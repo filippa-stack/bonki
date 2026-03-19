@@ -445,16 +445,113 @@ export default function Journey() {
         })}
       </div>
 
-      {/* ── Zone 3: Placeholder ── */}
-      <div style={{
-        padding: '0 24px 48px',
-        textAlign: 'center',
-        color: COLORS.driftwood,
-        fontSize: '14px',
-        opacity: 0.5,
-      }}>
-        Zone 3 — coming in Prompt 5.9
+      {/* ── Zone 3: Journey Insights ── */}
+      <div style={{ padding: '0 24px 32px' }}>
+        {coupleState && coupleState.current_card_index < 21 && !insights?.has_sufficient_data ? (
+          <div style={{
+            fontSize: '15px', color: COLORS.driftwoodBody, fontStyle: 'italic',
+            textAlign: 'center', padding: '24px 0',
+          }}>
+            Ni är på vecka {coupleState.current_card_index + 1}. Insikterna växer med er resa.
+          </div>
+        ) : insights?.has_sufficient_data ? (
+          <div>
+            {insights.max_delta_card && (
+              <div style={{ marginBottom: '16px' }}>
+                <div style={{ fontSize: '13px', color: COLORS.driftwood, marginBottom: '4px' }}>
+                  Här var ni längst ifrån varandra
+                </div>
+                <div style={{
+                  fontFamily: "'DM Serif Display', serif", fontSize: '18px',
+                  color: COLORS.lanternGlow,
+                }}>
+                  {getCardTitleFromId(insights.max_delta_card.card_id)}
+                </div>
+              </div>
+            )}
+            {insights.min_delta_card && (
+              <div style={{ marginBottom: '16px' }}>
+                <div style={{ fontSize: '13px', color: COLORS.driftwood, marginBottom: '4px' }}>
+                  Här var ni närmast
+                </div>
+                <div style={{
+                  fontFamily: "'DM Serif Display', serif", fontSize: '18px',
+                  color: COLORS.lanternGlow,
+                }}>
+                  {getCardTitleFromId(insights.min_delta_card.card_id)}
+                </div>
+              </div>
+            )}
+            <div style={{ fontSize: '14px', color: COLORS.driftwoodBody, marginTop: '8px' }}>
+              Ni skrev {insights.total_reflections} tankar under resan
+            </div>
+          </div>
+        ) : (
+          <div style={{ fontSize: '14px', color: COLORS.driftwoodBody, textAlign: 'center', padding: '16px 0' }}>
+            Ni skrev {insights?.total_reflections ?? 0} tankar under resan
+          </div>
+        )}
       </div>
+
+      {/* ── Tillbaka section ── */}
+      {tillbakaEntries.filter(e => e.isCompleted).length > 0 && (
+        <div style={{ padding: '0 24px 32px' }}>
+          <div style={{
+            fontFamily: "'DM Serif Display', serif", fontSize: '22px',
+            color: COLORS.deepSaffron, marginBottom: '16px',
+          }}>
+            Tillbaka
+          </div>
+          {tillbakaEntries.filter(e => e.isCompleted).map(entry => (
+            <div key={entry.index} style={{
+              padding: '12px 0',
+              borderBottom: `1px solid ${COLORS.emberMid}`,
+            }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+                <span style={{
+                  fontFamily: "'DM Serif Display', serif", fontSize: '16px',
+                  color: COLORS.lanternGlow,
+                }}>
+                  {entry.title}
+                </span>
+                {entry.completedAt && (
+                  <span style={{ fontSize: '12px', color: COLORS.driftwood, flexShrink: 0, marginLeft: '8px' }}>
+                    {new Date(entry.completedAt).toLocaleDateString('sv-SE')}
+                  </span>
+                )}
+              </div>
+              {entry.takeaway && (
+                <div style={{ marginTop: '8px', paddingLeft: '8px' }}>
+                  <div style={{ fontSize: '12px', color: COLORS.driftwood, marginBottom: '4px' }}>
+                    Efter samtalet
+                  </div>
+                  <div style={{ fontSize: '14px', color: COLORS.driftwoodBody }}>
+                    {entry.takeaway}
+                  </div>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* ── Ceremony reflection ── */}
+      {ceremonyReflection && (
+        <div style={{ padding: '0 24px 48px' }}>
+          <div style={{
+            fontFamily: "'DM Serif Display', serif", fontSize: '20px',
+            color: COLORS.deepSaffron, marginBottom: '12px',
+          }}>
+            Er ceremoni-reflektion
+          </div>
+          <div style={{
+            fontSize: '15px', color: COLORS.driftwoodBody, lineHeight: 1.6,
+            whiteSpace: 'pre-wrap',
+          }}>
+            {ceremonyReflection}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
