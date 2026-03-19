@@ -702,10 +702,12 @@ function ActionCard({
     if (!coupleId) return;
     setAdvancing(true);
     try {
+      const nextIndex = cardIndex + 1;
       const result = await skipCard({
         couple_id: coupleId,
         card_id: cardIdFromIndex(cardIndex),
         skip_type: 'auto_advanced',
+        ...(nextIndex <= 21 ? { slider_anchors: buildSliderAnchors(nextIndex) } : {}),
       });
       if (result.status === 'ceremony') {
         navigate('/ceremony');
