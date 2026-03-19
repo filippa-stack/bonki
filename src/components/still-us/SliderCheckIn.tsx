@@ -153,7 +153,7 @@ export default function SliderCheckIn({
     if (!hasSeenFormatPreview) {
       navigate('/format-preview');
     } else if (!hasPartner) {
-      navigate(`/solo-reflect/${cardId ?? `card_${cardIndex + 1}`}`);
+      navigate(`/solo-reflect/${slug ?? cardId ?? `card_${cardIndex + 1}`}`);
     } else {
       navigate('/');
     }
