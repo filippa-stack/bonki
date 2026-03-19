@@ -123,6 +123,7 @@ function ProtectedRoutes() {
               <Route path="/session/:cardId/tillbaka" element={<PageTransition><TillbakaSessionLive /></PageTransition>} />
               <Route path="/session/:cardId/tillbaka-complete" element={<PageTransition><TillbakaComplete /></PageTransition>} />
               <Route path="/journey" element={<PageTransition><Journey /></PageTransition>} />
+              <Route path="/unlock" element={<PageTransition><Paywall /></PageTransition>} />
               <Route path="/ceremony" element={<PageTransition><CompletionCeremony /></PageTransition>} />
               <Route path="*" element={<NotFound />} />
             </Routes>
