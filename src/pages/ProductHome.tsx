@@ -98,7 +98,10 @@ export default function ProductHome() {
         <div className="text-center space-y-4">
           <p className="font-serif text-lg" style={{ color: 'var(--text-primary)' }}>Produkten hittades inte</p>
           <button
-            onClick={() => navigate('/?devState=library')}
+            onClick={() => {
+              localStorage.removeItem('bonki-last-active-product');
+              navigate('/');
+            }}
             className="font-serif text-sm underline"
             style={{ color: 'var(--color-text-secondary)' }}
           >
