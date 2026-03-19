@@ -808,7 +808,7 @@ function ActionCard({
       );
     }
 
-
+    case 'partner_locked': {
       const nudgeSentAt = partnerNudgeSentAt ? new Date(partnerNudgeSentAt).getTime() : 0;
       const cooldownMs = 48 * 60 * 60 * 1000;
       const isNudgeDisabled = Date.now() - nudgeSentAt < cooldownMs;
