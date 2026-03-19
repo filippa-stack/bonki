@@ -34,6 +34,13 @@ export default function Home() {
   const shouldShowRitual = homeState.isDormant && !homeState.returnRitualShown && !homeState.loading;
   const layer = getLayerForCard(homeState.cardIndex);
 
+  // ── Ceremony redirect guard (highest priority) ──
+  useEffect(() => {
+    if (homeState.coupleState?.phase === 'ceremony') {
+      navigate('/ceremony', { replace: true });
+    }
+  }, [homeState.coupleState?.phase, navigate]);
+
   // ── Polling via pollCoupleState every 15s ──
   useEffect(() => {
     if (!space?.id) return;
