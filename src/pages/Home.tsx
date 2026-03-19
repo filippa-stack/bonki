@@ -361,6 +361,9 @@ export default function Home() {
               partnerName={homeState.partnerName}
               partnerTier={homeState.partnerTier}
               sessionPaused={homeState.sessionPaused}
+              initiatorName={homeState.initiatorName}
+              partnerNudgeSentAt={homeState.partnerNudgeSentAt}
+              coupleId={homeState.coupleId}
               onAction={handleAction}
             />
           )}
