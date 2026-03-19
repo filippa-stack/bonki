@@ -13,6 +13,7 @@ import { COLORS, cardIdFromIndex } from '@/lib/stillUsTokens';
 import { acquireSessionLock } from '@/lib/stillUsRpc';
 import { getTillbakaCard } from '@/data/tillbakaCards';
 import { getThresholdFraming, MOOD_OPTIONS, type ThresholdMood } from '@/data/thresholdFramings';
+import { enqueueWrite, hasPendingWrites, onSyncStatusChange } from '@/lib/offlineQueue';
 import SessionFocusShell from '@/components/SessionFocusShell';
 import SliderReveal from '@/components/still-us/SliderReveal';
 
@@ -76,6 +77,15 @@ export default function TillbakaSessionLive() {
 
   // Emotional exit
   const [showEmotionalExit, setShowEmotionalExit] = useState(false);
+  const [pendingSync, setPendingSync] = useState(false);
+  const localNotesCache = useRef<Record<string, Record<string, string>>>({});
+
+  useEffect(() => {
+    const cleanup = onSyncStatusChange(() => {
+      setPendingSync(hasPendingWrites());
+    });
+    return cleanup;
+  }, []);
 
   const isTier1 = coupleState?.partner_tier === 'tier_1';
   const showFastEnTanke = !isTier1;
@@ -279,30 +289,29 @@ export default function TillbakaSessionLive() {
     }
   }, [coupleState, backendCardId]);
 
-  const handleQ1Next = useCallback(async () => {
-    // Save Q1 note if present
+  const handleQ1Next = useCallback(() => {
+    // Fire-and-forget note save
     if (q1Note.trim() && coupleState) {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (user) {
-        const { data: existing } = await supabase
-          .from('user_card_state')
-          .select('notes')
-          .eq('couple_id', coupleState.couple_id)
-          .eq('user_id', user.id)
-          .eq('card_id', backendCardId)
-          .eq('cycle_id', coupleState.cycle_id)
-          .maybeSingle();
+      supabase.auth.getUser().then(({ data: { user } }) => {
+        if (!user) return;
+        const cacheKey = `${coupleState.couple_id}:${backendCardId}:${user.id}`;
+        const prev = localNotesCache.current[cacheKey] ?? {};
+        const merged = { ...prev, tillbaka_q1: q1Note.trim() };
+        localNotesCache.current[cacheKey] = merged;
 
-        const existingNotes = (existing?.notes as Record<string, string>) ?? {};
-        const merged = { ...existingNotes, tillbaka_q1: q1Note.trim() };
-
-        await supabase
-          .from('user_card_state')
-          .upsert(
-            { couple_id: coupleState.couple_id, user_id: user.id, card_id: backendCardId, cycle_id: coupleState.cycle_id, notes: merged as any },
-            { onConflict: 'couple_id,user_id,card_id,cycle_id' },
-          );
-      }
+        enqueueWrite({
+          table: 'user_card_state',
+          operation: 'upsert',
+          match: {},
+          data: {
+            couple_id: coupleState.couple_id,
+            user_id: user.id,
+            card_id: backendCardId,
+            cycle_id: coupleState.cycle_id,
+            notes: merged,
+          },
+        });
+      });
     }
 
     setStep('q2');
@@ -348,30 +357,29 @@ export default function TillbakaSessionLive() {
   }, [coupleState, backendCardId, step, navigate]);
 
   // ── Complete → navigate to tillbaka-complete ───────────────
-  const handleComplete = useCallback(async () => {
-    // Save Q2 note if present
+  const handleComplete = useCallback(() => {
+    // Fire-and-forget note save — never blocks navigation
     if (q2Note.trim() && coupleState) {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (user) {
-        const { data: existing } = await supabase
-          .from('user_card_state')
-          .select('notes')
-          .eq('couple_id', coupleState.couple_id)
-          .eq('user_id', user.id)
-          .eq('card_id', backendCardId)
-          .eq('cycle_id', coupleState.cycle_id)
-          .maybeSingle();
+      supabase.auth.getUser().then(({ data: { user } }) => {
+        if (!user) return;
+        const cacheKey = `${coupleState.couple_id}:${backendCardId}:${user.id}`;
+        const prev = localNotesCache.current[cacheKey] ?? {};
+        const merged = { ...prev, tillbaka_q2: q2Note.trim() };
+        localNotesCache.current[cacheKey] = merged;
 
-        const existingNotes = (existing?.notes as Record<string, string>) ?? {};
-        const merged = { ...existingNotes, tillbaka_q2: q2Note.trim() };
-
-        await supabase
-          .from('user_card_state')
-          .upsert(
-            { couple_id: coupleState.couple_id, user_id: user.id, card_id: backendCardId, cycle_id: coupleState.cycle_id, notes: merged as any },
-            { onConflict: 'couple_id,user_id,card_id,cycle_id' },
-          );
-      }
+        enqueueWrite({
+          table: 'user_card_state',
+          operation: 'upsert',
+          match: {},
+          data: {
+            couple_id: coupleState.couple_id,
+            user_id: user.id,
+            card_id: backendCardId,
+            cycle_id: coupleState.cycle_id,
+            notes: merged,
+          },
+        });
+      });
     }
 
     navigate(`/session/${slug}/tillbaka-complete`);
@@ -578,6 +586,11 @@ export default function TillbakaSessionLive() {
             </div>
           )}
         </div>
+        {pendingSync && (
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ textAlign: 'center', fontSize: '12px', color: COLORS.driftwood, padding: '8px 0', fontFamily: 'var(--font-sans)' }}>
+            Dina anteckningar sparas snart.
+          </motion.p>
+        )}
       </SessionFocusShell>
     );
   }
@@ -705,6 +718,11 @@ export default function TillbakaSessionLive() {
               Tillbaka hem
             </button>
           </div>
+        )}
+        {pendingSync && (
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ textAlign: 'center', fontSize: '12px', color: COLORS.driftwood, padding: '8px 0', fontFamily: 'var(--font-sans)' }}>
+            Dina anteckningar sparas snart.
+          </motion.p>
         )}
       </SessionFocusShell>
     );
