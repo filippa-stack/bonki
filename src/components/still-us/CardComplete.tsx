@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { EASE, EMOTION } from '@/lib/motion';
 import { COLORS, cardIdFromSlug, FEEDBACK_CARDS } from '@/lib/stillUsTokens';
-import { advanceCard } from '@/lib/stillUsRpc';
+import { advanceCard, buildSliderAnchors } from '@/lib/stillUsRpc';
 import FeedbackSheet from '@/components/FeedbackSheet';
 
 type Phase = 'takeaway' | 'handoff' | 'partner_writing' | 'committing';
@@ -87,11 +87,13 @@ export default function CardComplete({
       return;
     }
     try {
+      const nextIndex = cardIndex + 1;
       const result = await advanceCard({
         couple_id: coupleId,
         card_id: backendCardId,
         takeaway: myTakeaway || null,
         partner_takeaway: theirTakeaway,
+        ...(nextIndex <= 21 ? { slider_anchors: buildSliderAnchors(nextIndex) } : {}),
       });
       if (result.status === 'ceremony') {
         navigate('/ceremony', { replace: true });

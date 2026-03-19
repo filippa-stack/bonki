@@ -14,7 +14,7 @@ import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { useStillUsHome, type ActionCardKind } from '@/hooks/useStillUsHome';
 import { TOTAL_PROGRAM_CARDS } from '@/data/stillUsSequence';
 import { COLORS, getLayerForCard } from '@/lib/stillUsTokens';
-import { pollCoupleState, resetSliderCheckin, skipCard, restartProgram } from '@/lib/stillUsRpc';
+import { pollCoupleState, resetSliderCheckin, skipCard, restartProgram, buildSliderAnchors } from '@/lib/stillUsRpc';
 import { supabase } from '@/integrations/supabase/client';
 import { cardIdFromIndex } from '@/lib/stillUsTokens';
 import JourneyProgress from '@/components/still-us/JourneyProgress';
@@ -623,7 +623,7 @@ function ActionCard({
     if (!confirmed) return;
     try {
       setRestarting(true);
-      await restartProgram({ couple_id: coupleId! });
+      await restartProgram({ couple_id: coupleId!, slider_anchors: buildSliderAnchors(0) });
       window.location.reload();
     } catch (err) {
       console.error('Restart failed:', err);
@@ -702,10 +702,12 @@ function ActionCard({
     if (!coupleId) return;
     setAdvancing(true);
     try {
+      const nextIndex = cardIndex + 1;
       const result = await skipCard({
         couple_id: coupleId,
         card_id: cardIdFromIndex(cardIndex),
         skip_type: 'auto_advanced',
+        ...(nextIndex <= 21 ? { slider_anchors: buildSliderAnchors(nextIndex) } : {}),
       });
       if (result.status === 'ceremony') {
         navigate('/ceremony');
@@ -855,11 +857,13 @@ function ActionCard({
                 onClick={async () => {
                   if (!coupleId) return;
                   setSkipping(true);
-                  try {
+                   try {
+                    const nextIdx = cardIndex + 1;
                     const result = await skipCard({
                       couple_id: coupleId,
                       card_id: cardIdFromIndex(cardIndex),
                       skip_type: 'user_skipped',
+                      ...(nextIdx <= 21 ? { slider_anchors: buildSliderAnchors(nextIdx) } : {}),
                     });
                     if (result.status === 'ceremony') {
                       navigate('/ceremony');
