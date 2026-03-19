@@ -61,7 +61,7 @@ export default function Share({
       if (!state) return;
       const touch = state.current_touch as string | undefined;
       if (touch === 'session_1') {
-        navigate('/');
+        navigate('/?product=still-us');
       }
     });
 
