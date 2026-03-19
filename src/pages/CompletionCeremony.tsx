@@ -66,6 +66,31 @@ export default function CompletionCeremony() {
     checkAccess();
   }, [navigate]);
 
+  // ── Fetch journey insights ──
+  useEffect(() => {
+    if (!coupleState) return;
+    const fetchInsights = async () => {
+      try {
+        const result = await computeJourneyInsights({
+          couple_id: coupleState.couple_id,
+          cycle_id: coupleState.cycle_id,
+        });
+        setInsights(result as any);
+      } catch (err) {
+        console.error('Failed to fetch journey insights:', err);
+        setInsights({
+          max_delta_card: null,
+          min_delta_card: null,
+          total_reflections: 0,
+          has_sufficient_data: false,
+        });
+      } finally {
+        setInsightsLoading(false);
+      }
+    };
+    fetchInsights();
+  }, [coupleState]);
+
   // ── Screen 1 hold timer ──
   useEffect(() => {
     if (loading) return;
