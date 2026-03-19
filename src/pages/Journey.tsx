@@ -98,6 +98,62 @@ export default function Journey() {
       });
 
       setCardEntries(entries);
+
+      // Journey insights
+      try {
+        const insightsResult = await computeJourneyInsights({
+          couple_id: couple.couple_id,
+          cycle_id: couple.cycle_id,
+        });
+        setInsights(insightsResult);
+      } catch {}
+
+      // Tillbaka entries (if in maintenance)
+      if (couple.phase === 'maintenance' || couple.phase === 'second_cycle') {
+        const [{ data: tillbakaStates }, { data: tillbakaTakeaways }] = await Promise.all([
+          supabase
+            .from('session_state')
+            .select('card_id, completed_at, session_type')
+            .eq('couple_id', couple.couple_id)
+            .eq('cycle_id', couple.cycle_id)
+            .eq('session_type', 'tillbaka'),
+          supabase
+            .from('user_card_state')
+            .select('card_id, takeaway')
+            .eq('user_id', user.id)
+            .eq('couple_id', couple.couple_id)
+            .eq('cycle_id', couple.cycle_id),
+        ]);
+
+        const tbEntries = tillbakaCards.map((card, index) => {
+          const cardId = `tillbaka_${index + 1}`;
+          const sessState = tillbakaStates?.find(s => s.card_id === cardId);
+          const userState = tillbakaTakeaways?.find(s => s.card_id === cardId);
+          return {
+            index,
+            title: card.title,
+            completedAt: sessState?.completed_at ?? null,
+            takeaway: userState?.takeaway ?? null,
+            isCompleted: !!sessState?.completed_at,
+          };
+        });
+        setTillbakaEntries(tbEntries);
+      }
+
+      // Ceremony reflection
+      if (couple.ceremony_reflection) {
+        setCeremonyReflection(couple.ceremony_reflection);
+      } else if (couple.cycle_id > 1) {
+        const { data: archive } = await supabase
+          .from('ceremony_reflection_archive')
+          .select('reflection')
+          .eq('couple_id', couple.couple_id)
+          .eq('cycle_id', couple.cycle_id - 1)
+          .maybeSingle();
+        if (archive) setCeremonyReflection(archive.reflection);
+      }
+
+      setSelectedCycle(couple.cycle_id);
     };
     fetchData();
   }, []);
