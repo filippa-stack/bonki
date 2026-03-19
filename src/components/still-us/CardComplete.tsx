@@ -63,6 +63,11 @@ export default function CardComplete({
     }
   }, [cardIndex]);
 
+  // Clear feedback on phase change away from takeaway
+  useEffect(() => {
+    if (phase !== 'takeaway') setShowFeedback(false);
+  }, [phase]);
+
   // 3-second safety delay for handoff
   useEffect(() => {
     if (phase !== 'handoff') {
