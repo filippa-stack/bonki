@@ -38,7 +38,7 @@ export default function CardCompletePage() {
         .maybeSingle();
 
       if (!cs) {
-        navigate('/', { replace: true });
+        navigate('/?product=still-us', { replace: true });
         return;
       }
 

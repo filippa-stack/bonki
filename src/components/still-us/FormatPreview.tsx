@@ -53,7 +53,7 @@ export default function FormatPreview({ hasPartner = false, onComplete }: Format
     if (onComplete) {
       onComplete();
     } else if (hasPartner) {
-      navigate('/');
+      navigate('/?product=still-us');
     } else {
       navigate('/share');
     }
