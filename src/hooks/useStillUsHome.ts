@@ -85,6 +85,7 @@ const EMPTY_STATE: StillUsHomeState = {
   partnerSliderDone: false,
   sessionPaused: false,
   pausedReason: null,
+  maintenanceCardIndex: 0,
   maintenanceDaysUntilNext: null,
   maintenanceTillbakaTitle: '',
   maintenanceAvailable: false,

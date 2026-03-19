@@ -16,7 +16,7 @@ import { TOTAL_PROGRAM_CARDS } from '@/data/stillUsSequence';
 import { COLORS, getLayerForCard } from '@/lib/stillUsTokens';
 import { pollCoupleState, resetSliderCheckin } from '@/lib/stillUsRpc';
 import JourneyProgress from '@/components/still-us/JourneyProgress';
-import MaintenanceActionCard from '@/components/still-us/MaintenanceActionCard';
+import tillbakaCards from '@/data/tillbakaCards';
 import ReturnRitual from '@/components/still-us/ReturnRitual';
 import ProductHomeBackButton from '@/components/ProductHomeBackButton';
 import stillUsIllustration from '@/assets/illustration-still-us-home.png';
