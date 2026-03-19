@@ -362,9 +362,9 @@ export default function Home() {
             maintenanceTillbakaTitle={homeState.maintenanceTillbakaTitle}
             maintenanceAvailable={homeState.maintenanceAvailable}
             maintenanceDaysUntilNext={homeState.maintenanceDaysUntilNext}
-            pausedReason={null}
-            onAction={handleAction}
-          />
+          pausedReason={homeState.pausedReason}
+          onAction={handleAction}
+        />
         </div>
       </div>
 
