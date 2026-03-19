@@ -29,9 +29,10 @@ export default function Home() {
   const { user } = useAuth();
   const { space } = useCoupleSpaceContext();
   const homeState = useStillUsHome();
-  const [showReturnRitual, setShowReturnRitual] = useState(false);
+  const [dismissedInactivity, setDismissedInactivity] = useState(false);
 
-  const shouldShowRitual = homeState.isDormant && !homeState.returnRitualShown && !homeState.loading;
+  const showInactivityOverlay = homeState.dormancyDays > 7 && !dismissedInactivity && !homeState.loading;
+  const shouldShowRitual = homeState.isDormant && !homeState.returnRitualShown && !homeState.loading && !showInactivityOverlay;
   const layer = getLayerForCard(homeState.cardIndex);
 
   // ── Ceremony redirect guard (highest priority) ──
