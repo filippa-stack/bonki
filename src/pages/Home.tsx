@@ -15,6 +15,7 @@ import { useStillUsHome, type ActionCardKind } from '@/hooks/useStillUsHome';
 import { TOTAL_PROGRAM_CARDS } from '@/data/stillUsSequence';
 import { COLORS, getLayerForCard } from '@/lib/stillUsTokens';
 import { pollCoupleState, resetSliderCheckin, skipCard } from '@/lib/stillUsRpc';
+import { supabase } from '@/integrations/supabase/client';
 import { cardIdFromIndex } from '@/lib/stillUsTokens';
 import JourneyProgress from '@/components/still-us/JourneyProgress';
 import tillbakaCards from '@/data/tillbakaCards';
