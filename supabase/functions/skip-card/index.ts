@@ -122,6 +122,7 @@ Deno.serve(async (req: Request) => {
       current_touch: "slider",
       last_activity: now,
       partner_link_token: newLinkToken,
+      ...(slider_anchors ? { current_slider_anchors: slider_anchors } : {}),
     }).eq("couple_id", couple_id);
 
     // RULE 4: Create session_state for new card (CRITICAL invariant)

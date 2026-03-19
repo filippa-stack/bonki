@@ -89,6 +89,7 @@ Deno.serve(async (req: Request) => {
       phase: "program",
       partner_tier: "tier_1",
       purchase_status: "free_trial",
+      current_slider_anchors: sliderAnchors,
     });
 
     if (insertErr) {
