@@ -57,6 +57,7 @@ import TillbakaComplete from "./pages/TillbakaComplete";
 import Journey from "./pages/Journey";
 import Paywall from "./pages/Paywall";
 import SoloReflect from "./pages/SoloReflect";
+import DissolutionSettings from "./pages/DissolutionSettings";
 
 const queryClient = new QueryClient();
 
