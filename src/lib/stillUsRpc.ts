@@ -5,6 +5,7 @@
  */
 
 import { supabase } from '@/integrations/supabase/client';
+import { getSliderSet } from '@/data/sliderPrompts';
 
 // ── Helper ──────────────────────────────────────────────────
 async function invoke<T>(fnName: string, body: object): Promise<T> {
@@ -13,6 +14,24 @@ async function invoke<T>(fnName: string, body: object): Promise<T> {
     return { status: 'error', message: error?.message || 'Unknown error' } as T;
   }
   return data as T;
+}
+
+/**
+ * Build the JSONB payload for current_slider_anchors from sliderPrompts.
+ * Passed to edge functions so they can store it in couple_state.
+ */
+export function buildSliderAnchors(cardIndex: number) {
+  const set = getSliderSet(cardIndex);
+  if (!set) return null;
+  return {
+    card_title: set.cardTitle,
+    reflection_prompt: set.reflectionPrompt ?? null,
+    sliders: set.sliders.map((s) => ({
+      text: s.text,
+      leftLabel: s.leftLabel,
+      rightLabel: s.rightLabel,
+    })),
+  };
 }
 
 // ── Types ───────────────────────────────────────────────────
