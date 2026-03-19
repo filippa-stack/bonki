@@ -84,6 +84,7 @@ const EMPTY_STATE: StillUsHomeState = {
   cardTitle: 'Minsta vi',
   layerName: 'Grunden',
   phase: 'program',
+  cycleId: 1,
   purchaseStatus: 'free_trial',
   partnerTier: 'tier_3',
   partnerId: null,
