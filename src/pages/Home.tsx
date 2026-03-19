@@ -365,9 +365,11 @@ export default function Home() {
             maintenanceTillbakaTitle={homeState.maintenanceTillbakaTitle}
             maintenanceAvailable={homeState.maintenanceAvailable}
             maintenanceDaysUntilNext={homeState.maintenanceDaysUntilNext}
-          pausedReason={homeState.pausedReason}
-          onAction={handleAction}
-        />
+            pausedReason={homeState.pausedReason}
+            lastActivityAt={homeState.lastActivityAt}
+            onAction={handleAction}
+            onRefetch={homeState.refetch}
+          />
         </div>
       </div>
 
