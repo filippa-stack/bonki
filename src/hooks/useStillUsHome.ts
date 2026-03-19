@@ -183,7 +183,7 @@ export function useStillUsHome(): StillUsHomeState {
       const phase = cs.phase as StillUsHomeState['phase'];
       const purchaseStatus = cs.purchase_status as StillUsHomeState['purchaseStatus'];
       const partnerTier = cs.partner_tier as StillUsHomeState['partnerTier'];
-      const cycleId = cs.cycle_id ?? 1;
+      const cycleId = cycleIdVal;
       const migrationPending = cs.migration_pending ?? false;
       const lastActivityAt = cs.last_activity;
       const returnRitualShown = cs.return_ritual_shown_for_card === String(cardIndex);
