@@ -38,21 +38,33 @@ const items: NavItem[] = [
     label: 'Biblioteket',
     icon: House,
     path: '/',
-    match: (p) => p === '/' || (p.startsWith('/product/') && p !== '/product/still-us'),
+    match: (p, s) => {
+      // Library active for root (without ?product=still-us) and kids product pages
+      if (p === '/' && !s.includes('product=still-us')) return true;
+      if (p.startsWith('/product/') && p !== '/product/still-us') return true;
+      return false;
+    },
   },
   {
     id: 'still-us',
     label: 'Still Us',
     customIcon: StillUsIcon,
     path: '/product/still-us',
-    match: (p) => p === '/product/still-us',
+    match: (p, s) =>
+      p === '/product/still-us' ||
+      (p === '/' && s.includes('product=still-us')) ||
+      p.startsWith('/check-in') ||
+      p.startsWith('/session/') ||
+      p === '/share' ||
+      p === '/journey' ||
+      p === '/ceremony',
   },
   {
     id: 'journal',
     label: 'Era samtal',
     icon: BookOpen,
     path: '/journal',
-    match: (p) => p.startsWith('/journal'),
+    match: (p) => p.startsWith('/journal') || p.startsWith('/diary'),
   },
 ];
 
@@ -60,8 +72,14 @@ export default function BottomNav() {
   const navigate = useNavigate();
   const { pathname, search } = useLocation();
 
-  // Hide during card sessions (threshold → completion)
+  // Hide during active sessions (card sessions, Still Us sessions)
   if (pathname.startsWith('/card/')) return null;
+  if (pathname.startsWith('/check-in/')) return null;
+  if (pathname.startsWith('/session/')) return null;
+  if (pathname === '/share') return null;
+  if (pathname === '/tier2-setup') return null;
+  if (pathname === '/format-preview') return null;
+  if (pathname.startsWith('/solo-reflect/')) return null;
 
   return (
     <nav
@@ -83,7 +101,12 @@ export default function BottomNav() {
             return (
               <motion.button
                 key={item.id}
-                onClick={() => navigate(item.path)}
+                onClick={() => {
+                  if (item.id === 'library') {
+                    localStorage.removeItem('bonki-last-active-product');
+                  }
+                  navigate(item.path);
+                }}
                 whileTap={{ scale: 0.92 }}
                 transition={{ duration: 0.1 }}
                 className="relative flex flex-1 flex-col items-center justify-center"
