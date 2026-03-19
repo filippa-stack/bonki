@@ -16,7 +16,7 @@ import { TOTAL_PROGRAM_CARDS } from '@/data/stillUsSequence';
 import { COLORS, getLayerForCard } from '@/lib/stillUsTokens';
 import { pollCoupleState, resetSliderCheckin } from '@/lib/stillUsRpc';
 import JourneyProgress from '@/components/still-us/JourneyProgress';
-import MaintenanceActionCard from '@/components/still-us/MaintenanceActionCard';
+import tillbakaCards from '@/data/tillbakaCards';
 import ReturnRitual from '@/components/still-us/ReturnRitual';
 import ProductHomeBackButton from '@/components/ProductHomeBackButton';
 import stillUsIllustration from '@/assets/illustration-still-us-home.png';
@@ -92,13 +92,15 @@ export default function Home() {
       case 'unlock_self':
         navigate('/unlock');
         break;
+      case 'start_tillbaka':
+        navigate(`/session/tillbaka-${homeState.maintenanceCardIndex}/tillbaka`);
+        break;
+      case 'resume_tillbaka':
+        navigate(`/session/tillbaka-${homeState.maintenanceCardIndex}/tillbaka?resume=true`);
+        break;
       default:
         break;
     }
-  };
-
-  const handleMaintenanceStart = () => {
-    navigate(`/session/tillbaka-${homeState.maintenanceCardIndex}/tillbaka`);
   };
 
   return (
@@ -347,29 +349,24 @@ export default function Home() {
 
         {/* ── Zone 4: Action Card ── */}
         <div style={{ paddingLeft: '3vw', paddingRight: '3vw' }}>
-          {homeState.actionCard === 'maintenance' ? (
-            <MaintenanceActionCard
-              tillbakaIndex={homeState.maintenanceCardIndex}
-              tillbakaTitle={homeState.maintenanceTillbakaTitle}
-              available={homeState.maintenanceAvailable}
-              daysUntilNext={homeState.maintenanceDaysUntilNext ?? undefined}
-              onStart={handleMaintenanceStart}
-            />
-          ) : (
-            <ActionCard
-              kind={homeState.actionCard}
-              cardIndex={homeState.cardIndex}
-              cardTitle={homeState.cardTitle}
-              layerName={layer.name}
-              partnerName={homeState.partnerName}
-              partnerTier={homeState.partnerTier}
-              sessionPaused={homeState.sessionPaused}
-              initiatorName={homeState.initiatorName}
-              partnerNudgeSentAt={homeState.partnerNudgeSentAt}
-              coupleId={homeState.coupleId}
-              onAction={handleAction}
-            />
-          )}
+          <ActionCard
+            kind={homeState.actionCard}
+            cardIndex={homeState.cardIndex}
+            cardTitle={homeState.cardTitle}
+            layerName={layer.name}
+            partnerName={homeState.partnerName}
+            partnerTier={homeState.partnerTier}
+            sessionPaused={homeState.sessionPaused}
+            initiatorName={homeState.initiatorName}
+            partnerNudgeSentAt={homeState.partnerNudgeSentAt}
+            coupleId={homeState.coupleId}
+            maintenanceCardIndex={homeState.maintenanceCardIndex}
+            maintenanceTillbakaTitle={homeState.maintenanceTillbakaTitle}
+            maintenanceAvailable={homeState.maintenanceAvailable}
+            maintenanceDaysUntilNext={homeState.maintenanceDaysUntilNext}
+          pausedReason={homeState.pausedReason}
+          onAction={handleAction}
+        />
         </div>
       </div>
 
@@ -422,7 +419,7 @@ function NavTab({ label, active, onClick }: { label: string; active: boolean; on
   );
 }
 
-/* ── Action Card rendering (States 1-6) ── */
+/* ── Action Card rendering (States 1-6, 7/7b, 9, 10) ── */
 function ActionCard({
   kind,
   cardIndex,
@@ -434,6 +431,11 @@ function ActionCard({
   initiatorName,
   partnerNudgeSentAt,
   coupleId,
+  maintenanceCardIndex,
+  maintenanceTillbakaTitle,
+  maintenanceAvailable,
+  maintenanceDaysUntilNext,
+  pausedReason,
   onAction,
 }: {
   kind: ActionCardKind;
@@ -446,6 +448,11 @@ function ActionCard({
   initiatorName: string | null;
   partnerNudgeSentAt: string | null;
   coupleId: string | null;
+  maintenanceCardIndex: number;
+  maintenanceTillbakaTitle: string;
+  maintenanceAvailable: boolean;
+  maintenanceDaysUntilNext: number | null;
+  pausedReason: string | null;
   onAction: (action: string) => void;
 }) {
   const weekNum = cardIndex + 1;
@@ -598,6 +605,210 @@ function ActionCard({
       title = '';
       body = 'Er data uppdateras. Vänta en stund.';
       break;
+
+    case 'maintenance': {
+      const completedCount = maintenanceCardIndex;
+      const progressText = `${completedCount} av 12 tillbaka-samtal`;
+
+      if (sessionPaused) {
+        // State 7b: Tillbaka session paused
+        const reasonBody = pausedReason === 'emotional'
+          ? 'Ni stannade upp. Det är okej. Fortsätt när ni är redo.'
+          : 'Ni pausade ert tillbaka-samtal. Fortsätt där ni slutade.';
+
+        return (
+          <motion.div
+            initial={REDUCED ? false : { opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.25, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            style={{
+              width: '100%',
+              padding: '22px',
+              borderRadius: '22px',
+              overflow: 'hidden',
+              backgroundColor: `${COLORS.emberMid}40`,
+              backdropFilter: 'blur(12px)',
+            }}
+          >
+            <p style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: '11px',
+              textTransform: 'uppercase',
+              letterSpacing: '1.5px',
+              color: COLORS.driftwood,
+              margin: 0,
+            }}>
+              TILLBAKA · PAUS
+            </p>
+            <p style={{
+              fontFamily: "'DM Serif Display', serif",
+              fontSize: '20px',
+              color: COLORS.lanternGlow,
+              margin: '8px 0 0',
+            }}>
+              {maintenanceTillbakaTitle}
+            </p>
+            <p style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: '14px',
+              color: COLORS.lanternGlow,
+              opacity: 0.7,
+              margin: '12px 0 0',
+            }}>
+              {reasonBody}
+            </p>
+            <motion.button
+              whileTap={{ scale: 0.97 }}
+              onClick={() => onAction('resume_tillbaka')}
+              style={{
+                display: 'block',
+                margin: '20px auto 0',
+                width: '100%',
+                maxWidth: '320px',
+                height: '48px',
+                borderRadius: '12px',
+                backgroundColor: COLORS.deepSaffron,
+                border: 'none',
+                cursor: 'pointer',
+                fontFamily: 'var(--font-sans)',
+                fontSize: '16px',
+                fontWeight: 600,
+                color: '#FFFFFF',
+              }}
+            >
+              Fortsätt
+            </motion.button>
+            <p style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: '13px',
+              color: COLORS.driftwood,
+              textAlign: 'center',
+              margin: '16px 0 0',
+            }}>
+              {progressText}
+            </p>
+          </motion.div>
+        );
+      }
+
+      // State 7: Standard maintenance
+      if (maintenanceAvailable) {
+        return (
+          <motion.div
+            initial={REDUCED ? false : { opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.25, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            style={{
+              width: '100%',
+              padding: '22px',
+              borderRadius: '22px',
+              overflow: 'hidden',
+              backgroundColor: `${COLORS.emberMid}40`,
+              backdropFilter: 'blur(12px)',
+            }}
+          >
+            <p style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: '11px',
+              textTransform: 'uppercase',
+              letterSpacing: '1.5px',
+              color: COLORS.driftwood,
+              margin: 0,
+            }}>
+              TILLBAKA
+            </p>
+            <p style={{
+              fontFamily: "'DM Serif Display', serif",
+              fontSize: '20px',
+              color: COLORS.lanternGlow,
+              margin: '8px 0 0',
+            }}>
+              {maintenanceTillbakaTitle}
+            </p>
+            <motion.button
+              whileTap={{ scale: 0.97 }}
+              onClick={() => onAction('start_tillbaka')}
+              style={{
+                display: 'block',
+                margin: '20px auto 0',
+                width: '100%',
+                maxWidth: '320px',
+                height: '48px',
+                borderRadius: '12px',
+                backgroundColor: COLORS.deepSaffron,
+                border: 'none',
+                cursor: 'pointer',
+                fontFamily: 'var(--font-sans)',
+                fontSize: '16px',
+                fontWeight: 600,
+                color: '#FFFFFF',
+              }}
+            >
+              Börja
+            </motion.button>
+            <p style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: '13px',
+              color: COLORS.driftwood,
+              textAlign: 'center',
+              margin: '16px 0 0',
+            }}>
+              {progressText}
+            </p>
+          </motion.div>
+        );
+      }
+
+      // Between deliveries — no card available
+      const daysLeft = maintenanceDaysUntilNext;
+      const countdownText = (daysLeft !== null && daysLeft > 0)
+        ? `Nästa samtal kommer om ${daysLeft} dagar`
+        : 'Ert nästa samtal är redo snart.';
+
+      return (
+        <motion.div
+          initial={REDUCED ? false : { opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.25, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          style={{
+            width: '100%',
+            padding: '22px',
+            borderRadius: '22px',
+            overflow: 'hidden',
+            backgroundColor: `${COLORS.emberMid}40`,
+            backdropFilter: 'blur(12px)',
+          }}
+        >
+          <p style={{
+            fontFamily: 'var(--font-sans)',
+            fontSize: '11px',
+            textTransform: 'uppercase',
+            letterSpacing: '1.5px',
+            color: COLORS.driftwood,
+            margin: 0,
+          }}>
+            TILLBAKA
+          </p>
+          <p style={{
+            fontFamily: 'var(--font-sans)',
+            fontSize: '14px',
+            color: COLORS.driftwood,
+            margin: '12px 0 0',
+          }}>
+            {countdownText}
+          </p>
+          <p style={{
+            fontFamily: 'var(--font-sans)',
+            fontSize: '13px',
+            color: COLORS.driftwood,
+            textAlign: 'center',
+            margin: '16px 0 0',
+          }}>
+            {progressText}
+          </p>
+        </motion.div>
+      );
+    }
 
     case 'partner_locked': {
       const nudgeSentAt = partnerNudgeSentAt ? new Date(partnerNudgeSentAt).getTime() : 0;

@@ -48,6 +48,7 @@ export interface StillUsHomeState {
   partnerSliderDone: boolean;
   // Session
   sessionPaused: boolean;
+  pausedReason: string | null;
   // Maintenance
   maintenanceCardIndex: number;
   maintenanceDaysUntilNext: number | null;
@@ -83,6 +84,7 @@ const EMPTY_STATE: StillUsHomeState = {
   partnerName: null,
   partnerSliderDone: false,
   sessionPaused: false,
+  pausedReason: null,
   maintenanceCardIndex: 0,
   maintenanceDaysUntilNext: null,
   maintenanceTillbakaTitle: '',
@@ -195,6 +197,7 @@ export function useStillUsHome(): StillUsHomeState {
       const session1Completed = sessionActive ? ss.session_1_completed : false;
       const session2Completed = sessionActive ? ss.session_2_completed : false;
       const sessionPaused = sessionActive ? !!ss.paused_at : false;
+      const pausedReason = sessionActive ? (ss.paused_reason as string | null) : null;
 
       // Partner name
       const members = membersResult.data ?? [];
@@ -271,6 +274,7 @@ export function useStillUsHome(): StillUsHomeState {
         partnerName,
         partnerSliderDone,
         sessionPaused,
+        pausedReason,
         maintenanceCardIndex,
         maintenanceDaysUntilNext,
         maintenanceTillbakaTitle,
