@@ -14,7 +14,10 @@ export default function BackToLibraryButton({ color = 'var(--color-text-secondar
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ delay: 0.3, duration: 0.5 }}
-      onClick={() => navigate('/')}
+      onClick={() => {
+        localStorage.removeItem('bonki-last-active-product');
+        navigate('/');
+      }}
       aria-label="Tillbaka till biblioteket"
       style={{
         position: 'absolute',

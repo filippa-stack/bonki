@@ -193,7 +193,10 @@ export default function Header({
                     opacity: 0.85,
                     letterSpacing: '0.04em',
                   }}
-                  onClick={() => navigate('/', { replace: false })}
+                  onClick={() => {
+                    localStorage.removeItem('bonki-last-active-product');
+                    navigate('/', { replace: false });
+                  }}
                   aria-label="Tillbaka till startsidan"
                 >
                   BONKI

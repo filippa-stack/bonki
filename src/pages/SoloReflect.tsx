@@ -53,7 +53,7 @@ const SoloReflect = () => {
       </p>
 
       <button
-        onClick={() => navigate('/')}
+        onClick={() => navigate('/?product=still-us')}
         style={{
           background: 'transparent',
           border: 'none',

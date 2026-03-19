@@ -17,6 +17,7 @@ export default function DissolutionSettings() {
     try {
       setDissolving(true);
       await dissolveCouple({ couple_id: space.id, departing_user_id: user.id });
+      localStorage.removeItem('bonki-last-active-product');
       navigate('/');
     } catch (err) {
       console.error('Dissolution failed:', err);
