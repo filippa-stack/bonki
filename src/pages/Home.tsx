@@ -90,6 +90,9 @@ export default function Home() {
       case 'resume_session2':
         navigate(`/session/${cardId}/live-session2`);
         break;
+      case 'solo_reflect':
+        navigate(`/solo-reflect/${cardId}`);
+        break;
       case 'view_complete':
         navigate(`/session/${cardId}/complete`);
         break;
