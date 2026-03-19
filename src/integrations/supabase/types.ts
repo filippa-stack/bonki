@@ -575,6 +575,7 @@ export type Database = {
           couple_id: string
           created_at: string
           current_card_index: number
+          current_slider_anchors: Json | null
           current_touch: string
           cycle_id: number
           dissolved_at: string | null
@@ -600,6 +601,7 @@ export type Database = {
           couple_id: string
           created_at?: string
           current_card_index?: number
+          current_slider_anchors?: Json | null
           current_touch?: string
           cycle_id?: number
           dissolved_at?: string | null
@@ -625,6 +627,7 @@ export type Database = {
           couple_id?: string
           created_at?: string
           current_card_index?: number
+          current_slider_anchors?: Json | null
           current_touch?: string
           cycle_id?: number
           dissolved_at?: string | null
