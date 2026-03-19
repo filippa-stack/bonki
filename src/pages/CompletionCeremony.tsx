@@ -18,6 +18,14 @@ export default function CompletionCeremony() {
   const [swipeEnabled, setSwipeEnabled] = useState(false);
   const [loading, setLoading] = useState(true);
   const [coupleState, setCoupleState] = useState<CoupleStateData | null>(null);
+  const [insights, setInsights] = useState<{
+    max_delta_card: { card_id: string; avg_delta: number } | null;
+    min_delta_card: { card_id: string; avg_delta: number } | null;
+    total_reflections: number;
+    has_sufficient_data: boolean;
+  } | null>(null);
+  const [insightsLoading, setInsightsLoading] = useState(true);
+  const [screen3Reflection, setScreen3Reflection] = useState('');
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
   const containerRef = useRef<HTMLDivElement>(null);
