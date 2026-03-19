@@ -44,8 +44,10 @@ export interface StillUsHomeState {
   purchaseStatus: 'free_trial' | 'purchased';
   partnerTier: 'tier_1' | 'tier_2' | 'tier_3';
   // Partner info
+  partnerId: string | null;
   partnerName: string | null;
   partnerSliderDone: boolean;
+  partnerLinkToken: string | null;
   // Session
   sessionPaused: boolean;
   pausedReason: string | null;
@@ -62,6 +64,7 @@ export interface StillUsHomeState {
   // Touch & couple
   currentTouch: string;
   coupleId: string | null;
+  coupleCreatedAt: string | null;
   // Locked state
   initiatorId: string | null;
   initiatorName: string | null;
