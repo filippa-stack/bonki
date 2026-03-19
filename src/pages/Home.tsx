@@ -14,7 +14,7 @@ import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { useStillUsHome, type ActionCardKind } from '@/hooks/useStillUsHome';
 import { TOTAL_PROGRAM_CARDS } from '@/data/stillUsSequence';
 import { COLORS, getLayerForCard } from '@/lib/stillUsTokens';
-import { pollCoupleState, resetSliderCheckin, skipCard } from '@/lib/stillUsRpc';
+import { pollCoupleState, resetSliderCheckin, skipCard, restartProgram } from '@/lib/stillUsRpc';
 import { supabase } from '@/integrations/supabase/client';
 import { cardIdFromIndex } from '@/lib/stillUsTokens';
 import JourneyProgress from '@/components/still-us/JourneyProgress';
@@ -425,6 +425,8 @@ export default function Home() {
             partnerNudgeSentAt={homeState.partnerNudgeSentAt}
             coupleId={homeState.coupleId}
             cycleId={homeState.cycleId}
+            phase={homeState.phase}
+            currentTouch={homeState.currentTouch}
             maintenanceCardIndex={homeState.maintenanceCardIndex}
             maintenanceTillbakaTitle={homeState.maintenanceTillbakaTitle}
             maintenanceAvailable={homeState.maintenanceAvailable}
@@ -554,6 +556,8 @@ function ActionCard({
   partnerNudgeSentAt,
   coupleId,
   cycleId,
+  phase,
+  currentTouch,
   maintenanceCardIndex,
   maintenanceTillbakaTitle,
   maintenanceAvailable,
@@ -574,6 +578,8 @@ function ActionCard({
   partnerNudgeSentAt: string | null;
   coupleId: string | null;
   cycleId: number;
+  phase: string;
+  currentTouch: string;
   maintenanceCardIndex: number;
   maintenanceTillbakaTitle: string;
   maintenanceAvailable: boolean;
@@ -591,6 +597,90 @@ function ActionCard({
   const [pacingMomentShown, setPacingMomentShown] = useState(false);
   const [advancing, setAdvancing] = useState(false);
   const [recentCompletions, setRecentCompletions] = useState(0);
+  const [restarting, setRestarting] = useState(false);
+  const [completedTillbakaCount, setCompletedTillbakaCount] = useState(0);
+
+  // Fetch completed Tillbaka count for restart eligibility
+  useEffect(() => {
+    if (!coupleId || kind !== 'maintenance') return;
+    supabase
+      .from('session_state')
+      .select('card_id', { count: 'exact', head: true })
+      .eq('couple_id', coupleId)
+      .eq('cycle_id', cycleId)
+      .eq('session_type', 'tillbaka')
+      .not('completed_at', 'is', null)
+      .then(({ count }) => setCompletedTillbakaCount(count ?? 0));
+  }, [coupleId, cycleId, kind]);
+
+  const allTillbakaExhausted = maintenanceCardIndex >= 11 && currentTouch === 'complete';
+  const restartEligible = kind === 'maintenance' && (completedTillbakaCount >= 4 || allTillbakaExhausted);
+
+  const handleRestart = async () => {
+    const confirmed = window.confirm(
+      'Vill ni verkligen börja om hela resan? Alla 22 veckor börjar från början.'
+    );
+    if (!confirmed) return;
+    try {
+      setRestarting(true);
+      await restartProgram({ couple_id: coupleId! });
+      window.location.reload();
+    } catch (err) {
+      console.error('Restart failed:', err);
+      setRestarting(false);
+    }
+  };
+
+  const renderRestartCTA = () => {
+    if (!restartEligible) return null;
+    if (allTillbakaExhausted) {
+      return (
+        <motion.button
+          whileTap={{ scale: 0.97 }}
+          onClick={handleRestart}
+          disabled={restarting}
+          style={{
+            display: 'block',
+            margin: '20px auto 0',
+            width: '100%',
+            maxWidth: '320px',
+            height: '48px',
+            borderRadius: '12px',
+            backgroundColor: COLORS.deepSaffron,
+            border: 'none',
+            cursor: restarting ? 'default' : 'pointer',
+            opacity: restarting ? 0.6 : 1,
+            fontFamily: 'var(--font-sans)',
+            fontSize: '16px',
+            fontWeight: 600,
+            color: '#FFFFFF',
+          }}
+        >
+          {restarting ? 'Startar om...' : 'Börja om på djupet'}
+        </motion.button>
+      );
+    }
+    return (
+      <button
+        onClick={handleRestart}
+        disabled={restarting}
+        style={{
+          display: 'block',
+          margin: '16px auto 0',
+          background: 'transparent',
+          border: 'none',
+          fontFamily: 'var(--font-sans)',
+          fontSize: '14px',
+          color: COLORS.driftwood,
+          cursor: restarting ? 'default' : 'pointer',
+          textDecoration: 'underline',
+          opacity: restarting ? 0.6 : 1,
+        }}
+      >
+        {restarting ? 'Startar om...' : 'Börja om på djupet'}
+      </button>
+    );
+  };
 
   // Fetch recent completion count for pacing guard
   useEffect(() => {
@@ -1058,6 +1148,7 @@ function ActionCard({
             >
               Se er resa
             </button>
+            {renderRestartCTA()}
           </motion.div>
         );
       }
@@ -1142,6 +1233,7 @@ function ActionCard({
             >
               Se er resa
             </button>
+            {renderRestartCTA()}
           </motion.div>
         );
       }
@@ -1209,6 +1301,7 @@ function ActionCard({
           >
             Se er resa
           </button>
+          {renderRestartCTA()}
         </motion.div>
       );
     }
