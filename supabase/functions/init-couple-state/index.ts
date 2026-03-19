@@ -29,7 +29,7 @@ Deno.serve(async (req: Request) => {
     const body = await req.json().catch(() => ({}));
     const sliderAnchors = body?.slider_anchors ?? null;
 
-    // ── Auth: verify JWT ───────────────────────────────────────
+    // ── Auth: verify JWT via getUser ───────────────────────────
     const authHeader = req.headers.get("Authorization");
     if (!authHeader?.startsWith("Bearer ")) {
       return jsonResponse({ error: "unauthorized" }, 401, headers);
@@ -41,13 +41,13 @@ Deno.serve(async (req: Request) => {
       { global: { headers: { Authorization: authHeader } } }
     );
 
-    const token = authHeader.replace("Bearer ", "");
-    const { data: claimsData, error: claimsError } = await userClient.auth.getClaims(token);
-    if (claimsError || !claimsData?.claims) {
+    const { data: userData, error: userError } = await userClient.auth.getUser();
+    if (userError || !userData?.user) {
+      console.error("auth.getUser failed:", userError?.message);
       return jsonResponse({ error: "unauthorized" }, 401, headers);
     }
 
-    const userId = claimsData.claims.sub as string;
+    const userId = userData.user.id;
 
     // ── Service-role client (bypasses RLS) ─────────────────────
     const supabase = createServiceClient();
