@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Still Us — Check-in</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: #2E2233;
+      color: #F5E6D3;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px;
+      padding-top: calc(24px + env(safe-area-inset-top, 0px));
+    }
+    h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 28px;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+    .subtitle {
+      font-size: 14px;
+      color: #B5A898;
+      margin-bottom: 32px;
+      text-align: center;
+    }
+    .slider-container {
+      width: 100%;
+      max-width: 360px;
+      margin-bottom: 24px;
+    }
+    .slider-anchors {
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+      color: #F5E6D3;
+      margin-bottom: 8px;
+    }
+    .slider-track {
+      width: 100%;
+      height: 4px;
+      background: #473454;
+      border-radius: 22px;
+      position: relative;
+      cursor: pointer;
+      padding: 12px 0;
+      background-clip: content-box;
+    }
+    .slider-fill {
+      height: 4px;
+      background: rgba(232, 141, 58, 0.4);
+      border-radius: 22px;
+      position: absolute;
+      left: 0;
+      top: 12px;
+    }
+    .slider-marker {
+      width: 28px;
+      height: 28px;
+      background: #E8913A;
+      border: 2px solid white;
+      border-radius: 50%;
+      position: absolute;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      cursor: grab;
+      touch-action: none;
+    }
+    .slider-marker:focus-visible {
+      outline: 2px solid #E8913A;
+      outline-offset: 2px;
+    }
+    .privacy-note {
+      font-size: 12px;
+      font-style: italic;
+      color: #9B8E7E;
+      text-align: center;
+      margin-top: 8px;
+    }
+    .cta {
+      background: #E8913A;
+      color: #2E2233;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      font-size: 16px;
+      border: none;
+      border-radius: 12px;
+      padding: 16px 32px;
+      cursor: pointer;
+      width: 100%;
+      max-width: 360px;
+      margin-top: 24px;
+      transition: opacity 0.15s;
+    }
+    .cta:disabled {
+      background: #473454;
+      color: #9B8E7E;
+      cursor: default;
+    }
+    .cta:active:not(:disabled) { opacity: 0.85; }
+    .status-message {
+      font-size: 14px;
+      color: #B5A898;
+      text-align: center;
+      margin-top: 16px;
+    }
+    .dissolved-message {
+      font-family: 'DM Serif Display', serif;
+      font-size: 20px;
+      color: #9B8E7E;
+      text-align: center;
+      margin-top: 40vh;
+    }
+    .error-message {
+      color: #D4836D;
+      font-size: 14px;
+      text-align: center;
+      margin-top: 16px;
+    }
+    .reflection-area {
+      width: 100%;
+      max-width: 360px;
+      margin-top: 8px;
+    }
+    .reflection-area textarea {
+      width: 100%;
+      min-height: 60px;
+      background: rgba(71, 52, 84, 0.6);
+      color: #F5E6D3;
+      border: none;
+      border-radius: 12px;
+      padding: 12px 16px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 14px;
+      resize: vertical;
+      outline: none;
+    }
+    .reflection-area textarea::placeholder { color: #9B8E7E; }
+    .reflection-label {
+      font-size: 12px;
+      color: #9B8E7E;
+      font-style: italic;
+      margin-bottom: 6px;
+    }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+
+  <script>
+    // ── Configuration ──
+    var SUPABASE_URL = 'https://wcienwozdurwhswaarjy.supabase.co';
+    var EDGE_FUNCTION_URL = SUPABASE_URL + '/functions/v1/complete-slider-checkin';
+
+    // ── Extract token from URL ──
+    var params = new URLSearchParams(window.location.search);
+    var linkToken = params.get('token');
+
+    var app = document.getElementById('app');
+
+    if (!linkToken) {
+      app.innerHTML = '<p class="error-message">Länken verkar inte fungera. Be din partner skicka en ny.</p>';
+    } else {
+      renderSliders();
+    }
+
+    // ── State ──
+    var sliderPositions = [50, 50];
+    var slidersMoved = [false, false];
+    var checkinReflection = '';
+
+    function renderSliders() {
+      app.innerHTML =
+        '<h1>Veckans check-in</h1>' +
+        '<p class="subtitle">Flytta reglagen dit det k\u00e4nns r\u00e4tt f\u00f6r dig.</p>' +
+        '<div id="sliders"></div>' +
+        '<div class="reflection-area">' +
+          '<p class="reflection-label">Vill du l\u00e4gga till en tanke?</p>' +
+          '<textarea id="reflection" placeholder="Valfritt \u2014 skriv n\u00e5got du vill att ni pratar om\u2026"></textarea>' +
+        '</div>' +
+        '<p class="privacy-note">Bara du kan se det h\u00e4r tills ni s\u00e4tter er ner tillsammans.</p>' +
+        '<button id="submit-cta" class="cta" disabled>Flytta minst ett reglage</button>' +
+        '<div id="status"></div>';
+
+      var slidersContainer = document.getElementById('sliders');
+
+      // Render 2 sliders
+      // NOTE: Anchor texts are placeholders. Real implementation should embed
+      // card data in the JWT payload or pass anchor texts as URL params.
+      for (var i = 0; i < 2; i++) {
+        slidersContainer.appendChild(createSlider(i));
+      }
+
+      document.getElementById('reflection').addEventListener('input', function(e) {
+        checkinReflection = e.target.value;
+      });
+
+      document.getElementById('submit-cta').addEventListener('click', handleSubmit);
+    }
+
+    function createSlider(index) {
+      var container = document.createElement('div');
+      container.className = 'slider-container';
+      container.innerHTML =
+        '<div class="slider-anchors">' +
+          '<span id="anchor-left-' + index + '">\u2014</span>' +
+          '<span id="anchor-right-' + index + '">\u2014</span>' +
+        '</div>' +
+        '<div class="slider-track" id="track-' + index + '">' +
+          '<div class="slider-fill" id="fill-' + index + '" style="width: 50%"></div>' +
+          '<div class="slider-marker" id="marker-' + index + '" style="left: 50%"' +
+               ' role="slider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"' +
+               ' tabindex="0"></div>' +
+        '</div>';
+
+      var track = container.querySelector('#track-' + index);
+      var marker = container.querySelector('#marker-' + index);
+      var fill = container.querySelector('#fill-' + index);
+
+      function updatePosition(clientX) {
+        var rect = track.getBoundingClientRect();
+        var pct = ((clientX - rect.left) / rect.width) * 100;
+        pct = Math.max(0, Math.min(100, pct));
+        sliderPositions[index] = Math.round(pct);
+        slidersMoved[index] = true;
+        marker.style.left = pct + '%';
+        fill.style.width = pct + '%';
+        marker.setAttribute('aria-valuenow', Math.round(pct));
+        updateCTA();
+      }
+
+      // Pointer events for drag
+      marker.addEventListener('pointerdown', function(e) {
+        e.preventDefault();
+        marker.setPointerCapture(e.pointerId);
+        function onMove(ev) { updatePosition(ev.clientX); }
+        function onUp() {
+          marker.removeEventListener('pointermove', onMove);
+          marker.removeEventListener('pointerup', onUp);
+        }
+        marker.addEventListener('pointermove', onMove);
+        marker.addEventListener('pointerup', onUp);
+      });
+
+      // Tap on track
+      track.addEventListener('click', function(e) {
+        updatePosition(e.clientX);
+      });
+
+      // Keyboard support
+      marker.addEventListener('keydown', function(e) {
+        var step = 5;
+        if (e.key === 'ArrowRight' || e.key === 'ArrowUp') {
+          sliderPositions[index] = Math.min(100, sliderPositions[index] + step);
+        } else if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') {
+          sliderPositions[index] = Math.max(0, sliderPositions[index] - step);
+        } else { return; }
+        e.preventDefault();
+        slidersMoved[index] = true;
+        marker.style.left = sliderPositions[index] + '%';
+        fill.style.width = sliderPositions[index] + '%';
+        marker.setAttribute('aria-valuenow', sliderPositions[index]);
+        updateCTA();
+      });
+
+      return container;
+    }
+
+    function updateCTA() {
+      var btn = document.getElementById('submit-cta');
+      var anyMoved = slidersMoved.some(function(v) { return v; });
+
+      if (anyMoved) {
+        btn.disabled = false;
+        btn.textContent = 'Klar';
+      } else {
+        btn.disabled = true;
+        btn.textContent = 'Flytta minst ett reglage';
+      }
+    }
+
+    function handleSubmit() {
+      var btn = document.getElementById('submit-cta');
+      var status = document.getElementById('status');
+      btn.disabled = true;
+      btn.textContent = 'Skickar\u2026';
+      status.innerHTML = '';
+
+      fetch(EDGE_FUNCTION_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          link_token: linkToken,
+          slider_responses: sliderPositions.map(function(pos, i) {
+            return { slider_index: i, position: pos };
+          }),
+          checkin_reflection: checkinReflection.trim() || null,
+        }),
+      })
+      .then(function(response) { return response.json(); })
+      .then(function(data) {
+        if (data.status === 'dissolved') {
+          app.innerHTML = '<p class="dissolved-message">Det h\u00e4r utrymmet \u00e4r inte l\u00e4ngre aktivt.</p>';
+          return;
+        }
+
+        if (data.status === 'waiting' || data.status === 'ready') {
+          app.innerHTML =
+            '<div style="text-align: center; margin-top: 30vh;">' +
+              '<h1>Tack!</h1>' +
+              '<p class="subtitle" style="margin-top: 12px;">' +
+                (data.status === 'ready'
+                  ? 'Ni \u00e4r redo att s\u00e4tta er ner tillsammans.'
+                  : 'Din partner har inte svarat \u00e4n. Ni f\u00e5r en signal n\u00e4r det \u00e4r dags.') +
+              '</p>' +
+            '</div>';
+          return;
+        }
+
+        if (data.status === 'already_submitted') {
+          app.innerHTML =
+            '<div style="text-align: center; margin-top: 30vh;">' +
+              '<h1>Redan inskickad</h1>' +
+              '<p class="subtitle" style="margin-top: 12px;">Du har redan svarat p\u00e5 den h\u00e4r veckans check-in.</p>' +
+            '</div>';
+          return;
+        }
+
+        // Error fallback
+        status.innerHTML = '<p class="error-message">N\u00e5got gick fel. F\u00f6rs\u00f6k igen.</p>';
+        btn.disabled = false;
+        btn.textContent = 'Klar';
+      })
+      .catch(function() {
+        status.innerHTML = '<p class="error-message">Kunde inte n\u00e5 servern. Kolla din uppkoppling.</p>';
+        btn.disabled = false;
+        btn.textContent = 'Klar';
+      });
+    }
+  </script>
+</body>
+</html>
