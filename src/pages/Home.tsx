@@ -101,18 +101,118 @@ export default function Home() {
   return (
     <div style={{ minHeight: '100dvh', position: 'relative', overflow: 'hidden', backgroundColor: COLORS.emberNight }}>
 
-      {/* ── Return ritual overlay (States 7-10 placeholder) ── */}
+      {/* ── Inactivity overlay (7+ days) ── */}
       <AnimatePresence>
-        {shouldShowRitual && (
-          <ReturnRitual
-            daysSinceLastActivity={homeState.dormancyDays}
-            cardTitle={homeState.cardTitle}
-            onContinue={() => setShowReturnRitual(false)}
-            onRestart={() => {
-              setShowReturnRitual(false);
-              // TODO: call reset_slider_checkin RPC
+        {showInactivityOverlay && (
+          <motion.div
+            key="inactivity-overlay"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            style={{
+              position: 'fixed',
+              inset: 0,
+              zIndex: 50,
+              backgroundColor: COLORS.emberNight,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '24px',
             }}
-          />
+          >
+            <h1 style={{
+              fontFamily: "'DM Serif Display', serif",
+              fontSize: '28px',
+              color: COLORS.lanternGlow,
+              textAlign: 'center',
+              margin: 0,
+            }}>
+              Välkomna tillbaka.
+            </h1>
+
+            <p style={{
+              fontSize: '16px',
+              color: COLORS.lanternGlow,
+              opacity: 0.7,
+              textAlign: 'center',
+              marginTop: '16px',
+              fontFamily: 'var(--font-sans)',
+            }}>
+              Ni pausade vid Vecka {homeState.cardIndex + 1}: {homeState.cardTitle}.
+            </p>
+
+            {(() => {
+              const touch = homeState.currentTouch;
+              let contextText: string | null = null;
+              if (touch === 'slider' || touch === 'slider_checkin') {
+                contextText = 'Ni började inte veckans check-in.';
+              } else if (touch === 'session_1') {
+                contextText = 'Ni hade gjort er check-in men inte börjat prata.';
+              } else if (touch === 'session_2') {
+                contextText = 'Ni hade gjort Samtal 1. Samtal 2 väntar.';
+              }
+              return contextText ? (
+                <p style={{
+                  fontSize: '14px',
+                  color: COLORS.lanternGlow,
+                  opacity: 0.6,
+                  textAlign: 'center',
+                  marginTop: '8px',
+                  fontFamily: 'var(--font-sans)',
+                }}>
+                  {contextText}
+                </p>
+              ) : null;
+            })()}
+
+            <motion.button
+              whileTap={{ scale: 0.98 }}
+              onClick={() => setDismissedInactivity(true)}
+              style={{
+                marginTop: '40px',
+                width: '100%',
+                maxWidth: '320px',
+                height: '48px',
+                borderRadius: '12px',
+                backgroundColor: COLORS.deepSaffron,
+                border: 'none',
+                cursor: 'pointer',
+                fontFamily: 'var(--font-sans)',
+                fontSize: '16px',
+                fontWeight: 600,
+                color: '#FFFFFF',
+              }}
+            >
+              Fortsätt där ni slutade
+            </motion.button>
+
+            <button
+              onClick={async () => {
+                if (homeState.coupleId) {
+                  try {
+                    await resetSliderCheckin({ couple_id: homeState.coupleId, card_id: `card_${homeState.cardIndex + 1}` });
+                  } catch (err) {
+                    console.warn('Reset slider failed:', err);
+                  }
+                  homeState.refetch();
+                }
+                setDismissedInactivity(true);
+              }}
+              style={{
+                marginTop: '16px',
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                color: COLORS.driftwood,
+                fontSize: '14px',
+                fontFamily: 'var(--font-sans)',
+              }}
+            >
+              Börja om med en ny check-in
+            </button>
+          </motion.div>
         )}
       </AnimatePresence>
 
