@@ -132,10 +132,27 @@ export default function ProductIntro({
     ? introData.slides.map((s) => s.signoff).filter(Boolean).join('\n\n')
     : '';
 
-  const handleCta = () => {
+  const handleCta = async () => {
     // Persist seen flag server-side (fire-and-forget)
     markProductIntroSeenServer(productId);
-    if (freeCardId && onStartFreeCard) {
+
+    if (isStillUs) {
+      // Still Us: init couple_state, then navigate to first check-in
+      setInitiating(true);
+      try {
+        const result = await initCoupleState();
+        if (result.couple_id) {
+          navigate('/check-in/su-01-smallest-we');
+          return;
+        }
+      } catch (err) {
+        console.error('initCoupleState failed:', err);
+      } finally {
+        setInitiating(false);
+      }
+      // Fallback: complete normally
+      onComplete();
+    } else if (freeCardId && onStartFreeCard) {
       onStartFreeCard();
     } else {
       onComplete();
