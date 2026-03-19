@@ -222,6 +222,8 @@ export function useStillUsHome(): StillUsHomeState {
         actionCard = 'ceremony';
       } else if (phase === 'maintenance' || phase === 'restart') {
         actionCard = 'maintenance';
+      } else if (!isCurrentUserInitiator && partnerTier === 'tier_3' && purchaseStatus === 'free_trial' && cardIndex > 0) {
+        actionCard = 'partner_locked';
       } else {
         // Program phase
         if (cardIndex >= TOTAL_PROGRAM_CARDS) {
