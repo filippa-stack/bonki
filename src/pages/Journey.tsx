@@ -218,12 +218,12 @@ export default function Journey() {
       backgroundColor: COLORS.emberNight,
     }}>
       {/* ── Multi-cycle toggle ── */}
-      {coupleState?.cycle_id > 1 && (
+      {maxCycle > 1 && (
         <div style={{
           display: 'flex', gap: '8px', justifyContent: 'center',
           padding: '16px 24px 0',
         }}>
-          {Array.from({ length: coupleState.cycle_id }, (_, i) => i + 1).map(cycle => (
+          {Array.from({ length: maxCycle }, (_, i) => i + 1).map(cycle => (
             <button
               key={cycle}
               onClick={() => setSelectedCycle(cycle)}
