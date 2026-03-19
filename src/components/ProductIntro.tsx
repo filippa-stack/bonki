@@ -182,7 +182,9 @@ export default function ProductIntro({
         display: 'flex',
         flexDirection: 'column',
         overflow: expanded ? 'auto' : 'hidden',
-        position: 'relative',
+        position: 'fixed',
+        inset: 0,
+        zIndex: 50,
       }}
     >
       {/* ── 1. Illustration zone — atmospheric creature backdrop ── */}
