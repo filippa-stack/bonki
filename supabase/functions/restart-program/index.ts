@@ -15,6 +15,7 @@
 import { getCorsHeaders, handleCors } from "../_shared/cors.ts";
 import { createServiceClient } from "../_shared/supabase-client.ts";
 import { createSessionStateForCard } from "../_shared/create-session-state.ts";
+import { signLinkToken } from "../_shared/jwt-utils.ts";
 
 /** 1-indexed card_id convention: card_index 0 → "card_1" */
 function cardIdFromIndex(index: number): string {

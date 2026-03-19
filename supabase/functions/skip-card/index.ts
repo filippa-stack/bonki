@@ -18,6 +18,7 @@
 import { getCorsHeaders, handleCors } from "../_shared/cors.ts";
 import { createServiceClient } from "../_shared/supabase-client.ts";
 import { createSessionStateForCard } from "../_shared/create-session-state.ts";
+import { signLinkToken } from "../_shared/jwt-utils.ts";
 
 const TERMINAL_CARD_INDEX = 21;
 
