@@ -8,18 +8,52 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { COLORS } from '@/lib/stillUsTokens';
 import { supabase } from '@/integrations/supabase/client';
 
-interface FeedbackSheetProps {
+// Still Us card completion feedback
+interface StillUsFeedbackProps {
   coupleId: string;
   cardId: string;
   cardIndex: number;
   onDismiss: () => void;
+  // Legacy props not used in this mode
+  sessionId?: never;
+  coupleSpaceId?: never;
+  show?: never;
 }
+
+// Legacy feedback (used by CardView + CompletedSessionView)
+interface LegacyFeedbackProps {
+  sessionId: string;
+  coupleSpaceId: string;
+  show: boolean;
+  onDismiss: () => void;
+  // Still Us props not used in this mode
+  coupleId?: never;
+  cardId?: never;
+  cardIndex?: never;
+}
+
+export type FeedbackSheetProps = StillUsFeedbackProps | LegacyFeedbackProps;
 
 const prefersReduced =
   typeof window !== 'undefined' &&
   window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-export default function FeedbackSheet({ coupleId, cardId, cardIndex, onDismiss }: FeedbackSheetProps) {
+export default function FeedbackSheet(props: FeedbackSheetProps) {
+  const { onDismiss } = props;
+
+  // Legacy mode: render nothing if show is false
+  if ('sessionId' in props && props.sessionId !== undefined) {
+    if (!props.show) return null;
+    // Legacy mode renders the same sheet UI but without card-specific fields
+    return <FeedbackSheetInner coupleId={props.coupleSpaceId} cardId="" cardIndex={-1} onDismiss={props.onDismiss} />;
+  }
+
+  // Still Us mode
+  const { coupleId, cardId, cardIndex } = props as StillUsFeedbackProps;
+  return <FeedbackSheetInner coupleId={coupleId} cardId={cardId} cardIndex={cardIndex} onDismiss={onDismiss} />;
+}
+
+function FeedbackSheetInner({ coupleId, cardId, cardIndex, onDismiss }: { coupleId: string; cardId: string; cardIndex: number; onDismiss: () => void }) {
   const [rating, setRating] = useState<number | null>(null);
   const [comment, setComment] = useState('');
   const [submitted, setSubmitted] = useState(false);
