@@ -70,6 +70,7 @@ export default function CheckInPage() {
     <SliderCheckIn
       cardIndex={cardIndex}
       cardId={backendCardId}
+      slug={slug ?? ''}
       coupleId={space?.id}
       hasSeenFormatPreview={hasSeenFormatPreview}
       hasPartner={hasPartner}

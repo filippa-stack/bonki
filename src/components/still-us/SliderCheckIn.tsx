@@ -23,6 +23,8 @@ interface SliderCheckInProps {
   cardIndex: number;
   coupleId?: string;
   cardId?: string;
+  /** Frontend slug for route navigation (e.g. 'su-01-smallest-we') */
+  slug?: string;
   /** Whether format preview has been seen */
   hasSeenFormatPreview?: boolean;
   /** Whether partner is connected */
@@ -36,6 +38,7 @@ export default function SliderCheckIn({
   cardIndex,
   coupleId,
   cardId,
+  slug,
   hasSeenFormatPreview = false,
   hasPartner = false,
   partnerCompleted = false,
@@ -111,8 +114,8 @@ export default function SliderCheckIn({
     if (!hasSeenFormatPreview) {
       navigate('/format-preview');
     } else if (!hasPartner) {
-      // Solo user who has seen format preview
-      navigate(`/solo-reflect/${cardId ?? `card_${cardIndex + 1}`}`);
+      // Solo user who has seen format preview → solo reflection
+      navigate(`/solo-reflect/${slug ?? cardId ?? `card_${cardIndex + 1}`}`);
     } else if (result.status === 'ready' || partnerCompleted) {
       // Both completed
       navigate('/');
@@ -150,7 +153,7 @@ export default function SliderCheckIn({
     if (!hasSeenFormatPreview) {
       navigate('/format-preview');
     } else if (!hasPartner) {
-      navigate(`/solo-reflect/${cardId ?? `card_${cardIndex + 1}`}`);
+      navigate(`/solo-reflect/${slug ?? cardId ?? `card_${cardIndex + 1}`}`);
     } else {
       navigate('/');
     }
