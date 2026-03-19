@@ -44,8 +44,10 @@ export interface StillUsHomeState {
   purchaseStatus: 'free_trial' | 'purchased';
   partnerTier: 'tier_1' | 'tier_2' | 'tier_3';
   // Partner info
+  partnerId: string | null;
   partnerName: string | null;
   partnerSliderDone: boolean;
+  partnerLinkToken: string | null;
   // Session
   sessionPaused: boolean;
   pausedReason: string | null;
@@ -62,6 +64,7 @@ export interface StillUsHomeState {
   // Touch & couple
   currentTouch: string;
   coupleId: string | null;
+  coupleCreatedAt: string | null;
   // Locked state
   initiatorId: string | null;
   initiatorName: string | null;
@@ -82,8 +85,10 @@ const EMPTY_STATE: StillUsHomeState = {
   phase: 'program',
   purchaseStatus: 'free_trial',
   partnerTier: 'tier_3',
+  partnerId: null,
   partnerName: null,
   partnerSliderDone: false,
+  partnerLinkToken: null,
   sessionPaused: false,
   pausedReason: null,
   maintenanceCardIndex: 0,
@@ -96,6 +101,7 @@ const EMPTY_STATE: StillUsHomeState = {
   lastActivityAt: null,
   currentTouch: 'slider',
   coupleId: null,
+  coupleCreatedAt: null,
   initiatorId: null,
   initiatorName: null,
   partnerNudgeSentAt: null,
@@ -273,8 +279,10 @@ export function useStillUsHome(): StillUsHomeState {
         phase,
         purchaseStatus,
         partnerTier,
+        partnerId: cs.partner_id ?? null,
         partnerName,
         partnerSliderDone,
+        partnerLinkToken: cs.partner_link_token ?? null,
         sessionPaused,
         pausedReason,
         maintenanceCardIndex,
@@ -287,6 +295,7 @@ export function useStillUsHome(): StillUsHomeState {
         lastActivityAt: lastActivityAt ?? null,
         currentTouch,
         coupleId: spaceId,
+        coupleCreatedAt: cs.created_at ?? null,
         initiatorId,
         initiatorName: isCurrentUserInitiator ? null : (partnerName || 'din partner'),
         partnerNudgeSentAt,

@@ -8,7 +8,7 @@
 
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { useStillUsHome, type ActionCardKind } from '@/hooks/useStillUsHome';
@@ -31,6 +31,18 @@ export default function Home() {
   const { space } = useCoupleSpaceContext();
   const homeState = useStillUsHome();
   const [dismissedInactivity, setDismissedInactivity] = useState(false);
+  const [resharePromptDismissed, setResharePromptDismissed] = useState(false);
+
+  const showResharePrompt = useMemo(() => {
+    if (resharePromptDismissed) return false;
+    if (homeState.loading) return false;
+    if (homeState.partnerId) return false;
+    if (!homeState.partnerLinkToken) return false;
+    if (!homeState.coupleCreatedAt) return false;
+    const created = new Date(homeState.coupleCreatedAt);
+    const daysSince = (Date.now() - created.getTime()) / (1000 * 60 * 60 * 24);
+    return daysSince >= 7;
+  }, [homeState.partnerId, homeState.partnerLinkToken, homeState.coupleCreatedAt, homeState.loading, resharePromptDismissed]);
 
   const showInactivityOverlay = homeState.dormancyDays > 7 && !dismissedInactivity && !homeState.loading;
   const shouldShowRitual = homeState.isDormant && !homeState.returnRitualShown && !homeState.loading && !showInactivityOverlay;
@@ -371,6 +383,61 @@ export default function Home() {
             onRefetch={homeState.refetch}
           />
         </div>
+
+        {/* ── Partner re-share prompt ── */}
+        {showResharePrompt && (
+          <div style={{ padding: '20px 24px', textAlign: 'center' }}>
+            <p style={{
+              fontFamily: "'DM Serif Display', serif",
+              fontSize: '18px',
+              color: COLORS.lanternGlow,
+              marginBottom: '8px',
+            }}>
+              Din partner har inte anslutit sig än
+            </p>
+            <p style={{
+              fontFamily: "'Nunito', sans-serif",
+              fontSize: '14px',
+              color: COLORS.driftwoodBody,
+              marginBottom: '20px',
+            }}>
+              Det kan vara värt att skicka länken igen.
+            </p>
+            <div style={{ display: 'flex', gap: '16px', justifyContent: 'center' }}>
+              <button
+                onClick={() => navigate('/share')}
+                style={{
+                  background: COLORS.deepSaffron,
+                  color: COLORS.emberNight,
+                  fontFamily: "'Nunito', sans-serif",
+                  fontWeight: 700,
+                  fontSize: '16px',
+                  border: 'none',
+                  borderRadius: '12px',
+                  padding: '14px 28px',
+                  cursor: 'pointer',
+                }}
+              >
+                Skicka igen
+              </button>
+              <button
+                onClick={() => setResharePromptDismissed(true)}
+                style={{
+                  background: 'transparent',
+                  border: 'none',
+                  color: COLORS.driftwood,
+                  fontFamily: "'Nunito', sans-serif",
+                  fontSize: '14px',
+                  textDecoration: 'underline',
+                  cursor: 'pointer',
+                  padding: '14px 12px',
+                }}
+              >
+                Vänta lite till
+              </button>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* ── Zone 5: Bottom Navigation ── */}
