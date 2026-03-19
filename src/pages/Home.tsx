@@ -556,6 +556,8 @@ function ActionCard({
   partnerNudgeSentAt,
   coupleId,
   cycleId,
+  phase,
+  currentTouch,
   maintenanceCardIndex,
   maintenanceTillbakaTitle,
   maintenanceAvailable,
@@ -576,6 +578,8 @@ function ActionCard({
   partnerNudgeSentAt: string | null;
   coupleId: string | null;
   cycleId: number;
+  phase: string;
+  currentTouch: string;
   maintenanceCardIndex: number;
   maintenanceTillbakaTitle: string;
   maintenanceAvailable: boolean;
