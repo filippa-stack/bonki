@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Share from '@/components/still-us/Share';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
+import { slugFromCardIndex } from '@/lib/stillUsTokens';
 
 export default function SharePage() {
   const { user } = useAuth();
@@ -10,11 +11,11 @@ export default function SharePage() {
   const [weekNumber, setWeekNumber] = useState(1);
   const [cardTitle, setCardTitle] = useState<string | undefined>();
   const [realCoupleId, setRealCoupleId] = useState<string | undefined>();
+  const [cardSlug, setCardSlug] = useState<string | undefined>();
 
   useEffect(() => {
     if (!user?.id) return;
 
-    // Query couple_state by initiator_id/partner_id (NOT couple_spaces.id)
     (async () => {
       const { data: cs } = await supabase
         .from('couple_state')
@@ -24,15 +25,16 @@ export default function SharePage() {
         .maybeSingle();
 
       if (cs) {
+        const idx = cs.current_card_index ?? 0;
         setRealCoupleId(cs.couple_id);
         setPartnerLinkToken(cs.partner_link_token ?? null);
         setHasPartner(!!(cs.partner_id || cs.partner_tier === 'tier_2'));
-        setWeekNumber((cs.current_card_index ?? 0) + 1);
+        setWeekNumber(idx + 1);
+        setCardSlug(slugFromCardIndex(idx) ?? undefined);
       }
     })();
   }, [user?.id]);
 
-  // Build the real share link pointing to the partner check-in portal
   const shareLink = partnerLinkToken
     ? `${window.location.origin}/check-in/?token=${partnerLinkToken}`
     : '';
@@ -43,6 +45,7 @@ export default function SharePage() {
       hasPartner={hasPartner}
       weekNumber={weekNumber}
       cardTitle={cardTitle}
+      cardSlug={cardSlug}
       shareLink={shareLink}
     />
   );
