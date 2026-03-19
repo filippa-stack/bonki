@@ -547,14 +547,89 @@ function ActionCard({
       isAccent = true;
       break;
 
-    case 'session1_complete': // State 5
+    case 'session1_complete': { // State 5
       label = `VECKA ${weekNum} · SAMTAL 2`;
       title = '';
       body = 'Ni har öppnat ämnet. Nu väntar scenariot.';
       ctaLabel = 'Fortsätt ert samtal';
       ctaAction = 'start_session2';
       isAccent = true;
+
+      const daysSinceActivity = lastActivityAt
+        ? (Date.now() - new Date(lastActivityAt).getTime()) / (1000 * 60 * 60 * 24)
+        : 0;
+      const showStale = daysSinceActivity >= 14 && !staleDismissed;
+
+      if (showStale) {
+        belowCard = (
+          <div style={{ marginTop: '16px' }}>
+            <div style={{ height: '1px', backgroundColor: COLORS.emberMid, width: '100%' }} />
+            <p style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: '14px',
+              color: COLORS.lanternGlow,
+              opacity: 0.7,
+              textAlign: 'center',
+              margin: '16px 0 12px',
+            }}>
+              Det har gått ett tag sedan Samtal 1. Vill ni fortsätta {cardTitle} eller gå vidare?
+            </p>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px' }}>
+              <button
+                disabled={skipping}
+                onClick={() => setStaleDismissed(true)}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '14px',
+                  color: COLORS.deepSaffron,
+                  cursor: skipping ? 'default' : 'pointer',
+                  opacity: skipping ? 0.5 : 1,
+                }}
+              >
+                Fortsätta {cardTitle}
+              </button>
+              <button
+                disabled={skipping}
+                onClick={async () => {
+                  if (!coupleId) return;
+                  setSkipping(true);
+                  try {
+                    const result = await skipCard({
+                      couple_id: coupleId,
+                      card_id: cardIdFromIndex(cardIndex),
+                      skip_type: 'user_skipped',
+                    });
+                    if (result.status === 'ceremony') {
+                      navigate('/ceremony');
+                    } else {
+                      await onRefetch();
+                    }
+                  } catch (err) {
+                    console.warn('Skip card failed:', err);
+                  } finally {
+                    setSkipping(false);
+                  }
+                }}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '14px',
+                  color: COLORS.driftwood,
+                  cursor: skipping ? 'default' : 'pointer',
+                  opacity: skipping ? 0.5 : 1,
+                }}
+              >
+                {skipping ? 'Hoppar över...' : 'Gå vidare till nästa vecka'}
+              </button>
+            </div>
+          </div>
+        );
+      }
       break;
+    }
 
     case 'session2_active': // State 5 variant (session 2 in progress)
       label = sessionPaused ? `VECKA ${weekNum} · PAUS` : `VECKA ${weekNum} · SAMTAL 2`;
