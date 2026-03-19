@@ -55,7 +55,7 @@ export default function TillbakaPage() {
         }
         navigate('/?product=still-us');
       }}
-      onPause={() => navigate('/')}
+      onPause={() => navigate('/?product=still-us')}
     />
   );
 }

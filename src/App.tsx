@@ -122,7 +122,7 @@ function ProtectedRoutes() {
               <Route path="/session/:cardId/session2-start" element={<PageTransition><Session2StartPage /></PageTransition>} />
               <Route path="/session/:cardId/live-session2" element={<PageTransition><Session2LivePage /></PageTransition>} />
               <Route path="/session/:cardId/complete" element={<PageTransition><CardCompletePage /></PageTransition>} />
-              <Route path="/session/:cardId/tillbaka" element={<PageTransition><TillbakaSessionLive /></PageTransition>} />
+              <Route path="/session/:cardId/tillbaka" element={<PageTransition><TillbakaPage /></PageTransition>} />
               <Route path="/session/:cardId/tillbaka-complete" element={<PageTransition><TillbakaComplete /></PageTransition>} />
               <Route path="/journey" element={<PageTransition><Journey /></PageTransition>} />
               <Route path="/solo-reflect/:cardId" element={<PageTransition><SoloReflect /></PageTransition>} />

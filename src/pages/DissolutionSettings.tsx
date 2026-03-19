@@ -1,22 +1,35 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { COLORS } from '@/lib/stillUsTokens';
 import { dissolveCouple } from '@/lib/stillUsRpc';
 import { useAuth } from '@/contexts/AuthContext';
-import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
+import { supabase } from '@/integrations/supabase/client';
 
 export default function DissolutionSettings() {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { space } = useCoupleSpaceContext();
   const [step, setStep] = useState<'warning' | 'confirm'>('warning');
   const [dissolving, setDissolving] = useState(false);
+  const [realCoupleId, setRealCoupleId] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!user?.id) return;
+    (async () => {
+      const { data: cs } = await supabase
+        .from('couple_state')
+        .select('couple_id')
+        .or(`initiator_id.eq.${user.id},partner_id.eq.${user.id}`)
+        .is('dissolved_at', null)
+        .maybeSingle();
+      if (cs) setRealCoupleId(cs.couple_id);
+    })();
+  }, [user?.id]);
 
   const handleDissolve = async () => {
-    if (!space?.id || !user?.id) return;
+    if (!realCoupleId || !user?.id) return;
     try {
       setDissolving(true);
-      await dissolveCouple({ couple_id: space.id, departing_user_id: user.id });
+      await dissolveCouple({ couple_id: realCoupleId, departing_user_id: user.id });
       localStorage.removeItem('bonki-last-active-product');
       navigate('/');
     } catch (err) {
