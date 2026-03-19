@@ -263,6 +263,8 @@ export function useStillUsHome(): StillUsHomeState {
         isDormant,
         dormancyDays,
         returnRitualShown,
+        currentTouch,
+        coupleId: spaceId,
         loading: false,
       });
     } catch (err) {
