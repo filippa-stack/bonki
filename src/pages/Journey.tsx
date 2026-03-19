@@ -38,6 +38,10 @@ export default function Journey() {
   const [cardEntries, setCardEntries] = useState<CardEntry[]>([]);
   const [expandedCards, setExpandedCards] = useState<Set<number>>(new Set());
   const [coupleState, setCoupleState] = useState<any>(null);
+  const [insights, setInsights] = useState<any>(null);
+  const [selectedCycle, setSelectedCycle] = useState(1);
+  const [tillbakaEntries, setTillbakaEntries] = useState<any[]>([]);
+  const [ceremonyReflection, setCeremonyReflection] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
