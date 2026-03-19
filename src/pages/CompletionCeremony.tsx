@@ -321,18 +321,139 @@ export default function CompletionCeremony() {
           </div>
         </div>
 
-        {/* ── Screen 3: Placeholder ── */}
+        {/* ── Screen 3: Data Mirror ── */}
         <div style={{
           width: '100vw',
           height: '100%',
           display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
+          flexDirection: 'column',
           flexShrink: 0,
+          overflowY: 'auto',
+          WebkitOverflowScrolling: 'touch',
+          padding: '48px 32px',
         }}>
-          <p style={{ color: COLORS.driftwood, fontSize: '15px' }}>
-            Screen 3 — coming soon
-          </p>
+          {insightsLoading ? (
+            <div style={{
+              flex: 1,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+              <p style={{
+                color: COLORS.driftwood,
+                fontSize: '15px',
+                fontStyle: 'italic',
+              }}>
+                Laddar…
+              </p>
+            </div>
+          ) : insights?.has_sufficient_data ? (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+              {insights.max_delta_card && (
+                <div style={{ textAlign: 'center' }}>
+                  <p style={{
+                    fontSize: '11px',
+                    fontWeight: 600,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.05em',
+                    color: COLORS.driftwood,
+                    marginBottom: '4px',
+                  }}>
+                    Här var ni längst ifrån varandra
+                  </p>
+                  <p style={{
+                    fontFamily: '"DM Serif Display", serif',
+                    fontSize: '20px',
+                    fontWeight: 400,
+                    color: COLORS.lanternGlow,
+                  }}>
+                    {getCardTitleFromId(insights.max_delta_card.card_id)}
+                  </p>
+                </div>
+              )}
+
+              {insights.min_delta_card && (
+                <div style={{ textAlign: 'center' }}>
+                  <p style={{
+                    fontSize: '11px',
+                    fontWeight: 600,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.05em',
+                    color: COLORS.driftwood,
+                    marginBottom: '4px',
+                  }}>
+                    Här var ni närmast
+                  </p>
+                  <p style={{
+                    fontFamily: '"DM Serif Display", serif',
+                    fontSize: '20px',
+                    fontWeight: 400,
+                    color: COLORS.lanternGlow,
+                  }}>
+                    {getCardTitleFromId(insights.min_delta_card.card_id)}
+                  </p>
+                </div>
+              )}
+
+              <div style={{ textAlign: 'center' }}>
+                <p style={{
+                  fontSize: '15px',
+                  color: COLORS.driftwoodBody,
+                  lineHeight: 1.6,
+                }}>
+                  Ni skrev {insights.total_reflections} tankar under resan
+                </p>
+              </div>
+            </div>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+              <p style={{
+                fontSize: '15px',
+                color: COLORS.driftwoodBody,
+                lineHeight: 1.6,
+                textAlign: 'center',
+              }}>
+                Ni gick igenom programmet på ert eget sätt — några veckor
+                hoppades över, några pausades. Det är okej. Det viktiga
+                är att ni är här.
+              </p>
+
+              <p style={{
+                fontSize: '15px',
+                color: COLORS.driftwoodBody,
+                textAlign: 'center',
+              }}>
+                Ni skrev {insights?.total_reflections ?? 0} tankar under resan
+              </p>
+
+              <p style={{
+                fontSize: '13px',
+                color: COLORS.driftwood,
+                textAlign: 'center',
+              }}>
+                Vad minns ni mest?
+              </p>
+
+              <textarea
+                value={screen3Reflection}
+                onChange={(e) => setScreen3Reflection(e.target.value)}
+                placeholder=""
+                style={{
+                  width: '100%',
+                  minHeight: '120px',
+                  background: COLORS.emberGlow,
+                  color: COLORS.lanternGlow,
+                  border: 'none',
+                  borderRadius: '12px',
+                  padding: '16px',
+                  fontSize: '16px',
+                  fontFamily: 'inherit',
+                  resize: 'vertical',
+                  outline: 'none',
+                }}
+              />
+            </div>
+          )}
         </div>
 
         {/* ── Screen 4: Placeholder ── */}
