@@ -41,6 +41,7 @@ export default function Share({
   hasPartner = false,
   coupleId,
   cardId,
+  cardSlug,
   cardTitle,
   weekNumber = 1,
   shareLink = '',
