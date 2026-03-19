@@ -766,13 +766,28 @@ function ActionCard({
       title = '';
       body = `${partnerName ?? 'Din partner'} har inte gjort sin check-in ännu.`;
       // No CTA
-      if (partnerTier === 'tier_1') {
-        belowCard = (
+      belowCard = (
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', marginTop: '12px' }}>
+          {partnerTier === 'tier_1' && (
+            <button
+              onClick={() => onAction('send_link')}
+              style={{
+                background: 'none',
+                border: 'none',
+                fontFamily: 'var(--font-sans)',
+                fontSize: '14px',
+                color: COLORS.driftwood,
+                cursor: 'pointer',
+                padding: '8px 0',
+                textDecoration: 'underline',
+              }}
+            >
+              Skicka check-in-länken?
+            </button>
+          )}
           <button
-            onClick={() => onAction('send_link')}
+            onClick={() => onAction('solo_reflect')}
             style={{
-              display: 'block',
-              margin: '12px auto 0',
               background: 'none',
               border: 'none',
               fontFamily: 'var(--font-sans)',
@@ -780,13 +795,12 @@ function ActionCard({
               color: COLORS.driftwood,
               cursor: 'pointer',
               padding: '8px 0',
-              textDecoration: 'underline',
             }}
           >
-            Skicka check-in-länken?
+            Reflektera själv
           </button>
-        );
-      }
+        </div>
+      );
       break;
 
     case 'slider_ready': // State 3
