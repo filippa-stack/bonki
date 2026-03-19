@@ -130,6 +130,7 @@ function ProtectedRoutes() {
               <Route path="/session/:cardId/tillbaka-complete" element={<PageTransition><TillbakaComplete /></PageTransition>} />
               <Route path="/journey" element={<PageTransition><Journey /></PageTransition>} />
               <Route path="/solo-reflect/:cardId" element={<PageTransition><SoloReflect /></PageTransition>} />
+              <Route path="/journey-preview" element={<PageTransition><JourneyPreview /></PageTransition>} />
               <Route path="/unlock" element={<PageTransition><Paywall /></PageTransition>} />
               <Route path="/ceremony" element={<PageTransition><CompletionCeremony /></PageTransition>} />
               <Route path="/settings/dissolve" element={<PageTransition><DissolutionSettings /></PageTransition>} />
