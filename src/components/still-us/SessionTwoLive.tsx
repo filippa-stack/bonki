@@ -579,6 +579,22 @@ export default function SessionTwoLive({
         {currentStep === 'interstitial' && renderInterstitial()}
         {currentStep === 'tank_om' && renderTankOm()}
       </AnimatePresence>
+
+      {pendingSync && (
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          style={{
+            textAlign: 'center',
+            fontSize: '12px',
+            color: COLORS.driftwood,
+            padding: '8px 0',
+            fontFamily: 'var(--font-sans)',
+          }}
+        >
+          Dina anteckningar sparas snart.
+        </motion.p>
+      )}
     </SessionFocusShell>
   );
 }
