@@ -1,8 +1,8 @@
-import { ReactNode, useState, useMemo } from 'react';
+import { ReactNode, useState, useMemo, useEffect } from 'react';
 import { Check, Copy } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import { isDemoMode, isDemoParam } from '@/lib/demoMode';
+import { isDemoMode, isDemoParam, enterDemoMode } from '@/lib/demoMode';
 
 const DESKTOP_ALLOWED_ROUTES = ['/analytics', '/login', '/flowcharts.html', '/kids-family-journey-flowchart.html', '/user-journey-flowchart.html', '/color-palette.html'];
 
@@ -42,7 +42,13 @@ export default function MobileOnlyGate({ children }: { children: ReactNode }) {
     });
   };
 
-  // Inside the demo iframe — render content directly (no gate)
+  // Inside the demo iframe — auto-enter demo mode and render content directly
+  useEffect(() => {
+    if (insideFrame && isDemoParam() && !isDemoMode()) {
+      enterDemoMode();
+    }
+  }, [insideFrame]);
+
   if (insideFrame) {
     return <>{children}</>;
   }
