@@ -466,7 +466,12 @@ export default function TillbakaSessionLive() {
       <SliderReveal
         cardIndex={tillbakaIndex}
         cardSlug={slug ?? ''}
-        sliders={tillbakaCard?.sliders ?? []}
+        sliders={(tillbakaCard?.sliders ?? []).map(s => ({
+          sliderId: s.id,
+          text: s.text,
+          leftLabel: s.leftLabel,
+          rightLabel: s.rightLabel,
+        }))}
         initiatorValues={initiatorSliders}
         partnerValues={partnerSliders}
         initiatorName={initiatorName}
