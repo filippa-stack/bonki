@@ -16,6 +16,7 @@ import { COLORS, cardIdFromSlug, cardIndexFromSlug } from '@/lib/stillUsTokens';
 import { getTankOmContent } from '@/data/tankOmContent';
 import { completeSession } from '@/lib/stillUsRpc';
 import { supabase } from '@/integrations/supabase/client';
+import { enqueueWrite, hasPendingWrites, onSyncStatusChange } from '@/lib/offlineQueue';
 import SessionFocusShell from '@/components/SessionFocusShell';
 
 // ── Types ───────────────────────────────────────────────────
@@ -133,6 +134,15 @@ export default function SessionTwoLive({
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showEmotionalExit, setShowEmotionalExit] = useState(false);
+  const [pendingSync, setPendingSync] = useState(false);
+  const localNotesCache = useRef<Record<string, Record<string, string>>>({});
+
+  useEffect(() => {
+    const cleanup = onSyncStatusChange(() => {
+      setPendingSync(hasPendingWrites());
+    });
+    return cleanup;
+  }, []);
 
   const isTier1 = partnerTier === 'tier_1';
   const tankOm = getTankOmContent(cardId);
@@ -147,33 +157,36 @@ export default function SessionTwoLive({
 
   // ── Note persistence helper ───────────────────────────────
   const saveNote = useCallback(
-    async (stepId: string, text: string) => {
+    (stepId: string, text: string) => {
       if (!text.trim()) return;
-      const userId = (await supabase.auth.getUser()).data.user?.id;
-      if (!userId) return;
+      const userId = supabase.auth.getSession().then(s => s.data.session?.user?.id);
+      // Fire-and-forget: use cached user id synchronously if available
+      const cachedUser = (supabase as any).auth?.['currentSession']?.user?.id;
 
-      const { data: existing } = await supabase
-        .from('user_card_state')
-        .select('notes')
-        .eq('couple_id', coupleId)
-        .eq('card_id', cardId)
-        .eq('user_id', userId)
-        .maybeSingle();
+      const doSave = (uid: string) => {
+        const cacheKey = `${coupleId}:${cardId}:${uid}`;
+        const prev = localNotesCache.current[cacheKey] ?? {};
+        const merged = { ...prev, [stepId]: text.trim() };
+        localNotesCache.current[cacheKey] = merged;
 
-      const prevNotes = (existing?.notes as Record<string, string>) ?? {};
-      const merged = { ...prevNotes, [stepId]: text.trim() };
-
-      await supabase
-        .from('user_card_state')
-        .upsert(
-          {
+        enqueueWrite({
+          table: 'user_card_state',
+          operation: 'upsert',
+          match: {},
+          data: {
             couple_id: coupleId,
             card_id: cardId,
-            user_id: userId,
+            user_id: uid,
             notes: merged,
           },
-          { onConflict: 'couple_id,user_id,card_id,cycle_id' }
-        );
+        });
+      };
+
+      // Try sync path first, fall back to async
+      supabase.auth.getUser().then(({ data }) => {
+        const uid = data.user?.id;
+        if (uid) doSave(uid);
+      });
     },
     [coupleId, cardId]
   );
@@ -187,8 +200,8 @@ export default function SessionTwoLive({
   );
 
   // ── Vänd Q2 next handler ──────────────────────────────────
-  const handleVandNext = useCallback(async () => {
-    await saveNote('session2_vand', vandNote);
+  const handleVandNext = useCallback(() => {
+    saveNote('session2_vand', vandNote);
     setCurrentStep('interstitial');
   }, [vandNote, saveNote]);
 
@@ -197,7 +210,8 @@ export default function SessionTwoLive({
     setSubmitting(true);
     setError(null);
 
-    await saveNote('session2_tank_om', tankOmNote);
+    // Fire-and-forget note save — never blocks navigation
+    saveNote('session2_tank_om', tankOmNote);
 
     const result = await completeSession({
       couple_id: coupleId,
@@ -565,6 +579,22 @@ export default function SessionTwoLive({
         {currentStep === 'interstitial' && renderInterstitial()}
         {currentStep === 'tank_om' && renderTankOm()}
       </AnimatePresence>
+
+      {pendingSync && (
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          style={{
+            textAlign: 'center',
+            fontSize: '12px',
+            color: COLORS.driftwood,
+            padding: '8px 0',
+            fontFamily: 'var(--font-sans)',
+          }}
+        >
+          Dina anteckningar sparas snart.
+        </motion.p>
+      )}
     </SessionFocusShell>
   );
 }
