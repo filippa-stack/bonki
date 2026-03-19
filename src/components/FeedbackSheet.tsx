@@ -1,214 +1,274 @@
-import { useState, useRef, useCallback } from 'react';
+/**
+ * FeedbackSheet — Bottom sheet for post-card feedback (rating + optional comment).
+ * Never blocks completion flow; all errors caught silently.
+ */
+
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { COLORS } from '@/lib/stillUsTokens';
 import { supabase } from '@/integrations/supabase/client';
 
-const EASE = [0.22, 1, 0.36, 1] as const;
+// Still Us card completion feedback
+interface StillUsFeedbackProps {
+  coupleId: string;
+  cardId: string;
+  cardIndex: number;
+  onDismiss: () => void;
+  // Legacy props not used in this mode
+  sessionId?: never;
+  coupleSpaceId?: never;
+  show?: never;
+}
 
-interface FeedbackSheetProps {
+// Legacy feedback (used by CardView + CompletedSessionView)
+interface LegacyFeedbackProps {
   sessionId: string;
   coupleSpaceId: string;
   show: boolean;
   onDismiss: () => void;
+  // Still Us props not used in this mode
+  coupleId?: never;
+  cardId?: never;
+  cardIndex?: never;
 }
 
-export default function FeedbackSheet({ sessionId, coupleSpaceId, show, onDismiss }: FeedbackSheetProps) {
-  const [text, setText] = useState('');
-  const [submitting, setSubmitting] = useState(false);
+export type FeedbackSheetProps = StillUsFeedbackProps | LegacyFeedbackProps;
+
+const prefersReduced =
+  typeof window !== 'undefined' &&
+  window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+export default function FeedbackSheet(props: FeedbackSheetProps) {
+  const { onDismiss } = props;
+
+  // Legacy mode: render nothing if show is false
+  if ('sessionId' in props && props.sessionId !== undefined) {
+    if (!props.show) return null;
+    // Legacy mode renders the same sheet UI but without card-specific fields
+    return <FeedbackSheetInner coupleId={props.coupleSpaceId} cardId="" cardIndex={-1} onDismiss={props.onDismiss} />;
+  }
+
+  // Still Us mode
+  const { coupleId, cardId, cardIndex } = props as StillUsFeedbackProps;
+  return <FeedbackSheetInner coupleId={coupleId} cardId={cardId} cardIndex={cardIndex} onDismiss={onDismiss} />;
+}
+
+function FeedbackSheetInner({ coupleId, cardId, cardIndex, onDismiss }: { coupleId: string; cardId: string; cardIndex: number; onDismiss: () => void }) {
+  const [rating, setRating] = useState<number | null>(null);
+  const [comment, setComment] = useState('');
+  const [submitted, setSubmitted] = useState(false);
   const sheetRef = useRef<HTMLDivElement>(null);
 
-  const dismiss = useCallback(() => {
-    onDismiss();
+  // Focus trap + escape key
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onDismiss();
+        return;
+      }
+      if (e.key === 'Tab' && sheetRef.current) {
+        const focusable = sheetRef.current.querySelectorAll<HTMLElement>(
+          'button, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        if (focusable.length === 0) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    };
+    document.addEventListener('keydown', handleKey);
+    return () => document.removeEventListener('keydown', handleKey);
   }, [onDismiss]);
 
-  const handleOverlayClick = useCallback((e: React.MouseEvent) => {
-    if (sheetRef.current && !sheetRef.current.contains(e.target as Node)) {
-      dismiss();
-    }
-  }, [dismiss]);
+  useEffect(() => {
+    sheetRef.current?.focus();
+  }, []);
 
   const handleSubmit = useCallback(async () => {
-    if (submitting) return;
-    setSubmitting(true);
+    if (rating === null) return;
     try {
-      await supabase.from('beta_feedback' as any).insert({
-        couple_space_id: coupleSpaceId,
-        session_id: sessionId,
-        response_text: text.trim() || null,
-      } as any);
-    } catch {
-      // silent fail
+      await supabase.from('still_us_feedback' as any).insert({
+        couple_id: coupleId,
+        card_id: cardId,
+        card_index: cardIndex,
+        rating,
+        comment: comment || null,
+        created_at: new Date().toISOString(),
+      });
+    } catch (err) {
+      console.warn('Feedback save failed (table may not exist):', err);
     }
-    dismiss();
-  }, [text, coupleSpaceId, sessionId, submitting, dismiss]);
+    setSubmitted(true);
+    setTimeout(onDismiss, 1000);
+  }, [rating, comment, coupleId, cardId, cardIndex, onDismiss]);
+
+  const dur = prefersReduced ? 0.01 : undefined;
 
   return (
     <AnimatePresence>
-      {show && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0, transition: { duration: 0.2 } }}
-          transition={{ duration: 0.4, ease: [...EASE] }}
-          onClick={handleOverlayClick}
-          style={{
-            position: 'fixed',
-            inset: 0,
-            zIndex: 100,
-            background: 'rgba(0,0,0,0.25)',
-            backdropFilter: 'blur(6px)',
-            WebkitBackdropFilter: 'blur(6px)',
-            display: 'flex',
-            alignItems: 'flex-end',
-          }}
-        >
-          <motion.div
-            ref={sheetRef}
-            initial={{ y: '100%' }}
-            animate={{ y: 0 }}
-            exit={{ y: '100%', transition: { duration: 0.25, ease: [0.4, 0, 1, 1] } }}
-            transition={{ duration: 0.5, ease: [...EASE] }}
-            style={{
-              width: '100%',
-              maxHeight: '70vh',
-              background: 'var(--surface-base)',
-              borderRadius: 'var(--radius-card) var(--radius-card) 0 0',
-              padding: '48px 32px calc(32px + env(safe-area-inset-bottom, 0px))',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '0px',
-              overflowY: 'auto',
-              boxShadow: '0 -8px 40px -12px rgba(0,0,0,0.12)',
-            }}
-          >
-            {/* Brand label */}
-            <motion.p
-              initial={{ opacity: 0, y: 6 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.15, duration: 0.5, ease: [...EASE] }}
-              className="type-meta"
-              style={{
-                textTransform: 'uppercase',
-                letterSpacing: '0.14em',
-                fontSize: '10px',
-                color: 'var(--text-tertiary)',
-                opacity: 0.5,
-                textAlign: 'center',
-                marginBottom: '24px',
-              }}
-            >
-              Still Us
-            </motion.p>
+      <motion.div
+        key="backdrop"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: dur ?? 0.2 }}
+        onClick={onDismiss}
+        style={{
+          position: 'fixed',
+          inset: 0,
+          zIndex: 998,
+          background: 'rgba(0, 0, 0, 0.5)',
+        }}
+      />
 
-            {/* Question */}
-            <motion.p
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.22, duration: 0.6, ease: [...EASE] }}
-              className="font-serif"
-              style={{
-                fontSize: 'clamp(20px, 5.5vw, 24px)',
-                fontWeight: 400,
-                color: 'var(--text-primary)',
-                textAlign: 'center',
-                lineHeight: 1.45,
-                marginBottom: '12px',
-                textWrap: 'balance',
-              }}
-            >
-              Vad hände i rummet under det här samtalet som inte hade hänt annars?
-            </motion.p>
+      <motion.div
+        key="sheet"
+        ref={sheetRef}
+        tabIndex={-1}
+        initial={{ y: '100%' }}
+        animate={{ y: 0 }}
+        exit={{ y: '100%' }}
+        transition={{ type: 'tween', duration: dur ?? 0.3, ease: 'easeOut' }}
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          position: 'fixed',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          zIndex: 999,
+          backgroundColor: COLORS.emberMid,
+          borderRadius: '16px 16px 0 0',
+          padding: '24px',
+          paddingBottom: 'calc(24px + env(safe-area-inset-bottom, 0px))',
+          maxHeight: '80vh',
+          overflowY: 'auto',
+          outline: 'none',
+        }}
+      >
+        {submitted ? (
+          <p style={{
+            fontFamily: 'var(--font-sans)',
+            fontSize: '16px',
+            color: COLORS.lanternGlow,
+            textAlign: 'center',
+            padding: '24px 0',
+          }}>
+            Tack!
+          </p>
+        ) : (
+          <>
+            <h2 style={{
+              fontFamily: "'DM Serif Display', serif",
+              fontSize: '20px',
+              color: COLORS.lanternGlow,
+              margin: '0 0 20px 0',
+            }}>
+              Hur var det?
+            </h2>
 
-            {/* Founding member note */}
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.35, duration: 0.6, ease: [...EASE] }}
-              className="font-serif italic"
-              style={{
-                fontSize: '13px',
-                color: 'var(--accent-saffron)',
-                textAlign: 'center',
-                lineHeight: 1.5,
-                marginBottom: '32px',
-              }}
-            >
-              Som Founding Member är det just din feedback som hjälper oss att göra Still Us bättre – tack för att du är med och formar det
-            </motion.p>
+            <div style={{ display: 'flex', justifyContent: 'center', gap: '12px' }}>
+              {[1, 2, 3, 4, 5].map((n) => {
+                const filled = rating !== null && n <= rating;
+                return (
+                  <button
+                    key={n}
+                    role="button"
+                    aria-label={`Betyg ${n} av 5`}
+                    onClick={() => setRating(n)}
+                    style={{
+                      width: '44px',
+                      height: '44px',
+                      borderRadius: '50%',
+                      border: 'none',
+                      cursor: 'pointer',
+                      backgroundColor: filled ? COLORS.deepSaffron : COLORS.emberGlow,
+                      color: filled ? '#FFFFFF' : COLORS.driftwood,
+                      fontSize: '16px',
+                      fontWeight: filled ? 700 : 400,
+                      fontFamily: 'var(--font-sans)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      transition: 'background-color 0.15s ease',
+                    }}
+                  >
+                    {n}
+                  </button>
+                );
+              })}
+            </div>
 
-            {/* Textarea */}
-            <motion.div
-              initial={{ opacity: 0, y: 6 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 0.5, ease: [...EASE] }}
-            >
+            {rating !== null && (
               <textarea
-                value={text}
-                onChange={(e) => setText(e.target.value)}
-                placeholder="Skriv fritt..."
-                className="font-sans"
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+                placeholder="Berätta mer (valfritt)..."
                 style={{
-                  background: 'var(--surface-sunken)',
-                  border: '1px solid transparent',
-                  outline: 'none',
-                  borderRadius: 'var(--radius-card)',
-                  padding: '16px 20px',
-                  fontSize: '16px',
-                  lineHeight: 1.6,
-                  color: 'var(--text-primary)',
-                  minHeight: '96px',
-                  resize: 'none',
-                  marginBottom: '24px',
                   width: '100%',
-                  fontFamily: 'inherit',
-                  transition: 'border-color 200ms ease',
+                  minHeight: '60px',
+                  marginTop: '16px',
+                  backgroundColor: COLORS.emberGlow,
+                  color: COLORS.lanternGlow,
+                  fontSize: '14px',
+                  borderRadius: '12px',
+                  border: 'none',
+                  padding: '12px',
+                  fontFamily: 'var(--font-sans)',
+                  resize: 'vertical',
+                  outline: 'none',
                 }}
-                onFocus={(e) => { e.currentTarget.style.borderColor = 'var(--accent-saffron-muted)'; }}
-                onBlur={(e) => { e.currentTarget.style.borderColor = 'transparent'; }}
               />
-            </motion.div>
+            )}
 
-            {/* Actions */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.5, duration: 0.5, ease: [...EASE] }}
-              style={{ display: 'flex', flexDirection: 'column', gap: '0px' }}
-            >
-              {/* Submit */}
+            <div style={{ marginTop: '20px' }}>
               <button
                 onClick={handleSubmit}
-                disabled={submitting}
-                className="cta-primary"
+                disabled={rating === null}
                 style={{
-                  opacity: submitting ? 0.6 : 1,
                   width: '100%',
+                  height: '44px',
+                  borderRadius: '12px',
+                  backgroundColor: COLORS.deepSaffron,
+                  border: 'none',
+                  cursor: rating === null ? 'default' : 'pointer',
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '16px',
+                  fontWeight: 600,
+                  color: '#FFFFFF',
+                  opacity: rating === null ? 0.5 : 1,
+                  transition: 'opacity 0.15s ease',
                 }}
               >
                 Skicka
               </button>
 
-              {/* Skip */}
               <button
-                onClick={dismiss}
-                className="font-sans"
+                onClick={onDismiss}
                 style={{
+                  display: 'block',
+                  width: '100%',
+                  marginTop: '12px',
                   background: 'none',
                   border: 'none',
-                  fontSize: '13px',
-                  color: 'var(--text-tertiary)',
-                  opacity: 0.5,
-                  height: '48px',
-                  width: '100%',
                   cursor: 'pointer',
-                  letterSpacing: '0.01em',
+                  color: COLORS.driftwood,
+                  fontSize: '13px',
+                  fontFamily: 'var(--font-sans)',
+                  textAlign: 'center',
                 }}
               >
-                Inte just nu
+                Inte nu
               </button>
-            </motion.div>
-          </motion.div>
-        </motion.div>
-      )}
+            </div>
+          </>
+        )}
+      </motion.div>
     </AnimatePresence>
   );
 }
