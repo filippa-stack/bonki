@@ -428,6 +428,9 @@ function ActionCard({
   partnerName,
   partnerTier,
   sessionPaused,
+  initiatorName,
+  partnerNudgeSentAt,
+  coupleId,
   onAction,
 }: {
   kind: ActionCardKind;
@@ -437,6 +440,9 @@ function ActionCard({
   partnerName: string | null;
   partnerTier: string;
   sessionPaused: boolean;
+  initiatorName: string | null;
+  partnerNudgeSentAt: string | null;
+  coupleId: string | null;
   onAction: (action: string) => void;
 }) {
   const weekNum = cardIndex + 1;
