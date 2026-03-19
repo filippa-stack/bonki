@@ -47,6 +47,7 @@ export default function CardComplete({
 
   const [takeaway, setTakeaway] = useState('');
   const [phase, setPhase] = useState<Phase>('takeaway');
+  const [gorOpen, setGorOpen] = useState(false);
   const [partnerTakeaway, setPartnerTakeaway] = useState<string | null>(null);
   const [partnerText, setPartnerText] = useState('');
   const [gorExpanded, setGorExpanded] = useState(false);
