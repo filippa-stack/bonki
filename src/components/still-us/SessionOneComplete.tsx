@@ -82,6 +82,21 @@ export default function SessionOneComplete({
         return;
       }
 
+      // Paywall gate: card index 0 + free_trial → /paywall before Session 2
+      if (navTarget === 'session_2' && cardIndex === 0) {
+        // Check purchase_status
+        const { data: cs } = await supabase
+          .from('couple_state')
+          .select('purchase_status')
+          .eq('couple_id', coupleId)
+          .maybeSingle();
+
+        if (cs?.purchase_status === 'free_trial') {
+          navigate('/paywall', { replace: true });
+          return;
+        }
+      }
+
       if (navTarget === 'session_2') {
         navigate(`/session/${slug}/session2-start`, { replace: true });
       } else {
