@@ -141,7 +141,17 @@ export interface MigrateTier2Result {
   retry_after_seconds?: number;
 }
 
+export interface InitCoupleStateResult {
+  couple_id: string;
+  partner_link_token: string;
+  status?: string;
+}
+
 // ── Wrappers ────────────────────────────────────────────────
+
+export function initCoupleState() {
+  return invoke<InitCoupleStateResult>('init-couple-state', {});
+}
 
 export function completeSliderCheckin(params: SliderCheckinParams) {
   return invoke<SliderCheckinResult>('complete-slider-checkin', params);
