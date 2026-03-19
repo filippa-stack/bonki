@@ -6,7 +6,7 @@
  * 4 moods: Trött, Nyfiken, Orolig, Öppen
  * Both Nyfiken/Öppen = null (no framing needed)
  * One or both Trött = softener text
- * One or both Orolig = courage text + exit CTA option
+ * One or both Orolig = courage text
  */
 
 export type ThresholdMood = 'Trött' | 'Nyfiken' | 'Orolig' | 'Öppen';
@@ -19,7 +19,6 @@ export interface ThresholdFraming {
 
 /**
  * Returns framing text based on the two moods, or null if none needed.
- * Moods are sorted alphabetically to normalise key order.
  */
 export function getThresholdFraming(
   userMood: ThresholdMood,
@@ -34,11 +33,11 @@ export function getThresholdFraming(
   // Both positive — no framing needed
   if (allPositive) return null;
 
-  // Any Orolig — courage framing with exit CTA
+  // Any Orolig — courage framing
   if (hasOrolig) {
     return {
       title: 'Det är modigt att vara här',
-      body: 'Ni behöver inte göra allt ikväll. Ni kan pausa när som helst, och det är helt okej att avsluta om det behövs.',
+      body: 'Det är modigt att öppna något när det känns oroligt. Ni bestämmer takten.',
       showExitCta: true,
     };
   }
@@ -47,11 +46,11 @@ export function getThresholdFraming(
   if (hasTrott) {
     return {
       title: 'Det är okej att ta det lugnt',
-      body: 'Ni behöver inte prestera. Att vara här tillsammans räcker. Ta det i er egen takt.',
+      body: 'Det är okej att vara trötta. Ni behöver inte vara på topp för det här.',
     };
   }
 
-  // Mixed but neither Trött nor Orolig (e.g. Nyfiken + other)
+  // Mixed but neither Trött nor Orolig
   return null;
 }
 

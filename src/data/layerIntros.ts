@@ -11,11 +11,11 @@ export interface LayerIntro {
 }
 
 const layerIntros: LayerIntro[] = [
-  { layerIndex: 0, name: 'Grunden', intro: 'Ni börjar med det mest grundläggande — vad ni är för varandra.' },
-  { layerIndex: 1, name: 'Normen', intro: 'Nu går ni djupare in i det som pågår under ytan.' },
-  { layerIndex: 2, name: 'Konflikten', intro: 'Här möter ni det som kan vara svårt att prata om.' },
-  { layerIndex: 3, name: 'Längtan', intro: 'Ni utforskar det som öppnar upp er relation.' },
-  { layerIndex: 4, name: 'Valet', intro: 'De sista veckorna handlar om vart ni är på väg.' },
+  { layerIndex: 0, name: 'Grunden', intro: 'Grunden ni står på — det som bär er, och det som saknas.' },
+  { layerIndex: 1, name: 'Normen', intro: 'Reglerna ni lever efter — de uttalade och de tysta.' },
+  { layerIndex: 2, name: 'Konflikten', intro: 'Det som skaver — det ni undviker, och det ni behöver möta.' },
+  { layerIndex: 3, name: 'Längtan', intro: 'Det som driver er — önskningar, drömmar och det som kostar.' },
+  { layerIndex: 4, name: 'Valet', intro: 'Det ni väljer — att stanna, att förändra, att fortsätta välja.' },
 ];
 
 export function getLayerIntro(layerIndex: number): LayerIntro | undefined {
