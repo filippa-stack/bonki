@@ -44,11 +44,14 @@ export default function CompletionCeremony() {
 
       const { data: couple } = await supabase
         .from('couple_state')
-        .select('phase, ceremony_reflection, couple_id, cycle_id')
+        .select('phase, ceremony_reflection, couple_id, cycle_id, dissolved_at')
         .eq('initiator_id', user.id)
         .single();
 
       if (!couple) { navigate('/'); return; }
+
+      // Dissolved couples should not be in ceremony
+      if (couple.dissolved_at) { navigate('/'); return; }
 
       if (couple.phase === 'program') {
         navigate('/');
