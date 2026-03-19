@@ -32,7 +32,7 @@ Deno.serve(async (req: Request) => {
   const headers = getCorsHeaders(req);
 
   try {
-    const { couple_id, card_id, takeaway, partner_takeaway } = await req.json();
+    const { couple_id, card_id, takeaway, partner_takeaway, slider_anchors } = await req.json();
 
     if (!couple_id || !card_id) {
       return jsonResponse({ status: "error", message: "Missing required fields" }, 400, headers);
