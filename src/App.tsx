@@ -50,8 +50,8 @@ import {
   Session2LivePage,
   CardCompletePage,
   TillbakaPage,
-  CeremonyPage,
 } from "./pages/still-us-routes";
+import CompletionCeremony from "./pages/CompletionCeremony";
 
 const queryClient = new QueryClient();
 
