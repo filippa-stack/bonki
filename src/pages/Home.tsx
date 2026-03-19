@@ -92,13 +92,15 @@ export default function Home() {
       case 'unlock_self':
         navigate('/unlock');
         break;
+      case 'start_tillbaka':
+        navigate(`/session/tillbaka-${homeState.maintenanceCardIndex}/tillbaka`);
+        break;
+      case 'resume_tillbaka':
+        navigate(`/session/tillbaka-${homeState.maintenanceCardIndex}/tillbaka?resume=true`);
+        break;
       default:
         break;
     }
-  };
-
-  const handleMaintenanceStart = () => {
-    navigate(`/session/tillbaka-${homeState.maintenanceCardIndex}/tillbaka`);
   };
 
   return (
