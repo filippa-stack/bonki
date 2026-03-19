@@ -200,8 +200,8 @@ export default function SessionTwoLive({
   );
 
   // ── Vänd Q2 next handler ──────────────────────────────────
-  const handleVandNext = useCallback(async () => {
-    await saveNote('session2_vand', vandNote);
+  const handleVandNext = useCallback(() => {
+    saveNote('session2_vand', vandNote);
     setCurrentStep('interstitial');
   }, [vandNote, saveNote]);
 
