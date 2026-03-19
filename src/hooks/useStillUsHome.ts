@@ -284,6 +284,7 @@ export function useStillUsHome(): StillUsHomeState {
         isDormant,
         dormancyDays,
         returnRitualShown,
+        lastActivityAt: lastActivityAt ?? null,
         currentTouch,
         coupleId: spaceId,
         initiatorId,
