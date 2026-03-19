@@ -56,3 +56,6 @@ verify_jwt = false
 
 [functions.skip-card]
 verify_jwt = false
+
+[functions.init-couple-state]
+verify_jwt = false
