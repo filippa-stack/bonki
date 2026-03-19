@@ -57,6 +57,7 @@ import TillbakaComplete from "./pages/TillbakaComplete";
 import Journey from "./pages/Journey";
 import Paywall from "./pages/Paywall";
 import SoloReflect from "./pages/SoloReflect";
+import DissolutionSettings from "./pages/DissolutionSettings";
 
 const queryClient = new QueryClient();
 
@@ -127,6 +128,7 @@ function ProtectedRoutes() {
               <Route path="/solo-reflect/:cardId" element={<PageTransition><SoloReflect /></PageTransition>} />
               <Route path="/unlock" element={<PageTransition><Paywall /></PageTransition>} />
               <Route path="/ceremony" element={<PageTransition><CompletionCeremony /></PageTransition>} />
+              <Route path="/settings/dissolve" element={<PageTransition><DissolutionSettings /></PageTransition>} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </AnimatePresence>
