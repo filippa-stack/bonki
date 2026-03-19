@@ -98,11 +98,7 @@ export default function Share({
   }, [hasPartner, message, shareLink, navigate]);
 
   const handleSkip = () => {
-    if (cardSlug) {
-      navigate(`/solo-reflect/${cardSlug}`);
-    } else {
-      navigate('/?product=still-us');
-    }
+    navigate('/journey-preview');
   };
 
   const [simulating, setSimulating] = useState(false);
