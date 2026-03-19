@@ -502,6 +502,7 @@ function ActionCard({
   initiatorName,
   partnerNudgeSentAt,
   coupleId,
+  cycleId,
   maintenanceCardIndex,
   maintenanceTillbakaTitle,
   maintenanceAvailable,
