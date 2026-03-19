@@ -155,7 +155,7 @@ export default function SliderCheckIn({
     } else if (!hasPartner) {
       navigate(`/solo-reflect/${slug ?? cardId ?? `card_${cardIndex + 1}`}`);
     } else {
-      navigate('/');
+      navigate('/?product=still-us');
     }
   };
 
