@@ -54,6 +54,7 @@ import {
 import CompletionCeremony from "./pages/CompletionCeremony";
 import TillbakaSessionLive from "./components/TillbakaSessionLive";
 import TillbakaComplete from "./pages/TillbakaComplete";
+import Journey from "./pages/Journey";
 
 const queryClient = new QueryClient();
 
