@@ -280,6 +280,10 @@ export function useStillUsHome(): StillUsHomeState {
         returnRitualShown,
         currentTouch,
         coupleId: spaceId,
+        initiatorId,
+        initiatorName: isCurrentUserInitiator ? null : (partnerName || 'din partner'),
+        partnerNudgeSentAt,
+        isCurrentUserInitiator,
         loading: false,
       });
     } catch (err) {
