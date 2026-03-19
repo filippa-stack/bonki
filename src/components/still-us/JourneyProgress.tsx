@@ -5,7 +5,7 @@
 
 import { motion } from 'framer-motion';
 import { EASE, BEAT_1 } from '@/lib/motion';
-import { DEEP_SAFFRON, EMBER_GLOW, DRIFTWOOD } from '@/lib/palette';
+import { COLORS } from '@/lib/stillUsTokens';
 import { LAYERS, TOTAL_PROGRAM_CARDS } from '@/data/stillUsSequence';
 
 interface JourneyProgressProps {

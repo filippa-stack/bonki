@@ -5,7 +5,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { EASE, EMOTION } from '@/lib/motion';
-import { EMBER_NIGHT, EMBER_GLOW, DEEP_SAFFRON, DRIFTWOOD, BARK } from '@/lib/palette';
+import { COLORS } from '@/lib/stillUsTokens';
 
 interface Tier2SetupProps {
   onComplete: (partnerName: string) => void;

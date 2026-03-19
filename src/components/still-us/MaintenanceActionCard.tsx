@@ -4,7 +4,7 @@
 
 import { motion } from 'framer-motion';
 import { EASE, PRESS } from '@/lib/motion';
-import { EMBER_GLOW, DEEP_SAFFRON, DRIFTWOOD, BARK } from '@/lib/palette';
+import { COLORS } from '@/lib/stillUsTokens';
 
 interface MaintenanceActionCardProps {
   tillbakaIndex: number;
