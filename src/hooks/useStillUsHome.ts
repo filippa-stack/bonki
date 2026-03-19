@@ -131,44 +131,48 @@ export function useStillUsHome(): StillUsHomeState {
   const spaceId = space?.id;
 
   const fetchState = useCallback(async () => {
-    if (!userId || !spaceId) {
+    if (!userId) {
       setState(prev => ({ ...prev, loading: false }));
       return;
     }
 
     try {
-      // Fetch couple_state, user_card_state (for both users), and session_state in parallel
-      const [csResult, ucsResult, ssResult, membersResult] = await Promise.all([
-        supabase
-          .from('couple_state')
-          .select('*')
-          .eq('couple_id', spaceId)
-          .maybeSingle(),
-        supabase
-          .from('user_card_state')
-          .select('user_id, card_id, slider_completed_at, cycle_id')
-          .eq('couple_id', spaceId),
-        supabase
-          .from('session_state')
-          .select('*')
-          .eq('couple_id', spaceId)
-          .limit(1)
-          .maybeSingle(),
-        supabase
-          .from('couple_members')
-          .select('user_id')
-          .eq('couple_space_id', spaceId)
-          .is('left_at', null),
-      ]);
-
-      if (!mountedRef.current) return;
+      // First: fetch couple_state by initiator/partner (NOT couple_spaces.id)
+      const csResult = await supabase
+        .from('couple_state')
+        .select('*')
+        .or(`initiator_id.eq.${userId},partner_id.eq.${userId}`)
+        .is('dissolved_at', null)
+        .maybeSingle();
 
       const cs = csResult.data;
       if (!cs) {
-        // No couple_state yet — show loading or default
         setState(prev => ({ ...prev, loading: false, actionCard: 'slider_not_started' }));
         return;
       }
+
+      // Use the real couple_id from couple_state for subsequent queries
+      const realCoupleId = cs.couple_id as string;
+
+      const [ucsResult, ssResult, membersResult] = await Promise.all([
+        supabase
+          .from('user_card_state')
+          .select('user_id, card_id, slider_completed_at, cycle_id')
+          .eq('couple_id', realCoupleId),
+        supabase
+          .from('session_state')
+          .select('*')
+          .eq('couple_id', realCoupleId)
+          .limit(1)
+          .maybeSingle(),
+        spaceId ? supabase
+          .from('couple_members')
+          .select('user_id')
+          .eq('couple_space_id', spaceId)
+          .is('left_at', null) : Promise.resolve({ data: [] as { user_id: string }[] }),
+      ]);
+
+      if (!mountedRef.current) return;
 
       const cardIndex = cs.current_card_index ?? 0;
       const currentTouch = cs.current_touch as string;
