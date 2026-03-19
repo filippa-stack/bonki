@@ -29,6 +29,7 @@ export type ActionCardKind =
   | 'tier2_setup'            // 7b: Tier 2 setup intercept
   | 'ceremony'               // 8: All 22 done
   | 'maintenance'            // 9: Phase 3 maintenance
+  | 'partner_locked'         // 9b: Partner locked (free_trial, card > 0)
   | 'migration_pending'      // 10: Migration in progress
   | 'loading';
 
@@ -59,6 +60,11 @@ export interface StillUsHomeState {
   // Touch & couple
   currentTouch: string;
   coupleId: string | null;
+  // Locked state
+  initiatorId: string | null;
+  initiatorName: string | null;
+  partnerNudgeSentAt: string | null;
+  isCurrentUserInitiator: boolean;
   // Loading
   loading: boolean;
   // Actions
@@ -86,6 +92,10 @@ const EMPTY_STATE: StillUsHomeState = {
   returnRitualShown: false,
   currentTouch: 'slider',
   coupleId: null,
+  initiatorId: null,
+  initiatorName: null,
+  partnerNudgeSentAt: null,
+  isCurrentUserInitiator: true,
   loading: true,
   refetch: async () => {},
 };
@@ -156,6 +166,9 @@ export function useStillUsHome(): StillUsHomeState {
       const lastActivityAt = cs.last_activity;
       const returnRitualShown = cs.return_ritual_shown_for_card === String(cardIndex);
       const tier2Name = cs.tier_2_partner_name ?? null;
+      const initiatorId = cs.initiator_id ?? null;
+      const isCurrentUserInitiator = initiatorId === userId;
+      const partnerNudgeSentAt = cs.partner_nudge_sent_at ?? null;
 
       // Card info
       const cardEntry = CARD_SEQUENCE[cardIndex] ?? CARD_SEQUENCE[0];
@@ -209,6 +222,8 @@ export function useStillUsHome(): StillUsHomeState {
         actionCard = 'ceremony';
       } else if (phase === 'maintenance' || phase === 'restart') {
         actionCard = 'maintenance';
+      } else if (!isCurrentUserInitiator && partnerTier === 'tier_3' && purchaseStatus === 'free_trial' && cardIndex > 0) {
+        actionCard = 'partner_locked';
       } else {
         // Program phase
         if (cardIndex >= TOTAL_PROGRAM_CARDS) {
@@ -265,6 +280,10 @@ export function useStillUsHome(): StillUsHomeState {
         returnRitualShown,
         currentTouch,
         coupleId: spaceId,
+        initiatorId,
+        initiatorName: isCurrentUserInitiator ? null : (partnerName || 'din partner'),
+        partnerNudgeSentAt,
+        isCurrentUserInitiator,
         loading: false,
       });
     } catch (err) {
