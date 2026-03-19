@@ -1301,6 +1301,7 @@ function ActionCard({
           >
             Se er resa
           </button>
+          {renderRestartCTA()}
         </motion.div>
       );
     }
