@@ -134,6 +134,15 @@ export default function SessionTwoLive({
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showEmotionalExit, setShowEmotionalExit] = useState(false);
+  const [pendingSync, setPendingSync] = useState(false);
+  const localNotesCache = useRef<Record<string, Record<string, string>>>({});
+
+  useEffect(() => {
+    const cleanup = onSyncStatusChange(() => {
+      setPendingSync(hasPendingWrites());
+    });
+    return cleanup;
+  }, []);
 
   const isTier1 = partnerTier === 'tier_1';
   const tankOm = getTankOmContent(cardId);
