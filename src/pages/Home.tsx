@@ -772,6 +772,22 @@ function ActionCard({
             }}>
               {progressText}
             </p>
+            <button
+              onClick={() => navigate('/journey')}
+              style={{
+                display: 'block',
+                margin: '12px auto 0',
+                background: 'none',
+                border: 'none',
+                fontFamily: 'var(--font-sans)',
+                fontSize: '14px',
+                color: COLORS.driftwood,
+                cursor: 'pointer',
+                textDecoration: 'underline',
+              }}
+            >
+              Se er resa
+            </button>
           </motion.div>
         );
       }
@@ -840,6 +856,22 @@ function ActionCard({
             }}>
               {progressText}
             </p>
+            <button
+              onClick={() => navigate('/journey')}
+              style={{
+                display: 'block',
+                margin: '12px auto 0',
+                background: 'none',
+                border: 'none',
+                fontFamily: 'var(--font-sans)',
+                fontSize: '14px',
+                color: COLORS.driftwood,
+                cursor: 'pointer',
+                textDecoration: 'underline',
+              }}
+            >
+              Se er resa
+            </button>
           </motion.div>
         );
       }
@@ -891,6 +923,22 @@ function ActionCard({
           }}>
             {progressText}
           </p>
+          <button
+            onClick={() => navigate('/journey')}
+            style={{
+              display: 'block',
+              margin: '12px auto 0',
+              background: 'none',
+              border: 'none',
+              fontFamily: 'var(--font-sans)',
+              fontSize: '14px',
+              color: COLORS.driftwood,
+              cursor: 'pointer',
+              textDecoration: 'underline',
+            }}
+          >
+            Se er resa
+          </button>
         </motion.div>
       );
     }
