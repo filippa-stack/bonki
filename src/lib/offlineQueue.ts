@@ -41,14 +41,14 @@ export async function attemptSync(): Promise<void> {
       let error: unknown = null;
 
       if (write.operation === 'upsert') {
-        const result = await supabase
+        const result = await (supabase as any)
           .from(write.table)
-          .upsert(write.data as Record<string, unknown>);
+          .upsert(write.data);
         error = result.error;
       } else if (write.operation === 'update') {
-        let query = supabase.from(write.table).update(write.data as Record<string, unknown>);
+        let query = (supabase as any).from(write.table).update(write.data);
         for (const [key, value] of Object.entries(write.match)) {
-          query = query.eq(key, value as string);
+          query = query.eq(key, value);
         }
         const result = await query;
         error = result.error;
