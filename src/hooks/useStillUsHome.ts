@@ -301,6 +301,7 @@ export function useStillUsHome(): StillUsHomeState {
         currentTouch,
         coupleId: spaceId,
         coupleCreatedAt: cs.created_at ?? null,
+        dissolvedAt: cs.dissolved_at ?? null,
         initiatorId,
         initiatorName: isCurrentUserInitiator ? null : (partnerName || 'din partner'),
         partnerNudgeSentAt,
