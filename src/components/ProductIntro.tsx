@@ -91,8 +91,10 @@ export default function ProductIntro({
   onComplete,
   onStartFreeCard,
 }: ProductIntroProps) {
+  const navigate = useNavigate();
   const introData = productIntros[productId];
   const [expanded, setExpanded] = useState(false);
+  const [initiating, setInitiating] = useState(false);
   const freeCardImageUrl = useCardImage(freeCardId);
   const isStillUs = productId === 'still_us';
 
