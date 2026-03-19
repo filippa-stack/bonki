@@ -167,6 +167,12 @@ export default function Journey() {
     });
   }, []);
 
+  const getCardTitleFromId = (cardId: string): string => {
+    const index = parseInt(cardId.replace('card_', ''), 10) - 1;
+    const set = getSliderSet(index);
+    return set?.cardTitle ?? `Vecka ${index + 1}`;
+  };
+
   // Build timeline nodes from real data (falls back to static placeholders if no entries yet)
   const timelineNodes = sliderPrompts.map((card, index) => {
     const layer = getLayerForCard(index);
