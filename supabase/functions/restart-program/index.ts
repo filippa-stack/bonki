@@ -29,7 +29,7 @@ Deno.serve(async (req: Request) => {
   const headers = getCorsHeaders(req);
 
   try {
-    const { couple_id } = await req.json();
+    const { couple_id, slider_anchors } = await req.json();
 
     if (!couple_id) {
       return jsonResponse({ status: "error", message: "Missing couple_id" }, 400, headers);
@@ -91,6 +91,7 @@ Deno.serve(async (req: Request) => {
       phase: "second_cycle",
       last_activity: now,
       partner_link_token: newLinkToken,
+      ...(slider_anchors ? { current_slider_anchors: slider_anchors } : {}),
     }).eq("couple_id", couple_id);
 
     await createSessionStateForCard(supabase, couple_id, firstCardId, newCycleId, "program");

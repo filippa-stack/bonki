@@ -5,7 +5,7 @@ import { productIntros } from '@/data/productIntros';
 import { allProducts } from '@/data/products';
 import { useCardImage } from '@/hooks/useCardImage';
 import { supabase } from '@/integrations/supabase/client';
-import { initCoupleState } from '@/lib/stillUsRpc';
+import { initCoupleState, buildSliderAnchors } from '@/lib/stillUsRpc';
 import { LANTERN_GLOW, DRIFTWOOD, MIDNIGHT_INK, BONKI_ORANGE, DEEP_SAFFRON } from '@/lib/palette';
 
 // ── Illustration imports (same as product homes) ──
@@ -140,7 +140,7 @@ export default function ProductIntro({
       // Still Us: init couple_state, then navigate to first check-in
       setInitiating(true);
       try {
-        const result = await initCoupleState();
+        const result = await initCoupleState(buildSliderAnchors(0));
         if (result.couple_id) {
           navigate('/check-in/su-01-smallest-we');
           return;

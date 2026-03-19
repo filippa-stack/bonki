@@ -5,6 +5,7 @@
  */
 
 import { supabase } from '@/integrations/supabase/client';
+import { getSliderSet } from '@/data/sliderPrompts';
 
 // ── Helper ──────────────────────────────────────────────────
 async function invoke<T>(fnName: string, body: object): Promise<T> {
@@ -13,6 +14,24 @@ async function invoke<T>(fnName: string, body: object): Promise<T> {
     return { status: 'error', message: error?.message || 'Unknown error' } as T;
   }
   return data as T;
+}
+
+/**
+ * Build the JSONB payload for current_slider_anchors from sliderPrompts.
+ * Passed to edge functions so they can store it in couple_state.
+ */
+export function buildSliderAnchors(cardIndex: number) {
+  const set = getSliderSet(cardIndex);
+  if (!set) return null;
+  return {
+    card_title: set.cardTitle,
+    reflection_prompt: set.reflectionPrompt ?? null,
+    sliders: set.sliders.map((s) => ({
+      text: s.text,
+      leftLabel: s.leftLabel,
+      rightLabel: s.rightLabel,
+    })),
+  };
 }
 
 // ── Types ───────────────────────────────────────────────────
@@ -70,20 +89,24 @@ export interface AdvanceCardParams {
   card_id: string;
   takeaway?: string | null;
   partner_takeaway?: string | null;
+  slider_anchors?: ReturnType<typeof buildSliderAnchors>;
 }
 export interface AdvanceCardResult {
   status: 'advanced' | 'ceremony' | 'dissolved' | 'error';
   new_card_index?: number;
+  partner_link_token?: string;
 }
 
 export interface SkipCardParams {
   couple_id: string;
   card_id: string;
   skip_type: 'user_skipped' | 'auto_advanced';
+  slider_anchors?: ReturnType<typeof buildSliderAnchors>;
 }
 export interface SkipCardResult {
   status: 'skipped' | 'ceremony' | 'dissolved' | 'error';
   new_card_index?: number;
+  partner_link_token?: string;
 }
 
 export interface ResetSliderCheckinParams {
@@ -109,10 +132,12 @@ export interface ComputeJourneyInsightsResult {
 
 export interface RestartProgramParams {
   couple_id: string;
+  slider_anchors?: ReturnType<typeof buildSliderAnchors>;
 }
 export interface RestartProgramResult {
   status: 'restarted' | 'dissolved' | 'error';
   new_cycle_id?: number;
+  partner_link_token?: string;
 }
 
 export interface DissolveCoupleParams {
@@ -149,8 +174,10 @@ export interface InitCoupleStateResult {
 
 // ── Wrappers ────────────────────────────────────────────────
 
-export function initCoupleState() {
-  return invoke<InitCoupleStateResult>('init-couple-state', {});
+export function initCoupleState(sliderAnchors?: ReturnType<typeof buildSliderAnchors>) {
+  return invoke<InitCoupleStateResult>('init-couple-state', {
+    slider_anchors: sliderAnchors ?? null,
+  });
 }
 
 export function completeSliderCheckin(params: SliderCheckinParams) {

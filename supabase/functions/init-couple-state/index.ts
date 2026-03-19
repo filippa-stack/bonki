@@ -25,6 +25,10 @@ Deno.serve(async (req: Request) => {
   const headers = getCorsHeaders(req);
 
   try {
+    // ── Parse optional slider_anchors from body ─────────────────
+    const body = await req.json().catch(() => ({}));
+    const sliderAnchors = body?.slider_anchors ?? null;
+
     // ── Auth: verify JWT ───────────────────────────────────────
     const authHeader = req.headers.get("Authorization");
     if (!authHeader?.startsWith("Bearer ")) {
@@ -86,6 +90,7 @@ Deno.serve(async (req: Request) => {
       phase: "program",
       partner_tier: "tier_1",
       purchase_status: "free_trial",
+      current_slider_anchors: sliderAnchors,
     });
 
     if (insertErr) {
