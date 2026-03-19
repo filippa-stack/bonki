@@ -502,6 +502,7 @@ export default function ProductIntro({
               fontSize: '17px',
               fontWeight: 600,
               color: MIDNIGHT_INK,
+              opacity: initiating ? 0.7 : 1,
               transition: 'opacity 150ms ease, transform 140ms cubic-bezier(0.4, 0, 0.2, 1)',
             }}
             onMouseDown={(e) => {
