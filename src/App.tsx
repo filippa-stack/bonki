@@ -55,6 +55,7 @@ import CompletionCeremony from "./pages/CompletionCeremony";
 import TillbakaSessionLive from "./components/TillbakaSessionLive";
 import TillbakaComplete from "./pages/TillbakaComplete";
 import Journey from "./pages/Journey";
+import Paywall from "./pages/Paywall";
 
 const queryClient = new QueryClient();
 
