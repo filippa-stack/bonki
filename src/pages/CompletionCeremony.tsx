@@ -716,18 +716,92 @@ export default function CompletionCeremony() {
           )}
         </div>
 
-        {/* ── Screen 5: Placeholder ── */}
+        {/* ── Screen 5: Transition to Phase 3 ── */}
         <div style={{
           width: '100vw',
-          height: '100%',
+          height: '100dvh',
+          flexShrink: 0,
+          background: COLORS.emberNight,
           display: 'flex',
+          flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          flexShrink: 0,
+          padding: '48px 24px',
         }}>
-          <p style={{ color: COLORS.driftwood, fontSize: '15px' }}>
-            Screen 5 — coming soon
-          </p>
+          <div style={{ maxWidth: '340px', width: '100%', textAlign: 'center' }}>
+            <div style={{
+              fontFamily: "'DM Serif Display', serif",
+              fontSize: '24px',
+              color: COLORS.lanternGlow,
+              lineHeight: '1.4',
+              marginBottom: '20px',
+            }}>
+              Still Us är inte slut — det är annorlunda nu.
+            </div>
+
+            <div style={{
+              fontSize: '16px',
+              color: COLORS.lanternGlow,
+              opacity: 0.7,
+              lineHeight: '1.5',
+              marginBottom: '48px',
+            }}>
+              Var fjärde vecka skickar vi en ny fråga. Kortare. Enklare.
+              Gjord för er som redan har pratat.
+            </div>
+
+            {transitionState === 'error' ? (
+              <div>
+                <div style={{
+                  color: COLORS.lanternGlow,
+                  fontSize: '14px',
+                  marginBottom: '16px',
+                  opacity: 0.8,
+                }}>
+                  Något gick fel. Försök igen.
+                </div>
+                <button
+                  onClick={handleTransitionToMaintenance}
+                  style={{
+                    background: COLORS.bonkiOrange,
+                    color: COLORS.emberNight,
+                    border: 'none',
+                    borderRadius: '30px',
+                    padding: '18px 40px',
+                    fontSize: '18px',
+                    fontFamily: "'DM Serif Display', serif",
+                    cursor: 'pointer',
+                    width: '100%',
+                    maxWidth: '300px',
+                  }}
+                >
+                  Försök igen
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={handleTransitionToMaintenance}
+                disabled={transitionState === 'saving'}
+                style={{
+                  background: COLORS.bonkiOrange,
+                  color: COLORS.emberNight,
+                  border: 'none',
+                  borderRadius: '30px',
+                  padding: '18px 40px',
+                  fontSize: '20px',
+                  fontFamily: "'DM Serif Display', serif",
+                  cursor: transitionState === 'saving' ? 'default' : 'pointer',
+                  width: '100%',
+                  maxWidth: '300px',
+                  animation: transitionState === 'saving'
+                    ? 'ceremonyPulse 1.5s ease-in-out infinite'
+                    : 'none',
+                }}
+              >
+                {transitionState === 'saving' ? 'Sparar...' : 'Fortsätt till Ert rum'}
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </div>
