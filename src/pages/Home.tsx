@@ -117,6 +117,56 @@ export default function Home() {
     }
   };
 
+  // ── Dissolved state guard (second highest priority after ceremony) ──
+  if (homeState.dissolvedAt) {
+    return (
+      <div style={{
+        minHeight: '100vh',
+        background: COLORS.emberNight,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '24px',
+        textAlign: 'center',
+      }}>
+        <h1 style={{
+          fontFamily: "'DM Serif Display', serif",
+          fontSize: '20px',
+          color: COLORS.driftwood,
+          marginBottom: '12px',
+        }}>
+          Ert gemensamma utrymme är avslutat.
+        </h1>
+        <p style={{
+          fontFamily: "'Nunito', sans-serif",
+          fontSize: '15px',
+          color: COLORS.driftwoodBody,
+          lineHeight: '1.6',
+          marginBottom: '32px',
+        }}>
+          Er resa finns kvar.
+        </p>
+        <button
+          onClick={() => navigate('/journey')}
+          style={{
+            background: 'transparent',
+            border: `1px solid ${COLORS.driftwood}`,
+            color: COLORS.driftwood,
+            fontFamily: "'Nunito', sans-serif",
+            fontWeight: 700,
+            fontSize: '16px',
+            borderRadius: '12px',
+            padding: '14px 28px',
+            cursor: 'pointer',
+          }}
+        >
+          Se er resa
+        </button>
+      </div>
+    );
+  }
+
   return (
     <div style={{ minHeight: '100dvh', position: 'relative', overflow: 'hidden', backgroundColor: COLORS.emberNight }}>
 
