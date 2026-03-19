@@ -39,7 +39,8 @@ export default function Journey() {
   const [expandedCards, setExpandedCards] = useState<Set<number>>(new Set());
   const [coupleState, setCoupleState] = useState<any>(null);
   const [insights, setInsights] = useState<any>(null);
-  const [selectedCycle, setSelectedCycle] = useState(1);
+  const [selectedCycle, setSelectedCycle] = useState<number | null>(null);
+  const [maxCycle, setMaxCycle] = useState(1);
   const [tillbakaEntries, setTillbakaEntries] = useState<any[]>([]);
   const [ceremonyReflection, setCeremonyReflection] = useState<string | null>(null);
 
