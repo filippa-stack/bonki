@@ -493,18 +493,113 @@ export default function CompletionCeremony() {
           )}
         </div>
 
-        {/* ── Screen 4: Placeholder ── */}
+        {/* ── Screen 4: Final Reflection ── */}
         <div style={{
           width: '100vw',
           height: '100%',
           display: 'flex',
+          flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
           flexShrink: 0,
+          padding: '48px 32px',
+          overflowY: 'auto',
+          WebkitOverflowScrolling: 'touch',
         }}>
-          <p style={{ color: COLORS.driftwood, fontSize: '15px' }}>
-            Screen 4 — coming soon
+          <style>{`
+            @keyframes ceremonyPulse {
+              0%, 100% { opacity: 0.6; }
+              50% { opacity: 1; }
+            }
+          `}</style>
+
+          <p style={{
+            fontFamily: '"DM Serif Display", serif',
+            fontSize: '20px',
+            fontWeight: 400,
+            color: COLORS.lanternGlow,
+            textAlign: 'center',
+            lineHeight: 1.5,
+            marginBottom: '24px',
+          }}>
+            Ni började med 'Ert minsta vi' och slutade med
+            'Att välja varandra'. Vad tar ni med er?
           </p>
+
+          <textarea
+            value={ceremonyReflection}
+            onChange={(e) => setCeremonyReflection(e.target.value)}
+            placeholder=""
+            style={{
+              width: '100%',
+              maxWidth: '340px',
+              minHeight: '160px',
+              background: COLORS.emberGlow,
+              color: COLORS.lanternGlow,
+              border: 'none',
+              borderRadius: '12px',
+              padding: '16px',
+              fontSize: '16px',
+              fontFamily: 'inherit',
+              resize: 'vertical',
+              outline: 'none',
+              marginBottom: '32px',
+            }}
+          />
+
+          {saveState === 'error' ? (
+            <div style={{ textAlign: 'center' }}>
+              <div style={{
+                color: COLORS.lanternGlow,
+                fontSize: '14px',
+                marginBottom: '16px',
+                opacity: 0.8,
+              }}>
+                Det gick inte att spara just nu. Din text är sparad lokalt.
+              </div>
+              <button
+                onClick={saveCeremonyReflection}
+                style={{
+                  background: COLORS.deepSaffron,
+                  color: COLORS.emberNight,
+                  border: 'none',
+                  borderRadius: '30px',
+                  padding: '14px 40px',
+                  fontSize: '16px',
+                  fontFamily: "'DM Serif Display', serif",
+                  cursor: 'pointer',
+                  width: '100%',
+                  maxWidth: '280px',
+                }}
+              >
+                Försök igen
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={saveCeremonyReflection}
+              disabled={saveState === 'saving' || saveState === 'success'}
+              style={{
+                background: COLORS.deepSaffron,
+                color: COLORS.emberNight,
+                border: 'none',
+                borderRadius: '30px',
+                padding: '16px 40px',
+                fontSize: '18px',
+                fontFamily: "'DM Serif Display', serif",
+                cursor: saveState === 'saving' ? 'default' : 'pointer',
+                width: '100%',
+                maxWidth: '280px',
+                display: 'block',
+                margin: '0 auto',
+                animation: saveState === 'saving'
+                  ? 'ceremonyPulse 1.5s ease-in-out infinite'
+                  : 'none',
+              }}
+            >
+              {saveState === 'saving' ? 'Sparar...' : 'Fortsätt'}
+            </button>
+          )}
         </div>
 
         {/* ── Screen 5: Placeholder ── */}
