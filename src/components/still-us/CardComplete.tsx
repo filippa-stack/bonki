@@ -7,8 +7,9 @@ import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { EASE, EMOTION } from '@/lib/motion';
-import { COLORS, cardIdFromSlug } from '@/lib/stillUsTokens';
+import { COLORS, cardIdFromSlug, FEEDBACK_CARDS } from '@/lib/stillUsTokens';
 import { advanceCard } from '@/lib/stillUsRpc';
+import FeedbackSheet from '@/components/FeedbackSheet';
 
 type Phase = 'takeaway' | 'handoff' | 'partner_writing' | 'committing';
 
