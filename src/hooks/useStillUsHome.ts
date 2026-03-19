@@ -41,6 +41,7 @@ export interface StillUsHomeState {
   cardTitle: string;
   layerName: string;
   phase: 'program' | 'ceremony' | 'maintenance' | 'restart';
+  cycleId: number;
   purchaseStatus: 'free_trial' | 'purchased';
   partnerTier: 'tier_1' | 'tier_2' | 'tier_3';
   // Partner info
