@@ -5,29 +5,25 @@
  */
 
 import { cards } from '@/data/content';
+import type { Prompt } from '@/types';
 
-export interface SessionQuestion {
+export interface SessionQ {
   text: string;
   anchor?: string;
 }
 
 export interface SessionContent {
-  /** Session 1: Öppna questions (typically 2-3) */
-  oppna: SessionQuestion[];
-  /** Session 1: Vänd question 1 */
-  vand1: SessionQuestion;
-  /** Session 2: Vänd question 2 (may not exist for all cards) */
-  vand2: SessionQuestion | null;
-  /** Session 2: Tänk om scenario + question */
+  oppna: SessionQ[];
+  vand1: SessionQ;
+  vand2: SessionQ | null;
   tankOm: { scenario: string; question: string } | null;
-  /** Gör exercise content + prompt */
   gor: { content: string; prompt?: string } | null;
 }
 
-/**
- * Get session content for a given card index (0-based).
- * Returns null if the card doesn't exist in content.ts.
- */
+function promptText(p: string | Prompt): string {
+  return typeof p === 'string' ? p : p.text;
+}
+
 export function getSessionContent(cardIndex: number): SessionContent | null {
   const card = cards[cardIndex];
   if (!card) return null;
@@ -37,41 +33,27 @@ export function getSessionContent(cardIndex: number): SessionContent | null {
   const scenario = card.sections.find(s => s.type === 'scenario');
   const exercise = card.sections.find(s => s.type === 'exercise');
 
-  // Öppna: first 2 prompts from opening section
-  const oppna: SessionQuestion[] = (opening?.prompts ?? []).slice(0, 2).map((text, i) => ({
-    text,
+  const oppna: SessionQ[] = (opening?.prompts ?? []).slice(0, 2).map((p, i) => ({
+    text: promptText(p),
     anchor: opening?.anchors?.find(a => a.promptIndex === i)?.text,
   }));
 
-  // Vänd 1: first prompt from reflective section
   const vandPrompts = reflective?.prompts ?? [];
-  const vand1: SessionQuestion = {
-    text: vandPrompts[0] ?? 'Vad var det viktigaste ni pratade om?',
+  const vand1: SessionQ = {
+    text: vandPrompts[0] ? promptText(vandPrompts[0]) : 'Vad var det viktigaste ni pratade om?',
     anchor: reflective?.anchors?.find(a => a.promptIndex === 0)?.text,
   };
 
-  // Vänd 2: second prompt from reflective section (Session 2)
-  const vand2: SessionQuestion | null = vandPrompts[1]
-    ? {
-        text: vandPrompts[1],
-        anchor: reflective?.anchors?.find(a => a.promptIndex === 1)?.text,
-      }
+  const vand2: SessionQ | null = vandPrompts[1]
+    ? { text: promptText(vandPrompts[1]), anchor: reflective?.anchors?.find(a => a.promptIndex === 1)?.text }
     : null;
 
-  // Tänk om: scenario content + first prompt
   const tankOm = scenario
-    ? {
-        scenario: scenario.content ?? '',
-        question: scenario.prompts?.[0] ?? '',
-      }
+    ? { scenario: scenario.content ?? '', question: scenario.prompts?.[0] ? promptText(scenario.prompts[0]) : '' }
     : null;
 
-  // Gör: exercise content + first prompt
   const gor = exercise
-    ? {
-        content: exercise.content ?? '',
-        prompt: exercise.prompts?.[0],
-      }
+    ? { content: exercise.content ?? '', prompt: exercise.prompts?.[0] ? promptText(exercise.prompts[0]) : undefined }
     : null;
 
   return { oppna, vand1, vand2, tankOm, gor };
