@@ -23,6 +23,8 @@ interface SliderCheckInProps {
   cardIndex: number;
   coupleId?: string;
   cardId?: string;
+  /** Frontend slug for route navigation (e.g. 'su-01-smallest-we') */
+  slug?: string;
   /** Whether format preview has been seen */
   hasSeenFormatPreview?: boolean;
   /** Whether partner is connected */
