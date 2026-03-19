@@ -1,25 +1,26 @@
 import { useState, useEffect } from 'react';
 import FormatPreview from '@/components/still-us/FormatPreview';
-import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 
 export default function FormatPreviewPage() {
-  const { space } = useCoupleSpaceContext();
   const { user } = useAuth();
   const [hasPartner, setHasPartner] = useState(false);
 
   useEffect(() => {
-    if (!space?.id || !user?.id) return;
+    if (!user?.id) return;
     (async () => {
-      const { data } = await supabase
-        .from('couple_members')
-        .select('user_id')
-        .eq('couple_space_id', space.id)
-        .is('left_at', null);
-      setHasPartner((data?.length ?? 0) > 1);
+      const { data: cs } = await supabase
+        .from('couple_state')
+        .select('partner_id, partner_tier')
+        .or(`initiator_id.eq.${user.id},partner_id.eq.${user.id}`)
+        .is('dissolved_at', null)
+        .maybeSingle();
+      if (cs) {
+        setHasPartner(!!(cs.partner_id || cs.partner_tier === 'tier_2'));
+      }
     })();
-  }, [space?.id, user?.id]);
+  }, [user?.id]);
 
   return <FormatPreview hasPartner={hasPartner} />;
 }

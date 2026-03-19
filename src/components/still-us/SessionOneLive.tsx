@@ -337,14 +337,24 @@ export default function SessionOneLive() {
 
   // ── Pause handlers ────────────────────────────────────────
   const handlePauseTime = useCallback(async () => {
-    // TODO: update session_state with paused_reason='time'
-    navigate('/');
-  }, [navigate]);
+    if (coupleState && backendCardId) {
+      await supabase.from('session_state').update({
+        paused_at: new Date().toISOString(),
+        paused_reason: 'time',
+      }).eq('couple_id', coupleState.couple_id).eq('card_id', backendCardId).eq('cycle_id', coupleState.cycle_id);
+    }
+    navigate('/?product=still-us');
+  }, [navigate, coupleState, backendCardId]);
 
   const handlePauseEmotional = useCallback(async () => {
-    // TODO: update session_state with paused_reason='emotional'
-    navigate('/');
-  }, [navigate]);
+    if (coupleState && backendCardId) {
+      await supabase.from('session_state').update({
+        paused_at: new Date().toISOString(),
+        paused_reason: 'emotional',
+      }).eq('couple_id', coupleState.couple_id).eq('card_id', backendCardId).eq('cycle_id', coupleState.cycle_id);
+    }
+    navigate('/?product=still-us');
+  }, [navigate, coupleState, backendCardId]);
 
   // ── Step advance handler ──────────────────────────────────
   const handleNext = useCallback(async () => {

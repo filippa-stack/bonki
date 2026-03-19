@@ -58,12 +58,12 @@ export default function Home() {
 
   // ── Polling via pollCoupleState every 15s ──
   useEffect(() => {
-    if (!space?.id) return;
-    const stop = pollCoupleState(space.id, 15_000, () => {
+    if (!homeState.coupleId) return;
+    const stop = pollCoupleState(homeState.coupleId, 15_000, () => {
       homeState.refetch();
     });
     return stop;
-  }, [space?.id]);
+  }, [homeState.coupleId]);
 
   const handleAction = (action: string) => {
     const cardId = homeState.cardId;

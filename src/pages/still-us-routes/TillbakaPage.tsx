@@ -53,9 +53,9 @@ export default function TillbakaPage() {
             card_takeaway: notes['tb-1'] || notes['tb-0'] || null,
           });
         }
-        navigate('/');
+        navigate('/?product=still-us');
       }}
-      onPause={() => navigate('/')}
+      onPause={() => navigate('/?product=still-us')}
     />
   );
 }

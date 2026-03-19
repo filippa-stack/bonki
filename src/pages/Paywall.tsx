@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { supabase } from '@/integrations/supabase/client';
-import { COLORS } from '@/lib/stillUsTokens';
+import { COLORS, slugFromCardIndex } from '@/lib/stillUsTokens';
 import { useAuth } from '@/contexts/AuthContext';
 
 export default function Paywall() {
@@ -22,7 +22,7 @@ export default function Paywall() {
         .or(`initiator_id.eq.${user.id},partner_id.eq.${user.id}`)
         .maybeSingle();
       if (cs) {
-        setSlug(`kort-${cs.current_card_index + 1}`);
+        setSlug(slugFromCardIndex(cs.current_card_index) ?? `su-01-smallest-we`);
       }
     })();
   }, [user?.id]);
@@ -226,7 +226,7 @@ export default function Paywall() {
         )}
 
         <div
-          onClick={() => navigate('/')}
+          onClick={() => navigate('/?product=still-us')}
           style={{
             color: COLORS.driftwood,
             fontSize: '14px',

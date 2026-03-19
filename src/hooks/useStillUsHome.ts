@@ -154,6 +154,10 @@ export function useStillUsHome(): StillUsHomeState {
       // Use the real couple_id from couple_state for subsequent queries
       const realCoupleId = cs.couple_id as string;
 
+      const cardIndex = cs.current_card_index ?? 0;
+      const backendCardIdForQuery = cardIdFromIndex(cardIndex);
+      const cycleIdVal = cs.cycle_id ?? 1;
+
       const [ucsResult, ssResult, membersResult] = await Promise.all([
         supabase
           .from('user_card_state')
@@ -163,7 +167,8 @@ export function useStillUsHome(): StillUsHomeState {
           .from('session_state')
           .select('*')
           .eq('couple_id', realCoupleId)
-          .limit(1)
+          .eq('card_id', backendCardIdForQuery)
+          .eq('cycle_id', cycleIdVal)
           .maybeSingle(),
         spaceId ? supabase
           .from('couple_members')
@@ -174,12 +179,11 @@ export function useStillUsHome(): StillUsHomeState {
 
       if (!mountedRef.current) return;
 
-      const cardIndex = cs.current_card_index ?? 0;
       const currentTouch = cs.current_touch as string;
       const phase = cs.phase as StillUsHomeState['phase'];
       const purchaseStatus = cs.purchase_status as StillUsHomeState['purchaseStatus'];
       const partnerTier = cs.partner_tier as StillUsHomeState['partnerTier'];
-      const cycleId = cs.cycle_id ?? 1;
+      const cycleId = cycleIdVal;
       const migrationPending = cs.migration_pending ?? false;
       const lastActivityAt = cs.last_activity;
       const returnRitualShown = cs.return_ritual_shown_for_card === String(cardIndex);
@@ -191,7 +195,7 @@ export function useStillUsHome(): StillUsHomeState {
       // Card info
       const cardEntry = CARD_SEQUENCE[cardIndex] ?? CARD_SEQUENCE[0];
       const cardSlug = cardEntry.cardId; // slug used for routing
-      const backendCardId = cardIdFromIndex(cardIndex); // 'card_N' for DB queries
+      const backendCardId = backendCardIdForQuery; // 'card_N' for DB queries
       const cardTitle = cardEntry.title;
       const layer = LAYERS[cardEntry.layerIndex] ?? LAYERS[0];
       const layerName = layer.name;
@@ -303,7 +307,7 @@ export function useStillUsHome(): StillUsHomeState {
         returnRitualShown,
         lastActivityAt: lastActivityAt ?? null,
         currentTouch,
-        coupleId: spaceId,
+        coupleId: realCoupleId,
         coupleCreatedAt: cs.created_at ?? null,
         dissolvedAt: cs.dissolved_at ?? null,
         initiatorId,
