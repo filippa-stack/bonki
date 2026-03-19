@@ -38,21 +38,33 @@ const items: NavItem[] = [
     label: 'Biblioteket',
     icon: House,
     path: '/',
-    match: (p) => p === '/' || (p.startsWith('/product/') && p !== '/product/still-us'),
+    match: (p, s) => {
+      // Library active for root (without ?product=still-us) and kids product pages
+      if (p === '/' && !s.includes('product=still-us')) return true;
+      if (p.startsWith('/product/') && p !== '/product/still-us') return true;
+      return false;
+    },
   },
   {
     id: 'still-us',
     label: 'Still Us',
     customIcon: StillUsIcon,
     path: '/product/still-us',
-    match: (p) => p === '/product/still-us',
+    match: (p, s) =>
+      p === '/product/still-us' ||
+      (p === '/' && s.includes('product=still-us')) ||
+      p.startsWith('/check-in') ||
+      p.startsWith('/session/') ||
+      p === '/share' ||
+      p === '/journey' ||
+      p === '/ceremony',
   },
   {
     id: 'journal',
     label: 'Era samtal',
     icon: BookOpen,
     path: '/journal',
-    match: (p) => p.startsWith('/journal'),
+    match: (p) => p.startsWith('/journal') || p.startsWith('/diary'),
   },
 ];
 
