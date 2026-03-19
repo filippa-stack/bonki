@@ -168,8 +168,10 @@ export interface InitCoupleStateResult {
 
 // ── Wrappers ────────────────────────────────────────────────
 
-export function initCoupleState() {
-  return invoke<InitCoupleStateResult>('init-couple-state', {});
+export function initCoupleState(sliderAnchors?: ReturnType<typeof buildSliderAnchors>) {
+  return invoke<InitCoupleStateResult>('init-couple-state', {
+    slider_anchors: sliderAnchors ?? null,
+  });
 }
 
 export function completeSliderCheckin(params: SliderCheckinParams) {
