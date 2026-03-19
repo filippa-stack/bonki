@@ -806,6 +806,19 @@ export default function SessionOneLive() {
           )}
         </motion.div>
       </AnimatePresence>
+
+      {pendingSync && (
+        <p style={{
+          fontFamily: "'Nunito', sans-serif",
+          fontSize: '12px',
+          color: COLORS.driftwood,
+          textAlign: 'center',
+          padding: '8px 0',
+          opacity: 0.7,
+        }}>
+          Dina anteckningar sparas snart.
+        </p>
+      )}
     </SessionFocusShell>
   );
 }
