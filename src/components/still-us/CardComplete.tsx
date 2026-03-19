@@ -435,6 +435,15 @@ export default function CardComplete({
           Tillbaka hem
         </motion.button>
       </motion.div>
+
+      {showFeedback && (
+        <FeedbackSheet
+          coupleId={coupleId}
+          cardId={cardIdFromSlug(slug) || ''}
+          cardIndex={cardIndex}
+          onDismiss={() => setShowFeedback(false)}
+        />
+      )}
     </div>
   );
 }
