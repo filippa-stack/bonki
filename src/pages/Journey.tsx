@@ -2,13 +2,15 @@
  * Journey — "ERA SAMTAL" tab content.
  * Zone 1: Horizontal curved timeline with 22 nodes.
  * Zone 2: Layer-grouped card entries with expandable reflections.
- * Zone 3: Placeholder for insights (Prompt 5.9).
+ * Zone 3: Journey insights, Tillbaka section, ceremony reflection.
  */
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { COLORS, getLayerForCard } from '@/lib/stillUsTokens';
-import sliderPrompts from '@/data/sliderPrompts';
+import sliderPrompts, { getSliderSet } from '@/data/sliderPrompts';
 import layerIntros from '@/data/layerIntros';
+import tillbakaCards from '@/data/tillbakaCards';
+import { computeJourneyInsights } from '@/lib/stillUsRpc';
 import { supabase } from '@/integrations/supabase/client';
 
 type NodeStatus = 'completed' | 'skipped' | 'current' | 'future';
