@@ -89,6 +89,9 @@ export default function Home() {
       case 'ceremony':
         navigate('/ceremony');
         break;
+      case 'unlock_self':
+        navigate('/unlock');
+        break;
       default:
         break;
     }
