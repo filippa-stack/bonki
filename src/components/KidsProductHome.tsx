@@ -405,7 +405,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
               width: '100%',
               height: '100%',
               objectFit: 'cover',
-              objectPosition: '50% 55%',
+              objectPosition: HERO_OBJECT_POSITION[product.id] ?? '50% 55%',
               filter: 'saturate(1.2) brightness(1.1)',
             }}
           />
