@@ -82,6 +82,11 @@ const SQUARE_TILE_ILLUSTRATION_STYLES = [
   { scale: 1.05, objectPosition: '50% 30%', opacity: 0.88 },
 ];
 
+/** Per-product hero image vertical position — default is '50% 55%' */
+const HERO_OBJECT_POSITION: Record<string, string> = {
+  jag_i_varlden: '50% 35%',
+};
+
 /* ── First card per category hook ── */
 function useFirstCardImages(product: ProductManifest) {
   const firstCardIds = useMemo(
@@ -400,7 +405,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
               width: '100%',
               height: '100%',
               objectFit: 'cover',
-              objectPosition: '50% 55%',
+              objectPosition: HERO_OBJECT_POSITION[product.id] ?? '50% 55%',
               filter: 'saturate(1.2) brightness(1.1)',
             }}
           />
