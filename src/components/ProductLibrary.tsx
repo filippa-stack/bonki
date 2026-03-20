@@ -46,10 +46,10 @@ const TAGLINES: Record<string, string> = {
 const TILE_COLORS: Record<string, string> = {
   jag_i_mig: '#3A6260',       // Deep teal — from the character's clothing
   jag_med_andra: '#AC7A44',   // Warm amber — relational/togetherness theme
-  jag_i_varlden: '#2E3E5E',   // Dusk Blue — saturated, separates from Still Us
+  jag_i_varlden: '#2A4A6B',   // Richer dusk blue — more saturated, separates from Still Us
   sexualitetskort: '#3E2F24',  // Bark Brown — dark, protected, mature
-  vardagskort: '#3C4A30',      // Warm olive — earthy everyday tone
-  syskonkort: '#8E5234',       // Sienna — warm wool blanket, from illustration palette
+  vardagskort: '#3D5030',      // Deeper forest green — richer than previous olive
+  syskonkort: '#7A4228',       // Deeper sienna — more saturation, less muddy
 };
 
 /** Luminance helper — determines if a tile needs light or dark treatment.
@@ -103,23 +103,23 @@ const ILLUSTRATION_OPACITY: Record<string, number> = {
 /** Per-tile radial glow color behind illustration — creates 3D depth
  *  Calibrated for mid-tone tile palette (Mar 2026): complementary hue glow */
 const ILLUSTRATION_GLOW: Record<string, string> = {
-  jag_i_mig: 'rgba(240, 190, 80, 0.18)',
-  jag_med_andra: 'rgba(160, 130, 220, 0.15)',
-  jag_i_varlden: 'rgba(140, 200, 230, 0.18)',
-  sexualitetskort: 'rgba(220, 150, 130, 0.18)',
-  vardagskort: 'rgba(200, 180, 100, 0.18)',
-  syskonkort: 'rgba(80, 200, 220, 0.18)',
+  jag_i_mig: 'rgba(240, 190, 80, 0.12)',
+  jag_med_andra: 'rgba(160, 130, 220, 0.10)',
+  jag_i_varlden: 'rgba(140, 200, 230, 0.12)',
+  sexualitetskort: 'rgba(220, 150, 130, 0.12)',
+  vardagskort: 'rgba(200, 180, 100, 0.12)',
+  syskonkort: 'rgba(80, 200, 220, 0.12)',
 };
 
 /** Per-tile drop-shadow + saturation boost — makes character pop from bg
  *  Shadow colors derived from each tile's own bg for natural grounding */
 const ILLUSTRATION_SHADOW: Record<string, string> = {
-  jag_i_mig: 'saturate(1.3) brightness(1.2) drop-shadow(0 6px 20px rgba(30, 50, 48, 0.6)) drop-shadow(0 14px 40px rgba(58, 98, 96, 0.3)) drop-shadow(0 2px 4px rgba(0,0,0,0.25))',
-  jag_med_andra: 'saturate(1.25) contrast(1.1) drop-shadow(0 6px 20px rgba(86, 61, 34, 0.6)) drop-shadow(0 14px 40px rgba(172, 122, 68, 0.3)) drop-shadow(0 2px 4px rgba(0,0,0,0.2))',
-  jag_i_varlden: 'saturate(1.35) brightness(1.25) drop-shadow(0 6px 20px rgba(23, 31, 47, 0.7)) drop-shadow(0 14px 40px rgba(46, 62, 94, 0.35)) drop-shadow(0 2px 4px rgba(0,0,0,0.3))',
-  sexualitetskort: 'saturate(1.35) brightness(1.3) drop-shadow(0 6px 20px rgba(31, 24, 18, 0.7)) drop-shadow(0 14px 40px rgba(62, 47, 36, 0.35)) drop-shadow(0 2px 4px rgba(0,0,0,0.3))',
-  vardagskort: 'saturate(1.35) brightness(1.25) drop-shadow(0 8px 24px rgba(30, 37, 24, 0.7)) drop-shadow(0 16px 48px rgba(60, 74, 48, 0.35)) drop-shadow(0 2px 4px rgba(0,0,0,0.35))',
-  syskonkort: 'saturate(1.3) brightness(1.2) drop-shadow(0 6px 20px rgba(71, 41, 26, 0.6)) drop-shadow(0 14px 40px rgba(142, 82, 52, 0.3)) drop-shadow(0 2px 4px rgba(0,0,0,0.25))',
+  jag_i_mig: 'saturate(1.3) brightness(1.15) drop-shadow(0 6px 20px rgba(30, 50, 48, 0.5)) drop-shadow(0 2px 4px rgba(0,0,0,0.2))',
+  jag_med_andra: 'saturate(1.2) contrast(1.08) drop-shadow(0 6px 20px rgba(86, 61, 34, 0.5)) drop-shadow(0 2px 4px rgba(0,0,0,0.15))',
+  jag_i_varlden: 'saturate(1.3) brightness(1.2) drop-shadow(0 6px 20px rgba(21, 37, 54, 0.6)) drop-shadow(0 2px 4px rgba(0,0,0,0.25))',
+  sexualitetskort: 'saturate(1.3) brightness(1.25) drop-shadow(0 6px 20px rgba(31, 24, 18, 0.6)) drop-shadow(0 2px 4px rgba(0,0,0,0.25))',
+  vardagskort: 'saturate(1.3) brightness(1.2) drop-shadow(0 8px 24px rgba(30, 40, 24, 0.6)) drop-shadow(0 2px 4px rgba(0,0,0,0.25))',
+  syskonkort: 'saturate(1.3) brightness(1.15) drop-shadow(0 6px 20px rgba(61, 33, 20, 0.5)) drop-shadow(0 2px 4px rgba(0,0,0,0.2))',
 };
 
 /** Title colors — dark text on lighter tiles, light on darker ones */
@@ -134,12 +134,22 @@ const ACCENT_COLORS: Record<string, string> = {
 
 /** Tagline colors — tinted to each tile's family */
 const TAGLINE_COLORS: Record<string, string> = {
-  jag_i_mig: 'hsla(178, 30%, 82%, 0.90)',     // Soft teal tint on dark teal
-  jag_med_andra: 'hsla(30, 30%, 85%, 0.90)',   // Warm cream on amber
-  jag_i_varlden: 'hsla(220, 30%, 82%, 0.90)',   // Soft blue tint on dusk blue
-  sexualitetskort: 'hsla(25, 35%, 78%, 0.90)', // Warm cream on bark brown
-  vardagskort: 'hsla(90, 20%, 78%, 0.90)',          // Soft olive tint on warm olive
-  syskonkort: 'hsla(25, 35%, 82%, 0.90)',       // Warm cream on sienna
+  jag_i_mig: 'hsla(178, 30%, 82%, 0.90)',
+  jag_med_andra: 'hsla(30, 30%, 85%, 0.90)',
+  jag_i_varlden: 'hsla(210, 35%, 82%, 0.90)',
+  sexualitetskort: 'hsla(25, 35%, 78%, 0.90)',
+  vardagskort: 'hsla(100, 25%, 80%, 0.90)',
+  syskonkort: 'hsla(25, 35%, 82%, 0.90)',
+};
+
+/** Tile height rhythm — alternating for visual breathing */
+const TILE_HEIGHTS: Record<string, string> = {
+  jag_i_mig: '260px',
+  jag_med_andra: '220px',
+  jag_i_varlden: '260px',
+  sexualitetskort: '220px',
+  vardagskort: '240px',
+  syskonkort: '220px',
 };
 
 /** Build badge text: "X ämnen" — no pricing on individual tiles */
@@ -227,11 +237,11 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
   accentColor?: string; taglineColor?: string; illustrationOpacity?: number;
   illustrationSize?: string; illustrationPosition?: string; wide?: boolean;
   showFreeBadge?: boolean; badgeText?: string; ageCount?: number;
-  hasActiveSession?: boolean;
+  hasActiveSession?: boolean; tileHeight?: string;
 }>(function PastelTile({
   name, bg, ageLabel, tagline, onClick, illustration, productId, accentColor, taglineColor,
   illustrationOpacity = 0.90, wide = false,
-  hasActiveSession = false,
+  hasActiveSession = false, tileHeight = '240px',
 }) {
   const toShadowColor = (hex: string, alpha: number) => {
     const r = parseInt(hex.slice(1, 3), 16);
@@ -261,7 +271,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
       style={{
         borderRadius: '22px',
         backgroundColor: bg,
-        height: '240px',
+        height: tileHeight,
         display: 'flex',
         position: 'relative',
         overflow: 'hidden',
@@ -342,18 +352,19 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
         </div>
       )}
 
-      {/* Localized text backdrop — protects legibility without washing the tile */}
+      {/* Localized text backdrop — bottom-left corner protection */}
       <div
         aria-hidden="true"
         style={{
           position: 'absolute',
           left: 0,
           bottom: 0,
-          width: '46%',
-          height: '72%',
+          width: '55%',
+          height: '65%',
           zIndex: 1,
           pointerEvents: 'none',
-          background: `linear-gradient(135deg, ${bgRgba(0.44)} 0%, ${bgRgba(0.22)} 42%, transparent 100%)`,
+          borderRadius: '0 0 0 22px',
+          background: `linear-gradient(to top right, ${bgRgba(0.75)} 0%, ${bgRgba(0.45)} 35%, ${bgRgba(0.15)} 60%, transparent 100%)`,
         }}
       />
 
@@ -437,7 +448,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
             lineHeight: 1.15,
             color: accentColor || '#FDF6E3',
             letterSpacing: '-0.01em',
-            textShadow: `0 1px 6px ${bgRgba(0.8)}, 0 0 16px ${bgRgba(0.6)}`,
+            textShadow: `0 2px 8px ${bgRgba(1)}, 0 0 20px ${bgRgba(0.9)}, 0 0 40px ${bgRgba(0.5)}`,
           }}
         >
           {name}
@@ -725,12 +736,12 @@ export default function ProductLibrary() {
             }} />
             <p style={{
               fontFamily: "var(--font-body)",
-              fontSize: '12px',
-              fontWeight: 600,
-              letterSpacing: '1.5px',
+              fontSize: '13px',
+              fontWeight: 700,
+              letterSpacing: '2px',
               textTransform: 'uppercase',
               color: '#D4F5C0',
-              marginBottom: '16px',
+              marginBottom: '20px',
             }}>
               Föräldrar
             </p>
@@ -746,7 +757,7 @@ export default function ProductLibrary() {
                 borderRadius: '22px',
                 backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.08) 100%)',
                 backgroundColor: '#263041',
-                height: '240px',
+                height: '260px',
                 display: 'flex',
                 flexDirection: 'column',
                 position: 'relative',
@@ -962,12 +973,12 @@ export default function ProductLibrary() {
             }} />
             <p style={{
               fontFamily: "var(--font-body)",
-              fontSize: '12px',
-              fontWeight: 600,
-              letterSpacing: '1.5px',
+              fontSize: '13px',
+              fontWeight: 700,
+              letterSpacing: '2px',
               textTransform: 'uppercase',
               color: '#D4F5C0',
-              marginBottom: '16px',
+              marginBottom: '20px',
             }}>
               Barn & Familj
             </p>
@@ -986,7 +997,7 @@ export default function ProductLibrary() {
             style={{
               display: 'flex',
               flexDirection: 'column',
-              gap: '20px',
+              gap: '28px',
             }}
           >
             {sortedKidsProducts.map((product) => (
@@ -1004,6 +1015,7 @@ export default function ProductLibrary() {
                 onClick={() => navigate(`/product/${product.slug}`)}
                 badgeText={buildBadgeText(product)}
                 hasActiveSession={activeProductIds.has(product.id)}
+                tileHeight={TILE_HEIGHTS[product.id] ?? '240px'}
                 wide
               />
             ))}

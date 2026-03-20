@@ -31,10 +31,10 @@ const PRODUCT_TILE_COLORS: Record<string, string> = {
   still_us: '#263041',
   jag_i_mig: '#3A6260',
   jag_med_andra: '#AC7A44',
-  jag_i_varlden: '#2E3E5E',
+  jag_i_varlden: '#2A4A6B',
   sexualitetskort: '#3E2F24',
-  vardagskort: '#3C4A30',
-  syskonkort: '#8E5234',
+  vardagskort: '#3D5030',
+  syskonkort: '#7A4228',
 };
 
 interface ResumeData {
