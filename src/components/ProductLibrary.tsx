@@ -465,7 +465,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
               fontSize: '10px',
               fontWeight: 500,
               letterSpacing: '0.04em',
-              color: taglineColor || 'hsla(38, 50%, 75%, 0.55)',
+              color: taglineColor || 'hsla(100, 40%, 80%, 0.50)',
               opacity: 0.7,
               marginTop: '6px',
               textShadow: `0 0 10px ${bgRgba(0.8)}`,
