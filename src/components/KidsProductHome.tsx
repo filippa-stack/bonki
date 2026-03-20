@@ -558,6 +558,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
                 isLocked={isLocked}
                 showLayerNumber={isSU}
                 compactHeight={isSU}
+                squareTile={useSquareGrid}
               />
             );
           })}
