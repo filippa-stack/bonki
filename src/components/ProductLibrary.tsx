@@ -285,9 +285,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
               `0 0 72px ${toShadowColor(bg, 0.18)}`,
               'inset 0 3px 6px rgba(255, 255, 255, 0.45)',
               `inset 0 -4px 10px ${toShadowColor(bg, 0.14)}`,
-              'inset 0 0 40px rgba(245, 216, 122, 0.0)',
             ].join(', '),
-        transition: { boxShadow: '300ms ease' } as any,
       }}
     >
       {/* Dual-layer radial glow behind illustration — wide ambient + tight concentrated */}
