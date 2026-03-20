@@ -127,6 +127,30 @@ const CARD_IMAGE_MAP: Record<string, { zip: ZipSource; folder: string; file: str
   'sk-sjukdom':            { zip: 'sk', folder: '', file: 'sjuk.png' },
   'sk-forlora-ett-syskon': { zip: 'sk', folder: '', file: 'förlora syskon.png' },
   'sk-framtid':            { zip: 'sk', folder: '', file: 'framtid.png' },
+
+  // ── Still Us Mock ──
+  'su-mock-0':  { zip: 'default', folder: '', file: '__standalone__' },
+  'su-mock-1':  { zip: 'default', folder: '', file: '__standalone__' },
+  'su-mock-2':  { zip: 'default', folder: '', file: '__standalone__' },
+  'su-mock-3':  { zip: 'default', folder: '', file: '__standalone__' },
+  'su-mock-4':  { zip: 'default', folder: '', file: '__standalone__' },
+  'su-mock-5':  { zip: 'default', folder: '', file: '__standalone__' },
+  'su-mock-6':  { zip: 'default', folder: '', file: '__standalone__' },
+  'su-mock-7':  { zip: 'default', folder: '', file: '__standalone__' },
+  'su-mock-8':  { zip: 'default', folder: '', file: '__standalone__' },
+  'su-mock-9':  { zip: 'default', folder: '', file: '__standalone__' },
+  'su-mock-10': { zip: 'default', folder: '', file: '__standalone__' },
+  'su-mock-11': { zip: 'default', folder: '', file: '__standalone__' },
+  'su-mock-12': { zip: 'default', folder: '', file: '__standalone__' },
+  'su-mock-13': { zip: 'default', folder: '', file: '__standalone__' },
+  'su-mock-14': { zip: 'default', folder: '', file: '__standalone__' },
+  'su-mock-15': { zip: 'default', folder: '', file: '__standalone__' },
+  'su-mock-16': { zip: 'default', folder: '', file: '__standalone__' },
+  'su-mock-17': { zip: 'default', folder: '', file: '__standalone__' },
+  'su-mock-18': { zip: 'default', folder: '', file: '__standalone__' },
+  'su-mock-19': { zip: 'default', folder: '', file: '__standalone__' },
+  'su-mock-20': { zip: 'default', folder: '', file: '__standalone__' },
+  'su-mock-21': { zip: 'default', folder: '', file: '__standalone__' },
 };
 
 /**
@@ -165,6 +189,30 @@ const STANDALONE_IMAGES: Record<string, string> = {
   'jma-acceptans': '/card-images/jma-acceptans.png',
   'jma-kluringen': '/card-images/jma-kluringen.png',
   'jma-utseende': '/card-images/jma-utseende.png',
+
+  // ── Still Us Mock ──
+  'su-mock-0': '/card-images/su-mock-0.png',
+  'su-mock-1': '/card-images/su-mock-1.png',
+  'su-mock-2': '/card-images/su-mock-2.png',
+  'su-mock-3': '/card-images/su-mock-3.png',
+  'su-mock-4': '/card-images/su-mock-4.png',
+  'su-mock-5': '/card-images/su-mock-5.png',
+  'su-mock-6': '/card-images/su-mock-6.png',
+  'su-mock-7': '/card-images/su-mock-7.png',
+  'su-mock-8': '/card-images/su-mock-8.png',
+  'su-mock-9': '/card-images/su-mock-9.png',
+  'su-mock-10': '/card-images/su-mock-10.png',
+  'su-mock-11': '/card-images/su-mock-11.png',
+  'su-mock-12': '/card-images/su-mock-12.png',
+  'su-mock-13': '/card-images/su-mock-13.png',
+  'su-mock-14': '/card-images/su-mock-14.png',
+  'su-mock-15': '/card-images/su-mock-15.png',
+  'su-mock-16': '/card-images/su-mock-16.png',
+  'su-mock-17': '/card-images/su-mock-17.png',
+  'su-mock-18': '/card-images/su-mock-18.png',
+  'su-mock-19': '/card-images/su-mock-19.png',
+  'su-mock-20': '/card-images/su-mock-20.png',
+  'su-mock-21': '/card-images/su-mock-21.png',
 };
 
 const ZIP_URLS: Record<ZipSource, string> = {
