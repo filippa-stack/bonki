@@ -398,7 +398,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
               height: '100%',
               objectFit: 'cover',
               objectPosition: '50% 12%',
-              ...(isVardag ? { filter: 'saturate(1.25) brightness(1.15)' } : {}),
+              filter: 'saturate(1.2) brightness(1.1)',
             }}
           />
           {/* Multi-stop scrim: product color blend — much lighter for Vardag */}
