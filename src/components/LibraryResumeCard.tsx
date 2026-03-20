@@ -192,6 +192,9 @@ export default function LibraryResumeCard({ activeTab, global, forceMock }: Libr
         textAlign: 'left',
         display: 'flex',
         alignItems: 'center',
+        boxShadow: useProductBg
+          ? `0 0 60px ${hexToRgba(tileBg, 0.25)}, 0 8px 24px rgba(0,0,0,0.15)`
+          : 'none',
       }}
     >
       <div style={{ flex: 1, minWidth: 0 }}>
