@@ -462,20 +462,20 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
               {product.name}
             </h1>
             {isSU ? (
-              <p
-                className="font-serif"
-                style={{
-                  fontSize: 'clamp(14px, 4vw, 18px)',
-                  fontWeight: 500,
-                  color: DRIFTWOOD,
-                  opacity: 0.95,
-                  marginTop: '6px',
-                  textShadow: `0 2px 24px rgba(0,0,0,1), 0 0 60px ${bg}, 0 0 120px ${bg}`,
-                }}
-              >
-                {product.tagline}
-              </p>
-              {isSU && (
+              <>
+                <p
+                  className="font-serif"
+                  style={{
+                    fontSize: 'clamp(14px, 4vw, 18px)',
+                    fontWeight: 500,
+                    color: DRIFTWOOD,
+                    opacity: 0.95,
+                    marginTop: '6px',
+                    textShadow: `0 2px 24px rgba(0,0,0,1), 0 0 60px ${bg}, 0 0 120px ${bg}`,
+                  }}
+                >
+                  {product.tagline}
+                </p>
                 <p
                   className="font-serif"
                   style={{
@@ -489,7 +489,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
                 >
                   22 samtalsövningar inom 5 områden
                 </p>
-              )}
+              </>
             ) : (
               <span
                 className="font-serif"
