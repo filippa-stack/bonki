@@ -233,9 +233,26 @@ function CategoryTile({
               objectFit: 'cover',
               objectPosition: style.objectPosition,
               opacity: style.opacity,
+              ...(squareTile ? {
+                filter: `saturate(1.25) brightness(1.15) drop-shadow(0 6px 16px rgba(0,0,0,0.5))`,
+              } : {}),
             }}
           />
         </div>
+      )}
+
+      {/* Inner glow for square tiles — atmospheric warmth behind illustration */}
+      {squareTile && (
+        <div
+          aria-hidden="true"
+          style={{
+            position: 'absolute',
+            inset: 0,
+            zIndex: 0,
+            pointerEvents: 'none',
+            background: `radial-gradient(ellipse 80% 70% at 50% 30%, rgba(${shieldRgb}, 0.15) 0%, transparent 70%)`,
+          }}
+        />
       )}
 
       {/* Gradient shield for text readability */}
@@ -245,8 +262,10 @@ function CategoryTile({
           bottom: 0,
           left: 0,
           right: 0,
-          height: '75%',
-          background: `linear-gradient(to top, rgba(${shieldRgb}, 1) 0%, rgba(${shieldRgb}, 0.97) 25%, rgba(${shieldRgb}, 0.85) 45%, rgba(${shieldRgb}, 0.45) 70%, transparent 100%)`,
+          height: squareTile ? '60%' : '75%',
+          background: squareTile
+            ? `linear-gradient(to top, rgba(${shieldRgb}, 1) 0%, rgba(${shieldRgb}, 0.95) 20%, rgba(${shieldRgb}, 0.7) 40%, rgba(${shieldRgb}, 0.2) 65%, transparent 100%)`
+            : `linear-gradient(to top, rgba(${shieldRgb}, 1) 0%, rgba(${shieldRgb}, 0.97) 25%, rgba(${shieldRgb}, 0.85) 45%, rgba(${shieldRgb}, 0.45) 70%, transparent 100%)`,
           pointerEvents: 'none',
           zIndex: 2,
         }}
@@ -259,7 +278,7 @@ function CategoryTile({
           bottom: 0,
           left: 0,
           right: 0,
-          padding: '14px 16px',
+          padding: squareTile ? '12px 14px' : '14px 16px',
           zIndex: 3,
         }}
       >
@@ -267,25 +286,27 @@ function CategoryTile({
           style={{
             fontFamily: 'var(--font-display)',
             fontVariationSettings: "'opsz' 17",
-            fontSize: '18px',
+            fontSize: squareTile ? '16px' : '18px',
             fontWeight: 600,
             color: LANTERN_GLOW,
             lineHeight: 1.2,
             display: 'block',
-            textShadow: '0 1px 4px rgba(0,0,0,0.5)',
+            textShadow: `0 1px 6px rgba(0,0,0,0.7), 0 0 16px rgba(${shieldRgb}, 0.8)`,
           }}
         >
           {cat.title}
         </span>
         <span
           style={{
-            fontSize: '12px',
-            fontWeight: 500,
-            color: '#C8BFB4',
+            fontSize: squareTile ? '11px' : '12px',
+            fontWeight: 600,
+            color: completed > 0 ? SAFFRON_FLAME : LANTERN_GLOW,
+            opacity: completed > 0 ? 0.9 : 0.5,
             lineHeight: 1.3,
             marginTop: '3px',
             display: 'block',
-            textShadow: '0 1px 3px rgba(0,0,0,0.4)',
+            letterSpacing: '0.02em',
+            textShadow: `0 1px 4px rgba(0,0,0,0.5)`,
           }}
         >
           {completed} av {total} kort utforskade
