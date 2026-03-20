@@ -393,16 +393,16 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
               objectPosition: '50% 12%',
             }}
           />
-          {/* Multi-stop scrim: product color blend — lighter for Vardag to show illustration */}
+          {/* Multi-stop scrim: product color blend — much lighter for Vardag */}
           <div
             style={{
               position: 'absolute',
               bottom: 0,
               left: 0,
               right: 0,
-              height: isVardag ? '75%' : '88%',
+              height: isVardag ? '60%' : '88%',
               background: isVardag
-                ? `linear-gradient(to top, ${bg} 0%, ${bg}E8 12%, ${bg}AA 28%, ${tileLight}50 50%, ${tileLight}18 70%, transparent 100%)`
+                ? `linear-gradient(to top, ${bg} 0%, ${bg}D0 15%, ${bg}80 35%, ${tileLight}30 55%, transparent 100%)`
                 : `linear-gradient(to top, ${bg} 0%, ${bg}F5 15%, ${bg}DD 30%, ${tileLight}70 55%, ${tileLight}26 75%, transparent 100%)`,
               pointerEvents: 'none',
             }}
