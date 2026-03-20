@@ -125,7 +125,7 @@ const ILLUSTRATION_SHADOW: Record<string, string> = {
 /** Title colors — dark text on lighter tiles, light on darker ones */
 const ACCENT_COLORS: Record<string, string> = {
   jag_i_mig: '#FDF6E3',       // Light on deep teal
-  jag_med_andra: '#2C2420',   // Bark on warm amber
+  jag_med_andra: '#FDF6E3',   // Light on warm amber
   jag_i_varlden: '#FDF6E3',   // Light on dusk blue
   sexualitetskort: '#FDF6E3', // Light on bark brown
   vardagskort: '#FDF6E3',     // Light on dark petrol
