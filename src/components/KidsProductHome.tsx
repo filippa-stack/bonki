@@ -547,7 +547,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
         </motion.div>
 
         {/* Flex spacer — pushes grid to bottom for square-grid layouts */}
-        {useSquareGrid && <div style={{ flex: 1 }} />}
+        {useSquareGrid && <div style={{ flex: 1, minHeight: '24px' }} />}
 
         {/* Section header — only for non-sequential, non-grid products */}
         {!isSU && !useSquareGrid && (
