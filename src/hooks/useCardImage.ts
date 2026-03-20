@@ -127,6 +127,30 @@ const CARD_IMAGE_MAP: Record<string, { zip: ZipSource; folder: string; file: str
   'sk-sjukdom':            { zip: 'sk', folder: '', file: 'sjuk.png' },
   'sk-forlora-ett-syskon': { zip: 'sk', folder: '', file: 'förlora syskon.png' },
   'sk-framtid':            { zip: 'sk', folder: '', file: 'framtid.png' },
+
+  // ── Still Us Mock ──
+  'su-mock-0':  { zip: 'default', folder: '', file: '__standalone__' },
+  'su-mock-1':  { zip: 'default', folder: '', file: '__standalone__' },
+  'su-mock-2':  { zip: 'default', folder: '', file: '__standalone__' },
+  'su-mock-3':  { zip: 'default', folder: '', file: '__standalone__' },
+  'su-mock-4':  { zip: 'default', folder: '', file: '__standalone__' },
+  'su-mock-5':  { zip: 'default', folder: '', file: '__standalone__' },
+  'su-mock-6':  { zip: 'default', folder: '', file: '__standalone__' },
+  'su-mock-7':  { zip: 'default', folder: '', file: '__standalone__' },
+  'su-mock-8':  { zip: 'default', folder: '', file: '__standalone__' },
+  'su-mock-9':  { zip: 'default', folder: '', file: '__standalone__' },
+  'su-mock-10': { zip: 'default', folder: '', file: '__standalone__' },
+  'su-mock-11': { zip: 'default', folder: '', file: '__standalone__' },
+  'su-mock-12': { zip: 'default', folder: '', file: '__standalone__' },
+  'su-mock-13': { zip: 'default', folder: '', file: '__standalone__' },
+  'su-mock-14': { zip: 'default', folder: '', file: '__standalone__' },
+  'su-mock-15': { zip: 'default', folder: '', file: '__standalone__' },
+  'su-mock-16': { zip: 'default', folder: '', file: '__standalone__' },
+  'su-mock-17': { zip: 'default', folder: '', file: '__standalone__' },
+  'su-mock-18': { zip: 'default', folder: '', file: '__standalone__' },
+  'su-mock-19': { zip: 'default', folder: '', file: '__standalone__' },
+  'su-mock-20': { zip: 'default', folder: '', file: '__standalone__' },
+  'su-mock-21': { zip: 'default', folder: '', file: '__standalone__' },
 };
 
 /**
