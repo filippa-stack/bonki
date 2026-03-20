@@ -736,12 +736,12 @@ export default function ProductLibrary() {
             }} />
             <p style={{
               fontFamily: "var(--font-body)",
-              fontSize: '12px',
-              fontWeight: 600,
-              letterSpacing: '1.5px',
+              fontSize: '13px',
+              fontWeight: 700,
+              letterSpacing: '2px',
               textTransform: 'uppercase',
               color: '#D4F5C0',
-              marginBottom: '16px',
+              marginBottom: '20px',
             }}>
               Föräldrar
             </p>
