@@ -448,7 +448,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
             lineHeight: 1.15,
             color: accentColor || '#FDF6E3',
             letterSpacing: '-0.01em',
-            textShadow: `0 1px 6px ${bgRgba(0.8)}, 0 0 16px ${bgRgba(0.6)}`,
+            textShadow: `0 2px 8px ${bgRgba(1)}, 0 0 20px ${bgRgba(0.9)}, 0 0 40px ${bgRgba(0.5)}`,
           }}
         >
           {name}
@@ -997,7 +997,7 @@ export default function ProductLibrary() {
             style={{
               display: 'flex',
               flexDirection: 'column',
-              gap: '20px',
+              gap: '28px',
             }}
           >
             {sortedKidsProducts.map((product) => (
