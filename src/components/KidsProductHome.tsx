@@ -447,21 +447,43 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
             >
               {product.name}
             </h1>
-            <p
-              className="font-serif"
-              style={{
-                fontSize: 'clamp(16px, 4.5vw, 20px)',
-                fontWeight: isSU ? 500 : 400,
-                color: isVardag ? product.accentColorMuted : (product.accentColor.startsWith('hsl') ? undefined : DRIFTWOOD),
-                opacity: 0.95,
-                marginTop: '6px',
-                textShadow: isSU
-                  ? `0 2px 24px rgba(0,0,0,1), 0 0 60px ${bg}, 0 0 120px ${bg}`
-                  : `0 2px 20px rgba(0,0,0,0.9), 0 0 50px ${bg}, 0 0 100px ${bg}`,
-              }}
-            >
-              {product.tagline}
-            </p>
+            {isVardag ? (
+              <span
+                className="font-serif"
+                style={{
+                  display: 'inline-block',
+                  fontSize: 'clamp(14px, 4vw, 18px)',
+                  fontWeight: 500,
+                  color: LANTERN_GLOW,
+                  opacity: 0.85,
+                  marginTop: '10px',
+                  padding: '4px 16px',
+                  borderRadius: '20px',
+                  background: `rgba(${hexToRgb(bg)}, 0.65)`,
+                  backdropFilter: 'blur(8px)',
+                  WebkitBackdropFilter: 'blur(8px)',
+                  letterSpacing: '0.02em',
+                }}
+              >
+                {product.tagline}
+              </span>
+            ) : (
+              <p
+                className="font-serif"
+                style={{
+                  fontSize: 'clamp(16px, 4.5vw, 20px)',
+                  fontWeight: isSU ? 500 : 400,
+                  color: product.accentColor.startsWith('hsl') ? undefined : DRIFTWOOD,
+                  opacity: 0.95,
+                  marginTop: '6px',
+                  textShadow: isSU
+                    ? `0 2px 24px rgba(0,0,0,1), 0 0 60px ${bg}, 0 0 120px ${bg}`
+                    : `0 2px 20px rgba(0,0,0,0.9), 0 0 50px ${bg}, 0 0 100px ${bg}`,
+                }}
+              >
+                {product.tagline}
+              </p>
+            )}
 
             {/* Spacer — pushes content below hero face zone */}
             {!useSquareGrid && <div style={{ height: isSU ? 'clamp(12px, 2vh, 24px)' : 'clamp(48px, 12vh, 100px)' }} />}
