@@ -136,6 +136,33 @@ export default function SessionOneLive() {
     })();
   }, [user?.id]);
 
+  // ── Acquire session lock on mount ─────────────────────────
+  useEffect(() => {
+    if (!coupleState || !backendCardId) return;
+    let cancelled = false;
+    (async () => {
+      try {
+        const result = await acquireSessionLock({
+          couple_id: coupleState.couple_id,
+          card_id: backendCardId,
+          device_id: deviceId,
+          user_id: user?.id ?? coupleState.initiator_id,
+        });
+        if (!cancelled && result.status === 'acquired') {
+          setLockAcquired(true);
+        } else if (!cancelled && result.status === 'blocked') {
+          // Another device holds the lock
+          navigate('/?product=still-us');
+        } else if (!cancelled && result.status === 'dissolved') {
+          navigate('/');
+        }
+      } catch {
+        // Silent fail — heartbeat will also fail gracefully
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [coupleState, backendCardId, deviceId, user?.id, navigate]);
+
   // ── Fetch slider data for reveal ──────────────────────────
   useEffect(() => {
     if (!coupleState || !backendCardId) return;
