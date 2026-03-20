@@ -28,7 +28,7 @@ Deno.serve(async (req: Request) => {
   try {
     const body = await req.json();
     const {
-      user_id,
+      user_id: bodyUserId,
       couple_id: bodyCouplId,
       card_id: bodyCardId,
       slider_responses,
@@ -37,6 +37,25 @@ Deno.serve(async (req: Request) => {
     } = body;
 
     const supabase = createServiceClient();
+
+    // ── Resolve authenticated user_id from Authorization header ───────────
+    let user_id = bodyUserId;
+    if (!link_token) {
+      // Authenticated caller: extract user_id from JWT in Authorization header
+      const authHeader = req.headers.get("Authorization");
+      if (authHeader?.startsWith("Bearer ")) {
+        const { createClient } = await import("https://esm.sh/@supabase/supabase-js@2");
+        const anonClient = createClient(
+          Deno.env.get("SUPABASE_URL")!,
+          Deno.env.get("SUPABASE_ANON_KEY")!,
+          { global: { headers: { Authorization: authHeader } } }
+        );
+        const { data: { user } } = await anonClient.auth.getUser();
+        if (user) {
+          user_id = user.id;
+        }
+      }
+    }
 
     // ── Resolve couple_id and card_id ──────────────────────────────────────
     let couple_id = bodyCouplId;
