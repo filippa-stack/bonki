@@ -1015,6 +1015,7 @@ export default function ProductLibrary() {
                 onClick={() => navigate(`/product/${product.slug}`)}
                 badgeText={buildBadgeText(product)}
                 hasActiveSession={activeProductIds.has(product.id)}
+                tileHeight={TILE_HEIGHTS[product.id] ?? '240px'}
                 wide
               />
             ))}
