@@ -101,6 +101,7 @@ const cards: Card[] = CARD_SEQUENCE.map(buildMockCard).filter((c): c is Card => 
 
 export const stillUsMockProduct: ProductManifest = {
   id: 'still_us_mock',
+  heroImage: stillUsHero,
   name: 'Still Us (test)',
   slug: 'still-us-mock',
   tagline: 'Ert samtal — vecka för vecka',
