@@ -16,6 +16,7 @@ import { COLORS, cardIndexFromSlug, cardIdFromSlug } from '@/lib/stillUsTokens';
 import { getSliderSetBySlug } from '@/data/sliderPrompts';
 import { getThresholdFraming, MOOD_OPTIONS, type ThresholdMood } from '@/data/thresholdFramings';
 import { supabase } from '@/integrations/supabase/client';
+import { acquireSessionLock } from '@/lib/stillUsRpc';
 import { enqueueWrite, hasPendingWrites, onSyncStatusChange } from '@/lib/offlineQueue';
 import { getSessionContent, type SessionQ } from '@/data/sessionQuestions';
 import { useAuth } from '@/contexts/AuthContext';
@@ -90,6 +91,7 @@ export default function SessionOneLive() {
   const [step, setStep] = useState<Step>('threshold');
   const [coupleState, setCoupleState] = useState<CoupleStateRow | null>(null);
   const [deviceId] = useState(() => crypto.randomUUID());
+  const [lockAcquired, setLockAcquired] = useState(false);
 
   // Threshold mood state
   const [initiatorMood, setInitiatorMood] = useState<ThresholdMood | null>(null);
@@ -133,6 +135,33 @@ export default function SessionOneLive() {
       if (data) setCoupleState(data as unknown as CoupleStateRow);
     })();
   }, [user?.id]);
+
+  // ── Acquire session lock on mount ─────────────────────────
+  useEffect(() => {
+    if (!coupleState || !backendCardId) return;
+    let cancelled = false;
+    (async () => {
+      try {
+        const result = await acquireSessionLock({
+          couple_id: coupleState.couple_id,
+          card_id: backendCardId,
+          device_id: deviceId,
+          user_id: user?.id ?? coupleState.initiator_id,
+        });
+        if (!cancelled && result.status === 'acquired') {
+          setLockAcquired(true);
+        } else if (!cancelled && result.status === 'blocked') {
+          // Another device holds the lock
+          navigate('/?product=still-us');
+        } else if (!cancelled && result.status === 'dissolved') {
+          navigate('/');
+        }
+      } catch {
+        // Silent fail — heartbeat will also fail gracefully
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [coupleState, backendCardId, deviceId, user?.id, navigate]);
 
   // ── Fetch slider data for reveal ──────────────────────────
   useEffect(() => {
@@ -390,7 +419,7 @@ export default function SessionOneLive() {
         <SessionFocusShell
           couple_id={coupleState?.couple_id}
           card_id={backendCardId ?? undefined}
-          device_id={deviceId}
+          device_id={lockAcquired ? deviceId : undefined}
           onExit={() => navigate('/')}
           ctaSlot={null}
         >
@@ -431,7 +460,7 @@ export default function SessionOneLive() {
 
     if (partnerTier === 'tier_2') {
       return (
-        <SessionFocusShell couple_id={coupleState?.couple_id} card_id={backendCardId ?? undefined} device_id={deviceId} onExit={() => navigate('/')} ctaSlot={null}>
+        <SessionFocusShell couple_id={coupleState?.couple_id} card_id={backendCardId ?? undefined} device_id={lockAcquired ? deviceId : undefined} onExit={() => navigate('/')} ctaSlot={null}>
           <Tier2Threshold
             initiatorName={initiatorName}
             partnerName={partnerName}
@@ -446,7 +475,7 @@ export default function SessionOneLive() {
     }
 
     return (
-      <SessionFocusShell couple_id={coupleState?.couple_id} card_id={backendCardId ?? undefined} device_id={deviceId} onExit={() => navigate('/')} ctaSlot={null}>
+      <SessionFocusShell couple_id={coupleState?.couple_id} card_id={backendCardId ?? undefined} device_id={lockAcquired ? deviceId : undefined} onExit={() => navigate('/')} ctaSlot={null}>
         <FullscreenThreshold
           initiatorName={initiatorName}
           partnerName={partnerName}
@@ -465,7 +494,7 @@ export default function SessionOneLive() {
       <SessionFocusShell
         couple_id={coupleState?.couple_id}
         card_id={backendCardId ?? undefined}
-        device_id={deviceId}
+        device_id={lockAcquired ? deviceId : undefined}
         onExit={() => navigate('/')}
         ctaSlot={
           framing.showExitCta ? (
@@ -645,7 +674,7 @@ export default function SessionOneLive() {
     <SessionFocusShell
       couple_id={coupleState?.couple_id}
       card_id={backendCardId ?? undefined}
-      device_id={deviceId}
+      device_id={lockAcquired ? deviceId : undefined}
       topSlot={stepNavBar}
       onExit={() => navigate('/')}
       ctaSlot={
