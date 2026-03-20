@@ -433,8 +433,8 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
               {product.tagline}
             </p>
 
-            {/* Spacer — pushes content below hero face zone */}
-            <div style={{ height: isSU ? 'clamp(12px, 2vh, 24px)' : 'clamp(48px, 12vh, 100px)' }} />
+            {/* Spacer — pushes content below hero face zone; flex-grows for grid layouts */}
+            <div style={{ height: isSU ? 'clamp(12px, 2vh, 24px)' : useSquareGrid ? undefined : 'clamp(48px, 12vh, 100px)', flex: useSquareGrid ? 1 : undefined }} />
 
             {/* ═══ Resume Pill (conditional) ═══ */}
             {!progress.loading && progress.activeSession && (() => {
