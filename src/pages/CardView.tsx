@@ -2050,7 +2050,7 @@ export default function CardView() {
                 ref={sectionViewRef}
                 section={currentSection}
                 card={card}
-                promptIndex={localPromptIndex}
+                promptIndex={resolvedPromptIndex}
                 coupleSpaceId={space?.id ?? null}
                 sessionId={normalizedSession.sessionId ?? null}
                 cardId={cardId ?? null}
