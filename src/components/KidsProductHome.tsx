@@ -475,6 +475,21 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
               >
                 {product.tagline}
               </p>
+              {isSU && (
+                <p
+                  className="font-serif"
+                  style={{
+                    fontSize: 'clamp(13px, 3.2vw, 15px)',
+                    fontWeight: 400,
+                    color: DRIFTWOOD,
+                    opacity: 0.7,
+                    marginTop: '4px',
+                    letterSpacing: '0.01em',
+                  }}
+                >
+                  22 samtalsövningar inom 5 områden
+                </p>
+              )}
             ) : (
               <span
                 className="font-serif"
