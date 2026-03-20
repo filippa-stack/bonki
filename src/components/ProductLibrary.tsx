@@ -561,40 +561,7 @@ export default function ProductLibrary() {
           background: 'radial-gradient(ellipse 55% 60% at 50% 35%, hsla(38, 78%, 48%, 0.14) 0%, hsla(38, 78%, 48%, 0.06) 45%, transparent 100%)',
           zIndex: 0,
         }} />
-        {/* Girl — top left, smaller and softer for hierarchy */}
-        <motion.img
-          src={creatureGirl}
-          alt=""
-          draggable={false}
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 0.42, y: 0 }}
-          transition={{ delay: 0.4, duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
-          style={{
-            position: 'absolute',
-            top: '10px',
-            left: '-20px',
-            width: '150px',
-            height: 'auto',
-            filter: 'brightness(1.1) saturate(0.75)',
-          }}
-        />
-        {/* Lion — top right, dominant hero focal point */}
-        <motion.img
-          src={creatureLionSolo}
-          alt=""
-          draggable={false}
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 0.6, y: 0 }}
-          transition={{ delay: 0.5, duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
-          style={{
-            position: 'absolute',
-            top: '-5px',
-            right: '-25px',
-            width: '290px',
-            height: 'auto',
-            filter: 'brightness(1.12) saturate(0.9)',
-          }}
-        />
+        {/* Creature illustrations removed — clean logo zone */}
         {/* Hero gradient scrim — ensures title legibility over creatures */}
         <div style={{
           position: 'absolute',
