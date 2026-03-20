@@ -103,6 +103,12 @@ export default function SliderCheckIn({
       checkin_reflection: reflection || null,
     });
 
+    if (result.status === 'error') {
+      console.error('SliderCheckIn save error:', result.message);
+      setSaving(false);
+      return;
+    }
+
     if (controller.signal.aborted) return;
 
     // Show confirmation checkmark
