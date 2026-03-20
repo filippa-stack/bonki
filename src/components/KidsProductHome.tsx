@@ -240,9 +240,9 @@ function CategoryTile({
               objectFit: 'cover',
               objectPosition: style.objectPosition,
               opacity: style.opacity,
-              ...(squareTile ? {
-                filter: `saturate(1.35) brightness(1.2) drop-shadow(0 6px 16px rgba(0,0,0,0.5))`,
-              } : {}),
+              filter: squareTile
+                ? `saturate(1.35) brightness(1.2) drop-shadow(0 6px 16px rgba(0,0,0,0.5))`
+                : `saturate(1.2) brightness(1.1) drop-shadow(0 4px 12px rgba(0,0,0,0.4))`,
             }}
           />
         </div>
