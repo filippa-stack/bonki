@@ -708,9 +708,19 @@ export default function ProductLibrary() {
         {/* ── Still Us cross-discovery ── */}
         <div className="px-5" style={{ marginTop: '0px' }}>
           <div style={{
-            borderTop: '1px solid hsla(100, 30%, 60%, 0.10)',
+            borderTop: 'none',
             paddingTop: '20px',
+            position: 'relative',
           }}>
+            {/* Mushroom-tinted section divider */}
+            <div style={{
+              position: 'absolute',
+              top: 0,
+              left: '10%',
+              right: '10%',
+              height: '1px',
+              background: 'linear-gradient(90deg, transparent 0%, rgba(110, 201, 184, 0.15) 30%, rgba(110, 201, 184, 0.20) 50%, rgba(110, 201, 184, 0.15) 70%, transparent 100%)',
+            }} />
             <p style={{
               fontFamily: "var(--font-body)",
               fontSize: '12px',
