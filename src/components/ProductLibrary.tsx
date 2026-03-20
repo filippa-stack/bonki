@@ -757,7 +757,7 @@ export default function ProductLibrary() {
                 borderRadius: '22px',
                 backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.08) 100%)',
                 backgroundColor: '#263041',
-                height: '240px',
+                height: '260px',
                 display: 'flex',
                 flexDirection: 'column',
                 position: 'relative',
@@ -973,12 +973,12 @@ export default function ProductLibrary() {
             }} />
             <p style={{
               fontFamily: "var(--font-body)",
-              fontSize: '12px',
-              fontWeight: 600,
-              letterSpacing: '1.5px',
+              fontSize: '13px',
+              fontWeight: 700,
+              letterSpacing: '2px',
               textTransform: 'uppercase',
               color: '#D4F5C0',
-              marginBottom: '16px',
+              marginBottom: '20px',
             }}>
               Barn & Familj
             </p>
