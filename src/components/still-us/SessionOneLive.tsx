@@ -91,6 +91,7 @@ export default function SessionOneLive() {
   const [step, setStep] = useState<Step>('threshold');
   const [coupleState, setCoupleState] = useState<CoupleStateRow | null>(null);
   const [deviceId] = useState(() => crypto.randomUUID());
+  const [lockAcquired, setLockAcquired] = useState(false);
 
   // Threshold mood state
   const [initiatorMood, setInitiatorMood] = useState<ThresholdMood | null>(null);
