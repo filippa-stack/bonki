@@ -335,7 +335,7 @@ export default function PromptItem({ prompt, index, sectionType, preamble, ancho
                   </motion.div>
                 )}
 
-                {prompt.text.split('\n').filter(p => p.trim() !== '').map((para, i) => (
+                {prompt.text.split('\n').filter(p => p.trim() !== '').map((para, i, paragraphs) => (
                   <p
                     key={i}
                     className="font-serif"
@@ -353,6 +353,7 @@ export default function PromptItem({ prompt, index, sectionType, preamble, ancho
                       position: 'relative',
                       zIndex: 1,
                       width: inlineScenarioPreamble ? '100%' : undefined,
+                      marginBottom: i < paragraphs.length - 1 ? '14px' : 0,
                     }}
                   >
                     {para}
