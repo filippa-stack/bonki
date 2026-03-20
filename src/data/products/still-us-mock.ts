@@ -16,6 +16,7 @@ import type { ProductManifest } from '@/types/product';
 import type { Category, Card, Section } from '@/types';
 import { cards as stillUsCards } from '@/data/content';
 import { CARD_SEQUENCE, LAYERS } from '@/data/stillUsSequence';
+import stillUsHero from '@/assets/illustration-still-us-home.png';
 
 // ── Categories (one per layer) ──────────────────────────────
 
@@ -100,6 +101,7 @@ const cards: Card[] = CARD_SEQUENCE.map(buildMockCard).filter((c): c is Card => 
 
 export const stillUsMockProduct: ProductManifest = {
   id: 'still_us_mock',
+  heroImage: stillUsHero,
   name: 'Still Us (test)',
   slug: 'still-us-mock',
   tagline: 'Ert samtal — vecka för vecka',
