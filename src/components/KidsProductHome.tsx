@@ -488,8 +488,8 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
           </motion.div>
         </motion.div>
 
-        {/* Section header — only for non-sequential products */}
-        {!isSU && (
+        {/* Section header — only for non-sequential, non-grid products */}
+        {!isSU && !useSquareGrid && (
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
