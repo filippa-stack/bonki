@@ -895,65 +895,6 @@ export default function ProductLibrary() {
           </div>
         </div>
 
-        {/* ── Still Us Mock (test tile) ── */}
-        <div className="px-5" style={{ marginTop: '16px' }}>
-          <motion.div
-            variants={tileVariants}
-            initial="hidden"
-            animate="visible"
-            whileHover={{ scale: 1.015, y: -2 }}
-            whileTap={{ scale: 0.97, y: 2 }}
-            onClick={() => navigate('/product/still-us-mock')}
-            className="cursor-pointer"
-            style={{
-              borderRadius: '22px',
-              backgroundColor: '#2E2233',
-              height: '80px',
-              display: 'flex',
-              alignItems: 'center',
-              padding: '0 20px',
-              position: 'relative',
-              overflow: 'hidden',
-              border: '1px dashed hsla(100, 50%, 75%, 0.35)',
-              boxShadow: '0 4px 16px rgba(23, 17, 26, 0.3)',
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <span style={{
-                fontFamily: "var(--font-body)",
-                fontSize: '10px',
-                fontWeight: 600,
-                letterSpacing: '0.08em',
-                textTransform: 'uppercase',
-                color: '#D4F5C0',
-                background: 'hsla(100, 50%, 75%, 0.10)',
-                borderRadius: '8px',
-                padding: '3px 8px',
-              }}>
-                TEST
-              </span>
-              <div>
-                <h3 style={{
-                  fontFamily: "var(--font-display)",
-                  fontSize: '16px',
-                  fontWeight: 600,
-                  color: '#FDF6E3',
-                  lineHeight: 1.2,
-                }}>
-                  Still Us — barnformat
-                </h3>
-                <p style={{
-                  fontFamily: "var(--font-body)",
-                  fontSize: '12px',
-                  color: 'hsla(100, 30%, 75%, 0.6)',
-                  marginTop: '2px',
-                }}>
-                  Samma innehåll, kids-arkitektur
-                </p>
-              </div>
-            </div>
-          </motion.div>
-        </div>
 
         {/* ── Barn & Familj section anchor ── */}
         <div className="px-5" style={{ marginTop: '0px' }}>
