@@ -50,6 +50,7 @@ import LockedReflectionDisplay from '@/components/LockedReflectionDisplay';
 
 import GorTillsammansOverlay, { hasSeenGorTillsammans } from '@/components/GorTillsammansOverlay';
 import IllustrationPeek from '@/components/IllustrationPeek';
+import { getGorExercise } from '@/data/gorExercises';
 import { useVerdigrisTheme } from '@/components/VerdigrisAtmosphere';
 import { CIRCADIAN_COLORS, CIRCADIAN_COLORS_LIGHT } from '@/components/CircadianMenu';
 import { useDevState } from '@/contexts/DevStateContext';
@@ -248,6 +249,7 @@ export default function CardView() {
   const dynamicSteps = useMemo(() => buildDynamicSteps(effectiveSteps as string[], isStillUs), [effectiveSteps, isStillUs]);
   const [feedbackDismissed, setFeedbackDismissed] = useState(false);
   const [showFeedback, setShowFeedback] = useState(false);
+  const [gorOpen, setGorOpen] = useState(false);
 
   useEffect(() => {
     if (!showCompletion || feedbackDismissed || !isStillUs) return;
@@ -903,6 +905,10 @@ export default function CardView() {
     const categoryDest = postCompletionNav.homeDest;
     const productHomeDest = product ? `/product/${product.slug}` : '/';
 
+    // Resolve exercise for su-mock cards (su-mock-N → cardIndex N)
+    const suMockMatch = cardId?.match(/^su-mock-(\d+)$/);
+    const gorExercise = suMockMatch ? getGorExercise(parseInt(suMockMatch[1], 10)) : null;
+
     return (
       <motion.div
         style={{
@@ -1039,6 +1045,68 @@ export default function CardView() {
               productId={product?.id}
             />
           </motion.div>
+
+          {/* Gör exercise — collapsible block */}
+          {gorExercise && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.25, duration: 0.3 }}
+              style={{ width: '100%', marginBottom: '24px' }}
+            >
+              <button
+                onClick={() => setGorOpen(!gorOpen)}
+                style={{
+                  width: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  padding: '14px 16px',
+                  backgroundColor: PARCHMENT,
+                  borderRadius: gorOpen ? '12px 12px 0 0' : '12px',
+                  border: 'none',
+                  cursor: 'pointer',
+                  transition: 'border-radius 0.2s ease',
+                }}
+              >
+                <span style={{
+                  fontFamily: "'DM Serif Display', serif",
+                  fontSize: '15px',
+                  fontWeight: 600,
+                  color: BARK,
+                }}>
+                  Gör: {gorExercise.title}
+                </span>
+                <span style={{
+                  color: DRIFTWOOD,
+                  fontSize: '18px',
+                  transform: gorOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                  transition: 'transform 0.2s ease',
+                  lineHeight: 1,
+                }}>
+                  ▾
+                </span>
+              </button>
+              {gorOpen && (
+                <div style={{
+                  padding: '16px',
+                  backgroundColor: PARCHMENT,
+                  borderRadius: '0 0 12px 12px',
+                  borderTop: `1px solid hsla(38, 30%, 70%, 0.4)`,
+                }}>
+                  <p style={{
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: '14px',
+                    color: DRIFTWOOD,
+                    lineHeight: 1.6,
+                    whiteSpace: 'pre-line',
+                  }}>
+                    {gorExercise.instructionText}
+                  </p>
+                </div>
+              )}
+            </motion.div>
+          )}
 
           {/* 4. Primary CTA */}
           <motion.div
