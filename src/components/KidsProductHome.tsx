@@ -433,8 +433,8 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
               {product.tagline}
             </p>
 
-            {/* Spacer — pushes content below hero face zone; flex-grows for grid layouts */}
-            <div style={{ height: isSU ? 'clamp(12px, 2vh, 24px)' : useSquareGrid ? undefined : 'clamp(48px, 12vh, 100px)', flex: useSquareGrid ? 1 : undefined }} />
+            {/* Spacer — pushes content below hero face zone */}
+            {!useSquareGrid && <div style={{ height: isSU ? 'clamp(12px, 2vh, 24px)' : 'clamp(48px, 12vh, 100px)' }} />}
 
             {/* ═══ Resume Pill (conditional) ═══ */}
             {!progress.loading && progress.activeSession && (() => {
@@ -487,6 +487,9 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
             })()}
           </motion.div>
         </motion.div>
+
+        {/* Flex spacer — pushes grid to bottom for square-grid layouts */}
+        {useSquareGrid && <div style={{ flex: 1 }} />}
 
         {/* Section header — only for non-sequential, non-grid products */}
         {!isSU && !useSquareGrid && (
