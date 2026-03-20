@@ -46,10 +46,10 @@ const TAGLINES: Record<string, string> = {
 const TILE_COLORS: Record<string, string> = {
   jag_i_mig: '#3A6260',       // Deep teal — from the character's clothing
   jag_med_andra: '#AC7A44',   // Warm amber — relational/togetherness theme
-  jag_i_varlden: '#2E3E5E',   // Dusk Blue — saturated, separates from Still Us
+  jag_i_varlden: '#2A4A6B',   // Richer dusk blue — more saturated, separates from Still Us
   sexualitetskort: '#3E2F24',  // Bark Brown — dark, protected, mature
-  vardagskort: '#3C4A30',      // Warm olive — earthy everyday tone
-  syskonkort: '#8E5234',       // Sienna — warm wool blanket, from illustration palette
+  vardagskort: '#3D5030',      // Deeper forest green — richer than previous olive
+  syskonkort: '#7A4228',       // Deeper sienna — more saturation, less muddy
 };
 
 /** Luminance helper — determines if a tile needs light or dark treatment.
@@ -103,23 +103,23 @@ const ILLUSTRATION_OPACITY: Record<string, number> = {
 /** Per-tile radial glow color behind illustration — creates 3D depth
  *  Calibrated for mid-tone tile palette (Mar 2026): complementary hue glow */
 const ILLUSTRATION_GLOW: Record<string, string> = {
-  jag_i_mig: 'rgba(240, 190, 80, 0.18)',
-  jag_med_andra: 'rgba(160, 130, 220, 0.15)',
-  jag_i_varlden: 'rgba(140, 200, 230, 0.18)',
-  sexualitetskort: 'rgba(220, 150, 130, 0.18)',
-  vardagskort: 'rgba(200, 180, 100, 0.18)',
-  syskonkort: 'rgba(80, 200, 220, 0.18)',
+  jag_i_mig: 'rgba(240, 190, 80, 0.12)',
+  jag_med_andra: 'rgba(160, 130, 220, 0.10)',
+  jag_i_varlden: 'rgba(140, 200, 230, 0.12)',
+  sexualitetskort: 'rgba(220, 150, 130, 0.12)',
+  vardagskort: 'rgba(200, 180, 100, 0.12)',
+  syskonkort: 'rgba(80, 200, 220, 0.12)',
 };
 
 /** Per-tile drop-shadow + saturation boost — makes character pop from bg
  *  Shadow colors derived from each tile's own bg for natural grounding */
 const ILLUSTRATION_SHADOW: Record<string, string> = {
-  jag_i_mig: 'saturate(1.3) brightness(1.2) drop-shadow(0 6px 20px rgba(30, 50, 48, 0.6)) drop-shadow(0 14px 40px rgba(58, 98, 96, 0.3)) drop-shadow(0 2px 4px rgba(0,0,0,0.25))',
-  jag_med_andra: 'saturate(1.25) contrast(1.1) drop-shadow(0 6px 20px rgba(86, 61, 34, 0.6)) drop-shadow(0 14px 40px rgba(172, 122, 68, 0.3)) drop-shadow(0 2px 4px rgba(0,0,0,0.2))',
-  jag_i_varlden: 'saturate(1.35) brightness(1.25) drop-shadow(0 6px 20px rgba(23, 31, 47, 0.7)) drop-shadow(0 14px 40px rgba(46, 62, 94, 0.35)) drop-shadow(0 2px 4px rgba(0,0,0,0.3))',
-  sexualitetskort: 'saturate(1.35) brightness(1.3) drop-shadow(0 6px 20px rgba(31, 24, 18, 0.7)) drop-shadow(0 14px 40px rgba(62, 47, 36, 0.35)) drop-shadow(0 2px 4px rgba(0,0,0,0.3))',
-  vardagskort: 'saturate(1.35) brightness(1.25) drop-shadow(0 8px 24px rgba(30, 37, 24, 0.7)) drop-shadow(0 16px 48px rgba(60, 74, 48, 0.35)) drop-shadow(0 2px 4px rgba(0,0,0,0.35))',
-  syskonkort: 'saturate(1.3) brightness(1.2) drop-shadow(0 6px 20px rgba(71, 41, 26, 0.6)) drop-shadow(0 14px 40px rgba(142, 82, 52, 0.3)) drop-shadow(0 2px 4px rgba(0,0,0,0.25))',
+  jag_i_mig: 'saturate(1.3) brightness(1.15) drop-shadow(0 6px 20px rgba(30, 50, 48, 0.5)) drop-shadow(0 2px 4px rgba(0,0,0,0.2))',
+  jag_med_andra: 'saturate(1.2) contrast(1.08) drop-shadow(0 6px 20px rgba(86, 61, 34, 0.5)) drop-shadow(0 2px 4px rgba(0,0,0,0.15))',
+  jag_i_varlden: 'saturate(1.3) brightness(1.2) drop-shadow(0 6px 20px rgba(21, 37, 54, 0.6)) drop-shadow(0 2px 4px rgba(0,0,0,0.25))',
+  sexualitetskort: 'saturate(1.3) brightness(1.25) drop-shadow(0 6px 20px rgba(31, 24, 18, 0.6)) drop-shadow(0 2px 4px rgba(0,0,0,0.25))',
+  vardagskort: 'saturate(1.3) brightness(1.2) drop-shadow(0 8px 24px rgba(30, 40, 24, 0.6)) drop-shadow(0 2px 4px rgba(0,0,0,0.25))',
+  syskonkort: 'saturate(1.3) brightness(1.15) drop-shadow(0 6px 20px rgba(61, 33, 20, 0.5)) drop-shadow(0 2px 4px rgba(0,0,0,0.2))',
 };
 
 /** Title colors — dark text on lighter tiles, light on darker ones */
