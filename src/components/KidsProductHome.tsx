@@ -400,7 +400,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
               width: '100%',
               height: '100%',
               objectFit: 'cover',
-              objectPosition: '50% 12%',
+              objectPosition: '50% 5%',
               filter: 'saturate(1.2) brightness(1.1)',
             }}
           />
