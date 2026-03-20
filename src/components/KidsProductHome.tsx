@@ -104,6 +104,7 @@ function CategoryTile({
   isLocked = false,
   showLayerNumber = false,
   compactHeight = false,
+  squareTile = false,
 }: {
   cat: { id: string; title: string; subtitle?: string };
   product: ProductManifest;
@@ -116,6 +117,7 @@ function CategoryTile({
   isLocked?: boolean;
   showLayerNumber?: boolean;
   compactHeight?: boolean;
+  squareTile?: boolean;
 }) {
   const navigate = useNavigate();
   const isFirst = index === 0;
