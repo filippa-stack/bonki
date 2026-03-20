@@ -265,9 +265,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
         display: 'flex',
         position: 'relative',
         overflow: 'hidden',
-        backgroundImage: light
-          ? 'linear-gradient(135deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.12) 100%)'
-          : 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.08) 100%)',
+        backgroundImage: 'none',
         border: light
           ? '1.5px solid rgba(0, 0, 0, 0.10)'
           : '1.5px solid rgba(255, 255, 255, 0.30)',
