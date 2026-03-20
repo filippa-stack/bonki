@@ -243,7 +243,6 @@ function CategoryTile({
               ...(squareTile ? {
                 filter: `saturate(1.35) brightness(1.2) drop-shadow(0 6px 16px rgba(0,0,0,0.5))`,
               } : {}),
-              } : {}),
             }}
           />
         </div>
