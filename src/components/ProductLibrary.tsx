@@ -535,7 +535,7 @@ export default function ProductLibrary() {
 
   const isDark = true; // Both tabs now use Midnight Ink
 
-  const libraryBg = '#1A1A2E';
+  const libraryBg = '#0B1026';
 
   return (
     <div
