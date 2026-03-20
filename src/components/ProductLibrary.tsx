@@ -103,12 +103,12 @@ const ILLUSTRATION_OPACITY: Record<string, number> = {
 /** Per-tile radial glow color behind illustration — creates 3D depth
  *  Calibrated for mid-tone tile palette (Mar 2026): complementary hue glow */
 const ILLUSTRATION_GLOW: Record<string, string> = {
-  jag_i_mig: 'rgba(240, 190, 80, 0.50)',           // Warm gold on deep teal — classic complementary
-  jag_med_andra: 'rgba(160, 130, 220, 0.45)',      // Cool lavender on warm amber — subtle contrast
-  jag_i_varlden: 'rgba(140, 200, 230, 0.50)',       // Bright cyan on dusk blue — complementary pop
-  sexualitetskort: 'rgba(220, 150, 130, 0.55)',    // Warm coral on bark brown — glows against dark
-  vardagskort: 'rgba(200, 180, 100, 0.55)',         // Warm gold on olive — natural complement
-  syskonkort: 'rgba(80, 200, 220, 0.50)',           // Cool aqua on warm sienna — temperature contrast
+  jag_i_mig: 'rgba(240, 190, 80, 0.18)',
+  jag_med_andra: 'rgba(160, 130, 220, 0.15)',
+  jag_i_varlden: 'rgba(140, 200, 230, 0.18)',
+  sexualitetskort: 'rgba(220, 150, 130, 0.18)',
+  vardagskort: 'rgba(200, 180, 100, 0.18)',
+  syskonkort: 'rgba(80, 200, 220, 0.18)',
 };
 
 /** Per-tile drop-shadow + saturation boost — makes character pop from bg
