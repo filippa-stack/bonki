@@ -1,6 +1,7 @@
 /**
  * LibraryResumeCard — Paused-session resume card for the product library screen.
- * Shows the most recent paused session, filtered by the active tab (barn/par).
+ * Shows the most recent paused session. When `global` is true it shows any product
+ * (no tab filter) and uses the product's tile color as background.
  */
 
 import { useState, useEffect } from 'react';
@@ -12,13 +13,25 @@ import { KIDS_PRODUCT_IDS } from '@/hooks/useKidsProductProgress';
 import { buildDynamicSteps } from '@/components/StepProgressIndicator';
 import { useDevState } from '@/contexts/DevStateContext';
 
-const DEEP_DUSK = '#2A2D3A';
 const LANTERN_GLOW = '#FDF6E3';
 const DRIFTWOOD = '#6B5E52';
 const DEEP_SAFFRON = '#D4A03A';
 const SAFFRON_FLAME = '#E9B44C';
+const DEEP_DUSK = '#2A2D3A';
+
+/** Product-specific tile colors — must match ProductLibrary TILE_COLORS */
+const PRODUCT_TILE_COLORS: Record<string, string> = {
+  still_us: '#263041',
+  jag_i_mig: '#3A6260',
+  jag_med_andra: '#AC7A44',
+  jag_i_varlden: '#344452',
+  sexualitetskort: '#A8766C',
+  vardagskort: '#3C4A30',
+  syskonkort: '#8E5234',
+};
 
 interface ResumeData {
+  productId: string;
   productName: string;
   cardTitle: string;
   cardId: string;
@@ -27,26 +40,28 @@ interface ResumeData {
 }
 
 interface LibraryResumeCardProps {
-  activeTab: 'barn' | 'par';
+  activeTab?: 'barn' | 'par';
+  /** When true, shows resume for any product (no tab filter) with product-colored bg */
+  global?: boolean;
   forceMock?: boolean;
 }
 
-export default function LibraryResumeCard({ activeTab, forceMock }: LibraryResumeCardProps) {
+export default function LibraryResumeCard({ activeTab, global, forceMock }: LibraryResumeCardProps) {
   const navigate = useNavigate();
   const { space } = useCoupleSpaceContext();
   const [resume, setResume] = useState<ResumeData | null>(null);
   const devState = useDevState();
 
-  // Dev mock: show a fake resume card when devState is active or forceMock is true
+  // Dev mock
   const showMock = forceMock || devState === 'library' || devState === 'pairedActive';
   const devMock: ResumeData | null = showMock
-    ? activeTab === 'barn'
-      ? { productName: 'Jag med Andra', cardTitle: 'Att vara duktig', cardId: 'jma-duktig', stepLabel: 'Pausad vid FRÅGA 2 AV 5', accentColor: SAFFRON_FLAME }
-      : { productName: 'Still Us', cardTitle: 'Att lyssna på riktigt', cardId: 'su-kommunikation-1', stepLabel: 'Pausad vid VÄND · Fråga 1 av 3', accentColor: DEEP_SAFFRON }
+    ? (global || activeTab === 'barn')
+      ? { productId: 'jag_med_andra', productName: 'Jag med Andra', cardTitle: 'Att vara duktig', cardId: 'jma-duktig', stepLabel: 'Pausad vid FRÅGA 2 AV 5', accentColor: SAFFRON_FLAME }
+      : { productId: 'still_us', productName: 'Still Us', cardTitle: 'Att lyssna på riktigt', cardId: 'su-kommunikation-1', stepLabel: 'Pausad vid VÄND · Fråga 1 av 3', accentColor: DEEP_SAFFRON }
     : null;
 
   useEffect(() => {
-    if (devMock) return; // skip fetch when dev mock active
+    if (devMock) return;
     if (!space?.id) {
       setResume(null);
       return;
@@ -55,7 +70,6 @@ export default function LibraryResumeCard({ activeTab, forceMock }: LibraryResum
     let cancelled = false;
 
     (async () => {
-      // Fetch all active sessions, most recent first
       const { data } = await supabase
         .from('couple_sessions')
         .select('id, card_id, category_id, product_id, last_activity_at')
@@ -68,11 +82,14 @@ export default function LibraryResumeCard({ activeTab, forceMock }: LibraryResum
         return;
       }
 
-      // Filter by active tab
-      const isKids = (pid: string) => KIDS_PRODUCT_IDS.includes(pid);
-      const filtered = data.filter(s =>
-        activeTab === 'barn' ? isKids(s.product_id) : s.product_id === 'still_us'
-      );
+      // Filter by tab unless global
+      let filtered = data;
+      if (!global && activeTab) {
+        const isKids = (pid: string) => KIDS_PRODUCT_IDS.includes(pid);
+        filtered = data.filter(s =>
+          activeTab === 'barn' ? isKids(s.product_id) : s.product_id === 'still_us'
+        );
+      }
 
       if (filtered.length === 0) {
         if (!cancelled) setResume(null);
@@ -95,7 +112,6 @@ export default function LibraryResumeCard({ activeTab, forceMock }: LibraryResum
       // Determine step label
       let stepLabel = '';
       if (session.product_id === 'still_us') {
-        // Fetch completions to determine current step
         const { data: completions } = await supabase
           .from('couple_session_completions')
           .select('step_index')
@@ -105,7 +121,6 @@ export default function LibraryResumeCard({ activeTab, forceMock }: LibraryResum
           const completedSteps = new Set((completions || []).map(c => c.step_index));
           const effectiveSteps = card.sections?.map((s: { type: string }) => s.type) ?? [];
           const dynSteps = buildDynamicSteps(effectiveSteps, true);
-          // Find first incomplete step
           let currentIdx = 0;
           for (let i = 0; i < dynSteps.length; i++) {
             if (!completedSteps.has(i)) { currentIdx = i; break; }
@@ -120,7 +135,6 @@ export default function LibraryResumeCard({ activeTab, forceMock }: LibraryResum
           }
         }
       } else {
-        // Kids: fetch step completions
         const { data: completions } = await supabase
           .from('couple_session_completions')
           .select('step_index')
@@ -139,6 +153,7 @@ export default function LibraryResumeCard({ activeTab, forceMock }: LibraryResum
 
       if (!cancelled) {
         setResume({
+          productId: session.product_id,
           productName: product.name,
           cardTitle: card.title,
           cardId: session.card_id,
@@ -149,23 +164,29 @@ export default function LibraryResumeCard({ activeTab, forceMock }: LibraryResum
     })();
 
     return () => { cancelled = true; };
-  }, [space?.id, activeTab]);
+  }, [space?.id, activeTab, global]);
 
   const display = devMock || resume;
   if (!display) return null;
+
+  const useProductBg = !!global;
+  const tileBg = useProductBg
+    ? (PRODUCT_TILE_COLORS[display.productId] ?? DEEP_DUSK)
+    : DEEP_DUSK;
 
   return (
     <button
       onClick={() => navigate(`/card/${display.cardId}`, { state: { resumed: true } })}
       style={{
-        width: 'calc(100% - 32px)',
-        margin: '16px 16px 0',
+        width: '100%',
         padding: '16px',
-        background: DEEP_DUSK,
-        borderLeft: `3px solid ${display.accentColor}`,
-        borderTop: 'none',
-        borderRight: 'none',
-        borderBottom: 'none',
+        background: tileBg,
+        border: useProductBg
+          ? '1.5px solid rgba(255, 255, 255, 0.20)'
+          : 'none',
+        borderLeft: useProductBg
+          ? '1.5px solid rgba(255, 255, 255, 0.20)'
+          : `3px solid ${display.accentColor}`,
         borderRadius: '16px',
         cursor: 'pointer',
         textAlign: 'left',

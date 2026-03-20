@@ -656,9 +656,9 @@ export default function ProductLibrary() {
 
         
 
-        {/* Resume banner — returning user hook */}
-        <div className="px-5">
-          <LibraryResumeBanner />
+        {/* Resume card — product-colored, above Föräldrar */}
+        <div className="px-5" style={{ marginBottom: '8px' }}>
+          <LibraryResumeCard global />
         </div>
 
         <div>
@@ -912,7 +912,7 @@ export default function ProductLibrary() {
 
         <div className="px-5" style={{ scrollMarginTop: '8px' }}>
           {/* Free-trial mention removed — now shown per-tile */}
-          <LibraryResumeCard activeTab="barn" />
+          {/* Resume card moved above Föräldrar */}
           <div style={{ height: '0px' }} />
           <motion.div
             variants={containerVariants}
