@@ -611,9 +611,8 @@ export default function ProductLibrary() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.15, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             style={{
-              fontFamily: "var(--font-display)",
-              fontVariationSettings: "'opsz' 36",
-              fontSize: '44px',
+              fontFamily: "'Bebas Neue', sans-serif",
+              fontSize: '52px',
               fontWeight: 400,
               color: '#D4F5C0',
               lineHeight: 1.1,

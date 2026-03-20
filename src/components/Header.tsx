@@ -186,9 +186,9 @@ export default function Header({
                 <span
                   className="cursor-pointer"
                   style={{
-                    fontFamily: 'var(--font-sans)',
-                    fontSize: '13px',
-                    fontWeight: 500,
+                    fontFamily: "'Bebas Neue', sans-serif",
+                    fontSize: '15px',
+                    fontWeight: 400,
                     color: '#D4F5C0',
                     opacity: 0.85,
                     letterSpacing: '0.04em',
