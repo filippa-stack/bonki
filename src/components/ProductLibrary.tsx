@@ -893,7 +893,7 @@ export default function ProductLibrary() {
         </div>
 
         {/* ── Barn & Familj section anchor ── */}
-        <div className="px-5" style={{ marginTop: '36px' }}>
+        <div className="px-5" style={{ marginTop: '0px' }}>
           <div style={{
             borderTop: '1px solid hsla(100, 30%, 60%, 0.10)',
             paddingTop: '20px',
