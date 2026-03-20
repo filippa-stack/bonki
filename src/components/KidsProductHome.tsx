@@ -316,6 +316,24 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
         }}
       />
 
+      {/* ── Ghost glow — product-tinted atmospheric warmth behind title ── */}
+      {isVardag && (
+        <div
+          aria-hidden="true"
+          style={{
+            position: 'absolute',
+            top: '10vh',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            width: '120vw',
+            height: '300px',
+            background: 'radial-gradient(ellipse 55% 60% at 50% 40%, hsla(92, 40%, 60%, 0.14) 0%, hsla(92, 40%, 60%, 0.05) 50%, transparent 100%)',
+            pointerEvents: 'none',
+            zIndex: 0,
+          }}
+        />
+      )}
+
       {/* ── Hero illustration — large, atmospheric, bleeds off top (skip for Still Us) ── */}
       {product.heroImage && !isSU && (
         <motion.div
