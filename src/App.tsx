@@ -87,7 +87,9 @@ function ProtectedRoutes() {
   }
 
   if (!user && !isDemoMode()) {
-    return <Navigate to="/login" replace />;
+    // Preserve query params (e.g. ?demo=1) when redirecting to login
+    const loginPath = `/login${location.search}`;
+    return <Navigate to={loginPath} replace />;
   }
 
   return (
