@@ -855,7 +855,7 @@ export default function ProductLibrary() {
                   lineHeight: 1.4,
                   textShadow: '0 0 10px rgba(46, 34, 51, 0.8)',
                 }}>
-                  22 veckor för er som vill stanna kvar
+                  22 samtalsövningar för er som vill stanna kvar
                 </p>
                 {/* Trust signal badges */}
                 <div style={{
@@ -865,18 +865,6 @@ export default function ProductLibrary() {
                   marginTop: '8px',
                   flexWrap: 'wrap',
                 }}>
-                  <span style={{
-                    fontFamily: "var(--font-body)",
-                    fontSize: '10px',
-                    fontWeight: 500,
-                    letterSpacing: '0.04em',
-                    color: 'hsla(100, 35%, 85%, 0.6)',
-                    background: 'hsla(100, 20%, 50%, 0.08)',
-                    borderRadius: '12px',
-                    padding: '3px 10px',
-                  }}>
-                    5 min om dagen
-                  </span>
                   <span style={{
                     fontFamily: "var(--font-body)",
                     fontSize: '10px',
