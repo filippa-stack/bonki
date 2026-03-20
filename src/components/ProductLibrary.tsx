@@ -342,16 +342,18 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
         </div>
       )}
 
-      {/* Horizontal gradient scrim — subtle text anchor, not a blanket */}
+      {/* Localized text backdrop — protects legibility without washing the tile */}
       <div
         aria-hidden="true"
         style={{
           position: 'absolute',
-          top: 0, left: 0, bottom: 0,
-          width: '50%',
+          left: 0,
+          bottom: 0,
+          width: '46%',
+          height: '72%',
           zIndex: 1,
           pointerEvents: 'none',
-          background: `linear-gradient(to right, ${bgRgba(0.85)} 0%, ${bgRgba(0.5)} 40%, transparent 100%)`,
+          background: `linear-gradient(135deg, ${bgRgba(0.44)} 0%, ${bgRgba(0.22)} 42%, transparent 100%)`,
         }}
       />
 
