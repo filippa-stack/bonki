@@ -36,7 +36,7 @@ export default function SharePage() {
   }, [user?.id]);
 
   const shareLink = partnerLinkToken
-    ? `${window.location.origin}/check-in/?token=${partnerLinkToken}`
+    ? `${window.location.origin}/check-in/index.html?token=${partnerLinkToken}`
     : '';
 
   return (
