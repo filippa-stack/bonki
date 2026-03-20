@@ -19,6 +19,13 @@ const DEEP_SAFFRON = '#D4A03A';
 const SAFFRON_FLAME = '#E9B44C';
 const DEEP_DUSK = '#2A2D3A';
 
+function hexToRgba(hex: string, alpha: number): string {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
+
 /** Product-specific tile colors — must match ProductLibrary TILE_COLORS */
 const PRODUCT_TILE_COLORS: Record<string, string> = {
   still_us: '#263041',
