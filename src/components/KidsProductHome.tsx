@@ -134,7 +134,7 @@ function CategoryTile({
         position: 'relative',
         overflow: 'hidden',
         width: '100%',
-        minHeight: compactHeight ? '120px' : '100px',
+        minHeight: compactHeight ? '105px' : '100px',
         borderRadius: '22px',
         cursor: isLocked ? 'default' : 'pointer',
         textAlign: 'left',
