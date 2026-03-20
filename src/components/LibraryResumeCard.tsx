@@ -19,6 +19,13 @@ const DEEP_SAFFRON = '#D4A03A';
 const SAFFRON_FLAME = '#E9B44C';
 const DEEP_DUSK = '#2A2D3A';
 
+function hexToRgba(hex: string, alpha: number): string {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
+
 /** Product-specific tile colors — must match ProductLibrary TILE_COLORS */
 const PRODUCT_TILE_COLORS: Record<string, string> = {
   still_us: '#263041',
@@ -192,6 +199,9 @@ export default function LibraryResumeCard({ activeTab, global, forceMock }: Libr
         textAlign: 'left',
         display: 'flex',
         alignItems: 'center',
+        boxShadow: useProductBg
+          ? `0 0 60px ${hexToRgba(tileBg, 0.25)}, 0 8px 24px rgba(0,0,0,0.15)`
+          : 'none',
       }}
     >
       <div style={{ flex: 1, minWidth: 0 }}>

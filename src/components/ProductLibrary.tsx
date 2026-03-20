@@ -546,7 +546,7 @@ export default function ProductLibrary() {
       }}
     >
 
-      {/* ── Bold creature illustrations — hero-level, full color ── */}
+      {/* ── Atmospheric background layers ── */}
       <div aria-hidden="true" style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none', zIndex: 0 }}>
         {/* Radial ghost glow — atmospheric warmth behind title */}
         <div style={{
@@ -559,8 +559,50 @@ export default function ProductLibrary() {
           background: 'radial-gradient(ellipse 55% 60% at 50% 35%, hsla(100, 60%, 80%, 0.10) 0%, hsla(100, 60%, 80%, 0.04) 45%, transparent 100%)',
           zIndex: 0,
         }} />
-        {/* Creature illustrations removed — clean logo zone */}
-        {/* Hero gradient scrim — ensures title legibility over creatures */}
+
+        {/* Twilight vignette — top corners, adds purple depth to night sky */}
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '50%',
+          height: '400px',
+          background: 'radial-gradient(ellipse 80% 70% at 0% 0%, rgba(74, 58, 107, 0.06) 0%, transparent 70%)',
+          zIndex: 0,
+        }} />
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          right: 0,
+          width: '50%',
+          height: '400px',
+          background: 'radial-gradient(ellipse 80% 70% at 100% 0%, rgba(74, 58, 107, 0.06) 0%, transparent 70%)',
+          zIndex: 0,
+        }} />
+
+        {/* Mid-zone warmth — Deep Navy bleed behind Föräldrar section */}
+        <div style={{
+          position: 'absolute',
+          top: '350px',
+          left: 0,
+          right: 0,
+          height: '600px',
+          background: 'linear-gradient(180deg, transparent 0%, rgba(26, 39, 68, 0.08) 30%, rgba(74, 58, 107, 0.05) 60%, transparent 100%)',
+          zIndex: 0,
+        }} />
+
+        {/* Forest floor emergence — Dark Forest tone behind Barn & Familj */}
+        <div style={{
+          position: 'absolute',
+          top: '900px',
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'linear-gradient(180deg, transparent 0%, rgba(28, 43, 26, 0.10) 25%, rgba(45, 69, 40, 0.08) 60%, rgba(28, 43, 26, 0.12) 100%)',
+          zIndex: 0,
+        }} />
+
+        {/* Hero gradient scrim — ensures title legibility */}
         <div style={{
           position: 'absolute',
           top: 0,
@@ -574,6 +616,7 @@ export default function ProductLibrary() {
             ${libraryBg} 100%)`,
           zIndex: 1,
         }} />
+
         {/* Trio — bottom zone, watching from below */}
         <motion.img
           src={creaturesTrio}
@@ -665,9 +708,19 @@ export default function ProductLibrary() {
         {/* ── Still Us cross-discovery ── */}
         <div className="px-5" style={{ marginTop: '0px' }}>
           <div style={{
-            borderTop: '1px solid hsla(100, 30%, 60%, 0.10)',
+            borderTop: 'none',
             paddingTop: '20px',
+            position: 'relative',
           }}>
+            {/* Mushroom-tinted section divider */}
+            <div style={{
+              position: 'absolute',
+              top: 0,
+              left: '10%',
+              right: '10%',
+              height: '1px',
+              background: 'linear-gradient(90deg, transparent 0%, rgba(110, 201, 184, 0.15) 30%, rgba(110, 201, 184, 0.20) 50%, rgba(110, 201, 184, 0.15) 70%, transparent 100%)',
+            }} />
             <p style={{
               fontFamily: "var(--font-body)",
               fontSize: '12px',
@@ -892,9 +945,19 @@ export default function ProductLibrary() {
         {/* ── Barn & Familj section anchor ── */}
         <div className="px-5" style={{ marginTop: '0px' }}>
           <div style={{
-            borderTop: '1px solid hsla(100, 30%, 60%, 0.10)',
+            borderTop: 'none',
             paddingTop: '20px',
+            position: 'relative',
           }}>
+            {/* Mushroom-tinted section divider */}
+            <div style={{
+              position: 'absolute',
+              top: 0,
+              left: '10%',
+              right: '10%',
+              height: '1px',
+              background: 'linear-gradient(90deg, transparent 0%, rgba(110, 201, 184, 0.15) 30%, rgba(110, 201, 184, 0.20) 50%, rgba(110, 201, 184, 0.15) 70%, transparent 100%)',
+            }} />
             <p style={{
               fontFamily: "var(--font-body)",
               fontSize: '12px',
