@@ -16,6 +16,7 @@ import type { ProductManifest } from '@/types/product';
 import type { Category, Card, Section } from '@/types';
 import { cards as stillUsCards } from '@/data/content';
 import { CARD_SEQUENCE, LAYERS } from '@/data/stillUsSequence';
+import stillUsHero from '@/assets/illustration-still-us-home.png';
 
 // ── Categories (one per layer) ──────────────────────────────
 
