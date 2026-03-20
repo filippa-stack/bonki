@@ -420,12 +420,12 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
               style={{
                 fontSize: 'clamp(16px, 4.5vw, 20px)',
                 fontWeight: isSU ? 500 : 400,
-                color: product.accentColor.startsWith('hsl') ? undefined : DRIFTWOOD,
-                opacity: 0.9,
+                color: isVardag ? product.accentColorMuted : (product.accentColor.startsWith('hsl') ? undefined : DRIFTWOOD),
+                opacity: 0.95,
                 marginTop: '6px',
                 textShadow: isSU
                   ? `0 2px 24px rgba(0,0,0,1), 0 0 60px ${bg}, 0 0 120px ${bg}`
-                  : `0 1px 16px rgba(0,0,0,0.8), 0 0 40px ${bg}, 0 0 80px ${bg}`,
+                  : `0 2px 20px rgba(0,0,0,0.9), 0 0 50px ${bg}, 0 0 100px ${bg}`,
               }}
             >
               {product.tagline}
