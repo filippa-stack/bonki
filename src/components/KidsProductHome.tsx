@@ -219,9 +219,9 @@ function CategoryTile({
             style={{
               width: '100%',
               height: '100%',
-              objectFit: 'cover',
-              objectPosition: style.objectPosition,
-              opacity: style.opacity,
+              objectFit: compactHeight ? 'contain' : 'cover',
+              objectPosition: compactHeight ? 'center 60%' : style.objectPosition,
+              opacity: compactHeight ? 0.5 : style.opacity,
             }}
           />
         </div>
