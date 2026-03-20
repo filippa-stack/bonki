@@ -21,11 +21,11 @@ import stillUsHero from '@/assets/illustration-still-us-home.png';
 // ── Categories (one per layer) ──────────────────────────────
 
 const LAYER_META: { id: string; title: string; subtitle: string; color: string }[] = [
-  { id: 'su-mock-grunden',    title: 'Grunden',    subtitle: 'Det som bär er — och det som saknas.',            color: '#8BA888' },
-  { id: 'su-mock-normen',     title: 'Normen',     subtitle: 'Reglerna ni lever efter — de uttalade och de tysta.', color: '#5D9B9B' },
-  { id: 'su-mock-konflikten', title: 'Konflikten', subtitle: 'Det som skaver — det ni undviker.',               color: '#D4836D' },
-  { id: 'su-mock-langtan',    title: 'Längtan',    subtitle: 'Önskningar, drömmar och det som kostar.',         color: '#C4A0A0' },
-  { id: 'su-mock-valet',      title: 'Valet',      subtitle: 'Att stanna, förändra, fortsätta välja.',          color: '#E8913A' },
+  { id: 'su-mock-grunden',    title: 'Grunden',    subtitle: 'Det som bär er — och det som saknas.',            color: '#343E4E' },
+  { id: 'su-mock-normen',     title: 'Normen',     subtitle: 'Reglerna ni lever efter — de uttalade och de tysta.', color: '#2A3241' },
+  { id: 'su-mock-konflikten', title: 'Konflikten', subtitle: 'Det som skaver — det ni undviker.',               color: '#263041' },
+  { id: 'su-mock-langtan',    title: 'Längtan',    subtitle: 'Önskningar, drömmar och det som kostar.',         color: '#222A37' },
+  { id: 'su-mock-valet',      title: 'Valet',      subtitle: 'Att stanna, förändra, fortsätta välja.',          color: '#1C222E' },
 ];
 
 const categories: Category[] = LAYER_META.map((l, i) => ({
