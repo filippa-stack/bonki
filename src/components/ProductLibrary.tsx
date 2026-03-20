@@ -682,19 +682,6 @@ export default function ProductLibrary() {
             }}>
               För er som par
             </p>
-            <p style={{
-              fontFamily: "var(--font-display)",
-              fontVariationSettings: "'opsz' 15",
-              fontSize: '15px',
-              fontWeight: 400,
-              color: '#D4F5C0',
-              opacity: 0.7,
-              lineHeight: 1.6,
-              textAlign: 'center',
-              marginBottom: '20px',
-            }}>
-              Du tar hand om samtalen med barnen — nu är det er tur
-            </p>
             <motion.div
               variants={tileVariants}
               initial="hidden"
