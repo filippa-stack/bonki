@@ -648,15 +648,15 @@ export default function ProductLibrary() {
               fontVariationSettings: "'opsz' 36",
               fontSize: '44px',
               fontWeight: 400,
-              color: 'hsla(38, 78%, 58%, 1)',
+              color: '#D4F5C0',
               lineHeight: 1.1,
               letterSpacing: '-0.03em',
               marginBottom: '12px',
               transition: 'color 400ms ease',
-              textShadow: '0 0 30px hsla(38, 78%, 48%, 0.35), 0 2px 24px hsla(230, 25%, 10%, 0.9), 0 0 60px hsla(230, 25%, 10%, 0.5)',
+              textShadow: '0 0 30px hsla(100, 60%, 80%, 0.2), 0 2px 24px hsla(230, 25%, 10%, 0.9), 0 0 60px hsla(230, 25%, 10%, 0.5)',
             }}
           >
-            Bonki
+            BONKI
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 6 }}
