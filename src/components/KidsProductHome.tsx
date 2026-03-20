@@ -134,13 +134,13 @@ function CategoryTile({
         position: 'relative',
         overflow: 'hidden',
         width: '100%',
-        minHeight: compactHeight ? '120px' : '100px',
+        minHeight: compactHeight ? '105px' : '100px',
         borderRadius: '22px',
         cursor: isLocked ? 'default' : 'pointer',
         textAlign: 'left',
         backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.08) 100%)',
         backgroundColor: tileBg,
-        opacity: isLocked ? 0.45 : 1,
+        opacity: isLocked ? 0.6 : 1,
         border: isFirst && !isLocked
           ? `2px solid ${SAFFRON_FLAME}`
           : isRecommended && !isLocked
@@ -402,7 +402,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
                 opacity: 0.9,
                 marginTop: '6px',
                 textShadow: isSU
-                  ? `0 2px 20px rgba(0,0,0,0.9), 0 0 50px ${bg}, 0 0 100px ${bg}`
+                  ? `0 2px 24px rgba(0,0,0,1), 0 0 60px ${bg}, 0 0 120px ${bg}`
                   : `0 1px 16px rgba(0,0,0,0.8), 0 0 40px ${bg}, 0 0 80px ${bg}`,
               }}
             >
@@ -410,7 +410,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
             </p>
 
             {/* Spacer — pushes content below hero face zone */}
-            <div style={{ height: isSU ? 'clamp(20px, 4vh, 40px)' : 'clamp(48px, 12vh, 100px)' }} />
+            <div style={{ height: isSU ? 'clamp(12px, 2vh, 24px)' : 'clamp(48px, 12vh, 100px)' }} />
 
             {/* ═══ Resume Pill (conditional) ═══ */}
             {!progress.loading && progress.activeSession && (() => {
