@@ -18,6 +18,7 @@ const FOURTEEN_DAYS_MS = 14 * 24 * 60 * 60 * 1000;
 export const KIDS_PRODUCT_IDS = [
   'jag_i_mig', 'jag_med_andra', 'jag_i_varlden',
   'vardagskort', 'syskonkort', 'sexualitetskort',
+  'still_us_mock',
 ];
 
 /** @deprecated All kids products now use 1-step sessions (prompts flattened) */
