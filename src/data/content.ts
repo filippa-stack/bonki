@@ -106,15 +106,6 @@ export const cards: Card[] = [
           'Vilka är de tidiga tecknen, för dig, på att ni börjar glida isär — innan det är uppenbart?',
         ],
       },
-      {
-        id: 'exercise-7a',
-        type: 'exercise',
-        title: 'Tillsammans',
-        content: 'Välj en mycket liten handling eller aktivitet ni gör tillsammans tre gånger kommande vecka.',
-        prompts: [
-          'Se det som ett test, inte en lösning.',
-        ],
-      },
     ],
   },
   // ── Card 1 · Grunden ─────────────────────────────────────
@@ -151,15 +142,6 @@ export const cards: Card[] = [
         content: 'Ni löser vardagen smidigt. Samtalen handlar om tider, ansvar och barn.',
         prompts: [
           'Finns det något mellan er som har slutat leva — även om allt fortfarande fungerar?',
-        ],
-      },
-      {
-        id: 'exercise-10',
-        type: 'exercise',
-        title: 'Tillsammans',
-        content: 'Avsätt tio minuter en gång den här veckan där ni inte pratar om barn eller logistik.',
-        prompts: [
-          'Om ni inte har något att säga — sitt kvar ändå.',
         ],
       },
     ],
@@ -200,15 +182,6 @@ export const cards: Card[] = [
           'Välj en förändring sedan ni fick barn som du vet inte var ditt val. Hur känns det idag — har du gjort fred med den, eller skaver den fortfarande?',
         ],
       },
-      {
-        id: 'exercise-8a',
-        type: 'exercise',
-        title: 'Tillsammans',
-        content: 'Identifiera en sak vardera som ni idag håller tillbaka.',
-        prompts: [
-          'Prata om vad som skulle krävas för att ni skulle kunna ge den lite mer plats.',
-        ],
-      },
     ],
   },
   // ── Card 3 · Grunden ─────────────────────────────────────
@@ -245,15 +218,6 @@ export const cards: Card[] = [
         content: 'Efter läggning gör ni olika saker. Ingen säger något, men båda drar egna slutsatser.',
         prompts: [
           'Vad gör du — utan att säga det rakt ut — när du känner att kvällen är slut, men din partner inte verkar märka det?',
-        ],
-      },
-      {
-        id: 'exercise-1',
-        type: 'exercise',
-        title: 'Tillsammans',
-        content: 'Välj en konkret handling eller mening som markerar att dagen är avslutad för er båda.',
-        prompts: [
-          'Prova i tre kvällar — och prata sedan om vad det förändrade.',
         ],
       },
     ],
@@ -294,15 +258,6 @@ export const cards: Card[] = [
           'En uppgift har tillhört dig så länge att den blivit en del av vem du är hemma. Vad skulle förändras mellan er om du släppte den?',
         ],
       },
-      {
-        id: 'exercise-3',
-        type: 'exercise',
-        title: 'Tillsammans',
-        content: 'Välj en etablerad roll att dela eller byta under en period.',
-        prompts: [
-          'Prata om vad som känns ovant — utan att rätta varandra.',
-        ],
-      },
     ],
   },
   // ── Card 5 · Normen ──────────────────────────────────────
@@ -339,15 +294,6 @@ export const cards: Card[] = [
         content: 'Ni gör samma saker, men på olika sätt. Barnet börjar navigera mellan er.',
         prompts: [
           'När barnen märker att ni gör saker på olika sätt — vad händer mellan er i det ögonblicket?',
-        ],
-      },
-      {
-        id: 'exercise-2',
-        type: 'exercise',
-        title: 'Tillsammans',
-        content: 'Välj ett område där ni medvetet låter två sätt samexistera.',
-        prompts: [
-          'Prata om vad ni vill att barnet ska förstå — inte om vem som gör rätt.',
         ],
       },
     ],
@@ -388,12 +334,6 @@ export const cards: Card[] = [
           'Ni har just fått svåra besked. En av er vill agera, den andra behöver stillhet. Vad säger ni till varandra — eller vad låter ni bli att säga?',
         ],
       },
-      {
-        id: 'exercise-16',
-        type: 'exercise',
-        title: 'Tillsammans',
-        content: 'Tänk ut hur en vecka kan se ut där båda era sätt får plats — utan att det ena blir norm och det andra undantag.',
-      },
     ],
   },
   // ── Card 7 · Normen ──────────────────────────────────────
@@ -431,12 +371,6 @@ export const cards: Card[] = [
         prompts: [
           'När en av er tappat tålamodet inför barnen — vad är det första som händer mellan er efteråt?',
         ],
-      },
-      {
-        id: 'exercise-17',
-        type: 'exercise',
-        title: 'Tillsammans',
-        content: 'Bestäm hur ni signalerar "vi tar det sen". Prata om hur ni sedan tar upp det — utan att ställa er mot varandra.',
       },
     ],
   },
@@ -476,12 +410,6 @@ export const cards: Card[] = [
           'Beskriv hur det känns i kroppen — i ögonblicket efter att en av er har dragit sig undan och dörren stängs.',
         ],
       },
-      {
-        id: 'exercise-18',
-        type: 'exercise',
-        title: 'Tillsammans',
-        content: 'Kom överens om tydliga tecken för:\n• när jag behöver vara ifred\n• när jag behöver att du stannar\n• när jag inte vet vad jag behöver',
-      },
     ],
   },
   // ── Card 9 · Konflikten ──────────────────────────────────
@@ -520,12 +448,6 @@ export const cards: Card[] = [
           'Din partner har börjat ta mindre plats — i samtalen, i besluten, i initiativet. Vad gör du med det du märker?',
         ],
       },
-      {
-        id: 'exercise-15',
-        type: 'exercise',
-        title: 'Tillsammans',
-        content: 'Enas om vilka ord ni använder — och undviker — inför barnet när någon av er tvivlar på sig själv. Bestäm vilka ansvar som tillfälligt kan skifta utan att den som kämpar tappar sin plats i familjen.',
-      },
     ],
   },
   // ── Card 10 · Konflikten ─────────────────────────────────
@@ -562,15 +484,6 @@ export const cards: Card[] = [
         content: 'En vardagssituation väcker starka reaktioner. Den ena reagerar på händelsen, den andra på känslan som väcks.',
         prompts: [
           'När ni reagerat olika på något med barnen — brukar ni kunna prata om det utan att det blir en tävling om vem som hade rätt?',
-        ],
-      },
-      {
-        id: 'exercise-4',
-        type: 'exercise',
-        title: 'Tillsammans',
-        content: 'Bestäm en gemensam formulering ni kan använda när historien talar för högt.',
-        prompts: [
-          'Prata efteråt om vad den skyddade — och vad den inte gjorde.',
         ],
       },
     ],
@@ -611,12 +524,6 @@ export const cards: Card[] = [
           'När en av er vill agera direkt och den andra vill avvakta — hur känns det i stunden?',
         ],
       },
-      {
-        id: 'exercise-6a',
-        type: 'exercise',
-        title: 'Tillsammans',
-        content: 'Enas om två saker: vad ni vill undvika att göra i affekt — och vad som är viktigt att hålla fast vid även när ni tycker olika.',
-      },
     ],
   },
   // ── Card 12 · Konflikten ─────────────────────────────────
@@ -654,12 +561,6 @@ export const cards: Card[] = [
         prompts: [
           'Tänk på senaste gången ni reagerade olika i ett spänt ögonblick med barnen. Vad försökte du skydda?',
         ],
-      },
-      {
-        id: 'exercise-5',
-        type: 'exercise',
-        title: 'Tillsammans',
-        content: 'Välj en värdering som ni båda håller högt men ofta tappar i vardagen. Enas om ett konkret tecken — i ton, beteende eller ordval — som signalerar att ni just nu håller på att glida ifrån den. Bestäm vad ni gör när en av er ser tecknet.',
       },
     ],
   },
@@ -699,12 +600,6 @@ export const cards: Card[] = [
           'När en släkting ifrågasätter er inför barnen och ni inte hunnit prata ihop er — hur hittar ni tillbaka till att stå enade?',
         ],
       },
-      {
-        id: 'exercise-11',
-        type: 'exercise',
-        title: 'Tillsammans',
-        content: 'Enas om en neutral mening ni kan säga inför barnet när ni inte är synkade. Bestäm också hur ni tar upp oenigheten efteråt — på ett sätt som inte söker skyldiga.',
-      },
     ],
   },
   // ── Card 14 · Längtan ────────────────────────────────────
@@ -742,12 +637,6 @@ export const cards: Card[] = [
         prompts: [
           'Vad har det kostat dig att låta en tradition som inte är din ta plats — och har du någonsin sagt det högt?',
         ],
-      },
-      {
-        id: 'exercise-12',
-        type: 'exercise',
-        title: 'Tillsammans',
-        content: 'Välj en tradition som en av er håller viktigare än den andra. Prata om vad den bär — inte bara vad den innehåller. Enas om hur ni hanterar den: behåller, anpassar, eller släpper — och vad det kräver av den som kompromissar.',
       },
     ],
   },
@@ -787,12 +676,6 @@ export const cards: Card[] = [
           'Vad händer mellan er när frustrationen gör att en av er agerar på ett sätt som den andra inte kan stå bakom?',
         ],
       },
-      {
-        id: 'exercise-19',
-        type: 'exercise',
-        title: 'Tillsammans',
-        content: 'Välj en situation där ni nyligen reagerade olika under press. Identifiera: vilken värdering försökte var och en av er skydda? Enas om en signal ni kan ge varandra i liknande situationer — som betyder "jag behöver att vi stannar upp innan vi hamnar på varsitt håll".',
-      },
     ],
   },
   // ── Card 16 · Längtan ────────────────────────────────────
@@ -830,12 +713,6 @@ export const cards: Card[] = [
         prompts: [
           'Vad har ni i efterhand önskat att ni pratat om — innan något stort tog fart?',
         ],
-      },
-      {
-        id: 'exercise-20',
-        type: 'exercise',
-        title: 'Tillsammans',
-        content: 'Bestäm vilka tecken som visar att satsningen tar för mycket plats. Enas också om hur ni justerar om de tecknen dyker upp — innan det går ut över relationen.',
       },
     ],
   },
@@ -875,12 +752,6 @@ export const cards: Card[] = [
           'Tänk på den senaste satsningen ni var oense om. Vad gjorde den värd det för dig — eller vad fick dig att tveka?',
         ],
       },
-      {
-        id: 'exercise-14',
-        type: 'exercise',
-        title: 'Tillsammans',
-        content: 'Enas om vad som gör satsningen värd det — i tid, pengar och energi. Prata om vad ni är beredda att vänta med — och vad som händer om en av er ångrar prioriteringen.',
-      },
     ],
   },
   // ── Card 18 · Valet ──────────────────────────────────────
@@ -918,12 +789,6 @@ export const cards: Card[] = [
         prompts: [
           'Vilka är de tidiga tecknen för dig på att en risk håller på att tippa över — att bli för kostsam?',
         ],
-      },
-      {
-        id: 'exercise-13',
-        type: 'exercise',
-        title: 'Tillsammans',
-        content: 'Välj en satsning som känns möjlig — något som en av er kanske vill ta tag i en dag.\nPrata igenom:\n• Vad skulle vara det bästa tänkbara utfallet?\n• Vad skulle vara det svåraste realistiska utfallet?\n• Vilken gräns vill ni inte passera — i tid, pengar eller energi?\n• Vilka två tecken skulle betyda: "nu behöver vi bromsa"?',
       },
     ],
   },
@@ -963,13 +828,6 @@ export const cards: Card[] = [
           'Vad är det som gör att du börjar undra om det här är mer än en tyst period?',
         ],
       },
-      {
-        id: 'exercise-21',
-        type: 'exercise',
-        title: 'Tillsammans',
-        content: 'Gör ett litet experiment under en vecka som bryter autopiloten — ett nytt sätt att hälsa, ta i varandra, eller ställa frågor ni inte brukar ställa.',
-        prompts: ['Prata sedan om det: förde det er närmare — eller visade det på ett avstånd?'],
-      },
     ],
   },
   // ── Card 20 · Valet ──────────────────────────────────────
@@ -1006,15 +864,6 @@ export const cards: Card[] = [
         content: 'Trötthet och längtan krockar. Press och tolkningar smyger sig in — trots goda intentioner.',
         prompts: [
           'Hur skiljer ni hos er på ett "nej" till sex och ett "nej" till varandra?',
-        ],
-      },
-      {
-        id: 'exercise-9',
-        type: 'exercise',
-        title: 'Tillsammans',
-        content: 'Skapa två tydliga signaler: "Jag längtar efter närhet" och "Jag kan inte just nu, men jag vill dig".',
-        prompts: [
-          'Hur kan de se ut så att ingen behöver gissa?',
         ],
       },
     ],
@@ -1054,13 +903,6 @@ export const cards: Card[] = [
         prompts: [
           'Vad händer i dig när du påminner dig om att du inte stannar för att du måste — utan för att du vill?',
         ],
-      },
-      {
-        id: 'exercise-22',
-        type: 'exercise',
-        title: 'Tillsammans',
-        content: 'Svara var för sig, utan att förklara eller försvara: "Det här hos dig gör att jag vill vara kvar."\nStanna upp. Låt din partner ta emot det — utan att svara direkt.\nAvsluta med: "Det här vill jag inte ta för givet."\nTacka varandra.',
-        prompts: ['Lyssna utan att kommentera eller lugna. Låt det få vara sant mellan er.'],
       },
     ],
   },
