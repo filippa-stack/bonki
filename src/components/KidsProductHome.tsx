@@ -581,7 +581,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
           style={{
             display: useSquareGrid ? 'grid' : 'flex',
             ...(useSquareGrid
-              ? { gridTemplateColumns: '1fr 1fr', gap: '12px' }
+              ? { gridTemplateColumns: '1fr 1fr', gap: '8px' }
               : { flexDirection: 'column' as const, gap: isSU ? '10px' : '12px' }),
             width: '100%',
             marginTop: isSU ? '16px' : undefined,
