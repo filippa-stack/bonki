@@ -105,6 +105,9 @@ export default function PromptItem({ prompt, index, sectionType, preamble, ancho
   };
 
   const hasIllustration = !!backgroundImageUrl;
+  const inlineScenarioPreamble = !!(preamble && hasIllustration && sectionType === 'scenario');
+  const stackedPreamble = !!preamble && !inlineScenarioPreamble;
+  const preambleParagraphs = preamble?.split('\n').filter(p => p.trim() !== '') ?? [];
 
   return (
     <div
@@ -113,7 +116,7 @@ export default function PromptItem({ prompt, index, sectionType, preamble, ancho
     >
       <div className="px-6 py-4">
         {/* ── Scenario preamble ── */}
-        {preamble && (
+        {stackedPreamble && (
           <motion.div
             key={`preamble-${index}`}
             initial={{ opacity: 0, y: 10 }}
@@ -122,7 +125,7 @@ export default function PromptItem({ prompt, index, sectionType, preamble, ancho
             className="w-full text-center"
             style={{ marginBottom: '28px' }}
           >
-            {preamble.split('\n').filter(p => p.trim() !== '').map((para, i) => (
+            {preambleParagraphs.map((para, i) => (
               <p
                 key={i}
                 className="font-serif"
@@ -134,7 +137,7 @@ export default function PromptItem({ prompt, index, sectionType, preamble, ancho
                   color: 'var(--text-primary)',
                   lineHeight: 1.45,
                   opacity: 0.78,
-                  marginBottom: i < preamble.split('\n').filter(p => p.trim() !== '').length - 1 ? '16px' : 0,
+                  marginBottom: i < preambleParagraphs.length - 1 ? '16px' : 0,
                 }}
               >
                 {para}
@@ -201,7 +204,7 @@ export default function PromptItem({ prompt, index, sectionType, preamble, ancho
             initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.65, ease: enterEase }}
-            className={preamble ? 'mt-10' : ''}
+            className={stackedPreamble ? 'mt-10' : ''}
             style={{
               backgroundColor: 'var(--surface-raised)',
               border: 'none',
@@ -209,7 +212,7 @@ export default function PromptItem({ prompt, index, sectionType, preamble, ancho
               borderRadius: '0 12px 12px 0',
               padding: '20px 24px 20px 28px',
               margin: '16px 0',
-              marginTop: !preamble ? '24px' : '16px',
+              marginTop: !stackedPreamble ? '24px' : '16px',
               width: '100%',
               boxShadow:
                 '0 1px 3px hsla(30, 15%, 25%, 0.04), ' +
@@ -263,35 +266,37 @@ export default function PromptItem({ prompt, index, sectionType, preamble, ancho
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 transition={{
                   duration: 0.7,
-                  delay: preamble ? 0.25 : 0,
+                  delay: stackedPreamble ? 0.25 : 0,
                   ease: enterEase,
                 }}
-                className={`w-full ${preamble ? 'mt-10' : ''}`}
+                className={`w-full ${stackedPreamble ? 'mt-10' : ''}`}
                 style={{
-                  /* Soft accent cushion behind question */
                   background: hasIllustration
                     ? 'none'
                     : 'radial-gradient(ellipse at 50% 40%, var(--question-cloud-tint, transparent) 0%, transparent 75%)',
                   borderRadius: '28px',
-                  padding: isLongText ? '28px 20px 20px' : '32px 20px 16px',
+                  padding: inlineScenarioPreamble
+                    ? '20px 20px 16px'
+                    : isLongText
+                      ? '28px 20px 20px'
+                      : '32px 20px 16px',
                   display: 'flex',
                   flexDirection: 'column',
-                  alignItems: isLongText ? 'flex-start' : 'center',
-                  gap: isLongText ? '12px' : '8px',
+                  alignItems: inlineScenarioPreamble || isLongText ? 'flex-start' : 'center',
+                  gap: inlineScenarioPreamble ? '18px' : isLongText ? '12px' : '8px',
                   position: 'relative',
                   overflow: 'visible',
                 }}
               >
-                {/* Soft oval shape for kids products */}
                 {hasIllustration && (
                   <div
                     style={{
                       position: 'absolute',
-                      top: '45%',
+                      top: inlineScenarioPreamble ? '50%' : '45%',
                       left: '50%',
                       transform: 'translate(-50%, -50%)',
-                      width: '90%',
-                      height: '130%',
+                      width: inlineScenarioPreamble ? '100%' : '90%',
+                      height: inlineScenarioPreamble ? '145%' : '130%',
                       borderRadius: '50%',
                       background: 'var(--question-cloud-solid, hsla(200, 20%, 85%, 0.5))',
                       filter: 'blur(8px)',
@@ -301,29 +306,59 @@ export default function PromptItem({ prompt, index, sectionType, preamble, ancho
                   />
                 )}
 
-                {/* Question text */}
+                {inlineScenarioPreamble && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.7, delay: 0.0, ease: enterEase }}
+                    style={{ position: 'relative', zIndex: 1, width: '100%' }}
+                  >
+                    {preambleParagraphs.map((para, i) => (
+                      <p
+                        key={i}
+                        className="font-serif"
+                        style={{
+                          fontSize: 'clamp(16px, 4vw, 20px)',
+                          textWrap: 'balance',
+                          textAlign: 'center',
+                          fontWeight: 400,
+                          color: 'var(--text-primary)',
+                          lineHeight: 1.45,
+                          opacity: 0.78,
+                          marginBottom: i < preambleParagraphs.length - 1 ? '12px' : 0,
+                          width: '100%',
+                        }}
+                      >
+                        {para}
+                      </p>
+                    ))}
+                  </motion.div>
+                )}
+
                 {prompt.text.split('\n').filter(p => p.trim() !== '').map((para, i) => (
                   <p
                     key={i}
                     className="font-serif"
                     style={{
-                      fontSize: isLongText
-                        ? 'clamp(18px, 4.2vw, 22px)'
-                        : 'clamp(24px, 6vw, 32px)',
+                      fontSize: inlineScenarioPreamble
+                        ? 'clamp(22px, 5.3vw, 30px)'
+                        : isLongText
+                          ? 'clamp(18px, 4.2vw, 22px)'
+                          : 'clamp(24px, 6vw, 32px)',
                       textWrap: isLongText ? 'pretty' : 'balance',
-                      textAlign: isLongText ? 'left' : 'center',
+                      textAlign: inlineScenarioPreamble || isLongText ? 'center' : 'center',
                       ...gravity,
-                      lineHeight: isLongText ? 1.5 : gravity.lineHeight,
-                      fontWeight: isLongText ? 400 : gravity.fontWeight,
+                      lineHeight: inlineScenarioPreamble ? 1.38 : isLongText ? 1.5 : gravity.lineHeight,
+                      fontWeight: inlineScenarioPreamble ? 600 : isLongText ? 400 : gravity.fontWeight,
                       position: 'relative',
                       zIndex: 1,
+                      width: inlineScenarioPreamble ? '100%' : undefined,
                     }}
                   >
                     {para}
                   </p>
                 ))}
 
-                {/* Illustration — visible companion below the question */}
                 {backgroundImageUrl && (
                   <motion.div
                     initial={{ opacity: 0, scale: 0.92 }}
