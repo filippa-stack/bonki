@@ -62,7 +62,7 @@ function hexToRgb(hex: string): string {
 const TILE_ILLUSTRATION_STYLES = [
   { scale: 1.15, objectPosition: '50% 15%', opacity: 0.55 },
   { scale: 1.15, objectPosition: '50% 20%', opacity: 0.45 },
-  { scale: 1.1,  objectPosition: '50% 18%', opacity: 0.38 },
+  { scale: 1.1,  objectPosition: '50% 55%', opacity: 0.38 },
   { scale: 1.1,  objectPosition: '50% 22%', opacity: 0.32 },
   { scale: 1.1,  objectPosition: '50% 20%', opacity: 0.28 },
 ];
@@ -219,9 +219,9 @@ function CategoryTile({
             style={{
               width: '100%',
               height: '100%',
-              objectFit: compactHeight ? 'contain' : 'cover',
-              objectPosition: compactHeight ? 'center 60%' : style.objectPosition,
-              opacity: compactHeight ? 0.5 : style.opacity,
+              objectFit: 'cover',
+              objectPosition: style.objectPosition,
+              opacity: style.opacity,
             }}
           />
         </div>
