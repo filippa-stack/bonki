@@ -129,7 +129,8 @@ function CategoryTile({
 }) {
   const navigate = useNavigate();
   const isFirst = index === 0;
-  const style = TILE_ILLUSTRATION_STYLES[Math.min(index, TILE_ILLUSTRATION_STYLES.length - 1)];
+  const styles = squareTile ? SQUARE_TILE_ILLUSTRATION_STYLES : TILE_ILLUSTRATION_STYLES;
+  const style = styles[Math.min(index, styles.length - 1)];
   const shieldRgb = hexToRgb(tileBg);
 
   return (
