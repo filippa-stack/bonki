@@ -314,8 +314,8 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
         }}
       />
 
-      {/* ── Hero illustration — large, atmospheric, bleeds off top ── */}
-      {product.heroImage && (
+      {/* ── Hero illustration — large, atmospheric, bleeds off top (skip for Still Us) ── */}
+      {product.heroImage && !isSU && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -325,7 +325,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
             top: '-10vh',
             left: '-5vw',
             right: '-5vw',
-            height: isSU ? '45vh' : '65vh',
+            height: '65vh',
             zIndex: 0,
             pointerEvents: 'none',
           }}

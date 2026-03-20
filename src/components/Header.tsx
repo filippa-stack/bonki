@@ -189,7 +189,7 @@ export default function Header({
                     fontFamily: 'var(--font-sans)',
                     fontSize: '13px',
                     fontWeight: 500,
-                    color: 'var(--accent-text, var(--color-text-secondary))',
+                    color: '#D4F5C0',
                     opacity: 0.85,
                     letterSpacing: '0.04em',
                   }}
