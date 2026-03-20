@@ -342,16 +342,16 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
         </div>
       )}
 
-      {/* Horizontal gradient scrim — text anchor left */}
+      {/* Horizontal gradient scrim — subtle text anchor, not a blanket */}
       <div
         aria-hidden="true"
         style={{
           position: 'absolute',
           top: 0, left: 0, bottom: 0,
-          width: '55%',
+          width: '50%',
           zIndex: 1,
           pointerEvents: 'none',
-          background: `linear-gradient(to right, ${bgRgba(1)} 0%, ${bgRgba(0.9)} 30%, ${bgRgba(0.4)} 65%, transparent 100%)`,
+          background: `linear-gradient(to right, ${bgRgba(0.85)} 0%, ${bgRgba(0.5)} 40%, transparent 100%)`,
         }}
       />
 
