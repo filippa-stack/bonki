@@ -382,7 +382,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
       )}
 
       {/* ── Hero illustration — large, atmospheric, bleeds off top (skip for Still Us) ── */}
-      {product.heroImage && (
+      {product.heroImage && !isSU && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
