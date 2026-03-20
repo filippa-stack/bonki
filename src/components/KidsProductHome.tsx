@@ -62,7 +62,7 @@ function hexToRgb(hex: string): string {
 const TILE_ILLUSTRATION_STYLES = [
   { scale: 1.15, objectPosition: '50% 15%', opacity: 0.55 },
   { scale: 1.15, objectPosition: '50% 20%', opacity: 0.45 },
-  { scale: 1.1,  objectPosition: '50% 18%', opacity: 0.38 },
+  { scale: 1.1,  objectPosition: '50% 55%', opacity: 0.38 },
   { scale: 1.1,  objectPosition: '50% 22%', opacity: 0.32 },
   { scale: 1.1,  objectPosition: '50% 20%', opacity: 0.28 },
 ];
