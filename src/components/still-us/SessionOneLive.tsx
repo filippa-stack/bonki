@@ -419,7 +419,7 @@ export default function SessionOneLive() {
         <SessionFocusShell
           couple_id={coupleState?.couple_id}
           card_id={backendCardId ?? undefined}
-          device_id={deviceId}
+          device_id={lockAcquired ? deviceId : undefined}
           onExit={() => navigate('/')}
           ctaSlot={null}
         >
@@ -460,7 +460,7 @@ export default function SessionOneLive() {
 
     if (partnerTier === 'tier_2') {
       return (
-        <SessionFocusShell couple_id={coupleState?.couple_id} card_id={backendCardId ?? undefined} device_id={deviceId} onExit={() => navigate('/')} ctaSlot={null}>
+        <SessionFocusShell couple_id={coupleState?.couple_id} card_id={backendCardId ?? undefined} device_id={lockAcquired ? deviceId : undefined} onExit={() => navigate('/')} ctaSlot={null}>
           <Tier2Threshold
             initiatorName={initiatorName}
             partnerName={partnerName}
@@ -475,7 +475,7 @@ export default function SessionOneLive() {
     }
 
     return (
-      <SessionFocusShell couple_id={coupleState?.couple_id} card_id={backendCardId ?? undefined} device_id={deviceId} onExit={() => navigate('/')} ctaSlot={null}>
+      <SessionFocusShell couple_id={coupleState?.couple_id} card_id={backendCardId ?? undefined} device_id={lockAcquired ? deviceId : undefined} onExit={() => navigate('/')} ctaSlot={null}>
         <FullscreenThreshold
           initiatorName={initiatorName}
           partnerName={partnerName}
@@ -494,7 +494,7 @@ export default function SessionOneLive() {
       <SessionFocusShell
         couple_id={coupleState?.couple_id}
         card_id={backendCardId ?? undefined}
-        device_id={deviceId}
+        device_id={lockAcquired ? deviceId : undefined}
         onExit={() => navigate('/')}
         ctaSlot={
           framing.showExitCta ? (
@@ -674,7 +674,7 @@ export default function SessionOneLive() {
     <SessionFocusShell
       couple_id={coupleState?.couple_id}
       card_id={backendCardId ?? undefined}
-      device_id={deviceId}
+      device_id={lockAcquired ? deviceId : undefined}
       topSlot={stepNavBar}
       onExit={() => navigate('/')}
       ctaSlot={
