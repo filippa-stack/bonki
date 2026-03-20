@@ -751,7 +751,7 @@ export default function ProductLibrary() {
               animate="visible"
               whileHover={{ scale: 1.015, y: -2 }}
               whileTap={{ scale: 0.97, y: 2 }}
-              onClick={() => navigate('/product/still-us')}
+              onClick={() => navigate('/product/still-us-mock')}
               className="cursor-pointer"
               style={{
                 borderRadius: '22px',
