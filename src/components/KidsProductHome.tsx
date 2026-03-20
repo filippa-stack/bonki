@@ -410,7 +410,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
             </p>
 
             {/* Spacer — pushes content below hero face zone */}
-            <div style={{ height: isSU ? 'clamp(20px, 4vh, 40px)' : 'clamp(48px, 12vh, 100px)' }} />
+            <div style={{ height: isSU ? 'clamp(12px, 2vh, 24px)' : 'clamp(48px, 12vh, 100px)' }} />
 
             {/* ═══ Resume Pill (conditional) ═══ */}
             {!progress.loading && progress.activeSession && (() => {
