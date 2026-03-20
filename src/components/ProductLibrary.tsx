@@ -237,11 +237,11 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
   accentColor?: string; taglineColor?: string; illustrationOpacity?: number;
   illustrationSize?: string; illustrationPosition?: string; wide?: boolean;
   showFreeBadge?: boolean; badgeText?: string; ageCount?: number;
-  hasActiveSession?: boolean;
+  hasActiveSession?: boolean; tileHeight?: string;
 }>(function PastelTile({
   name, bg, ageLabel, tagline, onClick, illustration, productId, accentColor, taglineColor,
   illustrationOpacity = 0.90, wide = false,
-  hasActiveSession = false,
+  hasActiveSession = false, tileHeight = '240px',
 }) {
   const toShadowColor = (hex: string, alpha: number) => {
     const r = parseInt(hex.slice(1, 3), 16);
@@ -271,7 +271,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
       style={{
         borderRadius: '22px',
         backgroundColor: bg,
-        height: '240px',
+        height: tileHeight,
         display: 'flex',
         position: 'relative',
         overflow: 'hidden',
