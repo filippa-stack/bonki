@@ -82,8 +82,23 @@ function buildMockCard(seqEntry: typeof CARD_SEQUENCE[number]): Card | null {
 
   const sections: Section[] = [primarySection];
 
-  // Keep scenario + exercise for the completion bonus / stage interstitial
-  if (scenario) sections.push({ ...scenario, id: `su-mock-scenario-${seqEntry.index}` });
+  // Keep scenario in-session, but merge intro + question into a single prompt
+  // so it behaves like the kids products' final question pattern.
+  if (scenario) {
+    sections.push({
+      ...scenario,
+      id: `su-mock-scenario-${seqEntry.index}`,
+      content: '',
+      prompts: (scenario.prompts ?? []).map((prompt) => {
+        const questionText = typeof prompt === 'string' ? prompt : prompt.text;
+        const mergedText = [scenario.content?.trim(), questionText.trim()].filter(Boolean).join('\n\n');
+
+        return typeof prompt === 'string'
+          ? mergedText
+          : { ...prompt, text: mergedText };
+      }),
+    });
+  }
   if (exercise) sections.push({ ...exercise, id: `su-mock-exercise-${seqEntry.index}` });
 
   return {
