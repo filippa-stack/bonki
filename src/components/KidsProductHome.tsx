@@ -101,6 +101,9 @@ function CategoryTile({
   completed,
   total,
   isRecommended,
+  isLocked = false,
+  showLayerNumber = false,
+  compactHeight = false,
 }: {
   cat: { id: string; title: string; subtitle?: string };
   product: ProductManifest;
@@ -110,6 +113,9 @@ function CategoryTile({
   completed: number;
   total: number;
   isRecommended: boolean;
+  isLocked?: boolean;
+  showLayerNumber?: boolean;
+  compactHeight?: boolean;
 }) {
   const navigate = useNavigate();
   const isFirst = index === 0;
@@ -119,44 +125,80 @@ function CategoryTile({
   return (
     <motion.button
       variants={tileVariants}
-      whileHover={{ scale: 1.02, y: -2 }}
-      whileTap={{ scale: 0.96, y: 2 }}
-      onClick={() => navigate(`/product/${product.slug}/portal/${cat.id}`)}
+      whileHover={isLocked ? {} : { scale: 1.02, y: -2 }}
+      whileTap={isLocked ? {} : { scale: 0.96, y: 2 }}
+      onClick={() => !isLocked && navigate(`/product/${product.slug}/portal/${cat.id}`)}
       aria-label={`${cat.title}: ${completed} av ${total} utforskade`}
+      aria-disabled={isLocked}
       style={{
         position: 'relative',
         overflow: 'hidden',
         width: '100%',
-        minHeight: '100px',
+        minHeight: compactHeight ? '88px' : '100px',
         borderRadius: '22px',
-        cursor: 'pointer',
+        cursor: isLocked ? 'default' : 'pointer',
         textAlign: 'left',
         backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.08) 100%)',
         backgroundColor: tileBg,
-        border: isFirst
+        opacity: isLocked ? 0.45 : 1,
+        border: isFirst && !isLocked
           ? `2px solid ${SAFFRON_FLAME}`
-          : isRecommended
+          : isRecommended && !isLocked
             ? `2px solid ${SAFFRON_FLAME}88`
             : '1.5px solid rgba(255, 255, 255, 0.25)',
-        boxShadow: isFirst
-          ? [
-              '0 0 16px rgba(233, 180, 76, 0.45)',
-              '0 0 4px rgba(233, 180, 76, 0.25)',
-              '0 12px 32px rgba(0, 0, 0, 0.30)',
-              '0 4px 12px rgba(0, 0, 0, 0.18)',
-              'inset 0 3px 6px rgba(255, 255, 255, 0.45)',
-              'inset 0 -4px 10px rgba(0, 0, 0, 0.14)',
-            ].join(', ')
-          : [
-              '0 12px 32px rgba(0, 0, 0, 0.30)',
-              '0 4px 12px rgba(0, 0, 0, 0.18)',
-              '0 1px 3px rgba(0, 0, 0, 0.08)',
-              'inset 0 3px 6px rgba(255, 255, 255, 0.45)',
-              'inset 0 -4px 10px rgba(0, 0, 0, 0.14)',
-            ].join(', '),
+        boxShadow: isLocked
+          ? '0 4px 12px rgba(0, 0, 0, 0.18), inset 0 2px 4px rgba(255, 255, 255, 0.2)'
+          : isFirst
+            ? [
+                '0 0 16px rgba(233, 180, 76, 0.45)',
+                '0 0 4px rgba(233, 180, 76, 0.25)',
+                '0 12px 32px rgba(0, 0, 0, 0.30)',
+                '0 4px 12px rgba(0, 0, 0, 0.18)',
+                'inset 0 3px 6px rgba(255, 255, 255, 0.45)',
+                'inset 0 -4px 10px rgba(0, 0, 0, 0.14)',
+              ].join(', ')
+            : [
+                '0 12px 32px rgba(0, 0, 0, 0.30)',
+                '0 4px 12px rgba(0, 0, 0, 0.18)',
+                '0 1px 3px rgba(0, 0, 0, 0.08)',
+                'inset 0 3px 6px rgba(255, 255, 255, 0.45)',
+                'inset 0 -4px 10px rgba(0, 0, 0, 0.14)',
+              ].join(', '),
         padding: 0,
+        transition: 'opacity 0.3s ease',
       }}
     >
+      {/* Layer number badge */}
+      {showLayerNumber && (
+        <div
+          style={{
+            position: 'absolute',
+            top: '10px',
+            left: '12px',
+            zIndex: 4,
+            width: '22px',
+            height: '22px',
+            borderRadius: '50%',
+            backgroundColor: isLocked ? 'rgba(255,255,255,0.08)' : 'rgba(255,255,255,0.15)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <span
+            style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: '11px',
+              fontWeight: 700,
+              color: isLocked ? 'rgba(255,255,255,0.4)' : LANTERN_GLOW,
+              lineHeight: 1,
+            }}
+          >
+            {index + 1}
+          </span>
+        </div>
+      )}
+
       {/* Tile illustration layer */}
       {tileImage && (
         <div
