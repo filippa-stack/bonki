@@ -136,7 +136,7 @@ function CategoryTile({
         position: 'relative',
         overflow: 'hidden',
         width: '100%',
-        ...(squareTile ? { aspectRatio: '1 / 1' } : { minHeight: compactHeight ? '105px' : '100px' }),
+        ...(squareTile ? { aspectRatio: '4 / 5' } : { minHeight: compactHeight ? '105px' : '100px' }),
         borderRadius: '22px',
         cursor: isLocked ? 'default' : 'pointer',
         textAlign: 'left',
