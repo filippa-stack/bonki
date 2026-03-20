@@ -586,7 +586,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
           }}
         >
           {product.categories.map((cat, index) => {
-            const tileBg = getTileColor(product, index);
+            const tileBg = getTileColor(product, index, useSquareGrid);
             const catProgress = progress.categoryProgress[cat.id];
             const completed = catProgress?.completed ?? 0;
             const total = catProgress?.total ?? cat.cardCount ?? 0;
