@@ -140,7 +140,7 @@ function CategoryTile({
         textAlign: 'left',
         backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.08) 100%)',
         backgroundColor: tileBg,
-        opacity: isLocked ? 0.45 : 1,
+        opacity: isLocked ? 0.6 : 1,
         border: isFirst && !isLocked
           ? `2px solid ${SAFFRON_FLAME}`
           : isRecommended && !isLocked
