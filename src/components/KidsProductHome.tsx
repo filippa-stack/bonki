@@ -516,8 +516,8 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
 
             const isRecommended = hasUncompleted && allPrecedingComplete;
 
-            // Sequential lock: for Still Us, lock tiles whose preceding layer isn't done
-            const isLocked = isSU && index > 0 && !allPrecedingComplete;
+            // No lock — paid users get full access, numbering communicates order
+            const isLocked = false;
 
             return (
               <CategoryTile
