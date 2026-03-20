@@ -352,18 +352,19 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
         </div>
       )}
 
-      {/* Localized text backdrop — protects legibility without washing the tile */}
+      {/* Localized text backdrop — bottom-left corner protection */}
       <div
         aria-hidden="true"
         style={{
           position: 'absolute',
           left: 0,
           bottom: 0,
-          width: '46%',
-          height: '72%',
+          width: '55%',
+          height: '65%',
           zIndex: 1,
           pointerEvents: 'none',
-          background: `linear-gradient(135deg, ${bgRgba(0.44)} 0%, ${bgRgba(0.22)} 42%, transparent 100%)`,
+          borderRadius: '0 0 0 22px',
+          background: `linear-gradient(to top right, ${bgRgba(0.75)} 0%, ${bgRgba(0.45)} 35%, ${bgRgba(0.15)} 60%, transparent 100%)`,
         }}
       />
 
