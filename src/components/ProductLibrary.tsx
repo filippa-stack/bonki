@@ -677,10 +677,10 @@ export default function ProductLibrary() {
               fontWeight: 600,
               letterSpacing: '1.5px',
               textTransform: 'uppercase',
-              color: '#6B5E52',
+              color: '#D4F5C0',
               marginBottom: '16px',
             }}>
-              För er som par
+              Föräldrar
             </p>
             <motion.div
               variants={tileVariants}
@@ -904,7 +904,7 @@ export default function ProductLibrary() {
               fontWeight: 600,
               letterSpacing: '1.5px',
               textTransform: 'uppercase',
-              color: '#6B5E52',
+              color: '#D4F5C0',
               marginBottom: '16px',
             }}>
               Barn & Familj
