@@ -44,7 +44,13 @@ const tileVariants = {
 
 /* ── Helpers ── */
 
-function getTileColor(product: ProductManifest, index: number): string {
+/** Vardag uses brighter, more distinct tile colors — no murky deep tones */
+const VARDAG_TILE_COLORS = ['#3C4A30', '#3A4A2E', '#384832', '#405030'];
+
+function getTileColor(product: ProductManifest, index: number, isSquareGrid = false): string {
+  if (isSquareGrid && product.id === 'vardagskort') {
+    return VARDAG_TILE_COLORS[index] ?? VARDAG_TILE_COLORS[0];
+  }
   const depths = [product.tileLight, product.tileMid, product.tileDeep].filter(Boolean) as string[];
   if (depths.length === 0) return product.backgroundColor;
   return depths[index % depths.length];
