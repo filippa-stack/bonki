@@ -51,9 +51,9 @@ function getTileColor(product: ProductManifest, index: number, isSquareGrid = fa
   if (isSquareGrid && product.id === 'vardagskort') {
     return VARDAG_TILE_COLORS[index] ?? VARDAG_TILE_COLORS[0];
   }
-  const depths = [product.tileLight, product.tileMid, product.tileDeep].filter(Boolean) as string[];
-  if (depths.length === 0) return product.backgroundColor;
-  return depths[index % depths.length];
+  // Use tileLight for all tiles to keep brightness uniform — tileMid/tileDeep darken too aggressively
+  const light = product.tileLight ?? product.backgroundColor;
+  return light;
 }
 
 function hexToRgb(hex: string): string {
@@ -66,11 +66,11 @@ function hexToRgb(hex: string): string {
 
 /** Per-tile illustration calibration — opacity decreases with depth */
 const TILE_ILLUSTRATION_STYLES = [
-  { scale: 1.15, objectPosition: '50% 15%', opacity: 0.55 },
-  { scale: 1.15, objectPosition: '50% 20%', opacity: 0.45 },
-  { scale: 1.1,  objectPosition: '50% 55%', opacity: 0.38 },
-  { scale: 1.1,  objectPosition: '50% 22%', opacity: 0.32 },
-  { scale: 1.1,  objectPosition: '50% 20%', opacity: 0.28 },
+  { scale: 1.15, objectPosition: '50% 15%', opacity: 0.75 },
+  { scale: 1.15, objectPosition: '50% 20%', opacity: 0.70 },
+  { scale: 1.1,  objectPosition: '50% 55%', opacity: 0.65 },
+  { scale: 1.1,  objectPosition: '50% 22%', opacity: 0.60 },
+  { scale: 1.1,  objectPosition: '50% 20%', opacity: 0.55 },
 ];
 
 /** Square-grid tiles get high-impact illustration treatment (like library tiles) */
