@@ -508,15 +508,16 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
           </motion.p>
         )}
 
-        {/* ═══ Category tiles — single column with ceramic treatment ═══ */}
+        {/* ═══ Category tiles ═══ */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
           animate="visible"
           style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: isSU ? '10px' : '12px',
+            display: useSquareGrid ? 'grid' : 'flex',
+            ...(useSquareGrid
+              ? { gridTemplateColumns: '1fr 1fr', gap: '12px' }
+              : { flexDirection: 'column' as const, gap: isSU ? '10px' : '12px' }),
             width: '100%',
             marginTop: isSU ? '16px' : undefined,
           }}
