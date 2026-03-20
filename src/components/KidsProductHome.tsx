@@ -151,7 +151,7 @@ function CategoryTile({
         position: 'relative',
         overflow: 'hidden',
         width: '100%',
-        ...(squareTile ? { aspectRatio: '4 / 5' } : { minHeight: compactHeight ? '105px' : '100px' }),
+        ...(squareTile ? { aspectRatio: '3 / 4' } : { minHeight: compactHeight ? '105px' : '100px' }),
 
         borderRadius: squareTile ? '28px' : '22px',
         cursor: isLocked ? 'default' : 'pointer',
@@ -549,7 +549,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
         </motion.div>
 
         {/* Flex spacer — pushes grid to bottom for square-grid layouts */}
-        {useSquareGrid && <div style={{ flex: 1, minHeight: '12px', maxHeight: '40px' }} />}
+        {useSquareGrid && <div style={{ flex: 1, minHeight: '12px' }} />}
 
         {/* Section header — only for non-sequential, non-grid products */}
         {!isSU && !useSquareGrid && (
