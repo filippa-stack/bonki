@@ -334,7 +334,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
   const tileLight = product.tileLight ?? bg;
   const isSU = product.slug === 'still-us-mock';
   const isVardag = product.id === 'vardagskort';
-  const useSquareGrid = isVardag; // 2×2 memory card layout
+  const useSquareGrid = true; // 2×2 grid for all products
 
   return (
     <div className="min-h-screen relative overflow-hidden" style={{ backgroundColor: bg }}>
