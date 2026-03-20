@@ -120,6 +120,7 @@ function CategoryTile({
   showLayerNumber = false,
   compactHeight = false,
   squareTile = false,
+  wideSpan = false,
 }: {
   cat: { id: string; title: string; subtitle?: string };
   product: ProductManifest;
@@ -133,6 +134,7 @@ function CategoryTile({
   showLayerNumber?: boolean;
   compactHeight?: boolean;
   squareTile?: boolean;
+  wideSpan?: boolean;
 }) {
   const navigate = useNavigate();
   const isFirst = index === 0;
@@ -152,7 +154,7 @@ function CategoryTile({
         position: 'relative',
         overflow: 'hidden',
         width: '100%',
-        ...(squareTile ? { aspectRatio: '3 / 4' } : { minHeight: compactHeight ? '120px' : '140px' }),
+        ...(squareTile ? { aspectRatio: wideSpan ? '2 / 1' : '3 / 4' } : { minHeight: compactHeight ? '120px' : '140px' }),
 
         borderRadius: squareTile ? '28px' : '22px',
         cursor: isLocked ? 'default' : 'pointer',
