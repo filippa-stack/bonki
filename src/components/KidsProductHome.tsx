@@ -75,10 +75,11 @@ const TILE_ILLUSTRATION_STYLES = [
 
 /** Square-grid tiles get high-impact illustration treatment (like library tiles) */
 const SQUARE_TILE_ILLUSTRATION_STYLES = [
-  { scale: 1.1, objectPosition: '50% 20%', opacity: 0.88 },
-  { scale: 1.1, objectPosition: '50% 15%', opacity: 0.85 },
-  { scale: 1.15, objectPosition: '50% 25%', opacity: 0.90 },
-  { scale: 1.15, objectPosition: '50% 20%', opacity: 0.90 },
+  { scale: 1.05, objectPosition: '50% 30%', opacity: 0.88 },
+  { scale: 1.05, objectPosition: '50% 25%', opacity: 0.85 },
+  { scale: 1.05, objectPosition: '50% 35%', opacity: 0.90 },
+  { scale: 1.05, objectPosition: '50% 30%', opacity: 0.90 },
+  { scale: 1.05, objectPosition: '50% 30%', opacity: 0.88 },
 ];
 
 /* ── First card per category hook ── */
@@ -119,6 +120,7 @@ function CategoryTile({
   showLayerNumber = false,
   compactHeight = false,
   squareTile = false,
+  wideSpan = false,
 }: {
   cat: { id: string; title: string; subtitle?: string };
   product: ProductManifest;
@@ -132,6 +134,7 @@ function CategoryTile({
   showLayerNumber?: boolean;
   compactHeight?: boolean;
   squareTile?: boolean;
+  wideSpan?: boolean;
 }) {
   const navigate = useNavigate();
   const isFirst = index === 0;
@@ -151,7 +154,7 @@ function CategoryTile({
         position: 'relative',
         overflow: 'hidden',
         width: '100%',
-        ...(squareTile ? { aspectRatio: '3 / 4' } : { minHeight: compactHeight ? '120px' : '140px' }),
+        ...(squareTile ? { aspectRatio: wideSpan ? '2 / 1' : '3 / 4' } : { minHeight: compactHeight ? '120px' : '140px' }),
 
         borderRadius: squareTile ? '28px' : '22px',
         cursor: isLocked ? 'default' : 'pointer',
@@ -583,22 +586,29 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
             // No lock — paid users get full access, numbering communicates order
             const isLocked = false;
 
+            const isLastOdd = useSquareGrid && product.categories.length % 2 === 1 && index === product.categories.length - 1;
+
             return (
-              <CategoryTile
+              <div
                 key={cat.id}
-                cat={cat}
-                product={product}
-                index={index}
-                tileBg={tileBg}
-                tileImage={isSU && index === 2 ? undefined : tileImages[index]}
-                completed={completed}
-                total={total}
-                isRecommended={isRecommended}
-                isLocked={isLocked}
-                showLayerNumber={isSU}
-                compactHeight={isSU}
-                squareTile={useSquareGrid}
-              />
+                style={isLastOdd ? { gridColumn: '1 / -1' } : undefined}
+              >
+                <CategoryTile
+                  cat={cat}
+                  product={product}
+                  index={index}
+                  tileBg={tileBg}
+                  tileImage={isSU && index === 2 ? undefined : tileImages[index]}
+                  completed={completed}
+                  total={total}
+                  isRecommended={isRecommended}
+                  isLocked={isLocked}
+                  showLayerNumber={isSU}
+                  compactHeight={isSU}
+                  squareTile={useSquareGrid}
+                  wideSpan={isLastOdd}
+                />
+              </div>
             );
           })}
         </motion.div>
