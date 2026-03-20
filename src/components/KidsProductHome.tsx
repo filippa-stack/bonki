@@ -67,6 +67,14 @@ const TILE_ILLUSTRATION_STYLES = [
   { scale: 1.1,  objectPosition: '50% 20%', opacity: 0.28 },
 ];
 
+/** Square-grid tiles get high-impact illustration treatment (like library tiles) */
+const SQUARE_TILE_ILLUSTRATION_STYLES = [
+  { scale: 1.1, objectPosition: '50% 20%', opacity: 0.85 },
+  { scale: 1.1, objectPosition: '50% 15%', opacity: 0.82 },
+  { scale: 1.1, objectPosition: '50% 25%', opacity: 0.80 },
+  { scale: 1.1, objectPosition: '50% 20%', opacity: 0.82 },
+];
+
 /* ── First card per category hook ── */
 function useFirstCardImages(product: ProductManifest) {
   const firstCardIds = useMemo(
