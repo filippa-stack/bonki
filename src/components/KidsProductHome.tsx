@@ -75,11 +75,11 @@ const TILE_ILLUSTRATION_STYLES = [
 
 /** Square-grid tiles get high-impact illustration treatment (like library tiles) */
 const SQUARE_TILE_ILLUSTRATION_STYLES = [
-  { scale: 1.05, objectPosition: '50% 30%', opacity: 0.88 },
-  { scale: 1.05, objectPosition: '50% 25%', opacity: 0.85 },
-  { scale: 1.05, objectPosition: '50% 35%', opacity: 0.90 },
-  { scale: 1.05, objectPosition: '50% 30%', opacity: 0.90 },
-  { scale: 1.05, objectPosition: '50% 30%', opacity: 0.88 },
+  { scale: 1.2, objectPosition: '50% 30%', opacity: 0.88 },
+  { scale: 1.2, objectPosition: '50% 25%', opacity: 0.85 },
+  { scale: 1.2, objectPosition: '50% 35%', opacity: 0.90 },
+  { scale: 1.2, objectPosition: '50% 30%', opacity: 0.90 },
+  { scale: 1.2, objectPosition: '50% 30%', opacity: 0.88 },
 ];
 
 /** Per-product hero image vertical position — default is '50% 55%' */
@@ -382,7 +382,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
       )}
 
       {/* ── Hero illustration — large, atmospheric, bleeds off top (skip for Still Us) ── */}
-      {product.heroImage && (
+      {product.heroImage && !isSU && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
