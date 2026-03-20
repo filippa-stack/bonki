@@ -104,6 +104,7 @@ function CategoryTile({
   isLocked = false,
   showLayerNumber = false,
   compactHeight = false,
+  squareTile = false,
 }: {
   cat: { id: string; title: string; subtitle?: string };
   product: ProductManifest;
@@ -116,6 +117,7 @@ function CategoryTile({
   isLocked?: boolean;
   showLayerNumber?: boolean;
   compactHeight?: boolean;
+  squareTile?: boolean;
 }) {
   const navigate = useNavigate();
   const isFirst = index === 0;
@@ -134,7 +136,7 @@ function CategoryTile({
         position: 'relative',
         overflow: 'hidden',
         width: '100%',
-        minHeight: compactHeight ? '105px' : '100px',
+        ...(squareTile ? { aspectRatio: '1 / 1' } : { minHeight: compactHeight ? '105px' : '100px' }),
         borderRadius: '22px',
         cursor: isLocked ? 'default' : 'pointer',
         textAlign: 'left',
@@ -294,6 +296,8 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
   const bg = product.backgroundColor;
   const tileLight = product.tileLight ?? bg;
   const isSU = product.slug === 'still-us-mock';
+  const isVardag = product.id === 'vardagskort';
+  const useSquareGrid = isVardag; // 2×2 memory card layout
 
   return (
     <div className="min-h-screen relative overflow-hidden" style={{ backgroundColor: bg }}>
@@ -313,6 +317,24 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
           zIndex: 0,
         }}
       />
+
+      {/* ── Ghost glow — product-tinted atmospheric warmth behind title ── */}
+      {isVardag && (
+        <div
+          aria-hidden="true"
+          style={{
+            position: 'absolute',
+            top: '10vh',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            width: '120vw',
+            height: '300px',
+            background: 'radial-gradient(ellipse 55% 60% at 50% 40%, hsla(92, 40%, 60%, 0.14) 0%, hsla(92, 40%, 60%, 0.05) 50%, transparent 100%)',
+            pointerEvents: 'none',
+            zIndex: 0,
+          }}
+        />
+      )}
 
       {/* ── Hero illustration — large, atmospheric, bleeds off top (skip for Still Us) ── */}
       {product.heroImage && !isSU && (
@@ -341,15 +363,17 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
               objectPosition: '50% 12%',
             }}
           />
-          {/* Multi-stop scrim: product color blend */}
+          {/* Multi-stop scrim: product color blend — lighter for Vardag to show illustration */}
           <div
             style={{
               position: 'absolute',
               bottom: 0,
               left: 0,
               right: 0,
-              height: '88%',
-              background: `linear-gradient(to top, ${bg} 0%, ${bg}F5 15%, ${bg}DD 30%, ${tileLight}70 55%, ${tileLight}26 75%, transparent 100%)`,
+              height: isVardag ? '75%' : '88%',
+              background: isVardag
+                ? `linear-gradient(to top, ${bg} 0%, ${bg}E8 12%, ${bg}AA 28%, ${tileLight}50 50%, ${tileLight}18 70%, transparent 100%)`
+                : `linear-gradient(to top, ${bg} 0%, ${bg}F5 15%, ${bg}DD 30%, ${tileLight}70 55%, ${tileLight}26 75%, transparent 100%)`,
               pointerEvents: 'none',
             }}
           />
@@ -398,12 +422,12 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
               style={{
                 fontSize: 'clamp(16px, 4.5vw, 20px)',
                 fontWeight: isSU ? 500 : 400,
-                color: product.accentColor.startsWith('hsl') ? undefined : DRIFTWOOD,
-                opacity: 0.9,
+                color: isVardag ? product.accentColorMuted : (product.accentColor.startsWith('hsl') ? undefined : DRIFTWOOD),
+                opacity: 0.95,
                 marginTop: '6px',
                 textShadow: isSU
                   ? `0 2px 24px rgba(0,0,0,1), 0 0 60px ${bg}, 0 0 120px ${bg}`
-                  : `0 1px 16px rgba(0,0,0,0.8), 0 0 40px ${bg}, 0 0 80px ${bg}`,
+                  : `0 2px 20px rgba(0,0,0,0.9), 0 0 50px ${bg}, 0 0 100px ${bg}`,
               }}
             >
               {product.tagline}
@@ -486,15 +510,16 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
           </motion.p>
         )}
 
-        {/* ═══ Category tiles — single column with ceramic treatment ═══ */}
+        {/* ═══ Category tiles ═══ */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
           animate="visible"
           style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: isSU ? '10px' : '12px',
+            display: useSquareGrid ? 'grid' : 'flex',
+            ...(useSquareGrid
+              ? { gridTemplateColumns: '1fr 1fr', gap: '12px' }
+              : { flexDirection: 'column' as const, gap: isSU ? '10px' : '12px' }),
             width: '100%',
             marginTop: isSU ? '16px' : undefined,
           }}
@@ -533,6 +558,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
                 isLocked={isLocked}
                 showLayerNumber={isSU}
                 compactHeight={isSU}
+                squareTile={useSquareGrid}
               />
             );
           })}
