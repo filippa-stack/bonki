@@ -526,7 +526,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
                 product={product}
                 index={index}
                 tileBg={tileBg}
-                tileImage={tileImages[index]}
+                tileImage={isSU && index === 2 ? undefined : tileImages[index]}
                 completed={completed}
                 total={total}
                 isRecommended={isRecommended}
