@@ -75,10 +75,10 @@ const TILE_ILLUSTRATION_STYLES = [
 
 /** Square-grid tiles get high-impact illustration treatment (like library tiles) */
 const SQUARE_TILE_ILLUSTRATION_STYLES = [
-  { scale: 1.1, objectPosition: '50% 20%', opacity: 0.85 },
-  { scale: 1.1, objectPosition: '50% 15%', opacity: 0.82 },
-  { scale: 1.1, objectPosition: '50% 25%', opacity: 0.80 },
-  { scale: 1.1, objectPosition: '50% 20%', opacity: 0.82 },
+  { scale: 1.1, objectPosition: '50% 20%', opacity: 0.88 },
+  { scale: 1.1, objectPosition: '50% 15%', opacity: 0.85 },
+  { scale: 1.15, objectPosition: '50% 25%', opacity: 0.90 },
+  { scale: 1.15, objectPosition: '50% 20%', opacity: 0.90 },
 ];
 
 /* ── First card per category hook ── */
@@ -241,7 +241,7 @@ function CategoryTile({
               objectPosition: style.objectPosition,
               opacity: style.opacity,
               ...(squareTile ? {
-                filter: `saturate(1.25) brightness(1.15) drop-shadow(0 6px 16px rgba(0,0,0,0.5))`,
+                filter: `saturate(1.35) brightness(1.2) drop-shadow(0 6px 16px rgba(0,0,0,0.5))`,
               } : {}),
             }}
           />
@@ -549,7 +549,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
         </motion.div>
 
         {/* Flex spacer — pushes grid to bottom for square-grid layouts */}
-        {useSquareGrid && <div style={{ flex: 1, minHeight: '24px' }} />}
+        {useSquareGrid && <div style={{ flex: 1, minHeight: '12px', maxHeight: '40px' }} />}
 
         {/* Section header — only for non-sequential, non-grid products */}
         {!isSU && !useSquareGrid && (
