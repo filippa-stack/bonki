@@ -408,10 +408,8 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
               bottom: 0,
               left: 0,
               right: 0,
-              height: isVardag ? '60%' : '88%',
-              background: isVardag
-                ? `linear-gradient(to top, ${bg} 0%, ${bg}B0 12%, ${bg}60 30%, ${tileLight}20 50%, transparent 100%)`
-                : `linear-gradient(to top, ${bg} 0%, ${bg}F5 15%, ${bg}DD 30%, ${tileLight}70 55%, ${tileLight}26 75%, transparent 100%)`,
+              height: '65%',
+              background: `linear-gradient(to top, ${bg} 0%, ${bg}C0 12%, ${bg}70 30%, ${tileLight}25 50%, transparent 100%)`,
               pointerEvents: 'none',
             }}
           />
@@ -455,7 +453,21 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
             >
               {product.name}
             </h1>
-            {isVardag ? (
+            {isSU ? (
+              <p
+                className="font-serif"
+                style={{
+                  fontSize: 'clamp(14px, 4vw, 18px)',
+                  fontWeight: 500,
+                  color: DRIFTWOOD,
+                  opacity: 0.95,
+                  marginTop: '6px',
+                  textShadow: `0 2px 24px rgba(0,0,0,1), 0 0 60px ${bg}, 0 0 120px ${bg}`,
+                }}
+              >
+                {product.tagline}
+              </p>
+            ) : (
               <span
                 className="font-serif"
                 style={{
@@ -475,22 +487,6 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
               >
                 {product.tagline}
               </span>
-            ) : (
-              <p
-                className="font-serif"
-                style={{
-                  fontSize: 'clamp(16px, 4.5vw, 20px)',
-                  fontWeight: isSU ? 500 : 400,
-                  color: product.accentColor.startsWith('hsl') ? undefined : DRIFTWOOD,
-                  opacity: 0.95,
-                  marginTop: '6px',
-                  textShadow: isSU
-                    ? `0 2px 24px rgba(0,0,0,1), 0 0 60px ${bg}, 0 0 120px ${bg}`
-                    : `0 2px 20px rgba(0,0,0,0.9), 0 0 50px ${bg}, 0 0 100px ${bg}`,
-                }}
-              >
-                {product.tagline}
-              </p>
             )}
 
             {/* Spacer — pushes content below hero face zone */}
@@ -551,27 +547,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
         {/* Flex spacer — pushes grid to bottom for square-grid layouts */}
         {useSquareGrid && <div style={{ flex: 1, minHeight: '12px' }} />}
 
-        {/* Section header — only for non-sequential, non-grid products */}
-        {!isSU && !useSquareGrid && (
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3, duration: 0.5 }}
-            style={{
-              fontFamily: 'var(--font-sans)',
-              fontSize: '13px',
-              fontWeight: 600,
-              letterSpacing: '1.5px',
-              textTransform: 'uppercase',
-              color: DRIFTWOOD,
-              textAlign: 'center',
-              marginTop: '24px',
-              marginBottom: '20px',
-            }}
-          >
-            Välj ett ämne
-          </motion.p>
-        )}
+        {/* Removed "Välj ett ämne" header — tiles speak for themselves */}
 
         {/* ═══ Category tiles ═══ */}
         <motion.div
