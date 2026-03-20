@@ -135,7 +135,7 @@ const ACCENT_COLORS: Record<string, string> = {
 /** Tagline colors — tinted to each tile's family */
 const TAGLINE_COLORS: Record<string, string> = {
   jag_i_mig: 'hsla(178, 30%, 82%, 0.90)',     // Soft teal tint on dark teal
-  jag_med_andra: 'hsla(30, 30%, 20%, 0.95)',   // Deep warm brown on amber
+  jag_med_andra: 'hsla(30, 30%, 85%, 0.90)',   // Warm cream on amber
   jag_i_varlden: 'hsla(220, 30%, 82%, 0.90)',   // Soft blue tint on dusk blue
   sexualitetskort: 'hsla(25, 35%, 78%, 0.90)', // Warm cream on bark brown
   vardagskort: 'hsla(90, 20%, 78%, 0.90)',          // Soft olive tint on warm olive
