@@ -465,7 +465,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
               fontSize: '10px',
               fontWeight: 500,
               letterSpacing: '0.04em',
-              color: taglineColor || 'hsla(38, 50%, 75%, 0.55)',
+              color: taglineColor || 'hsla(100, 40%, 80%, 0.50)',
               opacity: 0.7,
               marginTop: '6px',
               textShadow: `0 0 10px ${bgRgba(0.8)}`,
@@ -550,7 +550,7 @@ export default function ProductLibrary() {
 
       {/* ── Bold creature illustrations — hero-level, full color ── */}
       <div aria-hidden="true" style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none', zIndex: 0 }}>
-        {/* Radial saffron glow — atmospheric warmth behind title */}
+        {/* Radial ghost glow — atmospheric warmth behind title */}
         <div style={{
           position: 'absolute',
           top: '-20px',
@@ -558,7 +558,7 @@ export default function ProductLibrary() {
           transform: 'translateX(-50%)',
           width: '120vw',
           height: '340px',
-          background: 'radial-gradient(ellipse 55% 60% at 50% 35%, hsla(38, 78%, 48%, 0.14) 0%, hsla(38, 78%, 48%, 0.06) 45%, transparent 100%)',
+          background: 'radial-gradient(ellipse 55% 60% at 50% 35%, hsla(100, 60%, 80%, 0.10) 0%, hsla(100, 60%, 80%, 0.04) 45%, transparent 100%)',
           zIndex: 0,
         }} />
         {/* Creature illustrations removed — clean logo zone */}
@@ -634,7 +634,7 @@ export default function ProductLibrary() {
               fontStyle: 'normal',
               fontSize: '14px',
               fontWeight: 400,
-              color: 'hsla(38, 50%, 65%, 0.5)',
+              color: 'hsla(100, 40%, 80%, 0.45)',
               lineHeight: 1.6,
               transition: 'color 400ms ease',
               textShadow: '0 1px 16px hsla(230, 25%, 10%, 0.8)',
@@ -644,7 +644,7 @@ export default function ProductLibrary() {
           </motion.p>
         </motion.div>
 
-        {/* Saffron accent divider */}
+        {/* Ghost glow accent divider */}
         <motion.div
           initial={{ scaleX: 0, opacity: 0 }}
           animate={{ scaleX: 1, opacity: 1 }}
@@ -652,7 +652,7 @@ export default function ProductLibrary() {
           style={{
             width: '32px',
             height: '1.5px',
-            backgroundColor: 'hsla(38, 78%, 50%, 0.35)',
+            backgroundColor: 'hsla(100, 50%, 75%, 0.30)',
             margin: '24px auto 32px',
           }}
         />
@@ -668,7 +668,7 @@ export default function ProductLibrary() {
         {/* ── Still Us cross-discovery ── */}
         <div className="px-5" style={{ marginTop: '0px' }}>
           <div style={{
-            borderTop: '1px solid hsla(38, 50%, 50%, 0.12)',
+            borderTop: '1px solid hsla(100, 30%, 60%, 0.10)',
             paddingTop: '20px',
           }}>
             <p style={{
@@ -687,7 +687,7 @@ export default function ProductLibrary() {
               fontVariationSettings: "'opsz' 15",
               fontSize: '15px',
               fontWeight: 400,
-              color: '#E9B44C',
+              color: '#D4F5C0',
               opacity: 0.7,
               lineHeight: 1.6,
               textAlign: 'center',
@@ -723,7 +723,7 @@ export default function ProductLibrary() {
                 ].join(', '),
               }}
             >
-              {/* Inner warmth glow — saffron-tinted radial for life */}
+              {/* Inner warmth glow — ghost-glow-tinted radial for life */}
               <div
                 aria-hidden="true"
                 style={{
@@ -731,7 +731,7 @@ export default function ProductLibrary() {
                   inset: 0,
                   zIndex: 0,
                   pointerEvents: 'none',
-                  background: 'radial-gradient(ellipse 80% 90% at 65% 50%, rgba(212, 160, 58, 0.18) 0%, rgba(212, 160, 58, 0.06) 40%, transparent 70%)',
+                  background: 'radial-gradient(ellipse 80% 90% at 65% 50%, rgba(180, 220, 160, 0.12) 0%, rgba(180, 220, 160, 0.04) 40%, transparent 70%)',
                 }}
               />
               {/* Illustration — right-aligned, oversized like kids tiles */}
@@ -800,7 +800,7 @@ export default function ProductLibrary() {
                   fontFamily: "var(--font-body)",
                   fontSize: '14px',
                   fontWeight: 400,
-                  color: 'hsla(38, 55%, 75%, 0.8)',
+                  color: 'hsla(100, 40%, 85%, 0.7)',
                   marginTop: '4px',
                   lineHeight: 1.4,
                   textShadow: '0 0 10px rgba(46, 34, 51, 0.8)',
@@ -820,8 +820,8 @@ export default function ProductLibrary() {
                     fontSize: '10px',
                     fontWeight: 500,
                     letterSpacing: '0.04em',
-                    color: 'hsla(38, 40%, 80%, 0.65)',
-                    background: 'hsla(38, 20%, 50%, 0.1)',
+                    color: 'hsla(100, 35%, 85%, 0.6)',
+                    background: 'hsla(100, 20%, 50%, 0.08)',
                     borderRadius: '12px',
                     padding: '3px 10px',
                   }}>
@@ -832,8 +832,8 @@ export default function ProductLibrary() {
                     fontSize: '10px',
                     fontWeight: 500,
                     letterSpacing: '0.04em',
-                    color: 'hsla(38, 40%, 80%, 0.65)',
-                    background: 'hsla(38, 20%, 50%, 0.1)',
+                    color: 'hsla(100, 35%, 85%, 0.6)',
+                    background: 'hsla(100, 20%, 50%, 0.08)',
                     borderRadius: '12px',
                     padding: '3px 10px',
                   }}>
@@ -864,7 +864,7 @@ export default function ProductLibrary() {
               padding: '0 20px',
               position: 'relative',
               overflow: 'hidden',
-              border: '1px dashed hsla(28, 80%, 57%, 0.4)',
+              border: '1px dashed hsla(100, 50%, 75%, 0.35)',
               boxShadow: '0 4px 16px rgba(23, 17, 26, 0.3)',
             }}
           >
@@ -875,8 +875,8 @@ export default function ProductLibrary() {
                 fontWeight: 600,
                 letterSpacing: '0.08em',
                 textTransform: 'uppercase',
-                color: '#E8913A',
-                background: 'hsla(28, 80%, 57%, 0.12)',
+                color: '#D4F5C0',
+                background: 'hsla(100, 50%, 75%, 0.10)',
                 borderRadius: '8px',
                 padding: '3px 8px',
               }}>
@@ -895,7 +895,7 @@ export default function ProductLibrary() {
                 <p style={{
                   fontFamily: "var(--font-body)",
                   fontSize: '12px',
-                  color: 'hsla(38, 30%, 70%, 0.7)',
+                  color: 'hsla(100, 30%, 75%, 0.6)',
                   marginTop: '2px',
                 }}>
                   Samma innehåll, kids-arkitektur
@@ -908,7 +908,7 @@ export default function ProductLibrary() {
         {/* ── Barn & Familj section anchor ── */}
         <div className="px-5" style={{ marginTop: '36px' }}>
           <div style={{
-            borderTop: '1px solid hsla(38, 50%, 50%, 0.12)',
+            borderTop: '1px solid hsla(100, 30%, 60%, 0.10)',
             paddingTop: '20px',
           }}>
             <p style={{
@@ -944,7 +944,7 @@ export default function ProductLibrary() {
               fontStyle: 'normal',
               fontSize: '15px',
               fontWeight: 400,
-              color: '#E9B44C',
+              color: '#D4F5C0',
               opacity: 0.7,
               lineHeight: 1.6,
             }}
@@ -1001,13 +1001,13 @@ export default function ProductLibrary() {
             padding: '16px 20px',
             borderRadius: '16px',
             background: 'hsla(230, 30%, 16%, 0.6)',
-            border: '1px solid hsla(38, 60%, 50%, 0.12)',
+            border: '1px solid hsla(100, 40%, 60%, 0.10)',
             display: 'flex',
             alignItems: 'center',
             gap: '14px',
           }}
         >
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ color: '#E9B44C', opacity: 0.6, flexShrink: 0 }}>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ color: '#D4F5C0', opacity: 0.6, flexShrink: 0 }}>
             <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" />
           </svg>
           <div style={{ flex: 1 }}>
@@ -1024,7 +1024,7 @@ export default function ProductLibrary() {
             <p style={{
               fontFamily: "var(--font-body)",
               fontSize: '10px',
-              color: 'hsla(38, 50%, 65%, 0.5)',
+              color: 'hsla(100, 40%, 80%, 0.45)',
               marginTop: '2px',
             }}>
               Varje samtal sparas
@@ -1035,7 +1035,7 @@ export default function ProductLibrary() {
             fontSize: '10px',
             fontWeight: 600,
             letterSpacing: '0.06em',
-            color: '#E9B44C',
+            color: '#D4F5C0',
             opacity: 0.4,
           }}>
             →
