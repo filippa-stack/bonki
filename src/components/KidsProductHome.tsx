@@ -402,7 +402,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
                 opacity: 0.9,
                 marginTop: '6px',
                 textShadow: isSU
-                  ? `0 2px 20px rgba(0,0,0,0.9), 0 0 50px ${bg}, 0 0 100px ${bg}`
+                  ? `0 2px 24px rgba(0,0,0,1), 0 0 60px ${bg}, 0 0 120px ${bg}`
                   : `0 1px 16px rgba(0,0,0,0.8), 0 0 40px ${bg}, 0 0 80px ${bg}`,
               }}
             >
