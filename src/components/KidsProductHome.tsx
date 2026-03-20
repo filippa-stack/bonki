@@ -101,6 +101,9 @@ function CategoryTile({
   completed,
   total,
   isRecommended,
+  isLocked = false,
+  showLayerNumber = false,
+  compactHeight = false,
 }: {
   cat: { id: string; title: string; subtitle?: string };
   product: ProductManifest;
@@ -110,6 +113,9 @@ function CategoryTile({
   completed: number;
   total: number;
   isRecommended: boolean;
+  isLocked?: boolean;
+  showLayerNumber?: boolean;
+  compactHeight?: boolean;
 }) {
   const navigate = useNavigate();
   const isFirst = index === 0;
@@ -119,44 +125,80 @@ function CategoryTile({
   return (
     <motion.button
       variants={tileVariants}
-      whileHover={{ scale: 1.02, y: -2 }}
-      whileTap={{ scale: 0.96, y: 2 }}
-      onClick={() => navigate(`/product/${product.slug}/portal/${cat.id}`)}
+      whileHover={isLocked ? {} : { scale: 1.02, y: -2 }}
+      whileTap={isLocked ? {} : { scale: 0.96, y: 2 }}
+      onClick={() => !isLocked && navigate(`/product/${product.slug}/portal/${cat.id}`)}
       aria-label={`${cat.title}: ${completed} av ${total} utforskade`}
+      aria-disabled={isLocked}
       style={{
         position: 'relative',
         overflow: 'hidden',
         width: '100%',
-        minHeight: '100px',
+        minHeight: compactHeight ? '88px' : '100px',
         borderRadius: '22px',
-        cursor: 'pointer',
+        cursor: isLocked ? 'default' : 'pointer',
         textAlign: 'left',
         backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.08) 100%)',
         backgroundColor: tileBg,
-        border: isFirst
+        opacity: isLocked ? 0.45 : 1,
+        border: isFirst && !isLocked
           ? `2px solid ${SAFFRON_FLAME}`
-          : isRecommended
+          : isRecommended && !isLocked
             ? `2px solid ${SAFFRON_FLAME}88`
             : '1.5px solid rgba(255, 255, 255, 0.25)',
-        boxShadow: isFirst
-          ? [
-              '0 0 16px rgba(233, 180, 76, 0.45)',
-              '0 0 4px rgba(233, 180, 76, 0.25)',
-              '0 12px 32px rgba(0, 0, 0, 0.30)',
-              '0 4px 12px rgba(0, 0, 0, 0.18)',
-              'inset 0 3px 6px rgba(255, 255, 255, 0.45)',
-              'inset 0 -4px 10px rgba(0, 0, 0, 0.14)',
-            ].join(', ')
-          : [
-              '0 12px 32px rgba(0, 0, 0, 0.30)',
-              '0 4px 12px rgba(0, 0, 0, 0.18)',
-              '0 1px 3px rgba(0, 0, 0, 0.08)',
-              'inset 0 3px 6px rgba(255, 255, 255, 0.45)',
-              'inset 0 -4px 10px rgba(0, 0, 0, 0.14)',
-            ].join(', '),
+        boxShadow: isLocked
+          ? '0 4px 12px rgba(0, 0, 0, 0.18), inset 0 2px 4px rgba(255, 255, 255, 0.2)'
+          : isFirst
+            ? [
+                '0 0 16px rgba(233, 180, 76, 0.45)',
+                '0 0 4px rgba(233, 180, 76, 0.25)',
+                '0 12px 32px rgba(0, 0, 0, 0.30)',
+                '0 4px 12px rgba(0, 0, 0, 0.18)',
+                'inset 0 3px 6px rgba(255, 255, 255, 0.45)',
+                'inset 0 -4px 10px rgba(0, 0, 0, 0.14)',
+              ].join(', ')
+            : [
+                '0 12px 32px rgba(0, 0, 0, 0.30)',
+                '0 4px 12px rgba(0, 0, 0, 0.18)',
+                '0 1px 3px rgba(0, 0, 0, 0.08)',
+                'inset 0 3px 6px rgba(255, 255, 255, 0.45)',
+                'inset 0 -4px 10px rgba(0, 0, 0, 0.14)',
+              ].join(', '),
         padding: 0,
+        transition: 'opacity 0.3s ease',
       }}
     >
+      {/* Layer number badge */}
+      {showLayerNumber && (
+        <div
+          style={{
+            position: 'absolute',
+            top: '10px',
+            left: '12px',
+            zIndex: 4,
+            width: '22px',
+            height: '22px',
+            borderRadius: '50%',
+            backgroundColor: isLocked ? 'rgba(255,255,255,0.08)' : 'rgba(255,255,255,0.15)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <span
+            style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: '11px',
+              fontWeight: 700,
+              color: isLocked ? 'rgba(255,255,255,0.4)' : LANTERN_GLOW,
+              lineHeight: 1,
+            }}
+          >
+            {index + 1}
+          </span>
+        </div>
+      )}
+
       {/* Tile illustration layer */}
       {tileImage && (
         <div
@@ -251,6 +293,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
 
   const bg = product.backgroundColor;
   const tileLight = product.tileLight ?? bg;
+  const isSU = product.slug === 'still-us-mock';
 
   return (
     <div className="min-h-screen relative overflow-hidden" style={{ backgroundColor: bg }}>
@@ -282,7 +325,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
             top: '-10vh',
             left: '-5vw',
             right: '-5vw',
-            height: '65vh',
+            height: isSU ? '45vh' : '65vh',
             zIndex: 0,
             pointerEvents: 'none',
           }}
@@ -321,7 +364,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
           minHeight: '100vh',
           display: 'flex',
           flexDirection: 'column',
-          paddingTop: 'clamp(32px, 10vh, 90px)',
+          paddingTop: isSU ? 'clamp(24px, 6vh, 56px)' : 'clamp(32px, 10vh, 90px)',
           paddingRight: '5vw',
           paddingBottom: '80px',
           paddingLeft: '5vw',
@@ -354,18 +397,20 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
               className="font-serif"
               style={{
                 fontSize: 'clamp(16px, 4.5vw, 20px)',
-                fontWeight: 400,
+                fontWeight: isSU ? 500 : 400,
                 color: product.accentColor.startsWith('hsl') ? undefined : DRIFTWOOD,
                 opacity: 0.9,
                 marginTop: '6px',
-                textShadow: `0 1px 16px rgba(0,0,0,0.8), 0 0 40px ${bg}, 0 0 80px ${bg}`,
+                textShadow: isSU
+                  ? `0 2px 20px rgba(0,0,0,0.9), 0 0 50px ${bg}, 0 0 100px ${bg}`
+                  : `0 1px 16px rgba(0,0,0,0.8), 0 0 40px ${bg}, 0 0 80px ${bg}`,
               }}
             >
               {product.tagline}
             </p>
 
             {/* Spacer — pushes content below hero face zone */}
-            <div style={{ height: 'clamp(48px, 12vh, 100px)' }} />
+            <div style={{ height: isSU ? 'clamp(20px, 4vh, 40px)' : 'clamp(48px, 12vh, 100px)' }} />
 
             {/* ═══ Resume Pill (conditional) ═══ */}
             {!progress.loading && progress.activeSession && (() => {
@@ -419,32 +464,40 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
           </motion.div>
         </motion.div>
 
-        {/* Section header */}
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.3, duration: 0.5 }}
-          style={{
-            fontFamily: 'var(--font-sans)',
-            fontSize: '13px',
-            fontWeight: 600,
-            letterSpacing: '1.5px',
-            textTransform: 'uppercase',
-            color: DRIFTWOOD,
-            textAlign: 'center',
-            marginTop: '24px',
-            marginBottom: '20px',
-          }}
-        >
-          Välj ett ämne
-        </motion.p>
+        {/* Section header — only for non-sequential products */}
+        {!isSU && (
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3, duration: 0.5 }}
+            style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: '13px',
+              fontWeight: 600,
+              letterSpacing: '1.5px',
+              textTransform: 'uppercase',
+              color: DRIFTWOOD,
+              textAlign: 'center',
+              marginTop: '24px',
+              marginBottom: '20px',
+            }}
+          >
+            Välj ett ämne
+          </motion.p>
+        )}
 
         {/* ═══ Category tiles — single column with ceramic treatment ═══ */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          style={{ display: 'flex', flexDirection: 'column', gap: '12px', width: '100%' }}
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: isSU ? '10px' : '12px',
+            width: '100%',
+            marginTop: isSU ? '16px' : undefined,
+          }}
         >
           {product.categories.map((cat, index) => {
             const tileBg = getTileColor(product, index);
@@ -453,12 +506,18 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
             const total = catProgress?.total ?? cat.cardCount ?? 0;
             const hasUncompleted = completed < total;
 
-            const isRecommended = hasUncompleted && product.categories
+            // For sequential products: all preceding layers must be complete
+            const allPrecedingComplete = product.categories
               .slice(0, index)
               .every(prev => {
                 const p = progress.categoryProgress[prev.id];
                 return p && p.completed >= p.total;
               });
+
+            const isRecommended = hasUncompleted && allPrecedingComplete;
+
+            // Sequential lock: for Still Us, lock tiles whose preceding layer isn't done
+            const isLocked = isSU && index > 0 && !allPrecedingComplete;
 
             return (
               <CategoryTile
@@ -471,6 +530,9 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
                 completed={completed}
                 total={total}
                 isRecommended={isRecommended}
+                isLocked={isLocked}
+                showLayerNumber={isSU}
+                compactHeight={isSU}
               />
             );
           })}
