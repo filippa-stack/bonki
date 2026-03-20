@@ -44,7 +44,13 @@ const tileVariants = {
 
 /* ── Helpers ── */
 
-function getTileColor(product: ProductManifest, index: number): string {
+/** Vardag uses brighter, more distinct tile colors — no murky deep tones */
+const VARDAG_TILE_COLORS = ['#3C4A30', '#3A4A2E', '#384832', '#405030'];
+
+function getTileColor(product: ProductManifest, index: number, isSquareGrid = false): string {
+  if (isSquareGrid && product.id === 'vardagskort') {
+    return VARDAG_TILE_COLORS[index] ?? VARDAG_TILE_COLORS[0];
+  }
   const depths = [product.tileLight, product.tileMid, product.tileDeep].filter(Boolean) as string[];
   if (depths.length === 0) return product.backgroundColor;
   return depths[index % depths.length];
@@ -65,6 +71,14 @@ const TILE_ILLUSTRATION_STYLES = [
   { scale: 1.1,  objectPosition: '50% 55%', opacity: 0.38 },
   { scale: 1.1,  objectPosition: '50% 22%', opacity: 0.32 },
   { scale: 1.1,  objectPosition: '50% 20%', opacity: 0.28 },
+];
+
+/** Square-grid tiles get high-impact illustration treatment (like library tiles) */
+const SQUARE_TILE_ILLUSTRATION_STYLES = [
+  { scale: 1.1, objectPosition: '50% 20%', opacity: 0.85 },
+  { scale: 1.1, objectPosition: '50% 15%', opacity: 0.82 },
+  { scale: 1.1, objectPosition: '50% 25%', opacity: 0.80 },
+  { scale: 1.1, objectPosition: '50% 20%', opacity: 0.82 },
 ];
 
 /* ── First card per category hook ── */
@@ -121,7 +135,8 @@ function CategoryTile({
 }) {
   const navigate = useNavigate();
   const isFirst = index === 0;
-  const style = TILE_ILLUSTRATION_STYLES[Math.min(index, TILE_ILLUSTRATION_STYLES.length - 1)];
+  const styles = squareTile ? SQUARE_TILE_ILLUSTRATION_STYLES : TILE_ILLUSTRATION_STYLES;
+  const style = styles[Math.min(index, styles.length - 1)];
   const shieldRgb = hexToRgb(tileBg);
 
   return (
@@ -224,9 +239,26 @@ function CategoryTile({
               objectFit: 'cover',
               objectPosition: style.objectPosition,
               opacity: style.opacity,
+              ...(squareTile ? {
+                filter: `saturate(1.25) brightness(1.15) drop-shadow(0 6px 16px rgba(0,0,0,0.5))`,
+              } : {}),
             }}
           />
         </div>
+      )}
+
+      {/* Inner glow for square tiles — atmospheric warmth behind illustration */}
+      {squareTile && (
+        <div
+          aria-hidden="true"
+          style={{
+            position: 'absolute',
+            inset: 0,
+            zIndex: 0,
+            pointerEvents: 'none',
+            background: `radial-gradient(ellipse 80% 70% at 50% 30%, rgba(${shieldRgb}, 0.15) 0%, transparent 70%)`,
+          }}
+        />
       )}
 
       {/* Gradient shield for text readability */}
@@ -236,8 +268,10 @@ function CategoryTile({
           bottom: 0,
           left: 0,
           right: 0,
-          height: '75%',
-          background: `linear-gradient(to top, rgba(${shieldRgb}, 1) 0%, rgba(${shieldRgb}, 0.97) 25%, rgba(${shieldRgb}, 0.85) 45%, rgba(${shieldRgb}, 0.45) 70%, transparent 100%)`,
+          height: squareTile ? '60%' : '75%',
+          background: squareTile
+            ? `linear-gradient(to top, rgba(${shieldRgb}, 1) 0%, rgba(${shieldRgb}, 0.95) 20%, rgba(${shieldRgb}, 0.7) 40%, rgba(${shieldRgb}, 0.2) 65%, transparent 100%)`
+            : `linear-gradient(to top, rgba(${shieldRgb}, 1) 0%, rgba(${shieldRgb}, 0.97) 25%, rgba(${shieldRgb}, 0.85) 45%, rgba(${shieldRgb}, 0.45) 70%, transparent 100%)`,
           pointerEvents: 'none',
           zIndex: 2,
         }}
@@ -250,7 +284,7 @@ function CategoryTile({
           bottom: 0,
           left: 0,
           right: 0,
-          padding: '14px 16px',
+          padding: squareTile ? '12px 14px' : '14px 16px',
           zIndex: 3,
         }}
       >
@@ -258,25 +292,27 @@ function CategoryTile({
           style={{
             fontFamily: 'var(--font-display)',
             fontVariationSettings: "'opsz' 17",
-            fontSize: '18px',
+            fontSize: squareTile ? '16px' : '18px',
             fontWeight: 600,
             color: LANTERN_GLOW,
             lineHeight: 1.2,
             display: 'block',
-            textShadow: '0 1px 4px rgba(0,0,0,0.5)',
+            textShadow: `0 1px 6px rgba(0,0,0,0.7), 0 0 16px rgba(${shieldRgb}, 0.8)`,
           }}
         >
           {cat.title}
         </span>
         <span
           style={{
-            fontSize: '12px',
-            fontWeight: 500,
-            color: '#C8BFB4',
+            fontSize: squareTile ? '11px' : '12px',
+            fontWeight: 600,
+            color: completed > 0 ? SAFFRON_FLAME : LANTERN_GLOW,
+            opacity: completed > 0 ? 0.9 : 0.5,
             lineHeight: 1.3,
             marginTop: '3px',
             display: 'block',
-            textShadow: '0 1px 3px rgba(0,0,0,0.4)',
+            letterSpacing: '0.02em',
+            textShadow: `0 1px 4px rgba(0,0,0,0.5)`,
           }}
         >
           {completed} av {total} kort utforskade
@@ -363,16 +399,16 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
               objectPosition: '50% 12%',
             }}
           />
-          {/* Multi-stop scrim: product color blend — lighter for Vardag to show illustration */}
+          {/* Multi-stop scrim: product color blend — much lighter for Vardag */}
           <div
             style={{
               position: 'absolute',
               bottom: 0,
               left: 0,
               right: 0,
-              height: isVardag ? '75%' : '88%',
+              height: isVardag ? '60%' : '88%',
               background: isVardag
-                ? `linear-gradient(to top, ${bg} 0%, ${bg}E8 12%, ${bg}AA 28%, ${tileLight}50 50%, ${tileLight}18 70%, transparent 100%)`
+                ? `linear-gradient(to top, ${bg} 0%, ${bg}D0 15%, ${bg}80 35%, ${tileLight}30 55%, transparent 100%)`
                 : `linear-gradient(to top, ${bg} 0%, ${bg}F5 15%, ${bg}DD 30%, ${tileLight}70 55%, ${tileLight}26 75%, transparent 100%)`,
               pointerEvents: 'none',
             }}
@@ -417,21 +453,43 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
             >
               {product.name}
             </h1>
-            <p
-              className="font-serif"
-              style={{
-                fontSize: 'clamp(16px, 4.5vw, 20px)',
-                fontWeight: isSU ? 500 : 400,
-                color: isVardag ? product.accentColorMuted : (product.accentColor.startsWith('hsl') ? undefined : DRIFTWOOD),
-                opacity: 0.95,
-                marginTop: '6px',
-                textShadow: isSU
-                  ? `0 2px 24px rgba(0,0,0,1), 0 0 60px ${bg}, 0 0 120px ${bg}`
-                  : `0 2px 20px rgba(0,0,0,0.9), 0 0 50px ${bg}, 0 0 100px ${bg}`,
-              }}
-            >
-              {product.tagline}
-            </p>
+            {isVardag ? (
+              <span
+                className="font-serif"
+                style={{
+                  display: 'inline-block',
+                  fontSize: 'clamp(14px, 4vw, 18px)',
+                  fontWeight: 500,
+                  color: LANTERN_GLOW,
+                  opacity: 0.85,
+                  marginTop: '10px',
+                  padding: '4px 16px',
+                  borderRadius: '20px',
+                  background: `rgba(${hexToRgb(bg)}, 0.65)`,
+                  backdropFilter: 'blur(8px)',
+                  WebkitBackdropFilter: 'blur(8px)',
+                  letterSpacing: '0.02em',
+                }}
+              >
+                {product.tagline}
+              </span>
+            ) : (
+              <p
+                className="font-serif"
+                style={{
+                  fontSize: 'clamp(16px, 4.5vw, 20px)',
+                  fontWeight: isSU ? 500 : 400,
+                  color: product.accentColor.startsWith('hsl') ? undefined : DRIFTWOOD,
+                  opacity: 0.95,
+                  marginTop: '6px',
+                  textShadow: isSU
+                    ? `0 2px 24px rgba(0,0,0,1), 0 0 60px ${bg}, 0 0 120px ${bg}`
+                    : `0 2px 20px rgba(0,0,0,0.9), 0 0 50px ${bg}, 0 0 100px ${bg}`,
+                }}
+              >
+                {product.tagline}
+              </p>
+            )}
 
             {/* Spacer — pushes content below hero face zone */}
             {!useSquareGrid && <div style={{ height: isSU ? 'clamp(12px, 2vh, 24px)' : 'clamp(48px, 12vh, 100px)' }} />}
@@ -489,7 +547,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
         </motion.div>
 
         {/* Flex spacer — pushes grid to bottom for square-grid layouts */}
-        {useSquareGrid && <div style={{ flex: 1 }} />}
+        {useSquareGrid && <div style={{ flex: 1, minHeight: '24px' }} />}
 
         {/* Section header — only for non-sequential, non-grid products */}
         {!isSU && !useSquareGrid && (
@@ -528,7 +586,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
           }}
         >
           {product.categories.map((cat, index) => {
-            const tileBg = getTileColor(product, index);
+            const tileBg = getTileColor(product, index, useSquareGrid);
             const catProgress = progress.categoryProgress[cat.id];
             const completed = catProgress?.completed ?? 0;
             const total = catProgress?.total ?? cat.cardCount ?? 0;
