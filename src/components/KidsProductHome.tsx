@@ -45,7 +45,7 @@ const tileVariants = {
 /* ── Helpers ── */
 
 /** Vardag uses brighter, more distinct tile colors — no murky deep tones */
-const VARDAG_TILE_COLORS = ['#3C4A30', '#3A4A2E', '#384832', '#405030'];
+const VARDAG_TILE_COLORS = ['#3C4A30', '#3E4C32', '#3C4A30', '#3E4C32'];
 
 function getTileColor(product: ProductManifest, index: number, isSquareGrid = false): string {
   if (isSquareGrid && product.id === 'vardagskort') {
@@ -152,7 +152,8 @@ function CategoryTile({
         overflow: 'hidden',
         width: '100%',
         ...(squareTile ? { aspectRatio: '4 / 5' } : { minHeight: compactHeight ? '105px' : '100px' }),
-        borderRadius: '22px',
+
+        borderRadius: squareTile ? '28px' : '22px',
         cursor: isLocked ? 'default' : 'pointer',
         textAlign: 'left',
         backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.08) 100%)',
@@ -397,6 +398,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
               height: '100%',
               objectFit: 'cover',
               objectPosition: '50% 12%',
+              ...(isVardag ? { filter: 'saturate(1.25) brightness(1.15)' } : {}),
             }}
           />
           {/* Multi-stop scrim: product color blend — much lighter for Vardag */}
@@ -408,7 +410,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
               right: 0,
               height: isVardag ? '60%' : '88%',
               background: isVardag
-                ? `linear-gradient(to top, ${bg} 0%, ${bg}D0 15%, ${bg}80 35%, ${tileLight}30 55%, transparent 100%)`
+                ? `linear-gradient(to top, ${bg} 0%, ${bg}B0 12%, ${bg}60 30%, ${tileLight}20 50%, transparent 100%)`
                 : `linear-gradient(to top, ${bg} 0%, ${bg}F5 15%, ${bg}DD 30%, ${tileLight}70 55%, ${tileLight}26 75%, transparent 100%)`,
               pointerEvents: 'none',
             }}
@@ -461,13 +463,13 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
                   fontSize: 'clamp(14px, 4vw, 18px)',
                   fontWeight: 500,
                   color: LANTERN_GLOW,
-                  opacity: 0.85,
                   marginTop: '10px',
-                  padding: '4px 16px',
+                  padding: '5px 18px',
                   borderRadius: '20px',
-                  background: `rgba(${hexToRgb(bg)}, 0.65)`,
-                  backdropFilter: 'blur(8px)',
-                  WebkitBackdropFilter: 'blur(8px)',
+                  background: `rgba(${hexToRgb(bg)}, 0.78)`,
+                  backdropFilter: 'blur(12px)',
+                  WebkitBackdropFilter: 'blur(12px)',
+                  border: '1px solid rgba(255,255,255,0.08)',
                   letterSpacing: '0.02em',
                 }}
               >
