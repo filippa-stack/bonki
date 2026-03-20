@@ -19,6 +19,9 @@ function isInsideDemoFrame(): boolean {
 }
 
 export default function MobileOnlyGate({ children }: { children: ReactNode }) {
+  // Bypass: allow desktop preview during development. Remove this line to re-enable the gate.
+  return <>{children}</>;
+
   const [copied, setCopied] = useState(false);
   const location = useLocation();
   const { user } = useAuth();
