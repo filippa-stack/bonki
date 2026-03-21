@@ -411,13 +411,13 @@ export default function KidsCardPortal() {
                 }}
               />
 
-              {/* Ceramic border */}
+              {/* Ghost border */}
               <div
                 style={{
                   position: 'absolute',
                   inset: 0,
                   borderRadius: '20px',
-                  border: '1.5px solid rgba(255, 255, 255, 0.22)',
+                  border: '1px solid rgba(255, 255, 255, 0.12)',
                   pointerEvents: 'none',
                   zIndex: 6,
                 }}
