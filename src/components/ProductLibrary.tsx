@@ -755,21 +755,21 @@ export default function ProductLibrary() {
               className="cursor-pointer"
               style={{
                 borderRadius: '22px',
-                backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.08) 100%)',
-                backgroundColor: '#8B5E12',
+                backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.12) 100%)',
+                backgroundColor: '#6B4A0E',
                 height: '260px',
                 display: 'flex',
                 flexDirection: 'column',
                 position: 'relative',
                 overflow: 'hidden',
-                border: '2px solid rgba(255, 220, 120, 0.45)',
+                border: '2px solid rgba(255, 200, 90, 0.35)',
                 boxShadow: [
-                  '0 16px 40px rgba(70, 47, 9, 0.4)',
-                  '0 6px 16px rgba(70, 47, 9, 0.25)',
-                  '0 1px 3px rgba(0, 0, 0, 0.10)',
-                  '0 0 72px rgba(139, 94, 18, 0.18)',
-                  'inset 0 3px 6px rgba(255, 255, 255, 0.35)',
-                  'inset 0 -4px 10px rgba(70, 47, 9, 0.14)',
+                  '0 16px 40px rgba(50, 35, 8, 0.45)',
+                  '0 6px 16px rgba(50, 35, 8, 0.3)',
+                  '0 1px 3px rgba(0, 0, 0, 0.12)',
+                  '0 0 72px rgba(107, 74, 14, 0.20)',
+                  'inset 0 3px 6px rgba(255, 255, 255, 0.25)',
+                  'inset 0 -4px 10px rgba(50, 35, 8, 0.18)',
                 ].join(', '),
               }}
             >
@@ -781,7 +781,7 @@ export default function ProductLibrary() {
                   inset: 0,
                   zIndex: 0,
                   pointerEvents: 'none',
-                  background: 'radial-gradient(ellipse 80% 90% at 65% 50%, rgba(255, 220, 140, 0.15) 0%, rgba(255, 220, 140, 0.05) 40%, transparent 70%)',
+                  background: 'radial-gradient(ellipse 80% 90% at 65% 50%, rgba(255, 200, 100, 0.12) 0%, rgba(255, 200, 100, 0.04) 40%, transparent 70%)',
                 }}
               />
               {/* Illustration — right-aligned, oversized like kids tiles */}
@@ -804,7 +804,7 @@ export default function ProductLibrary() {
                     objectFit: 'contain',
                     objectPosition: 'right bottom',
                     opacity: 0.95,
-                    filter: 'brightness(1.1) saturate(1.1)',
+                    filter: 'brightness(1.15) saturate(1.2) contrast(1.05)',
                   }}
                 />
               </div>
@@ -818,7 +818,7 @@ export default function ProductLibrary() {
                   width: '55%',
                   zIndex: 1,
                   pointerEvents: 'none',
-                  background: `linear-gradient(to right, rgba(46, 34, 51, 1) 0%, rgba(46, 34, 51, 0.9) 30%, rgba(46, 34, 51, 0.4) 65%, transparent 100%)`,
+                  background: `linear-gradient(to right, rgba(40, 28, 6, 0.95) 0%, rgba(40, 28, 6, 0.85) 30%, rgba(40, 28, 6, 0.35) 65%, transparent 100%)`,
                 }}
               />
 
@@ -842,7 +842,7 @@ export default function ProductLibrary() {
                   color: '#FDF6E3',
                   lineHeight: 1.15,
                   letterSpacing: '-0.01em',
-                  textShadow: '0 1px 6px rgba(46, 34, 51, 0.8), 0 0 16px rgba(46, 34, 51, 0.6)',
+                  textShadow: '0 1px 6px rgba(40, 28, 6, 0.9), 0 0 16px rgba(40, 28, 6, 0.7)',
                 }}>
                   Still Us
                 </h3>
@@ -853,7 +853,7 @@ export default function ProductLibrary() {
                   color: 'hsla(100, 40%, 85%, 0.7)',
                   marginTop: '4px',
                   lineHeight: 1.4,
-                  textShadow: '0 0 10px rgba(46, 34, 51, 0.8)',
+                  textShadow: '0 0 10px rgba(40, 28, 6, 0.9)',
                 }}>
                   22 samtalsövningar för er som vill stanna kvar
                 </p>
