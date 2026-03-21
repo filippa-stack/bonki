@@ -187,21 +187,24 @@ export default function LibraryResumeCard({ activeTab, global, forceMock }: Libr
       style={{
         width: '100%',
         padding: '16px',
-        background: tileBg,
-        border: useProductBg
-          ? '1.5px solid rgba(255, 255, 255, 0.20)'
-          : 'none',
-        borderLeft: useProductBg
-          ? '1.5px solid rgba(255, 255, 255, 0.20)'
-          : `3px solid ${display.accentColor}`,
+        background: 'rgba(15, 15, 15, 0.7)',
+        backdropFilter: 'blur(22px)',
+        WebkitBackdropFilter: 'blur(22px)',
+        border: '1px solid rgba(255, 255, 255, 0.12)',
         borderRadius: '16px',
         cursor: 'pointer',
         textAlign: 'left',
         display: 'flex',
         alignItems: 'center',
-        boxShadow: useProductBg
-          ? `0 0 60px ${hexToRgba(tileBg, 0.25)}, 0 8px 24px rgba(0,0,0,0.15)`
-          : 'none',
+        backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.10) 100%)',
+        boxShadow: [
+          `0 20px 60px rgba(0, 0, 0, 0.50)`,
+          `0 8px 24px rgba(0, 0, 0, 0.30)`,
+          `0 2px 6px rgba(0, 0, 0, 0.15)`,
+          `0 0 50px ${hexToRgba(tileBg, 0.20)}`,
+          `inset 0 1px 0 rgba(255, 255, 255, 0.18)`,
+          `inset 0 -2px 6px rgba(0, 0, 0, 0.15)`,
+        ].join(', '),
       }}
     >
       <div style={{ flex: 1, minWidth: 0 }}>
