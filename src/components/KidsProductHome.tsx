@@ -173,11 +173,21 @@ function CategoryTile({
         borderRadius: squareTile ? '28px' : '22px',
         cursor: isLocked ? 'default' : 'pointer',
         textAlign: 'left',
-        backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.08) 100%)',
-        backgroundColor: tileBg,
+        backgroundImage: glassTile
+          ? 'none'
+          : 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.08) 100%)',
+        backgroundColor: glassTile ? 'rgba(255, 255, 255, 0.05)' : tileBg,
+        backdropFilter: glassTile ? 'blur(25px)' : undefined,
+        WebkitBackdropFilter: glassTile ? 'blur(25px)' : undefined,
         opacity: isLocked ? 0.6 : 1,
-        border: '1.5px solid rgba(255, 255, 255, 0.25)',
-        boxShadow: [
+        border: glassTile
+          ? '1px solid rgba(255, 255, 255, 0.1)'
+          : '1.5px solid rgba(255, 255, 255, 0.25)',
+        boxShadow: glassTile
+          ? glassGlowColor
+            ? `0 8px 40px ${glassGlowColor}, 0 2px 12px rgba(0,0,0,0.3)`
+            : '0 8px 40px rgba(0,0,0,0.3), 0 2px 12px rgba(0,0,0,0.2)'
+          : [
               '0 12px 32px rgba(0, 0, 0, 0.30)',
               '0 4px 12px rgba(0, 0, 0, 0.18)',
               '0 1px 3px rgba(0, 0, 0, 0.08)',
