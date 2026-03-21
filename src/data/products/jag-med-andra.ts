@@ -249,7 +249,7 @@ export const jagMedAndraProduct: ProductManifest = {
   tileDeep: '#6A4828',
   pronounMode: 'du',
   heroImage,
-  freeCardId: 'jma-vanskap',
+  freeCardId: 'jma-annorlunda',
   ageLabel: '6+',
   paywallDescription: 'Lås upp alla samtal om vänskap, gränser och att vara tillsammans.',
   categories,
