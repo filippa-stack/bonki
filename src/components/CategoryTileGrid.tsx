@@ -87,7 +87,6 @@ function CategoryTile({
   if (!cat) return null;
 
   const catProgress = progress.categoryProgress[cat.id];
-  const isFirst = index === 0;
   const isDeep = index >= total - 2 && total > 2;
   const nameOpacity = isDeep ? 0.85 : 1;
   const subOpacity = isDeep ? 0.7 : 1;
@@ -96,6 +95,7 @@ function CategoryTile({
 
   const completed = catProgress?.completed ?? 0;
   const totalCards = catProgress?.total ?? 0;
+  const hasProgress = completed > 0;
 
   const ariaLabel = `${cat.title}: ${tile.sub}. ${completed} av ${totalCards} utforskade.`;
 
@@ -115,23 +115,14 @@ function CategoryTile({
         textAlign: 'left',
         backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.08) 100%)',
         backgroundColor: tile.bg,
-        border: isFirst ? `2px solid ${SAFFRON}` : '1.5px solid rgba(255, 255, 255, 0.25)',
-        boxShadow: isFirst
-          ? [
-              '0 0 16px rgba(233, 180, 76, 0.45)',
-              '0 0 4px rgba(233, 180, 76, 0.25)',
-              '0 12px 32px rgba(0, 0, 0, 0.30)',
-              '0 4px 12px rgba(0, 0, 0, 0.18)',
-              'inset 0 3px 6px rgba(255, 255, 255, 0.45)',
-              'inset 0 -4px 10px rgba(0, 0, 0, 0.14)',
-            ].join(', ')
-          : [
-              '0 12px 32px rgba(0, 0, 0, 0.30)',
-              '0 4px 12px rgba(0, 0, 0, 0.18)',
-              '0 1px 3px rgba(0, 0, 0, 0.08)',
-              'inset 0 3px 6px rgba(255, 255, 255, 0.45)',
-              'inset 0 -4px 10px rgba(0, 0, 0, 0.14)',
-            ].join(', '),
+        border: '1.5px solid rgba(255, 255, 255, 0.25)',
+        boxShadow: [
+            '0 12px 32px rgba(0, 0, 0, 0.30)',
+            '0 4px 12px rgba(0, 0, 0, 0.18)',
+            '0 1px 3px rgba(0, 0, 0, 0.08)',
+            'inset 0 3px 6px rgba(255, 255, 255, 0.45)',
+            'inset 0 -4px 10px rgba(0, 0, 0, 0.14)',
+          ].join(', '),
         padding: 0,
         aspectRatio: isOddLast ? '2 / 1' : '1 / 1',
         ...(isOddLast ? { gridColumn: '1 / -1' } : {}),
@@ -221,22 +212,38 @@ function CategoryTile({
           {tile.sub}
         </span>
 
-        {/* Progress: text counter */}
+        {/* Progress: subtle bar + text */}
         {totalCards > 0 && (
-          <span
-            style={{
-              fontSize: '11px',
-              fontWeight: 600,
-              color: completed > 0 ? SAFFRON : LANTERN,
-              opacity: completed > 0 ? 0.85 : 0.3,
-              marginTop: '6px',
-              display: 'block',
-              letterSpacing: '0.02em',
-              textShadow: '0 1px 2px rgba(0,0,0,0.3)',
-            }}
-          >
-            {completed} av {totalCards}
-          </span>
+          <div style={{ marginTop: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            {/* Mini progress bar */}
+            <div style={{
+              width: '32px', height: '3px', borderRadius: '2px',
+              backgroundColor: 'rgba(255,255,255,0.12)',
+              overflow: 'hidden',
+              flexShrink: 0,
+            }}>
+              <div style={{
+                width: `${totalCards > 0 ? (completed / totalCards) * 100 : 0}%`,
+                height: '100%',
+                borderRadius: '2px',
+                backgroundColor: SAFFRON,
+                opacity: completed > 0 ? 0.9 : 0,
+                transition: 'width 0.4s ease',
+              }} />
+            </div>
+            <span
+              style={{
+                fontSize: '11px',
+                fontWeight: 500,
+                color: completed > 0 ? SAFFRON : LANTERN,
+                opacity: completed > 0 ? 0.8 : 0.3,
+                letterSpacing: '0.02em',
+                textShadow: '0 1px 2px rgba(0,0,0,0.3)',
+              }}
+            >
+              {completed} av {totalCards}
+            </span>
+          </div>
         )}
       </div>
     </motion.button>
