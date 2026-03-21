@@ -305,7 +305,10 @@ export default function KidsCardPortal() {
                 borderRadius: '20px',
                 overflow: 'hidden',
                 cursor: 'pointer',
-                backgroundColor: tileBg,
+                // Obsidian Glass surface
+                backgroundColor: 'rgba(15, 15, 15, 0.7)',
+                backdropFilter: 'blur(22px)',
+                WebkitBackdropFilter: 'blur(22px)',
                 zIndex: 1,
                 transform: portalPhase === 'phase1' ? 'scale(1.03)' : portalPhase === 'phase2' ? 'scale(1.03)' : undefined,
                 filter: portalPhase === 'phase1' ? 'brightness(1.1)' : undefined,
