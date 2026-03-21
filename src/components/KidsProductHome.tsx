@@ -261,7 +261,7 @@ function CategoryTile({
       )}
 
       {/* Inner glow for square tiles — atmospheric warmth behind illustration */}
-      {squareTile && (
+      {squareTile && !glassTile && (
         <div
           aria-hidden="true"
           style={{
@@ -274,6 +274,20 @@ function CategoryTile({
         />
       )}
 
+      {/* Chromatic inner glow for glass tiles */}
+      {glassTile && glassGlowColor && (
+        <div
+          aria-hidden="true"
+          style={{
+            position: 'absolute',
+            inset: 0,
+            zIndex: 0,
+            pointerEvents: 'none',
+            background: `radial-gradient(ellipse 90% 80% at 50% 40%, ${glassGlowColor} 0%, transparent 70%)`,
+          }}
+        />
+      )}
+
       {/* Gradient shield for text readability */}
       <div
         style={{
@@ -282,9 +296,11 @@ function CategoryTile({
           left: 0,
           right: 0,
           height: squareTile ? '60%' : '75%',
-          background: squareTile
-            ? `linear-gradient(to top, rgba(${shieldRgb}, 1) 0%, rgba(${shieldRgb}, 0.95) 20%, rgba(${shieldRgb}, 0.7) 40%, rgba(${shieldRgb}, 0.2) 65%, transparent 100%)`
-            : `linear-gradient(to top, rgba(${shieldRgb}, 1) 0%, rgba(${shieldRgb}, 0.97) 25%, rgba(${shieldRgb}, 0.85) 45%, rgba(${shieldRgb}, 0.45) 70%, transparent 100%)`,
+          background: glassTile
+            ? 'linear-gradient(to top, rgba(10, 6, 2, 0.85) 0%, rgba(10, 6, 2, 0.7) 25%, rgba(10, 6, 2, 0.35) 55%, transparent 100%)'
+            : squareTile
+              ? `linear-gradient(to top, rgba(${shieldRgb}, 1) 0%, rgba(${shieldRgb}, 0.95) 20%, rgba(${shieldRgb}, 0.7) 40%, rgba(${shieldRgb}, 0.2) 65%, transparent 100%)`
+              : `linear-gradient(to top, rgba(${shieldRgb}, 1) 0%, rgba(${shieldRgb}, 0.97) 25%, rgba(${shieldRgb}, 0.85) 45%, rgba(${shieldRgb}, 0.45) 70%, transparent 100%)`,
           pointerEvents: 'none',
           zIndex: 2,
         }}
