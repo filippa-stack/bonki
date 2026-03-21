@@ -485,7 +485,7 @@ export default function KidsCardPortal() {
                 marginTop: '4px',
               }}
             >
-              {promptCount} frågor · {estimateMinutes(promptCount)}
+              {promptCount} frågor · {estimateMinutes(promptCount, productSlug)}
             </p>
             <p
               style={{
