@@ -144,7 +144,6 @@ function CategoryTile({
   fillHeight?: boolean;
 }) {
   const navigate = useNavigate();
-  const isFirst = index === 0;
   const styles = squareTile ? SQUARE_TILE_ILLUSTRATION_STYLES : TILE_ILLUSTRATION_STYLES;
   const style = styles[Math.min(index, styles.length - 1)];
   const shieldRgb = hexToRgb(tileBg);
@@ -169,29 +168,14 @@ function CategoryTile({
         backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.08) 100%)',
         backgroundColor: tileBg,
         opacity: isLocked ? 0.6 : 1,
-        border: isFirst && !isLocked
-          ? `2px solid ${SAFFRON_FLAME}`
-          : isRecommended && !isLocked
-            ? `2px solid ${SAFFRON_FLAME}88`
-            : '1.5px solid rgba(255, 255, 255, 0.25)',
-        boxShadow: isLocked
-          ? '0 4px 12px rgba(0, 0, 0, 0.18), inset 0 2px 4px rgba(255, 255, 255, 0.2)'
-          : isFirst
-            ? [
-                '0 0 16px rgba(233, 180, 76, 0.45)',
-                '0 0 4px rgba(233, 180, 76, 0.25)',
-                '0 12px 32px rgba(0, 0, 0, 0.30)',
-                '0 4px 12px rgba(0, 0, 0, 0.18)',
-                'inset 0 3px 6px rgba(255, 255, 255, 0.45)',
-                'inset 0 -4px 10px rgba(0, 0, 0, 0.14)',
-              ].join(', ')
-            : [
-                '0 12px 32px rgba(0, 0, 0, 0.30)',
-                '0 4px 12px rgba(0, 0, 0, 0.18)',
-                '0 1px 3px rgba(0, 0, 0, 0.08)',
-                'inset 0 3px 6px rgba(255, 255, 255, 0.45)',
-                'inset 0 -4px 10px rgba(0, 0, 0, 0.14)',
-              ].join(', '),
+        border: '1.5px solid rgba(255, 255, 255, 0.25)',
+        boxShadow: [
+              '0 12px 32px rgba(0, 0, 0, 0.30)',
+              '0 4px 12px rgba(0, 0, 0, 0.18)',
+              '0 1px 3px rgba(0, 0, 0, 0.08)',
+              'inset 0 3px 6px rgba(255, 255, 255, 0.45)',
+              'inset 0 -4px 10px rgba(0, 0, 0, 0.14)',
+            ].join(', '),
         padding: 0,
         transition: 'opacity 0.3s ease',
       }}
@@ -313,21 +297,39 @@ function CategoryTile({
         >
           {cat.title}
         </span>
-        <span
-          style={{
-            fontSize: squareTile ? '11px' : '12px',
-            fontWeight: 600,
-            color: completed > 0 ? SAFFRON_FLAME : LANTERN_GLOW,
-            opacity: completed > 0 ? 0.9 : 0.5,
-            lineHeight: 1.3,
-            marginTop: '3px',
-            display: 'block',
-            letterSpacing: '0.02em',
-            textShadow: `0 1px 4px rgba(0,0,0,0.5)`,
-          }}
-        >
-          {completed} av {total} kort utforskade
-        </span>
+        {/* Progress: subtle bar + text */}
+        {total > 0 && (
+          <div style={{ marginTop: '6px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <div style={{
+              width: '28px', height: '3px', borderRadius: '2px',
+              backgroundColor: 'rgba(255,255,255,0.12)',
+              overflow: 'hidden',
+              flexShrink: 0,
+            }}>
+              <div style={{
+                width: `${total > 0 ? (completed / total) * 100 : 0}%`,
+                height: '100%',
+                borderRadius: '2px',
+                backgroundColor: SAFFRON_FLAME,
+                opacity: completed > 0 ? 0.9 : 0,
+                transition: 'width 0.4s ease',
+              }} />
+            </div>
+            <span
+              style={{
+                fontSize: squareTile ? '11px' : '12px',
+                fontWeight: 500,
+                color: completed > 0 ? SAFFRON_FLAME : LANTERN_GLOW,
+                opacity: completed > 0 ? 0.8 : 0.35,
+                lineHeight: 1.3,
+                letterSpacing: '0.02em',
+                textShadow: `0 1px 4px rgba(0,0,0,0.5)`,
+              }}
+            >
+              {completed} av {total}
+            </span>
+          </div>
+        )}
       </div>
     </motion.button>
   );

@@ -21,10 +21,10 @@ import stillUsHero from '@/assets/illustration-still-us-home.png';
 // ── Categories (one per layer) ──────────────────────────────
 
 const LAYER_META: { id: string; title: string; subtitle: string; color: string }[] = [
-  { id: 'su-mock-vardagen',     title: 'Vardagen',     subtitle: 'Hur livet mellan er ser ut just nu.',                        color: '#343E4E' },
-  { id: 'su-mock-tillsammans',  title: 'Tillsammans',  subtitle: 'Hur ni möter det som är svårt — och varandra.',             color: '#2A3241' },
-  { id: 'su-mock-grunden',      title: 'Grunden',      subtitle: 'Det ni bär med er in i relationen.',                        color: '#263041' },
-  { id: 'su-mock-riktningen',   title: 'Riktningen',   subtitle: 'Vart ni är på väg — och vad ni väljer.',                    color: '#1C222E' },
+  { id: 'su-mock-vardagen',     title: 'Vardagen',     subtitle: 'Hur livet mellan er ser ut just nu.',                        color: '#3D2E48' },
+  { id: 'su-mock-tillsammans',  title: 'Tillsammans',  subtitle: 'Hur ni möter det som är svårt — och varandra.',             color: '#352842' },
+  { id: 'su-mock-grunden',      title: 'Grunden',      subtitle: 'Det ni bär med er in i relationen.',                        color: '#2E2338' },
+  { id: 'su-mock-riktningen',   title: 'Riktningen',   subtitle: 'Vart ni är på väg — och vad ni väljer.',                    color: '#28202E' },
 ];
 
 const categories: Category[] = LAYER_META.map((l, i) => ({
@@ -121,14 +121,14 @@ export const stillUsMockProduct: ProductManifest = {
   tagline: 'Vi finns kvar',
   description: '22 samtal fördelade på fem lager. Testversion i barnproduktformat.',
   headerTitle: 'Still Us',
-  accentColor: 'hsl(28, 80%, 57%)',       // saffron
+  accentColor: 'hsl(28, 80%, 57%)',       // deep saffron
   accentColorMuted: 'hsl(28, 60%, 85%)',
-  secondaryAccent: 'hsl(215, 25%, 20%)',   // steel blue
-  backgroundColor: '#141822',
+  secondaryAccent: 'hsl(280, 20%, 22%)',   // ember tone
+  backgroundColor: '#2E2233',              // emberNight
   ctaButtonColor: '#E8913A',
-  tileLight: '#343E4E',
-  tileMid: '#2A3241',
-  tileDeep: '#263041',
+  tileLight: '#3D2E48',                    // ember-tinted tile
+  tileMid: '#352842',
+  tileDeep: '#2E2338',
   pronounMode: 'ni',
   paywallDescription: 'Fördjupa samtalet — vecka för vecka, lager för lager.',
   categories,
