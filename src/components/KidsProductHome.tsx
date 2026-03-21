@@ -440,10 +440,10 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
           minHeight: '100vh',
           display: 'flex',
           flexDirection: 'column',
-          paddingTop: isSU ? 'clamp(24px, 6vh, 56px)' : 'clamp(32px, 10vh, 90px)',
-          paddingRight: isSU ? '10px' : '16px',
-          paddingBottom: isSU ? '16px' : '0px',
-          paddingLeft: isSU ? '10px' : '16px',
+          paddingTop: 'clamp(32px, 10vh, 90px)',
+          paddingRight: '16px',
+          paddingBottom: '0px',
+          paddingLeft: '16px',
         }}
       >
         {/* Title zone */}
@@ -469,37 +469,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
             >
               {product.name}
             </h1>
-            {isSU ? (
-              <>
-                <p
-                  className="font-serif"
-                  style={{
-                    fontSize: 'clamp(14px, 4vw, 18px)',
-                    fontWeight: 500,
-                    color: DRIFTWOOD,
-                    opacity: 0.95,
-                    marginTop: '6px',
-                    textShadow: `0 2px 24px rgba(0,0,0,1), 0 0 60px ${bg}, 0 0 120px ${bg}`,
-                  }}
-                >
-                  {product.tagline}
-                </p>
-                <p
-                  className="font-serif"
-                  style={{
-                    fontSize: 'clamp(13px, 3.2vw, 15px)',
-                    fontWeight: 400,
-                    color: DRIFTWOOD,
-                    opacity: 0.7,
-                    marginTop: '4px',
-                    letterSpacing: '0.01em',
-                  }}
-                >
-                  22 samtalsövningar inom 4 områden
-                </p>
-              </>
-            ) : (
-              <span
+            <span
                 className="font-serif"
                 style={{
                   display: 'inline-block',
@@ -518,10 +488,9 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
               >
                 {product.tagline}
               </span>
-            )}
 
             {/* Spacer — pushes content below hero face zone */}
-            {!useSquareGrid && <div style={{ height: isSU ? 'clamp(12px, 2vh, 24px)' : 'clamp(48px, 12vh, 100px)' }} />}
+            {!useSquareGrid && <div style={{ height: 'clamp(48px, 12vh, 100px)' }} />}
 
             {/* ═══ Resume Pill (conditional) ═══ */}
             {!progress.loading && progress.activeSession && (() => {
@@ -576,7 +545,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
         </motion.div>
 
         {/* Small spacer before grid */}
-        {useSquareGrid && !isSU && <div style={{ flex: 1 }} />}
+        {useSquareGrid && <div style={{ flex: 1 }} />}
         {useSquareGrid && <div style={{ height: '8px' }} />}
 
         {/* Removed "Välj ett ämne" header — tiles speak for themselves */}
@@ -592,12 +561,10 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
               ? {
                   gridTemplateColumns: '1fr 1fr',
                   gap: '8px',
-                  ...(isSU ? { gridTemplateRows: '1fr 1fr', flex: 1, minHeight: 0 } : {}),
                 }
-              : { flexDirection: 'column' as const, gap: isSU ? '10px' : '12px' }),
+              : { flexDirection: 'column' as const, gap: '12px' }),
             width: '100%',
-            marginTop: isSU ? '16px' : undefined,
-            marginBottom: isSU ? undefined : '10vh',
+            marginBottom: '10vh',
           }}
         >
           {product.categories.map((cat, index) => {
@@ -627,7 +594,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
                 key={cat.id}
                 style={{
                   ...(isLastOdd ? { gridColumn: '1 / -1' } : {}),
-                  ...(isSU ? { minHeight: 0 } : {}),
+                  
                 }}
               >
                 <CategoryTile
@@ -641,10 +608,10 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
                   isRecommended={isRecommended}
                   isLocked={isLocked}
                   showLayerNumber={isSU}
-                  compactHeight={isSU}
+                  compactHeight={false}
                   squareTile={useSquareGrid}
                   wideSpan={isLastOdd}
-                  fillHeight={isSU}
+                  fillHeight={false}
                 />
               </div>
             );
