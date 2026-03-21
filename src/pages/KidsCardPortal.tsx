@@ -273,13 +273,10 @@ export default function KidsCardPortal() {
             transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
             style={{
               position: 'absolute',
-              inset: '-4px',
-              borderRadius: '24px',
-              boxShadow: [
-                `0 0 16px rgba(233, 180, 76, 0.45)`,
-                `0 0 4px rgba(233, 180, 76, 0.25)`,
-              ].join(', '),
-              border: `2px solid ${SAFFRON_FLAME}`,
+              inset: '-2px',
+              borderRadius: '22px',
+              boxShadow: `0 0 20px rgba(233, 180, 76, 0.35), 0 0 6px rgba(233, 180, 76, 0.15)`,
+              border: 'none',
               pointerEvents: 'none',
               zIndex: 0,
             }}
