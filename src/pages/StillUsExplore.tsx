@@ -20,11 +20,12 @@ import {
   MIDNIGHT_INK,
 } from '@/lib/palette';
 
-/** Three conceptual layers mapping category indices to labels */
+/** Four conceptual layers mapping category indices to labels */
 const LAYERS = [
-  { label: 'Grunden', categoryIndices: [0, 1, 2] },
-  { label: 'Det som formar er', categoryIndices: [3, 4, 5] },
-  { label: 'Djupet', categoryIndices: [6, 7, 8] },
+  { label: 'Vardagen', categoryIndices: [0] },
+  { label: 'Tillsammans', categoryIndices: [1] },
+  { label: 'Grunden', categoryIndices: [2] },
+  { label: 'Riktningen', categoryIndices: [3] },
 ] as const;
 
 export default function StillUsExplore() {

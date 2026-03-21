@@ -10,11 +10,10 @@ export const RESTART_MIN_TILLBAKA = 4;
 
 /** Layer boundaries (0-indexed card ranges) */
 export const LAYERS = [
-  { id: 'layer-1', name: 'Grunden', cards: [0, 1, 2, 3] },
-  { id: 'layer-2', name: 'Normen', cards: [4, 5, 6, 7, 8] },
-  { id: 'layer-3', name: 'Konflikten', cards: [9, 10, 11, 12, 13] },
-  { id: 'layer-4', name: 'Längtan', cards: [14, 15, 16, 17] },
-  { id: 'layer-5', name: 'Valet', cards: [18, 19, 20, 21] },
+  { id: 'layer-1', name: 'Vardagen', cards: [0, 1, 2, 3] },
+  { id: 'layer-2', name: 'Tillsammans', cards: [4, 5, 6, 7, 8, 9] },
+  { id: 'layer-3', name: 'Grunden', cards: [10, 11, 12, 13, 14, 15, 16] },
+  { id: 'layer-4', name: 'Riktningen', cards: [17, 18, 19, 20, 21] },
 ] as const;
 
 /** Slider check-in phase progression */
@@ -37,19 +36,19 @@ export const CARD_SEQUENCE: { index: number; cardId: string; title: string; laye
   { index: 6, cardId: 'su-07-adversity', title: 'Att möta motgångar', layerIndex: 1 },
   { index: 7, cardId: 'su-08-behind-scenes', title: 'Framför och bakom kulisserna', layerIndex: 1 },
   { index: 8, cardId: 'su-09-thoughtful-space', title: 'Omtänksamt utrymme', layerIndex: 1 },
-  { index: 9, cardId: 'su-10-self-esteem', title: 'När självkänslan svajar', layerIndex: 2 },
+  { index: 9, cardId: 'su-10-self-esteem', title: 'När självkänslan svajar', layerIndex: 1 },
   { index: 10, cardId: 'su-11-inherited-parenting', title: 'Uppfostran ni ärvt', layerIndex: 2 },
   { index: 11, cardId: 'su-12-boundaries', title: 'Att säga ifrån', layerIndex: 2 },
   { index: 12, cardId: 'su-13-values', title: 'Mina, dina, era värderingar', layerIndex: 2 },
   { index: 13, cardId: 'su-14-family-voices', title: 'Röster från släkten', layerIndex: 2 },
-  { index: 14, cardId: 'su-15-traditions', title: 'Mina, dina, era traditioner', layerIndex: 3 },
-  { index: 15, cardId: 'su-16-philosophy', title: 'Er filosofi', layerIndex: 3 },
-  { index: 16, cardId: 'su-17-life-tilts', title: 'När livet lutar', layerIndex: 3 },
+  { index: 14, cardId: 'su-15-traditions', title: 'Mina, dina, era traditioner', layerIndex: 2 },
+  { index: 15, cardId: 'su-16-philosophy', title: 'Er filosofi', layerIndex: 2 },
+  { index: 16, cardId: 'su-17-life-tilts', title: 'När livet lutar', layerIndex: 2 },
   { index: 17, cardId: 'su-18-worth-spending', title: 'Värt att spendera på', layerIndex: 3 },
-  { index: 18, cardId: 'su-19-risk', title: 'Risk under ansvar', layerIndex: 4 },
-  { index: 19, cardId: 'su-20-adrift', title: 'På drift', layerIndex: 4 },
-  { index: 20, cardId: 'su-21-love-languages', title: 'Kärleksspråk', layerIndex: 4 },
-  { index: 21, cardId: 'su-22-choosing', title: 'Att fortsätta välja', layerIndex: 4 },
+  { index: 18, cardId: 'su-19-risk', title: 'Risk under ansvar', layerIndex: 3 },
+  { index: 19, cardId: 'su-20-adrift', title: 'På drift', layerIndex: 3 },
+  { index: 20, cardId: 'su-21-love-languages', title: 'Kärleksspråk', layerIndex: 3 },
+  { index: 21, cardId: 'su-22-choosing', title: 'Att fortsätta välja', layerIndex: 3 },
 ];
 
 /** Stale card thresholds */

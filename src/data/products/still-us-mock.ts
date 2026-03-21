@@ -21,11 +21,10 @@ import stillUsHero from '@/assets/illustration-still-us-home.png';
 // ── Categories (one per layer) ──────────────────────────────
 
 const LAYER_META: { id: string; title: string; subtitle: string; color: string }[] = [
-  { id: 'su-mock-grunden',    title: 'Grunden',    subtitle: 'Det som bär er — och det som saknas.',            color: '#343E4E' },
-  { id: 'su-mock-normen',     title: 'Normen',     subtitle: 'Reglerna ni lever efter — de uttalade och de tysta.', color: '#2A3241' },
-  { id: 'su-mock-konflikten', title: 'Konflikten', subtitle: 'Det som skaver — det ni undviker.',               color: '#263041' },
-  { id: 'su-mock-langtan',    title: 'Längtan',    subtitle: 'Önskningar, drömmar och det som kostar.',         color: '#222A37' },
-  { id: 'su-mock-valet',      title: 'Valet',      subtitle: 'Att stanna, förändra, fortsätta välja.',          color: '#1C222E' },
+  { id: 'su-mock-vardagen',     title: 'Vardagen',     subtitle: 'Hur livet mellan er ser ut just nu.',                        color: '#343E4E' },
+  { id: 'su-mock-tillsammans',  title: 'Tillsammans',  subtitle: 'Hur ni möter det som är svårt — och varandra.',             color: '#2A3241' },
+  { id: 'su-mock-grunden',      title: 'Grunden',      subtitle: 'Det ni bär med er in i relationen.',                        color: '#263041' },
+  { id: 'su-mock-riktningen',   title: 'Riktningen',   subtitle: 'Vart ni är på väg — och vad ni väljer.',                    color: '#1C222E' },
 ];
 
 const categories: Category[] = LAYER_META.map((l, i) => ({
