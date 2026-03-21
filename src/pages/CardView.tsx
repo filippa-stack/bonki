@@ -2209,7 +2209,7 @@ export default function CardView() {
             flex: '0 0 auto',
             height: '56px',
             marginTop: 'env(safe-area-inset-top, 0px)',
-            backgroundColor: MIDNIGHT_INK,
+            backgroundColor: product?.backgroundColor ?? MIDNIGHT_INK,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
