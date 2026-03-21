@@ -751,7 +751,7 @@ export default function ProductLibrary() {
               animate="visible"
               whileHover={{ scale: 1.015, y: -2 }}
               whileTap={{ scale: 0.97, y: 2 }}
-              onClick={() => navigate('/product/still-us-mock')}
+              onClick={() => navigate('/product/still-us')}
               className="cursor-pointer"
               style={{
                 borderRadius: '22px',
@@ -963,11 +963,20 @@ export default function ProductLibrary() {
             margin: '28px 20px 16px',
             padding: '16px 20px',
             borderRadius: '16px',
-            background: 'hsla(230, 30%, 16%, 0.6)',
-            border: '1px solid hsla(100, 40%, 60%, 0.10)',
+            background: 'rgba(15, 15, 15, 0.7)',
+            backdropFilter: 'blur(22px)',
+            WebkitBackdropFilter: 'blur(22px)',
+            border: '1px solid rgba(255, 255, 255, 0.12)',
+            backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.08) 100%)',
             display: 'flex',
             alignItems: 'center',
             gap: '14px',
+            boxShadow: [
+              '0 12px 36px rgba(0, 0, 0, 0.40)',
+              '0 4px 12px rgba(0, 0, 0, 0.25)',
+              'inset 0 1px 0 rgba(255, 255, 255, 0.12)',
+              'inset 0 -2px 6px rgba(0, 0, 0, 0.12)',
+            ].join(', '),
           }}
         >
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ color: '#D4F5C0', opacity: 0.6, flexShrink: 0 }}>

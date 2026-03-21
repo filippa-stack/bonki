@@ -32,7 +32,7 @@ function hexToRgb(hex: string): string {
 }
 
 function estimateMinutes(_promptCount: number, productSlug?: string): string {
-  if (productSlug === 'still-us-mock') return 'ca 10–20 min';
+  if (productSlug === 'still-us') return 'ca 10–20 min';
   return 'ca 5–10 min';
 }
 
