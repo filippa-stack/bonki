@@ -48,7 +48,7 @@ const TILE_COLORS: Record<string, string> = {
   jag_med_andra: '#AC7A44',   // Warm amber — relational/togetherness theme
   jag_i_varlden: '#2A4A6B',   // Richer dusk blue — more saturated, separates from Still Us
   sexualitetskort: '#3E2F24',  // Bark Brown — dark, protected, mature
-  vardagskort: '#3D5030',      // Deeper forest green — richer than previous olive
+  vardagskort: '#081C24',      // Deep dark teal-ink
   syskonkort: '#7A4228',       // Deeper sienna — more saturation, less muddy
 };
 
