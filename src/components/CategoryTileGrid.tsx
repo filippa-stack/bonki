@@ -160,20 +160,21 @@ function CategoryTile({
               objectFit: 'cover',
               objectPosition: creatureStyle.objectPosition,
               opacity: creatureStyle.opacity,
+              filter: 'saturate(1.35) brightness(1.15)',
             }}
           />
         </div>
       )}
 
-      {/* Gradient shield (z-index 2) — 75% height for strong text readability */}
+      {/* Gradient shield (z-index 2) — 60% height, concentrated at bottom for text readability */}
       <div
         style={{
           position: 'absolute',
           bottom: 0,
           left: 0,
           right: 0,
-          height: '75%',
-          background: `linear-gradient(to top, rgba(${shieldRgb}, 1) 0%, rgba(${shieldRgb}, 0.97) 25%, rgba(${shieldRgb}, 0.85) 45%, rgba(${shieldRgb}, 0.45) 70%, transparent 100%)`,
+          height: '60%',
+          background: `linear-gradient(to top, rgba(${shieldRgb}, 0.95) 0%, rgba(${shieldRgb}, 0.85) 30%, rgba(${shieldRgb}, 0.4) 65%, transparent 100%)`,
           pointerEvents: 'none',
           zIndex: 2,
         }}
