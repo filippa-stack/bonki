@@ -84,7 +84,11 @@ const SQUARE_TILE_ILLUSTRATION_STYLES = [
 
 /** Per-product hero image vertical position — default is '50% 55%' */
 const HERO_OBJECT_POSITION: Record<string, string> = {
-  jag_i_varlden: '50% 25%',
+  jag_i_varlden: '50% 35%',
+};
+
+const HERO_TOP_OFFSET: Record<string, string> = {
+  jag_i_varlden: '-20vh',
 };
 
 /* ── First card per category hook ── */
@@ -393,7 +397,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
           transition={{ duration: 0.6 }}
           style={{
             position: 'absolute',
-            top: '-10vh',
+            top: HERO_TOP_OFFSET[product.id] ?? '-10vh',
             left: '-5vw',
             right: '-5vw',
             height: '65vh',
