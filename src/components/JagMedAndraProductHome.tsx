@@ -10,16 +10,16 @@ import type { CreatureTileStyle } from '@/components/CategoryTileGrid';
 import { useCardImage } from '@/hooks/useCardImage';
 
 const EASE = [0.4, 0.0, 0.2, 1] as const;
-const BG = '#1B121B';
+const BG = '#2A1E14';
 const ACCENT_COLOR = '#D4A46C';
-const TILE_LIGHT = '#3A2440';
+const TILE_LIGHT = '#AC7A44';
 
 const ORDERED_TILES = [
-  { id: 'jma-att-hora-till', bg: '#3A2440', sub: 'Var hör jag hemma?' },
-  { id: 'jma-nar-vi-jamfor-oss', bg: '#2E1C34', sub: 'Vad det gör med oss' },
-  { id: 'jma-nar-det-skaver', bg: '#26162C', sub: 'När vi sårar varandra' },
-  { id: 'jma-att-sta-stadig', bg: '#201224', sub: 'Din egen grund' },
-  { id: 'jma-vi-i-varlden', bg: '#1B121B', sub: 'Utanför oss själva' },
+  { id: 'jma-att-hora-till', bg: '#AC7A44', sub: 'Var hör jag hemma?' },
+  { id: 'jma-nar-vi-jamfor-oss', bg: '#8A6036', sub: 'Vad det gör med oss' },
+  { id: 'jma-nar-det-skaver', bg: '#7A5230', sub: 'När vi sårar varandra' },
+  { id: 'jma-att-sta-stadig', bg: '#6A4828', sub: 'Din egen grund' },
+  { id: 'jma-vi-i-varlden', bg: '#5A3E20', sub: 'Utanför oss själva' },
 ];
 
 // First card per category — used as tile illustrations

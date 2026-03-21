@@ -35,9 +35,9 @@ export const productTileColors: Record<string, ProductTileColors> = {
     tileDeep: '#1E3836',
   },
   jag_med_andra: {
-    tileLight: '#3A2440',
-    tileMid: '#2E1C34',
-    tileDeep: '#1B121B',
+    tileLight: '#AC7A44',
+    tileMid: '#8A6036',
+    tileDeep: '#6A4828',
   },
   jag_i_varlden: {
     tileLight: '#344452',
