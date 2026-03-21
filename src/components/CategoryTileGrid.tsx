@@ -160,6 +160,7 @@ function CategoryTile({
               objectFit: 'cover',
               objectPosition: creatureStyle.objectPosition,
               opacity: creatureStyle.opacity,
+              filter: 'saturate(1.35) brightness(1.15)',
             }}
           />
         </div>

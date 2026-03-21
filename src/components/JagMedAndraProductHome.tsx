@@ -31,13 +31,13 @@ const FIRST_CARD_IDS = [
   'jma-respekt',   // Vi i världen
 ];
 
-// Per-tile illustration calibration — vivid card art with individually tuned opacity
+// Per-tile illustration calibration — vivid card art, high opacity to showcase illustrations
 const CREATURE_TILE_STYLES: CreatureTileStyle[] = [
-  { scale: 1.15, objectPosition: '50% 15%', opacity: 0.45 },
-  { scale: 1.15, objectPosition: '50% 20%', opacity: 0.38 },
-  { scale: 1.1,  objectPosition: '50% 18%', opacity: 0.32 },
-  { scale: 1.1,  objectPosition: '50% 22%', opacity: 0.28 },
-  { scale: 1.1,  objectPosition: '50% 18%', opacity: 0.25 },
+  { scale: 1.15, objectPosition: '50% 15%', opacity: 0.88 },
+  { scale: 1.15, objectPosition: '50% 20%', opacity: 0.85 },
+  { scale: 1.1,  objectPosition: '50% 18%', opacity: 0.82 },
+  { scale: 1.1,  objectPosition: '50% 22%', opacity: 0.78 },
+  { scale: 1.1,  objectPosition: '50% 18%', opacity: 0.75 },
 ];
 
 const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.11, delayChildren: 0.4 } } };
@@ -80,10 +80,10 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
         style={{ position: 'absolute', top: '-8vh', left: '-5vw', right: '-5vw', height: '65vh', zIndex: 0, pointerEvents: 'none' }}
       >
         <img src={heroImage} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 8%' }} />
-        {/* Multi-stop scrim: product color mid-blend, then Midnight Ink */}
+        {/* Multi-stop scrim: lighter to let illustration colors breathe */}
         <div style={{
-          position: 'absolute', bottom: 0, left: 0, right: 0, height: '88%',
-          background: `linear-gradient(to top, ${BG} 0%, ${BG}F5 15%, rgba(42,30,20,0.88) 30%, rgba(138,96,54,0.45) 55%, rgba(172,122,68,0.15) 75%, transparent 100%)`,
+          position: 'absolute', bottom: 0, left: 0, right: 0, height: '75%',
+          background: `linear-gradient(to top, ${BG} 0%, ${BG}E8 20%, rgba(42,30,20,0.65) 45%, rgba(138,96,54,0.2) 70%, transparent 100%)`,
           pointerEvents: 'none',
         }} />
       </motion.div>
