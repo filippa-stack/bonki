@@ -359,12 +359,12 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
           position: 'absolute',
           left: 0,
           bottom: 0,
-          width: '55%',
-          height: '65%',
+          width: '50%',
+          height: '45%',
           zIndex: 1,
           pointerEvents: 'none',
           borderRadius: '0 0 0 22px',
-          background: `linear-gradient(to top right, ${bgRgba(0.75)} 0%, ${bgRgba(0.45)} 35%, ${bgRgba(0.15)} 60%, transparent 100%)`,
+          background: `linear-gradient(to top right, ${bgRgba(0.75)} 0%, ${bgRgba(0.4)} 40%, transparent 100%)`,
         }}
       />
 
