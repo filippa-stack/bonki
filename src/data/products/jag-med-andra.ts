@@ -5,7 +5,7 @@ import heroImage from '@/assets/illustration-jag-med-andra.png';
 const categories: Category[] = [
   { id: 'jma-vem-ar-jag', title: 'Vem är jag', subtitle: 'Att vara sig själv – även när det känns annorlunda.', description: 'Olikhet, utanförskap, skam, skuld och utseende', cardCount: 5 },
   { id: 'jma-jag-och-andra', title: 'Jag & andra', subtitle: 'Hur vi möter varandra – i det nära och det svåra.', description: 'Kontakt, vänskap, avundsjuka, kritik, konflikt, respekt och gränser', cardCount: 7 },
-  { id: 'jma-varlden-omkring-mig', title: 'Världen omkring mig', subtitle: 'Press, prestation och att mäta sig mot andra.', description: 'Prestation, tävling, misslyckande och jämlikhet', cardCount: 4 },
+  { id: 'jma-varlden-omkring-mig', title: 'Min omvärld', subtitle: 'Press, prestation och att mäta sig mot andra.', description: 'Prestation, tävling, misslyckande och jämlikhet', cardCount: 4 },
   { id: 'jma-vad-tror-jag-pa', title: 'Vad tror jag på', subtitle: 'Värderingar, mod och de stora frågorna.', description: 'Acceptans, integritet, sanning, mod och tankeexperiment', cardCount: 5 },
 ];
 
