@@ -305,7 +305,10 @@ export default function KidsCardPortal() {
                 borderRadius: '20px',
                 overflow: 'hidden',
                 cursor: 'pointer',
-                backgroundColor: tileBg,
+                // Obsidian Glass surface
+                backgroundColor: 'rgba(15, 15, 15, 0.7)',
+                backdropFilter: 'blur(22px)',
+                WebkitBackdropFilter: 'blur(22px)',
                 zIndex: 1,
                 transform: portalPhase === 'phase1' ? 'scale(1.03)' : portalPhase === 'phase2' ? 'scale(1.03)' : undefined,
                 filter: portalPhase === 'phase1' ? 'brightness(1.1)' : undefined,
@@ -388,33 +391,30 @@ export default function KidsCardPortal() {
                 </h2>
               </div>
 
-              {/* Ceramic rim — multi-layer bevel */}
+              {/* Ceramic rim — obsidian glass bevel */}
               <div
                 style={{
                   position: 'absolute',
                   inset: 0,
                   borderRadius: '20px',
                   boxShadow: [
-                    'inset 0 2px 4px rgba(255, 255, 255, 0.50)',
-                    'inset 0 1px 0px rgba(255, 255, 255, 0.65)',
-                    'inset 0 -3px 10px rgba(0, 0, 0, 0.25)',
-                    'inset 0 -1px 2px rgba(0, 0, 0, 0.18)',
-                    'inset 3px 0 8px rgba(255, 255, 255, 0.06)',
-                    'inset -3px 0 8px rgba(0, 0, 0, 0.06)',
-                    `inset 0 0 40px rgba(${tileBgRgb}, 0.12)`,
+                    'inset 0 2px 6px rgba(255, 255, 255, 0.35)',
+                    'inset 0 1px 1px rgba(255, 255, 255, 0.45)',
+                    'inset 0 -4px 12px rgba(0, 0, 0, 0.30)',
+                    'inset 0 -1px 2px rgba(0, 0, 0, 0.15)',
                   ].join(', '),
                   pointerEvents: 'none',
                   zIndex: 5,
                 }}
               />
 
-              {/* Ceramic border */}
+              {/* Ghost border */}
               <div
                 style={{
                   position: 'absolute',
                   inset: 0,
                   borderRadius: '20px',
-                  border: '1.5px solid rgba(255, 255, 255, 0.22)',
+                  border: '1px solid rgba(255, 255, 255, 0.12)',
                   pointerEvents: 'none',
                   zIndex: 6,
                 }}
@@ -422,18 +422,17 @@ export default function KidsCardPortal() {
             </motion.div>
           </AnimatePresence>
 
-          {/* Outer elevation — deep multi-layer lift */}
+          {/* Outer elevation — obsidian glass lift with chromatic glow */}
           <div
             style={{
               position: 'absolute',
               inset: 0,
               borderRadius: '20px',
               boxShadow: [
-                '0 30px 60px -12px rgba(0, 0, 0, 0.55)',
-                '0 18px 36px -8px rgba(0, 0, 0, 0.35)',
-                '0 8px 16px rgba(0, 0, 0, 0.20)',
-                '0 2px 6px rgba(0, 0, 0, 0.15)',
-                `0 0 80px -20px rgba(${tileBgRgb}, 0.30)`,
+                '0 20px 60px rgba(0, 0, 0, 0.55)',
+                '0 8px 24px rgba(0, 0, 0, 0.40)',
+                '0 3px 8px rgba(0, 0, 0, 0.25)',
+                `0 14px 56px rgba(${tileBgRgb}, 0.22)`,
               ].join(', '),
               pointerEvents: 'none',
               zIndex: 0,
