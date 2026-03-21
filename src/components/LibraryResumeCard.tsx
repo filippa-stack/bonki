@@ -34,7 +34,7 @@ const PRODUCT_TILE_COLORS: Record<string, string> = {
   jag_i_varlden: '#2A4A6B',
   sexualitetskort: '#3E2F24',
   vardagskort: '#3D5030',
-  syskonkort: '#7A4228',
+  syskonkort: '#2F353B',
 };
 
 interface ResumeData {
