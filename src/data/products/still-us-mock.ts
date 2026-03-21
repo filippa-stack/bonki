@@ -124,7 +124,7 @@ export const stillUsMockProduct: ProductManifest = {
   accentColor: 'hsl(28, 80%, 57%)',       // deep saffron
   accentColorMuted: 'hsl(28, 60%, 85%)',
   secondaryAccent: 'hsl(280, 20%, 22%)',   // ember tone
-  backgroundColor: '#D48900',
+  backgroundColor: '#1A0806',
   ctaButtonColor: '#E8913A',
   tileLight: '#6B4A0E',                    // rich gold-amber (matches library tile)
   tileMid: '#4A3308',
