@@ -81,7 +81,7 @@ export default function SexualitetProductHome({ product }: { product: ProductMan
         {/* Extended scrim with smooth blend */}
         <div style={{
           position: 'absolute', bottom: 0, left: 0, right: 0, height: '85%',
-          background: `linear-gradient(to top, ${BG} 0%, ${BG}F2 18%, rgba(44,28,24,0.85) 35%, rgba(136,96,86,0.5) 60%, rgba(168,118,108,0.15) 80%, transparent 100%)`,
+          background: `linear-gradient(to top, ${BG} 0%, ${BG}F2 18%, rgba(30,20,40,0.85) 35%, rgba(58,34,64,0.5) 60%, rgba(74,46,72,0.15) 80%, transparent 100%)`,
           pointerEvents: 'none',
         }} />
       </motion.div>
