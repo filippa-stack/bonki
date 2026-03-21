@@ -144,7 +144,6 @@ function CategoryTile({
   fillHeight?: boolean;
 }) {
   const navigate = useNavigate();
-  const isFirst = index === 0;
   const styles = squareTile ? SQUARE_TILE_ILLUSTRATION_STYLES : TILE_ILLUSTRATION_STYLES;
   const style = styles[Math.min(index, styles.length - 1)];
   const shieldRgb = hexToRgb(tileBg);
