@@ -28,12 +28,12 @@ function hexToRgba(hex: string, alpha: number): string {
 
 /** Product-specific tile colors — must match ProductLibrary TILE_COLORS */
 const PRODUCT_TILE_COLORS: Record<string, string> = {
-  still_us: '#263041',
+  still_us: '#8B5E12',
   jag_i_mig: '#2D6B62',
   jag_med_andra: '#B07A3A',
   jag_i_varlden: '#2A4A6B',
   sexualitetskort: '#3A2240',
-  vardagskort: '#071E28',
+  vardagskort: '#0A1A18',
   syskonkort: '#252838',
 };
 

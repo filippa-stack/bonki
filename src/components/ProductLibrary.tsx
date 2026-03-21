@@ -48,7 +48,7 @@ const TILE_COLORS: Record<string, string> = {
   jag_med_andra: '#B07A3A',   // Warm amber-orange — resonant, not dusty
   jag_i_varlden: '#2A4A6B',   // Richer dusk blue — more saturated, separates from Still Us
   sexualitetskort: '#3A2240',  // Deep aubergine — warm-cool tension with skin tones
-  vardagskort: '#071E28',      // Deep teal-ink — subtle teal bridge
+  vardagskort: '#0A1A18',      // Charcoal-green — separates from blue family
   syskonkort: '#252838',       // Deep indigo-slate — cool complement to warm yellow/orange
 };
 
@@ -756,7 +756,7 @@ export default function ProductLibrary() {
               style={{
                 borderRadius: '22px',
                 backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.08) 100%)',
-                backgroundColor: '#263041',
+                backgroundColor: '#8B5E12',
                 height: '260px',
                 display: 'flex',
                 flexDirection: 'column',
