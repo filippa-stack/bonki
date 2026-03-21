@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { ChevronRight, ChevronDown, Check } from 'lucide-react';
+import { ChevronRight, ChevronDown, Check, Bookmark, Play } from 'lucide-react';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { supabase } from '@/integrations/supabase/client';
 import {
@@ -164,17 +164,21 @@ function getProductColor(productId: string, cardId?: string): string {
 }
 
 // ─── Note Entry Card ───
-function NoteEntryCard({ entry, navigate }: { entry: NoteEntry; navigate: (p: string) => void }) {
+function NoteEntryCard({ entry, navigate, index }: { entry: NoteEntry; navigate: (p: string) => void; index: number }) {
   const [expanded, setExpanded] = useState(false);
   const isLong = entry.text.length > 200;
+  const accentColor = getProductColor(entry.productId, entry.cardId);
 
   return (
-    <div
+    <motion.div
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: Math.min(index * 0.04, 0.3), duration: 0.4, ease: EASE }}
       style={{
         backgroundColor: DEEP_DUSK,
         borderRadius: '16px',
-        borderLeft: `3px solid ${getProductColor(entry.productId, entry.cardId)}`,
-        padding: '16px',
+        borderLeft: `3px solid ${accentColor}`,
+        padding: '16px 16px 14px',
       }}
     >
       {/* Note text */}
@@ -182,9 +186,10 @@ function NoteEntryCard({ entry, navigate }: { entry: NoteEntry; navigate: (p: st
         <p
           style={{
             margin: 0,
-            fontSize: '17px',
+            fontFamily: 'var(--font-serif)',
+            fontSize: '16px',
             color: LANTERN_GLOW,
-            lineHeight: 1.5,
+            lineHeight: 1.6,
             ...(isLong && !expanded ? {
               display: '-webkit-box',
               WebkitLineClamp: 4,
@@ -195,36 +200,22 @@ function NoteEntryCard({ entry, navigate }: { entry: NoteEntry; navigate: (p: st
         >
           {entry.text}
         </p>
-        {isLong && !expanded && (
+        {isLong && (
           <button
-            onClick={() => setExpanded(true)}
+            onClick={() => setExpanded(!expanded)}
             style={{
               background: 'none',
               border: 'none',
-              color: DEEP_SAFFRON,
+              color: accentColor,
               fontSize: '13px',
+              fontWeight: 500,
               cursor: 'pointer',
               padding: 0,
-              marginTop: '4px',
+              marginTop: '6px',
+              letterSpacing: '0.02em',
             }}
           >
-            Läs mer
-          </button>
-        )}
-        {isLong && expanded && (
-          <button
-            onClick={() => setExpanded(false)}
-            style={{
-              background: 'none',
-              border: 'none',
-              color: DEEP_SAFFRON,
-              fontSize: '13px',
-              cursor: 'pointer',
-              padding: 0,
-              marginTop: '4px',
-            }}
-          >
-            Visa mindre
+            {expanded ? 'Visa mindre' : 'Läs mer'}
           </button>
         )}
       </div>
@@ -232,60 +223,74 @@ function NoteEntryCard({ entry, navigate }: { entry: NoteEntry; navigate: (p: st
       {/* Question anchor */}
       <p
         style={{
-          margin: '8px 0 0',
-          fontSize: '14px',
+          margin: '10px 0 0',
+          fontSize: '13px',
           fontStyle: 'italic',
-          color: DRIFTWOOD,
+          color: `${DRIFTWOOD}cc`,
           lineHeight: 1.4,
         }}
       >
         — {entry.questionText ?? 'Reflektion efter samtalet'}
       </p>
 
-      {/* Metadata */}
-      <p
-        style={{
-          margin: '8px 0 0',
-          fontSize: '12px',
-          color: DRIFTWOOD,
-          lineHeight: 1.4,
-        }}
-      >
-        {entry.cardName} · {entry.categoryName} · {formatFullDate(entry.date)}
-      </p>
-    </div>
+      {/* Metadata — split into separate pieces for clarity */}
+      <div style={{
+        marginTop: '10px',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '6px',
+        fontSize: '12px',
+        color: `${DRIFTWOOD}99`,
+        lineHeight: 1,
+      }}>
+        <span>{entry.cardName}</span>
+        <span style={{ opacity: 0.4 }}>·</span>
+        <span>{entry.categoryName}</span>
+        <span style={{ opacity: 0.4 }}>·</span>
+        <span>{formatFullDate(entry.date)}</span>
+      </div>
+    </motion.div>
   );
 }
 
 // ─── Completed-no-note marker ───
-function CompletedMarkerRow({ marker }: { marker: CompletedMarker }) {
+function CompletedMarkerRow({ marker, index }: { marker: CompletedMarker; index: number }) {
   return (
-    <div
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay: Math.min(index * 0.04, 0.3), duration: 0.35, ease: EASE }}
       style={{
         display: 'flex',
         alignItems: 'center',
-        gap: '8px',
+        gap: '10px',
         paddingLeft: '8px',
+        paddingTop: '2px',
+        paddingBottom: '2px',
       }}
     >
       <div
         style={{
-          width: '16px',
-          height: '16px',
+          width: '18px',
+          height: '18px',
           borderRadius: '50%',
-          backgroundColor: DEEP_SAFFRON,
+          backgroundColor: `${DEEP_SAFFRON}22`,
+          border: `1.5px solid ${DEEP_SAFFRON}66`,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           flexShrink: 0,
         }}
       >
-        <Check size={10} strokeWidth={2.5} color={LANTERN_GLOW} />
+        <Check size={10} strokeWidth={2.5} color={DEEP_SAFFRON} />
       </div>
-      <span style={{ fontSize: '14px', color: DRIFTWOOD }}>
+      <span style={{ fontSize: '14px', color: `${DRIFTWOOD}cc` }}>
         {marker.cardName}
       </span>
-    </div>
+      <span style={{ fontSize: '12px', color: `${DRIFTWOOD}66`, marginLeft: 'auto' }}>
+        {formatRelativeDate(marker.date)}
+      </span>
+    </motion.div>
   );
 }
 
