@@ -397,7 +397,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
           transition={{ duration: 0.6 }}
           style={{
             position: 'absolute',
-            top: '-10vh',
+            top: HERO_TOP_OFFSET[product.id] ?? '-10vh',
             left: '-5vw',
             right: '-5vw',
             height: '65vh',
