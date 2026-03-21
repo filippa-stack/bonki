@@ -49,7 +49,7 @@ const TILE_COLORS: Record<string, string> = {
   jag_i_varlden: '#2A4A6B',   // Richer dusk blue — more saturated, separates from Still Us
   sexualitetskort: '#3E2F24',  // Bark Brown — dark, protected, mature
   vardagskort: '#3D5030',      // Deeper forest green — richer than previous olive
-  syskonkort: '#7A4228',       // Deeper sienna — more saturation, less muddy
+  syskonkort: '#2F353B',       // Cool slate — distinct from warm browns
 };
 
 /** Luminance helper — determines if a tile needs light or dark treatment.
