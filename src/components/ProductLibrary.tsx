@@ -352,21 +352,6 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
         </div>
       )}
 
-      {/* Localized text backdrop — bottom-left corner protection */}
-      <div
-        aria-hidden="true"
-        style={{
-          position: 'absolute',
-          left: 0,
-          bottom: 0,
-          width: '50%',
-          height: '45%',
-          zIndex: 1,
-          pointerEvents: 'none',
-          borderRadius: '0 0 0 22px',
-          background: `linear-gradient(to top right, ${bgRgba(0.75)} 0%, ${bgRgba(0.4)} 40%, transparent 100%)`,
-        }}
-      />
 
       {/* Age badge — Parchment circle, top-right */}
       {ageLabel && (
@@ -427,17 +412,18 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
         </div>
       )}
 
-      {/* Text — left-aligned, lower-third emphasis */}
       <div style={{
         position: 'absolute',
-        left: 0, bottom: 0, top: 0,
-        width: '55%',
+        left: 0, bottom: 0,
         zIndex: 2,
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'flex-end',
-        padding: '20px',
-        paddingBottom: '24px',
+        padding: '14px 16px',
+        borderRadius: '0 12px 0 22px',
+        background: `linear-gradient(135deg, ${bgRgba(0.7)} 0%, ${bgRgba(0.5)} 100%)`,
+        backdropFilter: 'blur(8px)',
+        WebkitBackdropFilter: 'blur(8px)',
       }}>
         <h3
           style={{
