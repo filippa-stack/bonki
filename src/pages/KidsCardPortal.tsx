@@ -185,7 +185,7 @@ export default function KidsCardPortal() {
     <div
       style={{
         height: '100vh',
-        background: MIDNIGHT_INK,
+        background: product?.backgroundColor ?? MIDNIGHT_INK,
         display: 'flex',
         flexDirection: 'column',
         position: 'relative',
