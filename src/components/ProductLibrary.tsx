@@ -73,7 +73,7 @@ function hexToRgba(hex: string, alpha: number): string {
 /** Per-product illustration scale — large enough for dramatic presence */
 const ILLUSTRATION_SCALE: Record<string, { width: string; height: string }> = {
   jag_i_mig: { width: '80%', height: '180%' },
-  jag_med_andra: { width: '80%', height: '180%' },
+  jag_med_andra: { width: '85%', height: '185%' },
   jag_i_varlden: { width: '80%', height: '180%' },
   sexualitetskort: { width: '75%', height: '175%' },
   vardagskort: { width: '75%', height: '175%' },
@@ -115,7 +115,7 @@ const ILLUSTRATION_GLOW: Record<string, string> = {
  *  Shadow colors derived from each tile's own bg for natural grounding */
 const ILLUSTRATION_SHADOW: Record<string, string> = {
   jag_i_mig: 'saturate(1.3) brightness(1.15) drop-shadow(0 6px 20px rgba(30, 50, 48, 0.5)) drop-shadow(0 2px 4px rgba(0,0,0,0.2))',
-  jag_med_andra: 'saturate(1.2) contrast(1.08) drop-shadow(0 6px 20px rgba(86, 61, 34, 0.5)) drop-shadow(0 2px 4px rgba(0,0,0,0.15))',
+  jag_med_andra: 'saturate(1.3) contrast(1.1) brightness(1.1) drop-shadow(0 6px 20px rgba(86, 61, 34, 0.5)) drop-shadow(0 2px 4px rgba(0,0,0,0.15))',
   jag_i_varlden: 'saturate(1.3) brightness(1.2) drop-shadow(0 6px 20px rgba(21, 37, 54, 0.6)) drop-shadow(0 2px 4px rgba(0,0,0,0.25))',
   sexualitetskort: 'saturate(1.3) brightness(1.25) drop-shadow(0 6px 20px rgba(30, 20, 40, 0.6)) drop-shadow(0 2px 4px rgba(0,0,0,0.25))',
   vardagskort: 'saturate(1.3) brightness(1.2) drop-shadow(0 8px 24px rgba(7, 30, 40, 0.6)) drop-shadow(0 2px 4px rgba(0,0,0,0.25))',
@@ -145,7 +145,7 @@ const TAGLINE_COLORS: Record<string, string> = {
 /** Tile height rhythm — alternating for visual breathing */
 const TILE_HEIGHTS: Record<string, string> = {
   jag_i_mig: '260px',
-  jag_med_andra: '220px',
+  jag_med_andra: '240px',
   jag_i_varlden: '260px',
   sexualitetskort: '220px',
   vardagskort: '240px',
@@ -364,7 +364,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
           zIndex: 1,
           pointerEvents: 'none',
           borderRadius: '0 0 0 22px',
-          background: `linear-gradient(to top right, ${bgRgba(0.75)} 0%, ${bgRgba(0.45)} 35%, ${bgRgba(0.15)} 60%, transparent 100%)`,
+          background: `linear-gradient(to top right, ${bgRgba(0.88)} 0%, ${bgRgba(0.55)} 35%, ${bgRgba(0.2)} 60%, transparent 100%)`,
         }}
       />
 
