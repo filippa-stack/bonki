@@ -127,9 +127,9 @@ export const stillUsMockProduct: ProductManifest = {
   secondaryAccent: 'hsl(215, 25%, 20%)',   // steel blue
   backgroundColor: '#141822',
   ctaButtonColor: '#E8913A',
-  tileLight: '#E5E0D8',
-  tileMid: '#D5CFC6',
-  tileDeep: '#C8C2B8',
+  tileLight: '#343E4E',
+  tileMid: '#2A3241',
+  tileDeep: '#263041',
   pronounMode: 'ni',
   paywallDescription: 'Fördjupa samtalet — vecka för vecka, lager för lager.',
   categories,

@@ -49,7 +49,7 @@ const TILE_COLORS: Record<string, string> = {
   jag_i_varlden: '#2A4A6B',   // Richer dusk blue — more saturated, separates from Still Us
   sexualitetskort: '#3E2F24',  // Bark Brown — dark, protected, mature
   vardagskort: '#3D5030',      // Deeper forest green — richer than previous olive
-  syskonkort: '#2F353B',       // Cool slate — distinct from warm browns
+  syskonkort: '#7A4228',       // Deeper sienna — more saturation, less muddy
 };
 
 /** Luminance helper — determines if a tile needs light or dark treatment.
@@ -352,6 +352,21 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
         </div>
       )}
 
+      {/* Localized text backdrop — bottom-left corner protection */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          left: 0,
+          bottom: 0,
+          width: '55%',
+          height: '65%',
+          zIndex: 1,
+          pointerEvents: 'none',
+          borderRadius: '0 0 0 22px',
+          background: `linear-gradient(to top right, ${bgRgba(0.75)} 0%, ${bgRgba(0.45)} 35%, ${bgRgba(0.15)} 60%, transparent 100%)`,
+        }}
+      />
 
       {/* Age badge — Parchment circle, top-right */}
       {ageLabel && (
@@ -412,18 +427,17 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
         </div>
       )}
 
+      {/* Text — left-aligned, lower-third emphasis */}
       <div style={{
         position: 'absolute',
-        left: 0, bottom: 0,
+        left: 0, bottom: 0, top: 0,
+        width: '55%',
         zIndex: 2,
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'flex-end',
-        padding: '14px 16px',
-        borderRadius: '0 12px 0 22px',
-        background: `linear-gradient(135deg, ${bgRgba(0.7)} 0%, ${bgRgba(0.5)} 100%)`,
-        backdropFilter: 'blur(8px)',
-        WebkitBackdropFilter: 'blur(8px)',
+        padding: '20px',
+        paddingBottom: '24px',
       }}>
         <h3
           style={{
@@ -742,7 +756,7 @@ export default function ProductLibrary() {
               style={{
                 borderRadius: '22px',
                 backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.08) 100%)',
-                backgroundColor: '#E5E0D8',
+                backgroundColor: '#263041',
                 height: '260px',
                 display: 'flex',
                 flexDirection: 'column',

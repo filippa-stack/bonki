@@ -50,9 +50,9 @@ export const productTileColors: Record<string, ProductTileColors> = {
     tileDeep: '#262E1E',
   },
   syskonkort: {
-    tileLight: '#2F353B',
-    tileMid: '#252A2F',
-    tileDeep: '#1C2024',
+    tileLight: '#8E5234',
+    tileMid: '#6E3E26',
+    tileDeep: '#50301C',
   },
   sexualitetskort: {
     tileLight: '#A8766C',
@@ -60,7 +60,7 @@ export const productTileColors: Record<string, ProductTileColors> = {
     tileDeep: '#6A4A42',
   },
   still_us: {
-    tileLight: '#E5E0D8',
+    tileLight: '#D4A03A',
     tileMid: '#473454',
     tileDeep: '#2E2233',
   },

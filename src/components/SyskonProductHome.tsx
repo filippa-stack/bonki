@@ -10,15 +10,15 @@ import type { CreatureTileStyle } from '@/components/CategoryTileGrid';
 import { useCardImage } from '@/hooks/useCardImage';
 
 const EASE = [0.4, 0.0, 0.2, 1] as const;
-const BG = '#1C2024';
-const ACCENT_COLOR = '#8EAAB4';
-const TILE_LIGHT = '#2F353B';
+const BG = '#2A1A10';
+const ACCENT_COLOR = '#C88A64';
+const TILE_LIGHT = '#8E5234';
 
 const ORDERED_TILES = [
-  { id: 'sk-vi-blev-syskon', bg: '#2F353B', sub: 'När familjen växer' },
-  { id: 'sk-vi-ar-olika', bg: '#252A2F', sub: 'Att vara egen fast vi hör ihop' },
-  { id: 'sk-delat-utrymme', bg: '#222830', sub: 'När allting ska delas' },
-  { id: 'sk-er-relation', bg: '#1C2024', sub: 'Nära, svårt och allt däremellan' },
+  { id: 'sk-vi-blev-syskon', bg: '#8E5234', sub: 'När familjen växer' },
+  { id: 'sk-vi-ar-olika', bg: '#6E3E26', sub: 'Att vara egen fast vi hör ihop' },
+  { id: 'sk-delat-utrymme', bg: '#5E341E', sub: 'När allting ska delas' },
+  { id: 'sk-er-relation', bg: '#50301C', sub: 'Nära, svårt och allt däremellan' },
 ];
 
 // First card per category — used as tile illustrations
@@ -73,16 +73,13 @@ export default function SyskonProductHome({ product }: { product: ProductManifes
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6 }}
-        style={{ position: 'absolute', top: '-14vh', left: '-5vw', right: '-5vw', height: '85vh', zIndex: 0, pointerEvents: 'none' }}
+        style={{ position: 'absolute', top: '-14vh', left: '-5vw', right: '-5vw', height: '70vh', zIndex: 0, pointerEvents: 'none' }}
       >
-        <img src={heroImage} alt="" style={{
-          width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 8%',
-          filter: 'saturate(1.35) brightness(1.15)',
-        }} />
-        {/* Soft fade to background — no hard cutoff */}
+        <img src={heroImage} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 8%' }} />
+        {/* Extended scrim with smooth blend */}
         <div style={{
-          position: 'absolute', bottom: 0, left: 0, right: 0, height: '45%',
-          background: `linear-gradient(to top, ${BG} 0%, ${BG}CC 25%, transparent 100%)`,
+          position: 'absolute', bottom: 0, left: 0, right: 0, height: '85%',
+          background: `linear-gradient(to top, ${BG} 0%, ${BG}F2 18%, rgba(42,26,16,0.85) 35%, rgba(110,62,38,0.5) 60%, rgba(142,82,52,0.15) 80%, transparent 100%)`,
           pointerEvents: 'none',
         }} />
       </motion.div>
