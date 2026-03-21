@@ -96,6 +96,7 @@ function CategoryTile({
 
   const completed = catProgress?.completed ?? 0;
   const totalCards = catProgress?.total ?? 0;
+  const hasProgress = completed > 0;
 
   const ariaLabel = `${cat.title}: ${tile.sub}. ${completed} av ${totalCards} utforskade.`;
 
@@ -115,23 +116,14 @@ function CategoryTile({
         textAlign: 'left',
         backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.08) 100%)',
         backgroundColor: tile.bg,
-        border: isFirst ? `2px solid ${SAFFRON}` : '1.5px solid rgba(255, 255, 255, 0.25)',
-        boxShadow: isFirst
-          ? [
-              '0 0 16px rgba(233, 180, 76, 0.45)',
-              '0 0 4px rgba(233, 180, 76, 0.25)',
-              '0 12px 32px rgba(0, 0, 0, 0.30)',
-              '0 4px 12px rgba(0, 0, 0, 0.18)',
-              'inset 0 3px 6px rgba(255, 255, 255, 0.45)',
-              'inset 0 -4px 10px rgba(0, 0, 0, 0.14)',
-            ].join(', ')
-          : [
-              '0 12px 32px rgba(0, 0, 0, 0.30)',
-              '0 4px 12px rgba(0, 0, 0, 0.18)',
-              '0 1px 3px rgba(0, 0, 0, 0.08)',
-              'inset 0 3px 6px rgba(255, 255, 255, 0.45)',
-              'inset 0 -4px 10px rgba(0, 0, 0, 0.14)',
-            ].join(', '),
+        border: '1.5px solid rgba(255, 255, 255, 0.25)',
+        boxShadow: [
+            '0 12px 32px rgba(0, 0, 0, 0.30)',
+            '0 4px 12px rgba(0, 0, 0, 0.18)',
+            '0 1px 3px rgba(0, 0, 0, 0.08)',
+            'inset 0 3px 6px rgba(255, 255, 255, 0.45)',
+            'inset 0 -4px 10px rgba(0, 0, 0, 0.14)',
+          ].join(', '),
         padding: 0,
         aspectRatio: isOddLast ? '2 / 1' : '1 / 1',
         ...(isOddLast ? { gridColumn: '1 / -1' } : {}),
