@@ -489,7 +489,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
                     letterSpacing: '0.01em',
                   }}
                 >
-                  22 samtalsövningar inom 5 områden
+                  22 samtalsövningar inom 4 områden
                 </p>
               </>
             ) : (
