@@ -87,7 +87,6 @@ function CategoryTile({
   if (!cat) return null;
 
   const catProgress = progress.categoryProgress[cat.id];
-  const isFirst = index === 0;
   const isDeep = index >= total - 2 && total > 2;
   const nameOpacity = isDeep ? 0.85 : 1;
   const subOpacity = isDeep ? 0.7 : 1;
