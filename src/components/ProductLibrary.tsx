@@ -762,14 +762,14 @@ export default function ProductLibrary() {
                 flexDirection: 'column',
                 position: 'relative',
                 overflow: 'hidden',
-                border: '2px solid rgba(255, 255, 255, 0.45)',
+                border: '2px solid rgba(255, 220, 120, 0.45)',
                 boxShadow: [
-                  '0 16px 40px rgba(23, 17, 26, 0.4)',
-                  '0 6px 16px rgba(23, 17, 26, 0.25)',
+                  '0 16px 40px rgba(70, 47, 9, 0.4)',
+                  '0 6px 16px rgba(70, 47, 9, 0.25)',
                   '0 1px 3px rgba(0, 0, 0, 0.10)',
-                  '0 0 72px rgba(23, 17, 26, 0.18)',
-                  'inset 0 3px 6px rgba(255, 255, 255, 0.45)',
-                  'inset 0 -4px 10px rgba(23, 17, 26, 0.14)',
+                  '0 0 72px rgba(139, 94, 18, 0.18)',
+                  'inset 0 3px 6px rgba(255, 255, 255, 0.35)',
+                  'inset 0 -4px 10px rgba(70, 47, 9, 0.14)',
                 ].join(', '),
               }}
             >
@@ -781,7 +781,7 @@ export default function ProductLibrary() {
                   inset: 0,
                   zIndex: 0,
                   pointerEvents: 'none',
-                  background: 'radial-gradient(ellipse 80% 90% at 65% 50%, rgba(180, 220, 160, 0.12) 0%, rgba(180, 220, 160, 0.04) 40%, transparent 70%)',
+                  background: 'radial-gradient(ellipse 80% 90% at 65% 50%, rgba(255, 220, 140, 0.15) 0%, rgba(255, 220, 140, 0.05) 40%, transparent 70%)',
                 }}
               />
               {/* Illustration — right-aligned, oversized like kids tiles */}
