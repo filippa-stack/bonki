@@ -391,20 +391,17 @@ export default function KidsCardPortal() {
                 </h2>
               </div>
 
-              {/* Ceramic rim — multi-layer bevel */}
+              {/* Ceramic rim — obsidian glass bevel */}
               <div
                 style={{
                   position: 'absolute',
                   inset: 0,
                   borderRadius: '20px',
                   boxShadow: [
-                    'inset 0 2px 4px rgba(255, 255, 255, 0.50)',
-                    'inset 0 1px 0px rgba(255, 255, 255, 0.65)',
-                    'inset 0 -3px 10px rgba(0, 0, 0, 0.25)',
-                    'inset 0 -1px 2px rgba(0, 0, 0, 0.18)',
-                    'inset 3px 0 8px rgba(255, 255, 255, 0.06)',
-                    'inset -3px 0 8px rgba(0, 0, 0, 0.06)',
-                    `inset 0 0 40px rgba(${tileBgRgb}, 0.12)`,
+                    'inset 0 2px 6px rgba(255, 255, 255, 0.35)',
+                    'inset 0 1px 1px rgba(255, 255, 255, 0.45)',
+                    'inset 0 -4px 12px rgba(0, 0, 0, 0.30)',
+                    'inset 0 -1px 2px rgba(0, 0, 0, 0.15)',
                   ].join(', '),
                   pointerEvents: 'none',
                   zIndex: 5,
