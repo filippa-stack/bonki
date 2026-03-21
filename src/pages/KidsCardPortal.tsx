@@ -497,7 +497,7 @@ export default function KidsCardPortal() {
                 marginTop: '8px',
               }}
             >
-              Tryck på dörren när ni är redo.
+              Tryck på bilden när ni är redo.
             </p>
           </motion.div>
         </AnimatePresence>
