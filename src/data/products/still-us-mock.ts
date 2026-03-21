@@ -126,7 +126,7 @@ export const stillUsMockProduct: ProductManifest = {
   secondaryAccent: 'hsl(280, 20%, 22%)',   // ember tone
   backgroundColor: '#1A0806',
   ctaButtonColor: '#E8913A',
-  tileLight: '#1A0806',                    // obsidian (matches product bg)
+  tileLight: '#2E1A0A',                    // deep burnt umber (library tile)
   tileMid: '#4A3308',
   tileDeep: '#352606',
   pronounMode: 'ni',
