@@ -131,6 +131,8 @@ function CategoryTile({
   squareTile = false,
   wideSpan = false,
   fillHeight = false,
+  glassTile = false,
+  glassGlowColor,
 }: {
   cat: { id: string; title: string; subtitle?: string };
   product: ProductManifest;
@@ -146,6 +148,8 @@ function CategoryTile({
   squareTile?: boolean;
   wideSpan?: boolean;
   fillHeight?: boolean;
+  glassTile?: boolean;
+  glassGlowColor?: string;
 }) {
   const navigate = useNavigate();
   const styles = squareTile ? SQUARE_TILE_ILLUSTRATION_STYLES : TILE_ILLUSTRATION_STYLES;
@@ -169,11 +173,21 @@ function CategoryTile({
         borderRadius: squareTile ? '28px' : '22px',
         cursor: isLocked ? 'default' : 'pointer',
         textAlign: 'left',
-        backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.08) 100%)',
-        backgroundColor: tileBg,
+        backgroundImage: glassTile
+          ? 'none'
+          : 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.08) 100%)',
+        backgroundColor: glassTile ? 'rgba(255, 255, 255, 0.05)' : tileBg,
+        backdropFilter: glassTile ? 'blur(25px)' : undefined,
+        WebkitBackdropFilter: glassTile ? 'blur(25px)' : undefined,
         opacity: isLocked ? 0.6 : 1,
-        border: '1.5px solid rgba(255, 255, 255, 0.25)',
-        boxShadow: [
+        border: glassTile
+          ? '1px solid rgba(255, 255, 255, 0.1)'
+          : '1.5px solid rgba(255, 255, 255, 0.25)',
+        boxShadow: glassTile
+          ? glassGlowColor
+            ? `0 8px 40px ${glassGlowColor}, 0 2px 12px rgba(0,0,0,0.3)`
+            : '0 8px 40px rgba(0,0,0,0.3), 0 2px 12px rgba(0,0,0,0.2)'
+          : [
               '0 12px 32px rgba(0, 0, 0, 0.30)',
               '0 4px 12px rgba(0, 0, 0, 0.18)',
               '0 1px 3px rgba(0, 0, 0, 0.08)',
@@ -247,7 +261,7 @@ function CategoryTile({
       )}
 
       {/* Inner glow for square tiles — atmospheric warmth behind illustration */}
-      {squareTile && (
+      {squareTile && !glassTile && (
         <div
           aria-hidden="true"
           style={{
@@ -260,6 +274,20 @@ function CategoryTile({
         />
       )}
 
+      {/* Chromatic inner glow for glass tiles */}
+      {glassTile && glassGlowColor && (
+        <div
+          aria-hidden="true"
+          style={{
+            position: 'absolute',
+            inset: 0,
+            zIndex: 0,
+            pointerEvents: 'none',
+            background: `radial-gradient(ellipse 90% 80% at 50% 40%, ${glassGlowColor} 0%, transparent 70%)`,
+          }}
+        />
+      )}
+
       {/* Gradient shield for text readability */}
       <div
         style={{
@@ -268,9 +296,11 @@ function CategoryTile({
           left: 0,
           right: 0,
           height: squareTile ? '60%' : '75%',
-          background: squareTile
-            ? `linear-gradient(to top, rgba(${shieldRgb}, 1) 0%, rgba(${shieldRgb}, 0.95) 20%, rgba(${shieldRgb}, 0.7) 40%, rgba(${shieldRgb}, 0.2) 65%, transparent 100%)`
-            : `linear-gradient(to top, rgba(${shieldRgb}, 1) 0%, rgba(${shieldRgb}, 0.97) 25%, rgba(${shieldRgb}, 0.85) 45%, rgba(${shieldRgb}, 0.45) 70%, transparent 100%)`,
+          background: glassTile
+            ? 'linear-gradient(to top, rgba(10, 6, 2, 0.85) 0%, rgba(10, 6, 2, 0.7) 25%, rgba(10, 6, 2, 0.35) 55%, transparent 100%)'
+            : squareTile
+              ? `linear-gradient(to top, rgba(${shieldRgb}, 1) 0%, rgba(${shieldRgb}, 0.95) 20%, rgba(${shieldRgb}, 0.7) 40%, rgba(${shieldRgb}, 0.2) 65%, transparent 100%)`
+              : `linear-gradient(to top, rgba(${shieldRgb}, 1) 0%, rgba(${shieldRgb}, 0.97) 25%, rgba(${shieldRgb}, 0.85) 45%, rgba(${shieldRgb}, 0.45) 70%, transparent 100%)`,
           pointerEvents: 'none',
           zIndex: 2,
         }}
@@ -351,6 +381,14 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
   const isSU = product.slug === 'still-us-mock';
   const isVardag = product.id === 'vardagskort';
   const useSquareGrid = true; // 2×2 grid for all products
+
+  // Chromatic glow colors for Still Us glass tiles
+  const SU_GLOW_COLORS: Record<string, string> = {
+    'su-mock-vardagen':    'rgba(255, 140, 30, 0.25)',   // deep orange
+    'su-mock-tillsammans': 'rgba(80, 220, 190, 0.22)',   // mint-teal
+    'su-mock-grunden':     'rgba(255, 80, 160, 0.22)',   // neon-pink
+    'su-mock-riktningen':  'rgba(50, 200, 120, 0.22)',   // emerald-green
+  };
 
   return (
     <div className="min-h-screen relative overflow-hidden" style={{ backgroundColor: bg }}>
@@ -612,6 +650,8 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
                   squareTile={useSquareGrid}
                   wideSpan={isLastOdd}
                   fillHeight={false}
+                  glassTile={isSU}
+                  glassGlowColor={isSU ? SU_GLOW_COLORS[cat.id] : undefined}
                 />
               </div>
             );
