@@ -1,7 +1,7 @@
 /**
- * Still Us — Kids Architecture Mock
+ * Still Us — Kids Architecture Product
  *
- * Maps the 22 Still Us cards into a ProductManifest using the 5 clinical
+ * Maps the 22 Still Us cards into a ProductManifest using the 4 clinical
  * layers as categories. This lets the existing kids infrastructure
  * (KidsProductHome → KidsCardPortal → CardView → CompletedSessionView)
  * render Still Us content for A/B comparison.
@@ -113,13 +113,13 @@ const cards: Card[] = CARD_SEQUENCE.map(buildMockCard).filter((c): c is Card => 
 
 // ── Manifest ────────────────────────────────────────────────
 
-export const stillUsMockProduct: ProductManifest = {
-  id: 'still_us_mock',
+export const stillUsProduct: ProductManifest = {
+  id: 'still_us',
   heroImage: stillUsHero,
   name: 'Still Us',
-  slug: 'still-us-mock',
+  slug: 'still-us',
   tagline: 'Vi finns kvar',
-  description: '22 samtal fördelade på fem lager. Testversion i barnproduktformat.',
+  description: '22 samtal fördelade på fyra lager.',
   headerTitle: 'Still Us',
   accentColor: 'hsl(28, 80%, 57%)',       // deep saffron
   accentColorMuted: 'hsl(28, 60%, 85%)',

@@ -363,7 +363,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
 
   const bg = product.backgroundColor;
   const tileLight = product.tileLight ?? bg;
-  const isSU = product.slug === 'still-us-mock';
+  const isSU = product.slug === 'still-us';
   const isVardag = product.id === 'vardagskort';
   const useSquareGrid = true; // 2×2 grid for all products
 

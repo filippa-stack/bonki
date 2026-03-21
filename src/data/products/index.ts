@@ -4,7 +4,7 @@ export { jagIVarldenProduct } from './jag-i-varlden';
 export { vardagskortProduct } from './vardagskort';
 export { syskonkortProduct } from './syskonkort';
 export { sexualitetskortProduct } from './sexualitetskort';
-export { stillUsMockProduct } from './still-us-mock';
+export { stillUsProduct } from './still-us-mock';
 
 import type { ProductManifest } from '@/types/product';
 import type { Card, Category } from '@/types';
@@ -14,7 +14,7 @@ import { jagIVarldenProduct } from './jag-i-varlden';
 import { vardagskortProduct } from './vardagskort';
 import { syskonkortProduct } from './syskonkort';
 import { sexualitetskortProduct } from './sexualitetskort';
-import { stillUsMockProduct } from './still-us-mock';
+import { stillUsProduct } from './still-us-mock';
 
 export const allProducts: ProductManifest[] = [
   jagIMigProduct,
@@ -23,7 +23,7 @@ export const allProducts: ProductManifest[] = [
   vardagskortProduct,
   syskonkortProduct,
   sexualitetskortProduct,
-  stillUsMockProduct,
+  stillUsProduct,
 ];
 
 export function getProductById(id: string): ProductManifest | undefined {
