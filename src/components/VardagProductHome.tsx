@@ -15,15 +15,15 @@ import imgKvall from '/card-images/vk-kvall.png';
 import imgSova from '/card-images/vk-sova.png';
 
 const EASE = [0.4, 0.0, 0.2, 1] as const;
-const BG = '#161E14';
+const BG = '#081C24';
 const ACCENT_COLOR = '#8AAA72';
-const TILE_LIGHT = '#3C4A30';
+const TILE_LIGHT = '#122E38';
 
 const ORDERED_TILES = [
-  { id: 'vk-min-dag', bg: '#3C4A30', sub: 'Från morgon till kväll' },
-  { id: 'vk-var-rytm', bg: '#303C26', sub: 'Vanor och rutiner' },
-  { id: 'vk-vi-hemma', bg: '#262E1E', sub: 'Allt som händer innanför dörren' },
-  { id: 'vk-utanfor-hemmet', bg: '#1E2418', sub: 'Det du möter där ute' },
+  { id: 'vk-min-dag', bg: '#122E38', sub: 'Från morgon till kväll' },
+  { id: 'vk-var-rytm', bg: '#0D2530', sub: 'Vanor och rutiner' },
+  { id: 'vk-vi-hemma', bg: '#081C24', sub: 'Allt som händer innanför dörren' },
+  { id: 'vk-utanfor-hemmet', bg: '#06161E', sub: 'Det du möter där ute' },
 ];
 
 // Per-tile card images (first card per category)

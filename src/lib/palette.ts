@@ -45,9 +45,9 @@ export const productTileColors: Record<string, ProductTileColors> = {
     tileDeep: '#222E38',
   },
   vardagskort: {
-    tileLight: '#3C4A30',
-    tileMid: '#303C26',
-    tileDeep: '#262E1E',
+    tileLight: '#122E38',
+    tileMid: '#0D2530',
+    tileDeep: '#081C24',
   },
   syskonkort: {
     tileLight: '#8E5234',
