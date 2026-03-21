@@ -12,12 +12,12 @@ import { useCardImage } from '@/hooks/useCardImage';
 const EASE = [0.4, 0.0, 0.2, 1] as const;
 const BG = '#1A2F2E';
 const ACCENT_COLOR = '#8ECAC7';
-const TILE_LIGHT = '#3A6260';
+const TILE_LIGHT = '#2D6B62';
 
 const ORDERED_TILES = [
-  { id: 'jim-mina-kanslor', bg: '#3A6260', sub: 'Att känna igen dem' },
-  { id: 'jim-starka-kanslor', bg: '#2A4A48', sub: 'När det blir mycket' },
-  { id: 'jim-stora-kanslor', bg: '#1E3836', sub: 'Känslor med många lager' },
+  { id: 'jim-mina-kanslor', bg: '#2D6B62', sub: 'Att känna igen dem' },
+  { id: 'jim-starka-kanslor', bg: '#224F4A', sub: 'När det blir mycket' },
+  { id: 'jim-stora-kanslor', bg: '#1A3B38', sub: 'Känslor med många lager' },
 ];
 
 // First card per category — used as tile illustrations

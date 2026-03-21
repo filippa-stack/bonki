@@ -10,15 +10,15 @@ import type { CreatureTileStyle } from '@/components/CategoryTileGrid';
 import { useCardImage } from '@/hooks/useCardImage';
 
 const EASE = [0.4, 0.0, 0.2, 1] as const;
-const BG = '#2A1A10';
-const ACCENT_COLOR = '#C88A64';
-const TILE_LIGHT = '#8E5234';
+const BG = '#1A2418';
+const ACCENT_COLOR = '#C8B878';
+const TILE_LIGHT = '#3A4A30';
 
 const ORDERED_TILES = [
-  { id: 'sk-vi-blev-syskon', bg: '#8E5234', sub: 'När familjen växer' },
-  { id: 'sk-vi-ar-olika', bg: '#6E3E26', sub: 'Att vara egen fast vi hör ihop' },
-  { id: 'sk-delat-utrymme', bg: '#5E341E', sub: 'När allting ska delas' },
-  { id: 'sk-er-relation', bg: '#50301C', sub: 'Nära, svårt och allt däremellan' },
+  { id: 'sk-vi-blev-syskon', bg: '#3A4A30', sub: 'När familjen växer' },
+  { id: 'sk-vi-ar-olika', bg: '#2E3A28', sub: 'Att vara egen fast vi hör ihop' },
+  { id: 'sk-delat-utrymme', bg: '#283222', sub: 'När allting ska delas' },
+  { id: 'sk-er-relation', bg: '#222C1E', sub: 'Nära, svårt och allt däremellan' },
 ];
 
 // First card per category — used as tile illustrations
@@ -79,7 +79,7 @@ export default function SyskonProductHome({ product }: { product: ProductManifes
         {/* Extended scrim with smooth blend */}
         <div style={{
           position: 'absolute', bottom: 0, left: 0, right: 0, height: '85%',
-          background: `linear-gradient(to top, ${BG} 0%, ${BG}F2 18%, rgba(42,26,16,0.85) 35%, rgba(110,62,38,0.5) 60%, rgba(142,82,52,0.15) 80%, transparent 100%)`,
+          background: `linear-gradient(to top, ${BG} 0%, ${BG}F2 18%, rgba(26,36,24,0.85) 35%, rgba(46,58,40,0.5) 60%, rgba(58,74,48,0.15) 80%, transparent 100%)`,
           pointerEvents: 'none',
         }} />
       </motion.div>

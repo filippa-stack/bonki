@@ -11,15 +11,15 @@ import type { CreatureTileStyle } from '@/components/CategoryTileGrid';
 import { useCardImage } from '@/hooks/useCardImage';
 
 const EASE = [0.4, 0.0, 0.2, 1] as const;
-const BG = '#2C1C18';
-const ACCENT_COLOR = '#D4A098';
-const TILE_LIGHT = '#A8766C';
+const BG = '#1E1428';
+const ACCENT_COLOR = '#D4A0B8';
+const TILE_LIGHT = '#4A2E48';
 
 const ORDERED_TILES = [
-  { id: 'sex-min-identitet', bg: '#A8766C', sub: 'Vem du är och blir' },
-  { id: 'sex-normer-och-paverkan', bg: '#886056', sub: 'Det som formar oss' },
-  { id: 'sex-relation-och-ansvar', bg: '#7A524A', sub: 'Att ta hand om sig själv och andra' },
-  { id: 'sex-skydd-och-makt', bg: '#6A4A42', sub: 'Makt och sårbarhet' },
+  { id: 'sex-min-identitet', bg: '#4A2E48', sub: 'Vem du är och blir' },
+  { id: 'sex-normer-och-paverkan', bg: '#3A2240', sub: 'Det som formar oss' },
+  { id: 'sex-relation-och-ansvar', bg: '#321C38', sub: 'Att ta hand om sig själv och andra' },
+  { id: 'sex-skydd-och-makt', bg: '#2C1A32', sub: 'Makt och sårbarhet' },
 ];
 
 // Deer: huge dark eyes and ears. Tile 0 = face-dominant. Tile 1 ears extending.
@@ -81,7 +81,7 @@ export default function SexualitetProductHome({ product }: { product: ProductMan
         {/* Extended scrim with smooth blend */}
         <div style={{
           position: 'absolute', bottom: 0, left: 0, right: 0, height: '85%',
-          background: `linear-gradient(to top, ${BG} 0%, ${BG}F2 18%, rgba(44,28,24,0.85) 35%, rgba(136,96,86,0.5) 60%, rgba(168,118,108,0.15) 80%, transparent 100%)`,
+          background: `linear-gradient(to top, ${BG} 0%, ${BG}F2 18%, rgba(30,20,40,0.85) 35%, rgba(58,34,64,0.5) 60%, rgba(74,46,72,0.15) 80%, transparent 100%)`,
           pointerEvents: 'none',
         }} />
       </motion.div>

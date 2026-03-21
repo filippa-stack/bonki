@@ -29,12 +29,12 @@ function hexToRgba(hex: string, alpha: number): string {
 /** Product-specific tile colors — must match ProductLibrary TILE_COLORS */
 const PRODUCT_TILE_COLORS: Record<string, string> = {
   still_us: '#263041',
-  jag_i_mig: '#3A6260',
-  jag_med_andra: '#AC7A44',
+  jag_i_mig: '#2D6B62',
+  jag_med_andra: '#B07A3A',
   jag_i_varlden: '#2A4A6B',
-  sexualitetskort: '#3E2F24',
-  vardagskort: '#3D5030',
-  syskonkort: '#7A4228',
+  sexualitetskort: '#3A2240',
+  vardagskort: '#071E28',
+  syskonkort: '#2E3A28',
 };
 
 interface ResumeData {

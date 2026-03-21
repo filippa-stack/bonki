@@ -44,12 +44,12 @@ const TAGLINES: Record<string, string> = {
 
 /** Creature-color tile backgrounds — chosen to complement each illustration */
 const TILE_COLORS: Record<string, string> = {
-  jag_i_mig: '#3A6260',       // Deep teal — from the character's clothing
-  jag_med_andra: '#AC7A44',   // Warm amber — relational/togetherness theme
+  jag_i_mig: '#2D6B62',       // Deep chromatic teal — matches character clothing
+  jag_med_andra: '#B07A3A',   // Warm amber-orange — resonant, not dusty
   jag_i_varlden: '#2A4A6B',   // Richer dusk blue — more saturated, separates from Still Us
-  sexualitetskort: '#3E2F24',  // Bark Brown — dark, protected, mature
-  vardagskort: '#081C24',      // Deep dark teal-ink
-  syskonkort: '#7A4228',       // Deeper sienna — more saturation, less muddy
+  sexualitetskort: '#3A2240',  // Deep aubergine — warm-cool tension with skin tones
+  vardagskort: '#071E28',      // Deep teal-ink — subtle teal bridge
+  syskonkort: '#2E3A28',       // Deep forest moss — makes yellow/orange pop
 };
 
 /** Luminance helper — determines if a tile needs light or dark treatment.
@@ -106,9 +106,9 @@ const ILLUSTRATION_GLOW: Record<string, string> = {
   jag_i_mig: 'rgba(240, 190, 80, 0.12)',
   jag_med_andra: 'rgba(160, 130, 220, 0.10)',
   jag_i_varlden: 'rgba(140, 200, 230, 0.12)',
-  sexualitetskort: 'rgba(220, 150, 130, 0.12)',
+  sexualitetskort: 'rgba(180, 130, 200, 0.12)',
   vardagskort: 'rgba(200, 180, 100, 0.12)',
-  syskonkort: 'rgba(80, 200, 220, 0.12)',
+  syskonkort: 'rgba(200, 180, 80, 0.12)',
 };
 
 /** Per-tile drop-shadow + saturation boost — makes character pop from bg
@@ -117,9 +117,9 @@ const ILLUSTRATION_SHADOW: Record<string, string> = {
   jag_i_mig: 'saturate(1.3) brightness(1.15) drop-shadow(0 6px 20px rgba(30, 50, 48, 0.5)) drop-shadow(0 2px 4px rgba(0,0,0,0.2))',
   jag_med_andra: 'saturate(1.2) contrast(1.08) drop-shadow(0 6px 20px rgba(86, 61, 34, 0.5)) drop-shadow(0 2px 4px rgba(0,0,0,0.15))',
   jag_i_varlden: 'saturate(1.3) brightness(1.2) drop-shadow(0 6px 20px rgba(21, 37, 54, 0.6)) drop-shadow(0 2px 4px rgba(0,0,0,0.25))',
-  sexualitetskort: 'saturate(1.3) brightness(1.25) drop-shadow(0 6px 20px rgba(31, 24, 18, 0.6)) drop-shadow(0 2px 4px rgba(0,0,0,0.25))',
-  vardagskort: 'saturate(1.3) brightness(1.2) drop-shadow(0 8px 24px rgba(30, 40, 24, 0.6)) drop-shadow(0 2px 4px rgba(0,0,0,0.25))',
-  syskonkort: 'saturate(1.3) brightness(1.15) drop-shadow(0 6px 20px rgba(61, 33, 20, 0.5)) drop-shadow(0 2px 4px rgba(0,0,0,0.2))',
+  sexualitetskort: 'saturate(1.3) brightness(1.25) drop-shadow(0 6px 20px rgba(30, 20, 40, 0.6)) drop-shadow(0 2px 4px rgba(0,0,0,0.25))',
+  vardagskort: 'saturate(1.3) brightness(1.2) drop-shadow(0 8px 24px rgba(7, 30, 40, 0.6)) drop-shadow(0 2px 4px rgba(0,0,0,0.25))',
+  syskonkort: 'saturate(1.3) brightness(1.15) drop-shadow(0 6px 20px rgba(30, 40, 20, 0.5)) drop-shadow(0 2px 4px rgba(0,0,0,0.2))',
 };
 
 /** Title colors — dark text on lighter tiles, light on darker ones */
@@ -137,9 +137,9 @@ const TAGLINE_COLORS: Record<string, string> = {
   jag_i_mig: 'hsla(178, 30%, 82%, 0.90)',
   jag_med_andra: 'hsla(30, 30%, 85%, 0.90)',
   jag_i_varlden: 'hsla(210, 35%, 82%, 0.90)',
-  sexualitetskort: 'hsla(25, 35%, 78%, 0.90)',
-  vardagskort: 'hsla(100, 25%, 80%, 0.90)',
-  syskonkort: 'hsla(25, 35%, 82%, 0.90)',
+  sexualitetskort: 'hsla(300, 30%, 82%, 0.90)',
+  vardagskort: 'hsla(190, 25%, 80%, 0.90)',
+  syskonkort: 'hsla(80, 30%, 80%, 0.90)',
 };
 
 /** Tile height rhythm — alternating for visual breathing */
