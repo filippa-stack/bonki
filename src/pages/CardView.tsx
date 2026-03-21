@@ -2002,7 +2002,7 @@ export default function CardView() {
           topSlot={
             <div style={{
               width: '100%',
-              backgroundColor: MIDNIGHT_INK_LOCAL,
+              backgroundColor: product?.backgroundColor ?? MIDNIGHT_INK_LOCAL,
               paddingTop: 'env(safe-area-inset-top, 0px)',
             }}>
               {/* Nav bar — 52px */}
@@ -2209,7 +2209,7 @@ export default function CardView() {
             flex: '0 0 auto',
             height: '56px',
             marginTop: 'env(safe-area-inset-top, 0px)',
-            backgroundColor: MIDNIGHT_INK,
+            backgroundColor: product?.backgroundColor ?? MIDNIGHT_INK,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
