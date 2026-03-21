@@ -126,6 +126,7 @@ function CategoryTile({
   compactHeight = false,
   squareTile = false,
   wideSpan = false,
+  fillHeight = false,
 }: {
   cat: { id: string; title: string; subtitle?: string };
   product: ProductManifest;
@@ -140,6 +141,7 @@ function CategoryTile({
   compactHeight?: boolean;
   squareTile?: boolean;
   wideSpan?: boolean;
+  fillHeight?: boolean;
 }) {
   const navigate = useNavigate();
   const isFirst = index === 0;
@@ -159,7 +161,7 @@ function CategoryTile({
         position: 'relative',
         overflow: 'hidden',
         width: '100%',
-        ...(squareTile ? { aspectRatio: wideSpan ? '2 / 1' : '3 / 4' } : { minHeight: compactHeight ? '120px' : '140px' }),
+        ...(fillHeight ? { height: '100%' } : squareTile ? { aspectRatio: wideSpan ? '2 / 1' : '3 / 4' } : { minHeight: compactHeight ? '120px' : '140px' }),
 
         borderRadius: squareTile ? '28px' : '22px',
         cursor: isLocked ? 'default' : 'pointer',
@@ -433,9 +435,9 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
           display: 'flex',
           flexDirection: 'column',
           paddingTop: isSU ? 'clamp(24px, 6vh, 56px)' : 'clamp(32px, 10vh, 90px)',
-          paddingRight: '16px',
-          paddingBottom: '80px',
-          paddingLeft: '16px',
+          paddingRight: isSU ? '10px' : '16px',
+          paddingBottom: isSU ? '16px' : '80px',
+          paddingLeft: isSU ? '10px' : '16px',
         }}
       >
         {/* Title zone */}
@@ -487,7 +489,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
                     letterSpacing: '0.01em',
                   }}
                 >
-                  22 samtalsövningar inom 5 områden
+                  22 samtalsövningar inom 4 områden
                 </p>
               </>
             ) : (
@@ -580,7 +582,11 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
           style={{
             display: useSquareGrid ? 'grid' : 'flex',
             ...(useSquareGrid
-              ? { gridTemplateColumns: '1fr 1fr', gap: '8px' }
+              ? {
+                  gridTemplateColumns: '1fr 1fr',
+                  gap: '8px',
+                  ...(isSU ? { gridTemplateRows: '1fr 1fr', flex: 1, minHeight: 0 } : {}),
+                }
               : { flexDirection: 'column' as const, gap: isSU ? '10px' : '12px' }),
             width: '100%',
             marginTop: isSU ? '16px' : undefined,
@@ -611,7 +617,10 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
             return (
               <div
                 key={cat.id}
-                style={isLastOdd ? { gridColumn: '1 / -1' } : undefined}
+                style={{
+                  ...(isLastOdd ? { gridColumn: '1 / -1' } : {}),
+                  ...(isSU ? { minHeight: 0 } : {}),
+                }}
               >
                 <CategoryTile
                   cat={cat}
@@ -627,6 +636,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
                   compactHeight={isSU}
                   squareTile={useSquareGrid}
                   wideSpan={isLastOdd}
+                  fillHeight={isSU}
                 />
               </div>
             );
