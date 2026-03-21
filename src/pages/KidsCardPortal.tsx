@@ -31,7 +31,8 @@ function hexToRgb(hex: string): string {
   return `${parseInt(h.substring(0, 2), 16)},${parseInt(h.substring(2, 4), 16)},${parseInt(h.substring(4, 6), 16)}`;
 }
 
-function estimateMinutes(_promptCount: number): string {
+function estimateMinutes(_promptCount: number, productSlug?: string): string {
+  if (productSlug === 'still-us-mock') return 'ca 10–20 min';
   return 'ca 5–10 min';
 }
 
@@ -484,7 +485,7 @@ export default function KidsCardPortal() {
                 marginTop: '4px',
               }}
             >
-              {promptCount} frågor · {estimateMinutes(promptCount)}
+              {promptCount} frågor · {estimateMinutes(promptCount, productSlug)}
             </p>
             <p
               style={{
