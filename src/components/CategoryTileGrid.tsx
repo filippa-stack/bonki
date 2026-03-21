@@ -213,22 +213,38 @@ function CategoryTile({
           {tile.sub}
         </span>
 
-        {/* Progress: text counter */}
+        {/* Progress: subtle bar + text */}
         {totalCards > 0 && (
-          <span
-            style={{
-              fontSize: '11px',
-              fontWeight: 600,
-              color: completed > 0 ? SAFFRON : LANTERN,
-              opacity: completed > 0 ? 0.85 : 0.3,
-              marginTop: '6px',
-              display: 'block',
-              letterSpacing: '0.02em',
-              textShadow: '0 1px 2px rgba(0,0,0,0.3)',
-            }}
-          >
-            {completed} av {totalCards}
-          </span>
+          <div style={{ marginTop: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            {/* Mini progress bar */}
+            <div style={{
+              width: '32px', height: '3px', borderRadius: '2px',
+              backgroundColor: 'rgba(255,255,255,0.12)',
+              overflow: 'hidden',
+              flexShrink: 0,
+            }}>
+              <div style={{
+                width: `${totalCards > 0 ? (completed / totalCards) * 100 : 0}%`,
+                height: '100%',
+                borderRadius: '2px',
+                backgroundColor: SAFFRON,
+                opacity: completed > 0 ? 0.9 : 0,
+                transition: 'width 0.4s ease',
+              }} />
+            </div>
+            <span
+              style={{
+                fontSize: '11px',
+                fontWeight: 500,
+                color: completed > 0 ? SAFFRON : LANTERN,
+                opacity: completed > 0 ? 0.8 : 0.3,
+                letterSpacing: '0.02em',
+                textShadow: '0 1px 2px rgba(0,0,0,0.3)',
+              }}
+            >
+              {completed} av {totalCards}
+            </span>
+          </div>
         )}
       </div>
     </motion.button>
