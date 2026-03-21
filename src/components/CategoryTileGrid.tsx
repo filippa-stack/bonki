@@ -265,7 +265,8 @@ export default function CategoryTileGrid({ product, progress, tiles, creatureIma
         gridTemplateColumns: '1fr 1fr',
         gap: '10px',
         width: '100%',
-        padding: '0 12px',
+        padding: '0 12px 0',
+        marginBottom: '-6px',
       }}
     >
       {tiles.map((tile, index) => (
