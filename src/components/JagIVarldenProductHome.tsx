@@ -82,8 +82,8 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
         <img src={heroImage} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% -28%' }} />
         {/* Multi-stop scrim: product color mid-blend, then Midnight Ink */}
         <div style={{
-          position: 'absolute', bottom: 0, left: 0, right: 0, height: '88%',
-          background: `linear-gradient(to top, ${BG} 0%, ${BG}F5 15%, rgba(18,28,30,0.88) 30%, rgba(30,44,46,0.45) 55%, rgba(38,56,58,0.15) 75%, transparent 100%)`,
+          position: 'absolute', bottom: 0, left: 0, right: 0, height: '90%',
+          background: `linear-gradient(to top, ${BG} 0%, ${BG}F8 18%, rgba(18,28,30,0.92) 32%, rgba(24,36,38,0.6) 50%, rgba(30,44,46,0.25) 68%, rgba(38,56,58,0.08) 82%, transparent 100%)`,
           pointerEvents: 'none',
         }} />
       </motion.div>
