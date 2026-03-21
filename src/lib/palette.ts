@@ -60,7 +60,7 @@ export const productTileColors: Record<string, ProductTileColors> = {
     tileDeep: '#6A4A42',
   },
   still_us: {
-    tileLight: '#D4A03A',
+    tileLight: '#E5E0D8',
     tileMid: '#473454',
     tileDeep: '#2E2233',
   },
