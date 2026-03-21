@@ -45,7 +45,7 @@ const TAGLINES: Record<string, string> = {
 /** Creature-color tile backgrounds — chosen to complement each illustration */
 const TILE_COLORS: Record<string, string> = {
   jag_i_mig: '#3A6260',       // Deep teal — from the character's clothing
-  jag_med_andra: '#AC7A44',   // Warm amber — relational/togetherness theme
+  jag_med_andra: '#1B121B',   // Deep plum — relational/togetherness theme
   jag_i_varlden: '#2A4A6B',   // Richer dusk blue — more saturated, separates from Still Us
   sexualitetskort: '#3E2F24',  // Bark Brown — dark, protected, mature
   vardagskort: '#081C24',      // Deep dark teal-ink
