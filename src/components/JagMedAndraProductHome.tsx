@@ -15,20 +15,18 @@ const ACCENT_COLOR = '#D4A46C';
 const TILE_LIGHT = '#B07A3A';
 
 const ORDERED_TILES = [
-  { id: 'jma-att-hora-till', bg: '#B07A3A', sub: 'Var hör jag hemma?' },
-  { id: 'jma-nar-vi-jamfor-oss', bg: '#8A6036', sub: 'Vad det gör med oss' },
-  { id: 'jma-nar-det-skaver', bg: '#7A5230', sub: 'När vi sårar varandra' },
-  { id: 'jma-att-sta-stadig', bg: '#6A4828', sub: 'Din egen grund' },
-  { id: 'jma-vi-i-varlden', bg: '#5A3E20', sub: 'Utanför oss själva' },
+  { id: 'jma-vem-ar-jag', bg: '#B07A3A', sub: 'Det som formar dig inifrån' },
+  { id: 'jma-jag-och-andra', bg: '#8A6036', sub: 'Hur vi möter varandra' },
+  { id: 'jma-varlden-omkring-mig', bg: '#7A5230', sub: 'Press och prestation' },
+  { id: 'jma-vad-tror-jag-pa', bg: '#6A4828', sub: 'Värderingar och mod' },
 ];
 
 // First card per category — used as tile illustrations
 const FIRST_CARD_IDS = [
-  'jma-vanskap',   // Att höra till
-  'jma-duktig',    // När vi jämför oss
-  'jma-konflikt',  // När det skaver
-  'jma-stopp',     // Att stå stadig
-  'jma-respekt',   // Vi i världen
+  'jma-annorlunda',  // Vem är jag
+  'jma-kontakt',     // Jag & andra
+  'jma-duktig',      // Världen omkring mig
+  'jma-acceptans',   // Vad tror jag på
 ];
 
 // Per-tile illustration calibration — vivid card art, high opacity to showcase illustrations
@@ -37,7 +35,6 @@ const CREATURE_TILE_STYLES: CreatureTileStyle[] = [
   { scale: 1.15, objectPosition: '50% 20%', opacity: 0.85 },
   { scale: 1.1,  objectPosition: '50% 18%', opacity: 0.82 },
   { scale: 1.1,  objectPosition: '50% 22%', opacity: 0.78 },
-  { scale: 1.1,  objectPosition: '50% 18%', opacity: 0.75 },
 ];
 
 const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.11, delayChildren: 0.4 } } };
