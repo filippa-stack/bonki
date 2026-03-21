@@ -3092,6 +3092,16 @@ function KidsCompletionNote({ sessionId, spaceId, cardId, productId }: {
           overflow: 'auto',
         }}
       />
+      <p style={{
+        fontFamily: 'var(--font-sans)',
+        fontSize: '11px',
+        color: DRIFTWOOD,
+        opacity: 0.45,
+        textAlign: 'center',
+        marginTop: '8px',
+      }}>
+        Det ni skriver sparas i era samtal
+      </p>
     </motion.div>
   );
 }
