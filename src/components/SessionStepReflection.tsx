@@ -269,7 +269,7 @@ export default function SessionStepReflection({
                   letterSpacing: '0.02em',
                 }}
               >
-                ✓ Sparad
+                ✓ Sparat i era samtal
               </motion.p>
             )}
           </AnimatePresence>

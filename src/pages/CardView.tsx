@@ -2389,7 +2389,7 @@ export default function CardView() {
                       fontWeight: 400,
                       color: DRIFTWOOD,
                     }}>
-                      Skriv vad ni vill minnas i dagboken
+                      Skriv vad ni vill minnas
                     </span>
                   )}
                 </button>
@@ -2435,6 +2435,16 @@ export default function CardView() {
                         overflow: 'auto',
                       }}
                     />
+                    <p style={{
+                      fontFamily: 'var(--font-sans)',
+                      fontSize: '11px',
+                      color: DRIFTWOOD,
+                      opacity: 0.45,
+                      textAlign: 'center',
+                      marginTop: '8px',
+                    }}>
+                      Det ni skriver sparas i era samtal
+                    </p>
                     <button
                       onClick={() => setKidsNoteExpanded(false)}
                       aria-label="Stäng anteckning"
@@ -2861,7 +2871,7 @@ export default function CardView() {
                       isReflectionStep={isReflectionStep}
                       isExerciseStep={isExerciseStep}
                       hideNoteField={false}
-                      noteFieldLabel={isKidsProduct ? 'Skriv vad ni vill minnas i dagboken' : undefined}
+                      noteFieldLabel={isKidsProduct ? 'Skriv vad ni vill minnas' : undefined}
                       onLocked={async () => {
                         if (isLastPromptInStage) {
                           await handleCompleteStep();
@@ -3038,7 +3048,7 @@ function KidsCompletionNote({ sessionId, spaceId, cardId, productId }: {
           fontWeight: 400,
           color: DRIFTWOOD,
         }}>
-          Vill ni spara något i dagboken?
+          Skriv vad ni vill minnas
         </span>
       </button>
     );
@@ -3082,6 +3092,16 @@ function KidsCompletionNote({ sessionId, spaceId, cardId, productId }: {
           overflow: 'auto',
         }}
       />
+      <p style={{
+        fontFamily: 'var(--font-sans)',
+        fontSize: '11px',
+        color: DRIFTWOOD,
+        opacity: 0.45,
+        textAlign: 'center',
+        marginTop: '8px',
+      }}>
+        Det ni skriver sparas i era samtal
+      </p>
     </motion.div>
   );
 }
@@ -3201,6 +3221,16 @@ function SimpleTakeaway({ sessionId, spaceId, cardId, productId, stillUsMode }: 
           transition: 'background-color 320ms ease, box-shadow 320ms ease',
         }}
       />
+      <p style={{
+        fontFamily: 'var(--font-sans)',
+        fontSize: '11px',
+        color: stillUsMode ? DRIFTWOOD_T : 'var(--text-secondary)',
+        opacity: 0.45,
+        textAlign: 'center',
+        marginTop: '8px',
+      }}>
+        Det ni skriver sparas i era samtal
+      </p>
     </div>
   );
 }
