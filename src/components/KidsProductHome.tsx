@@ -597,6 +597,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
               : { flexDirection: 'column' as const, gap: isSU ? '10px' : '12px' }),
             width: '100%',
             marginTop: isSU ? '16px' : undefined,
+            marginBottom: isSU ? undefined : '10vh',
           }}
         >
           {product.categories.map((cat, index) => {
