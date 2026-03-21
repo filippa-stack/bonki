@@ -156,7 +156,11 @@ function CategoryTile({
   const style = styles[Math.min(index, styles.length - 1)];
   const shieldRgb = hexToRgb(tileBg);
 
-  return (
+    // Derive chromatic glow from tile background color
+    const glowRgb = hexToRgb(tileBg);
+    const chromaticGlow = glassGlowColor || `rgba(${glowRgb}, 0.22)`;
+
+    return (
     <motion.button
       variants={tileVariants}
       whileHover={isLocked ? {} : { scale: 1.02, y: -2 }}
@@ -173,37 +177,25 @@ function CategoryTile({
         borderRadius: squareTile ? '28px' : '22px',
         cursor: isLocked ? 'default' : 'pointer',
         textAlign: 'left',
-        backgroundImage: glassTile
-          ? 'linear-gradient(135deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.02) 40%, rgba(0,0,0,0.06) 100%)'
-          : 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.08) 100%)',
-        backgroundColor: glassTile ? 'rgba(255, 255, 255, 0.05)' : tileBg,
-        backdropFilter: glassTile ? 'blur(25px)' : undefined,
-        WebkitBackdropFilter: glassTile ? 'blur(25px)' : undefined,
+        backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 40%, rgba(0,0,0,0.06) 100%)',
+        backgroundColor: 'rgba(15, 15, 15, 0.7)',
+        backdropFilter: 'blur(22px)',
+        WebkitBackdropFilter: 'blur(22px)',
         opacity: isLocked ? 0.6 : 1,
-        border: glassTile
-          ? '1.5px solid rgba(255, 255, 255, 0.18)'
-          : '1.5px solid rgba(255, 255, 255, 0.25)',
-        boxShadow: glassTile
-          ? [
-              // Outer ceramic lift — deep dramatic shadow
-              '0 16px 48px rgba(0, 0, 0, 0.50)',
-              '0 6px 20px rgba(0, 0, 0, 0.35)',
-              '0 2px 6px rgba(0, 0, 0, 0.20)',
-              // Chromatic glow underneath
-              glassGlowColor ? `0 12px 50px ${glassGlowColor}` : '',
-              // Inner ceramic highlights — top shine
-              'inset 0 2px 8px rgba(255, 255, 255, 0.25)',
-              'inset 0 1px 1px rgba(255, 255, 255, 0.35)',
-              // Inner depth — bottom shadow
-              'inset 0 -3px 8px rgba(0, 0, 0, 0.25)',
-            ].filter(Boolean).join(', ')
-          : [
-              '0 12px 32px rgba(0, 0, 0, 0.30)',
-              '0 4px 12px rgba(0, 0, 0, 0.18)',
-              '0 1px 3px rgba(0, 0, 0, 0.08)',
-              'inset 0 3px 6px rgba(255, 255, 255, 0.45)',
-              'inset 0 -4px 10px rgba(0, 0, 0, 0.14)',
-            ].join(', '),
+        border: '1px solid rgba(255, 255, 255, 0.12)',
+        boxShadow: [
+          // Outer ceramic lift
+          '0 16px 48px rgba(0, 0, 0, 0.45)',
+          '0 6px 20px rgba(0, 0, 0, 0.30)',
+          '0 2px 6px rgba(0, 0, 0, 0.15)',
+          // Chromatic glow underneath — derived from tile/product color
+          `0 12px 50px ${chromaticGlow}`,
+          // Inner ceramic highlights — top shine
+          'inset 0 2px 8px rgba(255, 255, 255, 0.20)',
+          'inset 0 1px 1px rgba(255, 255, 255, 0.30)',
+          // Inner depth — bottom shadow
+          'inset 0 -3px 8px rgba(0, 0, 0, 0.20)',
+        ].join(', '),
         padding: 0,
         transition: 'opacity 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease',
       }}
