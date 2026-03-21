@@ -11,15 +11,15 @@ import type { CreatureTileStyle } from '@/components/CategoryTileGrid';
 import { useCardImage } from '@/hooks/useCardImage';
 
 const EASE = [0.4, 0.0, 0.2, 1] as const;
-const BG = '#2C1C18';
-const ACCENT_COLOR = '#D4A098';
-const TILE_LIGHT = '#A8766C';
+const BG = '#1E1428';
+const ACCENT_COLOR = '#D4A0B8';
+const TILE_LIGHT = '#4A2E48';
 
 const ORDERED_TILES = [
-  { id: 'sex-min-identitet', bg: '#A8766C', sub: 'Vem du är och blir' },
-  { id: 'sex-normer-och-paverkan', bg: '#886056', sub: 'Det som formar oss' },
-  { id: 'sex-relation-och-ansvar', bg: '#7A524A', sub: 'Att ta hand om sig själv och andra' },
-  { id: 'sex-skydd-och-makt', bg: '#6A4A42', sub: 'Makt och sårbarhet' },
+  { id: 'sex-min-identitet', bg: '#4A2E48', sub: 'Vem du är och blir' },
+  { id: 'sex-normer-och-paverkan', bg: '#3A2240', sub: 'Det som formar oss' },
+  { id: 'sex-relation-och-ansvar', bg: '#321C38', sub: 'Att ta hand om sig själv och andra' },
+  { id: 'sex-skydd-och-makt', bg: '#2C1A32', sub: 'Makt och sårbarhet' },
 ];
 
 // Deer: huge dark eyes and ears. Tile 0 = face-dominant. Tile 1 ears extending.

@@ -30,12 +30,12 @@ export interface ProductTileColors {
 
 export const productTileColors: Record<string, ProductTileColors> = {
   jag_i_mig: {
-    tileLight: '#3A6260',
-    tileMid: '#2A4A48',
-    tileDeep: '#1E3836',
+    tileLight: '#2D6B62',
+    tileMid: '#224F4A',
+    tileDeep: '#1A3B38',
   },
   jag_med_andra: {
-    tileLight: '#AC7A44',
+    tileLight: '#B07A3A',
     tileMid: '#8A6036',
     tileDeep: '#6A4828',
   },
@@ -47,17 +47,17 @@ export const productTileColors: Record<string, ProductTileColors> = {
   vardagskort: {
     tileLight: '#122E38',
     tileMid: '#0D2530',
-    tileDeep: '#081C24',
+    tileDeep: '#071E28',
   },
   syskonkort: {
-    tileLight: '#8E5234',
-    tileMid: '#6E3E26',
-    tileDeep: '#50301C',
+    tileLight: '#3A4A30',
+    tileMid: '#2E3A28',
+    tileDeep: '#222C1E',
   },
   sexualitetskort: {
-    tileLight: '#A8766C',
-    tileMid: '#886056',
-    tileDeep: '#6A4A42',
+    tileLight: '#4A2E48',
+    tileMid: '#3A2240',
+    tileDeep: '#2C1A32',
   },
   still_us: {
     tileLight: '#D4A03A',

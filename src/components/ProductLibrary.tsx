@@ -44,12 +44,12 @@ const TAGLINES: Record<string, string> = {
 
 /** Creature-color tile backgrounds — chosen to complement each illustration */
 const TILE_COLORS: Record<string, string> = {
-  jag_i_mig: '#3A6260',       // Deep teal — from the character's clothing
-  jag_med_andra: '#AC7A44',   // Warm amber — relational/togetherness theme
+  jag_i_mig: '#2D6B62',       // Deep chromatic teal — matches character clothing
+  jag_med_andra: '#B07A3A',   // Warm amber-orange — resonant, not dusty
   jag_i_varlden: '#2A4A6B',   // Richer dusk blue — more saturated, separates from Still Us
-  sexualitetskort: '#3E2F24',  // Bark Brown — dark, protected, mature
-  vardagskort: '#081C24',      // Deep dark teal-ink
-  syskonkort: '#7A4228',       // Deeper sienna — more saturation, less muddy
+  sexualitetskort: '#3A2240',  // Deep aubergine — warm-cool tension with skin tones
+  vardagskort: '#071E28',      // Deep teal-ink — subtle teal bridge
+  syskonkort: '#2E3A28',       // Deep forest moss — makes yellow/orange pop
 };
 
 /** Luminance helper — determines if a tile needs light or dark treatment.
