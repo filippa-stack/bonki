@@ -73,9 +73,18 @@ export default function SyskonProductHome({ product }: { product: ProductManifes
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6 }}
-        style={{ position: 'absolute', top: '-14vh', left: '-5vw', right: '-5vw', height: '70vh', zIndex: 0, pointerEvents: 'none' }}
+        style={{ position: 'absolute', top: '-14vh', left: '-5vw', right: '-5vw', height: '85vh', zIndex: 0, pointerEvents: 'none' }}
       >
-        <img src={heroImage} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 8%' }} />
+        <img src={heroImage} alt="" style={{
+          width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 8%',
+          filter: 'saturate(1.35) brightness(1.15)',
+        }} />
+        {/* Soft fade to background — no hard cutoff */}
+        <div style={{
+          position: 'absolute', bottom: 0, left: 0, right: 0, height: '45%',
+          background: `linear-gradient(to top, ${BG} 0%, ${BG}CC 25%, transparent 100%)`,
+          pointerEvents: 'none',
+        }} />
       </motion.div>
 
       {/* ── Content ── */}
