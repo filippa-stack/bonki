@@ -126,9 +126,9 @@ export const stillUsMockProduct: ProductManifest = {
   secondaryAccent: 'hsl(280, 20%, 22%)',   // ember tone
   backgroundColor: '#2E2233',              // emberNight
   ctaButtonColor: '#E8913A',
-  tileLight: '#3D2E48',                    // ember-tinted tile
-  tileMid: '#352842',
-  tileDeep: '#2E2338',
+  tileLight: '#6B4A0E',                    // rich gold-amber (matches library tile)
+  tileMid: '#4A3308',
+  tileDeep: '#352606',
   pronounMode: 'ni',
   paywallDescription: 'Fördjupa samtalet — vecka för vecka, lager för lager.',
   categories,
