@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { ChevronRight, ChevronDown, Check } from 'lucide-react';
+import { ChevronRight, ChevronDown, Check, Bookmark, Play } from 'lucide-react';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { supabase } from '@/integrations/supabase/client';
 import {
@@ -164,17 +164,21 @@ function getProductColor(productId: string, cardId?: string): string {
 }
 
 // ─── Note Entry Card ───
-function NoteEntryCard({ entry, navigate }: { entry: NoteEntry; navigate: (p: string) => void }) {
+function NoteEntryCard({ entry, navigate, index }: { entry: NoteEntry; navigate: (p: string) => void; index: number }) {
   const [expanded, setExpanded] = useState(false);
   const isLong = entry.text.length > 200;
+  const accentColor = getProductColor(entry.productId, entry.cardId);
 
   return (
-    <div
+    <motion.div
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: Math.min(index * 0.04, 0.3), duration: 0.4, ease: EASE }}
       style={{
         backgroundColor: DEEP_DUSK,
         borderRadius: '16px',
-        borderLeft: `3px solid ${getProductColor(entry.productId, entry.cardId)}`,
-        padding: '16px',
+        borderLeft: `3px solid ${accentColor}`,
+        padding: '16px 16px 14px',
       }}
     >
       {/* Note text */}
@@ -182,9 +186,10 @@ function NoteEntryCard({ entry, navigate }: { entry: NoteEntry; navigate: (p: st
         <p
           style={{
             margin: 0,
-            fontSize: '17px',
+            fontFamily: 'var(--font-serif)',
+            fontSize: '16px',
             color: LANTERN_GLOW,
-            lineHeight: 1.5,
+            lineHeight: 1.6,
             ...(isLong && !expanded ? {
               display: '-webkit-box',
               WebkitLineClamp: 4,
@@ -195,36 +200,22 @@ function NoteEntryCard({ entry, navigate }: { entry: NoteEntry; navigate: (p: st
         >
           {entry.text}
         </p>
-        {isLong && !expanded && (
+        {isLong && (
           <button
-            onClick={() => setExpanded(true)}
+            onClick={() => setExpanded(!expanded)}
             style={{
               background: 'none',
               border: 'none',
-              color: DEEP_SAFFRON,
+              color: accentColor,
               fontSize: '13px',
+              fontWeight: 500,
               cursor: 'pointer',
               padding: 0,
-              marginTop: '4px',
+              marginTop: '6px',
+              letterSpacing: '0.02em',
             }}
           >
-            Läs mer
-          </button>
-        )}
-        {isLong && expanded && (
-          <button
-            onClick={() => setExpanded(false)}
-            style={{
-              background: 'none',
-              border: 'none',
-              color: DEEP_SAFFRON,
-              fontSize: '13px',
-              cursor: 'pointer',
-              padding: 0,
-              marginTop: '4px',
-            }}
-          >
-            Visa mindre
+            {expanded ? 'Visa mindre' : 'Läs mer'}
           </button>
         )}
       </div>
@@ -232,60 +223,74 @@ function NoteEntryCard({ entry, navigate }: { entry: NoteEntry; navigate: (p: st
       {/* Question anchor */}
       <p
         style={{
-          margin: '8px 0 0',
-          fontSize: '14px',
+          margin: '10px 0 0',
+          fontSize: '13px',
           fontStyle: 'italic',
-          color: DRIFTWOOD,
+          color: `${DRIFTWOOD}cc`,
           lineHeight: 1.4,
         }}
       >
         — {entry.questionText ?? 'Reflektion efter samtalet'}
       </p>
 
-      {/* Metadata */}
-      <p
-        style={{
-          margin: '8px 0 0',
-          fontSize: '12px',
-          color: DRIFTWOOD,
-          lineHeight: 1.4,
-        }}
-      >
-        {entry.cardName} · {entry.categoryName} · {formatFullDate(entry.date)}
-      </p>
-    </div>
+      {/* Metadata — split into separate pieces for clarity */}
+      <div style={{
+        marginTop: '10px',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '6px',
+        fontSize: '12px',
+        color: `${DRIFTWOOD}99`,
+        lineHeight: 1,
+      }}>
+        <span>{entry.cardName}</span>
+        <span style={{ opacity: 0.4 }}>·</span>
+        <span>{entry.categoryName}</span>
+        <span style={{ opacity: 0.4 }}>·</span>
+        <span>{formatFullDate(entry.date)}</span>
+      </div>
+    </motion.div>
   );
 }
 
 // ─── Completed-no-note marker ───
-function CompletedMarkerRow({ marker }: { marker: CompletedMarker }) {
+function CompletedMarkerRow({ marker, index }: { marker: CompletedMarker; index: number }) {
   return (
-    <div
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay: Math.min(index * 0.04, 0.3), duration: 0.35, ease: EASE }}
       style={{
         display: 'flex',
         alignItems: 'center',
-        gap: '8px',
+        gap: '10px',
         paddingLeft: '8px',
+        paddingTop: '2px',
+        paddingBottom: '2px',
       }}
     >
       <div
         style={{
-          width: '16px',
-          height: '16px',
+          width: '18px',
+          height: '18px',
           borderRadius: '50%',
-          backgroundColor: DEEP_SAFFRON,
+          backgroundColor: `${DEEP_SAFFRON}22`,
+          border: `1.5px solid ${DEEP_SAFFRON}66`,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           flexShrink: 0,
         }}
       >
-        <Check size={10} strokeWidth={2.5} color={LANTERN_GLOW} />
+        <Check size={10} strokeWidth={2.5} color={DEEP_SAFFRON} />
       </div>
-      <span style={{ fontSize: '14px', color: DRIFTWOOD }}>
+      <span style={{ fontSize: '14px', color: `${DRIFTWOOD}cc` }}>
         {marker.cardName}
       </span>
-    </div>
+      <span style={{ fontSize: '12px', color: `${DRIFTWOOD}66`, marginLeft: 'auto' }}>
+        {formatRelativeDate(marker.date)}
+      </span>
+    </motion.div>
   );
 }
 
@@ -573,22 +578,23 @@ export default function Journal() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: EASE }}
         style={{
-          paddingTop: 'calc(env(safe-area-inset-top, 0px) + 60px)',
+          paddingTop: 'calc(env(safe-area-inset-top, 0px) + 56px)',
           textAlign: 'center',
           paddingLeft: '24px',
           paddingRight: '24px',
+          paddingBottom: '4px',
         }}
       >
         <h1 style={{
           fontFamily: "var(--font-display)",
           fontVariationSettings: "'opsz' 28",
-          fontSize: '28px', fontWeight: 600, color: LANTERN_GLOW, margin: 0, lineHeight: 1.2,
+          fontSize: '26px', fontWeight: 600, color: LANTERN_GLOW, margin: 0, lineHeight: 1.2,
         }}>
           Era samtal
         </h1>
         <p style={{
           fontFamily: 'var(--font-serif)', fontSize: '14px', fontStyle: 'italic',
-          color: DRIFTWOOD, marginTop: '8px', lineHeight: 1.4,
+          color: `${DRIFTWOOD}cc`, marginTop: '6px', lineHeight: 1.4,
         }}>
           Vad ni burit med er.
         </p>
@@ -600,7 +606,7 @@ export default function Journal() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.15, duration: 0.4, ease: EASE }}
-          style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginTop: '20px' }}
+          style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginTop: '16px' }}
         >
           {(['barn', 'par'] as const).map(chip => {
             const active = activeFilters.has(chip);
@@ -609,10 +615,10 @@ export default function Journal() {
                 key={chip}
                 onClick={() => toggleFilter(chip)}
                 style={{
-                  height: '32px', paddingLeft: '16px', paddingRight: '16px', borderRadius: '12px',
-                  border: `1px solid ${DRIFTWOOD}`,
-                  backgroundColor: active ? DEEP_DUSK : 'transparent',
-                  color: active ? LANTERN_GLOW : DRIFTWOOD,
+                  height: '30px', paddingLeft: '16px', paddingRight: '16px', borderRadius: '10px',
+                  border: active ? `1px solid ${DEEP_SAFFRON}44` : `1px solid ${DRIFTWOOD}44`,
+                  backgroundColor: active ? `${DEEP_SAFFRON}18` : 'transparent',
+                  color: active ? LANTERN_GLOW : `${DRIFTWOOD}aa`,
                   fontFamily: 'var(--font-sans)', fontSize: '12px', fontWeight: 500,
                   letterSpacing: '0.06em', textTransform: 'uppercase',
                   cursor: 'pointer', transition: 'all 200ms ease',
@@ -637,21 +643,30 @@ export default function Journal() {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.5, ease: EASE }}
-            style={{ textAlign: 'center', padding: '0 32px' }}
+            style={{ textAlign: 'center', padding: '0 40px' }}
           >
+            {/* Subtle decorative line */}
+            <div style={{
+              width: '32px', height: '1px', margin: '0 auto 24px',
+              background: `linear-gradient(90deg, transparent, ${DRIFTWOOD}66, transparent)`,
+            }} />
             <p style={{
               fontFamily: "var(--font-display)",
               fontVariationSettings: "'opsz' 20",
-              fontSize: '20px', color: LANTERN_GLOW, margin: 0, lineHeight: 1.3,
+              fontSize: '19px', color: LANTERN_GLOW, margin: 0, lineHeight: 1.35,
             }}>
               Det finns inget här ännu.
             </p>
             <p style={{
               fontFamily: 'var(--font-serif)', fontSize: '15px', fontStyle: 'italic',
-              color: DRIFTWOOD, marginTop: '16px', lineHeight: 1.4,
+              color: `${DRIFTWOOD}cc`, marginTop: '12px', lineHeight: 1.5,
             }}>
-              Varje samtal ni har lämnar ett spår.
+              Varje samtal ni har lämnar ett spår —<br />en anteckning, en tanke, ett minne.
             </p>
+            <div style={{
+              width: '32px', height: '1px', margin: '24px auto 0',
+              background: `linear-gradient(90deg, transparent, ${DRIFTWOOD}66, transparent)`,
+            }} />
           </motion.div>
         </div>
       ) : (
@@ -663,30 +678,38 @@ export default function Journal() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 0.5, ease: EASE }}
               style={{
-                margin: '24px 16px 0', backgroundColor: DEEP_DUSK,
-                borderRadius: '16px', borderLeft: `3px solid ${DEEP_SAFFRON}`, padding: '16px',
+                margin: '20px 16px 0',
+                background: `linear-gradient(135deg, ${DEEP_DUSK}, ${DEEP_DUSK}ee)`,
+                borderRadius: '16px', borderLeft: `3px solid ${DEEP_SAFFRON}`,
+                padding: '16px 16px 14px',
               }}
             >
-              <p style={{ margin: 0, fontSize: '16px', color: LANTERN_GLOW, lineHeight: 1.4 }}>
-                Ni har haft <span style={{ fontWeight: 600 }}>{pulseData.total}</span> samtal sedan {pulseData.monthLabel}.
+              <p style={{
+                margin: 0, fontSize: '15px', color: LANTERN_GLOW, lineHeight: 1.5,
+                fontFamily: 'var(--font-sans)',
+              }}>
+                Ni har haft{' '}
+                <span style={{ fontWeight: 700, color: DEEP_SAFFRON, fontSize: '18px' }}>{pulseData.total}</span>
+                {' '}samtal sedan {pulseData.monthLabel}.
               </p>
-              <p style={{ margin: '6px 0 0', fontSize: '14px', color: DRIFTWOOD, lineHeight: 1.4 }}>
+              <p style={{ margin: '8px 0 0', fontSize: '13px', color: `${DRIFTWOOD}cc`, lineHeight: 1.5 }}>
                 Senast:{' '}
                 <span
                   onClick={() => pulseData.latestCardId && navigate(`/card/${pulseData.latestCardId}`)}
                   style={{
                     fontWeight: 600,
+                    color: DRIFTWOOD,
                     cursor: pulseData.latestCardId ? 'pointer' : 'default',
                     textDecoration: pulseData.latestCardId ? 'underline' : 'none',
-                    textDecorationColor: `${DRIFTWOOD}66`, textUnderlineOffset: '2px',
+                    textDecorationColor: `${DRIFTWOOD}44`, textUnderlineOffset: '3px',
                   }}
                 >
                   {pulseData.latestCardName}
                 </span>
-                {' · '}{pulseData.latestRelDate}.
+                {' · '}{pulseData.latestRelDate}
               </p>
               {pulseData.uniqueProductCount > 1 && (
-                <p style={{ margin: '4px 0 0', fontSize: '13px', color: DRIFTWOOD, lineHeight: 1.4 }}>
+                <p style={{ margin: '4px 0 0', fontSize: '12px', color: `${DRIFTWOOD}88`, lineHeight: 1.4 }}>
                   I {pulseData.uniqueProductCount} olika samtalsprodukter
                 </p>
               )}
@@ -710,34 +733,47 @@ export default function Journal() {
                   WebkitTapHighlightColor: 'transparent',
                 }}
               >
-                <span style={{ fontSize: '15px', color: DRIFTWOOD, textAlign: 'left' }}>
+                <span style={{ fontSize: '14px', color: DRIFTWOOD, textAlign: 'left' }}>
                   {parExpanded ? 'Dölj parsamtal' : `Ni har ${stillUsSessions.length} parsamtal sparade`}
                 </span>
-                <span style={{ color: DRIFTWOOD, display: 'flex' }}>
-                  {parExpanded ? <ChevronDown size={18} strokeWidth={1.5} /> : <ChevronRight size={18} strokeWidth={1.5} />}
-                </span>
+                <motion.span
+                  animate={{ rotate: parExpanded ? 180 : 0 }}
+                  transition={{ duration: 0.2 }}
+                  style={{ color: DRIFTWOOD, display: 'flex' }}
+                >
+                  <ChevronDown size={18} strokeWidth={1.5} />
+                </motion.span>
               </button>
             </motion.div>
           )}
 
           {/* Timeline */}
-          {monthGroups.map(group => (
+          {monthGroups.map((group, gi) => (
             <div key={group.key}>
               {/* Month header */}
-              <p style={{
-                margin: '32px 0 12px 16px', fontSize: '12px', fontWeight: 600,
-                letterSpacing: '2px', color: DRIFTWOOD, lineHeight: 1,
+              <div style={{
+                margin: `${gi === 0 ? '28px' : '36px'} 16px 14px`,
+                display: 'flex', alignItems: 'center', gap: '10px',
               }}>
-                {group.label}
-              </p>
+                <span style={{
+                  fontSize: '11px', fontWeight: 600,
+                  letterSpacing: '2px', color: `${DRIFTWOOD}aa`, lineHeight: 1,
+                }}>
+                  {group.label}
+                </span>
+                <div style={{
+                  flex: 1, height: '1px',
+                  background: `linear-gradient(90deg, ${DRIFTWOOD}33, transparent)`,
+                }} />
+              </div>
 
               {/* Items */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', padding: '0 16px' }}>
-                {group.items.map(item =>
+                {group.items.map((item, idx) =>
                   item.type === 'note' ? (
-                    <NoteEntryCard key={item.id} entry={item} navigate={navigate} />
+                    <NoteEntryCard key={item.id} entry={item} navigate={navigate} index={idx} />
                   ) : (
-                    <CompletedMarkerRow key={item.id} marker={item} />
+                    <CompletedMarkerRow key={item.id} marker={item} index={idx} />
                   )
                 )}
               </div>
@@ -747,50 +783,68 @@ export default function Journal() {
           {/* ── Paused Sessions ── */}
           {filteredPaused.length > 0 && (
             <div>
-              <p style={{
-                margin: '40px 0 12px 16px', fontSize: '12px', fontWeight: 600,
-                letterSpacing: '2px', color: DRIFTWOOD, lineHeight: 1, textTransform: 'uppercase',
+              <div style={{
+                margin: '40px 16px 14px',
+                display: 'flex', alignItems: 'center', gap: '10px',
               }}>
-                Samtal ni inte avslutat
-              </p>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', padding: '0 16px' }}>
-                {filteredPaused.map(s => {
+                <span style={{
+                  fontSize: '11px', fontWeight: 600,
+                  letterSpacing: '2px', color: `${DRIFTWOOD}aa`, lineHeight: 1, textTransform: 'uppercase',
+                }}>
+                  Samtal ni inte avslutat
+                </span>
+                <div style={{
+                  flex: 1, height: '1px',
+                  background: `linear-gradient(90deg, ${DRIFTWOOD}33, transparent)`,
+                }} />
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', padding: '0 16px' }}>
+                {filteredPaused.map((s, idx) => {
                   const cardName = s.card_id ? getCardTitle(s.card_id) : 'Okänt samtal';
                   const catName = getCategoryName(s.category_id, s.card_id ?? '');
                   const stepName = effectiveIsPar(s.product_id, s.card_id)
                     ? (STILL_US_STEP_NAMES[s.currentStepIndex] ?? `Steg ${s.currentStepIndex + 1}`)
                     : `Fråga ${s.currentStepIndex + 1}`;
+                  const accentColor = getProductColor(s.product_id, s.card_id);
 
                   return (
-                    <button
+                    <motion.button
                       key={s.id}
+                      initial={{ opacity: 0, y: 6 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: idx * 0.05, duration: 0.35, ease: EASE }}
                       onClick={() => s.card_id && navigate(`/card/${s.card_id}`)}
                       style={{
                         width: '100%', backgroundColor: DEEP_DUSK, borderRadius: '16px',
-                        padding: '16px', cursor: 'pointer',
+                        padding: '14px 16px', cursor: 'pointer',
                         borderTop: 'none', borderRight: 'none', borderBottom: 'none',
-                        borderLeft: `3px solid ${getProductColor(s.product_id, s.card_id)}`,
+                        borderLeft: `3px solid ${accentColor}`,
                         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
                         textAlign: 'left', WebkitTapHighlightColor: 'transparent',
                       }}
                     >
                       <div style={{ minWidth: 0 }}>
                         <span style={{
-                          fontSize: '17px', fontWeight: 600, color: LANTERN_GLOW,
+                          fontSize: '16px', fontWeight: 600, color: LANTERN_GLOW,
                           display: 'block', lineHeight: 1.3,
                         }}>
                           {cardName}
                         </span>
                         <span style={{
-                          fontSize: '13px', color: DRIFTWOOD, display: 'block', marginTop: '4px',
+                          fontSize: '13px', color: `${DRIFTWOOD}cc`, display: 'block', marginTop: '4px',
                         }}>
                           Pausad vid {stepName} · {catName}
                         </span>
                       </div>
-                      <span style={{ fontSize: '15px', color: DEEP_SAFFRON, flexShrink: 0, marginLeft: '12px' }}>
+                      <div style={{
+                        display: 'flex', alignItems: 'center', gap: '6px',
+                        flexShrink: 0, marginLeft: '12px',
+                        color: accentColor, fontSize: '13px', fontWeight: 600,
+                      }}>
+                        <Play size={12} strokeWidth={2.5} fill={accentColor} />
                         Fortsätt
-                      </span>
-                    </button>
+                      </div>
+                    </motion.button>
                   );
                 })}
               </div>
@@ -800,43 +854,58 @@ export default function Journal() {
           {/* ── Bookmarked Questions ── */}
           {filteredBookmarks.length > 0 && (
             <div>
-              <p style={{
-                margin: '40px 0 12px 16px', fontSize: '12px', fontWeight: 600,
-                letterSpacing: '2px', color: DRIFTWOOD, lineHeight: 1, textTransform: 'uppercase',
+              <div style={{
+                margin: '40px 16px 14px',
+                display: 'flex', alignItems: 'center', gap: '10px',
               }}>
-                Frågor ni velat återvända till
-              </p>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', padding: '0 16px' }}>
-                {filteredBookmarks.map(b => {
+                <Bookmark size={13} strokeWidth={2} style={{ color: `${DRIFTWOOD}88` }} />
+                <span style={{
+                  fontSize: '11px', fontWeight: 600,
+                  letterSpacing: '2px', color: `${DRIFTWOOD}aa`, lineHeight: 1, textTransform: 'uppercase',
+                }}>
+                  Sparade frågor
+                </span>
+                <div style={{
+                  flex: 1, height: '1px',
+                  background: `linear-gradient(90deg, ${DRIFTWOOD}33, transparent)`,
+                }} />
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', padding: '0 16px' }}>
+                {filteredBookmarks.map((b, idx) => {
                   const cardName = getCardTitle(b.card_id);
                   const catName = getCategoryName(null, b.card_id);
 
                   return (
-                    <button
+                    <motion.button
                       key={b.id}
+                      initial={{ opacity: 0, y: 6 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: idx * 0.05, duration: 0.35, ease: EASE }}
                       onClick={() => navigate(`/card/${b.card_id}`)}
                       style={{
                         width: '100%', backgroundColor: DEEP_DUSK, borderRadius: '16px',
-                        padding: '16px', border: 'none', cursor: 'pointer',
+                        padding: '14px 16px', border: 'none', cursor: 'pointer',
                         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
                         textAlign: 'left', WebkitTapHighlightColor: 'transparent',
                       }}
                     >
                       <div style={{ minWidth: 0, flex: 1 }}>
                         <span style={{
-                          fontSize: '17px', color: LANTERN_GLOW,
-                          display: 'block', lineHeight: 1.4,
+                          fontFamily: 'var(--font-serif)',
+                          fontSize: '15px', color: LANTERN_GLOW,
+                          display: 'block', lineHeight: 1.5,
+                          fontStyle: 'italic',
                         }}>
-                          {b.question_text}
+                          "{b.question_text}"
                         </span>
                         <span style={{
-                          fontSize: '13px', color: DRIFTWOOD, display: 'block', marginTop: '8px',
+                          fontSize: '12px', color: `${DRIFTWOOD}99`, display: 'block', marginTop: '8px',
                         }}>
                           {cardName} · {catName}
                         </span>
                       </div>
-                      <ChevronRight size={18} strokeWidth={1.5} style={{ color: DRIFTWOOD, flexShrink: 0, marginLeft: '8px' }} />
-                    </button>
+                      <ChevronRight size={16} strokeWidth={1.5} style={{ color: `${DRIFTWOOD}66`, flexShrink: 0, marginLeft: '8px' }} />
+                    </motion.button>
                   );
                 })}
               </div>
