@@ -15,20 +15,18 @@ const ACCENT_COLOR = '#6A9A9E';
 const TILE_LIGHT = '#344452';
 
 const ORDERED_TILES = [
-  { id: 'jiv-min-vardag', bg: '#344452', sub: 'Det som fyller dina dagar' },
-  { id: 'jiv-vem-jag-ar', bg: '#2A3844', sub: 'Det som förändras just nu' },
-  { id: 'jiv-jag-och-andra', bg: '#222E38', sub: 'Hur vi påverkar varandra' },
-  { id: 'jiv-jag-i-samhallet', bg: '#1A242E', sub: 'Normer, rättvisa och din röst' },
-  { id: 'jiv-det-stora-sammanhanget', bg: '#0C1416', sub: 'Bortom det du ser' },
+  { id: 'jiv-vem-ar-jag', bg: '#344452', sub: 'Det som formar dig inifrån' },
+  { id: 'jiv-jag-och-andra', bg: '#2A3844', sub: 'Hur vi påverkar varandra' },
+  { id: 'jiv-varlden-omkring-mig', bg: '#222E38', sub: 'Normer, press och frågor' },
+  { id: 'jiv-vad-tror-jag-pa', bg: '#1A242E', sub: 'Värderingar och mening' },
 ];
 
 // First card per category — used as tile illustrations
 const FIRST_CARD_IDS = [
-  'jiv-halsa',         // Min vardag
-  'jiv-identitet',     // Vem jag är
-  'jiv-kommunikation', // Jag & andra
-  'jiv-social-media',  // Jag i samhället
-  'jiv-existens',      // Det stora sammanhanget
+  'jiv-identitet',     // Vem är jag
+  'jiv-vanskap',       // Jag & andra
+  'jiv-social-media',  // Världen omkring mig
+  'jiv-karlek',        // Vad tror jag på
 ];
 
 // Per-tile illustration calibration — individually tuned for visual weight
@@ -37,7 +35,6 @@ const CREATURE_TILE_STYLES: CreatureTileStyle[] = [
   { scale: 1.15, objectPosition: '50% 18%', opacity: 0.38 },
   { scale: 1.1,  objectPosition: '50% 20%', opacity: 0.32 },
   { scale: 1.1,  objectPosition: '50% 18%', opacity: 0.28 },
-  { scale: 1.1,  objectPosition: '50% 20%', opacity: 0.25 },
 ];
 
 const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.11, delayChildren: 0.4 } } };
