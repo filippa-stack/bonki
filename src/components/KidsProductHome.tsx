@@ -84,7 +84,7 @@ const SQUARE_TILE_ILLUSTRATION_STYLES = [
 
 /** Per-product hero image vertical position — default is '50% 55%' */
 const HERO_OBJECT_POSITION: Record<string, string> = {
-  jag_i_varlden: '50% 35%',
+  jag_i_varlden: '50% 25%',
 };
 
 /* ── First card per category hook ── */
