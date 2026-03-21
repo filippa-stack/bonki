@@ -442,7 +442,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
           flexDirection: 'column',
           paddingTop: isSU ? 'clamp(24px, 6vh, 56px)' : 'clamp(32px, 10vh, 90px)',
           paddingRight: isSU ? '10px' : '16px',
-          paddingBottom: isSU ? '16px' : '80px',
+          paddingBottom: isSU ? '16px' : '0px',
           paddingLeft: isSU ? '10px' : '16px',
         }}
       >
@@ -576,6 +576,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
         </motion.div>
 
         {/* Small spacer before grid */}
+        {useSquareGrid && !isSU && <div style={{ flex: 1 }} />}
         {useSquareGrid && <div style={{ height: '8px' }} />}
 
         {/* Removed "Välj ett ämne" header — tiles speak for themselves */}
