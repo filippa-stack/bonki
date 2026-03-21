@@ -379,7 +379,7 @@ export const jagMedAndraProduct: ProductManifest = {
   accentColor: 'hsl(32, 44%, 47%)',
   accentColorMuted: 'hsl(32, 30%, 85%)',
   secondaryAccent: 'hsl(32, 44%, 47%)',
-  backgroundColor: '#2A1E14',
+  backgroundColor: '#1B121B',
   ctaButtonColor: '#AC7A44',
   tileLight: '#AC7A44',
   tileMid: '#8A6036',
