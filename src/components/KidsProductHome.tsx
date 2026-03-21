@@ -177,24 +177,25 @@ function CategoryTile({
         borderRadius: squareTile ? '28px' : '22px',
         cursor: isLocked ? 'default' : 'pointer',
         textAlign: 'left',
-        backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 40%, rgba(0,0,0,0.06) 100%)',
+        backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.04) 35%, rgba(0,0,0,0.04) 70%, rgba(0,0,0,0.10) 100%)',
         backgroundColor: 'rgba(15, 15, 15, 0.7)',
         backdropFilter: 'blur(22px)',
         WebkitBackdropFilter: 'blur(22px)',
         opacity: isLocked ? 0.6 : 1,
         border: '1px solid rgba(255, 255, 255, 0.12)',
         boxShadow: [
-          // Outer ceramic lift
-          '0 16px 48px rgba(0, 0, 0, 0.45)',
-          '0 6px 20px rgba(0, 0, 0, 0.30)',
-          '0 2px 6px rgba(0, 0, 0, 0.15)',
-          // Chromatic glow underneath — derived from tile/product color
-          `0 12px 50px ${chromaticGlow}`,
-          // Inner ceramic highlights — top shine
-          'inset 0 2px 8px rgba(255, 255, 255, 0.20)',
-          'inset 0 1px 1px rgba(255, 255, 255, 0.30)',
-          // Inner depth — bottom shadow
-          'inset 0 -3px 8px rgba(0, 0, 0, 0.20)',
+          // Outer ceramic lift — dramatic depth stack
+          '0 20px 60px rgba(0, 0, 0, 0.55)',
+          '0 8px 24px rgba(0, 0, 0, 0.40)',
+          '0 3px 8px rgba(0, 0, 0, 0.25)',
+          // Chromatic glow underneath — product color bleed
+          `0 14px 56px ${chromaticGlow}`,
+          // Inner ceramic bevel — bright top edge
+          'inset 0 2px 6px rgba(255, 255, 255, 0.35)',
+          'inset 0 1px 1px rgba(255, 255, 255, 0.45)',
+          // Inner depth — dark bottom edge for 3D lift
+          'inset 0 -4px 12px rgba(0, 0, 0, 0.30)',
+          'inset 0 -1px 2px rgba(0, 0, 0, 0.15)',
         ].join(', '),
         padding: 0,
         transition: 'opacity 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease',
