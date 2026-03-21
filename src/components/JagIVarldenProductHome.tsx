@@ -76,7 +76,7 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
         transition={{ duration: 0.6 }}
         style={{ position: 'absolute', top: '-18vh', left: '-5vw', right: '-5vw', height: '75vh', zIndex: 0, pointerEvents: 'none' }}
       >
-        <img src={heroImage} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% -28%' }} />
+        <img src={heroImage} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 0%' }} />
         {/* Multi-stop scrim: product color mid-blend, then Midnight Ink */}
         <div style={{
           position: 'absolute', bottom: 0, left: 0, right: 0, height: '90%',
