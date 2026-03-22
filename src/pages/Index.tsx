@@ -130,8 +130,16 @@ export default function Index() {
     return <Onboarding />;
   }
 
-  // Still Us legacy: ?product=still-us routes to the original Home view
+  // Post-purchase redirect: return user to the card they were trying to open
   const searchParams = new URLSearchParams(window.location.search);
+  if (searchParams.get('purchase') === 'success') {
+    const returnCard = searchParams.get('returnCard');
+    if (returnCard) {
+      return <Navigate to={`/card/${returnCard}`} replace />;
+    }
+  }
+
+  // Still Us legacy: ?product=still-us routes to the original Home view
   if (searchParams.get('product') === 'still-us') {
     return <Home />;
   }
