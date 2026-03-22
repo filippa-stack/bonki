@@ -39,9 +39,8 @@ const items: NavItem[] = [
     icon: House,
     path: '/',
     match: (p, s) => {
-      // Library active for root (without ?product=still-us) and kids product pages
+      // Only root library page (not product home screens)
       if (p === '/' && !s.includes('product=still-us')) return true;
-      if (p.startsWith('/product/') && p !== '/product/still-us') return true;
       return false;
     },
   },
