@@ -134,7 +134,7 @@ export default function Paywall() {
           lineHeight: 1.6,
           marginBottom: '8px',
         }}>
-          Vad ni startade ikväll är en resa genom 22 veckor — ämnen som de flesta par aldrig tar upp. Inte för att de inte vill, utan för att de inte vet hur.
+          Vad ni startade ikväll är en resa genom 22 samtal — ämnen som de flesta par aldrig tar upp. Inte för att de inte vill, utan för att de inte vet hur.
         </p>
 
         <p style={{
@@ -162,10 +162,10 @@ export default function Paywall() {
             Vad som händer härifrån:
           </p>
           {[
-            'Varje vecka — ett nytt samtal som tar er djupare',
+            'Ett samtal i taget — varje gång lite djupare',
             'Konflikter, längtan, val — ämnena ni behöver',
             'Skrivna reflektioner som ni kan komma tillbaka till',
-            'En ceremoni efter 22 veckor som markerar vad ni byggt',
+            'En ceremoni efter sista samtalet som markerar vad ni byggt',
           ].map((line, i) => (
             <p key={i} style={{
               fontSize: '14px',
