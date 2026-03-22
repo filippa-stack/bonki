@@ -178,7 +178,7 @@ function CategoryTile({
         position: 'relative',
         overflow: 'hidden',
         width: '100%',
-        ...(fillHeight ? { height: '100%' } : squareTile ? { aspectRatio: wideSpan ? '2 / 1' : '3 / 4' } : { minHeight: compactHeight ? '120px' : '140px' }),
+        ...(fillHeight ? { height: '100%' } : squareTile ? { aspectRatio: wideSpan ? '2 / 1' : '2 / 3' } : { minHeight: compactHeight ? '120px' : '140px' }),
 
         borderRadius: squareTile ? '28px' : '22px',
         cursor: isLocked ? 'default' : 'pointer',
