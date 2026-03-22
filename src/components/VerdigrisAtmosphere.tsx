@@ -13,6 +13,13 @@ export function useVerdigrisTheme(active: boolean = true, lightLeakColor?: strin
     root.classList.add('theme-verdigris');
     document.body.classList.add('verdigris-grain', 'verdigris-lightleak');
 
+    // Force light text on dark background — inline styles beat CSS specificity conflicts
+    root.style.setProperty('--text-primary', 'hsl(38, 25%, 92%)');
+    root.style.setProperty('--text-secondary', 'hsl(192, 20%, 60%)');
+    root.style.setProperty('--text-tertiary', 'hsl(192, 15%, 45%)');
+    root.style.setProperty('--surface-base', 'hsl(192, 58%, 21%)');
+    root.style.setProperty('--surface-raised', 'hsl(192, 50%, 16%)');
+
     if (lightLeakColor) {
       root.style.setProperty('--lightleak-color', lightLeakColor);
     }
@@ -21,6 +28,11 @@ export function useVerdigrisTheme(active: boolean = true, lightLeakColor?: strin
       root.classList.remove('theme-verdigris');
       document.body.classList.remove('verdigris-grain', 'verdigris-lightleak');
       root.style.removeProperty('--lightleak-color');
+      root.style.removeProperty('--text-primary');
+      root.style.removeProperty('--text-secondary');
+      root.style.removeProperty('--text-tertiary');
+      root.style.removeProperty('--surface-base');
+      root.style.removeProperty('--surface-raised');
     };
   }, [active, lightLeakColor]);
 }
