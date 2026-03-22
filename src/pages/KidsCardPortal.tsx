@@ -22,7 +22,6 @@ import {
   LANTERN_GLOW,
   DRIFTWOOD,
   SAFFRON_FLAME,
-  GHOST_GLOW,
 } from '@/lib/palette';
 
 /* ── Helpers ── */
@@ -286,8 +285,8 @@ export default function KidsCardPortal() {
             fontWeight: 600,
             letterSpacing: '1.5px',
             textTransform: 'uppercase',
-            color: GHOST_GLOW,
-            opacity: 0.85,
+            color: LANTERN_GLOW,
+            opacity: 0.7,
           }}
         >
           {category.title}
@@ -297,8 +296,8 @@ export default function KidsCardPortal() {
             fontFamily: 'var(--font-sans)',
             fontSize: '12px',
             fontWeight: 600,
-            color: GHOST_GLOW,
-            opacity: 0.6,
+            color: LANTERN_GLOW,
+            opacity: 0.5,
             minWidth: '28px',
             textAlign: 'right',
           }}
@@ -559,7 +558,7 @@ export default function KidsCardPortal() {
               style={{
                 fontFamily: 'var(--font-sans)',
                 fontSize: '11px',
-                color: GHOST_GLOW,
+                color: LANTERN_GLOW,
                 opacity: 0.55,
                 marginTop: '4px',
               }}
@@ -604,7 +603,7 @@ export default function KidsCardPortal() {
                 cursor: 'pointer',
                 fontFamily: 'var(--font-sans)',
                 fontSize: '13px',
-                color: GHOST_GLOW,
+                color: LANTERN_GLOW,
                 opacity: 0.6,
                 padding: '6px 16px',
               }}
@@ -620,7 +619,7 @@ export default function KidsCardPortal() {
                 cursor: 'pointer',
                 fontFamily: 'var(--font-sans)',
                 fontSize: '12px',
-                color: GHOST_GLOW,
+                color: LANTERN_GLOW,
                 padding: '4px 16px',
                 opacity: 0.45,
               }}
