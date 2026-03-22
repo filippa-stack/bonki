@@ -55,7 +55,7 @@ export default function SessionStepReflection({
 
   // If noteFieldLabel is provided, force the note field visible
   const effectiveHideNoteField = noteFieldLabel ? false : hideNoteField;
-  const triggerLabel = noteFieldLabel || 'Fäst en tanke';
+  const triggerLabel = noteFieldLabel || 'Skriv vad ni vill minnas';
 
   const { loading, myReflection, setText, markReady } =
     useSessionReflections(sessionId, reflectionStepIndex);
@@ -273,20 +273,18 @@ export default function SessionStepReflection({
               </motion.p>
             )}
           </AnimatePresence>
-          {/* Privacy line */}
-          {stillUsMode && (
-            <p style={{
-              fontFamily: 'var(--font-sans)',
-              fontStyle: 'italic',
-              fontSize: '12px',
-              color: DRIFTWOOD,
-              textAlign: 'center',
-              marginTop: '8px',
-              opacity: 0.6,
-            }}>
-              Inget ni skriver lämnar det här rummet.
-            </p>
-          )}
+          {/* Persistent hint */}
+          <p style={{
+            fontFamily: 'var(--font-sans)',
+            fontStyle: 'italic',
+            fontSize: '11px',
+            color: stillUsMode ? DRIFTWOOD : 'var(--text-secondary)',
+            textAlign: 'center',
+            marginTop: '8px',
+            opacity: stillUsMode ? 0.6 : 0.45,
+          }}>
+            Det ni skriver sparas i era samtal
+          </p>
         </motion.div>
       )}
 

@@ -71,7 +71,7 @@ export default function TillbakaComplete() {
           lineHeight: 1.6,
           marginBottom: '32px',
         }}>
-          Något ni vill minnas?
+          Skriv vad ni vill minnas
         </div>
 
         <textarea
@@ -90,9 +90,20 @@ export default function TillbakaComplete() {
             fontFamily: 'inherit',
             resize: 'vertical',
             outline: 'none',
-            marginBottom: '32px',
+            marginBottom: '12px',
           }}
         />
+        <p style={{
+          fontFamily: 'var(--font-sans)',
+          fontSize: '11px',
+          fontStyle: 'italic',
+          color: COLORS.driftwood,
+          opacity: 0.6,
+          textAlign: 'center',
+          marginBottom: '32px',
+        }}>
+          Det ni skriver sparas i era samtal
+        </p>
 
         <button
           onClick={handleComplete}
