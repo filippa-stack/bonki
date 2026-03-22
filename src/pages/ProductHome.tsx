@@ -86,7 +86,13 @@ export default function ProductHome() {
           setShowIntro(false);
           if (product.freeCardId) {
             localStorage.setItem('bonki-last-active-product', product.slug);
-            navigate(`/card/${product.freeCardId}`);
+            const freeCard = product.cards.find(c => c.id === product.freeCardId);
+            const catId = freeCard?.categoryId;
+            if (catId) {
+              navigate(`/product/${product.slug}/portal/${catId}`);
+            } else {
+              navigate(`/card/${product.freeCardId}`);
+            }
           }
         }}
       />
