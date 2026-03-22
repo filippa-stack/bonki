@@ -1274,23 +1274,7 @@ export default function CardView() {
             <SimpleTakeaway sessionId={activeSessionId} spaceId={space?.id ?? null} cardId={cardId} productId={product?.id} stillUsMode />
           </motion.div>
 
-          {/* Privacy */}
-          <motion.p
-            className="font-sans"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            style={{
-              fontSize: '12px',
-              fontStyle: 'italic',
-              color: DRIFTWOOD,
-              opacity: 0.55,
-              textAlign: 'center',
-              marginTop: '10px',
-            }}
-          >
-            Inget ni skriver lämnar det här rummet.
-          </motion.p>
+          {/* Note: SimpleTakeaway already shows "Det ni skriver sparas i era samtal" */}
 
           {/* 3–5. CTAs */}
           <motion.div
@@ -2394,7 +2378,7 @@ export default function CardView() {
                     textAlign: 'center',
                     marginBottom: '8px',
                   }}>
-                    Inget du skriver lämnar det här rummet.
+                    Det ni skriver sparas i era samtal
                   </p>
                   <div style={{ position: 'relative' }}>
                     <textarea
@@ -3054,7 +3038,7 @@ function KidsCompletionNote({ sessionId, spaceId, cardId, productId }: {
         textAlign: 'center',
         marginBottom: '8px',
       }}>
-        Inget du skriver lämnar det här rummet.
+        Det ni skriver sparas i era samtal
       </p>
       <textarea
         ref={textareaRef}
