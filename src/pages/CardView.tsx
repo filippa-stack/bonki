@@ -2329,7 +2329,7 @@ export default function CardView() {
                   style={{
                     fontSize: '24px',
                     fontWeight: 600,
-                    color: BARK,
+                    color: LANTERN_GLOW,
                     textAlign: 'center',
                     lineHeight: 1.35,
                     maxWidth: 'calc(100vw - 48px)',
