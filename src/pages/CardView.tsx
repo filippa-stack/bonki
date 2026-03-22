@@ -1924,7 +1924,7 @@ export default function CardView() {
   const exitBackTo = isFromArchive ? '/shared' : (
     isKidsProduct && product && category
       ? `/product/${product.slug}/portal/${category.id}`
-      : category ? `/category/${category.id}` : '/'
+      : product ? `/product/${product.slug}` : '/'
   );
 
   const handleSessionExit = () => {
