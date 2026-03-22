@@ -318,10 +318,14 @@ export default function KidsCardPortal() {
         {/* ═══ Portal tile — constrained to leave room for copy ═══ */}
         <div style={{ flex: 1, position: 'relative', minHeight: 0, maxHeight: 'calc(100vh - 280px)' }}>
 
-          {/* ── Saffron glow frame (matches recommended tiles) ── */}
+          {/* ── Saffron glow frame — intensifies on open ── */}
           <motion.div
-            animate={{ opacity: [0.6, 1, 0.6] }}
-            transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+            animate={portalPhase !== 'idle'
+              ? { opacity: 1, boxShadow: `0 0 60px rgba(233, 180, 76, 0.7), 0 0 120px rgba(233, 180, 76, 0.3)` }
+              : { opacity: [0.6, 1, 0.6] }}
+            transition={portalPhase !== 'idle'
+              ? { duration: 0.4, ease: [0.22, 1, 0.36, 1] }
+              : { duration: 3, repeat: Infinity, ease: 'easeInOut' }}
             style={{
               position: 'absolute',
               inset: '-2px',
