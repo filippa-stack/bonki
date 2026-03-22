@@ -22,6 +22,7 @@ import {
   LANTERN_GLOW,
   DRIFTWOOD,
   SAFFRON_FLAME,
+  GHOST_GLOW,
 } from '@/lib/palette';
 
 /* ── Helpers ── */
@@ -285,7 +286,8 @@ export default function KidsCardPortal() {
             fontWeight: 600,
             letterSpacing: '1.5px',
             textTransform: 'uppercase',
-            color: DRIFTWOOD,
+            color: GHOST_GLOW,
+            opacity: 0.85,
           }}
         >
           {category.title}
@@ -294,7 +296,9 @@ export default function KidsCardPortal() {
           style={{
             fontFamily: 'var(--font-sans)',
             fontSize: '12px',
-            color: DRIFTWOOD,
+            fontWeight: 600,
+            color: GHOST_GLOW,
+            opacity: 0.6,
             minWidth: '28px',
             textAlign: 'right',
           }}
@@ -555,7 +559,8 @@ export default function KidsCardPortal() {
               style={{
                 fontFamily: 'var(--font-sans)',
                 fontSize: '11px',
-                color: DRIFTWOOD,
+                color: GHOST_GLOW,
+                opacity: 0.55,
                 marginTop: '4px',
               }}
             >
@@ -599,7 +604,8 @@ export default function KidsCardPortal() {
                 cursor: 'pointer',
                 fontFamily: 'var(--font-sans)',
                 fontSize: '13px',
-                color: DRIFTWOOD,
+                color: GHOST_GLOW,
+                opacity: 0.6,
                 padding: '6px 16px',
               }}
             >
@@ -608,16 +614,16 @@ export default function KidsCardPortal() {
           )}
           <button
             onClick={() => setBrowseOpen(true)}
-            style={{
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              fontFamily: 'var(--font-sans)',
-              fontSize: '12px',
-              color: DRIFTWOOD,
-              padding: '4px 16px',
-              opacity: 0.7,
-            }}
+              style={{
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                fontFamily: 'var(--font-sans)',
+                fontSize: '12px',
+                color: GHOST_GLOW,
+                padding: '4px 16px',
+                opacity: 0.45,
+              }}
           >
             Utforska alla samtal
           </button>
