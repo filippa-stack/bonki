@@ -58,7 +58,7 @@ export default function KidsCardPortal() {
   // Resolve product + category
   const product = allProducts.find(p => p.slug === productSlug);
   const category = product?.categories.find(c => c.id === categoryId);
-  const categoryCards = useMemo(
+  const allCategoryCards = useMemo(
     () => product?.cards.filter(c => c.categoryId === categoryId) ?? [],
     [product, categoryId],
   );
@@ -79,12 +79,15 @@ export default function KidsCardPortal() {
     [progress.recentlyCompletedCardIds],
   );
 
-  // Determine which card to show — first uncompleted, or first if all done
-  const initialCardIndex = useMemo(() => {
-    if (!categoryCards.length) return 0;
-    const firstUncompleted = categoryCards.findIndex(c => !completedSet.has(c.id));
-    return firstUncompleted >= 0 ? firstUncompleted : 0;
-  }, [categoryCards, completedSet]);
+  // Reorder: uncompleted cards first (in original sequence), completed cards to back
+  const categoryCards = useMemo(() => {
+    const uncompleted = allCategoryCards.filter(c => !completedSet.has(c.id));
+    const completed = allCategoryCards.filter(c => completedSet.has(c.id));
+    return [...uncompleted, ...completed];
+  }, [allCategoryCards, completedSet]);
+
+  // Always start at the first card (which is now the first uncompleted)
+  const initialCardIndex = 0;
 
   const [currentIndex, setCurrentIndex] = useState(initialCardIndex);
   const [direction, setDirection] = useState<1 | -1>(1);
