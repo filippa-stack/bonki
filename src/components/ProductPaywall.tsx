@@ -187,7 +187,7 @@ export default function ProductPaywall({ product, onAccessGranted, cardId, curre
               left: 0,
               right: 0,
               height: '80vh',
-              backgroundColor: MIDNIGHT_INK,
+              backgroundColor: pageBg,
               borderTopLeftRadius: '20px',
               borderTopRightRadius: '20px',
               display: 'flex',
@@ -366,7 +366,7 @@ export default function ProductPaywall({ product, onAccessGranted, cardId, curre
       style={{
         position: 'fixed',
         inset: 0,
-        backgroundColor: MIDNIGHT_INK,
+        backgroundColor: pageBg,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
