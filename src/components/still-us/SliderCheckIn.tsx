@@ -124,7 +124,7 @@ export default function SliderCheckIn({
       navigate('/share');
     } else if (result.status === 'ready' || partnerCompleted) {
       // Both completed → home (session ready)
-      navigate('/?product=still-us');
+      navigate('/product/still-us');
     } else {
       // Waiting for partner → share screen to nudge
       navigate('/share');
@@ -161,7 +161,7 @@ export default function SliderCheckIn({
     } else if (!hasPartner) {
       navigate(`/solo-reflect/${slug ?? cardId ?? `card_${cardIndex + 1}`}`);
     } else {
-      navigate('/?product=still-us');
+      navigate('/product/still-us');
     }
   };
 

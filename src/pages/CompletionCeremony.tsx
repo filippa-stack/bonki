@@ -40,7 +40,7 @@ export default function CompletionCeremony() {
   useEffect(() => {
     const checkAccess = async () => {
       const { data: { user } } = await supabase.auth.getUser();
-      if (!user) { navigate('/?product=still-us'); return; }
+      if (!user) { navigate('/product/still-us'); return; }
 
       const { data: couple } = await supabase
         .from('couple_state')
@@ -48,13 +48,13 @@ export default function CompletionCeremony() {
         .eq('initiator_id', user.id)
         .single();
 
-      if (!couple) { navigate('/?product=still-us'); return; }
+      if (!couple) { navigate('/product/still-us'); return; }
 
       // Dissolved couples should not be in ceremony
-      if (couple.dissolved_at) { navigate('/?product=still-us'); return; }
+      if (couple.dissolved_at) { navigate('/product/still-us'); return; }
 
       if (couple.phase === 'program') {
-        navigate('/?product=still-us');
+        navigate('/product/still-us');
         return;
       }
 
@@ -62,7 +62,7 @@ export default function CompletionCeremony() {
         if (couple.ceremony_reflection) {
           setCurrentScreen(4);
         } else {
-          navigate('/?product=still-us');
+          navigate('/product/still-us');
           return;
         }
       }
@@ -104,7 +104,7 @@ export default function CompletionCeremony() {
 
           if (!error) {
             localStorage.removeItem('still_us_pending_phase_transition');
-            navigate('/?product=still-us');
+            navigate('/product/still-us');
             return;
           }
         }
@@ -227,7 +227,7 @@ export default function CompletionCeremony() {
 
           try { localStorage.removeItem('still_us_pending_phase_transition'); } catch {}
           setTransitionState('success');
-          navigate('/?product=still-us');
+          navigate('/product/still-us');
           return;
         }
       } catch {}

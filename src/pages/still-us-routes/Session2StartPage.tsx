@@ -50,7 +50,7 @@ export default function Session2StartPage() {
         .maybeSingle();
 
       if (!cs) {
-        navigate('/?product=still-us', { replace: true });
+        navigate('/product/still-us', { replace: true });
         return;
       }
 

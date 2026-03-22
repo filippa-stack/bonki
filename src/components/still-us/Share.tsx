@@ -65,7 +65,7 @@ export default function Share({
       if (!state) return;
       const touch = state.current_touch as string | undefined;
       if (touch === 'session_1') {
-        navigate('/?product=still-us');
+        navigate('/product/still-us');
       }
     });
 
@@ -83,7 +83,7 @@ export default function Share({
           url: hasPartner ? shareLink : undefined,
         });
         // After successful share, go back to Home
-        navigate('/?product=still-us');
+        navigate('/product/still-us');
       } catch {
         // User cancelled — stay on page
       }
@@ -92,7 +92,7 @@ export default function Share({
       setCopied(true);
       setTimeout(() => {
         setCopied(false);
-        navigate('/?product=still-us');
+        navigate('/product/still-us');
       }, 1500);
     }
   }, [hasPartner, message, shareLink, navigate]);

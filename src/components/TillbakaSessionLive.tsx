@@ -101,7 +101,7 @@ export default function TillbakaSessionLive() {
   useEffect(() => {
     const init = async () => {
       const { data: { user } } = await supabase.auth.getUser();
-      if (!user) { navigate('/?product=still-us'); return; }
+      if (!user) { navigate('/product/still-us'); return; }
 
       const { data: couple } = await supabase
         .from('couple_state')
@@ -109,7 +109,7 @@ export default function TillbakaSessionLive() {
         .or(`initiator_id.eq.${user.id},partner_id.eq.${user.id}`)
         .single();
 
-      if (!couple || couple.phase !== 'maintenance') { navigate('/?product=still-us'); return; }
+      if (!couple || couple.phase !== 'maintenance') { navigate('/product/still-us'); return; }
       setCoupleState(couple as unknown as CoupleStateRow);
 
       // Acquire session lock
@@ -137,7 +137,7 @@ export default function TillbakaSessionLive() {
           else if (ss?.current_step === 'tillbaka_q1') setStep('q1');
         }
       } else {
-        navigate('/?product=still-us');
+        navigate('/product/still-us');
       }
     };
     init();
@@ -338,7 +338,7 @@ export default function TillbakaSessionLive() {
       .eq('couple_id', coupleState.couple_id)
       .eq('card_id', backendCardId)
       .eq('cycle_id', coupleState.cycle_id);
-    navigate('/?product=still-us');
+    navigate('/product/still-us');
   }, [coupleState, backendCardId, step, navigate]);
 
   const handleEmotionalExit = useCallback(async () => {
@@ -353,7 +353,7 @@ export default function TillbakaSessionLive() {
       .eq('couple_id', coupleState.couple_id)
       .eq('card_id', backendCardId)
       .eq('cycle_id', coupleState.cycle_id);
-    navigate('/?product=still-us');
+    navigate('/product/still-us');
   }, [coupleState, backendCardId, step, navigate]);
 
   // ── Complete → navigate to tillbaka-complete ───────────────
@@ -395,7 +395,7 @@ export default function TillbakaSessionLive() {
   if (step === 'threshold') {
     if (coupleState.partner_tier === 'tier_2') {
       return (
-        <SessionFocusShell couple_id={coupleState.couple_id} card_id={backendCardId} device_id={deviceId} onExit={() => navigate('/?product=still-us')} ctaSlot={null}>
+        <SessionFocusShell couple_id={coupleState.couple_id} card_id={backendCardId} device_id={deviceId} onExit={() => navigate('/product/still-us')} ctaSlot={null}>
           <Tier2Threshold
             initiatorName={initiatorName}
             partnerName={partnerName}
@@ -410,7 +410,7 @@ export default function TillbakaSessionLive() {
     }
 
     return (
-      <SessionFocusShell couple_id={coupleState.couple_id} card_id={backendCardId} device_id={deviceId} onExit={() => navigate('/?product=still-us')} ctaSlot={null}>
+      <SessionFocusShell couple_id={coupleState.couple_id} card_id={backendCardId} device_id={deviceId} onExit={() => navigate('/product/still-us')} ctaSlot={null}>
         <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '16px' }}>
           <CompactThresholdRow
             initiatorName={initiatorName}
@@ -445,7 +445,7 @@ export default function TillbakaSessionLive() {
         couple_id={coupleState.couple_id}
         card_id={backendCardId}
         device_id={deviceId}
-        onExit={() => navigate('/?product=still-us')}
+        onExit={() => navigate('/product/still-us')}
         ctaSlot={
           framing.showExitCta ? (
             <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px' }}>
@@ -498,7 +498,7 @@ export default function TillbakaSessionLive() {
         couple_id={coupleState.couple_id}
         card_id={backendCardId}
         device_id={deviceId}
-        onExit={() => navigate('/?product=still-us')}
+        onExit={() => navigate('/product/still-us')}
         ctaSlot={
           <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}>
             <button
@@ -602,7 +602,7 @@ export default function TillbakaSessionLive() {
         couple_id={coupleState.couple_id}
         card_id={backendCardId}
         device_id={deviceId}
-        onExit={() => navigate('/?product=still-us')}
+        onExit={() => navigate('/product/still-us')}
         ctaSlot={
           <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}>
             <button

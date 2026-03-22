@@ -16,9 +16,9 @@ export default function Tier2SetupPage() {
             .update({ tier_2_partner_name: partnerName })
             .eq('initiator_id', user.id);
         }
-        navigate('/?product=still-us');
+        navigate('/product/still-us');
       }}
-      onBack={() => navigate('/?product=still-us')}
+      onBack={() => navigate('/product/still-us')}
     />
   );
 }
