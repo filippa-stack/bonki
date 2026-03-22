@@ -43,22 +43,14 @@ function markSpacePaid(spaceId: string | null | undefined) {
   localStorage.setItem(PURCHASE_KEY_LEGACY, 'true');
 }
 
-/** One-time migration: copy paid_at into user_product_access */
+/** One-time migration: copy paid_at into user_product_access via secure RPC */
 async function migrateProductAccess(userId: string, paidAt: string) {
-  const { data: existing } = await supabase
-    .from('user_product_access')
-    .select('id')
-    .eq('user_id', userId)
-    .eq('product_id', 'still_us')
-    .maybeSingle();
-
-  if (!existing) {
-    await supabase.from('user_product_access').insert({
-      user_id: userId,
-      product_id: 'still_us',
-      granted_at: paidAt,
-      granted_via: 'purchase',
-    });
+  const { error } = await supabase.rpc('migrate_product_access_if_paid', {
+    p_user_id: userId,
+    p_paid_at: paidAt,
+  });
+  if (error) {
+    console.warn('[migrateProductAccess] RPC failed:', error.message);
   }
 }
 
