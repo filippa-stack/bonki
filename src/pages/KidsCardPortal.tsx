@@ -94,9 +94,11 @@ export default function KidsCardPortal() {
   const [browseOpen, setBrowseOpen] = useState(false);
   const card = categoryCards[currentIndex];
 
-  // Portal-open animation state: 'idle' | 'phase1' | 'phase2'
-  const [portalPhase, setPortalPhase] = useState<'idle' | 'phase1' | 'phase2'>('idle');
+  // Portal-open animation state
+  const [portalPhase, setPortalPhase] = useState<'idle' | 'phase1' | 'phase2' | 'phase3'>('idle');
   const navigating = useRef(false);
+
+  const isStillUs = productSlug === 'still-us';
 
   const promptCount = card ? getPromptCount(card) : 0;
   const isFirst = currentIndex <= 0;
@@ -114,19 +116,34 @@ export default function KidsCardPortal() {
     if (!card || navigating.current || portalPhase !== 'idle') return;
     navigating.current = true;
 
-    // Phase 1: scale + brightness (0–200ms)
-    setPortalPhase('phase1');
-
-    setTimeout(() => {
-      // Phase 2: fade out everything (200–500ms)
-      setPortalPhase('phase2');
-
+    if (isStillUs) {
+      // ── Still Us: cinematic warm-light burst ──
+      // Phase 1 (0–400ms): glow intensifies, card lifts
+      setPortalPhase('phase1');
       setTimeout(() => {
-        // Phase 3: navigate
-        navigate(`/card/${card.id}`);
-      }, 350);
-    }, 200);
-  }, [navigate, card, portalPhase]);
+        // Phase 2 (400–900ms): radial light floods screen
+        setPortalPhase('phase2');
+        setTimeout(() => {
+          // Phase 3 (900–1200ms): light fades, navigate
+          setPortalPhase('phase3');
+          setTimeout(() => navigate(`/card/${card.id}`), 350);
+        }, 500);
+      }, 400);
+    } else {
+      // ── Kids/other: magical zoom-through ──
+      // Phase 1 (0–150ms): card lifts + brightens
+      setPortalPhase('phase1');
+      setTimeout(() => {
+        // Phase 2 (150–650ms): zoom deep into illustration
+        setPortalPhase('phase2');
+        setTimeout(() => {
+          // Phase 3 (650–900ms): white-out then navigate
+          setPortalPhase('phase3');
+          setTimeout(() => navigate(`/card/${card.id}`), 250);
+        }, 500);
+      }, 150);
+    }
+  }, [navigate, card, portalPhase, isStillUs]);
 
   const goToIndex = useCallback((index: number) => {
     setDirection(index > currentIndex ? 1 : -1);
