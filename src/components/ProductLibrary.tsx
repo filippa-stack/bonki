@@ -630,22 +630,6 @@ export default function ProductLibrary() {
           zIndex: 1,
         }} />
 
-        {/* Trio — bottom zone, watching from below */}
-        <motion.img
-          src={creaturesTrio}
-          alt=""
-          draggable={false}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 0.18 }}
-          transition={{ delay: 1.0, duration: 1.8, ease: [0.22, 1, 0.36, 1] }}
-          style={{
-            position: 'absolute',
-            bottom: '-60px',
-            left: '-80px',
-            width: '460px',
-            height: 'auto',
-          }}
-        />
       </div>
 
       {/* Content */}
