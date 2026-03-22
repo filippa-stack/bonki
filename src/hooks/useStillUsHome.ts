@@ -162,7 +162,9 @@ export function useStillUsHome(): StillUsHomeState {
         supabase
           .from('user_card_state')
           .select('user_id, card_id, slider_completed_at, cycle_id')
-          .eq('couple_id', realCoupleId),
+          .eq('couple_id', realCoupleId)
+          .eq('card_id', backendCardIdForQuery)
+          .eq('cycle_id', cycleIdVal),
         supabase
           .from('session_state')
           .select('*')

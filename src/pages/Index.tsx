@@ -26,10 +26,13 @@ export function isSpacePaid(spaceId: string | null | undefined, paidAt?: string 
 }
 
 async function markSpacePaidInDb(spaceId: string) {
-  await supabase
+  const { error } = await supabase
     .from('couple_spaces')
     .update({ paid_at: new Date().toISOString() } as any)
     .eq('id', spaceId);
+  if (error) {
+    console.error('[markSpacePaidInDb] Failed to update paid_at:', error.message);
+  }
 }
 
 function markSpacePaid(spaceId: string | null | undefined) {
