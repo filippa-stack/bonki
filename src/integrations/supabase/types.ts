@@ -1599,6 +1599,10 @@ export type Database = {
         Args: { _session_id: string; _step_index: number }
         Returns: undefined
       }
+      migrate_product_access_if_paid: {
+        Args: { p_paid_at: string; p_user_id: string }
+        Returns: undefined
+      }
       reset_slider_checkin: {
         Args: { p_couple_space_id: string }
         Returns: undefined
