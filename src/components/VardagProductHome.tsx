@@ -7,12 +7,7 @@ import ProductHomeBackButton from '@/components/ProductHomeBackButton';
 import { useKidsProductProgress } from '@/hooks/useKidsProductProgress';
 import CategoryTileGrid from '@/components/CategoryTileGrid';
 import type { CreatureTileStyle } from '@/components/CategoryTileGrid';
-
-// Card images — first card of each category
-import imgMorgon from '/card-images/vk-morgon.png';
-import imgHushall from '/card-images/vk-hushall.png';
-import imgKvall from '/card-images/vk-kvall.png';
-import imgSova from '/card-images/vk-sova.png';
+import { useNextCardImages } from '@/hooks/useNextCardImages';
 
 const EASE = [0.4, 0.0, 0.2, 1] as const;
 const BG = '#0A1A18';
@@ -24,14 +19,6 @@ const ORDERED_TILES = [
   { id: 'vk-var-rytm', bg: '#10241E', sub: 'Vanor och rutiner' },
   { id: 'vk-vi-hemma', bg: '#0A1A18', sub: 'Allt som händer innanför dörren' },
   { id: 'vk-utanfor-hemmet', bg: '#071412', sub: 'Det du möter där ute' },
-];
-
-// Per-tile card images (first card per category)
-const TILE_IMAGES: (string | undefined)[] = [
-  imgMorgon,   // Min dag
-  imgKvall,    // Vår rytm
-  imgHushall,  // Vi hemma
-  imgSova,     // Utanför hemmet
 ];
 
 // Optically calibrated per-tile — denser motifs get lower opacity
