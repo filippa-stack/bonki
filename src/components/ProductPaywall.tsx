@@ -39,8 +39,9 @@ export default function ProductPaywall({ product, onAccessGranted, cardId, curre
 
   const isStillUs = product.id === 'still_us';
 
-  // Product-specific CTA color — use product accent, fall back to BONKI_ORANGE
-  const ctaColor = product.ctaButtonColor ?? product.accentColor ?? BONKI_ORANGE;
+  // CTA button is always Bonki Orange; product color goes on background
+  const ctaColor = BONKI_ORANGE;
+  const pageBg = product.backgroundColor ?? MIDNIGHT_INK;
 
   // Dev bypass via long-press on price line
   const longPressTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
