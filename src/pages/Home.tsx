@@ -23,7 +23,8 @@ import ReturnRitual from '@/components/still-us/ReturnRitual';
 import ProductHomeBackButton from '@/components/ProductHomeBackButton';
 import stillUsIllustration from '@/assets/illustration-still-us-home.png';
 
-const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+// Evaluated once at module load — acceptable for SSR-less SPA
+const REDUCED = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 /* ── Main Home component ── */
 export default function Home() {
@@ -56,14 +57,7 @@ export default function Home() {
     }
   }, [homeState.phase, homeState.dissolvedAt, navigate]);
 
-  // ── Polling via pollCoupleState every 15s ──
-  useEffect(() => {
-    if (!homeState.coupleId) return;
-    const stop = pollCoupleState(homeState.coupleId, 15_000, () => {
-      homeState.refetch();
-    });
-    return stop;
-  }, [homeState.coupleId]);
+  // Polling removed — useStillUsHome already runs adaptive polling (10s→60s).
 
   const handleAction = (action: string) => {
     const cardId = homeState.cardId;

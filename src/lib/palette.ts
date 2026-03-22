@@ -15,6 +15,7 @@ export const WARM_WHITE = '#FFFDF8';
 export const BONKI_ORANGE = '#E85D2C';
 export const BARK = '#2C2420';
 export const DRIFTWOOD = '#6B5E52';
+/** @deprecated Ghost Glow removed from product surfaces. Kept for reference only. */
 export const GHOST_GLOW = '#D4F5C0';
 
 // ── Still Us tokens ──

@@ -441,7 +441,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
   };
 
   const mostRecentConversation = state.coupleSpace?.conversationThreads
-    .sort((a, b) => b.lastActivityAt.getTime() - a.lastActivityAt.getTime())[0] || null;
+    ? [...state.coupleSpace.conversationThreads]
+        .sort((a, b) => b.lastActivityAt.getTime() - a.lastActivityAt.getTime())[0] || null
+    : null;
 
   // ---------------------------------------------------------------------------
   // Session management
