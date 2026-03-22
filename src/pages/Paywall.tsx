@@ -5,6 +5,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { COLORS, slugFromCardIndex } from '@/lib/stillUsTokens';
 import { useAuth } from '@/contexts/AuthContext';
 import { isTestMode } from '@/lib/testMode';
+import { isDemoMode } from '@/lib/demoMode';
 
 export default function Paywall() {
   const navigate = useNavigate();

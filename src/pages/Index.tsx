@@ -117,11 +117,11 @@ export default function Index() {
     return <Home />;
   }
 
-  // ── Demo mode: follow normal production flow (no gate skipping) ──
-  // Demo users see the same flow as real users: onboarding → library
+  // ── Demo mode: skip onboarding gate ──
+  const demoActive = isDemoMode();
 
   // ── Normal production flow ──
-  if (!hasCompletedOnboarding) {
+  if (!hasCompletedOnboarding && !demoActive) {
     return <Onboarding />;
   }
 
