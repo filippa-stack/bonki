@@ -15,7 +15,7 @@ import { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import type { ProductManifest } from '@/types/product';
-import { useKidsProductProgress } from '@/hooks/useKidsProductProgress';
+import { useKidsProductProgress, type KidsProductProgress } from '@/hooks/useKidsProductProgress';
 import { useCardImage } from '@/hooks/useCardImage';
 import ProductHomeBackButton from '@/components/ProductHomeBackButton';
 import {
@@ -91,14 +91,20 @@ const HERO_TOP_OFFSET: Record<string, string> = {
   jag_i_varlden: '-20vh',
 };
 
-/* ── First card per category hook ── */
-function useFirstCardImages(product: ProductManifest) {
+/* ── First uncompleted card per category hook ── */
+function useFirstCardImages(product: ProductManifest, progress: KidsProductProgress) {
+  const completedSet = useMemo(
+    () => new Set(progress.recentlyCompletedCardIds),
+    [progress.recentlyCompletedCardIds],
+  );
+
   const firstCardIds = useMemo(
     () => product.categories.map(cat => {
-      const firstCard = product.cards.find(c => c.categoryId === cat.id);
-      return firstCard?.id ?? '';
+      const catCards = product.cards.filter(c => c.categoryId === cat.id);
+      const next = catCards.find(c => !completedSet.has(c.id));
+      return (next ?? catCards[0])?.id ?? '';
     }),
-    [product],
+    [product, completedSet],
   );
 
   // useCardImage must be called at top level, so we use up to 6 slots
@@ -359,7 +365,7 @@ function CategoryTile({
 export default function KidsProductHome({ product }: { product: ProductManifest }) {
   const navigate = useNavigate();
   const progress = useKidsProductProgress(product);
-  const tileImages = useFirstCardImages(product);
+  const tileImages = useFirstCardImages(product, progress);
 
   const bg = product.backgroundColor;
   const tileLight = product.tileLight ?? bg;
