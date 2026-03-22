@@ -263,7 +263,7 @@ export default function Paywall() {
         )}
 
         <div
-          onClick={() => navigate('/?product=still-us')}
+          onClick={() => navigate('/product/still-us')}
           style={{
             color: COLORS.driftwood,
             fontSize: '14px',
