@@ -89,7 +89,9 @@ export default function ProductPaywall({ product, onAccessGranted, cardId, curre
           },
           body: JSON.stringify({
             productId: product.id,
-            successUrl: `${window.location.origin}/?purchase=success&product=${product.id}`,
+            successUrl: cardId
+              ? `${window.location.origin}/?purchase=success&product=${product.id}&returnCard=${cardId}`
+              : `${window.location.origin}/?purchase=success&product=${product.id}`,
             cancelUrl: `${window.location.origin}/?purchase=cancel`,
           }),
         }
