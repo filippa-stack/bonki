@@ -5,7 +5,7 @@ import { ArrowLeft } from 'lucide-react';
 import { allProducts } from '@/data/products';
 import { useProductTheme } from '@/hooks/useProductTheme';
 import { useThemeSwitcher } from '@/hooks/useThemeSwitcher';
-import { preloadZip, PRODUCT_ZIP_MAP } from '@/hooks/useCardImage';
+
 import ProductIntro, { useProductIntroNeeded } from '@/components/ProductIntro';
 import KidsProductHome from '@/components/KidsProductHome';
 import { KIDS_PRODUCT_IDS } from '@/hooks/useKidsProductProgress';
@@ -41,12 +41,7 @@ export default function ProductHome() {
     if (needsIntro) setShowIntro(true);
   }, [needsIntro]);
 
-  // Preload ZIP when entering a product home — so card images are fast later
-  useEffect(() => {
-    if (product?.id && PRODUCT_ZIP_MAP[product.id]) {
-      preloadZip(PRODUCT_ZIP_MAP[product.id]);
-    }
-    // Remember last active product for skip-to-product launch
+  // Remember last active product for skip-to-product launch
     if (product?.slug) {
       localStorage.setItem('bonki-last-active-product', product.slug);
     }
