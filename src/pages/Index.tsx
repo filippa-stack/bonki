@@ -142,9 +142,9 @@ export default function Index() {
     }
   }
 
-  // Still Us legacy: ?product=still-us routes to the original Home view
+  // Still Us legacy: ?product=still-us → canonical route
   if (searchParams.get('product') === 'still-us') {
-    return <Home />;
+    return <Navigate to="/product/still-us" replace />;
   }
 
   // Par first visit: route directly to Still Us home, then clear the flag
