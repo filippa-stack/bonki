@@ -69,34 +69,48 @@ export default function CompletedSessionView({
   [completionMessages]);
 
   // Compute next card for child products
-  const [completedCardIds, setCompletedCardIds] = useState<Set<string>>(new Set());
+  const [busyCardIds, setBusyCardIds] = useState<Set<string>>(new Set());
   useEffect(() => {
     if (!space?.id || !isChildProduct) return;
     supabase
       .from('couple_sessions')
       .select('card_id')
       .eq('couple_space_id', space.id)
-      .eq('status', 'completed')
+      .in('status', ['completed', 'active'])
       .then(({ data }) => {
-        if (data) setCompletedCardIds(new Set(data.map(s => s.card_id).filter(Boolean) as string[]));
+        if (data) setBusyCardIds(new Set(data.map(s => s.card_id).filter(Boolean) as string[]));
       });
   }, [space?.id, isChildProduct]);
 
   const nextDest = useMemo(() => {
     if (!isChildProduct || !product) return null;
-    const done = new Set(completedCardIds);
+    const done = new Set(busyCardIds);
     done.add(cardId);
-    // Find the next uncompleted card in the product's sequential order
-    const currentIdx = product.cards.findIndex(c => c.id === cardId);
-    // Search from after the current card, then wrap around
-    for (let i = 1; i < product.cards.length; i++) {
-      const nextCard = product.cards[(currentIdx + i) % product.cards.length];
-      if (!done.has(nextCard.id) && nextCard.categoryId) {
-        return `/product/${product.slug}/portal/${nextCard.categoryId}`;
+
+    // 1. Try next uncompleted card within the SAME category
+    const sameCatCards = product.cards.filter(c => c.categoryId === categoryId);
+    const currentCatIdx = sameCatCards.findIndex(c => c.id === cardId);
+    for (let i = 1; i < sameCatCards.length; i++) {
+      const next = sameCatCards[(currentCatIdx + i) % sameCatCards.length];
+      if (!done.has(next.id) && next.categoryId) {
+        return `/product/${product.slug}/portal/${next.categoryId}`;
       }
     }
+
+    // 2. All cards in current category done — find next category in sequence
+    const catOrder = product.categories.map(c => c.id);
+    const currentCatSeqIdx = catOrder.indexOf(categoryId ?? '');
+    for (let ci = 1; ci < catOrder.length; ci++) {
+      const nextCatId = catOrder[(currentCatSeqIdx + ci) % catOrder.length];
+      const catCards = product.cards.filter(c => c.categoryId === nextCatId);
+      const nextCard = catCards.find(c => !done.has(c.id));
+      if (nextCard) {
+        return `/product/${product.slug}/portal/${nextCatId}`;
+      }
+    }
+
     return null;
-  }, [isChildProduct, product, completedCardIds, cardId]);
+  }, [isChildProduct, product, busyCardIds, cardId, categoryId]);
 
   // Show feedback sheet 2s after content renders
   useEffect(() => {
