@@ -173,7 +173,7 @@ export default function DissolutionSettings() {
       </button>
 
       <button
-        onClick={() => navigate(-1)}
+        onClick={() => navigate('/product/still-us')}
         style={{
           background: 'transparent',
           border: 'none',
