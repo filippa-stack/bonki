@@ -149,7 +149,7 @@ const cards: Card[] = [
 
 export const sexualitetskortProduct: ProductManifest = {
   id: 'sexualitetskort',
-  name: 'Sexualitet',
+  name: 'Närhet & Intimitet',
   slug: 'sexualitetskort',
   tagline: 'Kropp, gränser och identitet.',
   description: 'Utforska kropp, identitet och sexualitet',
