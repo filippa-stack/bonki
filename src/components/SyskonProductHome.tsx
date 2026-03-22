@@ -7,7 +7,7 @@ import ProductHomeBackButton from '@/components/ProductHomeBackButton';
 import { useKidsProductProgress } from '@/hooks/useKidsProductProgress';
 import CategoryTileGrid from '@/components/CategoryTileGrid';
 import type { CreatureTileStyle } from '@/components/CategoryTileGrid';
-import { useCardImage } from '@/hooks/useCardImage';
+import { useNextCardImages } from '@/hooks/useNextCardImages';
 
 const EASE = [0.4, 0.0, 0.2, 1] as const;
 const BG = '#2A1018';
@@ -19,14 +19,6 @@ const ORDERED_TILES = [
   { id: 'sk-vi-ar-olika', bg: '#3A1820', sub: 'Att vara egen fast vi hör ihop' },
   { id: 'sk-delat-utrymme', bg: '#30141C', sub: 'När allting ska delas' },
   { id: 'sk-er-relation', bg: '#2A1018', sub: 'Nära, svårt och allt däremellan' },
-];
-
-// First card per category — used as tile illustrations
-const FIRST_CARD_IDS = [
-  'sk-att-fa-ett-syskon',  // Vi blev syskon
-  'sk-unik',               // Vi är olika
-  'sk-dela',               // Delat utrymme
-  'sk-vanskap-relation',   // Er relation
 ];
 
 // Optically calibrated per-tile
@@ -42,13 +34,7 @@ const titleVariants = { hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y:
 
 export default function SyskonProductHome({ product }: { product: ProductManifest }) {
   const progress = useKidsProductProgress(product);
-
-  // Load first card image per category dynamically from zip
-  const img0 = useCardImage(FIRST_CARD_IDS[0]);
-  const img1 = useCardImage(FIRST_CARD_IDS[1]);
-  const img2 = useCardImage(FIRST_CARD_IDS[2]);
-  const img3 = useCardImage(FIRST_CARD_IDS[3]);
-  const tileImages = [img0 ?? undefined, img1 ?? undefined, img2 ?? undefined, img3 ?? undefined];
+  const tileImages = useNextCardImages(product, progress);
   return (
     <div className="min-h-screen relative overflow-hidden" style={{ backgroundColor: BG }}>
       <ProductHomeBackButton color="#FDF6E3" />

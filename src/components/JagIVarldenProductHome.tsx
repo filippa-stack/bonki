@@ -7,7 +7,7 @@ import ProductHomeBackButton from '@/components/ProductHomeBackButton';
 import { useKidsProductProgress } from '@/hooks/useKidsProductProgress';
 import CategoryTileGrid from '@/components/CategoryTileGrid';
 import type { CreatureTileStyle } from '@/components/CategoryTileGrid';
-import { useCardImage } from '@/hooks/useCardImage';
+import { useNextCardImages } from '@/hooks/useNextCardImages';
 
 const EASE = [0.4, 0.0, 0.2, 1] as const;
 const BG = '#121C1E';
@@ -19,14 +19,6 @@ const ORDERED_TILES = [
   { id: 'jiv-jag-och-andra', bg: '#2A3844', sub: 'Hur vi påverkar varandra' },
   { id: 'jiv-varlden-omkring-mig', bg: '#222E38', sub: 'Normer, press och frågor' },
   { id: 'jiv-vad-tror-jag-pa', bg: '#1A242E', sub: 'Värderingar och mening' },
-];
-
-// First card per category — used as tile illustrations
-const FIRST_CARD_IDS = [
-  'jiv-identitet',     // Vem är jag
-  'jiv-vanskap',       // Jag & andra
-  'jiv-social-media',  // Världen omkring mig
-  'jiv-karlek',        // Vad tror jag på
 ];
 
 // Per-tile illustration calibration — individually tuned for visual weight
@@ -42,13 +34,7 @@ const titleVariants = { hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y:
 
 export default function JagIVarldenProductHome({ product }: { product: ProductManifest }) {
   const progress = useKidsProductProgress(product);
-
-  const img0 = useCardImage(FIRST_CARD_IDS[0]);
-  const img1 = useCardImage(FIRST_CARD_IDS[1]);
-  const img2 = useCardImage(FIRST_CARD_IDS[2]);
-  const img3 = useCardImage(FIRST_CARD_IDS[3]);
-  const img4 = useCardImage(FIRST_CARD_IDS[4]);
-  const tileImages = [img0 ?? undefined, img1 ?? undefined, img2 ?? undefined, img3 ?? undefined, img4 ?? undefined];
+  const tileImages = useNextCardImages(product, progress);
 
   return (
     <div className="min-h-screen relative overflow-hidden" style={{ backgroundColor: BG }}>
