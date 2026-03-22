@@ -71,7 +71,7 @@ export default function TillbakaComplete() {
           lineHeight: 1.6,
           marginBottom: '32px',
         }}>
-          Något ni vill minnas?
+          Skriv vad ni vill minnas
         </div>
 
         <textarea
