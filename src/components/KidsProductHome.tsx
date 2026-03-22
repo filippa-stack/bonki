@@ -215,22 +215,25 @@ function CategoryTile({
             top: '10px',
             left: '12px',
             zIndex: 4,
-            width: '22px',
-            height: '22px',
+            width: '24px',
+            height: '24px',
             borderRadius: '50%',
-            backgroundColor: isLocked ? 'rgba(255,255,255,0.08)' : 'rgba(255,255,255,0.15)',
+            backgroundColor: isLocked ? 'rgba(255,255,255,0.10)' : 'rgba(255,255,255,0.22)',
+            border: isLocked ? '1px solid rgba(255,255,255,0.06)' : '1px solid rgba(255,255,255,0.18)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
+            backdropFilter: 'blur(8px)',
           }}
         >
           <span
             style={{
               fontFamily: 'var(--font-sans)',
-              fontSize: '11px',
+              fontSize: '12px',
               fontWeight: 700,
-              color: isLocked ? 'rgba(255,255,255,0.4)' : LANTERN_GLOW,
+              color: isLocked ? 'rgba(255,255,255,0.45)' : LANTERN_GLOW,
               lineHeight: 1,
+              textShadow: '0 1px 3px rgba(0,0,0,0.5)',
             }}
           >
             {index + 1}
@@ -326,8 +329,8 @@ function CategoryTile({
         {total > 0 && (
           <div style={{ marginTop: '6px', display: 'flex', alignItems: 'center', gap: '8px' }}>
             <div style={{
-              width: '28px', height: '3px', borderRadius: '2px',
-              backgroundColor: 'rgba(255,255,255,0.12)',
+              width: '36px', height: '4px', borderRadius: '2px',
+              backgroundColor: 'rgba(255,255,255,0.18)',
               overflow: 'hidden',
               flexShrink: 0,
             }}>
@@ -336,19 +339,19 @@ function CategoryTile({
                 height: '100%',
                 borderRadius: '2px',
                 backgroundColor: SAFFRON_FLAME,
-                opacity: completed > 0 ? 0.9 : 0,
+                opacity: completed > 0 ? 1 : 0,
                 transition: 'width 0.4s ease',
               }} />
             </div>
             <span
               style={{
-                fontSize: squareTile ? '11px' : '12px',
-                fontWeight: 500,
+                fontSize: squareTile ? '12px' : '13px',
+                fontWeight: 600,
                 color: completed > 0 ? SAFFRON_FLAME : LANTERN_GLOW,
-                opacity: completed > 0 ? 0.8 : 0.35,
+                opacity: completed > 0 ? 0.9 : 0.45,
                 lineHeight: 1.3,
-                letterSpacing: '0.02em',
-                textShadow: `0 1px 4px rgba(0,0,0,0.5)`,
+                letterSpacing: '0.03em',
+                textShadow: `0 1px 4px rgba(0,0,0,0.6)`,
               }}
             >
               {completed} av {total}
