@@ -2543,7 +2543,6 @@ export default function CardView() {
       style={{
         backgroundColor: 'var(--surface-base)',
         transition: 'background-color 0.6s ease',
-        transition: 'background-color 0.6s ease',
       }}
       initial={
         suppressEntryAnim
