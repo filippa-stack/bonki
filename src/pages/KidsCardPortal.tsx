@@ -94,9 +94,11 @@ export default function KidsCardPortal() {
   const [browseOpen, setBrowseOpen] = useState(false);
   const card = categoryCards[currentIndex];
 
-  // Portal-open animation state: 'idle' | 'phase1' | 'phase2'
-  const [portalPhase, setPortalPhase] = useState<'idle' | 'phase1' | 'phase2'>('idle');
+  // Portal-open animation state
+  const [portalPhase, setPortalPhase] = useState<'idle' | 'phase1' | 'phase2' | 'phase3'>('idle');
   const navigating = useRef(false);
+
+  const isStillUs = productSlug === 'still-us';
 
   const promptCount = card ? getPromptCount(card) : 0;
   const isFirst = currentIndex <= 0;
@@ -114,19 +116,34 @@ export default function KidsCardPortal() {
     if (!card || navigating.current || portalPhase !== 'idle') return;
     navigating.current = true;
 
-    // Phase 1: scale + brightness (0–200ms)
-    setPortalPhase('phase1');
-
-    setTimeout(() => {
-      // Phase 2: fade out everything (200–500ms)
-      setPortalPhase('phase2');
-
+    if (isStillUs) {
+      // ── Still Us: cinematic warm-light burst ──
+      // Phase 1 (0–400ms): glow intensifies, card lifts
+      setPortalPhase('phase1');
       setTimeout(() => {
-        // Phase 3: navigate
-        navigate(`/card/${card.id}`);
-      }, 350);
-    }, 200);
-  }, [navigate, card, portalPhase]);
+        // Phase 2 (400–900ms): radial light floods screen
+        setPortalPhase('phase2');
+        setTimeout(() => {
+          // Phase 3 (900–1200ms): light fades, navigate
+          setPortalPhase('phase3');
+          setTimeout(() => navigate(`/card/${card.id}`), 350);
+        }, 500);
+      }, 400);
+    } else {
+      // ── Kids/other: magical zoom-through ──
+      // Phase 1 (0–150ms): card lifts + brightens
+      setPortalPhase('phase1');
+      setTimeout(() => {
+        // Phase 2 (150–650ms): zoom deep into illustration
+        setPortalPhase('phase2');
+        setTimeout(() => {
+          // Phase 3 (650–900ms): white-out then navigate
+          setPortalPhase('phase3');
+          setTimeout(() => navigate(`/card/${card.id}`), 250);
+        }, 500);
+      }, 150);
+    }
+  }, [navigate, card, portalPhase, isStillUs]);
 
   const goToIndex = useCallback((index: number) => {
     setDirection(index > currentIndex ? 1 : -1);
@@ -210,6 +227,36 @@ export default function KidsCardPortal() {
         }}
       />
 
+      {/* ── Still Us: warm light flood overlay ── */}
+      {isStillUs && (portalPhase === 'phase2' || portalPhase === 'phase3') && (
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 50,
+            pointerEvents: 'none',
+            background: `radial-gradient(circle at 50% 45%, rgba(233, 180, 76, ${portalPhase === 'phase3' ? 0.95 : 0.6}) 0%, rgba(180, 120, 40, ${portalPhase === 'phase3' ? 0.85 : 0.3}) 40%, rgba(26, 8, 6, ${portalPhase === 'phase3' ? 0.9 : 0.1}) 100%)`,
+            opacity: portalPhase === 'phase3' ? 1 : 0.85,
+            transition: 'opacity 350ms ease-in, background 500ms ease-in',
+          }}
+        />
+      )}
+
+      {/* ── Kids: white-out zoom overlay ── */}
+      {!isStillUs && portalPhase === 'phase3' && (
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 50,
+            pointerEvents: 'none',
+            background: `radial-gradient(circle at 50% 45%, rgba(255, 255, 255, 0.95) 0%, rgba(${tileBgRgb}, 0.7) 60%, rgba(${tileBgRgb}, 0.9) 100%)`,
+            opacity: 1,
+            animation: 'fadeIn 250ms ease-in forwards',
+          }}
+        />
+      )}
+
       {/* ═══ Top Bar ═══ */}
       <div
         style={{
@@ -271,10 +318,14 @@ export default function KidsCardPortal() {
         {/* ═══ Portal tile — constrained to leave room for copy ═══ */}
         <div style={{ flex: 1, position: 'relative', minHeight: 0, maxHeight: 'calc(100vh - 280px)' }}>
 
-          {/* ── Saffron glow frame (matches recommended tiles) ── */}
+          {/* ── Saffron glow frame — intensifies on open ── */}
           <motion.div
-            animate={{ opacity: [0.6, 1, 0.6] }}
-            transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+            animate={portalPhase !== 'idle'
+              ? { opacity: 1, boxShadow: `0 0 60px rgba(233, 180, 76, 0.7), 0 0 120px rgba(233, 180, 76, 0.3)` }
+              : { opacity: [0.6, 1, 0.6] }}
+            transition={portalPhase !== 'idle'
+              ? { duration: 0.4, ease: [0.22, 1, 0.36, 1] }
+              : { duration: 3, repeat: Infinity, ease: 'easeInOut' }}
             style={{
               position: 'absolute',
               inset: '-2px',
@@ -305,7 +356,7 @@ export default function KidsCardPortal() {
                 width: '100%',
                 height: '100%',
                 position: 'relative',
-                borderRadius: '20px',
+                borderRadius: portalPhase === 'phase2' || portalPhase === 'phase3' ? '0px' : '20px',
                 overflow: 'hidden',
                 cursor: 'pointer',
                 // Obsidian Glass surface
@@ -313,10 +364,31 @@ export default function KidsCardPortal() {
                 backdropFilter: 'blur(22px)',
                 WebkitBackdropFilter: 'blur(22px)',
                 zIndex: 1,
-                transform: portalPhase === 'phase1' ? 'scale(1.03)' : portalPhase === 'phase2' ? 'scale(1.03)' : undefined,
-                filter: portalPhase === 'phase1' ? 'brightness(1.1)' : undefined,
-                opacity: portalPhase === 'phase2' ? 0 : 1,
-                transition: 'transform 200ms ease-out, filter 200ms ease-out, opacity 300ms ease-in',
+                ...(isStillUs ? {
+                  // Still Us: gentle lift → hold → fade into light
+                  transform:
+                    portalPhase === 'phase1' ? 'scale(1.02)' :
+                    portalPhase === 'phase2' ? 'scale(1.04)' :
+                    portalPhase === 'phase3' ? 'scale(1.04)' : undefined,
+                  filter:
+                    portalPhase === 'phase1' ? 'brightness(1.15) saturate(1.2)' :
+                    portalPhase === 'phase2' ? 'brightness(1.6) saturate(0.8)' :
+                    portalPhase === 'phase3' ? 'brightness(2.5) saturate(0.3)' : undefined,
+                  opacity: portalPhase === 'phase3' ? 0 : 1,
+                  transition: 'transform 400ms cubic-bezier(0.22, 1, 0.36, 1), filter 500ms ease-out, opacity 350ms ease-in, border-radius 300ms ease',
+                } : {
+                  // Kids: lift → zoom deep through → vanish
+                  transform:
+                    portalPhase === 'phase1' ? 'scale(1.04)' :
+                    portalPhase === 'phase2' ? 'scale(2.8)' :
+                    portalPhase === 'phase3' ? 'scale(4.0)' : undefined,
+                  filter:
+                    portalPhase === 'phase1' ? 'brightness(1.12)' :
+                    portalPhase === 'phase2' ? 'brightness(1.3)' :
+                    portalPhase === 'phase3' ? 'brightness(2.0)' : undefined,
+                  opacity: portalPhase === 'phase3' ? 0 : 1,
+                  transition: 'transform 500ms cubic-bezier(0.22, 1, 0.36, 1), filter 400ms ease-out, opacity 250ms ease-in, border-radius 200ms ease',
+                }),
               }}
             >
               {/* Card illustration — full bleed */}
