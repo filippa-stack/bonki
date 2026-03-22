@@ -77,7 +77,7 @@ export default function CheckInPage() {
       hasSeenFormatPreview={hasSeenFormatPreview}
       hasPartner={hasPartner}
       partnerCompleted={partnerCompleted}
-      onBack={() => navigate(-1)}
+      onBack={() => navigate('/product/still-us')}
     />
   );
 }

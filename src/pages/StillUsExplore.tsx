@@ -110,7 +110,7 @@ export default function StillUsExplore() {
       {/* Header */}
       <div style={{ padding: '12px 16px 0', display: 'flex', alignItems: 'center', gap: '12px' }}>
         <button
-          onClick={() => navigate(-1)}
+          onClick={() => navigate('/product/still-us')}
           style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '4px' }}
         >
           <ChevronLeft size={24} color={LANTERN_GLOW} />
