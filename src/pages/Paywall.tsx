@@ -5,6 +5,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { COLORS, slugFromCardIndex } from '@/lib/stillUsTokens';
 import { useAuth } from '@/contexts/AuthContext';
 import { isTestMode } from '@/lib/testMode';
+import { isDemoMode } from '@/lib/demoMode';
 
 export default function Paywall() {
   const navigate = useNavigate();
@@ -12,6 +13,14 @@ export default function Paywall() {
   const [slug, setSlug] = useState<string | null>(null);
   const [processing, setProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const bypassed = isDemoMode() || isTestMode();
+
+  // Demo/test mode: bypass paywall entirely
+  useEffect(() => {
+    if (bypassed) {
+      navigate('/product/still-us', { replace: true });
+    }
+  }, [bypassed, navigate]);
 
   // Fetch current slug for redirect after purchase
   useEffect(() => {

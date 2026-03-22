@@ -7,6 +7,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useDevState } from '@/contexts/DevStateContext';
 import { useThemeSwitcher } from '@/hooks/useThemeSwitcher';
 import { supabase } from '@/integrations/supabase/client';
+import { isDemoMode } from '@/lib/demoMode';
 import Onboarding from '@/components/Onboarding';
 import Home from '@/pages/Home';
 import PurchaseScreen from '@/components/PurchaseScreen';
@@ -117,11 +118,11 @@ export default function Index() {
     return <Home />;
   }
 
-  // ── Demo mode: follow normal production flow (no gate skipping) ──
-  // Demo users see the same flow as real users: onboarding → library
+  // ── Demo mode: skip onboarding gate ──
+  const demoActive = isDemoMode();
 
   // ── Normal production flow ──
-  if (!hasCompletedOnboarding) {
+  if (!hasCompletedOnboarding && !demoActive) {
     return <Onboarding />;
   }
 
