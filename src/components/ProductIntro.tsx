@@ -569,19 +569,34 @@ export default function ProductIntro({
   );
 }
 
-/** Hook: check if a product intro should be shown (server-side) */
+/** Hook: check if a product intro should be shown.
+ *  Shows intro until the user has completed at least one session in this product. */
 export function useProductIntroNeeded(productId: string): boolean {
   const [needed, setNeeded] = useState(false);
   const [checked, setChecked] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
-    hasSeenProductIntroServer(productId).then((seen) => {
+
+    (async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user || cancelled) { setChecked(true); return; }
+
+      // Check for any completed session in this product
+      const { data } = await supabase
+        .from('couple_sessions')
+        .select('id')
+        .eq('product_id', productId)
+        .eq('status', 'completed')
+        .limit(1);
+
       if (!cancelled) {
-        setNeeded(!seen);
+        const hasCompleted = (data?.length ?? 0) > 0;
+        setNeeded(!hasCompleted);
         setChecked(true);
       }
-    });
+    })();
+
     return () => { cancelled = true; };
   }, [productId]);
 
