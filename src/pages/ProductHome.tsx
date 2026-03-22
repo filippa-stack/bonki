@@ -42,10 +42,11 @@ export default function ProductHome() {
   }, [needsIntro]);
 
   // Remember last active product for skip-to-product launch
+  useEffect(() => {
     if (product?.slug) {
       localStorage.setItem('bonki-last-active-product', product.slug);
     }
-  }, [product?.id, product?.slug]);
+  }, [product?.slug]);
 
   // Still Us: show ProductIntro first, then redirect to legacy Home
   if (isStillUs) {
