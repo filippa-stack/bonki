@@ -2542,7 +2542,7 @@ export default function CardView() {
       className="min-h-screen"
       style={{
         backgroundColor: 'var(--surface-base)',
-        backgroundImage: pronounMode === 'du' ? 'var(--kids-bg-glow, none)' : 'none',
+        transition: 'background-color 0.6s ease',
         transition: 'background-color 0.6s ease',
       }}
       initial={

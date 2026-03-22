@@ -271,9 +271,7 @@ export default function PromptItem({ prompt, index, sectionType, preamble, ancho
                 }}
                 className={`w-full ${stackedPreamble ? 'mt-10' : ''}`}
                 style={{
-                  background: hasIllustration
-                    ? 'none'
-                    : 'radial-gradient(ellipse at 50% 40%, var(--question-cloud-tint, transparent) 0%, transparent 75%)',
+                  background: 'none',
                   borderRadius: '28px',
                   padding: inlineScenarioPreamble
                     ? '20px 20px 16px'
@@ -287,24 +285,6 @@ export default function PromptItem({ prompt, index, sectionType, preamble, ancho
                   position: 'relative',
                   overflow: 'visible',
                 }}
-              >
-                {hasIllustration && (
-                  <div
-                    style={{
-                      position: 'absolute',
-                      top: inlineScenarioPreamble ? '50%' : '45%',
-                      left: '50%',
-                      transform: 'translate(-50%, -50%)',
-                      width: inlineScenarioPreamble ? '100%' : '90%',
-                      height: inlineScenarioPreamble ? '145%' : '130%',
-                      borderRadius: '50%',
-                      background: 'var(--question-cloud-solid, hsla(200, 20%, 85%, 0.5))',
-                      filter: 'blur(8px)',
-                      pointerEvents: 'none',
-                      zIndex: 0,
-                    }}
-                  />
-                )}
 
                 {inlineScenarioPreamble && (
                   <motion.div
