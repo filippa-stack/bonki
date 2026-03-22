@@ -17,7 +17,7 @@ const FOURTEEN_DAYS_MS = 14 * 24 * 60 * 60 * 1000;
 /** All kids product IDs */
 export const KIDS_PRODUCT_IDS = [
   'jag_i_mig', 'jag_med_andra', 'jag_i_varlden',
-  'vardagskort', 'syskonkort', 'sexualitetskort',
+  'vardagskort', 'syskonkort', 'sexualitetskort', 'still_us',
   'still_us',
 ];
 

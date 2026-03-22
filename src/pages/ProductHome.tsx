@@ -11,15 +11,12 @@ import KidsProductHome from '@/components/KidsProductHome';
 import { KIDS_PRODUCT_IDS } from '@/hooks/useKidsProductProgress';
 
 /** Still Us free card ID */
-const STILL_US_FREE_CARD_ID = 'smallest-we';
-
 export default function ProductHome() {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
   useThemeSwitcher();
 
-  const isStillUs = slug === 'still-us';
-  const product = isStillUs ? undefined : allProducts.find((p) => p.slug === slug);
+  const product = allProducts.find((p) => p.slug === slug);
 
   // Always call hooks — use fallback values if product not found
   useProductTheme(
@@ -31,9 +28,8 @@ export default function ProductHome() {
     product,
   );
 
-  const needsIntroStillUs = useProductIntroNeeded('still_us');
   const needsIntroProduct = useProductIntroNeeded(product?.id ?? '');
-  const needsIntro = isStillUs ? needsIntroStillUs : needsIntroProduct;
+  const needsIntro = needsIntroProduct;
   const [showIntro, setShowIntro] = useState(needsIntro);
 
   // Sync showIntro with async needsIntro
@@ -47,28 +43,6 @@ export default function ProductHome() {
       localStorage.setItem('bonki-last-active-product', product.slug);
     }
   }, [product?.slug]);
-
-  // Still Us: show ProductIntro first, then redirect to legacy Home
-  if (isStillUs) {
-    if (showIntro) {
-      return (
-        <ProductIntro
-          productId="still_us"
-          accentColor="hsl(158, 35%, 18%)"
-          backgroundColor="#FFFDF8"
-          freeCardId={STILL_US_FREE_CARD_ID}
-          onComplete={() => {
-            setShowIntro(false);
-          }}
-          onStartFreeCard={() => {
-            setShowIntro(false);
-            navigate('/check-in/su-01-smallest-we', { replace: true });
-          }}
-        />
-      );
-    }
-    return <Navigate to="/still-us/explore" replace />;
-  }
 
   if (showIntro && product) {
     return (
