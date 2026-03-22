@@ -22,7 +22,6 @@ import {
   LANTERN_GLOW,
   DRIFTWOOD,
   SAFFRON_FLAME,
-  GHOST_GLOW,
 } from '@/lib/palette';
 
 /* ── Helpers ── */
