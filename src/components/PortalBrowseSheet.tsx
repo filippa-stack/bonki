@@ -1,6 +1,6 @@
 /**
  * PortalBrowseSheet — Bottom sheet showing all cards in a category.
- * Used by KidsCardPortal for the "Utforska alla kort" feature.
+ * Used by KidsCardPortal for the "Utforska alla samtal" feature.
  */
 
 import { useCallback } from 'react';

@@ -619,7 +619,7 @@ export default function KidsCardPortal() {
               opacity: 0.7,
             }}
           >
-            Utforska alla kort
+            Utforska alla samtal
           </button>
         </div>
       </div>
