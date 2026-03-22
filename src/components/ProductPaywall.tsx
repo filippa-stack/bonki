@@ -396,6 +396,9 @@ export default function ProductPaywall({ product, onAccessGranted, cardId, curre
               borderRadius: '16px',
               overflow: 'hidden',
               marginBottom: '16px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
             }}
           >
             <img
@@ -403,10 +406,9 @@ export default function ProductPaywall({ product, onAccessGranted, cardId, curre
               alt={cardTitle}
               style={{
                 width: '100%',
-                height: '100%',
+                height: 'auto',
                 maxHeight: '35vh',
-                objectFit: 'cover',
-                objectPosition: 'center 35%',
+                objectFit: 'contain',
                 display: 'block',
               }}
             />
