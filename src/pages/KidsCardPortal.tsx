@@ -227,6 +227,36 @@ export default function KidsCardPortal() {
         }}
       />
 
+      {/* ── Still Us: warm light flood overlay ── */}
+      {isStillUs && (portalPhase === 'phase2' || portalPhase === 'phase3') && (
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 50,
+            pointerEvents: 'none',
+            background: `radial-gradient(circle at 50% 45%, rgba(233, 180, 76, ${portalPhase === 'phase3' ? 0.95 : 0.6}) 0%, rgba(180, 120, 40, ${portalPhase === 'phase3' ? 0.85 : 0.3}) 40%, rgba(26, 8, 6, ${portalPhase === 'phase3' ? 0.9 : 0.1}) 100%)`,
+            opacity: portalPhase === 'phase3' ? 1 : 0.85,
+            transition: 'opacity 350ms ease-in, background 500ms ease-in',
+          }}
+        />
+      )}
+
+      {/* ── Kids: white-out zoom overlay ── */}
+      {!isStillUs && portalPhase === 'phase3' && (
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 50,
+            pointerEvents: 'none',
+            background: `radial-gradient(circle at 50% 45%, rgba(255, 255, 255, 0.95) 0%, rgba(${tileBgRgb}, 0.7) 60%, rgba(${tileBgRgb}, 0.9) 100%)`,
+            opacity: 1,
+            animation: 'fadeIn 250ms ease-in forwards',
+          }}
+        />
+      )}
+
       {/* ═══ Top Bar ═══ */}
       <div
         style={{
