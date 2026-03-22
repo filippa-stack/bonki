@@ -2199,7 +2199,7 @@ export default function CardView() {
         <div style={{
           position: 'fixed',
           inset: 0,
-          backgroundColor: LANTERN_GLOW,
+          backgroundColor: product?.backgroundColor ?? MIDNIGHT_INK,
           display: 'flex',
           flexDirection: 'column',
           zIndex: 10,
