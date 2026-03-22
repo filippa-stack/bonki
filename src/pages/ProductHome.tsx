@@ -67,7 +67,7 @@ export default function ProductHome() {
         />
       );
     }
-    return <Navigate to="/?product=still-us" replace />;
+    return <Navigate to="/still-us/explore" replace />;
   }
 
   if (showIntro && product) {
