@@ -84,7 +84,7 @@ export default function BottomNav() {
   if (pathname.startsWith('/solo-reflect/')) return null;
   if (pathname === '/ceremony') return null;
   if (pathname === '/journey-preview') return null;
-  if (pathname === '/unlock') return null;
+  // Show bottom nav on /unlock so user doesn't feel trapped
   if (pathname.startsWith('/settings/')) return null;
 
   return (

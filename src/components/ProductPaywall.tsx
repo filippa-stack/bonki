@@ -39,6 +39,9 @@ export default function ProductPaywall({ product, onAccessGranted, cardId, curre
 
   const isStillUs = product.id === 'still_us';
 
+  // Product-specific CTA color — use product accent, fall back to BONKI_ORANGE
+  const ctaColor = product.ctaButtonColor ?? product.accentColor ?? BONKI_ORANGE;
+
   // Dev bypass via long-press on price line
   const longPressTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -279,7 +282,7 @@ export default function ProductPaywall({ product, onAccessGranted, cardId, curre
                 maxWidth: '320px',
                 height: '56px',
                 borderRadius: '14px',
-                backgroundColor: BONKI_ORANGE,
+                backgroundColor: ctaColor,
                 border: 'none',
                 cursor: loading ? 'wait' : 'pointer',
                 marginTop: '32px',
@@ -348,7 +351,7 @@ export default function ProductPaywall({ product, onAccessGranted, cardId, curre
                 padding: '8px 16px',
               }}
             >
-              Tillbaka
+              Inte nu
             </button>
           </motion.div>
         </div>
@@ -479,7 +482,7 @@ export default function ProductPaywall({ product, onAccessGranted, cardId, curre
             width: '100%',
             height: '56px',
             borderRadius: '14px',
-            backgroundColor: BONKI_ORANGE,
+            backgroundColor: ctaColor,
             border: 'none',
             cursor: loading ? 'wait' : 'pointer',
             marginTop: '32px',
@@ -548,7 +551,7 @@ export default function ProductPaywall({ product, onAccessGranted, cardId, curre
             padding: '8px 16px',
           }}
         >
-          Tillbaka
+          Inte nu
         </button>
       </motion.div>
     </div>
