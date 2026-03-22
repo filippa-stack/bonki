@@ -285,8 +285,8 @@ export default function KidsCardPortal() {
             fontWeight: 600,
             letterSpacing: '1.5px',
             textTransform: 'uppercase',
-            color: GHOST_GLOW,
-            opacity: 0.85,
+            color: LANTERN_GLOW,
+            opacity: 0.7,
           }}
         >
           {category.title}
@@ -296,8 +296,8 @@ export default function KidsCardPortal() {
             fontFamily: 'var(--font-sans)',
             fontSize: '12px',
             fontWeight: 600,
-            color: GHOST_GLOW,
-            opacity: 0.6,
+            color: LANTERN_GLOW,
+            opacity: 0.5,
             minWidth: '28px',
             textAlign: 'right',
           }}
