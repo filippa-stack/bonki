@@ -558,7 +558,7 @@ export default function KidsCardPortal() {
               style={{
                 fontFamily: 'var(--font-sans)',
                 fontSize: '11px',
-                color: GHOST_GLOW,
+                color: LANTERN_GLOW,
                 opacity: 0.55,
                 marginTop: '4px',
               }}
@@ -603,7 +603,7 @@ export default function KidsCardPortal() {
                 cursor: 'pointer',
                 fontFamily: 'var(--font-sans)',
                 fontSize: '13px',
-                color: GHOST_GLOW,
+                color: LANTERN_GLOW,
                 opacity: 0.6,
                 padding: '6px 16px',
               }}
@@ -619,7 +619,7 @@ export default function KidsCardPortal() {
                 cursor: 'pointer',
                 fontFamily: 'var(--font-sans)',
                 fontSize: '12px',
-                color: GHOST_GLOW,
+                color: LANTERN_GLOW,
                 padding: '4px 16px',
                 opacity: 0.45,
               }}
