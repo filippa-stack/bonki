@@ -37,6 +37,13 @@ export default function ProductPaywall({ product, onAccessGranted, cardId, curre
   const [error, setError] = useState<string | null>(null);
   const [priceSek, setPriceSek] = useState<number | null>(null);
 
+  // Demo mode: auto-bypass paywall
+  useEffect(() => {
+    if (isDemoMode() || isDemoParam()) {
+      onAccessGranted?.();
+    }
+  }, []);
+
   const isStillUs = product.id === 'still_us';
 
   // CTA button is always Bonki Orange; product color goes on background

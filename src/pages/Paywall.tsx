@@ -14,6 +14,12 @@ export default function Paywall() {
   const [processing, setProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // Demo/test mode: bypass paywall entirely
+  if (isDemoMode() || isTestMode()) {
+    navigate('/product/still-us', { replace: true });
+    return null;
+  }
+
   // Fetch current slug for redirect after purchase
   useEffect(() => {
     if (!user?.id) return;
