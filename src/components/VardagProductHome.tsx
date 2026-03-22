@@ -34,6 +34,7 @@ const titleVariants = { hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y:
 
 export default function VardagProductHome({ product }: { product: ProductManifest }) {
   const progress = useKidsProductProgress(product);
+  const tileImages = useNextCardImages(product, progress);
 
   return (
     <div className="min-h-screen relative overflow-hidden" style={{ backgroundColor: BG }}>
@@ -109,7 +110,7 @@ export default function VardagProductHome({ product }: { product: ProductManifes
           product={product}
           progress={progress}
           tiles={ORDERED_TILES}
-          tileImages={TILE_IMAGES}
+          tileImages={tileImages}
           creatureTileStyles={CREATURE_TILE_STYLES}
         />
       </div>
