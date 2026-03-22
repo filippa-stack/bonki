@@ -352,7 +352,7 @@ export default function KidsCardPortal() {
                 width: '100%',
                 height: '100%',
                 position: 'relative',
-                borderRadius: '20px',
+                borderRadius: portalPhase === 'phase2' || portalPhase === 'phase3' ? '0px' : '20px',
                 overflow: 'hidden',
                 cursor: 'pointer',
                 // Obsidian Glass surface
@@ -360,10 +360,31 @@ export default function KidsCardPortal() {
                 backdropFilter: 'blur(22px)',
                 WebkitBackdropFilter: 'blur(22px)',
                 zIndex: 1,
-                transform: portalPhase === 'phase1' ? 'scale(1.03)' : portalPhase === 'phase2' ? 'scale(1.03)' : undefined,
-                filter: portalPhase === 'phase1' ? 'brightness(1.1)' : undefined,
-                opacity: portalPhase === 'phase2' ? 0 : 1,
-                transition: 'transform 200ms ease-out, filter 200ms ease-out, opacity 300ms ease-in',
+                ...(isStillUs ? {
+                  // Still Us: gentle lift → hold → fade into light
+                  transform:
+                    portalPhase === 'phase1' ? 'scale(1.02)' :
+                    portalPhase === 'phase2' ? 'scale(1.04)' :
+                    portalPhase === 'phase3' ? 'scale(1.04)' : undefined,
+                  filter:
+                    portalPhase === 'phase1' ? 'brightness(1.15) saturate(1.2)' :
+                    portalPhase === 'phase2' ? 'brightness(1.6) saturate(0.8)' :
+                    portalPhase === 'phase3' ? 'brightness(2.5) saturate(0.3)' : undefined,
+                  opacity: portalPhase === 'phase3' ? 0 : 1,
+                  transition: 'transform 400ms cubic-bezier(0.22, 1, 0.36, 1), filter 500ms ease-out, opacity 350ms ease-in, border-radius 300ms ease',
+                } : {
+                  // Kids: lift → zoom deep through → vanish
+                  transform:
+                    portalPhase === 'phase1' ? 'scale(1.04)' :
+                    portalPhase === 'phase2' ? 'scale(2.8)' :
+                    portalPhase === 'phase3' ? 'scale(4.0)' : undefined,
+                  filter:
+                    portalPhase === 'phase1' ? 'brightness(1.12)' :
+                    portalPhase === 'phase2' ? 'brightness(1.3)' :
+                    portalPhase === 'phase3' ? 'brightness(2.0)' : undefined,
+                  opacity: portalPhase === 'phase3' ? 0 : 1,
+                  transition: 'transform 500ms cubic-bezier(0.22, 1, 0.36, 1), filter 400ms ease-out, opacity 250ms ease-in, border-radius 200ms ease',
+                }),
               }}
             >
               {/* Card illustration — full bleed */}
