@@ -14,7 +14,7 @@ const SoloReflect = () => {
   const card = cardIndex >= 0 && cardIndex < CARD_SEQUENCE.length ? CARD_SEQUENCE[cardIndex] : null;
 
   if (!card) {
-    navigate('/?product=still-us', { replace: true });
+    navigate('/product/still-us', { replace: true });
     return null;
   }
 
@@ -27,7 +27,7 @@ const SoloReflect = () => {
         localStorage.setItem(`still_us_solo_reflection_${cardId}`, text.trim());
       } catch { /* quota exceeded — skip silently */ }
     }
-    navigate('/?product=still-us');
+    navigate('/product/still-us');
   };
 
   return (
@@ -42,7 +42,7 @@ const SoloReflect = () => {
     }}>
       {/* Back arrow */}
       <button
-        onClick={() => navigate('/?product=still-us')}
+        onClick={() => navigate('/product/still-us')}
         aria-label="Tillbaka"
         style={{
           background: 'none',

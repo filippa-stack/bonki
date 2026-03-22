@@ -126,7 +126,7 @@ export default function TestModePanel() {
       });
     }
     setBusy(false);
-    navigate('/?product=still-us');
+    navigate('/product/still-us');
   };
 
   const setPhase = async (phase: string) => {
@@ -143,7 +143,7 @@ export default function TestModePanel() {
       updates.current_touch = 'slider_checkin';
     }
     await updateCoupleState(updates);
-    navigate('/?product=still-us');
+    navigate('/product/still-us');
   };
 
   const setTouch = async (touch: string) => {

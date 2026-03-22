@@ -88,7 +88,7 @@ export default function CeremonyPage() {
             })
             .eq('couple_id', coupleId);
         }
-        navigate('/?product=still-us');
+        navigate('/product/still-us');
       }}
     />
   );

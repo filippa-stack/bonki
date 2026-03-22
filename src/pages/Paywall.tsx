@@ -240,7 +240,7 @@ export default function Paywall() {
               if (slug) {
                 navigate(`/session/${slug}/session2-start`, { replace: true });
               } else {
-                navigate('/?product=still-us', { replace: true });
+                navigate('/product/still-us', { replace: true });
               }
             }}
             disabled={processing}

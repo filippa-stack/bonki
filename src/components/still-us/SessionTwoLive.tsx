@@ -194,7 +194,7 @@ export default function SessionTwoLive({
   // ── Pause handler ─────────────────────────────────────────
   const handlePause = useCallback(
     () => {
-      navigate('/?product=still-us', { replace: true });
+      navigate('/product/still-us', { replace: true });
     },
     [navigate]
   );
@@ -568,7 +568,7 @@ export default function SessionTwoLive({
       device_id={deviceId}
       topSlot={showNav ? renderStepNav() : undefined}
       ctaSlot={<></>}
-      onExit={() => navigate('/?product=still-us', { replace: true })}
+      onExit={() => navigate('/product/still-us', { replace: true })}
     >
       {showEmotionalExit && (
         <EmotionalExitOverlay onExit={handlePause} />

@@ -152,7 +152,7 @@ export default function SessionOneLive() {
           setLockAcquired(true);
         } else if (!cancelled && result.status === 'blocked') {
           // Another device holds the lock
-          navigate('/?product=still-us');
+          navigate('/product/still-us');
         } else if (!cancelled && result.status === 'dissolved') {
           navigate('/');
         }
@@ -372,7 +372,7 @@ export default function SessionOneLive() {
         paused_reason: 'time',
       }).eq('couple_id', coupleState.couple_id).eq('card_id', backendCardId).eq('cycle_id', coupleState.cycle_id);
     }
-    navigate('/?product=still-us');
+    navigate('/product/still-us');
   }, [navigate, coupleState, backendCardId]);
 
   const handlePauseEmotional = useCallback(async () => {
@@ -382,7 +382,7 @@ export default function SessionOneLive() {
         paused_reason: 'emotional',
       }).eq('couple_id', coupleState.couple_id).eq('card_id', backendCardId).eq('cycle_id', coupleState.cycle_id);
     }
-    navigate('/?product=still-us');
+    navigate('/product/still-us');
   }, [navigate, coupleState, backendCardId]);
 
   // ── Step advance handler ──────────────────────────────────

@@ -42,7 +42,7 @@ export default function JourneyPreview() {
       >
         {/* Back arrow */}
         <button
-          onClick={() => navigate('/?product=still-us', { replace: true })}
+          onClick={() => navigate('/product/still-us', { replace: true })}
           aria-label="Tillbaka"
           style={{
             background: 'none',

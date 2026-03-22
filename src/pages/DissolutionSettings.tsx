@@ -108,7 +108,7 @@ export default function DissolutionSettings() {
       padding: '24px',
     }}>
       <button
-        onClick={() => navigate(-1)}
+        onClick={() => navigate('/product/still-us')}
         style={{
           background: 'transparent',
           border: 'none',
@@ -173,7 +173,7 @@ export default function DissolutionSettings() {
       </button>
 
       <button
-        onClick={() => navigate(-1)}
+        onClick={() => navigate('/product/still-us')}
         style={{
           background: 'transparent',
           border: 'none',
