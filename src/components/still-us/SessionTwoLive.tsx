@@ -493,7 +493,7 @@ export default function SessionTwoLive({
           fontSize: '26px',
           color: COLORS.lanternGlow,
           lineHeight: 1.3,
-          marginTop: '16px',
+          marginTop: '32px',
         }}>
           {tankOm?.question ?? '[Fråga saknas]'}
         </p>
