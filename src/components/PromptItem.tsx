@@ -284,7 +284,7 @@ export default function PromptItem({ prompt, index, sectionType, preamble, ancho
                   gap: inlineScenarioPreamble ? '18px' : isLongText ? '12px' : '8px',
                   position: 'relative',
                   overflow: 'visible',
-                }}
+                }}>
 
                 {inlineScenarioPreamble && (
                   <motion.div
