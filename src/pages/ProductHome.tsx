@@ -11,15 +11,12 @@ import KidsProductHome from '@/components/KidsProductHome';
 import { KIDS_PRODUCT_IDS } from '@/hooks/useKidsProductProgress';
 
 /** Still Us free card ID */
-const STILL_US_FREE_CARD_ID = 'smallest-we';
-
 export default function ProductHome() {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
   useThemeSwitcher();
 
-  const isStillUs = slug === 'still-us';
-  const product = isStillUs ? undefined : allProducts.find((p) => p.slug === slug);
+  const product = allProducts.find((p) => p.slug === slug);
 
   // Always call hooks — use fallback values if product not found
   useProductTheme(
