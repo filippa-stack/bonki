@@ -2242,6 +2242,10 @@ export default function CardView() {
       // Save any typed note before advancing — pass text explicitly
       if (kidsNoteLocalText.trim()) {
         await kidsNoteSession.markReady(kidsNoteLocalText);
+        // Also persist to demo diary for journal visibility in demo mode
+        if (isDemoMode() && product) {
+          upsertDemoDiaryEntry({ productId: product.id, cardId: card.id, text: kidsNoteLocalText, mode: 'append' });
+        }
       }
       if (isLastPrompt) {
         await handleCompleteStep();
