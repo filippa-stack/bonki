@@ -16,6 +16,7 @@ import { cards as stillUsCards, categories as stillUsCategories } from '@/data/c
 import { allProducts } from '@/data/products';
 import { isDemoMode } from '@/lib/demoMode';
 import { useDevState } from '@/contexts/DevStateContext';
+import { DEMO_DIARY_EVENT } from '@/lib/demoDiary';
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 const STILL_US_ID = 'still_us';
@@ -333,6 +334,7 @@ export default function Journal() {
   const { space } = useCoupleSpaceContext();
   const devState = useDevState();
   const demoActive = isDemoMode() || !!devState;
+  const [demoDiaryVersion, setDemoDiaryVersion] = useState(0);
 
   const [sessions, setSessions] = useState<CompletedSession[] | null>(null);
   const [takeaways, setTakeaways] = useState<any[] | null>(null);
@@ -472,6 +474,19 @@ export default function Journal() {
 
     items.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
     return items;
+  }, [demoActive, demoDiaryVersion]);
+
+  useEffect(() => {
+    if (!demoActive) return;
+
+    const syncDemoDiary = () => setDemoDiaryVersion((version) => version + 1);
+    window.addEventListener(DEMO_DIARY_EVENT, syncDemoDiary);
+    window.addEventListener('storage', syncDemoDiary);
+
+    return () => {
+      window.removeEventListener(DEMO_DIARY_EVENT, syncDemoDiary);
+      window.removeEventListener('storage', syncDemoDiary);
+    };
   }, [demoActive]);
 
   // Build session lookup
