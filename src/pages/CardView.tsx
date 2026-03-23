@@ -31,7 +31,7 @@ import { getCompletionMessages, getUIText, type PronounMode } from '@/lib/pronou
 import { useCardImage } from '@/hooks/useCardImage';
 import { isDemoMode, isDemoParam } from '@/lib/demoMode';
 import { upsertDemoDiaryEntry } from '@/lib/demoDiary';
-import { saveDemoSession, updateDemoSessionStep, completeDemoSession, isDemoCardCompleted } from '@/lib/demoSession';
+import { saveDemoSession, updateDemoSessionStep, completeDemoSession, isDemoCardCompleted, DEMO_SESSION_EVENT } from '@/lib/demoSession';
 import { useCardVisit } from '@/hooks/useCardVisit';
 import { useProductTheme } from '@/hooks/useProductTheme';
 
@@ -814,13 +814,25 @@ export default function CardView() {
 
   const [completedCardIds, setCompletedCardIds] = useState<Set<string>>(new Set());
   useEffect(() => {
+    const syncLocal = () => {
+      if (isLocalPreviewMode && product) {
+        setCompletedCardIds(new Set(
+          product.cards
+            .filter((candidate) => isDemoCardCompleted(product.id, candidate.id))
+            .map((candidate) => candidate.id)
+        ));
+      }
+    };
+
     if (isLocalPreviewMode && product) {
-      setCompletedCardIds(new Set(
-        product.cards
-          .filter((candidate) => isDemoCardCompleted(product.id, candidate.id))
-          .map((candidate) => candidate.id)
-      ));
-      return;
+      syncLocal();
+      // Re-sync when demo session changes (card completed)
+      window.addEventListener(DEMO_SESSION_EVENT, syncLocal);
+      window.addEventListener('storage', syncLocal);
+      return () => {
+        window.removeEventListener(DEMO_SESSION_EVENT, syncLocal);
+        window.removeEventListener('storage', syncLocal);
+      };
     }
 
     if (!space?.id) return;
