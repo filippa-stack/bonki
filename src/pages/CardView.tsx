@@ -238,6 +238,10 @@ export default function CardView() {
     _setShowCompletion(val);
     if (val && cardId) {
       markCardCompleted(cardId);
+      // Add search param so BottomNav becomes visible on completion pages
+      const url = new URL(window.location.href);
+      url.searchParams.set('view', 'completed');
+      window.history.replaceState({}, '', url.toString());
     }
   }, [cardId, markCardCompleted]);
 
