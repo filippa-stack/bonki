@@ -546,6 +546,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
 
             {/* ── Still Us: Intro session entry ── */}
             {isSU && (
+              <div style={{ display: 'block', width: '100%', textAlign: 'center', marginTop: '14px' }}>
               <motion.button
                 variants={fadeUp}
                 whileTap={{ scale: 0.97 }}
