@@ -14,6 +14,7 @@ import {
 } from '@/lib/palette';
 import { cards as stillUsCards, categories as stillUsCategories } from '@/data/content';
 import { allProducts } from '@/data/products';
+import { isDemoMode } from '@/lib/demoMode';
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 const STILL_US_ID = 'still_us';
@@ -84,6 +85,13 @@ interface CompletedMarker {
 }
 
 type TimelineItem = NoteEntry | CompletedMarker;
+
+interface DemoDiaryEntry {
+  cardId: string;
+  text: string;
+  date: string;
+  type?: string;
+}
 
 const SWEDISH_MONTHS = [
   'januari', 'februari', 'mars', 'april', 'maj', 'juni',
@@ -297,6 +305,7 @@ function CompletedMarkerRow({ marker, index }: { marker: CompletedMarker; index:
 export default function Journal() {
   const navigate = useNavigate();
   const { space } = useCoupleSpaceContext();
+  const demoActive = isDemoMode();
 
   const [sessions, setSessions] = useState<CompletedSession[] | null>(null);
   const [takeaways, setTakeaways] = useState<any[] | null>(null);
@@ -398,12 +407,45 @@ export default function Journal() {
   }, [space?.id]);
 
   const loading = sessions === null || takeaways === null || reflections === null;
-  const isEmpty = !loading && sessions!.length === 0;
 
   const stillUsSessions = useMemo(() => {
     if (!sessions) return [];
     return sessions.filter(s => effectiveIsPar(s.product_id, s.card_id));
   }, [sessions]);
+
+  const demoTimelineItems = useMemo<TimelineItem[]>(() => {
+    if (!demoActive) return [];
+
+    const items: TimelineItem[] = [];
+
+    for (const product of allProducts) {
+      try {
+        const key = `bonki-demo-diary-${product.id}`;
+        const stored = JSON.parse(localStorage.getItem(key) || '[]') as DemoDiaryEntry[];
+
+        stored.forEach((entry, index) => {
+          if (!entry?.text?.trim() || !entry.cardId || !entry.date) return;
+          items.push({
+            type: 'note',
+            id: `demo-${product.id}-${entry.cardId}-${entry.date}-${index}`,
+            text: entry.text.trim(),
+            questionText: null,
+            cardId: entry.cardId,
+            cardName: getCardTitle(entry.cardId),
+            categoryName: getCategoryName(null, entry.cardId),
+            productId: product.id,
+            date: entry.date,
+            sessionId: `demo-${product.id}-${entry.cardId}`,
+          });
+        });
+      } catch {
+        // Ignore malformed local demo data
+      }
+    }
+
+    items.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    return items;
+  }, [demoActive]);
 
   // Build session lookup
   const sessionMap = useMemo(() => {
@@ -475,8 +517,10 @@ export default function Journal() {
 
     // Sort by date desc
     items.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-    return items;
-  }, [loading, takeaways, reflections, sessions, sessionMap]);
+    return [...demoTimelineItems, ...items].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  }, [loading, takeaways, reflections, sessions, sessionMap, demoTimelineItems]);
+
+  const isEmpty = !loading && allTimelineItems.length === 0 && pausedSessions.length === 0 && bookmarks.length === 0;
 
   // Filter by active chips + privacy logic
   const visibleItems = useMemo(() => {
