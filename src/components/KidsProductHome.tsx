@@ -546,14 +546,14 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
               </span>
 
 
-            {/* ── Still Us: Intro session — pill CTA (outside title fadeUp to avoid overflow) ── */}
+            {/* ── Still Us: Intro session — glass pill CTA ── */}
             {isSU && !introCompleted && (
               <motion.div
                 variants={fadeUp}
                 style={{ display: 'flex', justifyContent: 'center', width: '100%', marginTop: '24px', marginBottom: '8px' }}
               >
                 <motion.button
-                  whileTap={{ scale: 0.95 }}
+                  whileTap={{ scale: 0.96 }}
                   onClick={() => {
                     localStorage.setItem('bonki-last-active-product', product.slug);
                     navigate('/card/su-intro');
@@ -562,30 +562,31 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
                     display: 'inline-flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    gap: '7px',
-                    padding: '10px 28px',
-                    background: 'rgba(30, 28, 24, 0.55)',
-                    backdropFilter: 'blur(12px)',
-                    WebkitBackdropFilter: 'blur(12px)',
-                    border: `1.5px solid ${SAFFRON_FLAME}66`,
+                    gap: '8px',
+                    padding: '11px 26px',
+                    background: 'rgba(18, 16, 12, 0.6)',
+                    backdropFilter: 'blur(16px)',
+                    WebkitBackdropFilter: 'blur(16px)',
+                    border: `1.5px solid ${SAFFRON_FLAME}55`,
                     borderRadius: '100px',
                     cursor: 'pointer',
-                    boxShadow: `0 0 20px ${SAFFRON_FLAME}25, inset 0 1px 0 rgba(255,255,255,0.06)`,
+                    boxShadow: `0 4px 20px rgba(0,0,0,0.35), 0 0 24px ${SAFFRON_FLAME}20, inset 0 1px 0 rgba(255,255,255,0.08)`,
                     transition: 'all 0.3s ease',
                   }}
                 >
+                  <Play size={12} color={SAFFRON_FLAME} fill={SAFFRON_FLAME} strokeWidth={0} style={{ flexShrink: 0 }} />
                   <span
                     style={{
                       fontFamily: 'var(--font-serif)',
                       fontSize: '14px',
                       fontWeight: 500,
                       color: LANTERN_GLOW,
-                      letterSpacing: '0.03em',
+                      letterSpacing: '0.02em',
+                      whiteSpace: 'nowrap',
                     }}
                   >
-                    Börja här
+                    Börja här: <span style={{ opacity: 0.7 }}>Ert första samtal</span>
                   </span>
-                  <ChevronRight size={14} color={SAFFRON_FLAME} strokeWidth={2.5} />
                 </motion.button>
               </motion.div>
             )}
