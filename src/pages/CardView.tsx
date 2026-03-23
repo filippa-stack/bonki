@@ -224,9 +224,16 @@ export default function CardView() {
   const [completedSessionCount, setCompletedSessionCount] = useState(0);
 
   // showCompletion: session just finished — takeaway ritual before archive
-  const [showCompletion, _setShowCompletion] = useState(
-    devState === 'completed' ? true : false
-  );
+  const [showCompletion, _setShowCompletion] = useState(() => {
+    const isCompleted = devState === 'completed';
+    if (isCompleted) {
+      // Set search param so BottomNav shows on initial completion render
+      const url = new URL(window.location.href);
+      url.searchParams.set('view', 'completed');
+      window.history.replaceState({}, '', url.toString());
+    }
+    return isCompleted;
+  });
   // Lock headline on first render to prevent flash when product resolves
   const completionHeadlineRef = useRef<string | null>(null);
   if (!completionHeadlineRef.current) {
