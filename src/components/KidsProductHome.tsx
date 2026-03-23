@@ -21,6 +21,7 @@ import { useCardImage } from '@/hooks/useCardImage';
 import { supabase } from '@/integrations/supabase/client';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import ProductHomeBackButton from '@/components/ProductHomeBackButton';
+import { ChevronDown } from 'lucide-react';
 import {
   MIDNIGHT_INK,
   DEEP_DUSK,
@@ -544,9 +545,8 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
                 {product.tagline}
               </span>
 
-            {/* ── Still Us: Intro session entry — pure typographic CTA ── */}
+            {/* ── Still Us: Intro session — editorial divider with chevrons ── */}
             {isSU && (
-              <div style={{ display: 'block', width: '100%', textAlign: 'center', marginTop: '20px' }}>
               <motion.button
                 variants={fadeUp}
                 whileTap={{ scale: 0.97 }}
@@ -555,47 +555,61 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
                   navigate('/card/su-intro');
                 }}
                 style={{
-                  display: 'inline-flex',
+                  display: 'flex',
                   alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '6px',
-                  padding: 0,
+                  gap: '10px',
+                  width: '100%',
+                  marginTop: '24px',
+                  padding: '0 4px',
                   background: 'transparent',
                   border: 'none',
                   cursor: 'pointer',
-                  opacity: introCompleted ? 0.3 : 0.65,
+                  opacity: introCompleted ? 0.3 : 0.75,
                   transition: 'opacity 0.3s ease',
                 }}
               >
-                {introCompleted && (
-                  <span style={{
-                    fontSize: '10px',
-                    color: SAFFRON_FLAME,
-                    lineHeight: 1,
-                  }}>✓</span>
+                {/* Left line */}
+                <div style={{
+                  flex: 1,
+                  height: '1px',
+                  background: `linear-gradient(to right, transparent, rgba(253, 246, 227, 0.2))`,
+                }} />
+
+                {/* Left chevron */}
+                {!introCompleted && (
+                  <ChevronDown size={12} color={SAFFRON_FLAME} strokeWidth={2} style={{ opacity: 0.7 }} />
                 )}
+                {introCompleted && (
+                  <span style={{ fontSize: '10px', color: SAFFRON_FLAME, lineHeight: 1 }}>✓</span>
+                )}
+
+                {/* Label */}
                 <span
                   style={{
                     fontFamily: 'var(--font-serif)',
-                    fontSize: '13px',
+                    fontSize: '12px',
                     fontWeight: 400,
                     color: LANTERN_GLOW,
-                    letterSpacing: '0.06em',
-                    borderBottom: introCompleted ? 'none' : `1px solid rgba(253, 246, 227, 0.25)`,
-                    paddingBottom: '2px',
+                    letterSpacing: '0.08em',
+                    whiteSpace: 'nowrap',
+                    opacity: introCompleted ? 0.6 : 0.9,
                   }}
                 >
-                  {introCompleted ? 'Ert första samtal' : 'Börja här'}
+                  Ert första samtal
                 </span>
+
+                {/* Right chevron */}
                 {!introCompleted && (
-                  <span style={{
-                    fontSize: '12px',
-                    color: SAFFRON_FLAME,
-                    lineHeight: 1,
-                  }}>→</span>
+                  <ChevronDown size={12} color={SAFFRON_FLAME} strokeWidth={2} style={{ opacity: 0.7 }} />
                 )}
+
+                {/* Right line */}
+                <div style={{
+                  flex: 1,
+                  height: '1px',
+                  background: `linear-gradient(to left, transparent, rgba(253, 246, 227, 0.2))`,
+                }} />
               </motion.button>
-              </div>
             )}
             {/* Spacer — pushes content below hero face zone */}
             {!useSquareGrid && <div style={{ height: 'clamp(48px, 12vh, 100px)' }} />}
