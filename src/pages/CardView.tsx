@@ -366,8 +366,8 @@ export default function CardView() {
   // Volume 1: single-writer model, reflection surface always active
 
   // ─── Auto-abandon stale session for DIFFERENT card on mount ───
-  // Session creation is LAZY — only happens when user completes a step (handleCompleteStep).
-  // This keeps analytics clean: no abandoned sessions from browsing.
+  // Session creation is LAZY for Still Us — only happens when user completes a step.
+  // For kids products, sessions are created EAGERLY so resume banners work.
   const abandonCheckedRef = useRef(false);
   useEffect(() => {
     if (devState || isFromArchive || showCompletion) return;
@@ -390,6 +390,41 @@ export default function CardView() {
     })();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [devState, isFromArchive, showCompletion, normalizedSession.loading, normalizedSession.sessionId, space?.id, cardId]);
+
+  // ─── Eager session creation for kids products ───
+  // Kids products create sessions immediately so resume banners appear on home/library.
+  const eagerSessionRef = useRef(false);
+  useEffect(() => {
+    if (!isKidsProduct || devState || isFromArchive || showCompletion) return;
+    if (normalizedSession.loading) return;
+    if (eagerSessionRef.current) return;
+    if (!space?.id || !cardId) return;
+    // Already have an active session for this card
+    if (normalizedSession.sessionId && normalizedSession.cardId === cardId) return;
+    // Don't create if there's still another session (abandon hasn't completed yet)
+    if (normalizedSession.sessionId && normalizedSession.cardId !== cardId) return;
+
+    eagerSessionRef.current = true;
+    const cardData = getCardById(cardId);
+    if (!cardData) return;
+
+    (async () => {
+      if (isDevToolsEnabled()) console.log('[eager] creating session for kids product', cardId);
+      const { error } = await supabase.rpc('activate_couple_session', {
+        p_couple_space_id: space!.id,
+        p_category_id: cardData.categoryId,
+        p_card_id: cardId,
+        p_step_count: effectiveSteps.length,
+        p_product_id: product?.id ?? 'still_us',
+      });
+      if (!error) {
+        await normalizedSession.refetch();
+      } else if (isDevToolsEnabled()) {
+        console.error('[eager] session creation failed:', error);
+      }
+    })();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isKidsProduct, devState, isFromArchive, showCompletion, normalizedSession.loading, normalizedSession.sessionId, space?.id, cardId]);
 
   // ─── Single resolver ───
   const cardViewMode: CardViewMode = (() => {
@@ -2539,7 +2574,7 @@ export default function CardView() {
                   color: PARCHMENT,
                 }}
               >
-                Ja, avsluta
+                Ja, pausa
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
