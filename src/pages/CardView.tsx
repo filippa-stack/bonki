@@ -464,16 +464,20 @@ export default function CardView() {
   // ─── Sub-prompt index within current stage ───
   const [localPromptIndex, setLocalPromptIndex] = useState(0);
 
-  // Reset local override only when the server moves FORWARD
+  // Reset local override when server step advances OR session changes
   const serverStepIndex = normalizedSession.currentStepIndex;
   const prevServerStepRef = useRef(serverStepIndex);
+  const prevSessionIdRef = useRef(normalizedSession.sessionId);
   useEffect(() => {
-    if (serverStepIndex > prevServerStepRef.current) {
+    const sessionChanged = normalizedSession.sessionId !== prevSessionIdRef.current;
+    const stepAdvanced = serverStepIndex > prevServerStepRef.current;
+    if (sessionChanged || stepAdvanced) {
       setLocalStepIndex(null);
       setLocalPromptIndex(0);
     }
     prevServerStepRef.current = serverStepIndex;
-  }, [serverStepIndex]);
+    prevSessionIdRef.current = normalizedSession.sessionId;
+  }, [serverStepIndex, normalizedSession.sessionId]);
 
   // ─── Session start screen — ritual gate before first question ───
   // showStartScreen is a pure UX gate, decoupled from session state.
