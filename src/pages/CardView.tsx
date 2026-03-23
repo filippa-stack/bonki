@@ -2266,13 +2266,31 @@ export default function CardView() {
       : (currentPromptRaw as any)?.text ?? '';
 
     const handleKidsAdvance = async () => {
+      console.log('[DEBUG handleKidsAdvance]', {
+        kidsNoteLocalText,
+        isLocalPreviewMode,
+        productId: product?.id,
+        cardId: card.id,
+        localPromptIndex,
+        isLastPrompt,
+        kidsNoteStepIndex,
+      });
       // Save any typed note before advancing — pass text explicitly
       if (kidsNoteLocalText.trim()) {
         await kidsNoteSession.markReady(kidsNoteLocalText);
         // Also persist to demo diary for journal visibility in demo mode
         if (isLocalPreviewMode && product) {
+          console.log('[DEBUG] Saving to demo diary:', { text: kidsNoteLocalText, cardId: card.id });
           upsertDemoDiaryEntry({ productId: product.id, cardId: card.id, text: kidsNoteLocalText, mode: 'append' });
+          // Verify save
+          try {
+            const key = `bonki-demo-diary-${product.id}`;
+            const stored = localStorage.getItem(key);
+            console.log('[DEBUG] localStorage after save:', stored);
+          } catch {}
         }
+      } else {
+        console.log('[DEBUG] kidsNoteLocalText is EMPTY, skipping save');
       }
       if (isLastPrompt) {
         await handleCompleteStep();
