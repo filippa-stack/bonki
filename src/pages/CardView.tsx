@@ -875,7 +875,16 @@ export default function CardView() {
       return { type: 'all_complete' as const, destination: homeDest, label: 'Avsluta', homeDest };
     }
 
-    // Still Us: navigate to portal page for next card
+    // Still Us: always return to product home — user picks next card freely
+    if (product && product.id === 'still_us') {
+      // Check if there are any incomplete cards at all
+      const allDone = productCards.every(c => effectiveCompleted.has(c.id));
+      if (allDone) {
+        return { type: 'all_complete' as const, destination: `/product/${product.slug}`, label: '', homeDest };
+      }
+      return { type: 'next_card' as const, destination: `/product/${product.slug}`, label: 'Tillbaka till Still Us', homeDest };
+    }
+
     if (nextIncompleteInCategory) {
       const portalDest = category ? `/product/${product.slug}/portal/${category.id}` : `/product/${product.slug}`;
       return { type: 'next_card' as const, destination: portalDest, label: 'Nästa samtal', homeDest };
