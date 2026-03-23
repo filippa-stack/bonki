@@ -1385,13 +1385,14 @@ export default function CardView() {
                   Nästa samtal <ArrowRight size={16} style={{ opacity: 0.7 }} />
                 </button>
 
-                {/* 4. Secondary: Tillbaka till [Cat] */}
+                {/* 4. Secondary: Tillbaka till produkthem */}
                 <button
-                  onClick={() => navigateWithFeedback(homeDest)}
+                  onClick={() => navigateWithFeedback(product ? `/product/${product.slug}` : '/')}
                   className="font-sans"
                   style={{
                     fontSize: '14px',
                     color: DRIFTWOOD,
+                    opacity: 0.55,
                     background: 'none',
                     border: 'none',
                     cursor: 'pointer',
@@ -1399,36 +1400,10 @@ export default function CardView() {
                     textAlign: 'center',
                   }}
                 >
-                  Tillbaka till {categoryName}
+                  Tillbaka till {product?.name ?? categoryName}
                 </button>
               </>
             )}
-
-            {/* 5. Journal link */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.75, duration: EMOTION }}
-              style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
-            >
-              <button
-                onClick={() => navigateWithFeedback('/shared')}
-                className="font-sans"
-                style={{
-                  fontSize: '13px',
-                  color: DRIFTWOOD,
-                  background: 'none',
-                  border: 'none',
-                  cursor: 'pointer',
-                  textDecoration: 'underline',
-                  textUnderlineOffset: '3px',
-                  marginTop: '24px',
-                  opacity: 0.5,
-                }}
-              >
-                Se alla era anteckningar
-              </button>
-            </motion.div>
           </motion.div>
 
         </div>

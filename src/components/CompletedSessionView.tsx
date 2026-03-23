@@ -362,32 +362,23 @@ export default function CompletedSessionView({
                   Nästa <ArrowRight size={16} style={{ opacity: 0.7 }} />
                 </button>
                 <button
-                  onClick={() => navigate(isChildProduct && product && categoryId ? `/product/${product.slug}/portal/${categoryId}` : categoryId ? `/category/${categoryId}` : `/product/${product!.slug}`)}
+                  onClick={() => navigate(`/product/${product!.slug}`)}
                   className="font-sans"
-                  style={{ fontSize: '13px', color: 'var(--completion-link)', opacity: 0.55, background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline', textUnderlineOffset: '3px' }}
+                  style={{ fontSize: '13px', color: 'var(--completion-link)', opacity: 0.55, background: 'none', border: 'none', cursor: 'pointer' }}
                 >
-                  Avsluta
+                  Tillbaka till {product!.name}
                 </button>
               </>
             ) : (
               <button
                 onClick={() => navigate(
-                  isChildProduct ? (categoryId && product ? `/product/${product.slug}/portal/${categoryId}` : `/product/${product!.slug}`) : '/'
+                  isChildProduct ? `/product/${product!.slug}` : '/'
                 )}
                 className="cta-primary"
               >
-                {isChildProduct ? 'Avsluta' : 'Fortsätt utforska'}
+                {isChildProduct ? 'Tillbaka till ' + product!.name : 'Fortsätt utforska'}
               </button>
             )}
-            <button
-              onClick={() => navigate(
-                isChildProduct ? `/diary/${product!.id}` : '/shared'
-              )}
-              className="font-sans"
-              style={{ fontSize: '13px', color: 'var(--completion-link)', opacity: 0.4, background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline', textUnderlineOffset: '3px' }}
-            >
-              {isChildProduct ? 'Vår dagbok' : 'Se alla era anteckningar'}
-            </button>
           </motion.div>
 
         </div>
