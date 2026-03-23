@@ -8,7 +8,7 @@
  * - Re-fetches on every navigation (location.key) to reflect latest state
  */
 
-import { useState, useEffect, useMemo, useCallback } from 'react';
+import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
@@ -67,8 +67,77 @@ export function useKidsProductProgress(product: ProductManifest | undefined): Ki
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [loading, setLoading] = useState(true);
   const isLocalPreview = isDemoMode() || !!devState;
+  const fetchCounterRef = useRef(0);
 
   const productId = product?.id;
+
+  // Extracted DB fetch as a stable callback for reuse by navigation + realtime
+  const fetchFromDb = useCallback(async () => {
+    if (!space?.id || !productId) return;
+
+    const fetchId = ++fetchCounterRef.current;
+    setLoading(true);
+
+    const fetchCompleted = supabase
+      .from('couple_sessions')
+      .select('card_id, ended_at')
+      .eq('couple_space_id', space.id)
+      .eq('product_id', productId)
+      .eq('status', 'completed')
+      .order('ended_at', { ascending: false });
+
+    const fetchActive = supabase
+      .from('couple_sessions')
+      .select('id, card_id, category_id')
+      .eq('couple_space_id', space.id)
+      .eq('product_id', productId)
+      .eq('status', 'active')
+      .limit(1);
+
+    const [completedRes, activeRes] = await Promise.all([fetchCompleted, fetchActive]);
+    if (fetchId !== fetchCounterRef.current) return;
+
+    if (completedRes.data) {
+      setCompletedSessions(
+        completedRes.data
+          .filter(s => s.card_id && s.ended_at)
+          .map(s => ({ card_id: s.card_id!, ended_at: s.ended_at! }))
+      );
+    }
+
+    if (activeRes.data && activeRes.data.length > 0) {
+      const session = activeRes.data[0];
+      setActiveSession({
+        sessionId: session.id,
+        cardId: session.card_id!,
+        categoryId: session.category_id!,
+      });
+
+      const { data: completions } = await supabase
+        .from('couple_session_completions')
+        .select('step_index')
+        .eq('session_id', session.id);
+
+      if (fetchId !== fetchCounterRef.current) return;
+
+      const completedSteps = new Set((completions || []).map(c => c.step_index));
+      const { data: steps } = await supabase
+        .from('couple_session_steps')
+        .select('step_index')
+        .eq('session_id', session.id)
+        .order('step_index');
+
+      if (fetchId !== fetchCounterRef.current) return;
+      if (steps) {
+        const firstIncomplete = steps.find(s => !completedSteps.has(s.step_index));
+        setCurrentStepIndex(firstIncomplete?.step_index ?? 0);
+      }
+    } else {
+      setActiveSession(null);
+    }
+
+    if (fetchId === fetchCounterRef.current) setLoading(false);
+  }, [space?.id, productId]);
 
   // Re-fetch on navigation and local preview session changes
   useEffect(() => {
@@ -117,71 +186,37 @@ export function useKidsProductProgress(product: ProductManifest | undefined): Ki
       return;
     }
 
-    let cancelled = false;
-    setLoading(true);
+    fetchFromDb();
+  }, [space?.id, productId, product, location.key, isLocalPreview, fetchFromDb]);
 
-    const fetchCompleted = supabase
-      .from('couple_sessions')
-      .select('card_id, ended_at')
-      .eq('couple_space_id', space.id)
-      .eq('product_id', productId)
-      .eq('status', 'completed')
-      .order('ended_at', { ascending: false });
+  // Realtime: re-fetch when session status changes in this space
+  useEffect(() => {
+    if (isLocalPreview || !space?.id || !productId) return;
 
-    const fetchActive = supabase
-      .from('couple_sessions')
-      .select('id, card_id, category_id')
-      .eq('couple_space_id', space.id)
-      .eq('product_id', productId)
-      .eq('status', 'active')
-      .limit(1);
+    const debounceRef = { current: undefined as ReturnType<typeof setTimeout> | undefined };
 
-    Promise.all([fetchCompleted, fetchActive]).then(async ([completedRes, activeRes]) => {
-      if (cancelled) return;
-
-      if (completedRes.data) {
-        setCompletedSessions(
-          completedRes.data
-            .filter(s => s.card_id && s.ended_at)
-            .map(s => ({ card_id: s.card_id!, ended_at: s.ended_at! }))
-        );
-      }
-
-      if (activeRes.data && activeRes.data.length > 0) {
-        const session = activeRes.data[0];
-        setActiveSession({
-          sessionId: session.id,
-          cardId: session.card_id!,
-          categoryId: session.category_id!,
-        });
-
-        const { data: completions } = await supabase
-          .from('couple_session_completions')
-          .select('step_index')
-          .eq('session_id', session.id);
-
-        if (!cancelled) {
-          const completedSteps = new Set((completions || []).map(c => c.step_index));
-          const { data: steps } = await supabase
-            .from('couple_session_steps')
-            .select('step_index')
-            .eq('session_id', session.id)
-            .order('step_index');
-
-          if (!cancelled && steps) {
-            const firstIncomplete = steps.find(s => !completedSteps.has(s.step_index));
-            setCurrentStepIndex(firstIncomplete?.step_index ?? 0);
-          }
+    const channel = supabase
+      .channel(`kids-progress-rt-${space.id}-${productId}`)
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'couple_sessions',
+          filter: `couple_space_id=eq.${space.id}`,
+        },
+        () => {
+          if (debounceRef.current) clearTimeout(debounceRef.current);
+          debounceRef.current = setTimeout(() => fetchFromDb(), 400);
         }
-      } else {
-        setActiveSession(null);
-      }
+      )
+      .subscribe();
 
-      if (!cancelled) setLoading(false);
-    });
-
-    return () => { cancelled = true; };
-  }, [space?.id, productId, product, location.key, isLocalPreview]);
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+      supabase.removeChannel(channel);
+    };
+  }, [isLocalPreview, space?.id, productId, fetchFromDb]);
 
   // Apply 14-day expiry
   const recentlyCompletedCardIds = useMemo(() => {
