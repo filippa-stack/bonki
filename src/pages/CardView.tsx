@@ -31,6 +31,7 @@ import { getCompletionMessages, getUIText, type PronounMode } from '@/lib/pronou
 import { useCardImage } from '@/hooks/useCardImage';
 import { isDemoMode, isDemoParam } from '@/lib/demoMode';
 import { upsertDemoDiaryEntry } from '@/lib/demoDiary';
+import { saveDemoSession, updateDemoSessionStep, completeDemoSession } from '@/lib/demoSession';
 import { useCardVisit } from '@/hooks/useCardVisit';
 import { useProductTheme } from '@/hooks/useProductTheme';
 
