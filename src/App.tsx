@@ -40,17 +40,8 @@ import ScreenshotExport from "./pages/ScreenshotExport";
 import AnalyticsDashboard from "./pages/AnalyticsDashboard";
 import { useCaptureController } from "@/hooks/useCaptureController";
 
-// Still Us v2.5 route pages
+// Still Us route pages (kept: ceremony, journey, paywall, solo-reflect, dissolution)
 import {
-  CheckInPage,
-  CheckInHandoffPage,
-  FormatPreviewPage,
-  SharePage,
-  Tier2SetupPage,
-  SessionStartPage,
-  Session1CompletePage,
-  Session2StartPage,
-  Session2LivePage,
   CardCompletePage,
   TillbakaPage,
 } from "./pages/still-us-routes";
@@ -117,19 +108,20 @@ function ProtectedRoutes() {
               <Route path="/journal" element={<PageTransition><Journal /></PageTransition>} />
               <Route path="/diary/:productId" element={<PageTransition><Diary /></PageTransition>} />
 
-              {/* Still Us v2.5 routes */}
-              <Route path="/check-in/:cardId" element={<PageTransition><CheckInPage /></PageTransition>} />
-              <Route path="/check-in/:cardId/handoff" element={<PageTransition><CheckInHandoffPage /></PageTransition>} />
-              <Route path="/format-preview" element={<PageTransition><FormatPreviewPage /></PageTransition>} />
-              <Route path="/share" element={<PageTransition><SharePage /></PageTransition>} />
-              <Route path="/tier2-setup" element={<PageTransition><Tier2SetupPage /></PageTransition>} />
-              <Route path="/session/:cardId/start" element={<PageTransition><SessionStartPage /></PageTransition>} />
-              <Route path="/session/:cardId/complete-session1" element={<PageTransition><Session1CompletePage /></PageTransition>} />
-              <Route path="/session/:cardId/session2-start" element={<PageTransition><Session2StartPage /></PageTransition>} />
-              <Route path="/session/:cardId/live-session2" element={<PageTransition><Session2LivePage /></PageTransition>} />
+              {/* Still Us: only card-complete and tillbaka routes kept */}
               <Route path="/session/:cardId/complete" element={<PageTransition><CardCompletePage /></PageTransition>} />
               <Route path="/session/:cardId/tillbaka" element={<PageTransition><TillbakaPage /></PageTransition>} />
               <Route path="/session/:cardId/tillbaka-complete" element={<PageTransition><TillbakaComplete /></PageTransition>} />
+
+              {/* Legacy Still Us routes → redirect to product home */}
+              <Route path="/check-in/*" element={<Navigate to="/product/still-us" replace />} />
+              <Route path="/share" element={<Navigate to="/product/still-us" replace />} />
+              <Route path="/format-preview" element={<Navigate to="/product/still-us" replace />} />
+              <Route path="/tier2-setup" element={<Navigate to="/product/still-us" replace />} />
+              <Route path="/session/:cardId/start" element={<Navigate to="/product/still-us" replace />} />
+              <Route path="/session/:cardId/complete-session1" element={<Navigate to="/product/still-us" replace />} />
+              <Route path="/session/:cardId/session2-start" element={<Navigate to="/product/still-us" replace />} />
+              <Route path="/session/:cardId/live-session2" element={<Navigate to="/product/still-us" replace />} />
               <Route path="/journey" element={<PageTransition><Journey /></PageTransition>} />
               <Route path="/solo-reflect/:cardId" element={<PageTransition><SoloReflect /></PageTransition>} />
               <Route path="/journey-preview" element={<PageTransition><JourneyPreview /></PageTransition>} />
