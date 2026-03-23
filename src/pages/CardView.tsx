@@ -2024,7 +2024,7 @@ export default function CardView() {
           onPause={() => navigate('/')}
           showExitDialog={showLeaveConfirm}
           onExitDialogClose={() => setShowLeaveConfirm(false)}
-          onExitConfirm={() => navigate(exitBackTo)}
+          onExitConfirm={() => handleSmartExit()}
           topSlot={
             <div style={{
               width: '100%',
@@ -2514,7 +2514,7 @@ export default function CardView() {
                 fontSize: '18px',
                 color: BARK,
               }}>
-                Vill du avsluta samtalet?
+                Pausa samtalet?
               </AlertDialogTitle>
             </AlertDialogHeader>
             <AlertDialogFooter style={{ marginTop: '16px' }}>
@@ -2525,7 +2525,7 @@ export default function CardView() {
                 Nej, fortsätt
               </AlertDialogCancel>
               <AlertDialogAction
-                onClick={() => navigate(exitBackTo)}
+                onClick={() => handleSmartExit()}
                 style={{
                   backgroundColor: BARK,
                   color: PARCHMENT,
