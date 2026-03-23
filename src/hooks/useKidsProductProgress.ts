@@ -53,6 +53,7 @@ export interface KidsProductProgress {
 
 export function useKidsProductProgress(product: ProductManifest | undefined): KidsProductProgress {
   const { space } = useCoupleSpaceContext();
+  const location = useLocation();
   const [completedSessions, setCompletedSessions] = useState<{ card_id: string; ended_at: string }[]>([]);
   const [activeSession, setActiveSession] = useState<{
     sessionId: string;
@@ -63,6 +64,8 @@ export function useKidsProductProgress(product: ProductManifest | undefined): Ki
   const [loading, setLoading] = useState(true);
 
   const productId = product?.id;
+
+  // Re-fetch on navigation (location.key changes on every navigate())
 
   useEffect(() => {
     if (!space?.id || !productId) {
