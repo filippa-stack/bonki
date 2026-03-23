@@ -57,6 +57,7 @@ interface LibraryResumeCardProps {
 
 export default function LibraryResumeCard({ activeTab, global, forceMock }: LibraryResumeCardProps) {
   const navigate = useNavigate();
+  const location = useLocation();
   const { space } = useCoupleSpaceContext();
   const [resume, setResume] = useState<ResumeData | null>(null);
   const devState = useDevState();
