@@ -546,11 +546,11 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
               </span>
 
 
-            {/* ── Still Us: Intro session — glass pill CTA ── */}
-            {isSU && !introCompleted && (
+            {/* ── Still Us: Intro session — glass pill CTA or placeholder ── */}
+            {isSU && (
               <motion.div
                 variants={fadeUp}
-                style={{ display: 'flex', justifyContent: 'center', width: '100%', marginTop: '24px', marginBottom: '8px' }}
+                style={{ display: 'flex', justifyContent: 'center', width: '100%', marginTop: '24px', marginBottom: '8px', minHeight: '44px' }}
               >
                 <motion.button
                   whileTap={{ scale: 0.96 }}
