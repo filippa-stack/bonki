@@ -75,9 +75,7 @@ export default function BottomNav() {
   // Show on /card/ when viewing archive or completed session
   const params = new URLSearchParams(search);
   const isCardArchiveOrComplete = params.get('from') === 'archive' || params.get('view') === 'completed';
-  // Show bottom nav on all /card/ routes (including completion which renders inline)
-  // Only hide during active live sessions — but we can't distinguish easily,
-  // so we show on /card/ always now; the session view uses position:fixed anyway.
+  if (pathname.startsWith('/card/') && !isCardArchiveOrComplete) return null;
   if (pathname.startsWith('/check-in/')) return null;
   if (pathname.startsWith('/session/')) return null;
   if (pathname === '/share') return null;
