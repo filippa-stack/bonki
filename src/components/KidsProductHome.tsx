@@ -370,6 +370,7 @@ function CategoryTile({
 
 export default function KidsProductHome({ product }: { product: ProductManifest }) {
   const navigate = useNavigate();
+  const { space } = useCoupleSpaceContext();
   const progress = useKidsProductProgress(product);
   const tileImages = useFirstCardImages(product, progress);
 
@@ -378,6 +379,25 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
   const isSU = product.slug === 'still-us';
   const isVardag = product.id === 'vardagskort';
   const useSquareGrid = true; // 2×2 grid for all products
+
+  // ── Intro session completion state (Still Us only) ──
+  const [introCompleted, setIntroCompleted] = useState(false);
+  useEffect(() => {
+    if (!isSU || !space?.id) return;
+    let cancelled = false;
+    supabase
+      .from('couple_sessions')
+      .select('id')
+      .eq('couple_space_id', space.id)
+      .eq('card_id', 'su-intro')
+      .eq('status', 'completed')
+      .limit(1)
+      .maybeSingle()
+      .then(({ data }) => {
+        if (!cancelled && data) setIntroCompleted(true);
+      });
+    return () => { cancelled = true; };
+  }, [isSU, space?.id]);
 
   // Chromatic glow colors for Still Us glass tiles
   const SU_GLOW_COLORS: Record<string, string> = {
