@@ -146,6 +146,7 @@ function CategoryTile({
   fillHeight = false,
   glassTile = false,
   glassGlowColor,
+  enlargeTiles = false,
 }: {
   cat: { id: string; title: string; subtitle?: string };
   product: ProductManifest;
@@ -163,6 +164,7 @@ function CategoryTile({
   fillHeight?: boolean;
   glassTile?: boolean;
   glassGlowColor?: string;
+  enlargeTiles?: boolean;
 }) {
   const navigate = useNavigate();
   const styles = squareTile ? SQUARE_TILE_ILLUSTRATION_STYLES : TILE_ILLUSTRATION_STYLES;
