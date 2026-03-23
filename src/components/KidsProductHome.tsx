@@ -382,9 +382,28 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
   const useSquareGrid = true; // 2×2 grid for all products
 
   // ── Intro session completion state (Still Us only) ──
-  const [introCompleted, setIntroCompleted] = useState(false);
+  const [introCompleted, setIntroCompleted] = useState(() => {
+    // Check demo mode first
+    if (isSU) {
+      try {
+        const { isDemoCardCompleted } = require('@/lib/demoSession');
+        if (isDemoCardCompleted('still_us', 'su-intro')) return true;
+      } catch { /* ignore */ }
+    }
+    return false;
+  });
   useEffect(() => {
-    if (!isSU || !space?.id) return;
+    if (!isSU) return;
+    // Check demo completed
+    (async () => {
+      const { isDemoCardCompleted } = await import('@/lib/demoSession');
+      if (isDemoCardCompleted('still_us', 'su-intro')) {
+        setIntroCompleted(true);
+        return;
+      }
+    })();
+    // Check DB
+    if (!space?.id) return;
     let cancelled = false;
     supabase
       .from('couple_sessions')
