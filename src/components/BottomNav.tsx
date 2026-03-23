@@ -72,7 +72,10 @@ export default function BottomNav() {
   const { pathname, search } = useLocation();
 
   // Hide during active sessions (card sessions, Still Us sessions)
-  if (pathname.startsWith('/card/')) return null;
+  // Show on /card/ when viewing archive or completed session
+  const params = new URLSearchParams(search);
+  const isCardArchiveOrComplete = params.get('from') === 'archive' || params.get('view') === 'completed';
+  if (pathname.startsWith('/card/') && !isCardArchiveOrComplete) return null;
   if (pathname.startsWith('/check-in/')) return null;
   if (pathname.startsWith('/session/')) return null;
   if (pathname === '/share') return null;
