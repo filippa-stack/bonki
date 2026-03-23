@@ -122,7 +122,7 @@ export default function Index() {
   const demoActive = isDemoMode();
 
   // ── Normal production flow ──
-  if (!hasCompletedOnboarding && !demoActive) {
+  if (!hasCompletedOnboarding && !demoActive && !devBypassGates) {
     return <Onboarding />;
   }
 
