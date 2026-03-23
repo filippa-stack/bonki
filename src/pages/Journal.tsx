@@ -15,6 +15,7 @@ import {
 import { cards as stillUsCards, categories as stillUsCategories } from '@/data/content';
 import { allProducts } from '@/data/products';
 import { isDemoMode } from '@/lib/demoMode';
+import { useDevState } from '@/contexts/DevStateContext';
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 const STILL_US_ID = 'still_us';
@@ -305,7 +306,8 @@ function CompletedMarkerRow({ marker, index }: { marker: CompletedMarker; index:
 export default function Journal() {
   const navigate = useNavigate();
   const { space } = useCoupleSpaceContext();
-  const demoActive = isDemoMode();
+  const devState = useDevState();
+  const demoActive = isDemoMode() || !!devState;
 
   const [sessions, setSessions] = useState<CompletedSession[] | null>(null);
   const [takeaways, setTakeaways] = useState<any[] | null>(null);
