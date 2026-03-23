@@ -140,23 +140,23 @@ export default function Index() {
     return <Navigate to="/product/still-us" replace />;
   }
 
-  // Par first visit: route directly to Still Us product home
+  // Skip-to-product: returning users land on their last active product (cold start only)
+  const skipToProductKey = 'bonki-skip-to-product-done';
+  const lastProductSlug = localStorage.getItem('bonki-last-active-product');
+  if (!sessionStorage.getItem(skipToProductKey)) {
+    sessionStorage.setItem(skipToProductKey, '1');
+    if (lastProductSlug) {
+      return <Navigate to={`/product/${lastProductSlug}`} replace />;
+    }
+  }
+
+  // Par first visit: route directly to Still Us product home (only if no last-active-product)
   const initialTab = localStorage.getItem('bonki-initial-tab');
-  if (initialTab === 'par') {
+  if (initialTab === 'par' && !lastProductSlug) {
     const parFirstVisitKey = 'bonki-par-first-visit-done';
     if (!sessionStorage.getItem(parFirstVisitKey)) {
       sessionStorage.setItem(parFirstVisitKey, '1');
       return <Navigate to="/product/still-us" replace />;
-    }
-  }
-
-  // Skip-to-product: returning users land on their last active product (cold start only)
-  const skipToProductKey = 'bonki-skip-to-product-done';
-  if (!sessionStorage.getItem(skipToProductKey)) {
-    sessionStorage.setItem(skipToProductKey, '1');
-    const lastProductSlug = localStorage.getItem('bonki-last-active-product');
-    if (lastProductSlug) {
-      return <Navigate to={`/product/${lastProductSlug}`} replace />;
     }
   }
 
