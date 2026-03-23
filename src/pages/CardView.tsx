@@ -188,6 +188,7 @@ export default function CardView() {
   const paywallProductId = product?.id ?? (isStillUsCard ? 'still_us' : '');
   const { hasAccess: hasProductAccess, loading: accessLoading } = useProductAccess(paywallProductId);
   const [demoBypassed, setDemoBypassed] = useState(false);
+  const isLocalPreviewMode = isDemoMode() || !!devState;
   const needsPaywall = !isFreeCard && !hasProductAccess && !accessLoading && (!!product || isStillUsCard) && !devState && !demoBypassed && !isDemoMode();
 
   // Apply product theme (background + accent colors)
@@ -210,15 +211,6 @@ export default function CardView() {
   const { recordVisit } = useCardVisit();
   useEffect(() => {
     if (cardId) recordVisit(cardId);
-    // In demo mode, persist an active session to localStorage for resume banners
-    if (cardId && isDemoMode() && product && card) {
-      saveDemoSession({
-        productId: product.id,
-        cardId,
-        categoryId: card.categoryId ?? '',
-        currentStepIndex: 0,
-      });
-    }
   }, [cardId, recordVisit]);
 
   const [activeSessionId, setActiveSessionId] = useState<string | null>(
@@ -256,8 +248,8 @@ export default function CardView() {
     _setShowCompletion(val);
     if (val && cardId) {
       markCardCompleted(cardId);
-      // Clear demo session on completion
-      if (isDemoMode() && product) {
+      // Clear local preview session on completion
+      if (isLocalPreviewMode && product) {
         completeDemoSession(product.id, cardId);
       }
       // Add search param so BottomNav becomes visible on completion pages
@@ -492,6 +484,18 @@ export default function CardView() {
     cardViewMode === 'archive'
       ? archiveStepIndex
       : (localStepIndex ?? serverStepIndex);
+
+  useEffect(() => {
+    // In local preview modes, persist an active session to localStorage for resume banners
+    if (cardId && isLocalPreviewMode && product && card && cardViewMode === 'live') {
+      saveDemoSession({
+        productId: product.id,
+        cardId,
+        categoryId: card.categoryId ?? '',
+        currentStepIndex,
+      });
+    }
+  }, [cardId, isLocalPreviewMode, product, card, cardViewMode, currentStepIndex]);
 
   // ─── DEV-ONLY debug strip (disabled — never visible) ───
   const _devDebug = null;
