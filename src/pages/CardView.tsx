@@ -890,7 +890,7 @@ export default function CardView() {
     const LANTERN_GLOW = '#FDF6E3';
     const SAFFRON = '#E9B44C';
     const BARK = '#2C2420';
-    const DRIFTWOOD = '#6B5E52';
+    const DRIFTWOOD = '#FDF6E3';
     const PARCHMENT = '#F5EDD2';
     const MIDNIGHT_INK = '#1A1A2E';
 
@@ -1439,7 +1439,7 @@ export default function CardView() {
   if (shouldShowStartScreen && isKidsProduct && product) {
     const MIDNIGHT_INK = '#1A1A2E';
     const LANTERN_GLOW = '#FDF6E3';
-    const DRIFTWOOD = '#6B5E52';
+    const DRIFTWOOD = '#FDF6E3';
     const BONKI_ORANGE = '#E85D2C';
     const SAFFRON = '#E9B44C';
 
@@ -1671,7 +1671,7 @@ export default function CardView() {
   if (shouldShowStartScreen) {
     const EMBER_NIGHT_T = product?.backgroundColor ?? '#1A0806';
     const LANTERN_GLOW_T = '#FDF6E3';
-    const DRIFTWOOD_T = '#6B5E52';
+    const DRIFTWOOD_T = '#FDF6E3';
     const MIDNIGHT_INK_T = '#1A1A2E';
     const BONKI_ORANGE_T = '#E85D2C';
 
@@ -2170,7 +2170,7 @@ export default function CardView() {
     const SAFFRON = '#E9B44C';
     const PARCHMENT = '#F5EDD2';
     const BARK = '#2C2420';
-    const DRIFTWOOD = '#6B5E52';
+    const DRIFTWOOD = '#FDF6E3';
 
     const totalPrompts = flatPromptMap ? totalFlatPrompts : getEffectivePromptCount(currentSection);
     const progressFraction = totalPrompts > 0 ? (localPromptIndex + 1) / totalPrompts : 0;
@@ -2977,7 +2977,7 @@ function KidsCompletionNote({ sessionId, spaceId, cardId, productId }: {
   productId?: string;
 }) {
   const BARK = '#2C2420';
-  const DRIFTWOOD = '#6B5E52';
+  const DRIFTWOOD = '#FDF6E3';
   const PARCHMENT = '#F5EDD2';
 
   const [expanded, setExpanded] = useState(false);
@@ -3127,7 +3127,7 @@ function SimpleTakeaway({ sessionId, spaceId, cardId, productId, stillUsMode }: 
   const isDemo = isDemoMode();
   const debounceRef = useRef<ReturnType<typeof setTimeout>>();
 
-  const DRIFTWOOD_T = '#6B5E52';
+  const DRIFTWOOD_T = '#FDF6E3';
   const BARK_T = '#2C2420';
   const EMBER_GLOW_T = '#F5E8CC';
   const hasFill = text.trim().length > 0;
