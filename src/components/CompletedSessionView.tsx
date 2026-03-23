@@ -337,11 +337,11 @@ export default function CompletedSessionView({
             >
               <p style={{ fontSize: '11px', letterSpacing: '0.06em', textTransform: 'uppercase', color: '#FDF6E3', opacity: 0.45 }}>Det ni tog med er</p>
               <div style={{
-                background: 'hsl(36 20% 97% / 0.70)',
+                background: 'rgba(255, 255, 255, 0.06)',
                 borderRadius: '12px',
-                boxShadow: 'inset 0 1px 3px hsla(30, 12%, 25%, 0.04), 0 1px 2px hsla(30, 15%, 25%, 0.03)',
+                border: '1px solid rgba(255, 255, 255, 0.08)',
               }}>
-                <p className="font-serif italic whitespace-pre-wrap" style={{ padding: '20px 24px', fontSize: '17px', lineHeight: 1.7, color: 'var(--text-secondary)' }}>{session.takeawayText}</p>
+                <p className="font-serif italic whitespace-pre-wrap" style={{ padding: '20px 24px', fontSize: '17px', lineHeight: 1.7, color: '#FDF6E3', opacity: 0.8 }}>{session.takeawayText}</p>
               </div>
             </motion.div>
           )}
