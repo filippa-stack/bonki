@@ -117,7 +117,7 @@ const introCard: Card = {
   id: 'su-intro',
   title: 'Börja här',
   subtitle: 'Ett första samtal — för att landa tillsammans.',
-  categoryId: '__intro__',        // virtual category, not in grid
+  categoryId: 'su-mock-vardagen',        // route intro through first real portal category
   sections: [
     {
       id: 'su-intro-opening',
