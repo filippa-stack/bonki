@@ -9,7 +9,7 @@ import { useThemeSwitcher } from '@/hooks/useThemeSwitcher';
 import { supabase } from '@/integrations/supabase/client';
 import { isDemoMode } from '@/lib/demoMode';
 import Onboarding from '@/components/Onboarding';
-import Home from '@/pages/Home';
+
 import PurchaseScreen from '@/components/PurchaseScreen';
 import ProductLibrary from '@/components/ProductLibrary';
 import ProductIntro from '@/components/ProductIntro';
