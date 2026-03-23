@@ -258,16 +258,10 @@ export default function CardView() {
     setFeedbackDismissed(true);
   }, []);
 
-  // Intercept navigation during completion: show feedback first if not yet seen (Still Us only)
+  // Navigation — feedback intercept removed
   const navigateWithFeedback = useCallback((destination: string) => {
-    if (isStillUs && showCompletion && !feedbackDismissed && !showFeedback) {
-      setShowFeedback(true);
-      // Store destination so we navigate after dismiss
-      pendingNavRef.current = destination;
-      return;
-    }
     navigate(destination);
-  }, [isStillUs, showCompletion, feedbackDismissed, showFeedback, navigate]);
+  }, [navigate]);
 
   const pendingNavRef = useRef<string | null>(null);
 
