@@ -1330,7 +1330,7 @@ export default function CardView() {
                   textWrap: 'balance',
                 }}
               >
-                Härifrån går ni vidare vecka för vecka, lager för lager.
+                Härifrån väljer ni själva vilka samtal ni vill ta — i er egen takt.
               </p>
             )}
           </motion.div>
