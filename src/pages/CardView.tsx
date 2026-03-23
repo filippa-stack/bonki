@@ -1510,7 +1510,7 @@ export default function CardView() {
               </button>
             ) : (
               <>
-                {/* Primary: Nästa samtal → */}
+                {/* Primary CTA */}
                 <button
                   onClick={() => navigateWithFeedback(postCompletionNav.destination)}
                   style={{
@@ -1531,26 +1531,28 @@ export default function CardView() {
                     cursor: 'pointer',
                   }}
                 >
-                  Nästa samtal <ArrowRight size={16} style={{ opacity: 0.7 }} />
+                  {postCompletionNav.label || 'Nästa samtal'} <ArrowRight size={16} style={{ opacity: 0.7 }} />
                 </button>
 
-                {/* 4. Secondary: Tillbaka till produkthem */}
-                <button
-                  onClick={() => navigateWithFeedback(product ? `/product/${product.slug}` : '/')}
-                  className="font-sans"
-                  style={{
-                    fontSize: '14px',
-                    color: DRIFTWOOD,
-                    opacity: 0.55,
-                    background: 'none',
-                    border: 'none',
-                    cursor: 'pointer',
-                    marginTop: '16px',
-                    textAlign: 'center',
-                  }}
-                >
-                  Tillbaka till {product?.name ?? categoryName}
-                </button>
+                {/* Secondary: Tillbaka — only if primary doesn't already go to product home */}
+                {product && postCompletionNav.destination !== `/product/${product.slug}` && (
+                  <button
+                    onClick={() => navigateWithFeedback(`/product/${product.slug}`)}
+                    className="font-sans"
+                    style={{
+                      fontSize: '14px',
+                      color: DRIFTWOOD,
+                      opacity: 0.55,
+                      background: 'none',
+                      border: 'none',
+                      cursor: 'pointer',
+                      marginTop: '16px',
+                      textAlign: 'center',
+                    }}
+                  >
+                    Tillbaka till {product.name}
+                  </button>
+                )}
               </>
             )}
           </motion.div>
