@@ -155,6 +155,7 @@ export default function CardView() {
       localStorage.setItem('bonki-last-active-product', product.slug);
     }
   }, [product?.slug]);
+  const uiText = useMemo(() => getUIText(pronounMode), [pronounMode]);
   const isUnifiedSingleStepProduct = !!product;
   const effectiveSteps = useMemo(() => {
     // All product-backed cards use a unified single-step flow in session view
