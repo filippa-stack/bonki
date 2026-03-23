@@ -849,7 +849,10 @@ export default function CardView() {
   }, [space?.id, cardViewMode, isLocalPreviewMode, product]);
 
   const postCompletionNav = useMemo(() => {
-    if (!category || !card) return { type: 'home' as const, destination: '/', label: '', homeDest: '/' };
+    if (!category || !card) {
+      console.warn('[postCompletionNav] early exit — category:', category?.id, 'card:', card?.id);
+      return { type: 'home' as const, destination: '/', label: '', homeDest: '/' };
+    }
 
     const productCards = product ? product.cards : cards;
     const effectiveCompleted = new Set(completedCardIds);
@@ -857,6 +860,15 @@ export default function CardView() {
 
     const categoryCards = productCards.filter((candidate) => candidate.categoryId === category.id);
     const nextIncompleteInCategory = categoryCards.find((candidate) => !effectiveCompleted.has(candidate.id));
+
+    console.info('[postCompletionNav]', {
+      cardId: card.id,
+      categoryId: category.id,
+      productId: product?.id,
+      completedCount: completedCardIds.size,
+      categoryCardsCount: categoryCards.length,
+      nextInCategory: nextIncompleteInCategory?.id ?? null,
+    });
 
     const buildPortalDestination = (targetCategoryId: string, targetCardId?: string) => {
       if (!product) return `/category/${targetCategoryId}`;
