@@ -62,6 +62,10 @@ export function useSessionReflections(
 
   // ─── 1. Reset state when session or step changes ───
   useEffect(() => {
+    if (pendingSave.current) {
+      clearTimeout(pendingSave.current);
+      pendingSave.current = null;
+    }
     setMyReflection(null);
     setLocalText('');
     localTextRef.current = '';
