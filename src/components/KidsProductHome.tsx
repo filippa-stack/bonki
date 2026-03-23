@@ -1,5 +1,5 @@
 /**
- * KidsProductHome — Shared product home for ALL 6 kids products.
+ * KidsProductHome — Shared product home for ALL 6 kids products + Still Us.
  *
  * Replaces JagIMigProductHome, JagMedAndraProductHome, etc.
  * All product-specific values come from the ProductManifest.
@@ -9,6 +9,7 @@
  *  2. Resume pill (conditional): Deep Dusk card for active session
  *  3. Category tiles: single-column, full-width, tile-depth colors
  *     WITH ceramic glow, illustration from first card per category
+ *  4. Still Us only: intro session entry in hero zone
  */
 
 import { useMemo } from 'react';
