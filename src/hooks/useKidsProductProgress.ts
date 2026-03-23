@@ -5,9 +5,11 @@
  * - Applies 14-day expiry: completion markers disappear after 14 days
  * - Determines "next suggested" card and category
  * - Fetches active session for resume banner
+ * - Re-fetches on every navigation (location.key) to reflect latest state
  */
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
+import { useLocation } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import type { ProductManifest } from '@/types/product';
@@ -51,6 +53,7 @@ export interface KidsProductProgress {
 
 export function useKidsProductProgress(product: ProductManifest | undefined): KidsProductProgress {
   const { space } = useCoupleSpaceContext();
+  const location = useLocation();
   const [completedSessions, setCompletedSessions] = useState<{ card_id: string; ended_at: string }[]>([]);
   const [activeSession, setActiveSession] = useState<{
     sessionId: string;
@@ -62,6 +65,7 @@ export function useKidsProductProgress(product: ProductManifest | undefined): Ki
 
   const productId = product?.id;
 
+  // Re-fetch on navigation (location.key changes on every navigate())
   useEffect(() => {
     if (!space?.id || !productId) {
       setLoading(false);
@@ -116,7 +120,6 @@ export function useKidsProductProgress(product: ProductManifest | undefined): Ki
 
         if (!cancelled) {
           const completedSteps = new Set((completions || []).map(c => c.step_index));
-          // Find first incomplete step
           const { data: steps } = await supabase
             .from('couple_session_steps')
             .select('step_index')
@@ -136,7 +139,7 @@ export function useKidsProductProgress(product: ProductManifest | undefined): Ki
     });
 
     return () => { cancelled = true; };
-  }, [space?.id, productId]);
+  }, [space?.id, productId, location.key]);
 
   // Apply 14-day expiry
   const recentlyCompletedCardIds = useMemo(() => {
