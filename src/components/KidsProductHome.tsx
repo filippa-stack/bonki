@@ -597,7 +597,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
                   )}
                 </motion.button>
               </motion.div>
-            )
+            )}
             {/* Spacer — pushes content below hero face zone */}
             {!useSquareGrid && <div style={{ height: 'clamp(48px, 12vh, 100px)' }} />}
 
