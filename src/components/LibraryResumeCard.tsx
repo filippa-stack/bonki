@@ -72,6 +72,37 @@ export default function LibraryResumeCard({ activeTab, global, forceMock }: Libr
 
   useEffect(() => {
     if (devMock) return;
+
+    // Demo mode: read from localStorage
+    if (isDemoMode()) {
+      const demoSession = getMostRecentDemoSession();
+      if (demoSession) {
+        const product = getProductById(demoSession.productId);
+        if (product) {
+          const card = product.cards.find(c => c.id === demoSession.cardId);
+          if (card) {
+            const totalPrompts = card.sections?.reduce(
+              (sum, s) => sum + (s.prompts?.length ?? 0), 0
+            ) ?? 0;
+            const stepLabel = totalPrompts > 1
+              ? `Fråga ${demoSession.currentStepIndex + 1} av ${totalPrompts}`
+              : 'Frågor';
+            setResume({
+              productId: product.id,
+              productName: product.name,
+              cardTitle: card.title,
+              cardId: demoSession.cardId,
+              stepLabel: `Pausad vid ${stepLabel}`,
+              accentColor: product.id === 'still_us' ? DEEP_SAFFRON : SAFFRON_FLAME,
+            });
+            return;
+          }
+        }
+      }
+      setResume(null);
+      return;
+    }
+
     if (!space?.id) {
       setResume(null);
       return;
