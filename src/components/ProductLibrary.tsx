@@ -7,6 +7,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/sonner';
+import { isDemoMode } from '@/lib/demoMode';
 
 import LibraryResumeCard from '@/components/LibraryResumeCard';
 import watermarkMamma from '@/assets/watermark-mamma.png';
