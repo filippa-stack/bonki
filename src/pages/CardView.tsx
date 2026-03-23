@@ -546,17 +546,17 @@ export default function CardView() {
   // Reset note UI when prompt changes
   useEffect(() => {
     setKidsNoteExpanded(false);
+    setKidsNoteLocalText('');
+    kidsNoteInteractedRef.current = false;
   }, [localPromptIndex]);
 
-  // Sync saved note text from DB
+  // Sync saved note text from DB — only after loading completes for the NEW step
   useEffect(() => {
-    if (!kidsNoteSession.loading && kidsNoteSession.myReflection?.text) {
+    if (kidsNoteSession.loading) return;
+    if (kidsNoteSession.myReflection?.text) {
       setKidsNoteLocalText(kidsNoteSession.myReflection.text);
       setKidsNoteExpanded(true);
-    } else if (!kidsNoteSession.loading) {
-      setKidsNoteLocalText('');
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [kidsNoteSession.loading, kidsNoteStepIndex]);
 
 
