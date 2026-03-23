@@ -384,6 +384,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
   const tileLight = product.tileLight ?? bg;
   const isSU = product.slug === 'still-us';
   const isVardag = product.id === 'vardagskort';
+  const isSyskon = product.id === 'syskonkort';
   const useSquareGrid = true; // 2×2 grid for all products
 
   // ── Intro session completion state (Still Us only) ──
