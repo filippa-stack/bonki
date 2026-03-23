@@ -183,9 +183,11 @@ export default function CompletedSessionView({
     return `${month.charAt(0).toUpperCase() + month.slice(1)} ${year}`;
   };
 
+  const bgColor = product?.backgroundColor ?? 'var(--surface-base)';
+
   if (loading) {
     return (
-      <div className="min-h-screen" style={{ backgroundColor: 'var(--surface-base)' }}>
+      <div className="min-h-screen" style={{ backgroundColor: bgColor }}>
         <Header title={cardTitle} showBack backTo={isChildProduct && product && categoryId ? `/product/${product.slug}/portal/${categoryId}` : categoryId ? `/category/${categoryId}` : '/'} />
         <div className="px-6 pt-title-above pb-8">
           <div className="max-w-md mx-auto space-y-4">
@@ -200,7 +202,7 @@ export default function CompletedSessionView({
 
   if (!session) {
     return (
-      <div className="min-h-screen" style={{ backgroundColor: 'var(--surface-base)' }}>
+      <div className="min-h-screen" style={{ backgroundColor: bgColor }}>
         <Header title={cardTitle} showBack backTo={isChildProduct && product && categoryId ? `/product/${product.slug}/portal/${categoryId}` : categoryId ? `/category/${categoryId}` : '/'} />
         <div className="px-6 pt-title-above pb-8 text-center max-w-md mx-auto space-y-8">
           <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>Ingen tidigare session hittades.</p>
@@ -219,7 +221,7 @@ export default function CompletedSessionView({
   }).filter(g => g.partnerRef || g.myRef);
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: 'var(--surface-base)' }}>
+    <div className="min-h-screen" style={{ backgroundColor: bgColor }}>
       <Header title={cardTitle} showBack backTo={isChildProduct && product && categoryId ? `/product/${product.slug}/portal/${categoryId}` : categoryId ? `/category/${categoryId}` : '/'} />
 
       <div className="px-6 pb-8" style={{ paddingTop: '32px' }}>
