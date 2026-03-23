@@ -2000,6 +2000,9 @@ export default function CardView() {
       // Save any pending kids note before completing
       if (isKidsProduct && kidsNoteLocalText.trim()) {
         await kidsNoteSession.markReady(kidsNoteLocalText);
+        if (isDemoMode() && product) {
+          upsertDemoDiaryEntry({ productId: product.id, cardId: card.id, text: kidsNoteLocalText, mode: 'append' });
+        }
       }
       await handleCompleteStep();
     }
