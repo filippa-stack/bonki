@@ -5,13 +5,15 @@
  */
 
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { getProductById } from '@/data/products';
 import { KIDS_PRODUCT_IDS } from '@/hooks/useKidsProductProgress';
 import { buildDynamicSteps } from '@/components/StepProgressIndicator';
 import { useDevState } from '@/contexts/DevStateContext';
+import { isDemoMode } from '@/lib/demoMode';
+import { getMostRecentDemoSession } from '@/lib/demoSession';
 
 const LANTERN_GLOW = '#FDF6E3';
 const DRIFTWOOD = '#6B5E52';
@@ -55,6 +57,7 @@ interface LibraryResumeCardProps {
 
 export default function LibraryResumeCard({ activeTab, global, forceMock }: LibraryResumeCardProps) {
   const navigate = useNavigate();
+  const location = useLocation();
   const { space } = useCoupleSpaceContext();
   const [resume, setResume] = useState<ResumeData | null>(null);
   const devState = useDevState();
@@ -69,6 +72,37 @@ export default function LibraryResumeCard({ activeTab, global, forceMock }: Libr
 
   useEffect(() => {
     if (devMock) return;
+
+    // Demo mode: read from localStorage
+    if (isDemoMode()) {
+      const demoSession = getMostRecentDemoSession();
+      if (demoSession) {
+        const product = getProductById(demoSession.productId);
+        if (product) {
+          const card = product.cards.find(c => c.id === demoSession.cardId);
+          if (card) {
+            const totalPrompts = card.sections?.reduce(
+              (sum, s) => sum + (s.prompts?.length ?? 0), 0
+            ) ?? 0;
+            const stepLabel = totalPrompts > 1
+              ? `Fråga ${demoSession.currentStepIndex + 1} av ${totalPrompts}`
+              : 'Frågor';
+            setResume({
+              productId: product.id,
+              productName: product.name,
+              cardTitle: card.title,
+              cardId: demoSession.cardId,
+              stepLabel: `Pausad vid ${stepLabel}`,
+              accentColor: product.id === 'still_us' ? DEEP_SAFFRON : SAFFRON_FLAME,
+            });
+            return;
+          }
+        }
+      }
+      setResume(null);
+      return;
+    }
+
     if (!space?.id) {
       setResume(null);
       return;
@@ -171,7 +205,7 @@ export default function LibraryResumeCard({ activeTab, global, forceMock }: Libr
     })();
 
     return () => { cancelled = true; };
-  }, [space?.id, activeTab, global]);
+  }, [space?.id, activeTab, global, location.key]);
 
   const display = devMock || resume;
   if (!display) return null;
