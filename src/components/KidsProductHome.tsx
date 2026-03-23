@@ -547,53 +547,54 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
 
             {/* ── Still Us: Intro session — subtle pill CTA ── */}
             {isSU && (
-              <motion.button
-                variants={fadeUp}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => {
-                  localStorage.setItem('bonki-last-active-product', product.slug);
-                  navigate('/card/su-intro');
-                }}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '6px',
-                  alignSelf: 'center',
-                  marginTop: '20px',
-                  padding: '8px 22px',
-                  background: introCompleted
-                    ? 'rgba(253, 246, 227, 0.06)'
-                    : 'rgba(253, 246, 227, 0.08)',
-                  border: `1px solid ${introCompleted ? 'rgba(253, 246, 227, 0.15)' : SAFFRON_FLAME + '55'}`,
-                  borderRadius: '100px',
-                  cursor: 'pointer',
-                  opacity: introCompleted ? 0.5 : 1,
-                  boxShadow: introCompleted
-                    ? 'none'
-                    : `0 0 16px ${SAFFRON_FLAME}22, 0 0 32px ${SAFFRON_FLAME}11`,
-                  transition: 'all 0.3s ease',
-                }}
-              >
-                {introCompleted && (
-                  <span style={{ fontSize: '11px', color: SAFFRON_FLAME, lineHeight: 1 }}>✓</span>
-                )}
-                <span
+              <div style={{ display: 'flex', justifyContent: 'center', width: '100%', marginTop: '20px' }}>
+                <motion.button
+                  variants={fadeUp}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => {
+                    localStorage.setItem('bonki-last-active-product', product.slug);
+                    navigate('/card/su-intro');
+                  }}
                   style={{
-                    fontFamily: 'var(--font-serif)',
-                    fontSize: '13px',
-                    fontWeight: 500,
-                    color: LANTERN_GLOW,
-                    letterSpacing: '0.04em',
-                    whiteSpace: 'nowrap',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '6px',
+                    padding: '9px 24px',
+                    background: introCompleted
+                      ? 'rgba(253, 246, 227, 0.06)'
+                      : 'rgba(253, 246, 227, 0.08)',
+                    border: `1px solid ${introCompleted ? 'rgba(253, 246, 227, 0.15)' : SAFFRON_FLAME + '55'}`,
+                    borderRadius: '100px',
+                    cursor: 'pointer',
+                    opacity: introCompleted ? 0.5 : 1,
+                    boxShadow: introCompleted
+                      ? 'none'
+                      : `0 0 16px ${SAFFRON_FLAME}22, 0 0 32px ${SAFFRON_FLAME}11`,
+                    transition: 'all 0.3s ease',
+                    flexShrink: 0,
                   }}
                 >
-                  Ert första samtal
-                </span>
-                {!introCompleted && (
-                  <ChevronRight size={13} color={SAFFRON_FLAME} strokeWidth={2.5} />
-                )}
-              </motion.button>
+                  {introCompleted && (
+                    <span style={{ fontSize: '11px', color: SAFFRON_FLAME, lineHeight: 1 }}>✓</span>
+                  )}
+                  <span
+                    style={{
+                      fontFamily: 'var(--font-serif)',
+                      fontSize: '13px',
+                      fontWeight: 500,
+                      color: LANTERN_GLOW,
+                      letterSpacing: '0.04em',
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
+                    Ert första samtal
+                  </span>
+                  {!introCompleted && (
+                    <ChevronRight size={13} color={SAFFRON_FLAME} strokeWidth={2.5} />
+                  )}
+                </motion.button>
+              </div>
             )}
             {/* Spacer — pushes content below hero face zone */}
             {!useSquareGrid && <div style={{ height: 'clamp(48px, 12vh, 100px)' }} />}
