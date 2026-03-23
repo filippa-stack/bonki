@@ -902,7 +902,7 @@ export default function CardView() {
 
     // Resolve exercise for su-mock cards (su-mock-N → cardIndex N)
     const suMockMatch = cardId?.match(/^su-mock-(\d+)$/);
-    const gorExercise = suMockMatch ? getGorExercise(parseInt(suMockMatch[1], 10)) : null;
+    const gorExerciseSU = suMockMatch ? getGorExercise(parseInt(suMockMatch[1], 10)) : null;
 
     return (
       <motion.div
@@ -1042,7 +1042,7 @@ export default function CardView() {
           </motion.div>
 
           {/* Gör exercise — collapsible block */}
-          {gorExercise && (
+          {gorExerciseSU && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -1070,7 +1070,7 @@ export default function CardView() {
                   fontWeight: 600,
                   color: BARK,
                 }}>
-                  Gör: {gorExercise.title}
+                  Gör: {gorExerciseSU.title}
                 </span>
                 <span style={{
                   color: DRIFTWOOD,
@@ -1096,7 +1096,7 @@ export default function CardView() {
                     lineHeight: 1.6,
                     whiteSpace: 'pre-line',
                   }}>
-                    {gorExercise.instructionText}
+                    {gorExerciseSU.instructionText}
                   </p>
                 </div>
               )}
@@ -1178,6 +1178,10 @@ export default function CardView() {
     const EMBER_GLOW = '#F5E8CC';
     const categoryName = category?.title ?? 'kategorin';
     const homeDest = postCompletionNav.homeDest;
+
+    // Resolve Gör exercise for su-mock cards
+    const suMockMatchSU = cardId?.match(/^su-mock-(\d+)$/);
+    const gorExerciseSU = suMockMatchSU ? getGorExercise(parseInt(suMockMatchSU[1], 10)) : null;
 
     return (
       <motion.div
@@ -1270,6 +1274,69 @@ export default function CardView() {
           </motion.div>
 
           {/* Note: SimpleTakeaway already shows "Det ni skriver sparas i era samtal" */}
+
+          {/* Gör exercise — collapsible block (Still Us) */}
+          {gorExerciseSU && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.45, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              className="max-w-md mx-auto"
+              style={{ width: '100%', marginTop: '24px' }}
+            >
+              <button
+                onClick={() => setGorOpen(!gorOpen)}
+                style={{
+                  width: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  padding: '14px 16px',
+                  backgroundColor: 'hsla(38, 30%, 85%, 0.12)',
+                  borderRadius: gorOpen ? '12px 12px 0 0' : '12px',
+                  border: 'none',
+                  cursor: 'pointer',
+                  transition: 'border-radius 0.2s ease',
+                }}
+              >
+                <span style={{
+                  fontFamily: "'DM Serif Display', serif",
+                  fontSize: '15px',
+                  fontWeight: 600,
+                  color: DEEP_SAFFRON,
+                }}>
+                  Gör: {gorExerciseSU.title}
+                </span>
+                <span style={{
+                  color: DRIFTWOOD,
+                  fontSize: '18px',
+                  transform: gorOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                  transition: 'transform 0.2s ease',
+                  lineHeight: 1,
+                }}>
+                  ▾
+                </span>
+              </button>
+              {gorOpen && (
+                <div style={{
+                  padding: '16px',
+                  backgroundColor: 'hsla(38, 30%, 85%, 0.12)',
+                  borderRadius: '0 0 12px 12px',
+                  borderTop: `1px solid hsla(38, 30%, 70%, 0.15)`,
+                }}>
+                  <p style={{
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: '14px',
+                    color: DRIFTWOOD,
+                    lineHeight: 1.6,
+                    whiteSpace: 'pre-line',
+                  }}>
+                    {gorExerciseSU.instructionText}
+                  </p>
+                </div>
+              )}
+            </motion.div>
+          )}
 
           {/* 3–5. CTAs */}
           <motion.div
@@ -1932,7 +1999,7 @@ export default function CardView() {
       switch (currentStageKey) {
         case 'opening': return 'Vänd perspektivet →';
         case 'reflective': return 'Tänk om... →';
-        case 'scenario': return 'Gör något tillsammans →';
+        case 'scenario': return 'Avsluta →';
         default: return 'Vi är klara.';
       }
     };
