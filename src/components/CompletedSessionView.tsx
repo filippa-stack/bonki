@@ -292,11 +292,11 @@ export default function CompletedSessionView({
                           : partnerName}
                       </p>
                       <div style={{
-                        background: 'var(--surface-raised)',
-                        borderRadius: 'var(--product-button-radius)',
-                        boxShadow: 'var(--product-button-shadow)',
+                        background: 'rgba(255, 255, 255, 0.06)',
+                        borderRadius: '12px',
+                        border: '1px solid rgba(255, 255, 255, 0.08)',
                       }}>
-                        <p className="font-serif italic whitespace-pre-wrap" style={{ padding: '20px 24px', fontSize: '17px', lineHeight: 1.7, color: 'var(--text-primary)' }}>{group.partnerRef.text}</p>
+                        <p className="font-serif italic whitespace-pre-wrap" style={{ padding: '20px 24px', fontSize: '17px', lineHeight: 1.7, color: '#FDF6E3' }}>{group.partnerRef.text}</p>
                       </div>
                     </div>
                   )}
@@ -310,11 +310,11 @@ export default function CompletedSessionView({
                           : myName}
                       </p>
                       <div style={{
-                        background: 'var(--surface-raised)',
-                        borderRadius: 'var(--product-button-radius)',
-                        boxShadow: 'var(--product-button-shadow)',
+                        background: 'rgba(255, 255, 255, 0.06)',
+                        borderRadius: '12px',
+                        border: '1px solid rgba(255, 255, 255, 0.08)',
                       }}>
-                        <p className="font-serif italic whitespace-pre-wrap" style={{ padding: '20px 24px', fontSize: '17px', lineHeight: 1.7, color: 'var(--text-primary)' }}>{group.myRef.text}</p>
+                        <p className="font-serif italic whitespace-pre-wrap" style={{ padding: '20px 24px', fontSize: '17px', lineHeight: 1.7, color: '#FDF6E3' }}>{group.myRef.text}</p>
                       </div>
                     </div>
                   )}
