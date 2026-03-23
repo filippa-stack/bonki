@@ -31,6 +31,30 @@ export default function LibraryResumeBanner() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Demo mode: read from localStorage
+    if (isDemoMode()) {
+      const demoSession = getMostRecentDemoSession();
+      if (demoSession) {
+        const product = getProductById(demoSession.productId);
+        if (product) {
+          const card = product.cards.find(c => c.id === demoSession.cardId);
+          const category = product.categories.find(c => c.id === demoSession.categoryId);
+          if (card) {
+            setTarget({
+              productId: product.id,
+              productName: product.name,
+              cardId: demoSession.cardId,
+              cardTitle: card.title,
+              categoryTitle: category?.title ?? '',
+              sessionId: `demo-${demoSession.cardId}`,
+            });
+          }
+        }
+      }
+      setLoading(false);
+      return;
+    }
+
     if (!space?.id) {
       setLoading(false);
       return;
