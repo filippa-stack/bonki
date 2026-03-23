@@ -1938,6 +1938,21 @@ export default function CardView() {
       : product ? `/product/${product.slug}` : '/'
   );
 
+  // Smart exit: auto-complete the step if user exits on the last prompt of the last step
+  const handleSmartExit = async () => {
+    const displayIndex = localStepIndex ?? serverStepIndex;
+    const isLastStep = displayIndex >= effectiveSteps.length - 1;
+    const section = card?.sections?.find((s: any) => s.type === effectiveSteps[displayIndex]);
+    const prompts = section?.prompts ?? [];
+    const totalPrompts = prompts.length || 1;
+    const isLastPrompt = localPromptIndex >= totalPrompts - 1;
+
+    if (isLastStep && isLastPrompt && cardViewMode === 'live') {
+      await handleCompleteStep();
+    }
+    navigate(exitBackTo);
+  };
+
   const handleSessionExit = () => {
     if (isExiting) return;
     setIsExiting(true);
@@ -2009,7 +2024,7 @@ export default function CardView() {
           onPause={() => navigate('/')}
           showExitDialog={showLeaveConfirm}
           onExitDialogClose={() => setShowLeaveConfirm(false)}
-          onExitConfirm={() => navigate(exitBackTo)}
+          onExitConfirm={() => handleSmartExit()}
           topSlot={
             <div style={{
               width: '100%',
@@ -2499,7 +2514,7 @@ export default function CardView() {
                 fontSize: '18px',
                 color: BARK,
               }}>
-                Vill du avsluta samtalet?
+                Pausa samtalet?
               </AlertDialogTitle>
             </AlertDialogHeader>
             <AlertDialogFooter style={{ marginTop: '16px' }}>
@@ -2510,7 +2525,7 @@ export default function CardView() {
                 Nej, fortsätt
               </AlertDialogCancel>
               <AlertDialogAction
-                onClick={() => navigate(exitBackTo)}
+                onClick={() => handleSmartExit()}
                 style={{
                   backgroundColor: BARK,
                   color: PARCHMENT,
