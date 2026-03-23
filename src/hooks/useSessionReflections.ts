@@ -26,9 +26,9 @@ interface UseSessionReflectionsReturn {
   setText: (text: string) => void;
   /**
    * Transition draft → ready.
-   * In the single-writer model this is the terminal action for a step.
+   * Accepts an explicit text override to avoid stale-ref issues.
    */
-  markReady: () => Promise<void>;
+  markReady: (explicitText?: string) => Promise<void>;
 }
 
 const AUTOSAVE_DELAY = 800;
@@ -171,13 +171,24 @@ export function useSessionReflections(
   }, [user, stepIndex, devState]);
 
   // ─── 5. Mark ready: draft → ready (terminal action) ───
-  const markReady = useCallback(async () => {
+  const markReady = useCallback(async (explicitText?: string) => {
     if (!user) return;
 
-    // Use ref to always get the latest text, avoiding stale closure issues
-    const currentText = localTextRef.current;
+    // Cancel any pending autosave to prevent draft overwriting ready state
+    if (pendingSave.current) {
+      clearTimeout(pendingSave.current);
+      pendingSave.current = null;
+    }
+
+    // Use explicit text if provided, otherwise fall back to ref
+    const currentText = explicitText ?? localTextRef.current;
 
     if (!devState && sessionIdRef.current) {
+      // Skip DB write if text is empty — no point saving an empty reflection
+      if (!currentText.trim()) {
+        return;
+      }
+
       const { error } = await supabase
         .from('step_reflections')
         .upsert(

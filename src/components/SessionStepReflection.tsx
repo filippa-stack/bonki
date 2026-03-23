@@ -110,7 +110,8 @@ export default function SessionStepReflection({
   const handleAdvance = async () => {
     setSubmitting(true);
     try {
-      await markReady();
+      // Pass localText explicitly to avoid stale-ref issues
+      await markReady(localText);
       await onLocked?.();
     } finally {
       setSubmitting(false);
