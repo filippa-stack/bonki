@@ -547,7 +547,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
 
 
             {/* ── Still Us: Intro session — pill CTA (outside title fadeUp to avoid overflow) ── */}
-            {isSU && (
+            {isSU && !introCompleted && (
               <motion.div
                 variants={fadeUp}
                 style={{ display: 'flex', justifyContent: 'center', width: '100%', marginTop: '24px', marginBottom: '8px' }}
@@ -564,22 +564,16 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
                     justifyContent: 'center',
                     gap: '7px',
                     padding: '10px 28px',
-                    background: introCompleted
-                      ? 'rgba(253, 246, 227, 0.06)'
-                      : 'rgba(253, 246, 227, 0.1)',
-                    border: `1.5px solid ${introCompleted ? 'rgba(253, 246, 227, 0.18)' : SAFFRON_FLAME + '77'}`,
+                    background: 'rgba(30, 28, 24, 0.55)',
+                    backdropFilter: 'blur(12px)',
+                    WebkitBackdropFilter: 'blur(12px)',
+                    border: `1.5px solid ${SAFFRON_FLAME}66`,
                     borderRadius: '100px',
                     cursor: 'pointer',
-                    opacity: introCompleted ? 0.5 : 1,
-                    boxShadow: introCompleted
-                      ? 'none'
-                      : `0 0 20px ${SAFFRON_FLAME}33, 0 0 40px ${SAFFRON_FLAME}15`,
+                    boxShadow: `0 0 20px ${SAFFRON_FLAME}25, inset 0 1px 0 rgba(255,255,255,0.06)`,
                     transition: 'all 0.3s ease',
                   }}
                 >
-                  {introCompleted && (
-                    <span style={{ fontSize: '12px', color: SAFFRON_FLAME, lineHeight: 1 }}>✓</span>
-                  )}
                   <span
                     style={{
                       fontFamily: 'var(--font-serif)',
@@ -589,11 +583,9 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
                       letterSpacing: '0.03em',
                     }}
                   >
-                    Ert första samtal
+                    Börja här
                   </span>
-                  {!introCompleted && (
-                    <ChevronRight size={14} color={SAFFRON_FLAME} strokeWidth={2.5} />
-                  )}
+                  <ChevronRight size={14} color={SAFFRON_FLAME} strokeWidth={2.5} />
                 </motion.button>
               </motion.div>
             )}
