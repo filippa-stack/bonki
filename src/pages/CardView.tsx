@@ -542,16 +542,21 @@ export default function CardView() {
   const [kidsNoteLocalText, setKidsNoteLocalText] = useState('');
   const kidsNoteInteractedRef = useRef(false);
   const kidsNoteTextareaRef = useRef<HTMLTextAreaElement>(null);
+  const kidsNoteSuppressSyncRef = useRef(false);
 
   // Reset note UI when prompt changes
   useEffect(() => {
+    kidsNoteSuppressSyncRef.current = true;
     setKidsNoteExpanded(false);
     setKidsNoteLocalText('');
     kidsNoteInteractedRef.current = false;
+    const timer = setTimeout(() => { kidsNoteSuppressSyncRef.current = false; }, 1500);
+    return () => clearTimeout(timer);
   }, [localPromptIndex]);
 
   // Sync saved note text from DB — only after loading completes for the NEW step
   useEffect(() => {
+    if (kidsNoteSuppressSyncRef.current) return;
     if (kidsNoteSession.loading) return;
     if (kidsNoteSession.myReflection?.text) {
       setKidsNoteLocalText(kidsNoteSession.myReflection.text);
