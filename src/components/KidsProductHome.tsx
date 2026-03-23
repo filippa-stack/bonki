@@ -556,7 +556,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
                   whileTap={{ scale: 0.96 }}
                   onClick={() => {
                     localStorage.setItem('bonki-last-active-product', product.slug);
-                    navigate('/product/still-us/portal/su-mock-vardagen');
+                    navigate('/card/su-intro');
                   }}
                   style={{
                     display: 'inline-flex',
@@ -594,9 +594,10 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
             {!useSquareGrid && <div style={{ height: 'clamp(48px, 12vh, 100px)' }} />}
 
             {/* ═══ Resume Pill (conditional) ═══ */}
-            {!progress.loading && progress.activeSession && (() => {
+            {!progress.loading && progress.activeSession && progress.activeSession.cardId !== 'su-intro' && (() => {
               const card = product.cards.find(c => c.id === progress.activeSession!.cardId);
               if (!card) return null;
+              const accentColor = product.tileLight ?? DEEP_SAFFRON;
               return (
                 <motion.button
                   initial={{ opacity: 0, y: 10 }}
@@ -608,36 +609,56 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
                     alignItems: 'center',
                     justifyContent: 'space-between',
                     width: '100%',
-                    padding: '16px',
-                    background: DEEP_DUSK,
-                    borderRadius: '12px',
-                    border: 'none',
-                    borderLeft: `3px solid ${product.tileLight ?? DEEP_SAFFRON}`,
+                    padding: '16px 18px',
+                    background: 'rgba(18, 16, 12, 0.55)',
+                    backdropFilter: 'blur(22px)',
+                    WebkitBackdropFilter: 'blur(22px)',
+                    borderRadius: '16px',
+                    border: `1px solid rgba(255, 255, 255, 0.06)`,
+                    borderLeft: `3px solid ${accentColor}`,
                     cursor: 'pointer',
                     textAlign: 'left',
+                    boxShadow: `0 4px 24px rgba(0,0,0,0.3), 0 0 16px ${accentColor}15, inset 0 1px 0 rgba(255,255,255,0.05)`,
                   }}
                 >
-                  <span
-                    style={{
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <p style={{
+                      fontFamily: 'var(--font-sans)',
+                      fontSize: '9px',
+                      fontWeight: 600,
+                      letterSpacing: '0.1em',
+                      textTransform: 'uppercase',
+                      color: DRIFTWOOD,
+                      marginBottom: '3px',
+                    }}>
+                      Fortsätt där ni slutade
+                    </p>
+                    <p style={{
                       fontFamily: 'var(--font-display)',
                       fontSize: '15px',
                       fontWeight: 600,
                       color: LANTERN_GLOW,
                       lineHeight: 1.3,
-                    }}
-                  >
-                    {card.title}
-                  </span>
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap',
+                    }}>
+                      {card.title}
+                    </p>
+                  </div>
                   <span
                     style={{
                       fontFamily: 'var(--font-sans)',
-                      fontSize: '14px',
+                      fontSize: '10px',
+                      fontWeight: 700,
+                      letterSpacing: '0.04em',
                       color: DEEP_SAFFRON,
+                      opacity: 0.7,
                       flexShrink: 0,
                       marginLeft: '12px',
                     }}
                   >
-                    Fortsätt
+                    Fortsätt →
                   </span>
                 </motion.button>
               );
