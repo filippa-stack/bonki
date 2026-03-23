@@ -251,27 +251,17 @@ export default function CardView() {
   const [showFeedback, setShowFeedback] = useState(false);
   const [gorOpen, setGorOpen] = useState(false);
 
-  useEffect(() => {
-    if (!showCompletion || feedbackDismissed || !isStillUs) return;
-    const timer = setTimeout(() => setShowFeedback(true), 2000);
-    return () => clearTimeout(timer);
-  }, [showCompletion, feedbackDismissed, isStillUs]);
+  // Feedback disabled — removed per product decision
 
   const handleFeedbackDismiss = useCallback(() => {
     setShowFeedback(false);
     setFeedbackDismissed(true);
   }, []);
 
-  // Intercept navigation during completion: show feedback first if not yet seen (Still Us only)
+  // Navigation — feedback intercept removed
   const navigateWithFeedback = useCallback((destination: string) => {
-    if (isStillUs && showCompletion && !feedbackDismissed && !showFeedback) {
-      setShowFeedback(true);
-      // Store destination so we navigate after dismiss
-      pendingNavRef.current = destination;
-      return;
-    }
     navigate(destination);
-  }, [isStillUs, showCompletion, feedbackDismissed, showFeedback, navigate]);
+  }, [navigate]);
 
   const pendingNavRef = useRef<string | null>(null);
 
@@ -1441,14 +1431,6 @@ export default function CardView() {
             </motion.div>
           </motion.div>
 
-          {activeSessionId && space && (
-            <FeedbackSheet
-              sessionId={activeSessionId}
-              coupleSpaceId={space.id}
-              show={showFeedback}
-              onDismiss={handleFeedbackDismissWithNav}
-            />
-          )}
         </div>
       </motion.div>
     );
