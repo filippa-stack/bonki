@@ -20,6 +20,7 @@ import { useKidsProductProgress, type KidsProductProgress } from '@/hooks/useKid
 import { useCardImage } from '@/hooks/useCardImage';
 import { supabase } from '@/integrations/supabase/client';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
+import { isDemoCardCompleted } from '@/lib/demoSession';
 import ProductHomeBackButton from '@/components/ProductHomeBackButton';
 import { ChevronRight, Play } from 'lucide-react';
 import {
