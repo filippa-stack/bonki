@@ -384,25 +384,16 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
 
   // ── Intro session completion state (Still Us only) ──
   const [introCompleted, setIntroCompleted] = useState(() => {
-    // Check demo mode first
-    if (isSU) {
-      try {
-        const { isDemoCardCompleted } = require('@/lib/demoSession');
-        if (isDemoCardCompleted('still_us', 'su-intro')) return true;
-      } catch { /* ignore */ }
-    }
+    if (isSU && isDemoCardCompleted('still_us', 'su-intro')) return true;
     return false;
   });
   useEffect(() => {
     if (!isSU) return;
     // Check demo completed
-    (async () => {
-      const { isDemoCardCompleted } = await import('@/lib/demoSession');
-      if (isDemoCardCompleted('still_us', 'su-intro')) {
-        setIntroCompleted(true);
-        return;
-      }
-    })();
+    if (isDemoCardCompleted('still_us', 'su-intro')) {
+      setIntroCompleted(true);
+      return;
+    }
     // Check DB
     if (!space?.id) return;
     let cancelled = false;
