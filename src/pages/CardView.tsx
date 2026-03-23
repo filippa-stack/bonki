@@ -2279,7 +2279,7 @@ export default function CardView() {
       } else {
         setLocalPromptIndex(localPromptIndex + 1);
         // Track step progress in demo mode
-        if (isDemoMode() && product) {
+        if (isLocalPreviewMode && product) {
           updateDemoSessionStep(product.id, card.id, localPromptIndex + 1);
         }
       }
