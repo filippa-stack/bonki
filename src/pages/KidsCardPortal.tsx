@@ -8,8 +8,8 @@
  * Route: /product/:productSlug/portal/:categoryId
  */
 
-import { useState, useMemo, useCallback, useRef } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useState, useMemo, useCallback, useRef, useEffect } from 'react';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence, type PanInfo } from 'framer-motion';
 import { ChevronLeft } from 'lucide-react';
 import { allProducts } from '@/data/products';
@@ -54,6 +54,7 @@ const SWIPE_THRESHOLD = 50;
 export default function KidsCardPortal() {
   const { productSlug, categoryId } = useParams<{ productSlug: string; categoryId: string }>();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
   // Resolve product + category
   const product = allProducts.find(p => p.slug === productSlug);
@@ -86,10 +87,18 @@ export default function KidsCardPortal() {
     return [...uncompleted, ...completed];
   }, [allCategoryCards, completedSet]);
 
-  // Always start at the first card (which is now the first uncompleted)
-  const initialCardIndex = 0;
+  const targetCardId = searchParams.get('card');
+  const initialCardIndex = useMemo(() => {
+    if (!targetCardId) return 0;
+    const targetIndex = categoryCards.findIndex((candidate) => candidate.id === targetCardId);
+    return targetIndex >= 0 ? targetIndex : 0;
+  }, [categoryCards, targetCardId]);
 
-  const [currentIndex, setCurrentIndex] = useState(initialCardIndex);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  useEffect(() => {
+    setCurrentIndex(initialCardIndex);
+  }, [initialCardIndex, targetCardId, categoryId]);
+
   const [direction, setDirection] = useState<1 | -1>(1);
   const [browseOpen, setBrowseOpen] = useState(false);
   const card = categoryCards[currentIndex];

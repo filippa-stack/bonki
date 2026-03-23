@@ -59,7 +59,7 @@ export default function ProductHome() {
             const freeCard = product.cards.find(c => c.id === product.freeCardId);
             const catId = freeCard?.categoryId;
             if (catId) {
-              navigate(`/product/${product.slug}/portal/${catId}`);
+              navigate(`/product/${product.slug}/portal/${catId}?card=${product.freeCardId}`);
             } else {
               navigate(`/card/${product.freeCardId}`);
             }
