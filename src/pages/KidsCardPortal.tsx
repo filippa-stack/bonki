@@ -194,6 +194,13 @@ export default function KidsCardPortal() {
     exit: (d: number) => ({ x: d > 0 ? -120 : 120, opacity: 0, scale: 0.92, y: 0 }),
   };
 
+  // Show stable loading screen until progress data is ready (prevents reorder glitch)
+  if (progress.loading) {
+    return (
+      <div style={{ height: '100vh', background: product?.backgroundColor ?? MIDNIGHT_INK }} />
+    );
+  }
+
   if (!product || !category || !card) {
     return (
       <div style={{ minHeight: '100vh', background: MIDNIGHT_INK, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
