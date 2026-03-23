@@ -15,6 +15,7 @@ import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import type { ProductManifest } from '@/types/product';
 import { isDemoMode } from '@/lib/demoMode';
 import { getDemoSessionForProduct } from '@/lib/demoSession';
+import { useDevState } from '@/contexts/DevStateContext';
 
 const FOURTEEN_DAYS_MS = 14 * 24 * 60 * 60 * 1000;
 
@@ -56,6 +57,7 @@ export interface KidsProductProgress {
 export function useKidsProductProgress(product: ProductManifest | undefined): KidsProductProgress {
   const { space } = useCoupleSpaceContext();
   const location = useLocation();
+  const devState = useDevState();
   const [completedSessions, setCompletedSessions] = useState<{ card_id: string; ended_at: string }[]>([]);
   const [activeSession, setActiveSession] = useState<{
     sessionId: string;
@@ -64,13 +66,14 @@ export function useKidsProductProgress(product: ProductManifest | undefined): Ki
   } | null>(null);
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [loading, setLoading] = useState(true);
+  const isLocalPreview = isDemoMode() || !!devState;
 
   const productId = product?.id;
 
   // Re-fetch on navigation (location.key changes on every navigate())
   useEffect(() => {
-    // Demo mode: read from localStorage instead of DB
-    if (isDemoMode()) {
+    // Local preview mode: read from localStorage instead of DB
+    if (isLocalPreview) {
       const demoSession = productId ? getDemoSessionForProduct(productId) : null;
       if (demoSession) {
         setActiveSession({
