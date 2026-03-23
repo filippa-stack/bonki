@@ -852,7 +852,7 @@ export default function CardView() {
       secondaryAccent: 'hsl(41, 78%, 48%)',
       backgroundColor: '#FFFDF8',
       pronounMode: 'ni' as const,
-      freeCardId: stillUsFreeCardId,
+      freeCardId: 'su-intro',
       categories: [],
       cards: [],
     };
