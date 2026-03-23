@@ -35,13 +35,32 @@ export function useProductTheme(
       root.style.setProperty('--product-bg', bgColor);
       // Kids product enhancements
       if (pronounMode === 'du') {
-        // E: Warmer question text color derived from accent
         const hue = p.split(',')[0]?.trim() ?? '215';
-        root.style.setProperty('--kids-question-color', `hsl(${hue}, 35%, 22%)`);
-        // C: Badge accent
-        root.style.setProperty('--kids-counter-bg', `hsla(${p}, 0.09)`);
-        root.style.setProperty('--kids-counter-color', `hsla(${p}, 0.70)`);
-        root.style.setProperty('--kids-counter-border', `hsla(${p}, 0.15)`);
+
+        // Detect dark backgrounds — use light question text for readability
+        const isDarkBg = (() => {
+          try {
+            const temp = document.createElement('div');
+            temp.style.color = bgColor!;
+            document.body.appendChild(temp);
+            const rgb = getComputedStyle(temp).color;
+            document.body.removeChild(temp);
+            const [r, g, b] = rgb.match(/\d+/g)?.map(Number) ?? [0, 0, 0];
+            const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+            return luminance < 0.35;
+          } catch {
+            return false;
+          }
+        })();
+
+        root.style.setProperty(
+          '--kids-question-color',
+          isDarkBg ? `hsl(${hue}, 20%, 88%)` : `hsl(${hue}, 35%, 22%)`
+        );
+        // Badge accent — adapt for dark backgrounds
+        root.style.setProperty('--kids-counter-bg', `hsla(${p}, ${isDarkBg ? '0.15' : '0.09'})`);
+        root.style.setProperty('--kids-counter-color', `hsla(${p}, ${isDarkBg ? '0.85' : '0.70'})`);
+        root.style.setProperty('--kids-counter-border', `hsla(${p}, ${isDarkBg ? '0.25' : '0.15'})`);
       }
     }
 
