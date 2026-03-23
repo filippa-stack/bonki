@@ -545,11 +545,14 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
                 {product.tagline}
               </span>
 
-            {/* ── Still Us: Intro session — subtle pill CTA ── */}
+
+            {/* ── Still Us: Intro session — pill CTA (outside title fadeUp to avoid overflow) ── */}
             {isSU && (
-              <div style={{ display: 'flex', justifyContent: 'center', width: '100%', marginTop: '20px' }}>
+              <motion.div
+                variants={fadeUp}
+                style={{ display: 'flex', justifyContent: 'center', width: '100%', marginTop: '24px', marginBottom: '8px' }}
+              >
                 <motion.button
-                  variants={fadeUp}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => {
                     localStorage.setItem('bonki-last-active-product', product.slug);
@@ -559,42 +562,40 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
                     display: 'inline-flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    gap: '6px',
-                    padding: '9px 24px',
+                    gap: '7px',
+                    padding: '10px 28px',
                     background: introCompleted
                       ? 'rgba(253, 246, 227, 0.06)'
-                      : 'rgba(253, 246, 227, 0.08)',
-                    border: `1px solid ${introCompleted ? 'rgba(253, 246, 227, 0.15)' : SAFFRON_FLAME + '55'}`,
+                      : 'rgba(253, 246, 227, 0.1)',
+                    border: `1.5px solid ${introCompleted ? 'rgba(253, 246, 227, 0.18)' : SAFFRON_FLAME + '77'}`,
                     borderRadius: '100px',
                     cursor: 'pointer',
                     opacity: introCompleted ? 0.5 : 1,
                     boxShadow: introCompleted
                       ? 'none'
-                      : `0 0 16px ${SAFFRON_FLAME}22, 0 0 32px ${SAFFRON_FLAME}11`,
+                      : `0 0 20px ${SAFFRON_FLAME}33, 0 0 40px ${SAFFRON_FLAME}15`,
                     transition: 'all 0.3s ease',
-                    flexShrink: 0,
                   }}
                 >
                   {introCompleted && (
-                    <span style={{ fontSize: '11px', color: SAFFRON_FLAME, lineHeight: 1 }}>✓</span>
+                    <span style={{ fontSize: '12px', color: SAFFRON_FLAME, lineHeight: 1 }}>✓</span>
                   )}
                   <span
                     style={{
                       fontFamily: 'var(--font-serif)',
-                      fontSize: '13px',
+                      fontSize: '14px',
                       fontWeight: 500,
                       color: LANTERN_GLOW,
-                      letterSpacing: '0.04em',
-                      whiteSpace: 'nowrap',
+                      letterSpacing: '0.03em',
                     }}
                   >
                     Ert första samtal
                   </span>
                   {!introCompleted && (
-                    <ChevronRight size={13} color={SAFFRON_FLAME} strokeWidth={2.5} />
+                    <ChevronRight size={14} color={SAFFRON_FLAME} strokeWidth={2.5} />
                   )}
                 </motion.button>
-              </div>
+              </motion.div>
             )}
             {/* Spacer — pushes content below hero face zone */}
             {!useSquareGrid && <div style={{ height: 'clamp(48px, 12vh, 100px)' }} />}
