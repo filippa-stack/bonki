@@ -434,14 +434,9 @@ export default function CardView() {
   // ─── Session start screen — ritual gate before first question ───
   // showStartScreen is a pure UX gate, decoupled from session state.
   // Set true on mount for live mode; only cleared by explicit user tap.
-  const [showStartScreen, setShowStartScreen] = useState(() => {
-    if (isResumed || isFromArchive) return false;
-    if (devState === 'completed') return false;
-    // Kids products: portal IS the start screen — skip directly to first question
-    if (isKidsProduct) return false;
-    // Always show start screen when entering a card in live mode
-    return true;
-  });
+  // Start screen removed — the portal page already serves as the intro gate.
+  // All products now go directly to the first question.
+  const [showStartScreen, setShowStartScreen] = useState(false);
 
   const hasStarted = !showStartScreen;
 
