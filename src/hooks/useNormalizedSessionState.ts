@@ -86,9 +86,12 @@ export function useNormalizedSessionState(): NormalizedSessionState {
 
   // Debounced refetch helper — coalesces bursts into a single RPC call
   const debouncedRefetch = useCallback(() => {
+    if (Date.now() < suppressUntilRef.current) return;
     if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => {
-      if (mountedRef.current) fetchState();
+      if (mountedRef.current && Date.now() >= suppressUntilRef.current) {
+        fetchState();
+      }
     }, 300);
   }, [fetchState]);
 
