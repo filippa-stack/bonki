@@ -1939,7 +1939,7 @@ export default function CardView() {
   );
 
   // Smart exit: auto-complete the step if user exits on the last prompt of the last step
-  const handleSmartExit = useCallback(async () => {
+  const handleSmartExit = async () => {
     const displayIndex = localStepIndex ?? serverStepIndex;
     const isLastStep = displayIndex >= effectiveSteps.length - 1;
     const section = card?.sections?.find((s: any) => s.type === effectiveSteps[displayIndex]);
@@ -1951,7 +1951,7 @@ export default function CardView() {
       await handleCompleteStep();
     }
     navigate(exitBackTo);
-  }, [localStepIndex, serverStepIndex, effectiveSteps, card, localPromptIndex, cardViewMode, handleCompleteStep, navigate, exitBackTo]);
+  };
 
   const handleSessionExit = () => {
     if (isExiting) return;
