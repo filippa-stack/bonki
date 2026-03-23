@@ -464,11 +464,15 @@ export default function CardView() {
   // ─── Sub-prompt index within current stage ───
   const [localPromptIndex, setLocalPromptIndex] = useState(0);
 
-  // Reset local override whenever the server advances
+  // Reset local override only when the server moves FORWARD
   const serverStepIndex = normalizedSession.currentStepIndex;
+  const prevServerStepRef = useRef(serverStepIndex);
   useEffect(() => {
-    setLocalStepIndex(null);
-    setLocalPromptIndex(0);
+    if (serverStepIndex > prevServerStepRef.current) {
+      setLocalStepIndex(null);
+      setLocalPromptIndex(0);
+    }
+    prevServerStepRef.current = serverStepIndex;
   }, [serverStepIndex]);
 
   // ─── Session start screen — ritual gate before first question ───
