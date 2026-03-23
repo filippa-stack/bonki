@@ -2995,6 +2995,12 @@ export default function CardView() {
                           }
                         }
                       }}
+                      onNoteCapture={(text) => {
+                        if (isLocalPreviewMode && card) {
+                          const pid = product?.id ?? 'still_us';
+                          upsertDemoDiaryEntry({ productId: pid, cardId: card.id, text, mode: 'append' });
+                        }
+                      }}
                     />
                     {!isKidsProduct && (
                       <p
