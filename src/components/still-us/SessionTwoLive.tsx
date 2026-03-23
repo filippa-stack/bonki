@@ -168,6 +168,7 @@ export default function SessionTwoLive({
           productId: 'still_us',
           cardId: slug,
           text,
+          entryKey: stepId,
           mode: 'append',
         });
       }

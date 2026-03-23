@@ -2,6 +2,7 @@ interface DemoDiaryEntry {
   cardId: string;
   text: string;
   date: string;
+  entryKey?: string;
   type: 'reflection';
 }
 
@@ -9,6 +10,7 @@ interface UpsertDemoDiaryEntryParams {
   productId: string;
   cardId: string;
   text: string;
+  entryKey?: string;
   mode?: 'replace' | 'append';
 }
 
@@ -35,6 +37,7 @@ export function upsertDemoDiaryEntry({
   productId,
   cardId,
   text,
+  entryKey,
   mode = 'replace',
 }: UpsertDemoDiaryEntryParams): void {
   const nextText = text.trim();
@@ -43,23 +46,52 @@ export function upsertDemoDiaryEntry({
   try {
     const key = `bonki-demo-diary-${productId}`;
     const existing = JSON.parse(localStorage.getItem(key) || '[]') as DemoDiaryEntry[];
-    const idx = existing.findIndex((entry) => entry.cardId === cardId);
-    const previous = idx >= 0 ? existing[idx] : null;
-    const mergedText = mode === 'append'
-      ? mergeBlocks(previous?.text ?? '', nextText)
-      : nextText;
 
     const entry: DemoDiaryEntry = {
       cardId,
-      text: mergedText,
+      text: nextText,
       date: new Date().toISOString(),
+      entryKey,
       type: 'reflection',
     };
 
-    if (idx >= 0) {
-      existing[idx] = entry;
+    const keyMatchIndex = entryKey
+      ? existing.findIndex((item) => item.cardId === cardId && item.entryKey === entryKey)
+      : -1;
+
+    if (mode === 'append') {
+      if (keyMatchIndex >= 0) {
+        const previous = existing[keyMatchIndex];
+        existing[keyMatchIndex] = {
+          ...previous,
+          text: mergeBlocks(previous.text, nextText),
+          date: entry.date,
+        };
+      } else {
+        const duplicateIndex = existing.findIndex(
+          (item) => item.cardId === cardId && item.text.trim() === nextText
+        );
+
+        if (duplicateIndex >= 0) {
+          existing[duplicateIndex] = {
+            ...existing[duplicateIndex],
+            date: entry.date,
+            entryKey: existing[duplicateIndex].entryKey ?? entryKey,
+          };
+        } else {
+          existing.unshift(entry);
+        }
+      }
     } else {
-      existing.unshift(entry);
+      const replaceIndex = keyMatchIndex >= 0
+        ? keyMatchIndex
+        : existing.findIndex((item) => item.cardId === cardId);
+
+      if (replaceIndex >= 0) {
+        existing[replaceIndex] = entry;
+      } else {
+        existing.unshift(entry);
+      }
     }
 
     localStorage.setItem(key, JSON.stringify(existing));
