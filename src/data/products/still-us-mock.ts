@@ -120,14 +120,32 @@ const introCard: Card = {
   categoryId: '__intro__',        // virtual category, not in grid
   sections: [
     {
-      id: 'su-intro-primary',
+      id: 'su-intro-opening',
       type: 'opening',
-      title: 'Frågor',
+      title: 'Öppna',
       content: '',
       prompts: [
-        'Vad fick er att vilja prova det här?',
-        'Hur känns det just nu — att sitta här tillsammans?',
-        'Vad hoppas ni att det här kan ge er?',
+        'Finns det något din partner gör — kanske utan att tänka på det — som alltid får dig att må lite bättre?',
+        'När kände du dig senast glad att det är just den här personen som sitter bredvid dig?',
+      ],
+    },
+    {
+      id: 'su-intro-reflective',
+      type: 'reflective',
+      title: 'Fördjupa',
+      content: '',
+      prompts: [
+        'Finns det något du önskar att din partner visste om dig just nu — utan att du behövt säga det?',
+        'Hur ofta pratar ni om er på det här sättet?',
+      ],
+    },
+    {
+      id: 'su-intro-scenario',
+      type: 'scenario',
+      title: 'Framåt',
+      content: '',
+      prompts: [
+        'Vad skulle det betyda för er om ni hade de här samtalen regelbundet?',
       ],
     },
   ],
