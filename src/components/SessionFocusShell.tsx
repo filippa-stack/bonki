@@ -197,7 +197,7 @@ export default function SessionFocusShell({
                 color: BARK,
                 textAlign: 'center',
               }}>
-                Vill ni avsluta?
+                Pausa samtalet?
               </p>
 
               <button
