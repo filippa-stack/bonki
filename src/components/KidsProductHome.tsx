@@ -21,7 +21,7 @@ import { useCardImage } from '@/hooks/useCardImage';
 import { supabase } from '@/integrations/supabase/client';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import ProductHomeBackButton from '@/components/ProductHomeBackButton';
-import { ChevronDown } from 'lucide-react';
+import { ChevronRight, ChevronLeft } from 'lucide-react';
 import {
   MIDNIGHT_INK,
   DEEP_DUSK,
@@ -577,7 +577,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
 
                 {/* Left chevron */}
                 {!introCompleted && (
-                  <ChevronDown size={12} color={SAFFRON_FLAME} strokeWidth={2} style={{ opacity: 0.7 }} />
+                  <ChevronRight size={12} color={SAFFRON_FLAME} strokeWidth={2} style={{ opacity: 0.7 }} />
                 )}
                 {introCompleted && (
                   <span style={{ fontSize: '10px', color: SAFFRON_FLAME, lineHeight: 1 }}>✓</span>
@@ -600,7 +600,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
 
                 {/* Right chevron */}
                 {!introCompleted && (
-                  <ChevronDown size={12} color={SAFFRON_FLAME} strokeWidth={2} style={{ opacity: 0.7 }} />
+                  <ChevronLeft size={12} color={SAFFRON_FLAME} strokeWidth={2} style={{ opacity: 0.7 }} />
                 )}
 
                 {/* Right line */}
