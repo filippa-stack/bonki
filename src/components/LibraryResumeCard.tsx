@@ -205,7 +205,7 @@ export default function LibraryResumeCard({ activeTab, global, forceMock }: Libr
     })();
 
     return () => { cancelled = true; };
-  }, [space?.id, activeTab, global]);
+  }, [space?.id, activeTab, global, location.key]);
 
   const display = devMock || resume;
   if (!display) return null;
