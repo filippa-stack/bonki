@@ -211,16 +211,7 @@ export default function CardView() {
   const { recordVisit } = useCardVisit();
   useEffect(() => {
     if (cardId) recordVisit(cardId);
-    // In local preview modes, persist an active session to localStorage for resume banners
-    if (cardId && isLocalPreviewMode && product && card) {
-      saveDemoSession({
-        productId: product.id,
-        cardId,
-        categoryId: card.categoryId ?? '',
-        currentStepIndex: currentStepIndex,
-      });
-    }
-  }, [cardId, recordVisit, isLocalPreviewMode, product, card, currentStepIndex]);
+  }, [cardId, recordVisit]);
 
   const [activeSessionId, setActiveSessionId] = useState<string | null>(
     devState ? 'dev-session' : null
@@ -493,6 +484,18 @@ export default function CardView() {
     cardViewMode === 'archive'
       ? archiveStepIndex
       : (localStepIndex ?? serverStepIndex);
+
+  useEffect(() => {
+    // In local preview modes, persist an active session to localStorage for resume banners
+    if (cardId && isLocalPreviewMode && product && card && cardViewMode === 'live') {
+      saveDemoSession({
+        productId: product.id,
+        cardId,
+        categoryId: card.categoryId ?? '',
+        currentStepIndex,
+      });
+    }
+  }, [cardId, isLocalPreviewMode, product, card, cardViewMode, currentStepIndex]);
 
   // ─── DEV-ONLY debug strip (disabled — never visible) ───
   const _devDebug = null;
