@@ -867,7 +867,8 @@ export default function CardView() {
       const catCards = productCards.filter(c => c.categoryId === catId);
       const hasIncomplete = catCards.some(c => !effectiveCompleted.has(c.id));
       if (hasIncomplete) {
-        return { type: 'next_category' as const, destination: `/category/${catId}`, label: 'Nästa ämne', homeDest };
+        const nextCatPortal = product ? `/product/${product.slug}/portal/${catId}` : `/category/${catId}`;
+        return { type: 'next_category' as const, destination: nextCatPortal, label: 'Nästa ämne', homeDest };
       }
     }
 
