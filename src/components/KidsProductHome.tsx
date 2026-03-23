@@ -557,14 +557,14 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
                 style={{
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '10px',
+                  gap: '8px',
                   width: '100%',
                   marginTop: '24px',
-                  padding: '0 4px',
+                  padding: '8px 4px',
                   background: 'transparent',
                   border: 'none',
                   cursor: 'pointer',
-                  opacity: introCompleted ? 0.3 : 0.75,
+                  opacity: introCompleted ? 0.35 : 1,
                   transition: 'opacity 0.3s ease',
                 }}
               >
@@ -572,12 +572,12 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
                 <div style={{
                   flex: 1,
                   height: '1px',
-                  background: `linear-gradient(to right, transparent, rgba(253, 246, 227, 0.2))`,
+                  background: `linear-gradient(to right, transparent 0%, rgba(253, 246, 227, 0.35) 100%)`,
                 }} />
 
                 {/* Left chevron */}
                 {!introCompleted && (
-                  <ChevronRight size={12} color={SAFFRON_FLAME} strokeWidth={2} style={{ opacity: 0.7 }} />
+                  <ChevronRight size={14} color={SAFFRON_FLAME} strokeWidth={2.5} />
                 )}
                 {introCompleted && (
                   <span style={{ fontSize: '10px', color: SAFFRON_FLAME, lineHeight: 1 }}>✓</span>
@@ -587,12 +587,12 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
                 <span
                   style={{
                     fontFamily: 'var(--font-serif)',
-                    fontSize: '12px',
-                    fontWeight: 400,
+                    fontSize: '13px',
+                    fontWeight: 500,
                     color: LANTERN_GLOW,
-                    letterSpacing: '0.08em',
+                    letterSpacing: '0.06em',
                     whiteSpace: 'nowrap',
-                    opacity: introCompleted ? 0.6 : 0.9,
+                    textShadow: '0 1px 6px rgba(0,0,0,0.8), 0 0 20px rgba(0,0,0,0.5)',
                   }}
                 >
                   Ert första samtal
@@ -600,14 +600,14 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
 
                 {/* Right chevron */}
                 {!introCompleted && (
-                  <ChevronLeft size={12} color={SAFFRON_FLAME} strokeWidth={2} style={{ opacity: 0.7 }} />
+                  <ChevronLeft size={14} color={SAFFRON_FLAME} strokeWidth={2.5} />
                 )}
 
                 {/* Right line */}
                 <div style={{
                   flex: 1,
                   height: '1px',
-                  background: `linear-gradient(to left, transparent, rgba(253, 246, 227, 0.2))`,
+                  background: `linear-gradient(to left, transparent 0%, rgba(253, 246, 227, 0.35) 100%)`,
                 }} />
               </motion.button>
             )}
