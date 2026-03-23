@@ -546,6 +546,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
 
             {/* ── Still Us: Intro session entry ── */}
             {isSU && (
+              <div style={{ display: 'block', width: '100%', textAlign: 'center', marginTop: '14px' }}>
               <motion.button
                 variants={fadeUp}
                 whileTap={{ scale: 0.97 }}
@@ -602,8 +603,8 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
                   }}>→</span>
                 )}
               </motion.button>
+              </div>
             )}
-
             {/* Spacer — pushes content below hero face zone */}
             {!useSquareGrid && <div style={{ height: 'clamp(48px, 12vh, 100px)' }} />}
 
