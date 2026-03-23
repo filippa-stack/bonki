@@ -2018,7 +2018,7 @@ export default function CardView() {
       // Save any pending kids note before completing
       if (isKidsProduct && kidsNoteLocalText.trim()) {
         await kidsNoteSession.markReady(kidsNoteLocalText);
-        if (isDemoMode() && product) {
+        if (isLocalPreviewMode && product) {
           upsertDemoDiaryEntry({ productId: product.id, cardId: card.id, text: kidsNoteLocalText, mode: 'append' });
         }
       }
@@ -2193,6 +2193,12 @@ export default function CardView() {
               onPause={() => navigate('/')}
               onLocked={handleFocusAdvance}
               onBack={handleFocusBack}
+              onNoteCapture={(text) => {
+                if (isLocalPreviewMode && card) {
+                  const pid = product?.id ?? 'still_us';
+                  upsertDemoDiaryEntry({ productId: pid, cardId: card.id, text, mode: 'append' });
+                }
+              }}
             />
           }
         >
@@ -2264,7 +2270,7 @@ export default function CardView() {
       if (kidsNoteLocalText.trim()) {
         await kidsNoteSession.markReady(kidsNoteLocalText);
         // Also persist to demo diary for journal visibility in demo mode
-        if (isDemoMode() && product) {
+        if (isLocalPreviewMode && product) {
           upsertDemoDiaryEntry({ productId: product.id, cardId: card.id, text: kidsNoteLocalText, mode: 'append' });
         }
       }
@@ -2273,7 +2279,7 @@ export default function CardView() {
       } else {
         setLocalPromptIndex(localPromptIndex + 1);
         // Track step progress in demo mode
-        if (isDemoMode() && product) {
+        if (isLocalPreviewMode && product) {
           updateDemoSessionStep(product.id, card.id, localPromptIndex + 1);
         }
       }
@@ -2987,6 +2993,12 @@ export default function CardView() {
                             toast('Samtalet sparas – ni kan fortsätta när ni vill', { duration: 3000 });
                             navigate(exitBackTo);
                           }
+                        }
+                      }}
+                      onNoteCapture={(text) => {
+                        if (isLocalPreviewMode && card) {
+                          const pid = product?.id ?? 'still_us';
+                          upsertDemoDiaryEntry({ productId: pid, cardId: card.id, text, mode: 'append' });
                         }
                       }}
                     />
