@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import type { ProductManifest } from '@/types/product';
-import heroImage from '@/assets/illustration-syskon.png';
+
 import UnifiedResumeBanner from '@/components/UnifiedResumeBanner';
 import NextConversationCard from '@/components/NextConversationCard';
 import ProductHomeBackButton from '@/components/ProductHomeBackButton';
