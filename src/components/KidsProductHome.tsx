@@ -1,5 +1,5 @@
 /**
- * KidsProductHome — Shared product home for ALL 6 kids products.
+ * KidsProductHome — Shared product home for ALL 6 kids products + Still Us.
  *
  * Replaces JagIMigProductHome, JagMedAndraProductHome, etc.
  * All product-specific values come from the ProductManifest.
@@ -9,14 +9,17 @@
  *  2. Resume pill (conditional): Deep Dusk card for active session
  *  3. Category tiles: single-column, full-width, tile-depth colors
  *     WITH ceramic glow, illustration from first card per category
+ *  4. Still Us only: intro session entry in hero zone
  */
 
-import { useMemo } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import type { ProductManifest } from '@/types/product';
 import { useKidsProductProgress, type KidsProductProgress } from '@/hooks/useKidsProductProgress';
 import { useCardImage } from '@/hooks/useCardImage';
+import { supabase } from '@/integrations/supabase/client';
+import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import ProductHomeBackButton from '@/components/ProductHomeBackButton';
 import {
   MIDNIGHT_INK,
@@ -367,6 +370,7 @@ function CategoryTile({
 
 export default function KidsProductHome({ product }: { product: ProductManifest }) {
   const navigate = useNavigate();
+  const { space } = useCoupleSpaceContext();
   const progress = useKidsProductProgress(product);
   const tileImages = useFirstCardImages(product, progress);
 
@@ -375,6 +379,25 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
   const isSU = product.slug === 'still-us';
   const isVardag = product.id === 'vardagskort';
   const useSquareGrid = true; // 2×2 grid for all products
+
+  // ── Intro session completion state (Still Us only) ──
+  const [introCompleted, setIntroCompleted] = useState(false);
+  useEffect(() => {
+    if (!isSU || !space?.id) return;
+    let cancelled = false;
+    supabase
+      .from('couple_sessions')
+      .select('id')
+      .eq('couple_space_id', space.id)
+      .eq('card_id', 'su-intro')
+      .eq('status', 'completed')
+      .limit(1)
+      .maybeSingle()
+      .then(({ data }) => {
+        if (!cancelled && data) setIntroCompleted(true);
+      });
+    return () => { cancelled = true; };
+  }, [isSU, space?.id]);
 
   // Chromatic glow colors for Still Us glass tiles
   const SU_GLOW_COLORS: Record<string, string> = {
@@ -520,6 +543,49 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
               >
                 {product.tagline}
               </span>
+
+            {/* ── Still Us: Intro session entry ── */}
+            {isSU && (
+              <motion.button
+                variants={fadeUp}
+                whileTap={{ scale: 0.97 }}
+                onClick={() => {
+                  localStorage.setItem('bonki-last-active-product', product.slug);
+                  navigate('/card/su-intro');
+                }}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  marginTop: introCompleted ? '12px' : '20px',
+                  padding: introCompleted ? '4px 14px' : '8px 20px',
+                  background: 'transparent',
+                  border: 'none',
+                  cursor: 'pointer',
+                  opacity: introCompleted ? 0.35 : 0.7,
+                  transition: 'opacity 0.3s ease',
+                }}
+              >
+                {introCompleted && (
+                  <span style={{
+                    fontSize: '11px',
+                    color: SAFFRON_FLAME,
+                    lineHeight: 1,
+                  }}>✓</span>
+                )}
+                <span
+                  style={{
+                    fontFamily: 'var(--font-serif)',
+                    fontSize: introCompleted ? '13px' : '15px',
+                    fontWeight: 500,
+                    color: LANTERN_GLOW,
+                    letterSpacing: '0.04em',
+                  }}
+                >
+                  {introCompleted ? 'Ert första samtal' : 'Börja här →'}
+                </span>
+              </motion.button>
+            )}
 
             {/* Spacer — pushes content below hero face zone */}
             {!useSquareGrid && <div style={{ height: 'clamp(48px, 12vh, 100px)' }} />}

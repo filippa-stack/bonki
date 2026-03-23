@@ -111,6 +111,28 @@ function buildMockCard(seqEntry: typeof CARD_SEQUENCE[number]): Card | null {
 
 const cards: Card[] = CARD_SEQUENCE.map(buildMockCard).filter((c): c is Card => c !== null);
 
+// ── Intro card (freemium / ice-breaker) ─────────────────────
+
+const introCard: Card = {
+  id: 'su-intro',
+  title: 'Börja här',
+  subtitle: 'Ett första samtal — för att landa tillsammans.',
+  categoryId: '__intro__',        // virtual category, not in grid
+  sections: [
+    {
+      id: 'su-intro-primary',
+      type: 'opening',
+      title: 'Frågor',
+      content: '',
+      prompts: [
+        'Vad fick er att vilja prova det här?',
+        'Hur känns det just nu — att sitta här tillsammans?',
+        'Vad hoppas ni att det här kan ge er?',
+      ],
+    },
+  ],
+};
+
 // ── Manifest ────────────────────────────────────────────────
 
 export const stillUsProduct: ProductManifest = {
@@ -130,7 +152,8 @@ export const stillUsProduct: ProductManifest = {
   tileMid: '#4A3308',
   tileDeep: '#352606',
   pronounMode: 'ni',
+  freeCardId: 'su-intro',
   paywallDescription: 'Fördjupa samtalet — vecka för vecka, lager för lager.',
   categories,
-  cards,
+  cards: [introCard, ...cards],
 };
