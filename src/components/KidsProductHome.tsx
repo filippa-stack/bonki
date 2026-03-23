@@ -187,7 +187,7 @@ function CategoryTile({
         position: 'relative',
         overflow: 'hidden',
         width: '100%',
-        ...(fillHeight ? { height: '100%' } : squareTile ? { aspectRatio: wideSpan ? '2 / 1' : (enlargeTiles ? '3 / 4' : '2 / 3') } : { minHeight: compactHeight ? '120px' : '140px' }),
+        ...(fillHeight ? { height: '100%' } : squareTile ? { aspectRatio: wideSpan ? '2 / 1' : (enlargeTiles ? '1 / 1' : '2 / 3') } : { minHeight: compactHeight ? '120px' : '140px' }),
 
         borderRadius: squareTile ? '28px' : '22px',
         cursor: isLocked ? 'default' : 'pointer',
@@ -702,8 +702,8 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
         </motion.div>
 
         {/* Small spacer before grid */}
-        {useSquareGrid && <div style={{ flex: 1 }} />}
-        {useSquareGrid && <div style={{ height: '8px' }} />}
+        {useSquareGrid && <div style={{ flex: HIDE_HERO_PRODUCTS.has(product.id) ? 0 : 1 }} />}
+        {useSquareGrid && <div style={{ height: HIDE_HERO_PRODUCTS.has(product.id) ? '0px' : '8px' }} />}
 
         {/* Removed "Välj ett ämne" header — tiles speak for themselves */}
 
