@@ -12,12 +12,14 @@
  *  4. Still Us only: intro session entry in hero zone
  */
 
-import { useMemo } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import type { ProductManifest } from '@/types/product';
 import { useKidsProductProgress, type KidsProductProgress } from '@/hooks/useKidsProductProgress';
 import { useCardImage } from '@/hooks/useCardImage';
+import { supabase } from '@/integrations/supabase/client';
+import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import ProductHomeBackButton from '@/components/ProductHomeBackButton';
 import {
   MIDNIGHT_INK,
