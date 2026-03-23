@@ -902,7 +902,7 @@ export default function CardView() {
 
     // Resolve exercise for su-mock cards (su-mock-N → cardIndex N)
     const suMockMatch = cardId?.match(/^su-mock-(\d+)$/);
-    const gorExercise = suMockMatch ? getGorExercise(parseInt(suMockMatch[1], 10)) : null;
+    const gorExerciseSU = suMockMatch ? getGorExercise(parseInt(suMockMatch[1], 10)) : null;
 
     return (
       <motion.div
@@ -1042,7 +1042,7 @@ export default function CardView() {
           </motion.div>
 
           {/* Gör exercise — collapsible block */}
-          {gorExercise && (
+          {gorExerciseSU && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -1070,7 +1070,7 @@ export default function CardView() {
                   fontWeight: 600,
                   color: BARK,
                 }}>
-                  Gör: {gorExercise.title}
+                  Gör: {gorExerciseSU.title}
                 </span>
                 <span style={{
                   color: DRIFTWOOD,
@@ -1096,7 +1096,7 @@ export default function CardView() {
                     lineHeight: 1.6,
                     whiteSpace: 'pre-line',
                   }}>
-                    {gorExercise.instructionText}
+                    {gorExerciseSU.instructionText}
                   </p>
                 </div>
               )}
@@ -1276,7 +1276,7 @@ export default function CardView() {
           {/* Note: SimpleTakeaway already shows "Det ni skriver sparas i era samtal" */}
 
           {/* Gör exercise — collapsible block (Still Us) */}
-          {gorExercise && (
+          {gorExerciseSU && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -1305,7 +1305,7 @@ export default function CardView() {
                   fontWeight: 600,
                   color: DEEP_SAFFRON,
                 }}>
-                  Gör: {gorExercise.title}
+                  Gör: {gorExerciseSU.title}
                 </span>
                 <span style={{
                   color: DRIFTWOOD,
@@ -1331,7 +1331,7 @@ export default function CardView() {
                     lineHeight: 1.6,
                     whiteSpace: 'pre-line',
                   }}>
-                    {gorExercise.instructionText}
+                    {gorExerciseSU.instructionText}
                   </p>
                 </div>
               )}
