@@ -57,9 +57,9 @@ export const productTileColors: Record<string, ProductTileColors> = {
     tileDeep: '#2A1018',
   },
   sexualitetskort: {
-    tileLight: '#4A2E48',
-    tileMid: '#3A2240',
-    tileDeep: '#2C1A32',
+    tileLight: '#A8766D',
+    tileMid: '#8A5F57',
+    tileDeep: '#6E4A44',
   },
   still_us: {
     tileLight: '#2E1A0A',

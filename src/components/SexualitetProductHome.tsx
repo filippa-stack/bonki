@@ -16,10 +16,10 @@ const ACCENT_COLOR = '#D4A0B8';
 const TILE_LIGHT = '#4A2E48';
 
 const ORDERED_TILES = [
-  { id: 'sex-min-identitet', bg: '#4A2E48', sub: 'Vem du är och blir' },
-  { id: 'sex-normer-och-paverkan', bg: '#3A2240', sub: 'Det som formar oss' },
-  { id: 'sex-relation-och-ansvar', bg: '#321C38', sub: 'Att ta hand om sig själv och andra' },
-  { id: 'sex-skydd-och-makt', bg: '#2C1A32', sub: 'Makt och sårbarhet' },
+  { id: 'sex-min-identitet', bg: '#A8766D', sub: 'Vem du är och blir' },
+  { id: 'sex-normer-och-paverkan', bg: '#8A5F57', sub: 'Det som formar oss' },
+  { id: 'sex-relation-och-ansvar', bg: '#7A524B', sub: 'Att ta hand om sig själv och andra' },
+  { id: 'sex-skydd-och-makt', bg: '#6E4A44', sub: 'Makt och sårbarhet' },
 ];
 
 // Deer: huge dark eyes and ears. Tile 0 = face-dominant. Tile 1 ears extending.
