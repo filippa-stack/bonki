@@ -137,23 +137,7 @@ export default function ProductIntro({
     // Persist seen flag server-side (fire-and-forget)
     markProductIntroSeenServer(productId);
 
-    if (isStillUs) {
-      // Still Us: init couple_state, then navigate to first check-in
-      setInitiating(true);
-      try {
-        const result = await initCoupleState(buildSliderAnchors(0));
-        if (result.couple_id) {
-          navigate('/check-in/su-01-smallest-we');
-          return;
-        }
-      } catch (err) {
-        console.error('initCoupleState failed:', err);
-      } finally {
-        setInitiating(false);
-      }
-      // Fallback: complete normally
-      onComplete();
-    } else if (freeCardId && onStartFreeCard) {
+    if (freeCardId && onStartFreeCard) {
       onStartFreeCard();
     } else {
       onComplete();

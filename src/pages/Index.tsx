@@ -115,7 +115,7 @@ export default function Index() {
 
   // Any other devState bypasses onboarding & purchase gates
   if (devState) {
-    return <Home />;
+    return <Navigate to="/product/still-us" replace />;
   }
 
   // ── Demo mode: skip onboarding gate ──
@@ -140,15 +140,13 @@ export default function Index() {
     return <Navigate to="/product/still-us" replace />;
   }
 
-  // Par first visit: route directly to Still Us home, then clear the flag
+  // Par first visit: route directly to Still Us product home
   const initialTab = localStorage.getItem('bonki-initial-tab');
   if (initialTab === 'par') {
-    // Don't clear yet — ProductLibrary reads it for default tab.
-    // But route to Still Us home on first post-onboarding visit.
     const parFirstVisitKey = 'bonki-par-first-visit-done';
     if (!sessionStorage.getItem(parFirstVisitKey)) {
       sessionStorage.setItem(parFirstVisitKey, '1');
-      return <Home />;
+      return <Navigate to="/product/still-us" replace />;
     }
   }
 
