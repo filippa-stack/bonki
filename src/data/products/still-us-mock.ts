@@ -115,9 +115,9 @@ const cards: Card[] = CARD_SEQUENCE.map(buildMockCard).filter((c): c is Card => 
 
 const introCard: Card = {
   id: 'su-intro',
-  title: 'Börja här',
+  title: 'Ert första samtal',
   subtitle: 'Ett första samtal — för att landa tillsammans.',
-  categoryId: 'su-mock-vardagen',        // route intro through first real portal category
+  categoryId: '__su-intro__',            // standalone — not part of any category
   sections: [
     {
       id: 'su-intro-opening',
