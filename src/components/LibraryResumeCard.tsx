@@ -73,8 +73,9 @@ export default function LibraryResumeCard({ activeTab, global, forceMock }: Libr
   useEffect(() => {
     if (devMock) return;
 
-    // Demo mode: read from localStorage
-    if (isDemoMode()) {
+    // Local preview mode: read from localStorage
+    const isLocalPreview = isDemoMode() || !!devState;
+    if (isLocalPreview && !devMock) {
       const demoSession = getMostRecentDemoSession();
       if (demoSession) {
         const product = getProductById(demoSession.productId);
