@@ -1314,8 +1314,25 @@ export default function CardView() {
                 textWrap: 'balance',
               }}
             >
-              Varje samtal är ett val. Ni valde rätt.
+              {cardId === 'su-intro'
+                ? 'Ert första samtal är klart. Nu börjar resan.'
+                : 'Varje samtal är ett val. Ni valde rätt.'}
             </h2>
+            {cardId === 'su-intro' && (
+              <p
+                className="font-sans"
+                style={{
+                  fontSize: '15px',
+                  color: DRIFTWOOD,
+                  opacity: 0.6,
+                  lineHeight: 1.6,
+                  marginTop: '12px',
+                  textWrap: 'balance',
+                }}
+              >
+                Härifrån går ni vidare vecka för vecka, lager för lager.
+              </p>
+            )}
           </motion.div>
 
           {/* 2. Note nudge — "Något ni vill minnas?" → Ember Glow input */}
@@ -1413,7 +1430,53 @@ export default function CardView() {
             className="max-w-md mx-auto flex flex-col items-center"
             style={{ paddingBottom: 'calc(72px + env(safe-area-inset-bottom, 0px))', marginTop: '48px' }}
           >
-            {postCompletionNav.type === 'all_complete' ? (
+            {cardId === 'su-intro' ? (
+              /* su-intro: unique CTA → first category portal or paywall */
+              <>
+                <button
+                  onClick={() => {
+                    // Check access — if no access, go to paywall
+                    const dest = '/product/still-us/portal/su-mock-vardagen';
+                    navigateWithFeedback(dest);
+                  }}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '6px',
+                    width: '100%',
+                    maxWidth: '520px',
+                    height: '52px',
+                    borderRadius: '14px',
+                    backgroundColor: DEEP_SAFFRON,
+                    color: MIDNIGHT_INK,
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: '17px',
+                    fontWeight: 600,
+                    border: 'none',
+                    cursor: 'pointer',
+                  }}
+                >
+                  Fortsätt till Vardagen <ArrowRight size={16} style={{ opacity: 0.7 }} />
+                </button>
+                <button
+                  onClick={() => navigateWithFeedback('/product/still-us')}
+                  className="font-sans"
+                  style={{
+                    fontSize: '14px',
+                    color: DRIFTWOOD,
+                    opacity: 0.55,
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    marginTop: '16px',
+                    textAlign: 'center',
+                  }}
+                >
+                  Tillbaka till Still Us
+                </button>
+              </>
+            ) : postCompletionNav.type === 'all_complete' ? (
               /* All done — go home */
               <button
                 onClick={() => navigateWithFeedback(homeDest)}
