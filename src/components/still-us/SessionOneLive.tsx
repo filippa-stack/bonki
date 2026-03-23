@@ -23,6 +23,8 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import SessionFocusShell from '@/components/SessionFocusShell';
 import SliderReveal from '@/components/still-us/SliderReveal';
+import { isDemoMode } from '@/lib/demoMode';
+import { upsertDemoDiaryEntry } from '@/lib/demoDiary';
 
 // ── Types ───────────────────────────────────────────────────
 
@@ -112,6 +114,7 @@ export default function SessionOneLive() {
   const isCompact = cardIndex >= 5;
   const partnerTier = coupleState?.partner_tier ?? 'tier_1';
   const isTier1 = partnerTier === 'tier_1';
+  const demoMode = isDemoMode();
 
   // Derive display names
   const initiatorName = space?.partner_a_name || 'Du';
@@ -341,7 +344,18 @@ export default function SessionOneLive() {
   const saveNote = useCallback(
     (stepId: string) => {
       const text = notes[stepId]?.trim();
-      if (!text || !coupleState || !backendCardId || !user?.id) return;
+      if (!text) return;
+
+      if (demoMode && slug) {
+        upsertDemoDiaryEntry({
+          productId: 'still_us',
+          cardId: slug,
+          text,
+          mode: 'append',
+        });
+      }
+
+      if (!coupleState || !backendCardId || !user?.id) return;
 
       const cacheKey = `${coupleState.couple_id}_${user.id}_${backendCardId}_${coupleState.cycle_id}`;
       const existingNotes = localNotesCache.current[cacheKey] ?? {};
@@ -361,7 +375,7 @@ export default function SessionOneLive() {
         },
       });
     },
-    [notes, coupleState, backendCardId, user?.id],
+    [notes, coupleState, backendCardId, user?.id, demoMode, slug],
   );
 
   // ── Pause handlers ────────────────────────────────────────

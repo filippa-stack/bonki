@@ -12,6 +12,8 @@ import { supabase } from '@/integrations/supabase/client';
 import EmberGlowTextarea from './EmberGlowTextarea';
 import LoadingCta from './LoadingCta';
 import BreathingDot from './BreathingDot';
+import { isDemoMode } from '@/lib/demoMode';
+import { upsertDemoDiaryEntry } from '@/lib/demoDiary';
 
 type Step = 'initiator_takeaway' | 'handoff_prompt' | 'partner_takeaway' | 'submitting';
 type NavTarget = 'home' | 'session_2';
@@ -34,6 +36,7 @@ export default function SessionOneComplete({
   cardIndex = -1,
 }: SessionOneCompleteProps) {
   const navigate = useNavigate();
+  const demoMode = isDemoMode();
   const [step, setStep] = useState<Step>('initiator_takeaway');
   const [initiatorTakeaway, setInitiatorTakeaway] = useState('');
   const [partnerTakeaway, setPartnerTakeaway] = useState('');
@@ -67,6 +70,23 @@ export default function SessionOneComplete({
   const submit = async (pTakeaway: string | null) => {
     setStep('submitting');
     setError(null);
+
+    if (demoMode) {
+      const combinedTakeaway = [initiatorTakeaway, pTakeaway]
+        .map((value) => value?.trim())
+        .filter(Boolean)
+        .join('\n\n');
+
+      if (combinedTakeaway) {
+        upsertDemoDiaryEntry({
+          productId: 'still_us',
+          cardId: slug,
+          text: combinedTakeaway,
+          mode: 'append',
+        });
+      }
+    }
+
     try {
       const res = await completeSession({
         couple_id: coupleId,
