@@ -1162,7 +1162,7 @@ export default function CardView() {
     // Still Us completion: Ember Night bg, fixed headline, Ember Glow takeaway
     const EMBER_NIGHT = product?.backgroundColor ?? '#1A0806';
     const DEEP_SAFFRON = '#D4A03A';
-    const DRIFTWOOD = '#C4B8A8';
+    const DRIFTWOOD = '#FDF6E3';
     const MIDNIGHT_INK = '#1A1A2E';
     const BARK = '#2C2420';
     const EMBER_GLOW = '#F5E8CC';
