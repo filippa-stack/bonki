@@ -64,6 +64,7 @@ export function useSessionReflections(
   useEffect(() => {
     setMyReflection(null);
     setLocalText('');
+    localTextRef.current = '';
     setLoading(true);
   }, [normalizedSessionId, stepIndex]);
 
