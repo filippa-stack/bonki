@@ -23,12 +23,21 @@ const STILL_US_ID = 'still_us';
 /** Determine the effective product type using card_id as source of truth */
 function isKidsCard(cardId: string | null): boolean {
   if (!cardId) return false;
-  // Check if the card belongs to any kids product manifest
-  return allProducts.some(p => p.cards.some(c => c.id === cardId));
+  // Check if the card belongs to any NON-Still-Us product manifest
+  return allProducts
+    .filter(p => p.id !== STILL_US_ID)
+    .some(p => p.cards.some(c => c.id === cardId));
+}
+
+function isStillUsCard(cardId: string | null): boolean {
+  if (!cardId) return false;
+  const suProduct = allProducts.find(p => p.id === STILL_US_ID);
+  return suProduct?.cards.some(c => c.id === cardId) ?? false;
 }
 
 function effectiveIsPar(productId: string, cardId: string | null): boolean {
   // Card-level check takes priority over potentially stale product_id
+  if (cardId && isStillUsCard(cardId)) return true;
   if (cardId && isKidsCard(cardId)) return false;
   return productId === STILL_US_ID;
 }
