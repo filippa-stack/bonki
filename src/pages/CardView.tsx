@@ -30,6 +30,7 @@ import ProductPaywall from '@/components/ProductPaywall';
 import { getCompletionMessages, getUIText, type PronounMode } from '@/lib/pronouns';
 import { useCardImage } from '@/hooks/useCardImage';
 import { isDemoMode, isDemoParam } from '@/lib/demoMode';
+import { upsertDemoDiaryEntry } from '@/lib/demoDiary';
 import { useCardVisit } from '@/hooks/useCardVisit';
 import { useProductTheme } from '@/hooks/useProductTheme';
 
@@ -1999,6 +2000,9 @@ export default function CardView() {
       // Save any pending kids note before completing
       if (isKidsProduct && kidsNoteLocalText.trim()) {
         await kidsNoteSession.markReady(kidsNoteLocalText);
+        if (isDemoMode() && product) {
+          upsertDemoDiaryEntry({ productId: product.id, cardId: card.id, text: kidsNoteLocalText, mode: 'append' });
+        }
       }
       await handleCompleteStep();
     }
@@ -2241,6 +2245,10 @@ export default function CardView() {
       // Save any typed note before advancing — pass text explicitly
       if (kidsNoteLocalText.trim()) {
         await kidsNoteSession.markReady(kidsNoteLocalText);
+        // Also persist to demo diary for journal visibility in demo mode
+        if (isDemoMode() && product) {
+          upsertDemoDiaryEntry({ productId: product.id, cardId: card.id, text: kidsNoteLocalText, mode: 'append' });
+        }
       }
       if (isLastPrompt) {
         await handleCompleteStep();
