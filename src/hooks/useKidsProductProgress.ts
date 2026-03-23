@@ -13,6 +13,8 @@ import { useLocation } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import type { ProductManifest } from '@/types/product';
+import { isDemoMode } from '@/lib/demoMode';
+import { getDemoSessionForProduct } from '@/lib/demoSession';
 
 const FOURTEEN_DAYS_MS = 14 * 24 * 60 * 60 * 1000;
 
