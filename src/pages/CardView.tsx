@@ -1160,7 +1160,7 @@ export default function CardView() {
   // ─────────────────────────────────────────────────────────────
   if (cardViewMode === 'completion') {
     // Still Us completion: Ember Night bg, fixed headline, Ember Glow takeaway
-    const EMBER_NIGHT = '#2E2233';
+    const EMBER_NIGHT = product?.backgroundColor ?? '#1A0806';
     const DEEP_SAFFRON = '#D4A03A';
     const DRIFTWOOD = '#6B5E52';
     const MIDNIGHT_INK = '#1A1A2E';
@@ -1686,7 +1686,7 @@ export default function CardView() {
 
   // ── Still Us threshold screen — single unified gate ──
   if (shouldShowStartScreen) {
-    const EMBER_NIGHT_T = '#2E2233';
+    const EMBER_NIGHT_T = product?.backgroundColor ?? '#1A0806';
     const LANTERN_GLOW_T = '#FDF6E3';
     const DRIFTWOOD_T = '#6B5E52';
     const MIDNIGHT_INK_T = '#1A1A2E';
