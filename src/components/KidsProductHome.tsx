@@ -554,21 +554,29 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
                   navigate('/card/su-intro');
                 }}
                 style={{
-                  display: 'flex',
+                  display: 'inline-flex',
                   alignItems: 'center',
-                  gap: '8px',
-                  marginTop: introCompleted ? '12px' : '20px',
-                  padding: introCompleted ? '4px 14px' : '8px 20px',
-                  background: 'transparent',
-                  border: 'none',
+                  justifyContent: 'center',
+                  gap: '6px',
+                  marginTop: '16px',
+                  padding: introCompleted ? '5px 16px' : '7px 22px',
+                  background: introCompleted
+                    ? 'rgba(255, 255, 255, 0.04)'
+                    : 'rgba(255, 255, 255, 0.08)',
+                  border: introCompleted
+                    ? '1px solid rgba(255, 255, 255, 0.06)'
+                    : '1px solid rgba(255, 255, 255, 0.14)',
+                  borderRadius: '24px',
+                  backdropFilter: 'blur(12px)',
+                  WebkitBackdropFilter: 'blur(12px)',
                   cursor: 'pointer',
-                  opacity: introCompleted ? 0.35 : 0.7,
-                  transition: 'opacity 0.3s ease',
+                  opacity: introCompleted ? 0.4 : 0.85,
+                  transition: 'opacity 0.3s ease, background 0.3s ease',
                 }}
               >
                 {introCompleted && (
                   <span style={{
-                    fontSize: '11px',
+                    fontSize: '10px',
                     color: SAFFRON_FLAME,
                     lineHeight: 1,
                   }}>✓</span>
@@ -576,14 +584,23 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
                 <span
                   style={{
                     fontFamily: 'var(--font-serif)',
-                    fontSize: introCompleted ? '13px' : '15px',
+                    fontSize: introCompleted ? '12px' : '14px',
                     fontWeight: 500,
                     color: LANTERN_GLOW,
-                    letterSpacing: '0.04em',
+                    letterSpacing: '0.05em',
+                    opacity: introCompleted ? 0.7 : 1,
                   }}
                 >
-                  {introCompleted ? 'Ert första samtal' : 'Börja här →'}
+                  {introCompleted ? 'Ert första samtal' : 'Börja här'}
                 </span>
+                {!introCompleted && (
+                  <span style={{
+                    fontSize: '13px',
+                    color: SAFFRON_FLAME,
+                    lineHeight: 1,
+                    marginLeft: '2px',
+                  }}>→</span>
+                )}
               </motion.button>
             )}
 
