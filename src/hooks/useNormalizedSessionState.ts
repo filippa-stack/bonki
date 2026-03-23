@@ -35,6 +35,7 @@ export function useNormalizedSessionState(): NormalizedSessionState {
   const [loading, setLoading] = useState(true);
   const mountedRef = useRef(true);
   const debounceRef = useRef<ReturnType<typeof setTimeout>>();
+  const suppressUntilRef = useRef<number>(0);
 
   const userId = user?.id;
   const spaceId = space?.id;
