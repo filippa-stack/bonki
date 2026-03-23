@@ -351,6 +351,7 @@ export default function SessionOneLive() {
           productId: 'still_us',
           cardId: slug,
           text,
+          entryKey: stepId,
           mode: 'append',
         });
       }

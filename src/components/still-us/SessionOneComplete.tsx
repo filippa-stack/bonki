@@ -82,6 +82,7 @@ export default function SessionOneComplete({
           productId: 'still_us',
           cardId: slug,
           text: combinedTakeaway,
+          entryKey: 'session-1-complete-takeaway',
           mode: 'append',
         });
       }

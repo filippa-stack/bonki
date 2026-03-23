@@ -113,24 +113,11 @@ export default function SessionStepReflection({
   };
 
   const handleAdvance = async () => {
-    console.log('[SSR handleAdvance]', {
-      localText,
-      hasOnNoteCapture: !!onNoteCapture,
-      stillUsMode,
-      stepIndex,
-      promptIndex,
-      reflectionStepIndex,
-    });
     setSubmitting(true);
     try {
-      // Pass localText explicitly to avoid stale-ref issues
       await markReady(localText);
-      // Notify parent of note text for local persistence
       if (localText.trim()) {
-        console.log('[SSR] Calling onNoteCapture with:', localText.trim());
         onNoteCapture?.(localText.trim());
-      } else {
-        console.log('[SSR] localText is empty, skipping onNoteCapture');
       }
       await onLocked?.();
     } finally {
