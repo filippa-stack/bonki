@@ -52,10 +52,33 @@ export function updateDemoSessionStep(productId: string, cardId: string, stepInd
   }
 }
 
-/** Remove a demo session (on completion) */
+/** Remove a demo session (on completion) and track it as completed */
 export function completeDemoSession(productId: string, cardId: string): void {
   const all = readAll().filter(s => !(s.productId === productId && s.cardId === cardId));
   writeAll(all);
+  // Track completed cards
+  markDemoCardCompleted(productId, cardId);
+}
+
+const COMPLETED_KEY = 'bonki-demo-completed-cards';
+
+function markDemoCardCompleted(productId: string, cardId: string): void {
+  try {
+    const set: string[] = JSON.parse(localStorage.getItem(COMPLETED_KEY) || '[]');
+    const key = `${productId}::${cardId}`;
+    if (!set.includes(key)) {
+      set.push(key);
+      localStorage.setItem(COMPLETED_KEY, JSON.stringify(set));
+    }
+  } catch { /* ignore */ }
+}
+
+/** Check if a card was completed in demo mode */
+export function isDemoCardCompleted(productId: string, cardId: string): boolean {
+  try {
+    const set: string[] = JSON.parse(localStorage.getItem(COMPLETED_KEY) || '[]');
+    return set.includes(`${productId}::${cardId}`);
+  } catch { return false; }
 }
 
 /** Get all active demo sessions */

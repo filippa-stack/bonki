@@ -20,6 +20,7 @@ import { useKidsProductProgress, type KidsProductProgress } from '@/hooks/useKid
 import { useCardImage } from '@/hooks/useCardImage';
 import { supabase } from '@/integrations/supabase/client';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
+import { isDemoCardCompleted } from '@/lib/demoSession';
 import ProductHomeBackButton from '@/components/ProductHomeBackButton';
 import { ChevronRight, Play } from 'lucide-react';
 import {
@@ -382,9 +383,19 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
   const useSquareGrid = true; // 2×2 grid for all products
 
   // ── Intro session completion state (Still Us only) ──
-  const [introCompleted, setIntroCompleted] = useState(false);
+  const [introCompleted, setIntroCompleted] = useState(() => {
+    if (isSU && isDemoCardCompleted('still_us', 'su-intro')) return true;
+    return false;
+  });
   useEffect(() => {
-    if (!isSU || !space?.id) return;
+    if (!isSU) return;
+    // Check demo completed
+    if (isDemoCardCompleted('still_us', 'su-intro')) {
+      setIntroCompleted(true);
+      return;
+    }
+    // Check DB
+    if (!space?.id) return;
     let cancelled = false;
     supabase
       .from('couple_sessions')
