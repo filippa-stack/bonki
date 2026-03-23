@@ -2018,7 +2018,7 @@ export default function CardView() {
       // Save any pending kids note before completing
       if (isKidsProduct && kidsNoteLocalText.trim()) {
         await kidsNoteSession.markReady(kidsNoteLocalText);
-        if (isDemoMode() && product) {
+        if (isLocalPreviewMode && product) {
           upsertDemoDiaryEntry({ productId: product.id, cardId: card.id, text: kidsNoteLocalText, mode: 'append' });
         }
       }
@@ -2270,7 +2270,7 @@ export default function CardView() {
       if (kidsNoteLocalText.trim()) {
         await kidsNoteSession.markReady(kidsNoteLocalText);
         // Also persist to demo diary for journal visibility in demo mode
-        if (isDemoMode() && product) {
+        if (isLocalPreviewMode && product) {
           upsertDemoDiaryEntry({ productId: product.id, cardId: card.id, text: kidsNoteLocalText, mode: 'append' });
         }
       }
