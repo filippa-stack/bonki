@@ -7,6 +7,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/sonner';
+import { isDemoMode } from '@/lib/demoMode';
 
 import LibraryResumeCard from '@/components/LibraryResumeCard';
 import watermarkMamma from '@/assets/watermark-mamma.png';
@@ -510,6 +511,23 @@ export default function ProductLibrary() {
   const { space } = useCoupleSpaceContext();
   const [activeProductIds, setActiveProductIds] = useState<Set<string>>(new Set());
   useEffect(() => {
+    const syncLocalPreview = () => {
+      if (!isDemoMode()) return;
+      import('@/lib/demoSession').then(({ getAllDemoSessions }) => {
+        setActiveProductIds(new Set(getAllDemoSessions().map(session => session.productId)));
+      });
+    };
+
+    if (isDemoMode()) {
+      syncLocalPreview();
+      window.addEventListener('bonki:demo-session-changed', syncLocalPreview);
+      window.addEventListener('storage', syncLocalPreview);
+      return () => {
+        window.removeEventListener('bonki:demo-session-changed', syncLocalPreview);
+        window.removeEventListener('storage', syncLocalPreview);
+      };
+    }
+
     if (!space?.id) return;
     let cancelled = false;
     supabase
