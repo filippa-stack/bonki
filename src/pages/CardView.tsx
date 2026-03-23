@@ -875,7 +875,16 @@ export default function CardView() {
       return { type: 'all_complete' as const, destination: homeDest, label: 'Avsluta', homeDest };
     }
 
-    // Still Us: navigate to portal page for next card
+    // Still Us: always return to product home — user picks next card freely
+    if (product && product.id === 'still_us') {
+      // Check if there are any incomplete cards at all
+      const allDone = productCards.every(c => effectiveCompleted.has(c.id));
+      if (allDone) {
+        return { type: 'all_complete' as const, destination: `/product/${product.slug}`, label: '', homeDest };
+      }
+      return { type: 'next_card' as const, destination: `/product/${product.slug}`, label: 'Tillbaka till Still Us', homeDest };
+    }
+
     if (nextIncompleteInCategory) {
       const portalDest = category ? `/product/${product.slug}/portal/${category.id}` : `/product/${product.slug}`;
       return { type: 'next_card' as const, destination: portalDest, label: 'Nästa samtal', homeDest };
@@ -1501,7 +1510,7 @@ export default function CardView() {
               </button>
             ) : (
               <>
-                {/* Primary: Nästa samtal → */}
+                {/* Primary CTA */}
                 <button
                   onClick={() => navigateWithFeedback(postCompletionNav.destination)}
                   style={{
@@ -1522,26 +1531,28 @@ export default function CardView() {
                     cursor: 'pointer',
                   }}
                 >
-                  Nästa samtal <ArrowRight size={16} style={{ opacity: 0.7 }} />
+                  {postCompletionNav.label || 'Nästa samtal'} <ArrowRight size={16} style={{ opacity: 0.7 }} />
                 </button>
 
-                {/* 4. Secondary: Tillbaka till produkthem */}
-                <button
-                  onClick={() => navigateWithFeedback(product ? `/product/${product.slug}` : '/')}
-                  className="font-sans"
-                  style={{
-                    fontSize: '14px',
-                    color: DRIFTWOOD,
-                    opacity: 0.55,
-                    background: 'none',
-                    border: 'none',
-                    cursor: 'pointer',
-                    marginTop: '16px',
-                    textAlign: 'center',
-                  }}
-                >
-                  Tillbaka till {product?.name ?? categoryName}
-                </button>
+                {/* Secondary: Tillbaka — only if primary doesn't already go to product home */}
+                {product && postCompletionNav.destination !== `/product/${product.slug}` && (
+                  <button
+                    onClick={() => navigateWithFeedback(`/product/${product.slug}`)}
+                    className="font-sans"
+                    style={{
+                      fontSize: '14px',
+                      color: DRIFTWOOD,
+                      opacity: 0.55,
+                      background: 'none',
+                      border: 'none',
+                      cursor: 'pointer',
+                      marginTop: '16px',
+                      textAlign: 'center',
+                    }}
+                  >
+                    Tillbaka till {product.name}
+                  </button>
+                )}
               </>
             )}
           </motion.div>
