@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import type { ProductManifest } from '@/types/product';
+import heroImage from '@/assets/illustration-jag-med-andra.png';
 import UnifiedResumeBanner from '@/components/UnifiedResumeBanner';
 import NextConversationCard from '@/components/NextConversationCard';
 import ProductHomeBackButton from '@/components/ProductHomeBackButton';
@@ -20,6 +21,7 @@ const ORDERED_TILES = [
   { id: 'jma-vad-tror-jag-pa', bg: '#6A4828', sub: 'Värderingar och mod' },
 ];
 
+// Per-tile illustration calibration — vivid card art, high opacity to showcase illustrations
 const CREATURE_TILE_STYLES: CreatureTileStyle[] = [
   { scale: 1.15, objectPosition: '50% 15%', opacity: 0.88 },
   { scale: 1.15, objectPosition: '50% 20%', opacity: 0.85 },
@@ -38,21 +40,39 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
     <div className="min-h-screen relative overflow-hidden" style={{ backgroundColor: BG }}>
       <ProductHomeBackButton color="#FDF6E3" />
 
+      {/* ── Atmospheric radial glow ── */}
       <div
         style={{
           position: 'absolute',
-          top: '-10vh',
+          top: '-8vh',
           left: '50%',
           transform: 'translateX(-50%)',
-          width: '120vw',
+          width: '160vw',
           height: '60vh',
-          background: `radial-gradient(ellipse 70% 55% at 50% 40%, ${TILE_LIGHT}26 0%, transparent 100%)`,
+          background: `radial-gradient(ellipse 65% 55% at 50% 40%, ${TILE_LIGHT}35 0%, ${TILE_LIGHT}15 45%, transparent 100%)`,
           pointerEvents: 'none',
           zIndex: 0,
         }}
       />
 
-      <div style={{ position: 'relative', zIndex: 1, minHeight: '100vh', display: 'flex', flexDirection: 'column', paddingTop: 'clamp(24px, 6vh, 56px)', paddingRight: '5vw', paddingBottom: '80px', paddingLeft: '5vw' }}>
+      {/* ── Hero illustration ── */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.6 }}
+        style={{ position: 'absolute', top: '-8vh', left: '-5vw', right: '-5vw', height: '65vh', zIndex: 0, pointerEvents: 'none' }}
+      >
+        <img src={heroImage} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 8%' }} />
+        {/* Multi-stop scrim: lighter to let illustration colors breathe */}
+        <div style={{
+          position: 'absolute', bottom: 0, left: 0, right: 0, height: '75%',
+          background: `linear-gradient(to top, ${BG} 0%, ${BG}E8 20%, rgba(42,30,20,0.65) 45%, rgba(138,96,54,0.2) 70%, transparent 100%)`,
+          pointerEvents: 'none',
+        }} />
+      </motion.div>
+
+      {/* ── Content ── */}
+      <div style={{ position: 'relative', zIndex: 1, minHeight: '100vh', display: 'flex', flexDirection: 'column', paddingTop: 'clamp(28px, 8vh, 80px)', paddingRight: '5vw', paddingBottom: '80px', paddingLeft: '5vw' }}>
         <motion.div variants={containerVariants} initial="hidden" animate="visible" style={{ textAlign: 'center', width: '100%' }}>
           <motion.div variants={titleVariants}>
             <h1 style={{
@@ -60,9 +80,9 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
               fontSize: 'clamp(34px, 9.5vw, 50px)',
               fontWeight: 700,
               color: '#FDF6E3',
-              letterSpacing: '-0.01em',
+              letterSpacing: '-0.02em',
               whiteSpace: 'nowrap',
-              textShadow: `0 2px 16px rgba(0,0,0,0.6), 0 0 60px ${BG}, 0 0 120px ${BG}`,
+              textShadow: `0 2px 20px rgba(0,0,0,0.7), 0 0 60px ${BG}, 0 0 120px ${BG}`,
               fontVariationSettings: "'opsz' 36",
             }}>
               Jag med andra
@@ -73,16 +93,18 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
               color: ACCENT_COLOR,
               opacity: 0.9,
               marginTop: '6px',
-              textShadow: `0 1px 12px rgba(0,0,0,0.7), 0 0 30px ${BG}, 0 0 60px ${BG}, 0 4px 24px ${BG}`,
+              textShadow: `0 1px 16px rgba(0,0,0,0.8), 0 0 40px ${BG}, 0 0 80px ${BG}`,
             }}>
               Det trygga och det svåra
             </p>
+            {/* Spacer — pushes action cards below hero face zone */}
+            <div style={{ height: 'clamp(56px, 14vh, 100px)' }} />
             <UnifiedResumeBanner product={product} kidsProgress={progress} accentColor={ACCENT_COLOR} />
             <NextConversationCard product={product} progress={progress} />
           </motion.div>
         </motion.div>
 
-        <div style={{ flex: 1, minHeight: '16px', maxHeight: 'clamp(24px, 6vh, 60px)' }} />
+        <div style={{ height: '24px' }} />
 
         <CategoryTileGrid
           product={product}

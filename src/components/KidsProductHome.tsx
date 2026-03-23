@@ -95,9 +95,6 @@ const HERO_TOP_OFFSET: Record<string, string> = {
   jag_i_varlden: '-20vh',
 };
 
-/** Products that hide the hero illustration entirely */
-const HIDE_HERO_PRODUCTS = new Set(['syskonkort']);
-
 /* ── First uncompleted card per category hook ── */
 function useFirstCardImages(product: ProductManifest, progress: KidsProductProgress) {
   const completedSet = useMemo(
@@ -146,7 +143,6 @@ function CategoryTile({
   fillHeight = false,
   glassTile = false,
   glassGlowColor,
-  enlargeTiles = false,
 }: {
   cat: { id: string; title: string; subtitle?: string };
   product: ProductManifest;
@@ -164,7 +160,6 @@ function CategoryTile({
   fillHeight?: boolean;
   glassTile?: boolean;
   glassGlowColor?: string;
-  enlargeTiles?: boolean;
 }) {
   const navigate = useNavigate();
   const styles = squareTile ? SQUARE_TILE_ILLUSTRATION_STYLES : TILE_ILLUSTRATION_STYLES;
@@ -187,7 +182,7 @@ function CategoryTile({
         position: 'relative',
         overflow: 'hidden',
         width: '100%',
-        ...(fillHeight ? { height: '100%' } : squareTile ? (enlargeTiles ? { height: '100%' } : { aspectRatio: wideSpan ? '2 / 1' : '2 / 3' }) : { minHeight: compactHeight ? '120px' : '140px' }),
+        ...(fillHeight ? { height: '100%' } : squareTile ? { aspectRatio: wideSpan ? '2 / 1' : '2 / 3' } : { minHeight: compactHeight ? '120px' : '140px' }),
 
         borderRadius: squareTile ? '28px' : '22px',
         cursor: isLocked ? 'default' : 'pointer',
@@ -384,7 +379,6 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
   const tileLight = product.tileLight ?? bg;
   const isSU = product.slug === 'still-us';
   const isVardag = product.id === 'vardagskort';
-  const isSyskon = product.id === 'syskonkort';
   const useSquareGrid = true; // 2×2 grid for all products
 
   // ── Intro session completion state (Still Us only) ──
@@ -452,7 +446,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
       )}
 
       {/* ── Hero illustration — large, atmospheric, bleeds off top ── */}
-      {product.heroImage && !HIDE_HERO_PRODUCTS.has(product.id) && (
+      {product.heroImage && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -479,7 +473,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
               filter: 'saturate(1.2) brightness(1.1)',
             }}
           />
-          {/* Multi-stop scrim: product color blend */}
+          {/* Multi-stop scrim: product color blend — much lighter for Vardag */}
           <div
             style={{
               position: 'absolute',
@@ -502,7 +496,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
           minHeight: '100vh',
           display: 'flex',
           flexDirection: 'column',
-          paddingTop: HIDE_HERO_PRODUCTS.has(product.id) ? 'clamp(24px, 6vh, 56px)' : 'clamp(32px, 10vh, 90px)',
+          paddingTop: 'clamp(32px, 10vh, 90px)',
           paddingRight: '16px',
           paddingBottom: '0px',
           paddingLeft: '16px',
@@ -702,8 +696,8 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
         </motion.div>
 
         {/* Small spacer before grid */}
-        {useSquareGrid && !HIDE_HERO_PRODUCTS.has(product.id) && <div style={{ flex: 1 }} />}
-        {useSquareGrid && !HIDE_HERO_PRODUCTS.has(product.id) && <div style={{ height: '8px' }} />}
+        {useSquareGrid && <div style={{ flex: 1 }} />}
+        {useSquareGrid && <div style={{ height: '8px' }} />}
 
         {/* Removed "Välj ett ämne" header — tiles speak for themselves */}
 
@@ -718,7 +712,6 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
               ? {
                   gridTemplateColumns: '1fr 1fr',
                   gap: '8px',
-                  ...(HIDE_HERO_PRODUCTS.has(product.id) ? { flex: 1, gridTemplateRows: '1fr 1fr' } : {}),
                 }
               : { flexDirection: 'column' as const, gap: '12px' }),
             width: '100%',
@@ -772,7 +765,6 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
                   fillHeight={false}
                   glassTile={isSU}
                   glassGlowColor={isSU ? SU_GLOW_COLORS[cat.id] : undefined}
-                  enlargeTiles={isSyskon}
                 />
               </div>
             );
