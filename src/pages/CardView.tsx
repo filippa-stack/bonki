@@ -1271,6 +1271,69 @@ export default function CardView() {
 
           {/* Note: SimpleTakeaway already shows "Det ni skriver sparas i era samtal" */}
 
+          {/* Gör exercise — collapsible block (Still Us) */}
+          {gorExercise && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.45, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              className="max-w-md mx-auto"
+              style={{ width: '100%', marginTop: '24px' }}
+            >
+              <button
+                onClick={() => setGorOpen(!gorOpen)}
+                style={{
+                  width: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  padding: '14px 16px',
+                  backgroundColor: 'hsla(38, 30%, 85%, 0.12)',
+                  borderRadius: gorOpen ? '12px 12px 0 0' : '12px',
+                  border: 'none',
+                  cursor: 'pointer',
+                  transition: 'border-radius 0.2s ease',
+                }}
+              >
+                <span style={{
+                  fontFamily: "'DM Serif Display', serif",
+                  fontSize: '15px',
+                  fontWeight: 600,
+                  color: DEEP_SAFFRON,
+                }}>
+                  Gör: {gorExercise.title}
+                </span>
+                <span style={{
+                  color: DRIFTWOOD,
+                  fontSize: '18px',
+                  transform: gorOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                  transition: 'transform 0.2s ease',
+                  lineHeight: 1,
+                }}>
+                  ▾
+                </span>
+              </button>
+              {gorOpen && (
+                <div style={{
+                  padding: '16px',
+                  backgroundColor: 'hsla(38, 30%, 85%, 0.12)',
+                  borderRadius: '0 0 12px 12px',
+                  borderTop: `1px solid hsla(38, 30%, 70%, 0.15)`,
+                }}>
+                  <p style={{
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: '14px',
+                    color: DRIFTWOOD,
+                    lineHeight: 1.6,
+                    whiteSpace: 'pre-line',
+                  }}>
+                    {gorExercise.instructionText}
+                  </p>
+                </div>
+              )}
+            </motion.div>
+          )}
+
           {/* 3–5. CTAs */}
           <motion.div
             initial={{ opacity: 0 }}
