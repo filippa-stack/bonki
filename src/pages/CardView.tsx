@@ -928,6 +928,8 @@ export default function CardView() {
     const DRIFTWOOD = '#FDF6E3';
     const PARCHMENT = '#F5EDD2';
     const MIDNIGHT_INK = '#1A1A2E';
+    const completionBg = product?.backgroundColor ?? MIDNIGHT_INK;
+    const isLightBg = false; // product backgrounds are always dark
 
     const hasNextCard = postCompletionNav.type === 'next_card' || postCompletionNav.type === 'next_category';
     const categoryDest = postCompletionNav.homeDest;
@@ -942,7 +944,7 @@ export default function CardView() {
         style={{
           position: 'fixed',
           inset: 0,
-          backgroundColor: LANTERN_GLOW,
+          backgroundColor: completionBg,
           zIndex: 10,
           display: 'flex',
           flexDirection: 'column',
@@ -966,8 +968,8 @@ export default function CardView() {
             border: 'none',
             cursor: 'pointer',
             padding: '8px',
-            color: BARK,
-            opacity: 0.5,
+            color: LANTERN_GLOW,
+            opacity: 0.6,
           }}
         >
           <ChevronLeft size={22} strokeWidth={1.5} />
@@ -1033,7 +1035,7 @@ export default function CardView() {
               fontWeight: 400,
               letterSpacing: '1.5px',
               textTransform: 'uppercase',
-              color: BARK,
+              color: LANTERN_GLOW,
               textAlign: 'center',
               marginTop: '12px',
             }}>
@@ -1050,7 +1052,7 @@ export default function CardView() {
             style={{
               fontSize: '24px',
               fontWeight: 600,
-              color: BARK,
+              color: LANTERN_GLOW,
               textAlign: 'center',
               lineHeight: 1.3,
               marginBottom: '32px',
@@ -1157,7 +1159,7 @@ export default function CardView() {
                 fontFamily: 'var(--font-sans)',
                 fontSize: '17px',
                 fontWeight: 600,
-                color: MIDNIGHT_INK,
+                color: '#1A1A2E',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -1185,7 +1187,8 @@ export default function CardView() {
                   fontFamily: 'var(--font-sans)',
                   fontSize: '14px',
                   fontWeight: 400,
-                  color: DRIFTWOOD,
+                  color: LANTERN_GLOW,
+                  opacity: 0.6,
                   textAlign: 'center',
                 }}
               >
@@ -1194,6 +1197,9 @@ export default function CardView() {
             )}
           </motion.div>
         </div>
+
+        {/* Bottom spacer for nav bar */}
+        <div style={{ height: 'calc(72px + env(safe-area-inset-bottom, 0px))', flexShrink: 0 }} />
       </motion.div>
     );
   }
