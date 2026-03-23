@@ -52,6 +52,7 @@ export function useSessionReflections(
   const [loading, setLoading] = useState(true);
   const [myReflection, setMyReflection] = useState<StepReflection | null>(null);
   const [localText, setLocalText] = useState('');
+  const localTextRef = useRef('');
   const pendingSave = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Keep ref in sync so callbacks always see the latest sessionId
