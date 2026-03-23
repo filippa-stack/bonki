@@ -2543,7 +2543,7 @@ export default function CardView() {
       )}
 
 
-      {isLive && effectiveSteps.length > 1 && isStillUsCard && (
+      {isLive && effectiveSteps.length > 1 && !isStillUsCard && !isStillUsFocusMode && (
         <motion.div
           style={{ paddingTop: '12px', marginTop: '12px' }}
           initial={!suppressEntryAnim ? { opacity: 0 } : false}
