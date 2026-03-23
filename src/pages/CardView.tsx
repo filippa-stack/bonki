@@ -856,9 +856,10 @@ export default function CardView() {
       return { type: 'all_complete' as const, destination: homeDest, label: 'Avsluta', homeDest };
     }
 
-    // Still Us: recommend next card/category
+    // Still Us: navigate to portal page for next card
     if (nextIncompleteInCategory) {
-      return { type: 'next_card' as const, destination: `/card/${nextIncompleteInCategory.id}`, label: 'Nästa samtal', homeDest };
+      const portalDest = category ? `/product/${product.slug}/portal/${category.id}` : `/product/${product.slug}`;
+      return { type: 'next_card' as const, destination: portalDest, label: 'Nästa samtal', homeDest };
     }
 
     for (const catId of getRecommendedCategoryOrder(card.id)) {
@@ -866,7 +867,8 @@ export default function CardView() {
       const catCards = productCards.filter(c => c.categoryId === catId);
       const hasIncomplete = catCards.some(c => !effectiveCompleted.has(c.id));
       if (hasIncomplete) {
-        return { type: 'next_category' as const, destination: `/category/${catId}`, label: 'Nästa ämne', homeDest };
+        const nextCatPortal = product ? `/product/${product.slug}/portal/${catId}` : `/category/${catId}`;
+        return { type: 'next_category' as const, destination: nextCatPortal, label: 'Nästa ämne', homeDest };
       }
     }
 
@@ -1981,9 +1983,7 @@ export default function CardView() {
   }
 
   const exitBackTo = isFromArchive ? '/shared' : (
-    isKidsProduct && product && category
-      ? `/product/${product.slug}/portal/${category.id}`
-      : product ? `/product/${product.slug}` : '/'
+    product ? `/product/${product.slug}` : '/'
   );
 
   // Smart exit: auto-complete the step if user exits on the last prompt of the last step
