@@ -1179,6 +1179,10 @@ export default function CardView() {
     const categoryName = category?.title ?? 'kategorin';
     const homeDest = postCompletionNav.homeDest;
 
+    // Resolve Gör exercise for su-mock cards
+    const suMockMatchSU = cardId?.match(/^su-mock-(\d+)$/);
+    const gorExerciseSU = suMockMatchSU ? getGorExercise(parseInt(suMockMatchSU[1], 10)) : null;
+
     return (
       <motion.div
         className="min-h-screen"
