@@ -44,6 +44,7 @@ const CARD_IDS_WITH_IMAGES = new Set([
   'sk-forlora-ett-syskon', 'sk-framtid',
 
   // ── Still Us Mock ──
+  'su-intro',
   'su-mock-0', 'su-mock-1', 'su-mock-2', 'su-mock-3', 'su-mock-4',
   'su-mock-5', 'su-mock-6', 'su-mock-7', 'su-mock-8', 'su-mock-9',
   'su-mock-10', 'su-mock-11', 'su-mock-12', 'su-mock-13', 'su-mock-14',
