@@ -33,34 +33,18 @@ export function useProductTheme(
     if (bgColor) {
       root.style.setProperty('--surface-base', bgColor);
       root.style.setProperty('--product-bg', bgColor);
+
+      // All product backgrounds are dark — force light text for readability
+      root.style.setProperty('--text-primary', 'hsl(38, 25%, 92%)');
+      root.style.setProperty('--text-secondary', 'hsl(38, 15%, 65%)');
+
       // Kids product enhancements
       if (pronounMode === 'du') {
         const hue = p.split(',')[0]?.trim() ?? '215';
-
-        // Detect dark backgrounds — use light question text for readability
-        const isDarkBg = (() => {
-          try {
-            const temp = document.createElement('div');
-            temp.style.color = bgColor!;
-            document.body.appendChild(temp);
-            const rgb = getComputedStyle(temp).color;
-            document.body.removeChild(temp);
-            const [r, g, b] = rgb.match(/\d+/g)?.map(Number) ?? [0, 0, 0];
-            const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-            return luminance < 0.35;
-          } catch {
-            return false;
-          }
-        })();
-
-        root.style.setProperty(
-          '--kids-question-color',
-          isDarkBg ? `hsl(${hue}, 20%, 88%)` : `hsl(${hue}, 35%, 22%)`
-        );
-        // Badge accent — adapt for dark backgrounds
-        root.style.setProperty('--kids-counter-bg', `hsla(${p}, ${isDarkBg ? '0.15' : '0.09'})`);
-        root.style.setProperty('--kids-counter-color', `hsla(${p}, ${isDarkBg ? '0.85' : '0.70'})`);
-        root.style.setProperty('--kids-counter-border', `hsla(${p}, ${isDarkBg ? '0.25' : '0.15'})`);
+        root.style.setProperty('--kids-question-color', `hsl(${hue}, 20%, 88%)`);
+        root.style.setProperty('--kids-counter-bg', `hsla(${p}, 0.15)`);
+        root.style.setProperty('--kids-counter-color', `hsla(${p}, 0.85)`);
+        root.style.setProperty('--kids-counter-border', `hsla(${p}, 0.25)`);
       }
     }
 
@@ -77,6 +61,7 @@ export function useProductTheme(
       ['--cta-default', '--cta-hover-v2', '--cta-active', '--cta-bg',
        '--session-header-bg', '--accent-saffron', '--accent-text',
        '--surface-base', '--product-bg', '--cta-button-color',
+       '--text-primary', '--text-secondary',
        '--kids-question-color',
        '--kids-counter-bg', '--kids-counter-color', '--kids-counter-border',
        '--tile-light', '--tile-mid', '--tile-deep',
