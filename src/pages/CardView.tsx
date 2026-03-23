@@ -30,6 +30,7 @@ import ProductPaywall from '@/components/ProductPaywall';
 import { getCompletionMessages, getUIText, type PronounMode } from '@/lib/pronouns';
 import { useCardImage } from '@/hooks/useCardImage';
 import { isDemoMode, isDemoParam } from '@/lib/demoMode';
+import { upsertDemoDiaryEntry } from '@/lib/demoDiary';
 import { useCardVisit } from '@/hooks/useCardVisit';
 import { useProductTheme } from '@/hooks/useProductTheme';
 
