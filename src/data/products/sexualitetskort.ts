@@ -157,7 +157,7 @@ export const sexualitetskortProduct: ProductManifest = {
   accentColor: 'hsl(10, 24%, 54%)',
   accentColorMuted: 'hsl(10, 18%, 82%)',
   secondaryAccent: 'hsl(310, 24%, 44%)',
-  backgroundColor: '#1E1428',
+  backgroundColor: '#3A2420',
   ctaButtonColor: '#A8766D',
   tileLight: '#A8766D',
   tileMid: '#8A5F57',
