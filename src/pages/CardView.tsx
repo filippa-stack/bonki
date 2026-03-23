@@ -2186,6 +2186,10 @@ export default function CardView() {
       : (currentPromptRaw as any)?.text ?? '';
 
     const handleKidsAdvance = async () => {
+      // Save any typed note before advancing
+      if (kidsNoteLocalText.trim()) {
+        await kidsNoteSession.markReady();
+      }
       if (isLastPrompt) {
         await handleCompleteStep();
       } else {
