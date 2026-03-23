@@ -52,6 +52,7 @@ export function useSessionReflections(
   const [loading, setLoading] = useState(true);
   const [myReflection, setMyReflection] = useState<StepReflection | null>(null);
   const [localText, setLocalText] = useState('');
+  const localTextRef = useRef('');
   const pendingSave = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Keep ref in sync so callbacks always see the latest sessionId
@@ -63,6 +64,7 @@ export function useSessionReflections(
   useEffect(() => {
     setMyReflection(null);
     setLocalText('');
+    localTextRef.current = '';
     setLoading(true);
   }, [normalizedSessionId, stepIndex]);
 
@@ -98,6 +100,7 @@ export function useSessionReflections(
       if (data) {
         setMyReflection(mapRow(data));
         setLocalText(data.text);
+        localTextRef.current = data.text;
       }
       setLoading(false);
     };
@@ -141,6 +144,7 @@ export function useSessionReflections(
   // ─── 4. Autosave draft text ───
   const setText = useCallback((text: string) => {
     setLocalText(text);
+    localTextRef.current = text;
     setMyReflection(prev => prev ? { ...prev, text } : null);
 
     if (pendingSave.current) clearTimeout(pendingSave.current);
@@ -170,6 +174,9 @@ export function useSessionReflections(
   const markReady = useCallback(async () => {
     if (!user) return;
 
+    // Use ref to always get the latest text, avoiding stale closure issues
+    const currentText = localTextRef.current;
+
     if (!devState && sessionIdRef.current) {
       const { error } = await supabase
         .from('step_reflections')
@@ -178,7 +185,7 @@ export function useSessionReflections(
             session_id: sessionIdRef.current,
             step_index: stepIndex,
             user_id: user.id,
-            text: localText,
+            text: currentText,
             state: 'ready' as any,
           },
           { onConflict: 'session_id,step_index,user_id' }
@@ -192,18 +199,18 @@ export function useSessionReflections(
 
     setMyReflection(prev =>
       prev
-        ? { ...prev, state: 'ready', text: localText }
+        ? { ...prev, state: 'ready', text: currentText }
         : {
             id: '',
             sessionId: sessionIdRef.current || 'dev-session',
             stepIndex,
             userId: user.id,
-            text: localText,
+            text: currentText,
             state: 'ready',
             updatedAt: new Date().toISOString(),
           }
     );
-  }, [user, stepIndex, localText, devState]);
+  }, [user, stepIndex, devState]);
 
   // Cleanup pending autosave on unmount
   useEffect(() => {

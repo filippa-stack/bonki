@@ -1948,6 +1948,10 @@ export default function CardView() {
     const isLastPrompt = localPromptIndex >= totalPrompts - 1;
 
     if (isLastStep && isLastPrompt && cardViewMode === 'live') {
+      // Save any pending kids note before completing
+      if (isKidsProduct && kidsNoteLocalText.trim()) {
+        await kidsNoteSession.markReady();
+      }
       await handleCompleteStep();
     }
     navigate(exitBackTo);
@@ -2186,6 +2190,10 @@ export default function CardView() {
       : (currentPromptRaw as any)?.text ?? '';
 
     const handleKidsAdvance = async () => {
+      // Save any typed note before advancing
+      if (kidsNoteLocalText.trim()) {
+        await kidsNoteSession.markReady();
+      }
       if (isLastPrompt) {
         await handleCompleteStep();
       } else {
