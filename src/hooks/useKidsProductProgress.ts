@@ -75,6 +75,10 @@ export function useKidsProductProgress(product: ProductManifest | undefined): Ki
 
     let cancelled = false;
     setLoading(true);
+  }, [space?.id, productId, location.key]);
+
+    let cancelled = false;
+    setLoading(true);
 
     // Fetch completed sessions for this product
     const fetchCompleted = supabase
