@@ -556,7 +556,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
                   whileTap={{ scale: 0.96 }}
                   onClick={() => {
                     localStorage.setItem('bonki-last-active-product', product.slug);
-                    navigate('/product/still-us/portal/__intro__');
+                    navigate('/product/still-us/portal/su-mock-vardagen');
                   }}
                   style={{
                     display: 'inline-flex',
