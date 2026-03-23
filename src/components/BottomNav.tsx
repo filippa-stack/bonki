@@ -72,7 +72,14 @@ export default function BottomNav() {
   const { pathname, search } = useLocation();
 
   // Hide during active sessions (card sessions, Still Us sessions)
-  if (pathname.startsWith('/card/')) return null;
+  // Show on /card/ when viewing archive or completed session
+  const params = new URLSearchParams(search);
+  if (pathname.startsWith('/card/') && params.get('from') !== 'archive') {
+    // Check if completion view is active (devState=completed or session just finished)
+    // We detect this by checking for a DOM marker set by CompletedSessionView
+    const completionEl = document.querySelector('[data-completion-view]');
+    if (!completionEl) return null;
+  }
   if (pathname.startsWith('/check-in/')) return null;
   if (pathname.startsWith('/session/')) return null;
   if (pathname === '/share') return null;
