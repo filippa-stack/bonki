@@ -205,7 +205,7 @@ export default function CompletedSessionView({
       <div className="min-h-screen" style={{ backgroundColor: bgColor }}>
         <Header title={cardTitle} showBack backTo={isChildProduct && product && categoryId ? `/product/${product.slug}/portal/${categoryId}` : categoryId ? `/category/${categoryId}` : '/'} />
         <div className="px-6 pt-title-above pb-8 text-center max-w-md mx-auto space-y-8">
-          <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>Ingen tidigare session hittades.</p>
+          <p className="text-sm" style={{ color: '#FDF6E3', opacity: 0.6 }}>Ingen tidigare session hittades.</p>
           <button onClick={onExploreAgain} className="cta-primary">Utforska igen</button>
         </div>
       </div>
@@ -262,7 +262,7 @@ export default function CompletedSessionView({
             >
               {headline}
             </h2>
-            <p className="font-serif italic" style={{ fontSize: '15px', color: 'var(--completion-subtitle)', opacity: 0.7 }}>
+            <p className="font-serif italic" style={{ fontSize: '15px', color: '#FDF6E3', opacity: 0.55 }}>
               {formatSessionDate(session.startedAt)}
             </p>
           </motion.div>
@@ -286,7 +286,7 @@ export default function CompletedSessionView({
                   {/* Partner first */}
                   {group.partnerRef && group.partnerRef.text.trim() && (
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                      <p style={{ fontSize: '11px', letterSpacing: '0.04em', color: 'var(--text-tertiary)', opacity: 0.6, paddingLeft: '2px' }}>
+                      <p style={{ fontSize: '11px', letterSpacing: '0.04em', color: '#FDF6E3', opacity: 0.5, paddingLeft: '2px' }}>
                         {group.partnerRef.speakerLabel && /^[AB]$/.test(group.partnerRef.speakerLabel)
                           ? group.partnerRef.speakerLabel
                           : partnerName}
@@ -304,7 +304,7 @@ export default function CompletedSessionView({
                   {/* User second */}
                   {group.myRef && group.myRef.text.trim() && (
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                      <p style={{ fontSize: '11px', letterSpacing: '0.04em', color: 'var(--text-tertiary)', opacity: 0.6, paddingLeft: '2px' }}>
+                      <p style={{ fontSize: '11px', letterSpacing: '0.04em', color: '#FDF6E3', opacity: 0.5, paddingLeft: '2px' }}>
                         {group.myRef.speakerLabel && /^[AB]$/.test(group.myRef.speakerLabel)
                           ? group.myRef.speakerLabel
                           : myName}
@@ -335,7 +335,7 @@ export default function CompletedSessionView({
               transition={{ delay: BEAT_3, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
               style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}
             >
-              <p style={{ fontSize: '11px', letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--completion-label)', opacity: 0.55 }}>Det ni tog med er</p>
+              <p style={{ fontSize: '11px', letterSpacing: '0.06em', textTransform: 'uppercase', color: '#FDF6E3', opacity: 0.45 }}>Det ni tog med er</p>
               <div style={{
                 background: 'hsl(36 20% 97% / 0.70)',
                 borderRadius: '12px',
@@ -366,7 +366,7 @@ export default function CompletedSessionView({
                 <button
                   onClick={() => navigate(`/product/${product!.slug}`)}
                   className="font-sans"
-                  style={{ fontSize: '13px', color: 'var(--completion-link)', opacity: 0.55, background: 'none', border: 'none', cursor: 'pointer' }}
+                  style={{ fontSize: '13px', color: '#FDF6E3', opacity: 0.45, background: 'none', border: 'none', cursor: 'pointer' }}
                 >
                   Tillbaka till {product!.name}
                 </button>
