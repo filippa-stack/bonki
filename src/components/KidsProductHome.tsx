@@ -589,10 +589,10 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
                     fontFamily: 'var(--font-serif)',
                     fontSize: '13px',
                     fontWeight: 500,
-                    color: LANTERN_GLOW,
+                    color: bg,
                     letterSpacing: '0.06em',
                     whiteSpace: 'nowrap',
-                    textShadow: '0 1px 6px rgba(0,0,0,0.8), 0 0 20px rgba(0,0,0,0.5)',
+                    textShadow: `0 0 12px ${SAFFRON_FLAME}, 0 0 24px ${SAFFRON_FLAME}88, 0 0 40px ${SAFFRON_FLAME}44`,
                   }}
                 >
                   Ert första samtal
