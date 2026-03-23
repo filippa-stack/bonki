@@ -544,9 +544,9 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
                 {product.tagline}
               </span>
 
-            {/* ── Still Us: Intro session entry ── */}
+            {/* ── Still Us: Intro session entry — pure typographic CTA ── */}
             {isSU && (
-              <div style={{ display: 'block', width: '100%', textAlign: 'center', marginTop: '14px' }}>
+              <div style={{ display: 'block', width: '100%', textAlign: 'center', marginTop: '20px' }}>
               <motion.button
                 variants={fadeUp}
                 whileTap={{ scale: 0.97 }}
@@ -559,20 +559,12 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
                   alignItems: 'center',
                   justifyContent: 'center',
                   gap: '6px',
-                  marginTop: '16px',
-                  padding: introCompleted ? '5px 16px' : '7px 22px',
-                  background: introCompleted
-                    ? 'rgba(255, 255, 255, 0.04)'
-                    : 'rgba(255, 255, 255, 0.08)',
-                  border: introCompleted
-                    ? '1px solid rgba(255, 255, 255, 0.06)'
-                    : '1px solid rgba(255, 255, 255, 0.14)',
-                  borderRadius: '24px',
-                  backdropFilter: 'blur(12px)',
-                  WebkitBackdropFilter: 'blur(12px)',
+                  padding: 0,
+                  background: 'transparent',
+                  border: 'none',
                   cursor: 'pointer',
-                  opacity: introCompleted ? 0.4 : 0.85,
-                  transition: 'opacity 0.3s ease, background 0.3s ease',
+                  opacity: introCompleted ? 0.3 : 0.65,
+                  transition: 'opacity 0.3s ease',
                 }}
               >
                 {introCompleted && (
@@ -585,21 +577,21 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
                 <span
                   style={{
                     fontFamily: 'var(--font-serif)',
-                    fontSize: introCompleted ? '12px' : '14px',
-                    fontWeight: 500,
+                    fontSize: '13px',
+                    fontWeight: 400,
                     color: LANTERN_GLOW,
-                    letterSpacing: '0.05em',
-                    opacity: introCompleted ? 0.7 : 1,
+                    letterSpacing: '0.06em',
+                    borderBottom: introCompleted ? 'none' : `1px solid rgba(253, 246, 227, 0.25)`,
+                    paddingBottom: '2px',
                   }}
                 >
                   {introCompleted ? 'Ert första samtal' : 'Börja här'}
                 </span>
                 {!introCompleted && (
                   <span style={{
-                    fontSize: '13px',
+                    fontSize: '12px',
                     color: SAFFRON_FLAME,
                     lineHeight: 1,
-                    marginLeft: '2px',
                   }}>→</span>
                 )}
               </motion.button>
