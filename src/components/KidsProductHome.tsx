@@ -544,6 +544,49 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
                 {product.tagline}
               </span>
 
+            {/* ── Still Us: Intro session entry ── */}
+            {isSU && (
+              <motion.button
+                variants={fadeUp}
+                whileTap={{ scale: 0.97 }}
+                onClick={() => {
+                  localStorage.setItem('bonki-last-active-product', product.slug);
+                  navigate('/card/su-intro');
+                }}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  marginTop: introCompleted ? '12px' : '20px',
+                  padding: introCompleted ? '4px 14px' : '8px 20px',
+                  background: 'transparent',
+                  border: 'none',
+                  cursor: 'pointer',
+                  opacity: introCompleted ? 0.35 : 0.7,
+                  transition: 'opacity 0.3s ease',
+                }}
+              >
+                {introCompleted && (
+                  <span style={{
+                    fontSize: '11px',
+                    color: SAFFRON_FLAME,
+                    lineHeight: 1,
+                  }}>✓</span>
+                )}
+                <span
+                  style={{
+                    fontFamily: 'var(--font-serif)',
+                    fontSize: introCompleted ? '13px' : '15px',
+                    fontWeight: 500,
+                    color: LANTERN_GLOW,
+                    letterSpacing: '0.04em',
+                  }}
+                >
+                  {introCompleted ? 'Ert första samtal' : 'Börja här →'}
+                </span>
+              </motion.button>
+            )}
+
             {/* Spacer — pushes content below hero face zone */}
             {!useSquareGrid && <div style={{ height: 'clamp(48px, 12vh, 100px)' }} />}
 
