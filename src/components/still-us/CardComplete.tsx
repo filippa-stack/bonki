@@ -7,10 +7,9 @@ import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { EASE, EMOTION } from '@/lib/motion';
-import { COLORS, cardIdFromSlug, FEEDBACK_CARDS } from '@/lib/stillUsTokens';
+import { COLORS, cardIdFromSlug } from '@/lib/stillUsTokens';
 import { advanceCard, buildSliderAnchors } from '@/lib/stillUsRpc';
 import { getGorExercise } from '@/data/gorExercises';
-import FeedbackSheet from '@/components/FeedbackSheet';
 
 type Phase = 'takeaway' | 'handoff' | 'partner_writing' | 'committing';
 
@@ -53,23 +52,8 @@ export default function CardComplete({
   const [gorExpanded, setGorExpanded] = useState(false);
   const [handoffReady, setHandoffReady] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [showFeedback, setShowFeedback] = useState(false);
-
   const weekNumber = cardIndex + 1;
   const gorExercise = getGorExercise(cardIndex);
-
-  // Feedback sheet trigger for specific cards
-  useEffect(() => {
-    if (FEEDBACK_CARDS.includes(cardIndex)) {
-      const timer = setTimeout(() => setShowFeedback(true), 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [cardIndex]);
-
-  // Clear feedback on phase change away from takeaway
-  useEffect(() => {
-    if (phase !== 'takeaway') setShowFeedback(false);
-  }, [phase]);
 
   // 3-second safety delay for handoff
   useEffect(() => {
@@ -497,14 +481,6 @@ export default function CardComplete({
         </motion.button>
       </motion.div>
 
-      {showFeedback && (
-        <FeedbackSheet
-          coupleId={coupleId}
-          cardId={cardIdFromSlug(slug) || ''}
-          cardIndex={cardIndex}
-          onDismiss={() => setShowFeedback(false)}
-        />
-      )}
     </div>
   );
 }

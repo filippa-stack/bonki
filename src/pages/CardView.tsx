@@ -1932,7 +1932,7 @@ export default function CardView() {
       switch (currentStageKey) {
         case 'opening': return 'Vänd perspektivet →';
         case 'reflective': return 'Tänk om... →';
-        case 'scenario': return 'Gör något tillsammans →';
+        case 'scenario': return 'Avsluta →';
         default: return 'Vi är klara.';
       }
     };
