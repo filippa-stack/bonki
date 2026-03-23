@@ -834,79 +834,81 @@ export default function CardView() {
     const effectiveCompleted = new Set(completedCardIds);
     effectiveCompleted.add(card.id);
 
-    // Find next incomplete card in same category
-    const categoryCards = productCards.filter(c => c.categoryId === category.id);
-    const nextIncompleteInCategory = categoryCards.find(c => !effectiveCompleted.has(c.id));
+    const categoryCards = productCards.filter((candidate) => candidate.categoryId === category.id);
+    const nextIncompleteInCategory = categoryCards.find((candidate) => !effectiveCompleted.has(candidate.id));
 
-    // Find next incomplete card in next category (for cross-category progression)
-    let nextCategoryCard: { destination: string; label: string } | null = null;
-    if (!nextIncompleteInCategory && product) {
-      const catOrder = product.categories.map(c => c.id);
-      for (const catId of catOrder) {
-        if (catId === category.id) continue;
-        const catCards = productCards.filter(c => c.categoryId === catId);
-        const next = catCards.find(c => !effectiveCompleted.has(c.id));
-        if (next) {
-          nextCategoryCard = { destination: `/card/${next.id}`, label: 'Nästa ämne' };
-          break;
-        }
-      }
-    }
+    const buildPortalDestination = (targetCategoryId: string, targetCardId?: string) => {
+      if (!product) return `/category/${targetCategoryId}`;
+      const basePath = `/product/${product.slug}/portal/${targetCategoryId}`;
+      return targetCardId ? `${basePath}?card=${targetCardId}` : basePath;
+    };
 
-    const homeDest = product && product.id !== 'still_us'
-      ? (category ? `/product/${product.slug}/portal/${category.id}` : `/product/${product.slug}`)
+    const categoryOrder = product
+      ? (product.id === 'still_us'
+          ? [...getRecommendedCategoryOrder(card.id)]
+          : product.categories.map((candidate) => candidate.id))
+      : [...getRecommendedCategoryOrder(card.id)];
+
+    const currentCategoryIndex = categoryOrder.indexOf(category.id);
+    const nextCategoryIds = currentCategoryIndex >= 0
+      ? [...categoryOrder.slice(currentCategoryIndex + 1), ...categoryOrder.slice(0, currentCategoryIndex)]
+      : categoryOrder.filter((candidate) => candidate !== category.id);
+
+    const nextCategoryCard = nextCategoryIds
+      .map((catId) => productCards.find((candidate) => candidate.categoryId === catId && !effectiveCompleted.has(candidate.id)))
+      .find(Boolean) ?? null;
+
+    const homeDest = product
+      ? `/product/${product.slug}`
       : '/';
 
-    // Kids/family products: navigate to portal page (not directly to card)
-    if (product && product.id !== 'still_us') {
-      const portalDest = category ? `/product/${product.slug}/portal/${category.id}` : `/product/${product.slug}`;
+    if (product) {
       if (nextIncompleteInCategory) {
-        return { type: 'next_card' as const, destination: portalDest, label: 'Nästa samtal', homeDest };
+        return {
+          type: 'next_card' as const,
+          destination: buildPortalDestination(category.id, nextIncompleteInCategory.id),
+          label: 'Nästa samtal',
+          homeDest,
+        };
       }
-      if (nextCategoryCard) {
-        // Next card is in a different category — go to that category's portal
-        const nextCatId = nextCategoryCard.destination.replace('/card/', '');
-        const nextCard = productCards.find(c => c.id === nextCatId);
-        const nextCatPortal = nextCard?.categoryId
-          ? `/product/${product.slug}/portal/${nextCard.categoryId}`
-          : `/product/${product.slug}`;
-        return { type: 'next_card' as const, destination: nextCatPortal, label: 'Nästa samtal', homeDest };
-      }
-      return { type: 'all_complete' as const, destination: homeDest, label: 'Avsluta', homeDest };
-    }
 
-    // Still Us: find next incomplete card in sequence across all categories
-    if (product && product.id === 'still_us') {
-      // 1. Try next incomplete card in same category first
-      if (nextIncompleteInCategory && category) {
-        return { type: 'next_card' as const, destination: `/product/${product.slug}/portal/${category.id}`, label: 'Nästa samtal', homeDest };
+      if (nextCategoryCard) {
+        return {
+          type: 'next_card' as const,
+          destination: buildPortalDestination(nextCategoryCard.categoryId, nextCategoryCard.id),
+          label: 'Nästa samtal',
+          homeDest,
+        };
       }
-      // 2. Try next category with incomplete cards (follows recommended order)
-      for (const catId of getRecommendedCategoryOrder(card.id)) {
-        if (catId === category?.id) continue;
-        const catCards = productCards.filter(c => c.categoryId === catId);
-        const hasIncomplete = catCards.some(c => !effectiveCompleted.has(c.id));
-        if (hasIncomplete) {
-          return { type: 'next_card' as const, destination: `/product/${product.slug}/portal/${catId}`, label: 'Nästa samtal', homeDest };
-        }
-      }
-      // 3. All done
-      return { type: 'all_complete' as const, destination: `/product/${product.slug}`, label: '', homeDest };
+
+      return {
+        type: 'all_complete' as const,
+        destination: homeDest,
+        label: product.id === 'still_us' ? '' : 'Avsluta',
+        homeDest,
+      };
     }
 
     if (nextIncompleteInCategory) {
-      const portalDest = category ? `/product/${product.slug}/portal/${category.id}` : `/product/${product.slug}`;
-      return { type: 'next_card' as const, destination: portalDest, label: 'Nästa samtal', homeDest };
+      return {
+        type: 'next_card' as const,
+        destination: buildPortalDestination(category.id),
+        label: 'Nästa samtal',
+        homeDest,
+      };
     }
 
-    for (const catId of getRecommendedCategoryOrder(card.id)) {
-      if (catId === category.id) continue;
-      const catCards = productCards.filter(c => c.categoryId === catId);
-      const hasIncomplete = catCards.some(c => !effectiveCompleted.has(c.id));
-      if (hasIncomplete) {
-        const nextCatPortal = product ? `/product/${product.slug}/portal/${catId}` : `/category/${catId}`;
-        return { type: 'next_category' as const, destination: nextCatPortal, label: 'Nästa ämne', homeDest };
-      }
+    const nextLegacyCategoryId = nextCategoryIds.find((catId) =>
+      productCards.some((candidate) => candidate.categoryId === catId && !effectiveCompleted.has(candidate.id))
+    );
+
+    if (nextLegacyCategoryId) {
+      return {
+        type: 'next_category' as const,
+        destination: buildPortalDestination(nextLegacyCategoryId),
+        label: 'Nästa ämne',
+        homeDest,
+      };
     }
 
     return { type: 'all_complete' as const, destination: '/', label: '', homeDest };
