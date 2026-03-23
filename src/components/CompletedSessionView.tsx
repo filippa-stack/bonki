@@ -224,7 +224,7 @@ export default function CompletedSessionView({
     <div className="min-h-screen" style={{ backgroundColor: bgColor }}>
       <Header title={cardTitle} showBack backTo={isChildProduct && product && categoryId ? `/product/${product.slug}/portal/${categoryId}` : categoryId ? `/category/${categoryId}` : '/'} />
 
-      <div className="px-6 pb-8" style={{ paddingTop: '32px' }}>
+      <div className="px-6" style={{ paddingTop: '32px', paddingBottom: '100px' }}>
         <div className="max-w-md mx-auto pb-8" style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
 
           {/* Completion header */}
