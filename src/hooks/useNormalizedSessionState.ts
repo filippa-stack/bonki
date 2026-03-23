@@ -35,6 +35,7 @@ export function useNormalizedSessionState(): NormalizedSessionState {
   const [loading, setLoading] = useState(true);
   const mountedRef = useRef(true);
   const debounceRef = useRef<ReturnType<typeof setTimeout>>();
+  const suppressUntilRef = useRef<number>(0);
 
   const userId = user?.id;
   const spaceId = space?.id;
@@ -45,6 +46,9 @@ export function useNormalizedSessionState(): NormalizedSessionState {
       clearTimeout(debounceRef.current);
       debounceRef.current = undefined;
     }
+
+    // Block realtime-triggered refetches for 2s after this explicit fetch
+    suppressUntilRef.current = Date.now() + 2000;
 
     if (!userId) {
       setState({ appMode: null, sessionId: null, cardId: null, categoryId: null, currentStepIndex: 0, waiting: false });
@@ -82,9 +86,12 @@ export function useNormalizedSessionState(): NormalizedSessionState {
 
   // Debounced refetch helper — coalesces bursts into a single RPC call
   const debouncedRefetch = useCallback(() => {
+    if (Date.now() < suppressUntilRef.current) return;
     if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => {
-      if (mountedRef.current) fetchState();
+      if (mountedRef.current && Date.now() >= suppressUntilRef.current) {
+        fetchState();
+      }
     }, 300);
   }, [fetchState]);
 
