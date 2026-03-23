@@ -395,6 +395,7 @@ export default function CompletedSessionView({
           onDismiss={handleFeedbackDismiss}
         />
       )}
+      <BottomNav />
     </div>
   );
 }
