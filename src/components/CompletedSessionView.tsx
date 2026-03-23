@@ -14,7 +14,6 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpaceContext as useCoupleSpace } from '@/contexts/CoupleSpaceContext';
 import Header from '@/components/Header';
-import BottomNav from '@/components/BottomNav';
 import { BEAT_1, BEAT_2, BEAT_3, EASE, EMOTION } from '@/lib/motion';
 
 const STEP_LABELS = ['Kom igång', 'Gå djupare', 'Föreställ er', 'I verkligheten'];
@@ -395,7 +394,6 @@ export default function CompletedSessionView({
           onDismiss={handleFeedbackDismiss}
         />
       )}
-      <BottomNav />
     </div>
   );
 }
