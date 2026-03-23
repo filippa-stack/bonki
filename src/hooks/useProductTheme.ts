@@ -61,6 +61,7 @@ export function useProductTheme(
       ['--cta-default', '--cta-hover-v2', '--cta-active', '--cta-bg',
        '--session-header-bg', '--accent-saffron', '--accent-text',
        '--surface-base', '--product-bg', '--cta-button-color',
+       '--text-primary', '--text-secondary',
        '--kids-question-color',
        '--kids-counter-bg', '--kids-counter-color', '--kids-counter-border',
        '--tile-light', '--tile-mid', '--tile-deep',
