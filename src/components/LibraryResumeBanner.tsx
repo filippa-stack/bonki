@@ -11,6 +11,8 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { allProducts, getProductById } from '@/data/products';
+import { isDemoMode } from '@/lib/demoMode';
+import { getMostRecentDemoSession } from '@/lib/demoSession';
 
 interface ResumeTarget {
   productId: string;
