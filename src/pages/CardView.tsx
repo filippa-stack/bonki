@@ -875,14 +875,23 @@ export default function CardView() {
       return { type: 'all_complete' as const, destination: homeDest, label: 'Avsluta', homeDest };
     }
 
-    // Still Us: always return to product home — user picks next card freely
+    // Still Us: find next incomplete card in sequence across all categories
     if (product && product.id === 'still_us') {
-      // Check if there are any incomplete cards at all
-      const allDone = productCards.every(c => effectiveCompleted.has(c.id));
-      if (allDone) {
-        return { type: 'all_complete' as const, destination: `/product/${product.slug}`, label: '', homeDest };
+      // 1. Try next incomplete card in same category first
+      if (nextIncompleteInCategory && category) {
+        return { type: 'next_card' as const, destination: `/product/${product.slug}/portal/${category.id}`, label: 'Nästa samtal', homeDest };
       }
-      return { type: 'next_card' as const, destination: `/product/${product.slug}`, label: 'Tillbaka till Still Us', homeDest };
+      // 2. Try next category with incomplete cards (follows recommended order)
+      for (const catId of getRecommendedCategoryOrder(card.id)) {
+        if (catId === category?.id) continue;
+        const catCards = productCards.filter(c => c.categoryId === catId);
+        const hasIncomplete = catCards.some(c => !effectiveCompleted.has(c.id));
+        if (hasIncomplete) {
+          return { type: 'next_card' as const, destination: `/product/${product.slug}/portal/${catId}`, label: 'Nästa samtal', homeDest };
+        }
+      }
+      // 3. All done
+      return { type: 'all_complete' as const, destination: `/product/${product.slug}`, label: '', homeDest };
     }
 
     if (nextIncompleteInCategory) {
