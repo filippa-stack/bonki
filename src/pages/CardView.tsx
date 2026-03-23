@@ -1330,7 +1330,7 @@ export default function CardView() {
                   textWrap: 'balance',
                 }}
               >
-                Härifrån väljer ni själva vilka samtal ni vill ta — i er egen takt.
+                Vi rekommenderar att börja med Vardagen — men ni väljer själva.
               </p>
             )}
           </motion.div>
