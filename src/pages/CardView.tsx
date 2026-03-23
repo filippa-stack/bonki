@@ -155,18 +155,18 @@ export default function CardView() {
       localStorage.setItem('bonki-last-active-product', product.slug);
     }
   }, [product?.slug]);
-  const uiText = useMemo(() => getUIText(pronounMode), [pronounMode]);
+  const isUnifiedSingleStepProduct = !!product;
   const effectiveSteps = useMemo(() => {
-    // Kids/family products: always 1 step (all prompts flattened into one sequence)
-    if (product && product.id !== 'still_us' && card?.sections.length) {
+    // All product-backed cards use a unified single-step flow in session view
+    if (isUnifiedSingleStepProduct && card?.sections.length) {
       return [card.sections[0].type] as readonly string[];
     }
     return getCardStepOrder(card);
-  }, [card, product]);
+  }, [card, isUnifiedSingleStepProduct]);
   const isKidsProduct = !!(product && product.id !== 'still_us');
-  // Flatten all section prompts into one sequence for kids products with multiple sections
+  // Flatten all section prompts into one sequence for product-backed cards
   const flatPromptMap = useMemo(() => {
-    if (!isKidsProduct || !card || card.sections.length <= 1) return null;
+    if (!isUnifiedSingleStepProduct || !card || card.sections.length <= 1) return null;
     const map: { section: (typeof card.sections)[0]; promptIndexInSection: number }[] = [];
     for (const section of card.sections) {
       const count = getEffectivePromptCount(section);
@@ -175,7 +175,7 @@ export default function CardView() {
       }
     }
     return map;
-  }, [isKidsProduct, card]);
+  }, [isUnifiedSingleStepProduct, card]);
   const totalFlatPrompts = flatPromptMap?.length ?? 0;
   const completionMessages = useMemo(() => getCompletionMessages(pronounMode, product?.ageLabel), [pronounMode, product?.ageLabel]);
   const cardImageUrl = useCardImage(cardId);
