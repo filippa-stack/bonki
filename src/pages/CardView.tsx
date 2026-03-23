@@ -838,13 +838,20 @@ export default function CardView() {
       ? (category ? `/product/${product.slug}/portal/${category.id}` : `/product/${product.slug}`)
       : '/';
 
-    // Kids/family products: find next card, but always offer home as secondary
+    // Kids/family products: navigate to portal page (not directly to card)
     if (product && product.id !== 'still_us') {
+      const portalDest = category ? `/product/${product.slug}/portal/${category.id}` : `/product/${product.slug}`;
       if (nextIncompleteInCategory) {
-        return { type: 'next_card' as const, destination: `/card/${nextIncompleteInCategory.id}`, label: 'Nästa', homeDest };
+        return { type: 'next_card' as const, destination: portalDest, label: 'Nästa samtal', homeDest };
       }
       if (nextCategoryCard) {
-        return { type: 'next_card' as const, destination: nextCategoryCard.destination, label: 'Nästa', homeDest };
+        // Next card is in a different category — go to that category's portal
+        const nextCatId = nextCategoryCard.destination.replace('/card/', '');
+        const nextCard = productCards.find(c => c.id === nextCatId);
+        const nextCatPortal = nextCard?.categoryId
+          ? `/product/${product.slug}/portal/${nextCard.categoryId}`
+          : `/product/${product.slug}`;
+        return { type: 'next_card' as const, destination: nextCatPortal, label: 'Nästa samtal', homeDest };
       }
       return { type: 'all_complete' as const, destination: homeDest, label: 'Avsluta', homeDest };
     }
