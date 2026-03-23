@@ -31,7 +31,7 @@ import { getCompletionMessages, getUIText, type PronounMode } from '@/lib/pronou
 import { useCardImage } from '@/hooks/useCardImage';
 import { isDemoMode, isDemoParam } from '@/lib/demoMode';
 import { upsertDemoDiaryEntry } from '@/lib/demoDiary';
-import { saveDemoSession, updateDemoSessionStep, completeDemoSession } from '@/lib/demoSession';
+import { saveDemoSession, updateDemoSessionStep, completeDemoSession, isDemoCardCompleted } from '@/lib/demoSession';
 import { useCardVisit } from '@/hooks/useCardVisit';
 import { useProductTheme } from '@/hooks/useProductTheme';
 
@@ -814,6 +814,15 @@ export default function CardView() {
 
   const [completedCardIds, setCompletedCardIds] = useState<Set<string>>(new Set());
   useEffect(() => {
+    if (isLocalPreviewMode && product) {
+      setCompletedCardIds(new Set(
+        product.cards
+          .filter((candidate) => isDemoCardCompleted(product.id, candidate.id))
+          .map((candidate) => candidate.id)
+      ));
+      return;
+    }
+
     if (!space?.id) return;
     supabase
       .from('couple_sessions')
@@ -825,7 +834,7 @@ export default function CardView() {
           setCompletedCardIds(new Set(data.map((r: any) => r.card_id).filter(Boolean)));
         }
       });
-  }, [space?.id, cardViewMode]);
+  }, [space?.id, cardViewMode, isLocalPreviewMode, product]);
 
   const postCompletionNav = useMemo(() => {
     if (!category || !card) return { type: 'home' as const, destination: '/', label: '', homeDest: '/' };

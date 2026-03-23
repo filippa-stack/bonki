@@ -14,7 +14,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import type { ProductManifest } from '@/types/product';
 import { isDemoMode } from '@/lib/demoMode';
-import { DEMO_SESSION_EVENT, getDemoSessionForProduct } from '@/lib/demoSession';
+import { DEMO_SESSION_EVENT, getDemoSessionForProduct, isDemoCardCompleted } from '@/lib/demoSession';
 import { useDevState } from '@/contexts/DevStateContext';
 
 const FOURTEEN_DAYS_MS = 14 * 24 * 60 * 60 * 1000;
@@ -74,6 +74,19 @@ export function useKidsProductProgress(product: ProductManifest | undefined): Ki
   useEffect(() => {
     const syncLocalPreview = () => {
       const demoSession = productId ? getDemoSessionForProduct(productId) : null;
+      const locallyCompletedCardIds = productId && product
+        ? product.cards
+            .filter(card => isDemoCardCompleted(productId, card.id))
+            .map(card => card.id)
+        : [];
+
+      setCompletedSessions(
+        locallyCompletedCardIds.map((cardId) => ({
+          card_id: cardId,
+          ended_at: new Date().toISOString(),
+        }))
+      );
+
       if (demoSession) {
         setActiveSession({
           sessionId: `demo-${demoSession.cardId}`,
@@ -168,7 +181,7 @@ export function useKidsProductProgress(product: ProductManifest | undefined): Ki
     });
 
     return () => { cancelled = true; };
-  }, [space?.id, productId, location.key, isLocalPreview]);
+  }, [space?.id, productId, product, location.key, isLocalPreview]);
 
   // Apply 14-day expiry
   const recentlyCompletedCardIds = useMemo(() => {
