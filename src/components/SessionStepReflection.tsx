@@ -278,10 +278,10 @@ export default function SessionStepReflection({
             fontFamily: 'var(--font-sans)',
             fontStyle: 'italic',
             fontSize: '11px',
-            color: stillUsMode ? DRIFTWOOD : 'var(--text-secondary)',
+            color: stillUsMode ? 'hsl(38 20% 82%)' : 'var(--text-secondary)',
             textAlign: 'center',
             marginTop: '8px',
-            opacity: stillUsMode ? 0.6 : 0.45,
+            opacity: stillUsMode ? 0.88 : 0.72,
           }}>
             Det ni skriver sparas i era samtal
           </p>
