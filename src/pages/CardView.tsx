@@ -814,13 +814,25 @@ export default function CardView() {
 
   const [completedCardIds, setCompletedCardIds] = useState<Set<string>>(new Set());
   useEffect(() => {
+    const syncLocal = () => {
+      if (isLocalPreviewMode && product) {
+        setCompletedCardIds(new Set(
+          product.cards
+            .filter((candidate) => isDemoCardCompleted(product.id, candidate.id))
+            .map((candidate) => candidate.id)
+        ));
+      }
+    };
+
     if (isLocalPreviewMode && product) {
-      setCompletedCardIds(new Set(
-        product.cards
-          .filter((candidate) => isDemoCardCompleted(product.id, candidate.id))
-          .map((candidate) => candidate.id)
-      ));
-      return;
+      syncLocal();
+      // Re-sync when demo session changes (card completed)
+      window.addEventListener(DEMO_SESSION_EVENT, syncLocal);
+      window.addEventListener('storage', syncLocal);
+      return () => {
+        window.removeEventListener(DEMO_SESSION_EVENT, syncLocal);
+        window.removeEventListener('storage', syncLocal);
+      };
     }
 
     if (!space?.id) return;
