@@ -47,7 +47,7 @@ const TILE_COLORS: Record<string, string> = {
   jag_i_mig: '#2D6B62',       // Deep chromatic teal — matches character clothing
   jag_med_andra: '#B07A3A',   // Warm amber-orange — resonant, not dusty
   jag_i_varlden: '#2A4A6B',   // Richer dusk blue — more saturated, separates from Still Us
-  sexualitetskort: '#3A2240',  // Deep aubergine — warm-cool tension with skin tones
+  sexualitetskort: '#A8766D',  // Warm terracotta-rose
   vardagskort: '#0A1A18',      // Charcoal-green — separates from blue family
   syskonkort: '#3A1820',       // Deep cherry — warm complement to yellow/orange characters
 };

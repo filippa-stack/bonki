@@ -32,7 +32,7 @@ const PRODUCT_TILE_COLORS: Record<string, string> = {
   jag_i_mig: '#2D6B62',
   jag_med_andra: '#B07A3A',
   jag_i_varlden: '#2A4A6B',
-  sexualitetskort: '#3A2240',
+  sexualitetskort: '#A8766D',
   vardagskort: '#0A1A18',
   syskonkort: '#3A1820',
 };
