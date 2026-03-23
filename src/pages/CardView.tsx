@@ -192,14 +192,13 @@ export default function CardView() {
   const needsPaywall = !isFreeCard && !hasProductAccess && !accessLoading && (!!product || isStillUsCard) && !devState && !demoBypassed && !isDemoMode();
 
   // Apply product theme (background + accent colors)
-  // For Still Us: use saffron as both primary + accent, Heritage Gold for CTA
   useProductTheme(
     isStillUsCard ? 'hsl(41, 78%, 48%)' : (product?.accentColor ?? 'hsl(158, 35%, 18%)'),
     isStillUsCard ? 'hsl(41, 78%, 48%)' : (product?.secondaryAccent ?? 'hsl(38, 88%, 46%)'),
-    isStillUsCard ? undefined : product?.backgroundColor,
+    product?.backgroundColor,
     isStillUsCard ? 'hsl(41, 78%, 48%)' : product?.ctaButtonColor,
     product?.pronounMode,
-    isStillUsCard ? undefined : product,
+    product,
   );
 
   // Apply Verdigris theme for Still Us cards
