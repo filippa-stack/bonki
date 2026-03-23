@@ -21,7 +21,7 @@ import { useCardImage } from '@/hooks/useCardImage';
 import { supabase } from '@/integrations/supabase/client';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import ProductHomeBackButton from '@/components/ProductHomeBackButton';
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, Play } from 'lucide-react';
 import {
   MIDNIGHT_INK,
   DEEP_DUSK,
