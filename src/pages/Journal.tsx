@@ -181,11 +181,19 @@ function getProductColor(productId: string, cardId?: string): string {
   return effectiveIsPar(productId, cardId ?? null) ? DEEP_SAFFRON : SAFFRON_FLAME;
 }
 
+function splitReflectionBlocks(text: string): string[] {
+  return text
+    .split(/\n{2,}/)
+    .map((block) => block.trim())
+    .filter(Boolean);
+}
+
 // ─── Note Entry Card ───
 function NoteEntryCard({ entry, navigate, index }: { entry: NoteEntry; navigate: (p: string) => void; index: number }) {
   const [expanded, setExpanded] = useState(false);
   const isLong = entry.text.length > 200;
   const accentColor = getProductColor(entry.productId, entry.cardId);
+  const reflectionBlocks = splitReflectionBlocks(entry.text);
 
   return (
     <motion.div
@@ -201,23 +209,31 @@ function NoteEntryCard({ entry, navigate, index }: { entry: NoteEntry; navigate:
     >
       {/* Note text */}
       <div style={{ position: 'relative' }}>
-        <p
-          style={{
-            margin: 0,
-            fontFamily: 'var(--font-serif)',
-            fontSize: '16px',
-            color: LANTERN_GLOW,
-            lineHeight: 1.6,
-            ...(isLong && !expanded ? {
-              display: '-webkit-box',
-              WebkitLineClamp: 4,
-              WebkitBoxOrient: 'vertical' as const,
-              overflow: 'hidden',
-            } : {}),
-          }}
-        >
-          {entry.text}
-        </p>
+          <div
+            style={{
+              ...(isLong && !expanded ? {
+                display: '-webkit-box',
+                WebkitLineClamp: 4,
+                WebkitBoxOrient: 'vertical' as const,
+                overflow: 'hidden',
+              } : {}),
+            }}
+          >
+            {reflectionBlocks.map((block, blockIndex) => (
+              <p
+                key={`${entry.id}-block-${blockIndex}`}
+                style={{
+                  margin: blockIndex === 0 ? 0 : '12px 0 0',
+                  fontFamily: 'var(--font-serif)',
+                  fontSize: '16px',
+                  color: LANTERN_GLOW,
+                  lineHeight: 1.6,
+                }}
+              >
+                {block}
+              </p>
+            ))}
+          </div>
         {isLong && (
           <button
             onClick={() => setExpanded(!expanded)}
