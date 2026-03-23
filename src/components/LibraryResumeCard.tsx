@@ -5,13 +5,15 @@
  */
 
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { getProductById } from '@/data/products';
 import { KIDS_PRODUCT_IDS } from '@/hooks/useKidsProductProgress';
 import { buildDynamicSteps } from '@/components/StepProgressIndicator';
 import { useDevState } from '@/contexts/DevStateContext';
+import { isDemoMode } from '@/lib/demoMode';
+import { getMostRecentDemoSession } from '@/lib/demoSession';
 
 const LANTERN_GLOW = '#FDF6E3';
 const DRIFTWOOD = '#6B5E52';
