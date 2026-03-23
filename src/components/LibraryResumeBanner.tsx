@@ -2,9 +2,10 @@
  * LibraryResumeBanner — "Välkommen tillbaka" resume surface at top of library.
  * Fetches the most recent active session across all products and shows a
  * one-tap return to where the user left off.
+ * Includes realtime subscription for live updates on session changes.
  */
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
@@ -29,6 +30,50 @@ export default function LibraryResumeBanner() {
   const { space } = useCoupleSpaceContext();
   const [target, setTarget] = useState<ResumeTarget | null>(null);
   const [loading, setLoading] = useState(true);
+
+  const fetchRef = useRef(0);
+
+  const fetchTarget = useCallback(async () => {
+    if (!space?.id) return;
+
+    const fetchId = ++fetchRef.current;
+
+    const { data } = await supabase
+      .from('couple_sessions')
+      .select('id, card_id, category_id, product_id, last_activity_at')
+      .eq('couple_space_id', space.id)
+      .eq('status', 'active')
+      .order('last_activity_at', { ascending: false })
+      .limit(1);
+
+    if (fetchId !== fetchRef.current) return;
+
+    if (data && data.length > 0) {
+      const session = data[0];
+      const product = getProductById(session.product_id);
+      if (product && session.card_id) {
+        const card = product.cards.find(c => c.id === session.card_id);
+        const category = product.categories.find(c => c.id === session.category_id);
+        if (card) {
+          setTarget({
+            productId: product.id,
+            productName: product.name,
+            cardId: session.card_id,
+            cardTitle: card.title,
+            categoryTitle: category?.title ?? '',
+            sessionId: session.id,
+          });
+          setLoading(false);
+          return;
+        }
+      }
+    }
+
+    if (fetchId === fetchRef.current) {
+      setTarget(null);
+      setLoading(false);
+    }
+  }, [space?.id]);
 
   useEffect(() => {
     // Demo mode: read from localStorage
@@ -60,44 +105,37 @@ export default function LibraryResumeBanner() {
       return;
     }
 
-    let cancelled = false;
+    fetchTarget();
+  }, [space?.id, fetchTarget]);
 
-    (async () => {
-      // Find most recent active session across all products
-      const { data } = await supabase
-        .from('couple_sessions')
-        .select('id, card_id, category_id, product_id, last_activity_at')
-        .eq('couple_space_id', space.id)
-        .eq('status', 'active')
-        .order('last_activity_at', { ascending: false })
-        .limit(1);
+  // Realtime: re-fetch when session status changes in this space
+  useEffect(() => {
+    if (isDemoMode() || !space?.id) return;
 
-      if (cancelled) return;
+    let debounceTimer: ReturnType<typeof setTimeout> | undefined;
 
-      if (data && data.length > 0) {
-        const session = data[0];
-        const product = getProductById(session.product_id);
-        if (product && session.card_id) {
-          const card = product.cards.find(c => c.id === session.card_id);
-          const category = product.categories.find(c => c.id === session.category_id);
-          if (card) {
-            setTarget({
-              productId: product.id,
-              productName: product.name,
-              cardId: session.card_id,
-              cardTitle: card.title,
-              categoryTitle: category?.title ?? '',
-              sessionId: session.id,
-            });
-          }
+    const channel = supabase
+      .channel(`lib-resume-banner-rt-${space.id}`)
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'couple_sessions',
+          filter: `couple_space_id=eq.${space.id}`,
+        },
+        () => {
+          if (debounceTimer) clearTimeout(debounceTimer);
+          debounceTimer = setTimeout(() => fetchTarget(), 500);
         }
-      }
+      )
+      .subscribe();
 
-      if (!cancelled) setLoading(false);
-    })();
-
-    return () => { cancelled = true; };
-  }, [space?.id]);
+    return () => {
+      if (debounceTimer) clearTimeout(debounceTimer);
+      supabase.removeChannel(channel);
+    };
+  }, [space?.id, fetchTarget]);
 
   if (loading || !target) return null;
 
