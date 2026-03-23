@@ -16,20 +16,15 @@ interface SessionStepReflectionProps {
   onBack?: () => void;
   isReflectionStep?: boolean;
   isExerciseStep?: boolean;
-  /** Hide the note textarea + Valfritt label (used for new kid/family products) */
   hideNoteField?: boolean;
-  /** Custom label for the note trigger. When set, overrides hideNoteField and shows the feather with this label. */
   noteFieldLabel?: string;
-  /** Custom CTA label override */
   ctaLabel?: string;
-  /** Custom pause label override */
   pauseLabel?: string;
-  /** Still Us mode — uses ember palette */
   stillUsMode?: boolean;
-  /** Show only pencil icon (no text label) for note trigger */
   compactNoteTrigger?: boolean;
-  /** Called when user taps pause */
   onPause?: () => void;
+  /** Called with note text when user advances (for local persistence) */
+  onNoteCapture?: (text: string) => void;
 }
 
 export default function SessionStepReflection({
@@ -49,6 +44,7 @@ export default function SessionStepReflection({
   stillUsMode = false,
   compactNoteTrigger = false,
   onPause,
+  onNoteCapture,
 }: SessionStepReflectionProps) {
   const navigate = useNavigate();
   const reflectionStepIndex = stepIndex * 100 + promptIndex;
@@ -121,6 +117,10 @@ export default function SessionStepReflection({
     try {
       // Pass localText explicitly to avoid stale-ref issues
       await markReady(localText);
+      // Notify parent of note text for local persistence
+      if (localText.trim()) {
+        onNoteCapture?.(localText.trim());
+      }
       await onLocked?.();
     } finally {
       setSubmitting(false);
