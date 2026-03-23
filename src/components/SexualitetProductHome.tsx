@@ -1,7 +1,5 @@
 import { motion } from 'framer-motion';
 import type { ProductManifest } from '@/types/product';
-import heroImage from '@/assets/illustration-sexualitet.png';
-import creatureImage from '@/assets/creature-radjur.png';
 import UnifiedResumeBanner from '@/components/UnifiedResumeBanner';
 import NextConversationCard from '@/components/NextConversationCard';
 import ProductHomeBackButton from '@/components/ProductHomeBackButton';
@@ -22,7 +20,6 @@ const ORDERED_TILES = [
   { id: 'sex-skydd-och-makt', bg: '#6E4A44', sub: 'Makt och sårbarhet' },
 ];
 
-// Deer: huge dark eyes and ears. Tile 0 = face-dominant. Tile 1 ears extending.
 const CREATURE_TILE_STYLES: CreatureTileStyle[] = [
   { scale: 1.1, objectPosition: '50% 20%', opacity: 0.6 },
   { scale: 1.1, objectPosition: '50% 20%', opacity: 0.55 },
@@ -41,7 +38,6 @@ export default function SexualitetProductHome({ product }: { product: ProductMan
     <div className="min-h-screen relative overflow-hidden" style={{ backgroundColor: BG }}>
       <ProductHomeBackButton color="#FDF6E3" />
 
-      {/* ── Atmospheric radial glow behind hero ── */}
       <div
         style={{
           position: 'absolute',
@@ -56,24 +52,7 @@ export default function SexualitetProductHome({ product }: { product: ProductMan
         }}
       />
 
-      {/* ── Hero illustration ── */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.6 }}
-        style={{ position: 'absolute', top: '-8vh', left: '-5vw', right: '-5vw', height: '65vh', zIndex: 0, pointerEvents: 'none' }}
-      >
-        <img src={heroImage} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 15%' }} />
-        {/* Extended scrim with smooth blend */}
-        <div style={{
-          position: 'absolute', bottom: 0, left: 0, right: 0, height: '85%',
-          background: `linear-gradient(to top, ${BG} 0%, ${BG}F2 18%, rgba(30,20,40,0.85) 35%, rgba(58,34,64,0.5) 60%, rgba(74,46,72,0.15) 80%, transparent 100%)`,
-          pointerEvents: 'none',
-        }} />
-      </motion.div>
-
-      {/* ── Content ── */}
-      <div style={{ position: 'relative', zIndex: 1, minHeight: '100vh', display: 'flex', flexDirection: 'column', paddingTop: 'clamp(32px, 10vh, 90px)', paddingRight: '5vw', paddingBottom: '80px', paddingLeft: '5vw' }}>
+      <div style={{ position: 'relative', zIndex: 1, minHeight: '100vh', display: 'flex', flexDirection: 'column', paddingTop: 'clamp(24px, 6vh, 56px)', paddingRight: '5vw', paddingBottom: '80px', paddingLeft: '5vw' }}>
         <motion.div variants={containerVariants} initial="hidden" animate="visible" style={{ textAlign: 'center', width: '100%' }}>
           <motion.div variants={titleVariants}>
             <h1 style={{
@@ -103,8 +82,7 @@ export default function SexualitetProductHome({ product }: { product: ProductMan
           </motion.div>
         </motion.div>
 
-        {/* Generous breathing room */}
-        <div style={{ flex: 1, minHeight: '32px', maxHeight: 'clamp(48px, 14vh, 130px)' }} />
+        <div style={{ flex: 1, minHeight: '16px', maxHeight: 'clamp(24px, 6vh, 60px)' }} />
 
         <CategoryTileGrid
           product={product}
