@@ -771,6 +771,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
                   fillHeight={false}
                   glassTile={isSU}
                   glassGlowColor={isSU ? SU_GLOW_COLORS[cat.id] : undefined}
+                  enlargeTiles={isSyskon}
                 />
               </div>
             );
