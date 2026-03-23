@@ -54,24 +54,8 @@ export default function SyskonProductHome({ product }: { product: ProductManifes
         }}
       />
 
-      {/* ── Hero illustration ── */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.6 }}
-        style={{ position: 'absolute', top: '-14vh', left: '-5vw', right: '-5vw', height: '70vh', zIndex: 0, pointerEvents: 'none' }}
-      >
-        <img src={heroImage} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 8%' }} />
-        {/* Extended scrim with smooth blend */}
-        <div style={{
-          position: 'absolute', bottom: 0, left: 0, right: 0, height: '85%',
-          background: `linear-gradient(to top, ${BG} 0%, ${BG}F2 18%, rgba(42,16,24,0.85) 35%, rgba(58,24,32,0.5) 60%, rgba(74,32,40,0.15) 80%, transparent 100%)`,
-          pointerEvents: 'none',
-        }} />
-      </motion.div>
-
       {/* ── Content ── */}
-      <div style={{ position: 'relative', zIndex: 1, minHeight: '100vh', display: 'flex', flexDirection: 'column', paddingTop: 'clamp(32px, 10vh, 90px)', paddingRight: '5vw', paddingBottom: '80px', paddingLeft: '5vw' }}>
+      <div style={{ position: 'relative', zIndex: 1, minHeight: '100vh', display: 'flex', flexDirection: 'column', paddingTop: 'clamp(24px, 6vh, 56px)', paddingRight: '5vw', paddingBottom: '80px', paddingLeft: '5vw' }}>
         <motion.div variants={containerVariants} initial="hidden" animate="visible" style={{ textAlign: 'center', width: '100%' }}>
           <motion.div variants={titleVariants}>
             <h1 style={{
@@ -102,7 +86,7 @@ export default function SyskonProductHome({ product }: { product: ProductManifes
         </motion.div>
 
         {/* Generous breathing room */}
-        <div style={{ flex: 1, minHeight: '32px', maxHeight: 'clamp(48px, 14vh, 130px)' }} />
+        <div style={{ flex: 1, minHeight: '16px', maxHeight: 'clamp(24px, 6vh, 60px)' }} />
 
         <CategoryTileGrid
           product={product}
