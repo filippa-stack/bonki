@@ -66,16 +66,11 @@ export function useKidsProductProgress(product: ProductManifest | undefined): Ki
   const productId = product?.id;
 
   // Re-fetch on navigation (location.key changes on every navigate())
-
   useEffect(() => {
     if (!space?.id || !productId) {
       setLoading(false);
       return;
     }
-
-    let cancelled = false;
-    setLoading(true);
-  }, [space?.id, productId, location.key]);
 
     let cancelled = false;
     setLoading(true);
@@ -125,7 +120,6 @@ export function useKidsProductProgress(product: ProductManifest | undefined): Ki
 
         if (!cancelled) {
           const completedSteps = new Set((completions || []).map(c => c.step_index));
-          // Find first incomplete step
           const { data: steps } = await supabase
             .from('couple_session_steps')
             .select('step_index')
@@ -145,7 +139,7 @@ export function useKidsProductProgress(product: ProductManifest | undefined): Ki
     });
 
     return () => { cancelled = true; };
-  }, [space?.id, productId]);
+  }, [space?.id, productId, location.key]);
 
   // Apply 14-day expiry
   const recentlyCompletedCardIds = useMemo(() => {
