@@ -5,9 +5,11 @@
  * - Applies 14-day expiry: completion markers disappear after 14 days
  * - Determines "next suggested" card and category
  * - Fetches active session for resume banner
+ * - Re-fetches on every navigation (location.key) to reflect latest state
  */
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
+import { useLocation } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import type { ProductManifest } from '@/types/product';
