@@ -547,7 +547,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
 
 
             {/* ── Still Us: Intro session — pill CTA (outside title fadeUp to avoid overflow) ── */}
-            {isSU && (
+            {isSU && !introCompleted && (
               <motion.div
                 variants={fadeUp}
                 style={{ display: 'flex', justifyContent: 'center', width: '100%', marginTop: '24px', marginBottom: '8px' }}
