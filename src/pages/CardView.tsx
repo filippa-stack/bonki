@@ -2084,14 +2084,6 @@ export default function CardView() {
                   {card?.title}
                 </span>
 
-                {/* Step labels */}
-                <StepProgressIndicator
-                  currentStepIndex={currentStepIndex}
-                  completedSteps={Array.from({ length: currentStepIndex }, (_, i) => i)}
-                  isTransitioning={showInterstitial}
-                  steps={dynamicSteps}
-                  stillUsMode={true}
-                />
               </div>
 
               {/* Progress bar — full width, 2px */}

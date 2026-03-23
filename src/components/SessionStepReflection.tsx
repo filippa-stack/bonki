@@ -130,7 +130,7 @@ export default function SessionStepReflection({
   const noteBorder = stillUsMode ? `1px solid ${DRIFTWOOD}33` : '1px solid hsla(36, 20%, 80%, 0.18)';
   const ctaBg = stillUsMode ? DEEP_SAFFRON : 'hsl(41, 78%, 48%)';
   const ctaTextColor = stillUsMode ? MIDNIGHT_INK : 'hsl(30, 10%, 12%)';
-  const triggerColor = stillUsMode ? DRIFTWOOD : 'var(--text-primary)';
+  const triggerColor = stillUsMode ? 'hsl(38 25% 92%)' : 'var(--text-primary)';
 
   return (
     <motion.div
@@ -170,7 +170,7 @@ export default function SessionStepReflection({
           <Pencil
             size={compactNoteTrigger ? 16 : 15}
             strokeWidth={1.5}
-            style={{ color: triggerColor, opacity: 0.35 }}
+            style={{ color: triggerColor, opacity: 0.72 }}
           />
           {!compactNoteTrigger && (
             <span
@@ -178,7 +178,7 @@ export default function SessionStepReflection({
                 fontFamily: 'var(--font-sans)',
                 fontSize: '14px',
                 color: triggerColor,
-                opacity: 0.40,
+                opacity: 0.78,
                 letterSpacing: '0.01em',
               }}
             >
@@ -278,10 +278,10 @@ export default function SessionStepReflection({
             fontFamily: 'var(--font-sans)',
             fontStyle: 'italic',
             fontSize: '11px',
-            color: stillUsMode ? DRIFTWOOD : 'var(--text-secondary)',
+            color: stillUsMode ? 'hsl(38 20% 82%)' : 'var(--text-secondary)',
             textAlign: 'center',
             marginTop: '8px',
-            opacity: stillUsMode ? 0.6 : 0.45,
+            opacity: stillUsMode ? 0.88 : 0.72,
           }}>
             Det ni skriver sparas i era samtal
           </p>
@@ -334,8 +334,8 @@ export default function SessionStepReflection({
             cursor: 'pointer',
             fontFamily: 'var(--font-sans)',
             fontSize: stillUsMode ? '14px' : '13px',
-            color: stillUsMode ? DRIFTWOOD : 'var(--text-secondary)',
-            opacity: stillUsMode ? 0.55 : 0.50,
+            color: stillUsMode ? 'hsl(38 20% 82%)' : 'var(--text-secondary)',
+            opacity: stillUsMode ? 0.9 : 0.72,
             textAlign: 'center',
           }}
         >
