@@ -210,6 +210,15 @@ export default function CardView() {
   const { recordVisit } = useCardVisit();
   useEffect(() => {
     if (cardId) recordVisit(cardId);
+    // In demo mode, persist an active session to localStorage for resume banners
+    if (cardId && isDemoMode() && product && card) {
+      saveDemoSession({
+        productId: product.id,
+        cardId,
+        categoryId: card.categoryId ?? '',
+        currentStepIndex: 0,
+      });
+    }
   }, [cardId, recordVisit]);
 
   const [activeSessionId, setActiveSessionId] = useState<string | null>(
@@ -247,12 +256,16 @@ export default function CardView() {
     _setShowCompletion(val);
     if (val && cardId) {
       markCardCompleted(cardId);
+      // Clear demo session on completion
+      if (isDemoMode() && product) {
+        completeDemoSession(product.id, cardId);
+      }
       // Add search param so BottomNav becomes visible on completion pages
       const url = new URL(window.location.href);
       url.searchParams.set('view', 'completed');
       window.history.replaceState({}, '', url.toString());
     }
-  }, [cardId, markCardCompleted]);
+  }, [cardId, markCardCompleted, product]);
 
   // ─── Feedback modal state (Still Us only) ───
   const isStillUs = product?.id === 'still_us' || !product;
