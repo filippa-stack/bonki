@@ -13,7 +13,7 @@ import { KIDS_PRODUCT_IDS } from '@/hooks/useKidsProductProgress';
 import { buildDynamicSteps } from '@/components/StepProgressIndicator';
 import { useDevState } from '@/contexts/DevStateContext';
 import { isDemoMode } from '@/lib/demoMode';
-import { getMostRecentDemoSession } from '@/lib/demoSession';
+import { DEMO_SESSION_EVENT, getMostRecentDemoSession } from '@/lib/demoSession';
 
 const LANTERN_GLOW = '#FDF6E3';
 const DRIFTWOOD = '#6B5E52';
@@ -73,9 +73,8 @@ export default function LibraryResumeCard({ activeTab, global, forceMock }: Libr
   useEffect(() => {
     if (devMock) return;
 
-    // Local preview mode: read from localStorage
     const isLocalPreview = isDemoMode() || !!devState;
-    if (isLocalPreview && !devMock) {
+    const syncLocalPreview = () => {
       const demoSession = getMostRecentDemoSession();
       if (demoSession) {
         const product = getProductById(demoSession.productId);
@@ -101,7 +100,16 @@ export default function LibraryResumeCard({ activeTab, global, forceMock }: Libr
         }
       }
       setResume(null);
-      return;
+    };
+
+    if (isLocalPreview) {
+      syncLocalPreview();
+      window.addEventListener(DEMO_SESSION_EVENT, syncLocalPreview);
+      window.addEventListener('storage', syncLocalPreview);
+      return () => {
+        window.removeEventListener(DEMO_SESSION_EVENT, syncLocalPreview);
+        window.removeEventListener('storage', syncLocalPreview);
+      };
     }
 
     if (!space?.id) {
@@ -124,7 +132,6 @@ export default function LibraryResumeCard({ activeTab, global, forceMock }: Libr
         return;
       }
 
-      // Filter by tab unless global
       let filtered = data;
       if (!global && activeTab) {
         const isKids = (pid: string) => KIDS_PRODUCT_IDS.includes(pid);
@@ -151,7 +158,6 @@ export default function LibraryResumeCard({ activeTab, global, forceMock }: Libr
         return;
       }
 
-      // Determine step label
       let stepLabel = '';
       if (session.product_id === 'still_us') {
         const { data: completions } = await supabase
@@ -206,7 +212,7 @@ export default function LibraryResumeCard({ activeTab, global, forceMock }: Libr
     })();
 
     return () => { cancelled = true; };
-  }, [space?.id, activeTab, global, location.key]);
+  }, [space?.id, activeTab, global, location.key, devState]);
 
   const display = devMock || resume;
   if (!display) return null;

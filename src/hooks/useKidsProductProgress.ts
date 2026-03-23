@@ -14,7 +14,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import type { ProductManifest } from '@/types/product';
 import { isDemoMode } from '@/lib/demoMode';
-import { getDemoSessionForProduct } from '@/lib/demoSession';
+import { DEMO_SESSION_EVENT, getDemoSessionForProduct } from '@/lib/demoSession';
 import { useDevState } from '@/contexts/DevStateContext';
 
 const FOURTEEN_DAYS_MS = 14 * 24 * 60 * 60 * 1000;
@@ -70,10 +70,9 @@ export function useKidsProductProgress(product: ProductManifest | undefined): Ki
 
   const productId = product?.id;
 
-  // Re-fetch on navigation (location.key changes on every navigate())
+  // Re-fetch on navigation and local preview session changes
   useEffect(() => {
-    // Local preview mode: read from localStorage instead of DB
-    if (isLocalPreview) {
+    const syncLocalPreview = () => {
       const demoSession = productId ? getDemoSessionForProduct(productId) : null;
       if (demoSession) {
         setActiveSession({
@@ -84,9 +83,20 @@ export function useKidsProductProgress(product: ProductManifest | undefined): Ki
         setCurrentStepIndex(demoSession.currentStepIndex);
       } else {
         setActiveSession(null);
+        setCurrentStepIndex(0);
       }
       setLoading(false);
-      return;
+    };
+
+    if (isLocalPreview) {
+      syncLocalPreview();
+      const handleSessionChange = () => syncLocalPreview();
+      window.addEventListener(DEMO_SESSION_EVENT, handleSessionChange);
+      window.addEventListener('storage', handleSessionChange);
+      return () => {
+        window.removeEventListener(DEMO_SESSION_EVENT, handleSessionChange);
+        window.removeEventListener('storage', handleSessionChange);
+      };
     }
 
     if (!space?.id || !productId) {
@@ -97,7 +107,6 @@ export function useKidsProductProgress(product: ProductManifest | undefined): Ki
     let cancelled = false;
     setLoading(true);
 
-    // Fetch completed sessions for this product
     const fetchCompleted = supabase
       .from('couple_sessions')
       .select('card_id, ended_at')
@@ -106,7 +115,6 @@ export function useKidsProductProgress(product: ProductManifest | undefined): Ki
       .eq('status', 'completed')
       .order('ended_at', { ascending: false });
 
-    // Fetch active session for this product
     const fetchActive = supabase
       .from('couple_sessions')
       .select('id, card_id, category_id')
@@ -134,7 +142,6 @@ export function useKidsProductProgress(product: ProductManifest | undefined): Ki
           categoryId: session.category_id!,
         });
 
-        // Fetch current step index for resume
         const { data: completions } = await supabase
           .from('couple_session_completions')
           .select('step_index')
@@ -161,7 +168,7 @@ export function useKidsProductProgress(product: ProductManifest | undefined): Ki
     });
 
     return () => { cancelled = true; };
-  }, [space?.id, productId, location.key]);
+  }, [space?.id, productId, location.key, isLocalPreview]);
 
   // Apply 14-day expiry
   const recentlyCompletedCardIds = useMemo(() => {

@@ -510,6 +510,23 @@ export default function ProductLibrary() {
   const { space } = useCoupleSpaceContext();
   const [activeProductIds, setActiveProductIds] = useState<Set<string>>(new Set());
   useEffect(() => {
+    const syncLocalPreview = () => {
+      if (!isDemoMode()) return;
+      import('@/lib/demoSession').then(({ getAllDemoSessions }) => {
+        setActiveProductIds(new Set(getAllDemoSessions().map(session => session.productId)));
+      });
+    };
+
+    if (isDemoMode()) {
+      syncLocalPreview();
+      window.addEventListener('bonki:demo-session-changed', syncLocalPreview);
+      window.addEventListener('storage', syncLocalPreview);
+      return () => {
+        window.removeEventListener('bonki:demo-session-changed', syncLocalPreview);
+        window.removeEventListener('storage', syncLocalPreview);
+      };
+    }
+
     if (!space?.id) return;
     let cancelled = false;
     supabase

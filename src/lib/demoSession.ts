@@ -4,6 +4,7 @@
  */
 
 const STORAGE_KEY = 'bonki-demo-active-sessions';
+export const DEMO_SESSION_EVENT = 'bonki:demo-session-changed';
 
 export interface DemoActiveSession {
   productId: string;
@@ -23,6 +24,9 @@ function readAll(): DemoActiveSession[] {
 
 function writeAll(sessions: DemoActiveSession[]) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(sessions));
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent(DEMO_SESSION_EVENT, { detail: sessions }));
+  }
 }
 
 /** Save or update the active demo session for a product+card */
@@ -52,6 +56,11 @@ export function updateDemoSessionStep(productId: string, cardId: string, stepInd
 export function completeDemoSession(productId: string, cardId: string): void {
   const all = readAll().filter(s => !(s.productId === productId && s.cardId === cardId));
   writeAll(all);
+}
+
+/** Get all active demo sessions */
+export function getAllDemoSessions(): DemoActiveSession[] {
+  return readAll();
 }
 
 /** Get active session for a specific product */
