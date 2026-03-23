@@ -156,7 +156,7 @@ export default function CardView() {
     }
   }, [product?.slug]);
   const uiText = useMemo(() => getUIText(pronounMode), [pronounMode]);
-  const isUnifiedSingleStepProduct = !!product;
+  const isUnifiedSingleStepProduct = !!(product && product.id !== 'still_us');
   const effectiveSteps = useMemo(() => {
     // All product-backed cards use a unified single-step flow in session view
     if (isUnifiedSingleStepProduct && card?.sections.length) {
