@@ -95,6 +95,9 @@ const HERO_TOP_OFFSET: Record<string, string> = {
   jag_i_varlden: '-20vh',
 };
 
+/** Products that hide the hero illustration entirely */
+const HIDE_HERO_PRODUCTS = new Set(['syskonkort']);
+
 /* ── First uncompleted card per category hook ── */
 function useFirstCardImages(product: ProductManifest, progress: KidsProductProgress) {
   const completedSet = useMemo(
@@ -182,7 +185,7 @@ function CategoryTile({
         position: 'relative',
         overflow: 'hidden',
         width: '100%',
-        ...(fillHeight ? { height: '100%' } : squareTile ? { aspectRatio: wideSpan ? '2 / 1' : '2 / 3' } : { minHeight: compactHeight ? '120px' : '140px' }),
+        ...(fillHeight ? { height: '100%' } : squareTile ? { aspectRatio: wideSpan ? '2 / 1' : (enlargeTiles ? '3 / 4' : '2 / 3') } : { minHeight: compactHeight ? '120px' : '140px' }),
 
         borderRadius: squareTile ? '28px' : '22px',
         cursor: isLocked ? 'default' : 'pointer',
@@ -446,45 +449,9 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
       )}
 
       {/* ── Hero illustration — large, atmospheric, bleeds off top ── */}
-      {product.heroImage && (
+      {product.heroImage && !HIDE_HERO_PRODUCTS.has(product.id) && (
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6 }}
-          style={{
-            position: 'absolute',
-            top: HERO_TOP_OFFSET[product.id] ?? '-10vh',
-            left: '-5vw',
-            right: '-5vw',
-            height: '65vh',
-            zIndex: 0,
-            pointerEvents: 'none',
-          }}
-        >
-          <img
-            src={product.heroImage}
-            alt=""
-            aria-hidden="true"
-            style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-              objectPosition: HERO_OBJECT_POSITION[product.id] ?? '50% 55%',
-              filter: 'saturate(1.2) brightness(1.1)',
-            }}
-          />
-          {/* Multi-stop scrim: product color blend — much lighter for Vardag */}
-          <div
-            style={{
-              position: 'absolute',
-              bottom: 0,
-              left: 0,
-              right: 0,
-              height: '65%',
-              background: `linear-gradient(to top, ${bg} 0%, ${bg}C0 12%, ${bg}70 30%, ${tileLight}25 50%, transparent 100%)`,
-              pointerEvents: 'none',
-            }}
-          />
+...
         </motion.div>
       )}
 
@@ -496,7 +463,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
           minHeight: '100vh',
           display: 'flex',
           flexDirection: 'column',
-          paddingTop: 'clamp(32px, 10vh, 90px)',
+          paddingTop: HIDE_HERO_PRODUCTS.has(product.id) ? 'clamp(24px, 6vh, 56px)' : 'clamp(32px, 10vh, 90px)',
           paddingRight: '16px',
           paddingBottom: '0px',
           paddingLeft: '16px',
