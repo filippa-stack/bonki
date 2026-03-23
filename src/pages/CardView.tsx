@@ -2013,7 +2013,7 @@ export default function CardView() {
       }
     };
 
-    const MIDNIGHT_INK_LOCAL = '#1A1A2E';
+    const MIDNIGHT_INK_LOCAL = product?.backgroundColor ?? '#1A0806';
     const LANTERN_GLOW_LOCAL = '#FDF6E3';
     const DEEP_SAFFRON_LOCAL = '#D4A03A';
 
