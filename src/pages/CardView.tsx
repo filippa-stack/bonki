@@ -188,6 +188,7 @@ export default function CardView() {
   const paywallProductId = product?.id ?? (isStillUsCard ? 'still_us' : '');
   const { hasAccess: hasProductAccess, loading: accessLoading } = useProductAccess(paywallProductId);
   const [demoBypassed, setDemoBypassed] = useState(false);
+  const isLocalPreviewMode = isDemoMode() || !!devState;
   const needsPaywall = !isFreeCard && !hasProductAccess && !accessLoading && (!!product || isStillUsCard) && !devState && !demoBypassed && !isDemoMode();
 
   // Apply product theme (background + accent colors)
@@ -210,16 +211,16 @@ export default function CardView() {
   const { recordVisit } = useCardVisit();
   useEffect(() => {
     if (cardId) recordVisit(cardId);
-    // In demo mode, persist an active session to localStorage for resume banners
-    if (cardId && isDemoMode() && product && card) {
+    // In local preview modes, persist an active session to localStorage for resume banners
+    if (cardId && isLocalPreviewMode && product && card) {
       saveDemoSession({
         productId: product.id,
         cardId,
         categoryId: card.categoryId ?? '',
-        currentStepIndex: 0,
+        currentStepIndex: currentStepIndex,
       });
     }
-  }, [cardId, recordVisit]);
+  }, [cardId, recordVisit, isLocalPreviewMode, product, card, currentStepIndex]);
 
   const [activeSessionId, setActiveSessionId] = useState<string | null>(
     devState ? 'dev-session' : null
@@ -256,8 +257,8 @@ export default function CardView() {
     _setShowCompletion(val);
     if (val && cardId) {
       markCardCompleted(cardId);
-      // Clear demo session on completion
-      if (isDemoMode() && product) {
+      // Clear local preview session on completion
+      if (isLocalPreviewMode && product) {
         completeDemoSession(product.id, cardId);
       }
       // Add search param so BottomNav becomes visible on completion pages
