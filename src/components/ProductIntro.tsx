@@ -6,7 +6,6 @@ import { productIntros } from '@/data/productIntros';
 import { allProducts } from '@/data/products';
 import { useCardImage } from '@/hooks/useCardImage';
 import { supabase } from '@/integrations/supabase/client';
-import { initCoupleState, buildSliderAnchors } from '@/lib/stillUsRpc';
 import { LANTERN_GLOW, DRIFTWOOD, MIDNIGHT_INK, BONKI_ORANGE, DEEP_SAFFRON } from '@/lib/palette';
 
 // ── Illustration imports (same as product homes) ──
@@ -137,23 +136,7 @@ export default function ProductIntro({
     // Persist seen flag server-side (fire-and-forget)
     markProductIntroSeenServer(productId);
 
-    if (isStillUs) {
-      // Still Us: init couple_state, then navigate to first check-in
-      setInitiating(true);
-      try {
-        const result = await initCoupleState(buildSliderAnchors(0));
-        if (result.couple_id) {
-          navigate('/check-in/su-01-smallest-we');
-          return;
-        }
-      } catch (err) {
-        console.error('initCoupleState failed:', err);
-      } finally {
-        setInitiating(false);
-      }
-      // Fallback: complete normally
-      onComplete();
-    } else if (freeCardId && onStartFreeCard) {
+    if (freeCardId && onStartFreeCard) {
       onStartFreeCard();
     } else {
       onComplete();
