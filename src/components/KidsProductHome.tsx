@@ -545,11 +545,11 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
                 {product.tagline}
               </span>
 
-            {/* ── Still Us: Intro session — editorial divider with chevrons ── */}
+            {/* ── Still Us: Intro session — subtle pill CTA ── */}
             {isSU && (
               <motion.button
                 variants={fadeUp}
-                whileTap={{ scale: 0.97 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={() => {
                   localStorage.setItem('bonki-last-active-product', product.slug);
                   navigate('/card/su-intro');
@@ -557,58 +557,42 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
                 style={{
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '8px',
-                  width: '100%',
-                  marginTop: '24px',
-                  padding: '8px 4px',
-                  background: 'transparent',
-                  border: 'none',
+                  justifyContent: 'center',
+                  gap: '6px',
+                  alignSelf: 'center',
+                  marginTop: '20px',
+                  padding: '8px 22px',
+                  background: introCompleted
+                    ? 'rgba(253, 246, 227, 0.06)'
+                    : 'rgba(253, 246, 227, 0.08)',
+                  border: `1px solid ${introCompleted ? 'rgba(253, 246, 227, 0.15)' : SAFFRON_FLAME + '55'}`,
+                  borderRadius: '100px',
                   cursor: 'pointer',
-                  opacity: introCompleted ? 0.35 : 1,
-                  transition: 'opacity 0.3s ease',
+                  opacity: introCompleted ? 0.5 : 1,
+                  boxShadow: introCompleted
+                    ? 'none'
+                    : `0 0 16px ${SAFFRON_FLAME}22, 0 0 32px ${SAFFRON_FLAME}11`,
+                  transition: 'all 0.3s ease',
                 }}
               >
-                {/* Left line */}
-                <div style={{
-                  flex: 1,
-                  height: '1px',
-                  background: `linear-gradient(to right, transparent 0%, rgba(253, 246, 227, 0.35) 100%)`,
-                }} />
-
-                {/* Left chevron */}
-                {!introCompleted && (
-                  <ChevronRight size={14} color={SAFFRON_FLAME} strokeWidth={2.5} />
-                )}
                 {introCompleted && (
-                  <span style={{ fontSize: '10px', color: SAFFRON_FLAME, lineHeight: 1 }}>✓</span>
+                  <span style={{ fontSize: '11px', color: SAFFRON_FLAME, lineHeight: 1 }}>✓</span>
                 )}
-
-                {/* Label */}
                 <span
                   style={{
                     fontFamily: 'var(--font-serif)',
                     fontSize: '13px',
                     fontWeight: 500,
-                    color: bg,
-                    letterSpacing: '0.06em',
+                    color: LANTERN_GLOW,
+                    letterSpacing: '0.04em',
                     whiteSpace: 'nowrap',
-                    textShadow: `0 0 12px ${SAFFRON_FLAME}, 0 0 24px ${SAFFRON_FLAME}88, 0 0 40px ${SAFFRON_FLAME}44`,
                   }}
                 >
                   Ert första samtal
                 </span>
-
-                {/* Right chevron */}
                 {!introCompleted && (
-                  <ChevronLeft size={14} color={SAFFRON_FLAME} strokeWidth={2.5} />
+                  <ChevronRight size={13} color={SAFFRON_FLAME} strokeWidth={2.5} />
                 )}
-
-                {/* Right line */}
-                <div style={{
-                  flex: 1,
-                  height: '1px',
-                  background: `linear-gradient(to left, transparent 0%, rgba(253, 246, 227, 0.35) 100%)`,
-                }} />
               </motion.button>
             )}
             {/* Spacer — pushes content below hero face zone */}
