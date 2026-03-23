@@ -6,6 +6,8 @@ interface DemoDiaryEntry {
   type: 'reflection';
 }
 
+export const DEMO_DIARY_EVENT = 'bonki:demo-diary-changed';
+
 interface UpsertDemoDiaryEntryParams {
   productId: string;
   cardId: string;
@@ -95,6 +97,11 @@ export function upsertDemoDiaryEntry({
     }
 
     localStorage.setItem(key, JSON.stringify(existing));
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent(DEMO_DIARY_EVENT, {
+        detail: { productId, cardId, entryKey },
+      }));
+    }
   } catch {
     // Ignore demo storage failures silently.
   }
