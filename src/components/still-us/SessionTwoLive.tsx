@@ -18,6 +18,8 @@ import { completeSession } from '@/lib/stillUsRpc';
 import { supabase } from '@/integrations/supabase/client';
 import { enqueueWrite, hasPendingWrites, onSyncStatusChange } from '@/lib/offlineQueue';
 import SessionFocusShell from '@/components/SessionFocusShell';
+import { isDemoMode } from '@/lib/demoMode';
+import { upsertDemoDiaryEntry } from '@/lib/demoDiary';
 
 // ── Types ───────────────────────────────────────────────────
 
@@ -136,6 +138,7 @@ export default function SessionTwoLive({
   const [showEmotionalExit, setShowEmotionalExit] = useState(false);
   const [pendingSync, setPendingSync] = useState(false);
   const localNotesCache = useRef<Record<string, Record<string, string>>>({});
+  const demoMode = isDemoMode();
 
   useEffect(() => {
     const cleanup = onSyncStatusChange(() => {
@@ -159,6 +162,16 @@ export default function SessionTwoLive({
   const saveNote = useCallback(
     (stepId: string, text: string) => {
       if (!text.trim()) return;
+
+      if (demoMode) {
+        upsertDemoDiaryEntry({
+          productId: 'still_us',
+          cardId: slug,
+          text,
+          mode: 'append',
+        });
+      }
+
       const userId = supabase.auth.getSession().then(s => s.data.session?.user?.id);
       // Fire-and-forget: use cached user id synchronously if available
       const cachedUser = (supabase as any).auth?.['currentSession']?.user?.id;
@@ -188,7 +201,7 @@ export default function SessionTwoLive({
         if (uid) doSave(uid);
       });
     },
-    [coupleId, cardId]
+    [coupleId, cardId, demoMode, slug]
   );
 
   // ── Pause handler ─────────────────────────────────────────
