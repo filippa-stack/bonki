@@ -47,6 +47,9 @@ export function useNormalizedSessionState(): NormalizedSessionState {
       debounceRef.current = undefined;
     }
 
+    // Block realtime-triggered refetches for 2s after this explicit fetch
+    suppressUntilRef.current = Date.now() + 2000;
+
     if (!userId) {
       setState({ appMode: null, sessionId: null, cardId: null, categoryId: null, currentStepIndex: 0, waiting: false });
       setLoading(false);
