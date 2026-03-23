@@ -82,12 +82,17 @@ export default function SessionStepReflection({
     }
   }, [loading, myReflection]);
 
-  // Sync server text into local when it arrives
+  // Sync server text into local — only on initial load for this step
+  const hasSyncedRef = useRef(false);
   useEffect(() => {
-    if (!loading && myReflection?.text) {
+    hasSyncedRef.current = false;
+  }, [reflectionStepIndex]);
+  useEffect(() => {
+    if (!loading && myReflection?.text && !hasSyncedRef.current) {
+      hasSyncedRef.current = true;
       setLocalText(myReflection.text);
     }
-  }, [loading, myReflection?.text]);
+  }, [loading, myReflection?.text, reflectionStepIndex]);
 
   const displayText = localText;
 
