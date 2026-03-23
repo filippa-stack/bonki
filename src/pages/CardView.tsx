@@ -2268,6 +2268,10 @@ export default function CardView() {
         await handleCompleteStep();
       } else {
         setLocalPromptIndex(localPromptIndex + 1);
+        // Track step progress in demo mode
+        if (isDemoMode() && product) {
+          updateDemoSessionStep(product.id, card.id, localPromptIndex + 1);
+        }
       }
     };
 
