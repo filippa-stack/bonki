@@ -68,6 +68,15 @@ export default function SessionStepReflection({
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const saveTimeoutRef = useRef<ReturnType<typeof setTimeout>>();
 
+  // Reset local state when step/prompt changes
+  useEffect(() => {
+    setLocalText('');
+    setSubmitting(false);
+    setIsExpanded(false);
+    setSaveIndicator('idle');
+    hadPriorTextRef.current = false;
+  }, [reflectionStepIndex]);
+
   // Track whether the user had already written something when this mounted
   const hadPriorTextRef = useRef(false);
   useEffect(() => {
