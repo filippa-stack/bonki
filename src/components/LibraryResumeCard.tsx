@@ -4,7 +4,7 @@
  * (no tab filter) and uses the product's tile color as background.
  */
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
@@ -70,6 +70,104 @@ export default function LibraryResumeCard({ activeTab, global, forceMock }: Libr
       : { productId: 'still_us', productName: 'Still Us', cardTitle: 'Att lyssna på riktigt', cardId: 'su-kommunikation-1', stepLabel: 'Pausad vid VÄND · Fråga 1 av 3', accentColor: DEEP_SAFFRON }
     : null;
 
+  const fetchRef = useRef(0);
+
+  const fetchFromDb = useCallback(async () => {
+    if (!space?.id) return;
+
+    const fetchId = ++fetchRef.current;
+
+    const { data } = await supabase
+      .from('couple_sessions')
+      .select('id, card_id, category_id, product_id, last_activity_at')
+      .eq('couple_space_id', space.id)
+      .eq('status', 'active')
+      .order('last_activity_at', { ascending: false });
+
+    if (fetchId !== fetchRef.current || !data || data.length === 0) {
+      if (fetchId === fetchRef.current) setResume(null);
+      return;
+    }
+
+    let filtered = data;
+    if (!global && activeTab) {
+      const isKids = (pid: string) => KIDS_PRODUCT_IDS.includes(pid);
+      filtered = data.filter(s =>
+        activeTab === 'barn' ? isKids(s.product_id) : s.product_id === 'still_us'
+      );
+    }
+
+    if (filtered.length === 0) {
+      if (fetchId === fetchRef.current) setResume(null);
+      return;
+    }
+
+    const session = filtered[0];
+    const product = getProductById(session.product_id);
+    if (!product || !session.card_id) {
+      if (fetchId === fetchRef.current) setResume(null);
+      return;
+    }
+
+    const card = product.cards.find(c => c.id === session.card_id);
+    if (!card) {
+      if (fetchId === fetchRef.current) setResume(null);
+      return;
+    }
+
+    let stepLabel = '';
+    if (session.product_id === 'still_us') {
+      const { data: completions } = await supabase
+        .from('couple_session_completions')
+        .select('step_index')
+        .eq('session_id', session.id);
+
+      if (fetchId === fetchRef.current) {
+        const completedSteps = new Set((completions || []).map(c => c.step_index));
+        const effectiveSteps = card.sections?.map((s: { type: string }) => s.type) ?? [];
+        const dynSteps = buildDynamicSteps(effectiveSteps, true);
+        let currentIdx = 0;
+        for (let i = 0; i < dynSteps.length; i++) {
+          if (!completedSteps.has(i)) { currentIdx = i; break; }
+        }
+        const step = dynSteps[currentIdx];
+        if (step) {
+          const section = card.sections?.[currentIdx];
+          const promptCount = section?.prompts?.length ?? 0;
+          stepLabel = promptCount > 1
+            ? `${step.label.toUpperCase()} · Fråga 1 av ${promptCount}`
+            : step.label.toUpperCase();
+        }
+      }
+    } else {
+      const { data: completions } = await supabase
+        .from('couple_session_completions')
+        .select('step_index')
+        .eq('session_id', session.id);
+
+      if (fetchId === fetchRef.current) {
+        const completedCount = (completions || []).length;
+        const totalPrompts = card.sections?.reduce(
+          (sum, s) => sum + (s.prompts?.length ?? 0), 0
+        ) ?? 0;
+        stepLabel = totalPrompts > 1
+          ? `Fråga ${completedCount + 1} av ${totalPrompts}`
+          : 'Frågor';
+      }
+    }
+
+    if (fetchId === fetchRef.current) {
+      setResume({
+        productId: session.product_id,
+        productName: product.name,
+        cardTitle: card.title,
+        cardId: session.card_id,
+        stepLabel: stepLabel ? `Pausad vid ${stepLabel}` : 'Pausad',
+        accentColor: session.product_id === 'still_us' ? DEEP_SAFFRON : SAFFRON_FLAME,
+      });
+    }
+  }, [space?.id, activeTab, global]);
+
   useEffect(() => {
     if (devMock) return;
 
@@ -117,102 +215,37 @@ export default function LibraryResumeCard({ activeTab, global, forceMock }: Libr
       return;
     }
 
-    let cancelled = false;
+    fetchFromDb();
+  }, [space?.id, activeTab, global, location.key, devState, fetchFromDb]);
 
-    (async () => {
-      const { data } = await supabase
-        .from('couple_sessions')
-        .select('id, card_id, category_id, product_id, last_activity_at')
-        .eq('couple_space_id', space.id)
-        .eq('status', 'active')
-        .order('last_activity_at', { ascending: false });
+  // Realtime: re-fetch when session status changes in this space
+  useEffect(() => {
+    if (isDemoMode() || !!devState || !space?.id) return;
 
-      if (cancelled || !data || data.length === 0) {
-        if (!cancelled) setResume(null);
-        return;
-      }
+    let debounceTimer: ReturnType<typeof setTimeout> | undefined;
 
-      let filtered = data;
-      if (!global && activeTab) {
-        const isKids = (pid: string) => KIDS_PRODUCT_IDS.includes(pid);
-        filtered = data.filter(s =>
-          activeTab === 'barn' ? isKids(s.product_id) : s.product_id === 'still_us'
-        );
-      }
-
-      if (filtered.length === 0) {
-        if (!cancelled) setResume(null);
-        return;
-      }
-
-      const session = filtered[0];
-      const product = getProductById(session.product_id);
-      if (!product || !session.card_id) {
-        if (!cancelled) setResume(null);
-        return;
-      }
-
-      const card = product.cards.find(c => c.id === session.card_id);
-      if (!card) {
-        if (!cancelled) setResume(null);
-        return;
-      }
-
-      let stepLabel = '';
-      if (session.product_id === 'still_us') {
-        const { data: completions } = await supabase
-          .from('couple_session_completions')
-          .select('step_index')
-          .eq('session_id', session.id);
-
-        if (!cancelled) {
-          const completedSteps = new Set((completions || []).map(c => c.step_index));
-          const effectiveSteps = card.sections?.map((s: { type: string }) => s.type) ?? [];
-          const dynSteps = buildDynamicSteps(effectiveSteps, true);
-          let currentIdx = 0;
-          for (let i = 0; i < dynSteps.length; i++) {
-            if (!completedSteps.has(i)) { currentIdx = i; break; }
-          }
-          const step = dynSteps[currentIdx];
-          if (step) {
-            const section = card.sections?.[currentIdx];
-            const promptCount = section?.prompts?.length ?? 0;
-            stepLabel = promptCount > 1
-              ? `${step.label.toUpperCase()} · Fråga 1 av ${promptCount}`
-              : step.label.toUpperCase();
-          }
+    const channel = supabase
+      .channel(`lib-resume-card-rt-${space.id}`)
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'couple_sessions',
+          filter: `couple_space_id=eq.${space.id}`,
+        },
+        () => {
+          if (debounceTimer) clearTimeout(debounceTimer);
+          debounceTimer = setTimeout(() => fetchFromDb(), 500);
         }
-      } else {
-        const { data: completions } = await supabase
-          .from('couple_session_completions')
-          .select('step_index')
-          .eq('session_id', session.id);
+      )
+      .subscribe();
 
-        if (!cancelled) {
-          const completedCount = (completions || []).length;
-          const totalPrompts = card.sections?.reduce(
-            (sum, s) => sum + (s.prompts?.length ?? 0), 0
-          ) ?? 0;
-          stepLabel = totalPrompts > 1
-            ? `Fråga ${completedCount + 1} av ${totalPrompts}`
-            : 'Frågor';
-        }
-      }
-
-      if (!cancelled) {
-        setResume({
-          productId: session.product_id,
-          productName: product.name,
-          cardTitle: card.title,
-          cardId: session.card_id,
-          stepLabel: stepLabel ? `Pausad vid ${stepLabel}` : 'Pausad',
-          accentColor: session.product_id === 'still_us' ? DEEP_SAFFRON : SAFFRON_FLAME,
-        });
-      }
-    })();
-
-    return () => { cancelled = true; };
-  }, [space?.id, activeTab, global, location.key, devState]);
+    return () => {
+      if (debounceTimer) clearTimeout(debounceTimer);
+      supabase.removeChannel(channel);
+    };
+  }, [space?.id, devState, fetchFromDb]);
 
   const display = devMock || resume;
   if (!display) return null;
