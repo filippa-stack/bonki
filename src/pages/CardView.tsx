@@ -251,11 +251,7 @@ export default function CardView() {
   const [showFeedback, setShowFeedback] = useState(false);
   const [gorOpen, setGorOpen] = useState(false);
 
-  useEffect(() => {
-    if (!showCompletion || feedbackDismissed || !isStillUs) return;
-    const timer = setTimeout(() => setShowFeedback(true), 2000);
-    return () => clearTimeout(timer);
-  }, [showCompletion, feedbackDismissed, isStillUs]);
+  // Feedback disabled — removed per product decision
 
   const handleFeedbackDismiss = useCallback(() => {
     setShowFeedback(false);
@@ -1441,14 +1437,6 @@ export default function CardView() {
             </motion.div>
           </motion.div>
 
-          {activeSessionId && space && (
-            <FeedbackSheet
-              sessionId={activeSessionId}
-              coupleSpaceId={space.id}
-              show={showFeedback}
-              onDismiss={handleFeedbackDismissWithNav}
-            />
-          )}
         </div>
       </motion.div>
     );
