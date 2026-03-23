@@ -69,6 +69,23 @@ export function useKidsProductProgress(product: ProductManifest | undefined): Ki
 
   // Re-fetch on navigation (location.key changes on every navigate())
   useEffect(() => {
+    // Demo mode: read from localStorage instead of DB
+    if (isDemoMode()) {
+      const demoSession = productId ? getDemoSessionForProduct(productId) : null;
+      if (demoSession) {
+        setActiveSession({
+          sessionId: `demo-${demoSession.cardId}`,
+          cardId: demoSession.cardId,
+          categoryId: demoSession.categoryId,
+        });
+        setCurrentStepIndex(demoSession.currentStepIndex);
+      } else {
+        setActiveSession(null);
+      }
+      setLoading(false);
+      return;
+    }
+
     if (!space?.id || !productId) {
       setLoading(false);
       return;
