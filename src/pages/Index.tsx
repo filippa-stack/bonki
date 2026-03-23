@@ -113,16 +113,16 @@ export default function Index() {
     return <Navigate to={`/diary/${productSlug}?devState=diary`} replace />;
   }
 
-  // Any other devState bypasses onboarding & purchase gates
-  if (devState) {
-    return <Navigate to="/product/still-us" replace />;
-  }
+  // Any other devState bypasses onboarding & purchase gates but does NOT
+  // force-redirect — let the normal flow decide what to render so that
+  // the "Biblioteket" (house) icon in BottomNav can reach the library.
+  const devBypassGates = !!devState;
 
   // ── Demo mode: skip onboarding gate ──
   const demoActive = isDemoMode();
 
   // ── Normal production flow ──
-  if (!hasCompletedOnboarding && !demoActive) {
+  if (!hasCompletedOnboarding && !demoActive && !devBypassGates) {
     return <Onboarding />;
   }
 
