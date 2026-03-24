@@ -82,7 +82,7 @@ const TILE_ILLUSTRATION_STYLES = [
 const SQUARE_TILE_ILLUSTRATION_STYLES = [
   { scale: 1.05, objectPosition: '50% 30%', opacity: 0.88 },
   { scale: 1.05, objectPosition: '50% 25%', opacity: 0.85 },
-  { scale: 1.45, objectPosition: '50% 50%', opacity: 0.90 },
+  { scale: 1.1,  objectPosition: '50% 15%', opacity: 0.88 },
   { scale: 1.05, objectPosition: '50% 30%', opacity: 0.90 },
   { scale: 1.05, objectPosition: '50% 30%', opacity: 0.88 },
 ];
