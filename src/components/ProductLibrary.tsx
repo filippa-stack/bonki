@@ -769,7 +769,8 @@ export default function ProductLibrary() {
                 boxShadow: [
                   '0 20px 60px rgba(0, 0, 0, 0.55)',
                   '0 8px 24px rgba(0, 0, 0, 0.35)',
-                  '0 0 72px rgba(200, 160, 120, 0.18)',
+                  '0 0 72px rgba(110, 201, 184, 0.06)',
+                  '0 0 40px rgba(200, 160, 120, 0.10)',
                   'inset 0 3px 6px rgba(255, 255, 255, 0.15)',
                   'inset 0 -4px 10px rgba(0, 0, 0, 0.25)',
                 ].join(', '),
