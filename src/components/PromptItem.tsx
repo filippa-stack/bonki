@@ -315,30 +315,39 @@ export default function PromptItem({ prompt, index, sectionType, preamble, ancho
                   </motion.div>
                 )}
 
-                {prompt.text.split('\n').filter(p => p.trim() !== '').map((para, i, paragraphs) => (
-                  <p
-                    key={i}
-                    className="font-serif"
-                    style={{
-                      fontSize: inlineScenarioPreamble
-                        ? 'clamp(22px, 5.3vw, 30px)'
-                        : isLongText
-                          ? 'clamp(18px, 4.2vw, 22px)'
-                          : 'clamp(24px, 6vw, 32px)',
-                      textWrap: isLongText ? 'pretty' : 'balance',
-                      textAlign: inlineScenarioPreamble || isLongText ? 'center' : 'center',
-                      ...gravity,
-                      lineHeight: inlineScenarioPreamble ? 1.38 : isLongText ? 1.5 : gravity.lineHeight,
-                      fontWeight: inlineScenarioPreamble ? 600 : isLongText ? 400 : gravity.fontWeight,
-                      position: 'relative',
-                      zIndex: 1,
-                      width: inlineScenarioPreamble ? '100%' : undefined,
-                      marginBottom: i < paragraphs.length - 1 ? '14px' : 0,
-                    }}
-                  >
-                    {para}
-                  </p>
-                ))}
+                {(() => {
+                  const rawParagraphs = prompt.text.includes('\n\n')
+                    ? prompt.text.split('\n\n').map(p => p.trim()).filter(Boolean)
+                    : prompt.text.split('\n').filter(p => p.trim() !== '');
+                  const hasDoubleBreaks = prompt.text.includes('\n\n');
+                  return rawParagraphs.map((para, i) => {
+                    const isLastPara = i === rawParagraphs.length - 1;
+                    return (
+                      <p
+                        key={i}
+                        className="font-serif"
+                        style={{
+                          fontSize: inlineScenarioPreamble
+                            ? 'clamp(22px, 5.3vw, 30px)'
+                            : isLongText
+                              ? 'clamp(18px, 4.2vw, 22px)'
+                              : 'clamp(24px, 6vw, 32px)',
+                          textWrap: isLongText ? 'pretty' : 'balance',
+                          textAlign: 'center',
+                          ...gravity,
+                          lineHeight: inlineScenarioPreamble ? 1.38 : isLongText ? 1.5 : gravity.lineHeight,
+                          fontWeight: hasDoubleBreaks && isLastPara ? 500 : (inlineScenarioPreamble ? 600 : isLongText ? 400 : gravity.fontWeight),
+                          position: 'relative',
+                          zIndex: 1,
+                          width: inlineScenarioPreamble ? '100%' : undefined,
+                          marginBottom: !isLastPara ? (hasDoubleBreaks ? '16px' : '14px') : 0,
+                        }}
+                      >
+                        {para}
+                      </p>
+                    );
+                  });
+                })()}
 
                 {backgroundImageUrl && (
                   <motion.div
