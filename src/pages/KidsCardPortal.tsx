@@ -11,7 +11,7 @@
 import { useState, useMemo, useCallback, useRef, useEffect } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence, type PanInfo } from 'framer-motion';
-import { ChevronLeft } from 'lucide-react';
+import { ChevronLeft, Check } from 'lucide-react';
 import { allProducts } from '@/data/products';
 import { useKidsProductProgress } from '@/hooks/useKidsProductProgress';
 import { useCardImage } from '@/hooks/useCardImage';
@@ -78,6 +78,10 @@ export default function KidsCardPortal() {
   const completedSet = useMemo(
     () => new Set(progress.recentlyCompletedCardIds),
     [progress.recentlyCompletedCardIds],
+  );
+  const activeSet = useMemo(
+    () => new Set(progress.activeCardIds),
+    [progress.activeCardIds],
   );
 
   // Reorder: uncompleted cards first (in original sequence), completed cards to back
@@ -513,6 +517,43 @@ export default function KidsCardPortal() {
                   zIndex: 6,
                 }}
               />
+
+              {/* Completion / in-progress indicator */}
+              {completedSet.has(card.id) && (
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: 12,
+                    right: 12,
+                    width: 20,
+                    height: 20,
+                    borderRadius: '50%',
+                    background: tileBg,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    zIndex: 7,
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
+                  }}
+                >
+                  <Check size={12} strokeWidth={2.5} color={LANTERN_GLOW} />
+                </div>
+              )}
+              {!completedSet.has(card.id) && activeSet.has(card.id) && (
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: 18,
+                    right: 18,
+                    width: 8,
+                    height: 8,
+                    borderRadius: '50%',
+                    background: tileBg,
+                    zIndex: 7,
+                    boxShadow: '0 1px 4px rgba(0,0,0,0.3)',
+                  }}
+                />
+              )}
             </motion.div>
           </AnimatePresence>
 
