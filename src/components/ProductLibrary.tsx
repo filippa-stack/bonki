@@ -74,7 +74,7 @@ function hexToRgba(hex: string, alpha: number): string {
 /** Per-product illustration scale — large enough for dramatic presence */
 const ILLUSTRATION_SCALE: Record<string, { width: string; height: string }> = {
   jag_i_mig: { width: '65%', height: '95%' },
-  jag_med_andra: { width: '70%', height: '95%' },
+  jag_med_andra: { width: '75%', height: '100%' },
   jag_i_varlden: { width: '80%', height: '180%' },
   sexualitetskort: { width: '75%', height: '175%' },
   vardagskort: { width: '75%', height: '175%' },
@@ -84,7 +84,7 @@ const ILLUSTRATION_SCALE: Record<string, { width: string; height: string }> = {
 /** Per-product offset — characters visible and dramatic, bleeding right */
 const ILLUSTRATION_OFFSET: Record<string, { top: string; right: string; bottom: string }> = {
   jag_i_mig: { top: '5%', right: '-2%', bottom: '0%' },
-  jag_med_andra: { top: '5%', right: '-4%', bottom: '0%' },
+  jag_med_andra: { top: '-5%', right: '-8%', bottom: '-5%' },
   jag_i_varlden: { top: '-22%', right: '0%', bottom: '-22%' },
   sexualitetskort: { top: '-25%', right: '0%', bottom: '-20%' },
   vardagskort: { top: '-25%', right: '0%', bottom: '-20%' },
