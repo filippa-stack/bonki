@@ -79,6 +79,10 @@ export default function KidsCardPortal() {
     () => new Set(progress.recentlyCompletedCardIds),
     [progress.recentlyCompletedCardIds],
   );
+  const activeSet = useMemo(
+    () => new Set(progress.activeCardIds),
+    [progress.activeCardIds],
+  );
 
   // Reorder: uncompleted cards first (in original sequence), completed cards to back
   const categoryCards = useMemo(() => {
