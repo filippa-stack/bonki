@@ -765,15 +765,27 @@ export default function ProductLibrary() {
                 flexDirection: 'column',
                 position: 'relative',
                 overflow: 'hidden',
-                border: '1px solid rgba(255, 255, 255, 0.10)',
+                border: '1.5px solid rgba(255, 255, 255, 0.12)',
                 boxShadow: [
-                  '0 16px 40px rgba(0, 0, 0, 0.45)',
-                  '0 6px 16px rgba(0, 0, 0, 0.3)',
-                  '0 1px 3px rgba(0, 0, 0, 0.12)',
-                  'inset 0 1px 2px rgba(255, 255, 255, 0.08)',
+                  '0 20px 60px rgba(0, 0, 0, 0.55)',
+                  '0 8px 24px rgba(0, 0, 0, 0.35)',
+                  '0 0 72px rgba(200, 160, 120, 0.18)',
+                  'inset 0 3px 6px rgba(255, 255, 255, 0.15)',
+                  'inset 0 -4px 10px rgba(0, 0, 0, 0.25)',
                 ].join(', '),
               }}
             >
+              {/* Warm radial glow behind illustration */}
+              <div
+                aria-hidden="true"
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  zIndex: 0,
+                  pointerEvents: 'none',
+                  background: 'radial-gradient(ellipse 80% 70% at 50% 35%, rgba(200, 150, 100, 0.15) 0%, rgba(200, 150, 100, 0.05) 50%, transparent 75%)',
+                }}
+              />
               {/* Illustration — centered, filling tile */}
               <div style={{
                 position: 'absolute',
@@ -782,7 +794,7 @@ export default function ProductLibrary() {
                 right: '-10%',
                 bottom: '-35%',
                 pointerEvents: 'none',
-                zIndex: 0,
+                zIndex: 1,
               }}>
                 <img
                   src={illustrationStillUs}
@@ -794,7 +806,7 @@ export default function ProductLibrary() {
                     objectFit: 'contain',
                     objectPosition: 'center top',
                     opacity: 0.95,
-                    filter: 'brightness(1.15) saturate(1.35) contrast(1.05)',
+                    filter: 'brightness(1.2) saturate(1.4) contrast(1.08)',
                   }}
                 />
               </div>
@@ -806,7 +818,7 @@ export default function ProductLibrary() {
                   position: 'absolute',
                   left: 0, right: 0, bottom: 0,
                   height: '55%',
-                  zIndex: 1,
+                  zIndex: 2,
                   pointerEvents: 'none',
                   background: `linear-gradient(to top, rgba(26, 26, 34, 0.92) 0%, rgba(26, 26, 34, 0.6) 40%, rgba(26, 26, 34, 0.1) 75%, transparent 100%)`,
                 }}
@@ -816,7 +828,7 @@ export default function ProductLibrary() {
               <div style={{
                 position: 'absolute',
                 left: 0, bottom: 0, right: 0,
-                zIndex: 2,
+                zIndex: 3,
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'flex-end',
