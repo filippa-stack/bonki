@@ -834,7 +834,7 @@ export default function ProductLibrary() {
                   color: '#FDF6E3',
                   lineHeight: 1.15,
                   letterSpacing: '-0.01em',
-                  textShadow: '0 1px 6px rgba(40, 28, 6, 0.9), 0 0 16px rgba(40, 28, 6, 0.7)',
+                  textShadow: '0 1px 8px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 0, 0, 0.5)',
                 }}>
                   Still Us
                 </h3>
@@ -845,7 +845,7 @@ export default function ProductLibrary() {
                   color: 'hsla(100, 40%, 85%, 0.7)',
                   marginTop: '4px',
                   lineHeight: 1.4,
-                  textShadow: '0 0 10px rgba(40, 28, 6, 0.9)',
+                  textShadow: '0 0 12px rgba(0, 0, 0, 0.8)',
                 }}>
                   22 samtalsövningar för er som vill stanna kvar
                 </p>
