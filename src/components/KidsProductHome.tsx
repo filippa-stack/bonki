@@ -90,12 +90,12 @@ const SQUARE_TILE_ILLUSTRATION_STYLES = [
 /** Per-product hero image vertical position — default is '50% 55%' */
 const HERO_OBJECT_POSITION: Record<string, string> = {
   jag_i_varlden: '50% 35%',
-  jag_i_mig: '50% 15%',
+  jag_i_mig: '50% 30%',
 };
 
 const HERO_TOP_OFFSET: Record<string, string> = {
   jag_i_varlden: '-20vh',
-  jag_i_mig: '-5vh',
+  jag_i_mig: '0vh',
 };
 
 /* ── First uncompleted card per category hook ── */
