@@ -775,6 +775,17 @@ export default function ProductLibrary() {
                 ].join(', '),
               }}
             >
+              {/* Warm radial glow behind illustration */}
+              <div
+                aria-hidden="true"
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  zIndex: 0,
+                  pointerEvents: 'none',
+                  background: 'radial-gradient(ellipse 80% 70% at 50% 35%, rgba(200, 150, 100, 0.15) 0%, rgba(200, 150, 100, 0.05) 50%, transparent 75%)',
+                }}
+              />
               {/* Illustration — centered, filling tile */}
               <div style={{
                 position: 'absolute',
@@ -783,7 +794,7 @@ export default function ProductLibrary() {
                 right: '-10%',
                 bottom: '-35%',
                 pointerEvents: 'none',
-                zIndex: 0,
+                zIndex: 1,
               }}>
                 <img
                   src={illustrationStillUs}
@@ -795,7 +806,7 @@ export default function ProductLibrary() {
                     objectFit: 'contain',
                     objectPosition: 'center top',
                     opacity: 0.95,
-                    filter: 'brightness(1.15) saturate(1.35) contrast(1.05)',
+                    filter: 'brightness(1.2) saturate(1.4) contrast(1.08)',
                   }}
                 />
               </div>
