@@ -99,6 +99,7 @@ function ProtectedRoutes() {
               
               <Route path="/categories" element={<Navigate to="/" replace />} />
               <Route path="/still-us/explore" element={<PageTransition><StillUsExplore /></PageTransition>} />
+              <Route path="/still-us/intro" element={<PageTransition><SuIntroPortal /></PageTransition>} />
               <Route path="/category/:categoryId" element={<PageTransition><Category /></PageTransition>} />
               <Route path="/card/:cardId" element={<PageTransition><CardView /></PageTransition>} />
               <Route path="/preview/:cardId" element={<PageTransition><CardPreview /></PageTransition>} />
