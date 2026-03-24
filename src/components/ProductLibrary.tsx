@@ -806,8 +806,8 @@ export default function ProductLibrary() {
                     height: '100%',
                     objectFit: 'contain',
                     objectPosition: 'center 15%',
-                    opacity: 0.95,
-                    filter: 'brightness(1.2) saturate(1.4) contrast(1.08)',
+                    opacity: 1,
+                    filter: 'brightness(1.25) saturate(1.5) contrast(1.1)',
                   }}
                 />
               </div>
