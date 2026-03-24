@@ -118,9 +118,9 @@ const ILLUSTRATION_SHADOW: Record<string, string> = {
   jag_i_mig: 'saturate(1.15) brightness(1.1) drop-shadow(0 6px 20px rgba(30, 50, 48, 0.5)) drop-shadow(0 2px 4px rgba(0,0,0,0.2))',
   jag_med_andra: 'saturate(1.3) contrast(1.1) brightness(1.1) drop-shadow(0 6px 20px rgba(86, 61, 34, 0.5)) drop-shadow(0 2px 4px rgba(0,0,0,0.15))',
   jag_i_varlden: 'saturate(1.3) brightness(1.2) drop-shadow(0 6px 20px rgba(21, 37, 54, 0.6)) drop-shadow(0 2px 4px rgba(0,0,0,0.25))',
-  sexualitetskort: 'saturate(1.6) brightness(1.45) contrast(1.1) drop-shadow(0 6px 20px rgba(50, 25, 30, 0.6)) drop-shadow(0 2px 4px rgba(0,0,0,0.25))',
+  sexualitetskort: 'saturate(1.8) brightness(1.7) contrast(1.12) drop-shadow(0 8px 24px rgba(180, 100, 80, 0.5)) drop-shadow(0 2px 4px rgba(0,0,0,0.2))',
   vardagskort: 'saturate(1.35) brightness(1.25) drop-shadow(0 8px 24px rgba(15, 35, 30, 0.6)) drop-shadow(0 2px 4px rgba(0,0,0,0.25))',
-  syskonkort: 'saturate(1.6) brightness(1.45) contrast(1.1) drop-shadow(0 6px 20px rgba(50, 20, 28, 0.5)) drop-shadow(0 2px 4px rgba(0,0,0,0.2))',
+  syskonkort: 'saturate(1.8) brightness(1.7) contrast(1.12) drop-shadow(0 8px 24px rgba(200, 130, 60, 0.5)) drop-shadow(0 2px 4px rgba(0,0,0,0.2))',
 };
 
 /** Title colors — dark text on lighter tiles, light on darker ones */
