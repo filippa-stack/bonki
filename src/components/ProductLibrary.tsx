@@ -765,37 +765,27 @@ export default function ProductLibrary() {
                 flexDirection: 'column',
                 position: 'relative',
                 overflow: 'hidden',
-                border: '2px solid rgba(255, 200, 90, 0.35)',
+                border: '1px solid rgba(255, 255, 255, 0.10)',
                 boxShadow: [
-                  '0 16px 40px rgba(50, 35, 8, 0.45)',
-                  '0 6px 16px rgba(50, 35, 8, 0.3)',
+                  '0 16px 40px rgba(0, 0, 0, 0.45)',
+                  '0 6px 16px rgba(0, 0, 0, 0.3)',
                   '0 1px 3px rgba(0, 0, 0, 0.12)',
-                  '0 0 72px rgba(107, 74, 14, 0.20)',
-                  'inset 0 3px 6px rgba(255, 255, 255, 0.25)',
-                  'inset 0 -4px 10px rgba(50, 35, 8, 0.18)',
+                  'inset 0 1px 2px rgba(255, 255, 255, 0.08)',
                 ].join(', '),
               }}
             >
-              {/* Inner warmth glow — ghost-glow-tinted radial for life */}
-              <div
-                aria-hidden="true"
-                style={{
-                  position: 'absolute',
-                  inset: 0,
-                  zIndex: 0,
-                  pointerEvents: 'none',
-                  background: 'radial-gradient(ellipse 80% 90% at 65% 50%, rgba(255, 200, 100, 0.12) 0%, rgba(255, 200, 100, 0.04) 40%, transparent 70%)',
-                }}
-              />
-              {/* Illustration — right-aligned, oversized like kids tiles */}
+              {/* Illustration — centered, filling tile */}
               <div style={{
                 position: 'absolute',
-                top: '-45%',
-                right: '-15%',
-                bottom: '-40%',
-                width: '85%',
+                top: '0',
+                right: '-5%',
+                bottom: '0',
+                width: '90%',
                 pointerEvents: 'none',
                 zIndex: 0,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
               }}>
                 <img
                   src={illustrationStillUs}
@@ -803,33 +793,32 @@ export default function ProductLibrary() {
                   draggable={false}
                   style={{
                     width: '100%',
-                    height: '100%',
+                    height: '95%',
                     objectFit: 'contain',
-                    objectPosition: 'right bottom',
+                    objectPosition: 'center center',
                     opacity: 0.95,
-                    filter: 'brightness(1.15) saturate(1.2) contrast(1.05)',
+                    filter: 'brightness(1.1) saturate(1.15)',
                   }}
                 />
               </div>
 
-              {/* Horizontal gradient scrim — text anchor left */}
+              {/* Bottom gradient scrim — text legibility */}
               <div
                 aria-hidden="true"
                 style={{
                   position: 'absolute',
-                  top: 0, left: 0, bottom: 0,
-                  width: '55%',
+                  left: 0, right: 0, bottom: 0,
+                  height: '65%',
                   zIndex: 1,
                   pointerEvents: 'none',
-                  background: `linear-gradient(to right, rgba(26, 26, 34, 0.95) 0%, rgba(26, 26, 34, 0.85) 30%, rgba(26, 26, 34, 0.35) 65%, transparent 100%)`,
+                  background: `linear-gradient(to top, rgba(26, 26, 34, 0.95) 0%, rgba(26, 26, 34, 0.75) 35%, rgba(26, 26, 34, 0.2) 70%, transparent 100%)`,
                 }}
               />
 
               {/* Text — left-aligned, lower-third emphasis */}
               <div style={{
                 position: 'absolute',
-                left: 0, bottom: 0, top: 0,
-                width: '55%',
+                left: 0, bottom: 0, right: 0,
                 zIndex: 2,
                 display: 'flex',
                 flexDirection: 'column',
@@ -845,7 +834,7 @@ export default function ProductLibrary() {
                   color: '#FDF6E3',
                   lineHeight: 1.15,
                   letterSpacing: '-0.01em',
-                  textShadow: '0 1px 6px rgba(40, 28, 6, 0.9), 0 0 16px rgba(40, 28, 6, 0.7)',
+                  textShadow: '0 1px 8px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 0, 0, 0.5)',
                 }}>
                   Still Us
                 </h3>
@@ -856,7 +845,7 @@ export default function ProductLibrary() {
                   color: 'hsla(100, 40%, 85%, 0.7)',
                   marginTop: '4px',
                   lineHeight: 1.4,
-                  textShadow: '0 0 10px rgba(40, 28, 6, 0.9)',
+                  textShadow: '0 0 12px rgba(0, 0, 0, 0.8)',
                 }}>
                   22 samtalsövningar för er som vill stanna kvar
                 </p>
