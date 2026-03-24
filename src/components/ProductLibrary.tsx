@@ -444,8 +444,8 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
           style={{
             fontFamily: "var(--font-display)",
             fontVariationSettings: "'opsz' 24",
-            fontSize: '26px',
-            fontWeight: 600,
+            fontSize: '28px',
+            fontWeight: 700,
             whiteSpace: 'nowrap',
             lineHeight: 1.15,
             color: accentColor || '#FDF6E3',
@@ -459,10 +459,10 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
           <p
             style={{
               fontFamily: "var(--font-body)",
-              fontSize: '14px',
-              fontWeight: 400,
+              fontSize: '15px',
+              fontWeight: 500,
               color: taglineColor || '#FDF6E3',
-              opacity: 0.8,
+              opacity: 0.9,
               marginTop: '4px',
               lineHeight: 1.4,
               textShadow: `0 0 10px ${bgRgba(0.8)}`,
@@ -843,7 +843,7 @@ export default function ProductLibrary() {
                   fontFamily: "var(--font-display)",
                   fontVariationSettings: "'opsz' 24",
                   fontSize: '28px',
-                  fontWeight: 600,
+                  fontWeight: 700,
                   color: '#FDF6E3',
                   lineHeight: 1.15,
                   letterSpacing: '-0.01em',
@@ -853,9 +853,9 @@ export default function ProductLibrary() {
                 </h3>
                 <p style={{
                   fontFamily: "var(--font-body)",
-                  fontSize: '14px',
-                  fontWeight: 400,
-                  color: 'hsla(100, 40%, 85%, 0.7)',
+                  fontSize: '15px',
+                  fontWeight: 500,
+                  color: 'hsla(100, 40%, 85%, 0.85)',
                   marginTop: '4px',
                   lineHeight: 1.4,
                   textShadow: '0 0 12px rgba(0, 0, 0, 0.8)',
