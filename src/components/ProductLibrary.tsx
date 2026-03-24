@@ -777,10 +777,10 @@ export default function ProductLibrary() {
               {/* Illustration — centered, filling tile */}
               <div style={{
                 position: 'absolute',
-                top: '-10%',
-                left: '5%',
-                right: '-5%',
-                bottom: '-10%',
+                top: '-25%',
+                left: '-15%',
+                right: '-15%',
+                bottom: '-25%',
                 pointerEvents: 'none',
                 zIndex: 0,
                 display: 'flex',
@@ -794,8 +794,8 @@ export default function ProductLibrary() {
                   style={{
                     width: '100%',
                     height: '100%',
-                    objectFit: 'contain',
-                    objectPosition: 'center center',
+                    objectFit: 'cover',
+                    objectPosition: 'center 35%',
                     opacity: 0.95,
                     filter: 'brightness(1.15) saturate(1.35) contrast(1.05)',
                   }}
