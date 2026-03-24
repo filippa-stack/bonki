@@ -765,12 +765,13 @@ export default function ProductLibrary() {
                 flexDirection: 'column',
                 position: 'relative',
                 overflow: 'hidden',
-                border: '1px solid rgba(255, 255, 255, 0.10)',
+                border: '1.5px solid rgba(255, 255, 255, 0.12)',
                 boxShadow: [
-                  '0 16px 40px rgba(0, 0, 0, 0.45)',
-                  '0 6px 16px rgba(0, 0, 0, 0.3)',
-                  '0 1px 3px rgba(0, 0, 0, 0.12)',
-                  'inset 0 1px 2px rgba(255, 255, 255, 0.08)',
+                  '0 20px 60px rgba(0, 0, 0, 0.55)',
+                  '0 8px 24px rgba(0, 0, 0, 0.35)',
+                  '0 0 72px rgba(200, 160, 120, 0.18)',
+                  'inset 0 3px 6px rgba(255, 255, 255, 0.15)',
+                  'inset 0 -4px 10px rgba(0, 0, 0, 0.25)',
                 ].join(', '),
               }}
             >
