@@ -122,8 +122,8 @@ h1, h2, h3,
     --state-inactive: 29 10% 55%;           /* Driftwood-light */
 
     /* Typography */
-    --font-display: 'Fraunces', Georgia, serif;
-    --font-body: 'Nunito', 'Segoe UI', sans-serif;
+    --font-display: 'Cormorant', Georgia, serif;
+    --font-body: 'DM Sans', 'Segoe UI', sans-serif;
     --font-serif: var(--font-display);
     --font-sans: var(--font-body);
 
