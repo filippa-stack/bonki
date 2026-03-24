@@ -545,10 +545,10 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
                   fontWeight: 400,
                   fontStyle: 'italic',
                   color: LANTERN_GLOW,
-                  opacity: 0.75,
+                  opacity: 0.85,
                   marginTop: '8px',
                   letterSpacing: '0.03em',
-                  textShadow: `0 1px 12px rgba(0,0,0,0.8), 0 0 40px ${bg}`,
+                  textShadow: `0 0 20px ${bg}, 0 0 40px ${bg}, 0 0 60px ${bg}, 0 2px 8px rgba(0,0,0,0.9)`,
                 }}
               >
                 {product.tagline}
