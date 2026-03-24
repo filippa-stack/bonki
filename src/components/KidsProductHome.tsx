@@ -184,8 +184,8 @@ function CategoryTile({
       style={{
         position: 'relative',
         overflow: 'hidden',
-        width: '100%',
-        ...(fillHeight ? { height: '100%' } : squareTile ? { aspectRatio: wideSpan ? '2 / 1' : '2 / 3' } : { minHeight: compactHeight ? '120px' : '140px' }),
+        width: wideSpan ? '48%' : '100%',
+        ...(fillHeight ? { height: '100%' } : squareTile ? { aspectRatio: '2 / 3' } : { minHeight: compactHeight ? '120px' : '140px' }),
 
         borderRadius: squareTile ? '28px' : '22px',
         cursor: isLocked ? 'default' : 'pointer',
@@ -724,7 +724,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
            <div
                 key={cat.id}
                 style={{
-                  ...(isLastOdd ? { gridColumn: '1 / -1', maxWidth: '60%', justifySelf: 'center' } : {}),
+                  ...(isLastOdd ? { gridColumn: '1 / -1', display: 'flex', justifyContent: 'center' } : {}),
                   
                 }}
               >
