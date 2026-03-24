@@ -90,10 +90,12 @@ const SQUARE_TILE_ILLUSTRATION_STYLES = [
 /** Per-product hero image vertical position — default is '50% 55%' */
 const HERO_OBJECT_POSITION: Record<string, string> = {
   jag_i_varlden: '50% 35%',
+  jag_i_mig: '50% 15%',
 };
 
 const HERO_TOP_OFFSET: Record<string, string> = {
   jag_i_varlden: '-20vh',
+  jag_i_mig: '-5vh',
 };
 
 /* ── First uncompleted card per category hook ── */
@@ -491,8 +493,8 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
               bottom: 0,
               left: 0,
               right: 0,
-              height: '65%',
-              background: `linear-gradient(to top, ${bg} 0%, ${bg}C0 12%, ${bg}70 30%, ${tileLight}25 50%, transparent 100%)`,
+          height: '75%',
+              background: `linear-gradient(to top, ${bg} 0%, ${bg}E0 15%, ${bg}90 35%, ${bg}40 55%, transparent 100%)`,
               pointerEvents: 'none',
             }}
           />
@@ -536,25 +538,21 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
             >
               {product.name}
             </h1>
-            <span
-                className="font-serif"
+             <p
                 style={{
-                  display: 'inline-block',
-                  fontSize: 'clamp(14px, 4vw, 18px)',
-                  fontWeight: 500,
+                  fontFamily: 'var(--font-display)',
+                  fontSize: 'clamp(15px, 4.2vw, 19px)',
+                  fontWeight: 400,
+                  fontStyle: 'italic',
                   color: LANTERN_GLOW,
-                  marginTop: '10px',
-                  padding: '5px 18px',
-                  borderRadius: '20px',
-                  background: `rgba(${hexToRgb(bg)}, 0.78)`,
-                  backdropFilter: 'blur(12px)',
-                  WebkitBackdropFilter: 'blur(12px)',
-                  border: '1px solid rgba(255,255,255,0.08)',
-                  letterSpacing: '0.02em',
+                  opacity: 0.75,
+                  marginTop: '8px',
+                  letterSpacing: '0.03em',
+                  textShadow: `0 1px 12px rgba(0,0,0,0.8), 0 0 40px ${bg}`,
                 }}
               >
                 {product.tagline}
-              </span>
+              </p>
 
 
             {/* ── Still Us: Intro session — glass pill CTA (before completion only) ── */}
@@ -723,10 +721,10 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
             const isLastOdd = useSquareGrid && product.categories.length % 2 === 1 && index === product.categories.length - 1;
 
             return (
-              <div
+           <div
                 key={cat.id}
                 style={{
-                  ...(isLastOdd ? { gridColumn: '1 / -1' } : {}),
+                  ...(isLastOdd ? { gridColumn: '1 / -1', maxWidth: '60%', justifySelf: 'center' } : {}),
                   
                 }}
               >
