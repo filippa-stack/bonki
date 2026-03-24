@@ -777,15 +777,12 @@ export default function ProductLibrary() {
               {/* Illustration — centered, filling tile */}
               <div style={{
                 position: 'absolute',
-                top: '-25%',
-                left: '-15%',
-                right: '-15%',
-                bottom: '-25%',
+                top: '-20%',
+                left: '10%',
+                right: '-10%',
+                bottom: '-30%',
                 pointerEvents: 'none',
                 zIndex: 0,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
               }}>
                 <img
                   src={illustrationStillUs}
@@ -794,8 +791,8 @@ export default function ProductLibrary() {
                   style={{
                     width: '100%',
                     height: '100%',
-                    objectFit: 'cover',
-                    objectPosition: 'center 35%',
+                    objectFit: 'contain',
+                    objectPosition: 'center top',
                     opacity: 0.95,
                     filter: 'brightness(1.15) saturate(1.35) contrast(1.05)',
                   }}
