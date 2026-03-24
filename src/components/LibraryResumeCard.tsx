@@ -30,7 +30,7 @@ function hexToRgba(hex: string, alpha: number): string {
 
 /** Product-specific tile colors — must match ProductLibrary TILE_COLORS */
 const PRODUCT_TILE_COLORS: Record<string, string> = {
-  still_us: '#2E1A0A',
+  still_us: '#1A1A22',
   jag_i_mig: '#2D6B62',
   jag_med_andra: '#B07A3A',
   jag_i_varlden: '#2A4A6B',
