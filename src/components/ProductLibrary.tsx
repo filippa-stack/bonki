@@ -777,10 +777,10 @@ export default function ProductLibrary() {
               {/* Illustration — centered, filling tile */}
               <div style={{
                 position: 'absolute',
-                top: '0',
+                top: '-10%',
+                left: '5%',
                 right: '-5%',
-                bottom: '0',
-                width: '90%',
+                bottom: '-10%',
                 pointerEvents: 'none',
                 zIndex: 0,
                 display: 'flex',
@@ -793,11 +793,11 @@ export default function ProductLibrary() {
                   draggable={false}
                   style={{
                     width: '100%',
-                    height: '95%',
+                    height: '100%',
                     objectFit: 'contain',
                     objectPosition: 'center center',
                     opacity: 0.95,
-                    filter: 'brightness(1.1) saturate(1.15)',
+                    filter: 'brightness(1.15) saturate(1.35) contrast(1.05)',
                   }}
                 />
               </div>
@@ -808,10 +808,10 @@ export default function ProductLibrary() {
                 style={{
                   position: 'absolute',
                   left: 0, right: 0, bottom: 0,
-                  height: '65%',
+                  height: '55%',
                   zIndex: 1,
                   pointerEvents: 'none',
-                  background: `linear-gradient(to top, rgba(26, 26, 34, 0.95) 0%, rgba(26, 26, 34, 0.75) 35%, rgba(26, 26, 34, 0.2) 70%, transparent 100%)`,
+                  background: `linear-gradient(to top, rgba(26, 26, 34, 0.92) 0%, rgba(26, 26, 34, 0.6) 40%, rgba(26, 26, 34, 0.1) 75%, transparent 100%)`,
                 }}
               />
 
