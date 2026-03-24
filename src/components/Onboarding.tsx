@@ -14,13 +14,6 @@ const fadeUp = (delay: number) => ({
 export default function Onboarding() {
   const { completeOnboarding, initializeCoupleSpace } = useApp();
 
-  const handleChoice = (audience: 'barn' | 'par') => {
-    trackOnboardingEvent('onboarding_complete', { audience });
-    localStorage.setItem('bonki-initial-tab', audience);
-    initializeCoupleSpace();
-    completeOnboarding();
-  };
-
   return (
     <div
       style={{
@@ -141,23 +134,9 @@ export default function Onboarding() {
             marginBottom: '20px',
           }}
         />
-
-        <motion.p
-          {...fadeUp(0.75)}
-          style={{
-            fontFamily: 'var(--font-body)',
-            fontSize: '0.92rem',
-            fontWeight: 300,
-            lineHeight: 1.6,
-            color: 'hsla(44, 86%, 94%, 0.55)',
-            margin: 0,
-          }}
-        >
-          Var vill ni börja?
-        </motion.p>
       </div>
 
-      {/* ── Binary choice — the micro-commitment ── */}
+      {/* ── Single CTA ── */}
       <motion.div
         {...fadeUp(0.9)}
         style={{
@@ -170,9 +149,12 @@ export default function Onboarding() {
           gap: '12px',
         }}
       >
-        {/* Barn choice */}
         <button
-          onClick={() => handleChoice('barn')}
+          onClick={() => {
+            trackOnboardingEvent('onboarding_complete', { audience: 'all' });
+            initializeCoupleSpace();
+            completeOnboarding();
+          }}
           style={{
             width: '100%',
             padding: '18px 24px',
@@ -182,10 +164,7 @@ export default function Onboarding() {
             border: '1px solid hsla(40, 78%, 61%, 0.18)',
             borderRadius: '16px',
             cursor: 'pointer',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'flex-start',
-            gap: '4px',
+            textAlign: 'center',
             transition: 'all 200ms ease',
           }}
           onMouseEnter={(e) => {
@@ -206,67 +185,7 @@ export default function Onboarding() {
               letterSpacing: '-0.01em',
             }}
           >
-            Med barnen
-          </span>
-          <span
-            style={{
-              fontFamily: 'var(--font-body)',
-              fontSize: '0.78rem',
-              fontWeight: 300,
-              color: 'hsla(44, 86%, 94%, 0.45)',
-            }}
-          >
-            Samtalskort för barn 3–18 år
-          </span>
-        </button>
-
-        {/* Par choice */}
-        <button
-          onClick={() => handleChoice('par')}
-          style={{
-            width: '100%',
-            padding: '18px 24px',
-            background: 'linear-gradient(135deg, hsla(40, 78%, 61%, 0.12) 0%, hsla(40, 70%, 50%, 0.06) 100%)',
-            backdropFilter: 'blur(20px)',
-            WebkitBackdropFilter: 'blur(20px)',
-            border: '1px solid hsla(40, 78%, 61%, 0.18)',
-            borderRadius: '16px',
-            cursor: 'pointer',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'flex-start',
-            gap: '4px',
-            transition: 'all 200ms ease',
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.background = 'linear-gradient(135deg, hsla(40, 78%, 61%, 0.20) 0%, hsla(40, 70%, 50%, 0.10) 100%)';
-            e.currentTarget.style.borderColor = 'hsla(40, 78%, 61%, 0.30)';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.background = 'linear-gradient(135deg, hsla(40, 78%, 61%, 0.12) 0%, hsla(40, 70%, 50%, 0.06) 100%)';
-            e.currentTarget.style.borderColor = 'hsla(40, 78%, 61%, 0.18)';
-          }}
-        >
-          <span
-            style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: '1.05rem',
-              fontWeight: 400,
-              color: '#FDF6E3',
-              letterSpacing: '-0.01em',
-            }}
-          >
-            Som par
-          </span>
-          <span
-            style={{
-              fontFamily: 'var(--font-sans)',
-              fontSize: '0.78rem',
-              fontWeight: 300,
-              color: 'hsla(44, 86%, 94%, 0.45)',
-            }}
-          >
-            Samtal för er relation
+            Börja
           </span>
         </button>
       </motion.div>
