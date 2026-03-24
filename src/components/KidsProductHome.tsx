@@ -753,6 +753,40 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
           })}
         </motion.div>
 
+        {/* ── Still Us: Completed intro link — below grid ── */}
+        {isSU && introCompleted && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5, duration: 0.5 }}
+            style={{ display: 'flex', justifyContent: 'center', width: '100%', marginTop: '16px', marginBottom: '10vh' }}
+          >
+            <button
+              onClick={() => navigate('/card/su-intro?from=archive')}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                padding: '8px 16px',
+              }}
+            >
+              <span style={{
+                fontFamily: 'var(--font-serif)',
+                fontSize: '13px',
+                fontWeight: 400,
+                color: DRIFTWOOD,
+                letterSpacing: '0.02em',
+              }}>
+                Ert första samtal
+              </span>
+              <span style={{ fontSize: '10px', color: DRIFTWOOD, opacity: 0.5 }}>✓</span>
+            </button>
+          </motion.div>
+        )}
+
       </div>
     </div>
   );
