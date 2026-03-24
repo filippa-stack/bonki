@@ -90,12 +90,12 @@ const SQUARE_TILE_ILLUSTRATION_STYLES = [
 /** Per-product hero image vertical position — default is '50% 55%' */
 const HERO_OBJECT_POSITION: Record<string, string> = {
   jag_i_varlden: '50% 35%',
-  jag_i_mig: '50% 10%',
+  jag_i_mig: '50% 18%',
 };
 
 const HERO_TOP_OFFSET: Record<string, string> = {
   jag_i_varlden: '-20vh',
-  jag_i_mig: '-18vh',
+  jag_i_mig: '-14vh',
 };
 
 /* ── First uncompleted card per category hook ── */
@@ -545,10 +545,16 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
                   fontWeight: 400,
                   fontStyle: 'italic',
                   color: LANTERN_GLOW,
-                  opacity: 0.85,
+                  opacity: 0.9,
                   marginTop: '8px',
                   letterSpacing: '0.03em',
-                  textShadow: `0 0 20px ${bg}, 0 0 40px ${bg}, 0 0 60px ${bg}, 0 2px 8px rgba(0,0,0,0.9)`,
+                  padding: '4px 16px',
+                  borderRadius: '12px',
+                  background: `rgba(0, 0, 0, 0.35)`,
+                  backdropFilter: 'blur(8px)',
+                  WebkitBackdropFilter: 'blur(8px)',
+                  textShadow: `0 1px 6px rgba(0,0,0,0.8)`,
+                  display: 'inline-block',
                 }}
               >
                 {product.tagline}
