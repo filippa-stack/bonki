@@ -784,7 +784,7 @@ export default function ProductLibrary() {
                   inset: 0,
                   zIndex: 0,
                   pointerEvents: 'none',
-                  background: 'radial-gradient(ellipse 80% 70% at 50% 35%, rgba(200, 150, 100, 0.15) 0%, rgba(200, 150, 100, 0.05) 50%, transparent 75%)',
+                  background: 'radial-gradient(ellipse 80% 70% at 50% 35%, rgba(110, 201, 184, 0.06) 0%, rgba(200, 150, 100, 0.08) 40%, transparent 75%)',
                 }}
               />
               {/* Illustration — centered, filling tile */}
