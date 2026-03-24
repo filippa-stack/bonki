@@ -542,19 +542,18 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
                 style={{
                   fontFamily: 'var(--font-display)',
                   fontSize: 'clamp(15px, 4.2vw, 19px)',
-                  fontWeight: 400,
+                  fontWeight: 500,
                   fontStyle: 'italic',
                   color: LANTERN_GLOW,
-                  opacity: 0.9,
                   marginTop: '8px',
                   letterSpacing: '0.03em',
-                  padding: '4px 16px',
-                  borderRadius: '12px',
-                  background: `rgba(0, 0, 0, 0.35)`,
-                  backdropFilter: 'blur(8px)',
-                  WebkitBackdropFilter: 'blur(8px)',
-                  textShadow: `0 1px 6px rgba(0,0,0,0.8)`,
-                  display: 'inline-block',
+                  textShadow: [
+                    `0 0 12px ${bg}`,
+                    `0 0 24px ${bg}`,
+                    `0 0 48px ${bg}`,
+                    `0 0 72px ${bg}`,
+                    `0 2px 4px rgba(0,0,0,0.9)`,
+                  ].join(', '),
                 }}
               >
                 {product.tagline}
