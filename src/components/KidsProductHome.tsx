@@ -724,7 +724,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
            <div
                 key={cat.id}
                 style={{
-                  ...(isLastOdd ? { gridColumn: '1 / -1', maxWidth: '60%', justifySelf: 'center' } : {}),
+                  ...(isLastOdd ? { gridColumn: '1 / -1', display: 'flex', justifyContent: 'center' } : {}),
                   
                 }}
               >
