@@ -82,7 +82,7 @@ const TILE_ILLUSTRATION_STYLES = [
 const SQUARE_TILE_ILLUSTRATION_STYLES = [
   { scale: 1.05, objectPosition: '50% 30%', opacity: 0.88 },
   { scale: 1.05, objectPosition: '50% 25%', opacity: 0.85 },
-  { scale: 1.45, objectPosition: '50% 50%', opacity: 0.90 },
+  { scale: 1.1,  objectPosition: '50% 15%', opacity: 0.88 },
   { scale: 1.05, objectPosition: '50% 30%', opacity: 0.90 },
   { scale: 1.05, objectPosition: '50% 30%', opacity: 0.88 },
 ];
@@ -545,10 +545,10 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
                   fontWeight: 400,
                   fontStyle: 'italic',
                   color: LANTERN_GLOW,
-                  opacity: 0.75,
+                  opacity: 0.85,
                   marginTop: '8px',
                   letterSpacing: '0.03em',
-                  textShadow: `0 1px 12px rgba(0,0,0,0.8), 0 0 40px ${bg}`,
+                  textShadow: `0 0 20px ${bg}, 0 0 40px ${bg}, 0 0 60px ${bg}, 0 2px 8px rgba(0,0,0,0.9)`,
                 }}
               >
                 {product.tagline}
