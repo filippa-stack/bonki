@@ -48,9 +48,9 @@ const TILE_COLORS: Record<string, string> = {
   jag_i_mig: '#245852',       // Muted teal — pulled back to balance with Still Us
   jag_med_andra: '#B07A3A',   // Warm amber-orange — resonant, not dusty
   jag_i_varlden: '#2A4A6B',   // Richer dusk blue — more saturated, separates from Still Us
-  sexualitetskort: '#6B4545',  // Lifted burgundy — enough contrast for illustration
+  sexualitetskort: '#5E3848',  // Plum-mauve — distinct from syskon's warm tone
   vardagskort: '#1A2E28',      // Richer forest charcoal — lifted from pure black
-  syskonkort: '#5A2A34',       // Lifted cherry-wine — illustration pops
+  syskonkort: '#6B4228',       // Warm sienna-brown — earthy, clearly different from närhet's cool plum
 };
 
 /** Luminance helper — determines if a tile needs light or dark treatment.
