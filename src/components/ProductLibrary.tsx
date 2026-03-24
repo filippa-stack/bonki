@@ -777,10 +777,10 @@ export default function ProductLibrary() {
               {/* Illustration — centered, filling tile */}
               <div style={{
                 position: 'absolute',
-                top: '-20%',
-                left: '10%',
+                top: '-5%',
+                left: '-10%',
                 right: '-10%',
-                bottom: '-30%',
+                bottom: '-35%',
                 pointerEvents: 'none',
                 zIndex: 0,
               }}>
