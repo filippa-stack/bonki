@@ -45,7 +45,7 @@ const TAGLINES: Record<string, string> = {
 
 /** Creature-color tile backgrounds — chosen to complement each illustration */
 const TILE_COLORS: Record<string, string> = {
-  jag_i_mig: '#2D6B62',       // Deep chromatic teal — matches character clothing
+  jag_i_mig: '#245852',       // Muted teal — pulled back to balance with Still Us
   jag_med_andra: '#B07A3A',   // Warm amber-orange — resonant, not dusty
   jag_i_varlden: '#2A4A6B',   // Richer dusk blue — more saturated, separates from Still Us
   sexualitetskort: '#A8766D',  // Warm terracotta-rose
@@ -115,7 +115,7 @@ const ILLUSTRATION_GLOW: Record<string, string> = {
 /** Per-tile drop-shadow + saturation boost — makes character pop from bg
  *  Shadow colors derived from each tile's own bg for natural grounding */
 const ILLUSTRATION_SHADOW: Record<string, string> = {
-  jag_i_mig: 'saturate(1.3) brightness(1.15) drop-shadow(0 6px 20px rgba(30, 50, 48, 0.5)) drop-shadow(0 2px 4px rgba(0,0,0,0.2))',
+  jag_i_mig: 'saturate(1.15) brightness(1.1) drop-shadow(0 6px 20px rgba(30, 50, 48, 0.5)) drop-shadow(0 2px 4px rgba(0,0,0,0.2))',
   jag_med_andra: 'saturate(1.3) contrast(1.1) brightness(1.1) drop-shadow(0 6px 20px rgba(86, 61, 34, 0.5)) drop-shadow(0 2px 4px rgba(0,0,0,0.15))',
   jag_i_varlden: 'saturate(1.3) brightness(1.2) drop-shadow(0 6px 20px rgba(21, 37, 54, 0.6)) drop-shadow(0 2px 4px rgba(0,0,0,0.25))',
   sexualitetskort: 'saturate(1.3) brightness(1.25) drop-shadow(0 6px 20px rgba(30, 20, 40, 0.6)) drop-shadow(0 2px 4px rgba(0,0,0,0.25))',
