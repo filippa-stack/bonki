@@ -568,7 +568,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
                   whileTap={{ scale: 0.96 }}
                   onClick={() => {
                     localStorage.setItem('bonki-last-active-product', product.slug);
-                    navigate('/card/su-intro');
+                    navigate('/still-us/intro');
                   }}
                   style={{
                     display: 'inline-flex',
