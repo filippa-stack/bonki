@@ -557,13 +557,12 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
               </span>
 
 
-            {/* ── Still Us: Intro session — glass pill CTA or placeholder ── */}
-            {isSU && (
+            {/* ── Still Us: Intro session — glass pill CTA (before completion only) ── */}
+            {isSU && !introCompleted && (
               <motion.div
                 variants={fadeUp}
                 style={{ display: 'flex', justifyContent: 'center', width: '100%', marginTop: '24px', marginBottom: '8px', minHeight: '44px' }}
               >
-                {!introCompleted ? (
                 <motion.button
                   whileTap={{ scale: 0.96 }}
                   onClick={() => {
@@ -600,34 +599,6 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
                     Börja här: <span style={{ opacity: 0.7 }}>Ert första samtal</span>
                   </span>
                 </motion.button>
-                ) : (
-                  <motion.button
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.4, duration: 0.5 }}
-                    onClick={() => navigate('/card/su-intro?from=archive')}
-                    style={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '6px',
-                      background: 'none',
-                      border: 'none',
-                      cursor: 'pointer',
-                      padding: '8px 16px',
-                    }}
-                  >
-                    <span style={{
-                      fontFamily: 'var(--font-serif)',
-                      fontSize: '13px',
-                      fontWeight: 400,
-                      color: DRIFTWOOD,
-                      letterSpacing: '0.02em',
-                    }}>
-                      Ert första samtal
-                    </span>
-                    <span style={{ fontSize: '10px', color: DRIFTWOOD, opacity: 0.5 }}>✓</span>
-                  </motion.button>
-                )}
               </motion.div>
             )}
             {/* Spacer — pushes content below hero face zone */}
