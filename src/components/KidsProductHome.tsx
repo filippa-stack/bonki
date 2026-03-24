@@ -90,12 +90,12 @@ const SQUARE_TILE_ILLUSTRATION_STYLES = [
 /** Per-product hero image vertical position — default is '50% 55%' */
 const HERO_OBJECT_POSITION: Record<string, string> = {
   jag_i_varlden: '50% 35%',
-  jag_i_mig: '50% 15%',
+  jag_i_mig: '50% 30%',
 };
 
 const HERO_TOP_OFFSET: Record<string, string> = {
   jag_i_varlden: '-20vh',
-  jag_i_mig: '-5vh',
+  jag_i_mig: '0vh',
 };
 
 /* ── First uncompleted card per category hook ── */
@@ -184,8 +184,8 @@ function CategoryTile({
       style={{
         position: 'relative',
         overflow: 'hidden',
-        width: wideSpan ? '48%' : '100%',
-        ...(fillHeight ? { height: '100%' } : squareTile ? { aspectRatio: '2 / 3' } : { minHeight: compactHeight ? '120px' : '140px' }),
+        width: '100%',
+        ...(fillHeight ? { height: '100%' } : squareTile ? { aspectRatio: wideSpan ? '5 / 3' : '2 / 3' } : { minHeight: compactHeight ? '120px' : '140px' }),
 
         borderRadius: squareTile ? '28px' : '22px',
         cursor: isLocked ? 'default' : 'pointer',
@@ -724,7 +724,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
            <div
                 key={cat.id}
                 style={{
-                  ...(isLastOdd ? { gridColumn: '1 / -1', display: 'flex', justifyContent: 'center' } : {}),
+                  ...(isLastOdd ? { gridColumn: '1 / -1' } : {}),
                   
                 }}
               >
