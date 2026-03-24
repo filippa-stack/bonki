@@ -818,8 +818,7 @@ export default function ProductLibrary() {
               {/* Text — left-aligned, lower-third emphasis */}
               <div style={{
                 position: 'absolute',
-                left: 0, bottom: 0, top: 0,
-                width: '55%',
+                left: 0, bottom: 0, right: 0,
                 zIndex: 2,
                 display: 'flex',
                 flexDirection: 'column',
