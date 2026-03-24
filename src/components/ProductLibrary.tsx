@@ -828,7 +828,7 @@ export default function ProductLibrary() {
               <div style={{
                 position: 'absolute',
                 left: 0, bottom: 0, right: 0,
-                zIndex: 2,
+                zIndex: 3,
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'flex-end',
