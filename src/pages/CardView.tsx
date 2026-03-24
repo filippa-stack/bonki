@@ -2255,7 +2255,7 @@ export default function CardView() {
               }}>
                 {/* Back arrow */}
                 <button
-                  onClick={() => setShowLeaveConfirm(true)}
+                  onClick={() => { if (localPromptIndex > 0 || currentStepIndex > 0) { handleFocusBack(); } else { setShowLeaveConfirm(true); } }}
                   aria-label="Tillbaka"
                   style={{
                     position: 'absolute',
