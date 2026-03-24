@@ -776,7 +776,7 @@ export default function ProductLibrary() {
                 ].join(', '),
               }}
             >
-              {/* Warm radial glow behind illustration */}
+              {/* Warm radial glow behind illustration — strong */}
               <div
                 aria-hidden="true"
                 style={{
@@ -784,16 +784,19 @@ export default function ProductLibrary() {
                   inset: 0,
                   zIndex: 0,
                   pointerEvents: 'none',
-                  background: 'radial-gradient(ellipse 80% 70% at 50% 35%, rgba(110, 201, 184, 0.06) 0%, rgba(200, 150, 100, 0.08) 40%, transparent 75%)',
+                  background: [
+                    'radial-gradient(ellipse 90% 80% at 50% 30%, rgba(210, 160, 100, 0.22) 0%, rgba(180, 120, 70, 0.10) 45%, transparent 75%)',
+                    'radial-gradient(ellipse 60% 50% at 55% 25%, rgba(240, 190, 130, 0.12) 0%, transparent 60%)',
+                  ].join(', '),
                 }}
               />
-              {/* Illustration — centered, filling tile */}
+              {/* Illustration — larger, filling tile */}
               <div style={{
                 position: 'absolute',
-                top: '5%',
-                left: '-10%',
-                right: '-10%',
-                bottom: '-40%',
+                top: '0%',
+                left: '-15%',
+                right: '-15%',
+                bottom: '-45%',
                 pointerEvents: 'none',
                 zIndex: 1,
               }}>
@@ -805,9 +808,9 @@ export default function ProductLibrary() {
                     width: '100%',
                     height: '100%',
                     objectFit: 'contain',
-                    objectPosition: 'center 15%',
+                    objectPosition: 'center 12%',
                     opacity: 1,
-                    filter: 'brightness(1.25) saturate(1.5) contrast(1.1)',
+                    filter: 'brightness(1.3) saturate(1.55) contrast(1.12)',
                   }}
                 />
               </div>
