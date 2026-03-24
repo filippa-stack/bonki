@@ -818,7 +818,7 @@ export default function ProductLibrary() {
                   position: 'absolute',
                   left: 0, right: 0, bottom: 0,
                   height: '55%',
-                  zIndex: 1,
+                  zIndex: 2,
                   pointerEvents: 'none',
                   background: `linear-gradient(to top, rgba(26, 26, 34, 0.92) 0%, rgba(26, 26, 34, 0.6) 40%, rgba(26, 26, 34, 0.1) 75%, transparent 100%)`,
                 }}
