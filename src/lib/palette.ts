@@ -19,7 +19,7 @@ export const DRIFTWOOD = '#6B5E52';
 export const GHOST_GLOW = '#D4F5C0';
 
 // ── Still Us tokens ──
-export const EMBER_NIGHT = '#1A0806';
+export const EMBER_NIGHT = '#1A1C22';
 export const EMBER_MID = '#473454';
 export const EMBER_GLOW = '#F5E8CC';
 
