@@ -493,8 +493,8 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
               bottom: 0,
               left: 0,
               right: 0,
-          height: '75%',
-              background: `linear-gradient(to top, ${bg} 0%, ${bg}E0 15%, ${bg}90 35%, ${bg}40 55%, transparent 100%)`,
+          height: '85%',
+              background: `linear-gradient(to top, ${bg} 0%, ${bg}F5 18%, ${bg}B0 38%, ${bg}60 55%, transparent 100%)`,
               pointerEvents: 'none',
             }}
           />
@@ -687,13 +687,13 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
           initial="hidden"
           animate="visible"
           style={{
-            display: useSquareGrid ? 'grid' : 'flex',
+            display: 'grid',
             ...(useSquareGrid
               ? {
-                  gridTemplateColumns: '1fr 1fr',
+                  gridTemplateColumns: product.categories.length === 3 ? '1fr 1fr 1fr' : '1fr 1fr',
                   gap: '8px',
                 }
-              : { flexDirection: 'column' as const, gap: '12px' }),
+              : { gridTemplateColumns: '1fr', gap: '12px' }),
             width: '100%',
             marginBottom: '10vh',
           }}
