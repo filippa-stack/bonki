@@ -444,8 +444,9 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
           style={{
             fontFamily: "var(--font-display)",
             fontVariationSettings: "'opsz' 24",
-            fontSize: '28px',
+            fontSize: '26px',
             fontWeight: 600,
+            whiteSpace: 'nowrap',
             lineHeight: 1.15,
             color: accentColor || '#FDF6E3',
             letterSpacing: '-0.01em',
