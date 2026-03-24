@@ -164,7 +164,7 @@ export const stillUsProduct: ProductManifest = {
   accentColor: 'hsl(28, 80%, 57%)',       // deep saffron
   accentColorMuted: 'hsl(28, 60%, 85%)',
   secondaryAccent: 'hsl(280, 20%, 22%)',   // ember tone
-  backgroundColor: '#1A0806',
+  backgroundColor: '#1A1C22',
   ctaButtonColor: '#E8913A',
   tileLight: '#2E1A0A',                    // deep burnt umber (library tile)
   tileMid: '#4A3308',
