@@ -14,10 +14,10 @@ export default {
     },
     extend: {
       fontFamily: {
-        display: ['Fraunces', 'Georgia', 'serif'],
-        serif: ['Fraunces', 'Georgia', 'serif'],
-        sans: ['Nunito', 'Segoe UI', 'sans-serif'],
-        body: ['Nunito', 'Segoe UI', 'sans-serif'],
+        display: ['Cormorant', 'Georgia', 'serif'],
+        serif: ['Cormorant', 'Georgia', 'serif'],
+        sans: ['DM Sans', 'Segoe UI', 'sans-serif'],
+        body: ['DM Sans', 'Segoe UI', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",
