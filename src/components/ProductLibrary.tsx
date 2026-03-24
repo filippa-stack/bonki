@@ -107,9 +107,9 @@ const ILLUSTRATION_GLOW: Record<string, string> = {
   jag_i_mig: 'rgba(240, 190, 80, 0.12)',
   jag_med_andra: 'rgba(160, 130, 220, 0.10)',
   jag_i_varlden: 'rgba(140, 200, 230, 0.12)',
-  sexualitetskort: 'rgba(180, 130, 200, 0.12)',
-  vardagskort: 'rgba(200, 180, 100, 0.12)',
-  syskonkort: 'rgba(220, 180, 80, 0.14)',
+  sexualitetskort: 'rgba(220, 140, 160, 0.20)',
+  vardagskort: 'rgba(180, 200, 100, 0.18)',
+  syskonkort: 'rgba(240, 160, 80, 0.20)',
 };
 
 /** Per-tile drop-shadow + saturation boost — makes character pop from bg
