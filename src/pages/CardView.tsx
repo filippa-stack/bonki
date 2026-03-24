@@ -2355,13 +2355,8 @@ export default function CardView() {
 
     // CTA labels per step transition
     const getStillUsCtaLabel = (): string => {
-      if (!isLastPromptInStage) return 'Fortsätt';
-      switch (currentStageKey) {
-        case 'opening': return 'Vänd perspektivet →';
-        case 'reflective': return 'Tänk om... →';
-        case 'scenario': return 'Avsluta →';
-        default: return 'Vi är klara.';
-      }
+      if (isLastStage && isLastPromptInStage) return 'Avsluta';
+      return 'Fortsätt';
     };
 
     // Note trigger: after step 2 (scenario+), show pencil only
@@ -2906,7 +2901,7 @@ export default function CardView() {
                 justifyContent: 'center',
               }}
             >
-              {isLastPrompt ? 'Avsluta samtalet' : 'Fortsätt'}
+              {isLastPrompt ? 'Avsluta' : 'Fortsätt'}
             </motion.button>
           </div>
         </div>

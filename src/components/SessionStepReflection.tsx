@@ -134,7 +134,7 @@ export default function SessionStepReflection({
 
   // Resolve CTA text
   const resolvedCtaLabel = ctaLabel
-    ?? (submitting ? 'Sparar…' : isLastStep ? 'Vi är klara' : 'Fortsätt');
+    ?? (submitting ? 'Sparar…' : isLastStep ? 'Avsluta' : 'Fortsätt');
 
   // Still Us palette
   const noteBg = stillUsMode ? EMBER_GLOW : 'hsla(36, 20%, 97%, 0.12)';
