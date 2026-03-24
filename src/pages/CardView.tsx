@@ -2136,7 +2136,9 @@ export default function CardView() {
   //  MODE: Still Us ARCHIVE — read-only focus shell
   // ─────────────────────────────────────────────────────────────
 
-  if (isFromArchive && (product?.id === 'still_us' || isStillUsCard) && currentSection) {
+  console.log('[ARCHIVE-DEBUG]', { cardId, isFromArchive, productId: product?.id, isStillUsCard, hasCard: !!card, currentSectionType: currentSection?.type, effectiveSteps0: effectiveSteps?.[0] });
+
+  if (isFromArchive && (product?.id === 'still_us' || isStillUsCard || cardId?.startsWith('su-')) && currentSection) {
     const MIDNIGHT_INK_A = product?.backgroundColor ?? '#1A0806';
     const LANTERN_GLOW_A = '#FDF6E3';
     const DEEP_SAFFRON_A = '#D4A03A';
