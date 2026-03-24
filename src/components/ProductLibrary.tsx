@@ -48,9 +48,9 @@ const TILE_COLORS: Record<string, string> = {
   jag_i_mig: '#245852',       // Muted teal — pulled back to balance with Still Us
   jag_med_andra: '#B07A3A',   // Warm amber-orange — resonant, not dusty
   jag_i_varlden: '#2A4A6B',   // Richer dusk blue — more saturated, separates from Still Us
-  sexualitetskort: '#5C3A3A',  // Deep burgundy-rose — rich, dark, premium
+  sexualitetskort: '#6B4545',  // Lifted burgundy — enough contrast for illustration
   vardagskort: '#1A2E28',      // Richer forest charcoal — lifted from pure black
-  syskonkort: '#4A1E28',       // Deeper cherry-wine — more saturated, richer
+  syskonkort: '#5A2A34',       // Lifted cherry-wine — illustration pops
 };
 
 /** Luminance helper — determines if a tile needs light or dark treatment.
@@ -107,9 +107,9 @@ const ILLUSTRATION_GLOW: Record<string, string> = {
   jag_i_mig: 'rgba(240, 190, 80, 0.12)',
   jag_med_andra: 'rgba(160, 130, 220, 0.10)',
   jag_i_varlden: 'rgba(140, 200, 230, 0.12)',
-  sexualitetskort: 'rgba(220, 140, 160, 0.20)',
+  sexualitetskort: 'rgba(220, 140, 160, 0.28)',
   vardagskort: 'rgba(180, 200, 100, 0.18)',
-  syskonkort: 'rgba(240, 160, 80, 0.20)',
+  syskonkort: 'rgba(240, 160, 80, 0.28)',
 };
 
 /** Per-tile drop-shadow + saturation boost — makes character pop from bg
@@ -118,9 +118,9 @@ const ILLUSTRATION_SHADOW: Record<string, string> = {
   jag_i_mig: 'saturate(1.15) brightness(1.1) drop-shadow(0 6px 20px rgba(30, 50, 48, 0.5)) drop-shadow(0 2px 4px rgba(0,0,0,0.2))',
   jag_med_andra: 'saturate(1.3) contrast(1.1) brightness(1.1) drop-shadow(0 6px 20px rgba(86, 61, 34, 0.5)) drop-shadow(0 2px 4px rgba(0,0,0,0.15))',
   jag_i_varlden: 'saturate(1.3) brightness(1.2) drop-shadow(0 6px 20px rgba(21, 37, 54, 0.6)) drop-shadow(0 2px 4px rgba(0,0,0,0.25))',
-  sexualitetskort: 'saturate(1.4) brightness(1.2) contrast(1.08) drop-shadow(0 6px 20px rgba(50, 25, 30, 0.6)) drop-shadow(0 2px 4px rgba(0,0,0,0.25))',
+  sexualitetskort: 'saturate(1.6) brightness(1.45) contrast(1.1) drop-shadow(0 6px 20px rgba(50, 25, 30, 0.6)) drop-shadow(0 2px 4px rgba(0,0,0,0.25))',
   vardagskort: 'saturate(1.35) brightness(1.25) drop-shadow(0 8px 24px rgba(15, 35, 30, 0.6)) drop-shadow(0 2px 4px rgba(0,0,0,0.25))',
-  syskonkort: 'saturate(1.4) brightness(1.2) drop-shadow(0 6px 20px rgba(50, 20, 28, 0.5)) drop-shadow(0 2px 4px rgba(0,0,0,0.2))',
+  syskonkort: 'saturate(1.6) brightness(1.45) contrast(1.1) drop-shadow(0 6px 20px rgba(50, 20, 28, 0.5)) drop-shadow(0 2px 4px rgba(0,0,0,0.2))',
 };
 
 /** Title colors — dark text on lighter tiles, light on darker ones */
