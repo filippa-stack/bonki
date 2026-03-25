@@ -55,21 +55,23 @@ export default function VardagProductHome({ product }: { product: ProductManifes
         }}
       />
 
-      {/* ── Hero illustration ── */}
+      {/* ── Hero illustration — left-weighted crop matching reference ── */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6 }}
-        style={{ position: 'absolute', top: '-14vh', left: '-5vw', right: '-5vw', height: '100vh', zIndex: 0, pointerEvents: 'none' }}
-      >
-        <img src={heroImage} alt="" style={{ width: '1080px', height: '1350px', objectFit: 'cover', objectPosition: '50% 8%', opacity: 0.38, position: 'absolute', left: '50%', transform: 'translateX(-50%)' }} />
-        {/* Extended 85% scrim with extra mid-stop for smooth blend */}
-        <div style={{
-          position: 'absolute', bottom: 0, left: 0, right: 0, height: '85%',
-          background: `linear-gradient(to top, ${BG}F0 0%, ${BG}E0 15%, ${BG}C0 35%, ${BG}80 55%, ${BG}40 70%, transparent 100%)`,
+        style={{
+          position: 'absolute',
+          inset: 0,
+          zIndex: 0,
           pointerEvents: 'none',
-        }} />
-      </motion.div>
+          backgroundImage: `url(${heroImage})`,
+          backgroundRepeat: 'no-repeat',
+          backgroundSize: '135vw auto',
+          backgroundPosition: '-15vw -2vh',
+          opacity: 0.38,
+        }}
+      />
 
       {/* ── Content ── */}
       <div style={{ position: 'relative', zIndex: 1, minHeight: '100vh', display: 'flex', flexDirection: 'column', paddingTop: 'clamp(32px, 10vh, 90px)', paddingRight: '5vw', paddingBottom: '80px', paddingLeft: '5vw' }}>
