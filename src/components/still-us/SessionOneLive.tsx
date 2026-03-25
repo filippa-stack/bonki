@@ -13,6 +13,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { EASE, EMOTION } from '@/lib/motion';
 import { COLORS, cardIndexFromSlug, cardIdFromSlug } from '@/lib/stillUsTokens';
+import { useCardImage } from '@/hooks/useCardImage';
 import { getSliderSetBySlug } from '@/data/sliderPrompts';
 import { getThresholdFraming, MOOD_OPTIONS, type ThresholdMood } from '@/data/thresholdFramings';
 import { supabase } from '@/integrations/supabase/client';
@@ -88,6 +89,8 @@ export default function SessionOneLive() {
 
   const cardIndex = slug ? cardIndexFromSlug(slug) : -1;
   const backendCardId = slug ? cardIdFromSlug(slug) : null;
+  const contentCardId = cardIndex >= 0 ? `su-mock-${cardIndex}` : null;
+  const cardIllustration = useCardImage(contentCardId);
   const sliderSet = slug ? getSliderSetBySlug(slug) : undefined;
 
   const [step, setStep] = useState<Step>('threshold');
