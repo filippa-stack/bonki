@@ -64,6 +64,7 @@ export default function CompletedSessionView({
   const ageLabel = product?.ageLabel;
   const completionMessages = useMemo(() => getCompletionMessages(pronounMode, ageLabel), [pronounMode, ageLabel]);
   const isChildProduct = product && product.id !== 'still_us';
+  const cardIllustration = useCardImage(cardId);
 
   const headline = useMemo(() =>
     completionMessages[Math.floor(Math.random() * completionMessages.length)],
