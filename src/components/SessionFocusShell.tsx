@@ -2,7 +2,7 @@ import { ReactNode, useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { EASE } from '@/lib/motion';
-import { EMBER_NIGHT, EMBER_GLOW, DEEP_SAFFRON, DRIFTWOOD, BARK, MIDNIGHT_INK } from '@/lib/palette';
+import { EMBER_GLOW, DEEP_SAFFRON, DRIFTWOOD, BARK, MIDNIGHT_INK } from '@/lib/palette';
 import { sessionHeartbeat } from '@/lib/stillUsRpc';
 
 interface SessionFocusShellProps {
@@ -19,13 +19,17 @@ interface SessionFocusShellProps {
   showExitDialog?: boolean;
   onExitDialogClose?: () => void;
   onExitConfirm?: () => void;
+  /** Product background color — fills full viewport */
+  productBgColor?: string;
+  /** Card illustration URL — shown behind the white question card */
+  illustrationSrc?: string | null;
 }
 
 const HEARTBEAT_INTERVAL_MS = 60_000;
 
 /**
- * Immersive shell for Still Us live sessions.
- * Ember Night bg, no tab bar, exit via dialog.
+ * Immersive shell for live sessions.
+ * Product bg color, card illustration behind white question card.
  * Sends heartbeat every 60s to maintain session lock.
  */
 export default function SessionFocusShell({
@@ -40,10 +44,14 @@ export default function SessionFocusShell({
   showExitDialog = false,
   onExitDialogClose,
   onExitConfirm,
+  productBgColor,
+  illustrationSrc,
 }: SessionFocusShellProps) {
   const navigate = useNavigate();
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
   const pausedRef = useRef(false);
+
+  const bgColor = productBgColor || '#4B759B';
 
   // ── Heartbeat (only when all IDs provided) ──
   useEffect(() => {
@@ -79,7 +87,7 @@ export default function SessionFocusShell({
         position: 'fixed',
         inset: 0,
         zIndex: 10,
-        backgroundColor: '#4B759B',
+        backgroundColor: bgColor,
         display: 'flex',
         flexDirection: 'column',
         overflow: 'hidden',
@@ -119,7 +127,7 @@ export default function SessionFocusShell({
         </div>
       )}
 
-      {/* Centered question content */}
+      {/* Main content area — illustration bg + white card */}
       <div
         style={{
           flex: '1 1 auto',
@@ -128,13 +136,52 @@ export default function SessionFocusShell({
           alignItems: 'center',
           justifyContent: 'center',
           width: '100%',
-          maxWidth: '520px',
-          padding: '0 24px',
-          margin: '0 auto',
+          position: 'relative',
           overflow: 'hidden',
+          padding: '12px 16px',
         }}
       >
-        {children}
+        {/* Illustration background — behind the white card */}
+        {illustrationSrc && (
+          <img
+            src={illustrationSrc}
+            alt=""
+            style={{
+              position: 'absolute',
+              inset: 0,
+              width: '100%',
+              height: '100%',
+              objectFit: 'contain',
+              objectPosition: '50% 40%',
+              opacity: 0.5,
+              pointerEvents: 'none',
+              zIndex: 0,
+            }}
+          />
+        )}
+
+        {/* White question card */}
+        <div
+          style={{
+            position: 'relative',
+            zIndex: 1,
+            width: '100%',
+            maxWidth: '520px',
+            flex: '1 1 auto',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: '#FAF7F2',
+            borderRadius: '24px',
+            padding: '24px 24px',
+            boxShadow: '0 8px 32px rgba(0,0,0,0.15)',
+            minHeight: 0,
+            overflow: 'hidden',
+          }}
+        >
+          {children}
+        </div>
       </div>
 
       {/* CTA zone */}
@@ -145,8 +192,8 @@ export default function SessionFocusShell({
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          padding: '0 24px',
-          paddingBottom: 'calc(24px + env(safe-area-inset-bottom, 0px))',
+          padding: '8px 24px',
+          paddingBottom: 'calc(16px + env(safe-area-inset-bottom, 0px))',
         }}
       >
         {ctaSlot}

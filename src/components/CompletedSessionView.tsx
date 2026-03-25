@@ -14,6 +14,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpaceContext as useCoupleSpace } from '@/contexts/CoupleSpaceContext';
 import Header from '@/components/Header';
+import { useCardImage } from '@/hooks/useCardImage';
 import { BEAT_1, BEAT_2, BEAT_3, EASE, EMOTION } from '@/lib/motion';
 
 const STEP_LABELS = ['Kom igång', 'Gå djupare', 'Föreställ er', 'I verkligheten'];
@@ -63,6 +64,7 @@ export default function CompletedSessionView({
   const ageLabel = product?.ageLabel;
   const completionMessages = useMemo(() => getCompletionMessages(pronounMode, ageLabel), [pronounMode, ageLabel]);
   const isChildProduct = product && product.id !== 'still_us';
+  const cardIllustration = useCardImage(cardId);
 
   const headline = useMemo(() =>
     completionMessages[Math.floor(Math.random() * completionMessages.length)],
@@ -221,10 +223,29 @@ export default function CompletedSessionView({
   }).filter(g => g.partnerRef || g.myRef);
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: bgColor }}>
+    <div className="min-h-screen" style={{ backgroundColor: bgColor, position: 'relative', overflow: 'hidden' }}>
+      {/* Card illustration background */}
+      {cardIllustration && (
+        <img
+          src={cardIllustration}
+          alt=""
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '50%',
+            objectFit: 'contain',
+            objectPosition: '50% 30%',
+            opacity: 0.3,
+            pointerEvents: 'none',
+            zIndex: 0,
+          }}
+        />
+      )}
       <Header title={cardTitle} showBack backTo={isChildProduct && product && categoryId ? `/product/${product.slug}/portal/${categoryId}` : categoryId ? `/category/${categoryId}` : '/'} />
 
-      <div className="px-6" style={{ paddingTop: '32px', paddingBottom: '100px' }}>
+      <div className="px-6" style={{ paddingTop: '32px', paddingBottom: '100px', position: 'relative', zIndex: 1 }}>
         <div className="max-w-md mx-auto pb-8" style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
 
           {/* Completion header */}

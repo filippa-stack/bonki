@@ -2177,6 +2177,8 @@ export default function CardView() {
 
     return (
       <SessionFocusShell
+        productBgColor={product?.backgroundColor}
+        illustrationSrc={cardImageUrl}
         onExit={() => navigate(product ? `/product/${product.slug}` : '/')}
         ctaSlot={
           <div style={{ width: '100%', maxWidth: '520px' }}>
@@ -2395,6 +2397,8 @@ export default function CardView() {
         {_devDebug}
         <SessionFocusShell
           key={`focus-${currentStepIndex}-${localPromptIndex}`}
+          productBgColor={product?.backgroundColor}
+          illustrationSrc={cardImageUrl}
           onExit={() => setShowLeaveConfirm(true)}
           onPause={() => navigate('/')}
           showExitDialog={showLeaveConfirm}

@@ -13,6 +13,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { EASE, EMOTION } from '@/lib/motion';
 import { COLORS, cardIndexFromSlug, cardIdFromSlug } from '@/lib/stillUsTokens';
+import { useCardImage } from '@/hooks/useCardImage';
 import { getSliderSetBySlug } from '@/data/sliderPrompts';
 import { getThresholdFraming, MOOD_OPTIONS, type ThresholdMood } from '@/data/thresholdFramings';
 import { supabase } from '@/integrations/supabase/client';
@@ -88,6 +89,8 @@ export default function SessionOneLive() {
 
   const cardIndex = slug ? cardIndexFromSlug(slug) : -1;
   const backendCardId = slug ? cardIdFromSlug(slug) : null;
+  const contentCardId = cardIndex >= 0 ? `su-mock-${cardIndex}` : null;
+  const cardIllustration = useCardImage(contentCardId);
   const sliderSet = slug ? getSliderSetBySlug(slug) : undefined;
 
   const [step, setStep] = useState<Step>('threshold');
@@ -431,7 +434,7 @@ export default function SessionOneLive() {
   if (step === 'threshold') {
     if (isCompact) {
       return (
-        <SessionFocusShell
+        <SessionFocusShell productBgColor="#4B759B" illustrationSrc={cardIllustration}
           couple_id={coupleState?.couple_id}
           card_id={backendCardId ?? undefined}
           device_id={lockAcquired ? deviceId : undefined}
@@ -475,7 +478,7 @@ export default function SessionOneLive() {
 
     if (partnerTier === 'tier_2') {
       return (
-        <SessionFocusShell couple_id={coupleState?.couple_id} card_id={backendCardId ?? undefined} device_id={lockAcquired ? deviceId : undefined} onExit={() => navigate('/')} ctaSlot={null}>
+        <SessionFocusShell productBgColor="#4B759B" illustrationSrc={cardIllustration} couple_id={coupleState?.couple_id} card_id={backendCardId ?? undefined} device_id={lockAcquired ? deviceId : undefined} onExit={() => navigate('/')} ctaSlot={null}>
           <Tier2Threshold
             initiatorName={initiatorName}
             partnerName={partnerName}
@@ -490,7 +493,7 @@ export default function SessionOneLive() {
     }
 
     return (
-      <SessionFocusShell couple_id={coupleState?.couple_id} card_id={backendCardId ?? undefined} device_id={lockAcquired ? deviceId : undefined} onExit={() => navigate('/')} ctaSlot={null}>
+      <SessionFocusShell productBgColor="#4B759B" illustrationSrc={cardIllustration} couple_id={coupleState?.couple_id} card_id={backendCardId ?? undefined} device_id={lockAcquired ? deviceId : undefined} onExit={() => navigate('/')} ctaSlot={null}>
         <FullscreenThreshold
           initiatorName={initiatorName}
           partnerName={partnerName}
@@ -506,7 +509,7 @@ export default function SessionOneLive() {
   // ── STEP: FRAMING ─────────────────────────────────────────
   if (step === 'framing' && framing) {
     return (
-      <SessionFocusShell
+      <SessionFocusShell productBgColor="#4B759B" illustrationSrc={cardIllustration}
         couple_id={coupleState?.couple_id}
         card_id={backendCardId ?? undefined}
         device_id={lockAcquired ? deviceId : undefined}
@@ -686,7 +689,7 @@ export default function SessionOneLive() {
   );
 
   return (
-    <SessionFocusShell
+    <SessionFocusShell productBgColor="#4B759B" illustrationSrc={cardIllustration}
       couple_id={coupleState?.couple_id}
       card_id={backendCardId ?? undefined}
       device_id={lockAcquired ? deviceId : undefined}

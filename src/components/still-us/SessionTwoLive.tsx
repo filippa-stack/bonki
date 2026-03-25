@@ -13,6 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { EASE, EMOTION } from '@/lib/motion';
 import { COLORS, cardIdFromSlug, cardIndexFromSlug } from '@/lib/stillUsTokens';
+import { useCardImage } from '@/hooks/useCardImage';
 import { getTankOmContent } from '@/data/tankOmContent';
 import { completeSession } from '@/lib/stillUsRpc';
 import { supabase } from '@/integrations/supabase/client';
@@ -129,6 +130,8 @@ export default function SessionTwoLive({
   vandAnchor,
 }: SessionTwoLiveProps) {
   const navigate = useNavigate();
+  const contentCardId = cardIndex >= 0 ? `su-mock-${cardIndex}` : null;
+  const cardIllustration = useCardImage(contentCardId);
   const [currentStep, setCurrentStep] = useState<Session2Step>('vand_q2');
   const [vandNote, setVandNote] = useState('');
   const [tankOmNote, setTankOmNote] = useState('');
