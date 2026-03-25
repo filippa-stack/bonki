@@ -2720,12 +2720,12 @@ export default function CardView() {
                 draggable={false}
                 style={{
                   position: 'absolute',
-                  inset: 0,
-                  width: '100%',
-                  height: '100%',
+                  inset: '-10%',
+                  width: '120%',
+                  height: '120%',
                   objectFit: 'contain',
-                  objectPosition: '50% 40%',
-                  opacity: 0.45,
+                  objectPosition: '50% 45%',
+                  opacity: 0.7,
                   pointerEvents: 'none',
                   zIndex: 0,
                 }}
@@ -2743,7 +2743,7 @@ export default function CardView() {
               flexDirection: 'column',
               backgroundColor: '#FAF7F2',
               borderRadius: '38px',
-              padding: '32px 28px 24px',
+              padding: '48px 28px 28px',
               boxShadow: '0 8px 32px rgba(0,0,0,0.15)',
               overflow: 'hidden',
             }}>

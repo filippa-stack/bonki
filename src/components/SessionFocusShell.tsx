@@ -148,12 +148,12 @@ export default function SessionFocusShell({
             alt=""
             style={{
               position: 'absolute',
-              inset: 0,
-              width: '100%',
-              height: '100%',
+              inset: '-10%',
+              width: '120%',
+              height: '120%',
               objectFit: 'contain',
-              objectPosition: '50% 40%',
-              opacity: 0.5,
+              objectPosition: '50% 45%',
+              opacity: 0.7,
               pointerEvents: 'none',
               zIndex: 0,
             }}
