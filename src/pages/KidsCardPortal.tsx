@@ -338,6 +338,7 @@ export default function KidsCardPortal() {
               animate="center"
               exit="exit"
               transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+              whileHover={portalPhase === 'idle' ? { scale: 1.02, boxShadow: '0 8px 32px rgba(0,0,0,0.25)' } : undefined}
               whileTap={portalPhase === 'idle' ? { scale: 0.97, y: 0 } : undefined}
               onClick={startSession}
               drag={portalPhase === 'idle' ? 'x' : false}
