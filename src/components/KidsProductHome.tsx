@@ -64,20 +64,20 @@ function hexToRgb(hex: string): string {
 
 /** Per-tile illustration calibration — opacity decreases with depth */
 const TILE_ILLUSTRATION_STYLES = [
-  { scale: 1.15, objectPosition: '50% 15%', opacity: 0.38 },
-  { scale: 1.15, objectPosition: '50% 20%', opacity: 0.38 },
-  { scale: 1.1,  objectPosition: '50% 55%', opacity: 0.38 },
-  { scale: 1.1,  objectPosition: '50% 22%', opacity: 0.38 },
-  { scale: 1.1,  objectPosition: '50% 20%', opacity: 0.38 },
+  { scale: 1.15, objectPosition: '50% 15%', opacity: 1 },
+  { scale: 1.15, objectPosition: '50% 20%', opacity: 1 },
+  { scale: 1.1,  objectPosition: '50% 55%', opacity: 1 },
+  { scale: 1.1,  objectPosition: '50% 22%', opacity: 1 },
+  { scale: 1.1,  objectPosition: '50% 20%', opacity: 1 },
 ];
 
 /** Square-grid tiles get high-impact illustration treatment (like library tiles) */
 const SQUARE_TILE_ILLUSTRATION_STYLES = [
-  { scale: 1.05, objectPosition: '50% 30%', opacity: 0.38 },
-  { scale: 1.05, objectPosition: '50% 25%', opacity: 0.38 },
-  { scale: 1.1,  objectPosition: '50% 15%', opacity: 0.38 },
-  { scale: 1.05, objectPosition: '50% 30%', opacity: 0.38 },
-  { scale: 1.05, objectPosition: '50% 30%', opacity: 0.38 },
+  { scale: 1.05, objectPosition: '50% 30%', opacity: 1 },
+  { scale: 1.05, objectPosition: '50% 25%', opacity: 1 },
+  { scale: 1.1,  objectPosition: '50% 15%', opacity: 1 },
+  { scale: 1.05, objectPosition: '50% 30%', opacity: 1 },
+  { scale: 1.05, objectPosition: '50% 30%', opacity: 1 },
 ];
 
 /** Per-product hero image vertical position — default is '50% 55%' */
@@ -346,7 +346,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
   const progress = useKidsProductProgress(product);
   const tileImages = useFirstCardImages(product, progress);
 
-  const bg = product.backgroundColor;
+  const bg = product.tileLight ?? product.backgroundColor;
   const tileLight = product.tileLight ?? bg;
   const isSU = product.slug === 'still-us';
   
