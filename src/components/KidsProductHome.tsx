@@ -49,14 +49,7 @@ const tileVariants = {
 
 /* ── Helpers ── */
 
-/** Vardag uses brighter, more distinct tile colors — no murky deep tones */
-const VARDAG_TILE_COLORS = ['#3C4A30', '#3E4C32', '#3C4A30', '#3E4C32'];
-
-function getTileColor(product: ProductManifest, index: number, isSquareGrid = false): string {
-  if (isSquareGrid && product.id === 'vardagskort') {
-    return VARDAG_TILE_COLORS[index] ?? VARDAG_TILE_COLORS[0];
-  }
-  // Use tileLight for all tiles to keep brightness uniform — tileMid/tileDeep darken too aggressively
+function getTileColor(product: ProductManifest, _index: number, _isSquareGrid = false): string {
   const light = product.tileLight ?? product.backgroundColor;
   return light;
 }
@@ -71,31 +64,41 @@ function hexToRgb(hex: string): string {
 
 /** Per-tile illustration calibration — opacity decreases with depth */
 const TILE_ILLUSTRATION_STYLES = [
-  { scale: 1.15, objectPosition: '50% 15%', opacity: 0.75 },
-  { scale: 1.15, objectPosition: '50% 20%', opacity: 0.70 },
-  { scale: 1.1,  objectPosition: '50% 55%', opacity: 0.65 },
-  { scale: 1.1,  objectPosition: '50% 22%', opacity: 0.60 },
-  { scale: 1.1,  objectPosition: '50% 20%', opacity: 0.55 },
+  { scale: 1.15, objectPosition: '50% 15%', opacity: 0.38 },
+  { scale: 1.15, objectPosition: '50% 20%', opacity: 0.38 },
+  { scale: 1.1,  objectPosition: '50% 55%', opacity: 0.38 },
+  { scale: 1.1,  objectPosition: '50% 22%', opacity: 0.38 },
+  { scale: 1.1,  objectPosition: '50% 20%', opacity: 0.38 },
 ];
 
 /** Square-grid tiles get high-impact illustration treatment (like library tiles) */
 const SQUARE_TILE_ILLUSTRATION_STYLES = [
-  { scale: 1.05, objectPosition: '50% 30%', opacity: 0.88 },
-  { scale: 1.05, objectPosition: '50% 25%', opacity: 0.85 },
-  { scale: 1.1,  objectPosition: '50% 15%', opacity: 0.88 },
-  { scale: 1.05, objectPosition: '50% 30%', opacity: 0.90 },
-  { scale: 1.05, objectPosition: '50% 30%', opacity: 0.88 },
+  { scale: 1.05, objectPosition: '50% 30%', opacity: 0.38 },
+  { scale: 1.05, objectPosition: '50% 25%', opacity: 0.38 },
+  { scale: 1.1,  objectPosition: '50% 15%', opacity: 0.38 },
+  { scale: 1.05, objectPosition: '50% 30%', opacity: 0.38 },
+  { scale: 1.05, objectPosition: '50% 30%', opacity: 0.38 },
 ];
 
 /** Per-product hero image vertical position — default is '50% 55%' */
 const HERO_OBJECT_POSITION: Record<string, string> = {
   jag_i_varlden: '50% 35%',
   jag_i_mig: '50% 18%',
+  jag_med_andra: '50% 30%',
+  vardagskort: '50% 20%',
+  syskonkort: '50% 25%',
+  sexualitetskort: '50% 25%',
+  still_us: '50% 40%',
 };
 
 const HERO_TOP_OFFSET: Record<string, string> = {
   jag_i_varlden: '-20vh',
   jag_i_mig: '-14vh',
+  jag_med_andra: '-12vh',
+  vardagskort: '-14vh',
+  syskonkort: '-12vh',
+  sexualitetskort: '-10vh',
+  still_us: '-8vh',
 };
 
 /* ── First uncompleted card per category hook ── */
@@ -169,10 +172,6 @@ function CategoryTile({
   const style = styles[Math.min(index, styles.length - 1)];
   const shieldRgb = hexToRgb(tileBg);
 
-    // Derive chromatic glow from tile background color
-    const glowRgb = hexToRgb(tileBg);
-    const chromaticGlow = glassGlowColor || `rgba(${glowRgb}, 0.22)`;
-
     return (
     <motion.button
       variants={tileVariants}
@@ -190,26 +189,10 @@ function CategoryTile({
         borderRadius: squareTile ? '28px' : '22px',
         cursor: isLocked ? 'default' : 'pointer',
         textAlign: 'left',
-        backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.04) 35%, rgba(0,0,0,0.04) 70%, rgba(0,0,0,0.10) 100%)',
-        backgroundColor: 'rgba(15, 15, 15, 0.7)',
-        backdropFilter: 'blur(22px)',
-        WebkitBackdropFilter: 'blur(22px)',
+        backgroundColor: tileBg,
         opacity: isLocked ? 0.6 : 1,
-        border: '1px solid rgba(255, 255, 255, 0.12)',
-        boxShadow: [
-          // Outer ceramic lift — dramatic depth stack
-          '0 20px 60px rgba(0, 0, 0, 0.55)',
-          '0 8px 24px rgba(0, 0, 0, 0.40)',
-          '0 3px 8px rgba(0, 0, 0, 0.25)',
-          // Chromatic glow underneath — product color bleed
-          `0 14px 56px ${chromaticGlow}`,
-          // Inner ceramic bevel — bright top edge
-          'inset 0 2px 6px rgba(255, 255, 255, 0.35)',
-          'inset 0 1px 1px rgba(255, 255, 255, 0.45)',
-          // Inner depth — dark bottom edge for 3D lift
-          'inset 0 -4px 12px rgba(0, 0, 0, 0.30)',
-          'inset 0 -1px 2px rgba(0, 0, 0, 0.15)',
-        ].join(', '),
+        border: '1px solid rgba(255, 255, 255, 0.18)',
+        boxShadow: '0 8px 24px rgba(0,0,0,0.12), 0 2px 6px rgba(0,0,0,0.06)',
         padding: 0,
         transition: 'opacity 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease',
       }}
@@ -271,29 +254,14 @@ function CategoryTile({
               objectFit: 'cover',
               objectPosition: style.objectPosition,
               opacity: style.opacity,
-              filter: squareTile
-                ? `saturate(1.35) brightness(1.2) drop-shadow(0 6px 16px rgba(0,0,0,0.5))`
-                : `saturate(1.2) brightness(1.1) drop-shadow(0 4px 12px rgba(0,0,0,0.4))`,
+              filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.10))',
             }}
           />
         </div>
       )}
 
-      {/* Chromatic inner glow — atmospheric warmth from product color */}
-      {(
-        <div
-          aria-hidden="true"
-          style={{
-            position: 'absolute',
-            inset: 0,
-            zIndex: 0,
-            pointerEvents: 'none',
-            background: `radial-gradient(ellipse 90% 80% at 50% 40%, ${chromaticGlow} 0%, transparent 70%)`,
-          }}
-        />
-      )}
 
-      {/* Gradient shield for text readability — dark obsidian base */}
+      {/* Gradient shield for text readability */}
       <div
         style={{
           position: 'absolute',
@@ -301,7 +269,7 @@ function CategoryTile({
           left: 0,
           right: 0,
           height: squareTile ? '60%' : '75%',
-          background: 'linear-gradient(to top, rgba(10, 6, 2, 0.88) 0%, rgba(10, 6, 2, 0.72) 25%, rgba(10, 6, 2, 0.35) 55%, transparent 100%)',
+          background: `linear-gradient(to top, rgba(${shieldRgb}, 0.85) 0%, rgba(${shieldRgb}, 0.60) 30%, rgba(${shieldRgb}, 0.25) 55%, transparent 100%)`,
           pointerEvents: 'none',
           zIndex: 2,
         }}
@@ -381,7 +349,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
   const bg = product.backgroundColor;
   const tileLight = product.tileLight ?? bg;
   const isSU = product.slug === 'still-us';
-  const isVardag = product.id === 'vardagskort';
+  
   const useSquareGrid = true; // 2×2 grid for all products
 
   // ── Intro session completion state (Still Us only) ──
@@ -413,13 +381,6 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
     return () => { cancelled = true; };
   }, [isSU, space?.id]);
 
-  // Chromatic glow colors for Still Us glass tiles
-  const SU_GLOW_COLORS: Record<string, string> = {
-    'su-mock-vardagen':    'rgba(255, 140, 30, 0.25)',   // deep orange
-    'su-mock-tillsammans': 'rgba(80, 220, 190, 0.22)',   // mint-teal
-    'su-mock-grunden':     'rgba(255, 80, 160, 0.22)',   // neon-pink
-    'su-mock-riktningen':  'rgba(50, 200, 120, 0.22)',   // emerald-green
-  };
 
   return (
     <div className="min-h-screen relative overflow-hidden" style={{ backgroundColor: bg }}>
@@ -440,23 +401,6 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
         }}
       />
 
-      {/* ── Ghost glow — product-tinted atmospheric warmth behind title ── */}
-      {isVardag && (
-        <div
-          aria-hidden="true"
-          style={{
-            position: 'absolute',
-            top: '10vh',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            width: '120vw',
-            height: '300px',
-            background: 'radial-gradient(ellipse 55% 60% at 50% 40%, hsla(92, 40%, 60%, 0.14) 0%, hsla(92, 40%, 60%, 0.05) 50%, transparent 100%)',
-            pointerEvents: 'none',
-            zIndex: 0,
-          }}
-        />
-      )}
 
       {/* ── Hero illustration — large, atmospheric, bleeds off top ── */}
       {product.heroImage && (
@@ -483,7 +427,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
               height: '100%',
               objectFit: 'cover',
               objectPosition: HERO_OBJECT_POSITION[product.id] ?? '50% 55%',
-              filter: 'saturate(1.2) brightness(1.1)',
+              filter: 'none',
             }}
           />
           {/* Multi-stop scrim: product color blend — much lighter for Vardag */}
@@ -748,8 +692,6 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
                   squareTile={useSquareGrid}
                   wideSpan={isLastOdd}
                   fillHeight={false}
-                  glassTile={isSU}
-                  glassGlowColor={isSU ? SU_GLOW_COLORS[cat.id] : undefined}
                 />
               </div>
             );
