@@ -60,13 +60,13 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6 }}
-        style={{ position: 'absolute', top: '-8vh', left: '-5vw', right: '-5vw', height: '65vh', zIndex: 0, pointerEvents: 'none' }}
+        style={{ position: 'absolute', top: '-8vh', left: '-5vw', right: '-5vw', height: '100vh', zIndex: 0, pointerEvents: 'none' }}
       >
         <img src={heroImage} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 8%' }} />
         {/* Multi-stop scrim: lighter to let illustration colors breathe */}
         <div style={{
           position: 'absolute', bottom: 0, left: 0, right: 0, height: '75%',
-          background: `linear-gradient(to top, ${BG} 0%, ${BG}E8 20%, rgba(42,30,20,0.65) 45%, rgba(138,96,54,0.2) 70%, transparent 100%)`,
+          background: `linear-gradient(to top, ${BG}F0 0%, ${BG}E0 15%, ${BG}C0 35%, ${BG}80 55%, ${BG}40 70%, transparent 100%)`,
           pointerEvents: 'none',
         }} />
       </motion.div>
