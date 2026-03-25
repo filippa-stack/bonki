@@ -759,7 +759,7 @@ export default function ProductLibrary() {
               style={{
                 borderRadius: '22px',
                 backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.12) 100%)',
-                backgroundColor: '#1E1C20',
+                backgroundColor: '#0D1B2A',
                 height: '260px',
                 display: 'flex',
                 flexDirection: 'column',
@@ -769,8 +769,8 @@ export default function ProductLibrary() {
                 boxShadow: [
                   '0 20px 60px rgba(0, 0, 0, 0.55)',
                   '0 8px 24px rgba(0, 0, 0, 0.35)',
-                  '0 0 72px rgba(110, 201, 184, 0.06)',
-                  '0 0 40px rgba(200, 160, 120, 0.10)',
+                   '0 0 72px rgba(59, 130, 246, 0.08)',
+                   '0 0 40px rgba(59, 130, 246, 0.06)',
                   'inset 0 3px 6px rgba(255, 255, 255, 0.15)',
                   'inset 0 -4px 10px rgba(0, 0, 0, 0.25)',
                 ].join(', '),
@@ -785,8 +785,8 @@ export default function ProductLibrary() {
                   zIndex: 0,
                   pointerEvents: 'none',
                   background: [
-                    'radial-gradient(ellipse 90% 80% at 50% 30%, rgba(210, 160, 100, 0.22) 0%, rgba(180, 120, 70, 0.10) 45%, transparent 75%)',
-                    'radial-gradient(ellipse 60% 50% at 55% 25%, rgba(240, 190, 130, 0.12) 0%, transparent 60%)',
+                    'radial-gradient(ellipse 90% 80% at 50% 30%, rgba(59, 130, 246, 0.18) 0%, rgba(30, 80, 180, 0.10) 45%, transparent 75%)',
+                    'radial-gradient(ellipse 60% 50% at 55% 25%, rgba(100, 160, 240, 0.12) 0%, transparent 60%)',
                   ].join(', '),
                 }}
               />
@@ -824,7 +824,7 @@ export default function ProductLibrary() {
                   height: '55%',
                   zIndex: 2,
                   pointerEvents: 'none',
-                  background: `linear-gradient(to top, rgba(26, 28, 34, 0.92) 0%, rgba(26, 28, 34, 0.6) 40%, rgba(26, 28, 34, 0.1) 75%, transparent 100%)`,
+                  background: `linear-gradient(to top, rgba(13, 27, 42, 0.92) 0%, rgba(13, 27, 42, 0.6) 40%, rgba(13, 27, 42, 0.1) 75%, transparent 100%)`,
                 }}
               />
 
