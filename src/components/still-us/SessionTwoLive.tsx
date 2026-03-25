@@ -13,6 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { EASE, EMOTION } from '@/lib/motion';
 import { COLORS, cardIdFromSlug, cardIndexFromSlug } from '@/lib/stillUsTokens';
+import { useCardImage } from '@/hooks/useCardImage';
 import { getTankOmContent } from '@/data/tankOmContent';
 import { completeSession } from '@/lib/stillUsRpc';
 import { supabase } from '@/integrations/supabase/client';
