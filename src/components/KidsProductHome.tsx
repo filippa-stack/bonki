@@ -692,8 +692,6 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
                   squareTile={useSquareGrid}
                   wideSpan={isLastOdd}
                   fillHeight={false}
-                  glassTile={isSU}
-                  glassGlowColor={isSU ? SU_GLOW_COLORS[cat.id] : undefined}
                 />
               </div>
             );
