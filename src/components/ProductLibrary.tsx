@@ -849,7 +849,7 @@ export default function ProductLibrary() {
                     objectFit: 'contain',
                     objectPosition: 'center 12%',
                     opacity: 1,
-                    filter: 'brightness(1.6) saturate(1.8) contrast(1.2) drop-shadow(0 4px 16px rgba(100, 170, 255, 0.4)) drop-shadow(0 8px 30px rgba(0, 40, 120, 0.5))',
+                    filter: 'drop-shadow(0 4px 16px rgba(100, 170, 255, 0.4)) drop-shadow(0 8px 30px rgba(0, 40, 120, 0.5))',
                   }}
                 />
               </div>
