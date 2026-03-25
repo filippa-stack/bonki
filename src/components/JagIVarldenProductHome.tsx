@@ -53,17 +53,17 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
           overflow: 'hidden',
         }}
       >
-        <img
-          src={heroImage}
-          alt=""
+        <div
           style={{
             position: 'absolute',
             top: '39px',
             left: '134px',
-            width: 'calc(100% - 134px)',
-            height: 'calc(100% - 39px)',
-            objectFit: 'cover',
-            objectPosition: 'left top',
+            right: 0,
+            bottom: 0,
+            backgroundImage: `url(${heroImage})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'right bottom',
+            backgroundRepeat: 'no-repeat',
             opacity: 0.38,
           }}
         />
