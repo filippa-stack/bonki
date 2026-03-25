@@ -758,25 +758,17 @@ export default function ProductLibrary() {
               className="cursor-pointer"
               style={{
                 borderRadius: '22px',
-                backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.12) 100%)',
-                backgroundColor: '#0A1628',
+                backgroundColor: '#0047AB',
                 height: '260px',
                 display: 'flex',
                 flexDirection: 'column',
                 position: 'relative',
                 overflow: 'hidden',
-                border: '1.5px solid rgba(255, 255, 255, 0.12)',
-                boxShadow: [
-                  '0 20px 60px rgba(0, 0, 0, 0.55)',
-                  '0 8px 24px rgba(0, 0, 0, 0.35)',
-                   '0 0 72px rgba(0, 71, 171, 0.08)',
-                   '0 0 40px rgba(0, 71, 171, 0.06)',
-                  'inset 0 3px 6px rgba(255, 255, 255, 0.15)',
-                  'inset 0 -4px 10px rgba(0, 0, 0, 0.25)',
-                ].join(', '),
+                border: '1.5px solid rgba(255, 255, 255, 0.15)',
+                boxShadow: '0 0 80px rgba(0, 71, 171, 0.35), 0 0 40px rgba(0, 71, 171, 0.20)',
               }}
             >
-              {/* Warm radial glow behind illustration — strong */}
+              {/* Cobalt glow behind illustration */}
               <div
                 aria-hidden="true"
                 style={{
@@ -784,10 +776,7 @@ export default function ProductLibrary() {
                   inset: 0,
                   zIndex: 0,
                   pointerEvents: 'none',
-                  background: [
-                    'radial-gradient(ellipse 90% 80% at 50% 30%, rgba(0, 71, 171, 0.20) 0%, rgba(0, 50, 130, 0.10) 45%, transparent 75%)',
-                    'radial-gradient(ellipse 60% 50% at 55% 25%, rgba(60, 120, 200, 0.12) 0%, transparent 60%)',
-                  ].join(', '),
+                  background: 'radial-gradient(ellipse 80% 70% at 50% 35%, rgba(0, 100, 220, 0.25) 0%, transparent 70%)',
                 }}
               />
               {/* Illustration — larger, filling tile */}
@@ -815,16 +804,16 @@ export default function ProductLibrary() {
                 />
               </div>
 
-              {/* Bottom gradient scrim — text legibility */}
+              {/* Bottom gradient scrim — text legibility, cobalt-tinted */}
               <div
                 aria-hidden="true"
                 style={{
                   position: 'absolute',
                   left: 0, right: 0, bottom: 0,
-                  height: '55%',
+                  height: '50%',
                   zIndex: 2,
                   pointerEvents: 'none',
-                  background: `linear-gradient(to top, rgba(10, 22, 40, 0.92) 0%, rgba(10, 22, 40, 0.6) 40%, rgba(10, 22, 40, 0.1) 75%, transparent 100%)`,
+                  background: 'linear-gradient(to top, rgba(0, 30, 80, 0.88) 0%, rgba(0, 40, 110, 0.5) 45%, transparent 100%)',
                 }}
               />
 
