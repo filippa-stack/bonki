@@ -10,14 +10,14 @@ import type { CreatureTileStyle } from '@/components/CategoryTileGrid';
 import { useNextCardImages } from '@/hooks/useNextCardImages';
 
 const EASE = [0.4, 0.0, 0.2, 1] as const;
-const BG = '#1A2F2E';
-const ACCENT_COLOR = '#8ECAC7';
-const TILE_LIGHT = '#2D6B62';
+const BG = '#115D57';
+const ACCENT_COLOR = '#27A69C';
+const TILE_LIGHT = '#27A69C';
 
 const ORDERED_TILES = [
-  { id: 'jim-mina-kanslor', bg: '#2D6B62', sub: 'Att känna igen dem' },
-  { id: 'jim-starka-kanslor', bg: '#224F4A', sub: 'När det blir mycket' },
-  { id: 'jim-stora-kanslor', bg: '#1A3B38', sub: 'Känslor med många lager' },
+  { id: 'jim-mina-kanslor', bg: '#27A69C', sub: 'Att känna igen dem' },
+  { id: 'jim-starka-kanslor', bg: '#1D8A82', sub: 'När det blir mycket' },
+  { id: 'jim-stora-kanslor', bg: '#115D57', sub: 'Känslor med många lager' },
 ];
 
 // Card images are vivid illustrations — higher opacity than creature textures
