@@ -113,7 +113,7 @@ function CategoryTile({
         borderRadius: '22px',
         cursor: 'pointer',
         textAlign: 'left',
-        backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.08) 100%)',
+        backgroundImage: 'none',
         backgroundColor: tile.bg,
         border: '1.5px solid rgba(255, 255, 255, 0.25)',
         boxShadow: [
@@ -151,25 +151,12 @@ function CategoryTile({
               objectFit: 'cover',
               objectPosition: creatureStyle.objectPosition,
               opacity: creatureStyle.opacity,
-              filter: 'saturate(1.35) brightness(1.15)',
+              filter: 'none',
             }}
           />
         </div>
       )}
 
-      {/* Gradient shield (z-index 2) — 60% height, concentrated at bottom for text readability */}
-      <div
-        style={{
-          position: 'absolute',
-          bottom: 0,
-          left: 0,
-          right: 0,
-          height: '60%',
-          background: `linear-gradient(to top, rgba(${shieldRgb}, 0.95) 0%, rgba(${shieldRgb}, 0.85) 30%, rgba(${shieldRgb}, 0.4) 65%, transparent 100%)`,
-          pointerEvents: 'none',
-          zIndex: 2,
-        }}
-      />
 
       {/* Text overlay (z-index 3) */}
       <div
@@ -192,7 +179,7 @@ function CategoryTile({
             opacity: nameOpacity,
             lineHeight: 1.2,
             display: 'block',
-            textShadow: '0 1px 4px rgba(0,0,0,0.5)',
+            textShadow: '0 1px 3px rgba(0,0,0,0.9), 0 2px 8px rgba(0,0,0,0.7), 0 0 24px rgba(0,0,0,0.5)',
           }}
         >
           {cat.title}
