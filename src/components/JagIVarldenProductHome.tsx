@@ -10,9 +10,9 @@ import type { CreatureTileStyle } from '@/components/CategoryTileGrid';
 import { useNextCardImages } from '@/hooks/useNextCardImages';
 
 const EASE = [0.4, 0.0, 0.2, 1] as const;
-const BG = '#121C1E';
-const ACCENT_COLOR = '#6A9A9E';
-const TILE_LIGHT = '#344452';
+const BG = '#2B3D2B';
+const ACCENT_COLOR = '#A8C78A';
+const TILE_LIGHT = '#3A5232';
 
 const ORDERED_TILES = [
   { id: 'jiv-vem-ar-jag', bg: '#344452', sub: 'Det som formar dig inifrån' },
@@ -40,33 +40,47 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
     <div className="min-h-screen relative overflow-hidden" style={{ backgroundColor: BG }}>
       <ProductHomeBackButton color="#FDF6E3" />
 
-      {/* ── Atmospheric radial glow ── */}
-      <div
-        style={{
-          position: 'absolute',
-          top: '-8vh',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          width: '160vw',
-          height: '60vh',
-          background: `radial-gradient(ellipse 65% 55% at 50% 40%, ${TILE_LIGHT}35 0%, ${TILE_LIGHT}15 45%, transparent 100%)`,
-          pointerEvents: 'none',
-          zIndex: 0,
-        }}
-      />
-
-      {/* ── Hero illustration ── */}
+      {/* ── Hero illustration — anchored bottom-right, peeking into frame ── */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 0.6 }}
-        style={{ position: 'absolute', top: '-18vh', left: '-5vw', right: '-5vw', height: '100vh', zIndex: 0, pointerEvents: 'none' }}
+        transition={{ duration: 0.8 }}
+        style={{
+          position: 'absolute',
+          inset: 0,
+          zIndex: -1,
+          pointerEvents: 'none',
+          overflow: 'hidden',
+        }}
       >
-        <img src={heroImage} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% -10%' }} />
-        {/* Multi-stop scrim: product color mid-blend, then Midnight Ink */}
+        <img
+          src={heroImage}
+          alt=""
+          style={{
+            position: 'absolute',
+            bottom: 0,
+            right: '-10vw',
+            width: '130%',
+            height: '100%',
+            objectFit: 'cover',
+            objectPosition: 'right bottom',
+          }}
+        />
+        {/* Left-side safe-zone gradient — solid BG fading to transparent */}
         <div style={{
-          position: 'absolute', bottom: 0, left: 0, right: 0, height: '90%',
-          background: `linear-gradient(to top, ${BG}F0 0%, ${BG}E0 15%, ${BG}C0 35%, ${BG}80 55%, ${BG}40 70%, transparent 100%)`,
+          position: 'absolute',
+          inset: 0,
+          background: `linear-gradient(to right, ${BG} 0%, ${BG}E0 20%, ${BG}80 45%, transparent 70%)`,
+          pointerEvents: 'none',
+        }} />
+        {/* Top text-zone scrim */}
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          height: '35%',
+          background: `linear-gradient(to bottom, ${BG}D0 0%, ${BG}80 60%, transparent 100%)`,
           pointerEvents: 'none',
         }} />
       </motion.div>
