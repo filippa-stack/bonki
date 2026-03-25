@@ -413,7 +413,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
             top: HERO_TOP_OFFSET[product.id] ?? '-10vh',
             left: '-5vw',
             right: '-5vw',
-            height: '65vh',
+            height: '100vh',
             zIndex: 0,
             pointerEvents: 'none',
           }}
@@ -438,7 +438,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
               left: 0,
               right: 0,
           height: '90%',
-              background: `linear-gradient(to top, ${bg} 0%, ${bg}FA 20%, ${bg}D0 40%, ${bg}80 58%, ${bg}30 72%, transparent 100%)`,
+              background: `linear-gradient(to top, ${bg}F0 0%, ${bg}E0 15%, ${bg}C0 35%, ${bg}80 55%, ${bg}40 70%, transparent 100%)`,
               pointerEvents: 'none',
             }}
           />

@@ -61,13 +61,13 @@ export default function SexualitetProductHome({ product }: { product: ProductMan
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6 }}
-        style={{ position: 'absolute', top: '-8vh', left: '-5vw', right: '-5vw', height: '65vh', zIndex: 0, pointerEvents: 'none' }}
+        style={{ position: 'absolute', top: '-8vh', left: '-5vw', right: '-5vw', height: '100vh', zIndex: 0, pointerEvents: 'none' }}
       >
         <img src={heroImage} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 15%' }} />
         {/* Extended scrim with smooth blend */}
         <div style={{
           position: 'absolute', bottom: 0, left: 0, right: 0, height: '85%',
-          background: `linear-gradient(to top, ${BG} 0%, ${BG}F2 18%, rgba(30,20,40,0.85) 35%, rgba(58,34,64,0.5) 60%, rgba(74,46,72,0.15) 80%, transparent 100%)`,
+          background: `linear-gradient(to top, ${BG}F0 0%, ${BG}E0 15%, ${BG}C0 35%, ${BG}80 55%, ${BG}40 70%, transparent 100%)`,
           pointerEvents: 'none',
         }} />
       </motion.div>
