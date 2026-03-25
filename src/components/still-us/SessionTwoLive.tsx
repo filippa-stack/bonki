@@ -130,6 +130,8 @@ export default function SessionTwoLive({
   vandAnchor,
 }: SessionTwoLiveProps) {
   const navigate = useNavigate();
+  const contentCardId = cardIndex >= 0 ? `su-mock-${cardIndex}` : null;
+  const cardIllustration = useCardImage(contentCardId);
   const [currentStep, setCurrentStep] = useState<Session2Step>('vand_q2');
   const [vandNote, setVandNote] = useState('');
   const [tankOmNote, setTankOmNote] = useState('');
