@@ -70,7 +70,6 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
           opacity: 0.38,
         }}
       />
-      </motion.div>
 
       {/* ── Content ── */}
       <div style={{ position: 'relative', zIndex: 1, minHeight: '100vh', display: 'flex', flexDirection: 'column', paddingTop: 'clamp(28px, 8vh, 80px)', paddingRight: '5vw', paddingBottom: '80px', paddingLeft: '5vw' }}>
