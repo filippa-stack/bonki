@@ -196,9 +196,10 @@ export default function KidsCardPortal() {
     [isLast, isFirst, goNext, goPrev],
   );
 
-  // Tile background color from product
-  const tileBg = product?.tileLight ?? MIDNIGHT_INK;
-  const tileBgRgb = hexToRgb(tileBg);
+  // Tile background colors from product
+  const tileLight = product?.tileLight ?? MIDNIGHT_INK;
+  const tileDark = product?.backgroundColor ?? MIDNIGHT_INK;
+  const tileBgRgb = hexToRgb(tileLight);
 
   // Slide animation variants (direction-aware)
   const slideVariants = {
