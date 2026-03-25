@@ -1,51 +1,54 @@
 
 
-# Portal Tile Redesign — Bright Two-Layer Layout
+# Product Color & Illustration Opacity Update
 
-Replace the dark "Obsidian Glass" portal tile with a bright two-layer structure matching the mockups. All copy, links, CTAs, navigation, and animation logic remain untouched.
+## Summary
 
-## Changes — `src/pages/KidsCardPortal.tsx`
+Three changes: update product color assignments, use light color for home screen backgrounds, and remove all illustration dimming on tiles.
 
-### 1. Tile structure (lines ~364-557)
+## 1. Update product data — new `tileLight` values
 
-Replace the single dark tile with a two-layer layout:
+Two products have new light colors. Update in their data files:
 
-```text
-┌─────────────────────────┐  outer: product.backgroundColor, rounded 20px, padding 10px
-│  ┌───────────────────┐  │
-│  │   illustration    │  │  inner: product.tileLight, rounded 16px, overflow hidden
-│  │   (full opacity)  │  │  illustration: objectFit contain, opacity 1, no filters
-│  └───────────────────┘  │
-│       Card Title        │  title below inner frame, centered
-└─────────────────────────┘
-```
+### `src/data/products/jag-i-mig.ts`
+- `tileLight`: `#CB7AB2` → `#27A69C`
+- Also update `ctaButtonColor` and `tileMid` to harmonize with the new teal
 
-- **Outer div**: `backgroundColor: tileBg` (product.tileLight), `borderRadius: 20px`, `padding: '10px 10px 16px'`
-- **Inner div**: `backgroundColor: product.backgroundColor`, `borderRadius: 16px`, `overflow: hidden`, holds illustration
-- Title moves below the inner frame (still inside outer), centered, `LANTERN_GLOW`
+### `src/data/products/jag-med-andra.ts`
+- `tileLight`: `#A62755` → `#CB7AB2`
+- Also update `ctaButtonColor` and `tileMid` to harmonize
 
-### 2. Remove decorative layers
-- **Saffron glow frame** (lines 344-361) — remove
-- **Ceramic glaze highlight** (lines 438-451) — remove
-- **Bottom scrim gradient** (lines 453-465) — remove
-- **Ceramic rim / obsidian glass bevel** (lines 492-507) — remove
-- **Ghost border** (lines 509-519) — remove
-- **Outer chromatic glow elevation** (lines 560-575) — remove
+All other products already have correct light/dark values.
 
-### 3. Illustration cleanup
-- `opacity: 0.92` → `1`
-- `filter: 'saturate(1.05) contrast(1.03)'` → `'none'`
+## 2. Home screen background = light color
 
-### 4. Surface cleanup
-- Remove `backgroundColor: 'rgba(15, 15, 15, 0.7)'` and `backdropFilter` from tile
-- Remove background radial glow div (lines 237-248)
+### `src/components/KidsProductHome.tsx`
+- Change page background from `product.backgroundColor` (dark) to `product.tileLight` (light)
+- Line 349: `const bg = product.backgroundColor` → `const bg = product.tileLight ?? product.backgroundColor`
+- The scrim gradients and text shadows already reference `bg`, so they'll adapt automatically
 
-### 5. Keep unchanged
-- All portal-open animation phases (scale/brightness/opacity transitions)
-- Completion/active indicators (move to inner frame)
-- All copy, links, CTAs, swipe handling, browse sheet, routing
-- Still Us warm-light and kids zoom-through overlays
+## 3. Portal, session & completion pages keep dark color
+
+These already use `product.backgroundColor` — no changes needed:
+- `KidsCardPortal.tsx` page bg (line 229) — uses `product.backgroundColor` ✓
+- `CardView.tsx` session/completion screens — uses `product.backgroundColor` ✓
+- `CompletedSessionView.tsx` — uses `product.backgroundColor` ✓
+
+## 4. Full opacity on all tile illustrations
+
+### `src/components/KidsProductHome.tsx`
+- `TILE_ILLUSTRATION_STYLES` (lines 66-72): all `opacity: 0.38` → `1`
+- `SQUARE_TILE_ILLUSTRATION_STYLES` (lines 75-81): all `opacity: 0.38` → `1`
+
+### `src/components/CategoryTileGrid.tsx`
+- `DEFAULT_TILE_CREATURE_STYLES` (lines 17-23): all opacity values → `1`
 
 ## Files touched
-1. `src/pages/KidsCardPortal.tsx` only
+1. `src/data/products/jag-i-mig.ts` — tileLight color
+2. `src/data/products/jag-med-andra.ts` — tileLight color
+3. `src/components/KidsProductHome.tsx` — bg source + tile opacity
+4. `src/components/CategoryTileGrid.tsx` — tile opacity
+
+## What stays the same
+All copy, links, CTAs, navigation, session logic, animations, portal structure.
 
