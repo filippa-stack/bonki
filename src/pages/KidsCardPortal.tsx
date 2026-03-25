@@ -329,25 +329,6 @@ export default function KidsCardPortal() {
         {/* ═══ Portal tile — constrained to leave room for copy ═══ */}
         <div style={{ flex: 1, position: 'relative', minHeight: 0, maxHeight: 'calc(100vh - 280px)' }}>
 
-          {/* ── Saffron glow frame — intensifies on open ── */}
-          <motion.div
-            animate={portalPhase !== 'idle'
-              ? { opacity: 1, boxShadow: `0 0 60px rgba(233, 180, 76, 0.7), 0 0 120px rgba(233, 180, 76, 0.3)` }
-              : { opacity: [0.6, 1, 0.6] }}
-            transition={portalPhase !== 'idle'
-              ? { duration: 0.4, ease: [0.22, 1, 0.36, 1] }
-              : { duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-            style={{
-              position: 'absolute',
-              inset: '-2px',
-              borderRadius: '22px',
-              boxShadow: `0 0 20px rgba(233, 180, 76, 0.35), 0 0 6px rgba(233, 180, 76, 0.15)`,
-              border: 'none',
-              pointerEvents: 'none',
-              zIndex: 0,
-            }}
-          />
-
           <AnimatePresence mode="wait" custom={direction}>
             <motion.div
               key={card.id}
@@ -370,13 +351,12 @@ export default function KidsCardPortal() {
                 borderRadius: portalPhase === 'phase2' || portalPhase === 'phase3' ? '0px' : '20px',
                 overflow: 'hidden',
                 cursor: 'pointer',
-                // Obsidian Glass surface
-                backgroundColor: 'rgba(15, 15, 15, 0.7)',
-                backdropFilter: 'blur(22px)',
-                WebkitBackdropFilter: 'blur(22px)',
+                backgroundColor: tileBg,
+                padding: '10px 10px 16px',
+                display: 'flex',
+                flexDirection: 'column',
                 zIndex: 1,
                 ...(isStillUs ? {
-                  // Still Us: gentle lift → hold → fade into light
                   transform:
                     portalPhase === 'phase1' ? 'scale(1.02)' :
                     portalPhase === 'phase2' ? 'scale(1.04)' :
@@ -388,7 +368,6 @@ export default function KidsCardPortal() {
                   opacity: portalPhase === 'phase3' ? 0 : 1,
                   transition: 'transform 400ms cubic-bezier(0.22, 1, 0.36, 1), filter 500ms ease-out, opacity 350ms ease-in, border-radius 300ms ease',
                 } : {
-                  // Kids: lift → zoom deep through → vanish
                   transform:
                     portalPhase === 'phase1' ? 'scale(1.04)' :
                     portalPhase === 'phase2' ? 'scale(2.8)' :
@@ -402,67 +381,76 @@ export default function KidsCardPortal() {
                 }),
               }}
             >
-              {/* Card illustration — full bleed */}
-              <PortalCardImage cardId={card.id}>
-                {(imageSrc) => imageSrc ? (
-                  <img
-                    src={imageSrc}
-                    alt={card.title}
-                    style={{
-                      position: 'absolute',
-                      inset: 0,
-                      width: '100%',
-                      height: '100%',
-                      objectFit: 'contain',
-                      objectPosition: '50% 50%',
-                      opacity: 0.92,
-                      zIndex: 1,
-                      filter: 'saturate(1.05) contrast(1.03)',
-                    }}
-                  />
-                ) : null}
-              </PortalCardImage>
-
-              {/* Ceramic glaze — highlight sweep */}
+              {/* Inner illustration frame */}
               <div
                 style={{
-                  position: 'absolute',
-                  inset: 0,
-                  backgroundImage: [
-                    'linear-gradient(145deg, rgba(255,255,255,0.20) 0%, rgba(255,255,255,0.05) 25%, transparent 50%)',
-                    'linear-gradient(180deg, rgba(255,255,255,0.06) 0%, transparent 35%, rgba(0,0,0,0.18) 100%)',
-                    'radial-gradient(ellipse at 25% 15%, rgba(255,255,255,0.10) 0%, transparent 45%)',
-                  ].join(', '),
-                  pointerEvents: 'none',
-                  zIndex: 3,
-                }}
-              />
-
-              {/* Subtle bottom scrim — just enough for title legibility */}
-              <div
-                style={{
-                  position: 'absolute',
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  height: '25%',
-                  background: 'linear-gradient(to top, rgba(0,0,0,0.40) 0%, rgba(0,0,0,0.10) 60%, transparent 100%)',
-                  pointerEvents: 'none',
-                  zIndex: 2,
-                }}
-              />
-
-              {/* Card title centered at bottom */}
-              <div
-                style={{
-                  position: 'absolute',
-                  left: 0,
-                  right: 0,
-                  bottom: '20px',
-                  textAlign: 'center',
-                  zIndex: 4,
+                  flex: 1,
+                  borderRadius: '16px',
+                  overflow: 'hidden',
+                  position: 'relative',
+                  backgroundColor: product?.backgroundColor ?? MIDNIGHT_INK,
+                  minHeight: 0,
                 }}
               >
+                <PortalCardImage cardId={card.id}>
+                  {(imageSrc) => imageSrc ? (
+                    <img
+                      src={imageSrc}
+                      alt={card.title}
+                      style={{
+                        position: 'absolute',
+                        inset: 0,
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'contain',
+                        objectPosition: '50% 50%',
+                        opacity: 1,
+                        zIndex: 1,
+                      }}
+                    />
+                  ) : null}
+                </PortalCardImage>
+
+                {/* Completion / in-progress indicator */}
+                {completedSet.has(card.id) && (
+                  <div
+                    style={{
+                      position: 'absolute',
+                      top: 10,
+                      right: 10,
+                      width: 20,
+                      height: 20,
+                      borderRadius: '50%',
+                      background: tileBg,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      zIndex: 7,
+                      boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
+                    }}
+                  >
+                    <Check size={12} strokeWidth={2.5} color={LANTERN_GLOW} />
+                  </div>
+                )}
+                {!completedSet.has(card.id) && activeSet.has(card.id) && (
+                  <div
+                    style={{
+                      position: 'absolute',
+                      top: 14,
+                      right: 14,
+                      width: 8,
+                      height: 8,
+                      borderRadius: '50%',
+                      background: tileBg,
+                      zIndex: 7,
+                      boxShadow: '0 1px 4px rgba(0,0,0,0.3)',
+                    }}
+                  />
+                )}
+              </div>
+
+              {/* Title below inner frame */}
+              <div style={{ textAlign: 'center', marginTop: '10px' }}>
                 <h2
                   style={{
                     fontFamily: 'var(--font-display)',
@@ -470,97 +458,13 @@ export default function KidsCardPortal() {
                     fontWeight: 700,
                     color: LANTERN_GLOW,
                     margin: 0,
-                    textShadow: '0 2px 12px rgba(0,0,0,0.5), 0 1px 3px rgba(0,0,0,0.4)',
                   }}
                 >
                   {card.title}
                 </h2>
               </div>
-
-              {/* Ceramic rim — obsidian glass bevel */}
-              <div
-                style={{
-                  position: 'absolute',
-                  inset: 0,
-                  borderRadius: '20px',
-                  boxShadow: [
-                    'inset 0 2px 6px rgba(255, 255, 255, 0.35)',
-                    'inset 0 1px 1px rgba(255, 255, 255, 0.45)',
-                    'inset 0 -4px 12px rgba(0, 0, 0, 0.30)',
-                    'inset 0 -1px 2px rgba(0, 0, 0, 0.15)',
-                  ].join(', '),
-                  pointerEvents: 'none',
-                  zIndex: 5,
-                }}
-              />
-
-              {/* Ghost border */}
-              <div
-                style={{
-                  position: 'absolute',
-                  inset: 0,
-                  borderRadius: '20px',
-                  border: '1px solid rgba(255, 255, 255, 0.12)',
-                  pointerEvents: 'none',
-                  zIndex: 6,
-                }}
-              />
-
-              {/* Completion / in-progress indicator */}
-              {completedSet.has(card.id) && (
-                <div
-                  style={{
-                    position: 'absolute',
-                    top: 12,
-                    right: 12,
-                    width: 20,
-                    height: 20,
-                    borderRadius: '50%',
-                    background: tileBg,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    zIndex: 7,
-                    boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
-                  }}
-                >
-                  <Check size={12} strokeWidth={2.5} color={LANTERN_GLOW} />
-                </div>
-              )}
-              {!completedSet.has(card.id) && activeSet.has(card.id) && (
-                <div
-                  style={{
-                    position: 'absolute',
-                    top: 18,
-                    right: 18,
-                    width: 8,
-                    height: 8,
-                    borderRadius: '50%',
-                    background: tileBg,
-                    zIndex: 7,
-                    boxShadow: '0 1px 4px rgba(0,0,0,0.3)',
-                  }}
-                />
-              )}
             </motion.div>
           </AnimatePresence>
-
-          {/* Outer elevation — obsidian glass lift with chromatic glow */}
-          <div
-            style={{
-              position: 'absolute',
-              inset: 0,
-              borderRadius: '20px',
-              boxShadow: [
-                '0 20px 60px rgba(0, 0, 0, 0.55)',
-                '0 8px 24px rgba(0, 0, 0, 0.40)',
-                '0 3px 8px rgba(0, 0, 0, 0.25)',
-                `0 14px 56px rgba(${tileBgRgb}, 0.22)`,
-              ].join(', '),
-              pointerEvents: 'none',
-              zIndex: 0,
-            }}
-          />
         </div>
 
         {/* ═══ Compact info below tile ═══ */}
