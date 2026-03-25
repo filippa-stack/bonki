@@ -456,9 +456,10 @@ export default function KidsCardPortal() {
                 <h2
                   style={{
                     fontFamily: 'var(--font-display)',
-                    fontSize: '26px',
+                    fontSize: '28px',
                     fontWeight: 700,
                     color: LANTERN_GLOW,
+                    textShadow: '0 1px 6px rgba(0,0,0,0.4)',
                     margin: 0,
                   }}
                 >
@@ -490,9 +491,9 @@ export default function KidsCardPortal() {
               <p
                 style={{
                   fontFamily: 'var(--font-serif)',
-                  fontSize: '13px',
+                  fontSize: '14px',
                   color: LANTERN_GLOW,
-                  opacity: 0.7,
+                  opacity: 0.85,
                   lineHeight: 1.4,
                   margin: 0,
                   display: '-webkit-box',
@@ -508,10 +509,10 @@ export default function KidsCardPortal() {
             <p
               style={{
                 fontFamily: 'var(--font-sans)',
-                fontSize: '11px',
+                fontSize: '12px',
                 color: LANTERN_GLOW,
-                opacity: 0.55,
-                marginTop: '4px',
+                opacity: 0.7,
+                marginTop: '5px',
               }}
             >
               {promptCount} frågor · {estimateMinutes(promptCount, productSlug)}
@@ -519,11 +520,11 @@ export default function KidsCardPortal() {
             <p
               style={{
                 fontFamily: 'var(--font-serif)',
-                fontSize: '12px',
+                fontSize: '13px',
                 fontStyle: 'italic',
                 color: SAFFRON_FLAME,
-                opacity: 0.8,
-                marginTop: '8px',
+                opacity: 0.9,
+                marginTop: '10px',
               }}
             >
               Tryck på bilden när ni är redo.
