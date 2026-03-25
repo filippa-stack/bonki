@@ -45,7 +45,7 @@ const TAGLINES: Record<string, string> = {
 
 /** Bright saturated tile backgrounds — vibrant flat-color aesthetic */
 const TILE_COLORS: Record<string, string> = {
-  jag_i_mig: '#CB7AB2',
+  jag_i_mig: '#27A69C',
   jag_med_andra: '#A62755',
   jag_i_varlden: '#C6D423',
   sexualitetskort: '#DD958B',
