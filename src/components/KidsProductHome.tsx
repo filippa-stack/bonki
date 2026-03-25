@@ -381,13 +381,6 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
     return () => { cancelled = true; };
   }, [isSU, space?.id]);
 
-  // Chromatic glow colors for Still Us glass tiles
-  const SU_GLOW_COLORS: Record<string, string> = {
-    'su-mock-vardagen':    'rgba(255, 140, 30, 0.25)',   // deep orange
-    'su-mock-tillsammans': 'rgba(80, 220, 190, 0.22)',   // mint-teal
-    'su-mock-grunden':     'rgba(255, 80, 160, 0.22)',   // neon-pink
-    'su-mock-riktningen':  'rgba(50, 200, 120, 0.22)',   // emerald-green
-  };
 
   return (
     <div className="min-h-screen relative overflow-hidden" style={{ backgroundColor: bg }}>
