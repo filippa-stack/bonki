@@ -15,18 +15,18 @@ const ACCENT_COLOR = '#A8C78A';
 const TILE_LIGHT = '#3A5232';
 
 const ORDERED_TILES = [
-  { id: 'jiv-vem-ar-jag', bg: '#344452', sub: 'Det som formar dig inifrån' },
-  { id: 'jiv-jag-och-andra', bg: '#2A3844', sub: 'Hur vi påverkar varandra' },
-  { id: 'jiv-varlden-omkring-mig', bg: '#222E38', sub: 'Normer, press och frågor' },
-  { id: 'jiv-vad-tror-jag-pa', bg: '#1A242E', sub: 'Värderingar och mening' },
+  { id: 'jiv-vem-ar-jag', bg: '#B8CC38', sub: 'Det som formar dig inifrån' },
+  { id: 'jiv-jag-och-andra', bg: '#C2D440', sub: 'Hur vi påverkar varandra' },
+  { id: 'jiv-varlden-omkring-mig', bg: '#AABC30', sub: 'Normer, press och frågor' },
+  { id: 'jiv-vad-tror-jag-pa', bg: '#B5CA35', sub: 'Värderingar och mening' },
 ];
 
-// Per-tile illustration calibration — individually tuned for visual weight
+// Per-tile illustration calibration — full opacity, prominent creatures
 const CREATURE_TILE_STYLES: CreatureTileStyle[] = [
-  { scale: 1.15, objectPosition: '50% 15%', opacity: 0.45 },
-  { scale: 1.15, objectPosition: '50% 18%', opacity: 0.38 },
-  { scale: 1.1,  objectPosition: '50% 20%', opacity: 0.32 },
-  { scale: 1.1,  objectPosition: '50% 18%', opacity: 0.28 },
+  { scale: 1.15, objectPosition: '50% 15%', opacity: 1 },
+  { scale: 1.15, objectPosition: '50% 18%', opacity: 1 },
+  { scale: 1.1,  objectPosition: '50% 20%', opacity: 1 },
+  { scale: 1.1,  objectPosition: '50% 18%', opacity: 1 },
 ];
 
 const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.11, delayChildren: 0.4 } } };
@@ -58,12 +58,12 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
           alt=""
           style={{
             position: 'absolute',
-            bottom: 0,
-            right: '-10vw',
-            width: '130%',
-            height: '100%',
+            top: '-10vh',
+            right: '-15vw',
+            width: '140%',
+            height: '120%',
             objectFit: 'cover',
-            objectPosition: 'right bottom',
+            objectPosition: '70% 20%',
           }}
         />
         {/* Left-side safe-zone gradient — solid BG fading to transparent */}
@@ -111,8 +111,8 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
             }}>
               Världen vidgas
             </p>
-            {/* Spacer — pushes action cards below hero face zone */}
-            <div style={{ height: 'clamp(56px, 14vh, 100px)' }} />
+            {/* Spacer — reduced to bring tiles closer to title */}
+            <div style={{ height: 'clamp(24px, 5vh, 48px)' }} />
             <UnifiedResumeBanner product={product} kidsProgress={progress} accentColor={ACCENT_COLOR} />
             <NextConversationCard product={product} progress={progress} />
           </motion.div>
