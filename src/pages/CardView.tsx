@@ -2738,19 +2738,18 @@ export default function CardView() {
               zIndex: 1,
               width: '100%',
               maxWidth: '520px',
-              flex: '1 1 auto',
+              flex: '0 0 auto',
               display: 'flex',
               flexDirection: 'column',
               backgroundColor: '#FAF7F2',
-              borderRadius: '24px',
-              padding: '24px',
+              borderRadius: '38px',
+              padding: '32px 28px 24px',
               boxShadow: '0 8px 32px rgba(0,0,0,0.15)',
-              minHeight: 0,
               overflow: 'hidden',
             }}>
               {/* Question text — centered */}
               <div style={{
-                flex: '1 1 auto',
+                flex: '0 0 auto',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
