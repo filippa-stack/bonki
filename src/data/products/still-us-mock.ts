@@ -21,10 +21,10 @@ import stillUsHero from '@/assets/illustration-still-us-home.png';
 // ── Categories (one per layer) ──────────────────────────────
 
 const LAYER_META: { id: string; title: string; subtitle: string; color: string }[] = [
-  { id: 'su-mock-vardagen',     title: 'Vardagen',     subtitle: 'Hur livet mellan er ser ut just nu.',                        color: '#5A3E0A' },
-  { id: 'su-mock-tillsammans',  title: 'Tillsammans',  subtitle: 'Hur ni möter det som är svårt — och varandra.',             color: '#4A3308' },
-  { id: 'su-mock-grunden',      title: 'Grunden',      subtitle: 'Det ni bär med er in i relationen.',                        color: '#3D2A06' },
-  { id: 'su-mock-riktningen',   title: 'Riktningen',   subtitle: 'Vart ni är på väg — och vad ni väljer.',                    color: '#302104' },
+  { id: 'su-mock-vardagen',     title: 'Vardagen',     subtitle: 'Hur livet mellan er ser ut just nu.',                        color: '#4A7C9B' },
+  { id: 'su-mock-tillsammans',  title: 'Tillsammans',  subtitle: 'Hur ni möter det som är svårt — och varandra.',             color: '#2E6B8A' },
+  { id: 'su-mock-grunden',      title: 'Grunden',      subtitle: 'Det ni bär med er in i relationen.',                        color: '#1B3A5C' },
+  { id: 'su-mock-riktningen',   title: 'Riktningen',   subtitle: 'Vart ni är på väg — och vad ni väljer.',                    color: '#0D1B2A' },
 ];
 
 const categories: Category[] = LAYER_META.map((l, i) => ({
@@ -161,14 +161,14 @@ export const stillUsProduct: ProductManifest = {
   tagline: 'Vi finns kvar',
   description: '22 samtal fördelade på fyra lager.',
   headerTitle: 'Still Us',
-  accentColor: 'hsl(28, 80%, 57%)',       // deep saffron
-  accentColorMuted: 'hsl(28, 60%, 85%)',
-  secondaryAccent: 'hsl(280, 20%, 22%)',   // ember tone
-  backgroundColor: '#1A1C22',
-  ctaButtonColor: '#E8913A',
-  tileLight: '#2E1A0A',                    // deep burnt umber (library tile)
-  tileMid: '#4A3308',
-  tileDeep: '#352606',
+  accentColor: 'hsl(217, 91%, 60%)',       // cobalt blue
+  accentColorMuted: 'hsl(217, 60%, 85%)',
+  secondaryAccent: 'hsl(215, 50%, 22%)',   // deep navy tone
+  backgroundColor: '#0D1B2A',
+  ctaButtonColor: '#3B82F6',
+  tileLight: '#0D1B2A',                    // deep navy (library tile)
+  tileMid: '#1B3A5C',
+  tileDeep: '#0A1424',
   pronounMode: 'ni',
   freeCardId: 'su-intro',
   paywallDescription: 'Fördjupa samtalet — vecka för vecka, lager för lager.',

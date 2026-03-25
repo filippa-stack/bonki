@@ -6,37 +6,37 @@
 
 // ── Colors ──────────────────────────────────────────────────
 export const COLORS = {
-  emberNight: '#2E2233',
-  emberMid: '#473454',
-  emberGlow: '#5C4466',
-  lanternGlow: '#F5E6D3',
-  driftwood: '#9B8E7E',
-  driftwoodBody: '#B5A898',
-  deepSaffron: '#E8913A',
-  bonkiOrange: '#E8913A',
-  grunden: '#8BA888',
-  normen: '#5D9B9B',
-  konflikten: '#D4836D',
-  langtan: '#C4A0A0',
-  valet: '#E8913A',
+  emberNight: '#0D1B2A',
+  emberMid: '#1B3A5C',
+  emberGlow: '#2A5490',
+  lanternGlow: '#D6E4F0',
+  driftwood: '#7B8FA8',
+  driftwoodBody: '#9AADC2',
+  deepSaffron: '#3B82F6',
+  bonkiOrange: '#3B82F6',
+  grunden: '#4A7C9B',
+  normen: '#2E6B8A',
+  konflikten: '#5B7EA8',
+  langtan: '#7B9EC4',
+  valet: '#3B82F6',
   
 } as const;
 
 // ── Layer color mapping (0-indexed card_index ranges) ───────
 export const LAYER_COLORS: Record<string, string> = {
-  grunden: '#8BA888',    // cards 0-3  (weeks 1-4)
-  normen: '#5D9B9B',     // cards 4-8  (weeks 5-9)
-  konflikten: '#D4836D', // cards 9-13 (weeks 10-14)
-  langtan: '#C4A0A0',    // cards 14-17 (weeks 15-18)
-  valet: '#E8913A',      // cards 18-21 (weeks 19-22)
+  grunden: '#4A7C9B',    // cards 0-3  (weeks 1-4)
+  normen: '#2E6B8A',     // cards 4-8  (weeks 5-9)
+  konflikten: '#5B7EA8', // cards 9-13 (weeks 10-14)
+  langtan: '#7B9EC4',    // cards 14-17 (weeks 15-18)
+  valet: '#3B82F6',      // cards 18-21 (weeks 19-22)
 };
 
 export function getLayerForCard(cardIndex: number): { name: string; color: string } {
-  if (cardIndex <= 3) return { name: 'Grunden', color: '#8BA888' };
-  if (cardIndex <= 8) return { name: 'Normen', color: '#5D9B9B' };
-  if (cardIndex <= 13) return { name: 'Konflikten', color: '#D4836D' };
-  if (cardIndex <= 17) return { name: 'Längtan', color: '#C4A0A0' };
-  return { name: 'Valet', color: '#E8913A' };
+  if (cardIndex <= 3) return { name: 'Grunden', color: '#4A7C9B' };
+  if (cardIndex <= 8) return { name: 'Normen', color: '#2E6B8A' };
+  if (cardIndex <= 13) return { name: 'Konflikten', color: '#5B7EA8' };
+  if (cardIndex <= 17) return { name: 'Längtan', color: '#7B9EC4' };
+  return { name: 'Valet', color: '#3B82F6' };
 }
 
 // ── Phase boundaries (check-in depth) ───────────────────────
