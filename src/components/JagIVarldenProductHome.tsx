@@ -58,33 +58,15 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
           alt=""
           style={{
             position: 'absolute',
-            top: '0',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            width: '1080px',
-            height: '1350px',
+            top: '39px',
+            left: '134px',
+            width: 'calc(100% - 134px)',
+            height: 'calc(100% - 39px)',
             objectFit: 'cover',
-            objectPosition: '85% 15%',
+            objectPosition: 'left top',
             opacity: 0.38,
           }}
         />
-        {/* Left-side safe-zone gradient — solid BG fading to transparent */}
-        <div style={{
-          position: 'absolute',
-          inset: 0,
-          background: `linear-gradient(to right, ${BG} 0%, ${BG}F0 15%, ${BG}A0 30%, transparent 55%)`,
-          pointerEvents: 'none',
-        }} />
-        {/* Top text-zone scrim */}
-        <div style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          height: '35%',
-          background: `linear-gradient(to bottom, ${BG}B0 0%, ${BG}60 50%, transparent 100%)`,
-          pointerEvents: 'none',
-        }} />
       </motion.div>
 
       {/* ── Content ── */}
