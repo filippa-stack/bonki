@@ -519,12 +519,14 @@ export default function KidsCardPortal() {
             </p>
             <p
               style={{
-                fontFamily: 'var(--font-serif)',
-                fontSize: '13px',
-                fontStyle: 'italic',
+                fontFamily: 'var(--font-display)',
+                fontSize: '15px',
+                fontWeight: 600,
                 color: SAFFRON_FLAME,
-                opacity: 0.9,
-                marginTop: '10px',
+                opacity: 1,
+                marginTop: '12px',
+                textShadow: `0 0 12px ${SAFFRON_FLAME}66, 0 0 24px ${SAFFRON_FLAME}33`,
+                letterSpacing: '0.3px',
               }}
             >
               Tryck på bilden när ni är redo.
