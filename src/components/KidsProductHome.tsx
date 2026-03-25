@@ -479,6 +479,21 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
                 pointerEvents: 'none',
               }}
             />
+          ) : product.id === 'sexualitetskort' ? (
+            <img
+              src={product.heroImage}
+              alt=""
+              aria-hidden="true"
+              style={{
+                position: 'absolute',
+                top: '-5%',
+                left: '-20%',
+                width: '110%',
+                height: 'auto',
+                opacity: 0.38,
+                pointerEvents: 'none',
+              }}
+            />
           ) : (
             <img
               src={product.heroImage}
@@ -497,7 +512,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
             />
           )}
           {/* Multi-stop scrim: product color blend — skip for Vardag */}
-          {product.id !== 'vardagskort' && product.id !== 'jag_i_mig' && product.id !== 'jag_med_andra' && product.id !== 'jag_i_varlden' && product.id !== 'syskonkort' && (
+          {product.id !== 'vardagskort' && product.id !== 'jag_i_mig' && product.id !== 'jag_med_andra' && product.id !== 'jag_i_varlden' && product.id !== 'syskonkort' && product.id !== 'sexualitetskort' && (
             <div
               style={{
                 position: 'absolute',
