@@ -774,7 +774,7 @@ export default function ProductLibrary() {
                 ].join(', '),
               }}
             >
-              {/* Intense radial burst — "shining from behind" */}
+              {/* Dual-layer radial glow — wide ambient + tight concentrated (like JiM) */}
               <div
                 aria-hidden="true"
                 style={{
@@ -782,54 +782,20 @@ export default function ProductLibrary() {
                   inset: 0,
                   zIndex: 0,
                   pointerEvents: 'none',
-                  background: [
-                    'radial-gradient(ellipse 60% 50% at 48% 20%, rgba(100, 180, 255, 0.50) 0%, rgba(40, 120, 230, 0.20) 40%, transparent 70%)',
-                    'radial-gradient(ellipse 40% 35% at 50% 15%, rgba(180, 215, 255, 0.35) 0%, transparent 55%)',
-                  ].join(', '),
+                  background: 'radial-gradient(ellipse 80% 90% at 65% 55%, rgba(80, 160, 255, 0.18) 0%, transparent 65%)',
                 }}
               />
-
-              {/* Echo outlines — 3 faint silhouette rings behind figures */}
-              {[
-                { scale: 1.08, opacity: 0.30 },
-                { scale: 1.16, opacity: 0.18 },
-                { scale: 1.25, opacity: 0.08 },
-              ].map((echo, i) => (
-                <div
-                  key={i}
-                  aria-hidden="true"
-                  style={{
-                    position: 'absolute',
-                    top: '0%',
-                    left: '-15%',
-                    right: '-15%',
-                    bottom: '-45%',
-                    pointerEvents: 'none',
-                    zIndex: 0,
-                    display: 'flex',
-                    alignItems: 'flex-start',
-                    justifyContent: 'center',
-                    overflow: 'hidden',
-                  }}
-                >
-                  <img
-                    src={illustrationStillUs}
-                    alt=""
-                    draggable={false}
-                    style={{
-                      width: '100%',
-                      height: '100%',
-                      objectFit: 'contain',
-                      objectPosition: 'center 12%',
-                      opacity: echo.opacity,
-                      transform: `scale(${echo.scale})`,
-                      filter: 'brightness(2) saturate(0) contrast(0.5) blur(1px)',
-                    }}
-                  />
-                </div>
-              ))}
-
-              {/* Illustration — main, filling tile */}
+              <div
+                aria-hidden="true"
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  zIndex: 0,
+                  pointerEvents: 'none',
+                  background: 'radial-gradient(ellipse 45% 55% at 70% 50%, rgba(80, 160, 255, 0.30) 0%, transparent 70%)',
+                }}
+              />
+              {/* Illustration — larger, filling tile */}
               <div style={{
                 position: 'absolute',
                 top: '0%',
@@ -849,7 +815,7 @@ export default function ProductLibrary() {
                     objectFit: 'contain',
                     objectPosition: 'center 12%',
                     opacity: 1,
-                    filter: 'drop-shadow(0 4px 16px rgba(100, 170, 255, 0.4)) drop-shadow(0 8px 30px rgba(0, 40, 120, 0.5))',
+                    filter: 'brightness(1.35) saturate(1.6) contrast(1.15) drop-shadow(0 6px 20px rgba(0, 30, 90, 0.5)) drop-shadow(0 2px 4px rgba(0,0,0,0.2))',
                   }}
                 />
               </div>
@@ -860,10 +826,10 @@ export default function ProductLibrary() {
                 style={{
                   position: 'absolute',
                   left: 0, right: 0, bottom: 0,
-                  height: '58%',
+                  height: '50%',
                   zIndex: 2,
                   pointerEvents: 'none',
-                  background: 'linear-gradient(to top, rgba(0, 25, 80, 0.96) 0%, rgba(0, 35, 100, 0.75) 25%, rgba(0, 45, 130, 0.35) 50%, rgba(0, 55, 150, 0.08) 75%, transparent 100%)',
+                  background: 'linear-gradient(to top, rgba(0, 30, 100, 0.90) 0%, rgba(0, 50, 140, 0.5) 45%, transparent 100%)',
                 }}
               />
 
