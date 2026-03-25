@@ -306,21 +306,6 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
         </div>
       )}
 
-      {/* Localized text backdrop — bottom-left corner protection */}
-      <div
-        aria-hidden="true"
-        style={{
-          position: 'absolute',
-          left: 0,
-          bottom: 0,
-          width: '60%',
-          height: '70%',
-          zIndex: 1,
-          pointerEvents: 'none',
-          borderRadius: '0 0 0 22px',
-          background: `linear-gradient(to top right, ${bgRgba(0.92)} 0%, ${bgRgba(0.65)} 35%, ${bgRgba(0.25)} 60%, transparent 100%)`,
-        }}
-      />
 
 
       {/* Resume indicator */}
@@ -721,18 +706,6 @@ export default function ProductLibrary() {
                 />
               </div>
 
-              {/* Bottom gradient scrim — text legibility */}
-              <div
-                aria-hidden="true"
-                style={{
-                  position: 'absolute',
-                  left: 0, right: 0, bottom: 0,
-                  height: '50%',
-                  zIndex: 2,
-                  pointerEvents: 'none',
-                  background: 'linear-gradient(to top, rgba(100, 160, 200, 0.70) 0%, rgba(148, 188, 225, 0.35) 45%, transparent 100%)',
-                }}
-              />
 
               {/* Text */}
               <div style={{
