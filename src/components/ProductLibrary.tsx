@@ -43,14 +43,14 @@ const TAGLINES: Record<string, string> = {
   sexualitetskort: 'Kropp, gränser och identitet',
 };
 
-/** Creature-color tile backgrounds — chosen to complement each illustration */
+/** Bright saturated tile backgrounds — vibrant flat-color aesthetic */
 const TILE_COLORS: Record<string, string> = {
-  jag_i_mig: '#245852',       // Muted teal — pulled back to balance with Still Us
-  jag_med_andra: '#B07A3A',   // Warm amber-orange — resonant, not dusty
-  jag_i_varlden: '#2A4A6B',   // Richer dusk blue — more saturated, separates from Still Us
-  sexualitetskort: '#5E3848',  // Plum-mauve — distinct from syskon's warm tone
-  vardagskort: '#1A2E28',      // Richer forest charcoal — lifted from pure black
-  syskonkort: '#6B4228',       // Warm sienna-brown — earthy, clearly different from närhet's cool plum
+  jag_i_mig: '#CB7AB2',
+  jag_med_andra: '#A62755',
+  jag_i_varlden: '#C6D423',
+  sexualitetskort: '#DD958B',
+  vardagskort: '#8BDDB0',
+  syskonkort: '#CF8BDD',
 };
 
 /** Luminance helper — determines if a tile needs light or dark treatment.
@@ -91,56 +91,47 @@ const ILLUSTRATION_OFFSET: Record<string, { top: string; right: string; bottom: 
   syskonkort: { top: '-25%', right: '0%', bottom: '-20%' },
 };
 
-/** Illustration opacities — pushed high for max POP */
+/** Illustration opacities — subtle presence on bright backgrounds */
 const ILLUSTRATION_OPACITY: Record<string, number> = {
-  jag_i_mig: 0.92,
-  jag_med_andra: 0.92,
-  jag_i_varlden: 0.92,
-  sexualitetskort: 0.92,
-  vardagskort: 0.92,
-  syskonkort: 0.92,
+  jag_i_mig: 0.38,
+  jag_med_andra: 0.38,
+  jag_i_varlden: 0.38,
+  sexualitetskort: 0.38,
+  vardagskort: 0.38,
+  syskonkort: 0.38,
 };
 
-/** Per-tile radial glow color behind illustration — creates 3D depth
- *  Calibrated for mid-tone tile palette (Mar 2026): complementary hue glow */
-const ILLUSTRATION_GLOW: Record<string, string> = {
-  jag_i_mig: 'rgba(240, 190, 80, 0.12)',
-  jag_med_andra: 'rgba(160, 130, 220, 0.10)',
-  jag_i_varlden: 'rgba(140, 200, 230, 0.12)',
-  sexualitetskort: 'rgba(220, 140, 160, 0.28)',
-  vardagskort: 'rgba(180, 200, 100, 0.18)',
-  syskonkort: 'rgba(240, 160, 80, 0.28)',
-};
+/** Per-tile radial glow — disabled for flat bright aesthetic */
+const ILLUSTRATION_GLOW: Record<string, string> = {};
 
-/** Per-tile drop-shadow + saturation boost — makes character pop from bg
- *  Shadow colors derived from each tile's own bg for natural grounding */
+/** Per-tile drop-shadow — subtle grounding, no saturation/brightness boost */
 const ILLUSTRATION_SHADOW: Record<string, string> = {
-  jag_i_mig: 'saturate(1.15) brightness(1.1) drop-shadow(0 6px 20px rgba(30, 50, 48, 0.5)) drop-shadow(0 2px 4px rgba(0,0,0,0.2))',
-  jag_med_andra: 'saturate(1.3) contrast(1.1) brightness(1.1) drop-shadow(0 6px 20px rgba(86, 61, 34, 0.5)) drop-shadow(0 2px 4px rgba(0,0,0,0.15))',
-  jag_i_varlden: 'saturate(1.6) brightness(1.5) contrast(1.1) drop-shadow(0 8px 24px rgba(21, 37, 54, 0.6)) drop-shadow(0 2px 4px rgba(0,0,0,0.25))',
-  sexualitetskort: 'saturate(1.8) brightness(1.7) contrast(1.12) drop-shadow(0 8px 24px rgba(180, 100, 80, 0.5)) drop-shadow(0 2px 4px rgba(0,0,0,0.2))',
-  vardagskort: 'saturate(1.6) brightness(1.5) contrast(1.1) drop-shadow(0 8px 24px rgba(15, 35, 30, 0.6)) drop-shadow(0 2px 4px rgba(0,0,0,0.25))',
-  syskonkort: 'saturate(1.8) brightness(1.7) contrast(1.12) drop-shadow(0 8px 24px rgba(200, 130, 60, 0.5)) drop-shadow(0 2px 4px rgba(0,0,0,0.2))',
+  jag_i_mig: 'drop-shadow(0 4px 12px rgba(0,0,0,0.10))',
+  jag_med_andra: 'drop-shadow(0 4px 12px rgba(0,0,0,0.10))',
+  jag_i_varlden: 'drop-shadow(0 4px 12px rgba(0,0,0,0.10))',
+  sexualitetskort: 'drop-shadow(0 4px 12px rgba(0,0,0,0.10))',
+  vardagskort: 'drop-shadow(0 4px 12px rgba(0,0,0,0.10))',
+  syskonkort: 'drop-shadow(0 4px 12px rgba(0,0,0,0.10))',
 };
 
-/** Title colors — dark text on lighter tiles, light on darker ones */
+/** Title colors — dark text on bright tiles, light on dark ones */
 const ACCENT_COLORS: Record<string, string> = {
-  jag_i_mig: '#FDF6E3',       // Light on deep teal
-  jag_med_andra: '#FDF6E3',   // Light on warm amber
-  jag_i_varlden: '#FDF6E3',   // Light on dusk blue
-  sexualitetskort: '#FDF6E3', // Light on bark brown
-  vardagskort: '#FDF6E3',     // Light on dark petrol
-  syskonkort: '#FDF6E3',      // Light on sienna
+  jag_i_mig: '#FFFFFF',
+  jag_med_andra: '#FDF6E3',
+  jag_i_varlden: '#1A1A2E',
+  sexualitetskort: '#1A1A2E',
+  vardagskort: '#1A1A2E',
+  syskonkort: '#1A1A2E',
 };
 
-/** Tagline colors — tinted to each tile's family */
+/** Tagline colors — matched to title tone per tile */
 const TAGLINE_COLORS: Record<string, string> = {
-  jag_i_mig: 'hsla(178, 30%, 82%, 0.90)',
-  jag_med_andra: 'hsla(30, 30%, 85%, 0.90)',
-  jag_i_varlden: 'hsla(210, 35%, 82%, 0.90)',
-  sexualitetskort: 'hsla(300, 30%, 82%, 0.90)',
-  vardagskort: 'hsla(190, 25%, 80%, 0.90)',
-  syskonkort: 'hsla(15, 30%, 82%, 0.90)',
+  jag_i_mig: 'hsla(0, 0%, 100%, 0.80)',
+  jag_med_andra: 'hsla(0, 0%, 95%, 0.80)',
+  jag_i_varlden: 'hsla(0, 0%, 10%, 0.65)',
+  sexualitetskort: 'hsla(0, 0%, 10%, 0.65)',
+  vardagskort: 'hsla(0, 0%, 10%, 0.65)',
+  syskonkort: 'hsla(0, 0%, 10%, 0.65)',
 };
 
 /** Tile height rhythm — alternating for visual breathing */
@@ -278,53 +269,15 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
         overflow: 'hidden',
         backgroundImage: 'none',
         border: light
-          ? '1.5px solid rgba(0, 0, 0, 0.10)'
-          : '1.5px solid rgba(255, 255, 255, 0.30)',
-        boxShadow: light
-          ? [
-              `0 16px 40px ${toShadowColor(bg, 0.35)}`,
-              `0 6px 16px ${toShadowColor(bg, 0.2)}`,
-              '0 1px 3px rgba(0, 0, 0, 0.08)',
-              `0 0 60px ${toShadowColor(bg, 0.15)}`,
-              `inset 0 3px 6px rgba(255, 255, 255, 0.25)`,
-              `inset 0 -4px 10px ${toShadowColor(bg, 0.10)}`,
-            ].join(', ')
-          : [
-              `0 16px 40px ${toShadowColor(bg, 0.4)}`,
-              `0 6px 16px ${toShadowColor(bg, 0.25)}`,
-              '0 1px 3px rgba(0, 0, 0, 0.10)',
-              `0 0 72px ${toShadowColor(bg, 0.18)}`,
-              'inset 0 3px 6px rgba(255, 255, 255, 0.45)',
-              `inset 0 -4px 10px ${toShadowColor(bg, 0.14)}`,
-            ].join(', '),
+          ? '1px solid rgba(0, 0, 0, 0.08)'
+          : '1px solid rgba(255, 255, 255, 0.15)',
+        boxShadow: [
+          `0 8px 24px rgba(0, 0, 0, 0.12)`,
+          `0 2px 6px rgba(0, 0, 0, 0.06)`,
+        ].join(', '),
       }}
     >
-      {/* Dual-layer radial glow behind illustration — wide ambient + tight concentrated */}
-      {illustration && productId && ILLUSTRATION_GLOW[productId] && (
-        <>
-          <div
-            aria-hidden="true"
-            style={{
-              position: 'absolute',
-              inset: 0,
-              zIndex: 0,
-              pointerEvents: 'none',
-              background: `radial-gradient(ellipse 80% 90% at 65% 55%, ${ILLUSTRATION_GLOW[productId]} 0%, transparent 65%)`,
-            }}
-          />
-          <div
-            aria-hidden="true"
-            style={{
-              position: 'absolute',
-              inset: 0,
-              zIndex: 0,
-              pointerEvents: 'none',
-              background: `radial-gradient(ellipse 45% 55% at 70% 50%, ${ILLUSTRATION_GLOW[productId].replace(/[\d.]+\)$/, '0.30)')} 0%, transparent 70%)`,
-            }}
-          />
-        </>
-      )}
-      {/* Illustration — right-aligned, bleeds off edge dramatically, with depth shadow */}
+      {/* Illustration — right-aligned, bleeds off edge dramatically */}
       {illustration && (
         <div
           style={{
@@ -758,44 +711,17 @@ export default function ProductLibrary() {
               className="cursor-pointer"
               style={{
                 borderRadius: '22px',
-                backgroundColor: '#0047AB',
+                backgroundColor: '#94BCE1',
                 height: '260px',
                 display: 'flex',
                 flexDirection: 'column',
                 position: 'relative',
                 overflow: 'hidden',
-                border: '1.5px solid rgba(255, 255, 255, 0.30)',
-                boxShadow: [
-                  '0 16px 40px rgba(0, 35, 85, 0.5)',
-                  '0 6px 16px rgba(0, 35, 85, 0.3)',
-                  '0 0 72px rgba(0, 71, 171, 0.25)',
-                  'inset 0 3px 6px rgba(255, 255, 255, 0.45)',
-                  'inset 0 -4px 10px rgba(0, 20, 60, 0.20)',
-                ].join(', '),
+                border: '1px solid rgba(0, 0, 0, 0.08)',
+                boxShadow: '0 8px 24px rgba(0, 0, 0, 0.12), 0 2px 6px rgba(0, 0, 0, 0.06)',
               }}
             >
-              {/* Dual-layer radial glow — wide ambient + tight concentrated (like JiM) */}
-              <div
-                aria-hidden="true"
-                style={{
-                  position: 'absolute',
-                  inset: 0,
-                  zIndex: 0,
-                  pointerEvents: 'none',
-                  background: 'radial-gradient(ellipse 80% 90% at 65% 55%, rgba(80, 160, 255, 0.18) 0%, transparent 65%)',
-                }}
-              />
-              <div
-                aria-hidden="true"
-                style={{
-                  position: 'absolute',
-                  inset: 0,
-                  zIndex: 0,
-                  pointerEvents: 'none',
-                  background: 'radial-gradient(ellipse 45% 55% at 70% 50%, rgba(80, 160, 255, 0.30) 0%, transparent 70%)',
-                }}
-              />
-              {/* Illustration — larger, filling tile */}
+              {/* Illustration */}
               <div style={{
                 position: 'absolute',
                 top: '0%',
@@ -814,13 +740,13 @@ export default function ProductLibrary() {
                     height: '100%',
                     objectFit: 'contain',
                     objectPosition: 'center 12%',
-                    opacity: 1,
-                    filter: 'brightness(1.35) saturate(1.6) contrast(1.15) drop-shadow(0 6px 20px rgba(0, 30, 90, 0.5)) drop-shadow(0 2px 4px rgba(0,0,0,0.2))',
+                    opacity: 0.38,
+                    filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.10))',
                   }}
                 />
               </div>
 
-              {/* Bottom gradient scrim — text legibility, cobalt-tinted */}
+              {/* Bottom gradient scrim — text legibility */}
               <div
                 aria-hidden="true"
                 style={{
@@ -829,11 +755,11 @@ export default function ProductLibrary() {
                   height: '50%',
                   zIndex: 2,
                   pointerEvents: 'none',
-                  background: 'linear-gradient(to top, rgba(0, 30, 100, 0.90) 0%, rgba(0, 50, 140, 0.5) 45%, transparent 100%)',
+                  background: 'linear-gradient(to top, rgba(100, 160, 200, 0.70) 0%, rgba(148, 188, 225, 0.35) 45%, transparent 100%)',
                 }}
               />
 
-              {/* Text — left-aligned, lower-third emphasis */}
+              {/* Text */}
               <div style={{
                 position: 'absolute',
                 left: 0, bottom: 0, right: 0,
@@ -849,10 +775,9 @@ export default function ProductLibrary() {
                   fontVariationSettings: "'opsz' 24",
                   fontSize: '28px',
                   fontWeight: 700,
-                  color: '#FDF6E3',
+                  color: '#1A1A2E',
                   lineHeight: 1.15,
                   letterSpacing: '-0.01em',
-                  textShadow: '0 1px 8px rgba(0, 20, 80, 0.8), 0 0 20px rgba(0, 40, 120, 0.5)',
                 }}>
                   Still Us
                 </h3>
@@ -860,10 +785,9 @@ export default function ProductLibrary() {
                   fontFamily: "var(--font-body)",
                   fontSize: '15px',
                   fontWeight: 500,
-                  color: 'hsla(215, 60%, 90%, 0.9)',
+                  color: 'hsla(0, 0%, 10%, 0.65)',
                   marginTop: '4px',
                   lineHeight: 1.4,
-                  textShadow: '0 0 12px rgba(0, 20, 80, 0.8)',
                 }}>
                   22 samtalsövningar för er som vill stanna kvar
                 </p>
@@ -880,8 +804,8 @@ export default function ProductLibrary() {
                     fontSize: '10px',
                     fontWeight: 500,
                     letterSpacing: '0.04em',
-                    color: 'hsla(215, 60%, 90%, 0.6)',
-                    background: 'hsla(215, 50%, 70%, 0.12)',
+                    color: 'hsla(0, 0%, 10%, 0.50)',
+                    background: 'hsla(0, 0%, 0%, 0.06)',
                     borderRadius: '12px',
                     padding: '3px 10px',
                   }}>
