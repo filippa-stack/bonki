@@ -93,12 +93,12 @@ const ILLUSTRATION_OFFSET: Record<string, { top: string; right: string; bottom: 
 
 /** Illustration opacities — subtle presence on bright backgrounds */
 const ILLUSTRATION_OPACITY: Record<string, number> = {
-  jag_i_mig: 0.38,
-  jag_med_andra: 0.38,
-  jag_i_varlden: 0.38,
-  sexualitetskort: 0.38,
-  vardagskort: 0.38,
-  syskonkort: 0.38,
+  jag_i_mig: 1,
+  jag_med_andra: 1,
+  jag_i_varlden: 1,
+  sexualitetskort: 1,
+  vardagskort: 1,
+  syskonkort: 1,
 };
 
 /** Per-tile radial glow — disabled for flat bright aesthetic */
@@ -740,7 +740,7 @@ export default function ProductLibrary() {
                     height: '100%',
                     objectFit: 'contain',
                     objectPosition: 'center 12%',
-                    opacity: 0.38,
+                    opacity: 1,
                     filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.10))',
                   }}
                 />
