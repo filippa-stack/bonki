@@ -395,7 +395,7 @@ export default function TillbakaSessionLive() {
   if (step === 'threshold') {
     if (coupleState.partner_tier === 'tier_2') {
       return (
-        <SessionFocusShell couple_id={coupleState.couple_id} card_id={backendCardId} device_id={deviceId} onExit={() => navigate('/product/still-us')} ctaSlot={null}>
+        <SessionFocusShell productBgColor="#4B759B" couple_id={coupleState.couple_id} card_id={backendCardId} device_id={deviceId} onExit={() => navigate('/product/still-us')} ctaSlot={null}>
           <Tier2Threshold
             initiatorName={initiatorName}
             partnerName={partnerName}
@@ -410,7 +410,7 @@ export default function TillbakaSessionLive() {
     }
 
     return (
-      <SessionFocusShell couple_id={coupleState.couple_id} card_id={backendCardId} device_id={deviceId} onExit={() => navigate('/product/still-us')} ctaSlot={null}>
+      <SessionFocusShell productBgColor="#4B759B" couple_id={coupleState.couple_id} card_id={backendCardId} device_id={deviceId} onExit={() => navigate('/product/still-us')} ctaSlot={null}>
         <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '16px' }}>
           <CompactThresholdRow
             initiatorName={initiatorName}
@@ -441,7 +441,7 @@ export default function TillbakaSessionLive() {
   // ── STEP: FRAMING ─────────────────────────────────────────
   if (step === 'framing' && framing) {
     return (
-      <SessionFocusShell
+      <SessionFocusShell productBgColor="#4B759B"
         couple_id={coupleState.couple_id}
         card_id={backendCardId}
         device_id={deviceId}
@@ -494,7 +494,7 @@ export default function TillbakaSessionLive() {
   // ── STEP: Q1 ──────────────────────────────────────────────
   if (step === 'q1') {
     return (
-      <SessionFocusShell
+      <SessionFocusShell productBgColor="#4B759B"
         couple_id={coupleState.couple_id}
         card_id={backendCardId}
         device_id={deviceId}
@@ -598,7 +598,7 @@ export default function TillbakaSessionLive() {
   // ── STEP: Q2 ──────────────────────────────────────────────
   if (step === 'q2') {
     return (
-      <SessionFocusShell
+      <SessionFocusShell productBgColor="#4B759B"
         couple_id={coupleState.couple_id}
         card_id={backendCardId}
         device_id={deviceId}
