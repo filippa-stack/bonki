@@ -711,44 +711,17 @@ export default function ProductLibrary() {
               className="cursor-pointer"
               style={{
                 borderRadius: '22px',
-                backgroundColor: '#0047AB',
+                backgroundColor: '#94BCE1',
                 height: '260px',
                 display: 'flex',
                 flexDirection: 'column',
                 position: 'relative',
                 overflow: 'hidden',
-                border: '1.5px solid rgba(255, 255, 255, 0.30)',
-                boxShadow: [
-                  '0 16px 40px rgba(0, 35, 85, 0.5)',
-                  '0 6px 16px rgba(0, 35, 85, 0.3)',
-                  '0 0 72px rgba(0, 71, 171, 0.25)',
-                  'inset 0 3px 6px rgba(255, 255, 255, 0.45)',
-                  'inset 0 -4px 10px rgba(0, 20, 60, 0.20)',
-                ].join(', '),
+                border: '1px solid rgba(0, 0, 0, 0.08)',
+                boxShadow: '0 8px 24px rgba(0, 0, 0, 0.12), 0 2px 6px rgba(0, 0, 0, 0.06)',
               }}
             >
-              {/* Dual-layer radial glow — wide ambient + tight concentrated (like JiM) */}
-              <div
-                aria-hidden="true"
-                style={{
-                  position: 'absolute',
-                  inset: 0,
-                  zIndex: 0,
-                  pointerEvents: 'none',
-                  background: 'radial-gradient(ellipse 80% 90% at 65% 55%, rgba(80, 160, 255, 0.18) 0%, transparent 65%)',
-                }}
-              />
-              <div
-                aria-hidden="true"
-                style={{
-                  position: 'absolute',
-                  inset: 0,
-                  zIndex: 0,
-                  pointerEvents: 'none',
-                  background: 'radial-gradient(ellipse 45% 55% at 70% 50%, rgba(80, 160, 255, 0.30) 0%, transparent 70%)',
-                }}
-              />
-              {/* Illustration — larger, filling tile */}
+              {/* Illustration */}
               <div style={{
                 position: 'absolute',
                 top: '0%',
@@ -767,13 +740,13 @@ export default function ProductLibrary() {
                     height: '100%',
                     objectFit: 'contain',
                     objectPosition: 'center 12%',
-                    opacity: 1,
-                    filter: 'brightness(1.35) saturate(1.6) contrast(1.15) drop-shadow(0 6px 20px rgba(0, 30, 90, 0.5)) drop-shadow(0 2px 4px rgba(0,0,0,0.2))',
+                    opacity: 0.38,
+                    filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.10))',
                   }}
                 />
               </div>
 
-              {/* Bottom gradient scrim — text legibility, cobalt-tinted */}
+              {/* Bottom gradient scrim — text legibility */}
               <div
                 aria-hidden="true"
                 style={{
@@ -782,11 +755,11 @@ export default function ProductLibrary() {
                   height: '50%',
                   zIndex: 2,
                   pointerEvents: 'none',
-                  background: 'linear-gradient(to top, rgba(0, 30, 100, 0.90) 0%, rgba(0, 50, 140, 0.5) 45%, transparent 100%)',
+                  background: 'linear-gradient(to top, rgba(100, 160, 200, 0.70) 0%, rgba(148, 188, 225, 0.35) 45%, transparent 100%)',
                 }}
               />
 
-              {/* Text — left-aligned, lower-third emphasis */}
+              {/* Text */}
               <div style={{
                 position: 'absolute',
                 left: 0, bottom: 0, right: 0,
@@ -802,10 +775,9 @@ export default function ProductLibrary() {
                   fontVariationSettings: "'opsz' 24",
                   fontSize: '28px',
                   fontWeight: 700,
-                  color: '#FDF6E3',
+                  color: '#1A1A2E',
                   lineHeight: 1.15,
                   letterSpacing: '-0.01em',
-                  textShadow: '0 1px 8px rgba(0, 20, 80, 0.8), 0 0 20px rgba(0, 40, 120, 0.5)',
                 }}>
                   Still Us
                 </h3>
@@ -813,10 +785,9 @@ export default function ProductLibrary() {
                   fontFamily: "var(--font-body)",
                   fontSize: '15px',
                   fontWeight: 500,
-                  color: 'hsla(215, 60%, 90%, 0.9)',
+                  color: 'hsla(0, 0%, 10%, 0.65)',
                   marginTop: '4px',
                   lineHeight: 1.4,
-                  textShadow: '0 0 12px rgba(0, 20, 80, 0.8)',
                 }}>
                   22 samtalsövningar för er som vill stanna kvar
                 </p>
@@ -833,8 +804,8 @@ export default function ProductLibrary() {
                     fontSize: '10px',
                     fontWeight: 500,
                     letterSpacing: '0.04em',
-                    color: 'hsla(215, 60%, 90%, 0.6)',
-                    background: 'hsla(215, 50%, 70%, 0.12)',
+                    color: 'hsla(0, 0%, 10%, 0.50)',
+                    background: 'hsla(0, 0%, 0%, 0.06)',
                     borderRadius: '12px',
                     padding: '3px 10px',
                   }}>
