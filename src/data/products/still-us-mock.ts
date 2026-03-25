@@ -21,10 +21,10 @@ import stillUsHero from '@/assets/illustration-still-us-home.png';
 // ── Categories (one per layer) ──────────────────────────────
 
 const LAYER_META: { id: string; title: string; subtitle: string; color: string }[] = [
-  { id: 'su-mock-vardagen',     title: 'Vardagen',     subtitle: 'Hur livet mellan er ser ut just nu.',                        color: '#5A3E0A' },
-  { id: 'su-mock-tillsammans',  title: 'Tillsammans',  subtitle: 'Hur ni möter det som är svårt — och varandra.',             color: '#4A3308' },
-  { id: 'su-mock-grunden',      title: 'Grunden',      subtitle: 'Det ni bär med er in i relationen.',                        color: '#3D2A06' },
-  { id: 'su-mock-riktningen',   title: 'Riktningen',   subtitle: 'Vart ni är på väg — och vad ni väljer.',                    color: '#302104' },
+  { id: 'su-mock-vardagen',     title: 'Vardagen',     subtitle: 'Hur livet mellan er ser ut just nu.',                        color: '#4A7C9B' },
+  { id: 'su-mock-tillsammans',  title: 'Tillsammans',  subtitle: 'Hur ni möter det som är svårt — och varandra.',             color: '#2E6B8A' },
+  { id: 'su-mock-grunden',      title: 'Grunden',      subtitle: 'Det ni bär med er in i relationen.',                        color: '#1B3A5C' },
+  { id: 'su-mock-riktningen',   title: 'Riktningen',   subtitle: 'Vart ni är på väg — och vad ni väljer.',                    color: '#0D1B2A' },
 ];
 
 const categories: Category[] = LAYER_META.map((l, i) => ({
