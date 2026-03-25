@@ -388,7 +388,7 @@ export default function KidsCardPortal() {
                   borderRadius: '16px',
                   overflow: 'hidden',
                   position: 'relative',
-                  backgroundColor: product?.backgroundColor ?? MIDNIGHT_INK,
+                  backgroundColor: tileBg,
                   minHeight: 0,
                 }}
               >
