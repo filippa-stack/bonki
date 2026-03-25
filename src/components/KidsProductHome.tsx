@@ -450,18 +450,20 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
               }}
             />
           )}
-          {/* Multi-stop scrim: product color blend — much lighter for Vardag */}
-          <div
-            style={{
-              position: 'absolute',
-              bottom: 0,
-              left: 0,
-              right: 0,
-          height: '90%',
-              background: `linear-gradient(to top, ${bg}F0 0%, ${bg}E0 15%, ${bg}C0 35%, ${bg}80 55%, ${bg}40 70%, transparent 100%)`,
-              pointerEvents: 'none',
-            }}
-          />
+          {/* Multi-stop scrim: product color blend — skip for Vardag */}
+          {product.id !== 'vardagskort' && (
+            <div
+              style={{
+                position: 'absolute',
+                bottom: 0,
+                left: 0,
+                right: 0,
+                height: '90%',
+                background: `linear-gradient(to top, ${bg}F0 0%, ${bg}E0 15%, ${bg}C0 35%, ${bg}80 55%, ${bg}40 70%, transparent 100%)`,
+                pointerEvents: 'none',
+              }}
+            />
+          )}
         </motion.div>
       )}
 
