@@ -49,14 +49,7 @@ const tileVariants = {
 
 /* ── Helpers ── */
 
-/** Vardag uses brighter, more distinct tile colors — no murky deep tones */
-const VARDAG_TILE_COLORS = ['#3C4A30', '#3E4C32', '#3C4A30', '#3E4C32'];
-
-function getTileColor(product: ProductManifest, index: number, isSquareGrid = false): string {
-  if (isSquareGrid && product.id === 'vardagskort') {
-    return VARDAG_TILE_COLORS[index] ?? VARDAG_TILE_COLORS[0];
-  }
-  // Use tileLight for all tiles to keep brightness uniform — tileMid/tileDeep darken too aggressively
+function getTileColor(product: ProductManifest, _index: number, _isSquareGrid = false): string {
   const light = product.tileLight ?? product.backgroundColor;
   return light;
 }
@@ -71,31 +64,41 @@ function hexToRgb(hex: string): string {
 
 /** Per-tile illustration calibration — opacity decreases with depth */
 const TILE_ILLUSTRATION_STYLES = [
-  { scale: 1.15, objectPosition: '50% 15%', opacity: 0.75 },
-  { scale: 1.15, objectPosition: '50% 20%', opacity: 0.70 },
-  { scale: 1.1,  objectPosition: '50% 55%', opacity: 0.65 },
-  { scale: 1.1,  objectPosition: '50% 22%', opacity: 0.60 },
-  { scale: 1.1,  objectPosition: '50% 20%', opacity: 0.55 },
+  { scale: 1.15, objectPosition: '50% 15%', opacity: 0.38 },
+  { scale: 1.15, objectPosition: '50% 20%', opacity: 0.38 },
+  { scale: 1.1,  objectPosition: '50% 55%', opacity: 0.38 },
+  { scale: 1.1,  objectPosition: '50% 22%', opacity: 0.38 },
+  { scale: 1.1,  objectPosition: '50% 20%', opacity: 0.38 },
 ];
 
 /** Square-grid tiles get high-impact illustration treatment (like library tiles) */
 const SQUARE_TILE_ILLUSTRATION_STYLES = [
-  { scale: 1.05, objectPosition: '50% 30%', opacity: 0.88 },
-  { scale: 1.05, objectPosition: '50% 25%', opacity: 0.85 },
-  { scale: 1.1,  objectPosition: '50% 15%', opacity: 0.88 },
-  { scale: 1.05, objectPosition: '50% 30%', opacity: 0.90 },
-  { scale: 1.05, objectPosition: '50% 30%', opacity: 0.88 },
+  { scale: 1.05, objectPosition: '50% 30%', opacity: 0.38 },
+  { scale: 1.05, objectPosition: '50% 25%', opacity: 0.38 },
+  { scale: 1.1,  objectPosition: '50% 15%', opacity: 0.38 },
+  { scale: 1.05, objectPosition: '50% 30%', opacity: 0.38 },
+  { scale: 1.05, objectPosition: '50% 30%', opacity: 0.38 },
 ];
 
 /** Per-product hero image vertical position — default is '50% 55%' */
 const HERO_OBJECT_POSITION: Record<string, string> = {
   jag_i_varlden: '50% 35%',
   jag_i_mig: '50% 18%',
+  jag_med_andra: '50% 30%',
+  vardagskort: '50% 20%',
+  syskonkort: '50% 25%',
+  sexualitetskort: '50% 25%',
+  still_us: '50% 40%',
 };
 
 const HERO_TOP_OFFSET: Record<string, string> = {
   jag_i_varlden: '-20vh',
   jag_i_mig: '-14vh',
+  jag_med_andra: '-12vh',
+  vardagskort: '-14vh',
+  syskonkort: '-12vh',
+  sexualitetskort: '-10vh',
+  still_us: '-8vh',
 };
 
 /* ── First uncompleted card per category hook ── */
