@@ -419,6 +419,21 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
                 pointerEvents: 'none',
               }}
             />
+          ) : product.id === 'jag_i_mig' ? (
+            <img
+              src={product.heroImage}
+              alt=""
+              aria-hidden="true"
+              style={{
+                position: 'absolute',
+                top: '12%',
+                left: '-35%',
+                width: '120%',
+                height: 'auto',
+                opacity: 0.38,
+                pointerEvents: 'none',
+              }}
+            />
           ) : (
             <img
               src={product.heroImage}
