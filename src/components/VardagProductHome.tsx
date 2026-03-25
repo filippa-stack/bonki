@@ -67,7 +67,7 @@ export default function VardagProductHome({ product }: { product: ProductManifes
           pointerEvents: 'none',
           backgroundImage: `url(${heroImage})`,
           backgroundRepeat: 'no-repeat',
-          backgroundSize: '56vw auto',
+          backgroundSize: '50vw auto',
           backgroundPosition: 'center 45%',
           opacity: 0.38,
         }}
