@@ -15,11 +15,11 @@ const SUBTITLE_COLOR = '#998F82';
 
 /** Default per-tile crop/opacity — subtle atmospheric wash, NOT dominant */
 const DEFAULT_TILE_CREATURE_STYLES: CreatureTileStyle[] = [
-  { scale: 1.3, objectPosition: '25% 15%', opacity: 0.45 },
-  { scale: 1.15, objectPosition: '75% 20%', opacity: 0.35 },
-  { scale: 1.8, objectPosition: '50% 10%', opacity: 0.25 },
-  { scale: 0.65, objectPosition: '50% 55%', opacity: 0.18 },
-  { scale: 0.85, objectPosition: '80% 40%', opacity: 0.12 },
+  { scale: 1.3, objectPosition: '25% 15%', opacity: 1 },
+  { scale: 1.15, objectPosition: '75% 20%', opacity: 1 },
+  { scale: 1.8, objectPosition: '50% 10%', opacity: 1 },
+  { scale: 0.65, objectPosition: '50% 55%', opacity: 1 },
+  { scale: 0.85, objectPosition: '80% 40%', opacity: 1 },
 ];
 
 export interface CreatureTileStyle {

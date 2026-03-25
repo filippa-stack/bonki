@@ -22,9 +22,9 @@ const ORDERED_TILES = [
 
 // Card images are vivid illustrations — higher opacity than creature textures
 const CREATURE_TILE_STYLES: CreatureTileStyle[] = [
-  { scale: 1.1, objectPosition: '50% 20%', opacity: 0.6 },
-  { scale: 1.1, objectPosition: '50% 20%', opacity: 0.55 },
-  { scale: 1.1, objectPosition: '50% 20%', opacity: 0.5 },
+  { scale: 1.1, objectPosition: '50% 20%', opacity: 1 },
+  { scale: 1.1, objectPosition: '50% 20%', opacity: 1 },
+  { scale: 1.1, objectPosition: '50% 20%', opacity: 1 },
 ];
 
 const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.11, delayChildren: 0.4 } } };
