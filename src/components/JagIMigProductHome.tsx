@@ -60,7 +60,7 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
         transition={{ duration: 0.6 }}
         style={{ position: 'absolute', top: '-8vh', left: '-5vw', right: '-5vw', height: '65vh', zIndex: 0, pointerEvents: 'none' }}
       >
-        <img src={heroImage} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 15%' }} />
+        <img src={heroImage} alt="" style={{ width: '1080px', height: '1350px', objectFit: 'cover', objectPosition: '50% 15%', opacity: 0.38, position: 'absolute', left: '50%', transform: 'translateX(-50%)' }} />
         {/* Extended scrim with smooth blend */}
         <div style={{
           position: 'absolute', bottom: 0, left: 0, right: 0, height: '85%',

@@ -62,7 +62,7 @@ export default function JagMedAndraProductHome({ product }: { product: ProductMa
         transition={{ duration: 0.6 }}
         style={{ position: 'absolute', top: '-8vh', left: '-5vw', right: '-5vw', height: '100vh', zIndex: 0, pointerEvents: 'none' }}
       >
-        <img src={heroImage} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 8%' }} />
+        <img src={heroImage} alt="" style={{ width: '1080px', height: '1350px', objectFit: 'cover', objectPosition: '50% 8%', opacity: 0.38, position: 'absolute', left: '50%', transform: 'translateX(-50%)' }} />
         {/* Multi-stop scrim: lighter to let illustration colors breathe */}
         <div style={{
           position: 'absolute', bottom: 0, left: 0, right: 0, height: '75%',

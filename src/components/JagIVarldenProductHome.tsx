@@ -59,11 +59,13 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
           style={{
             position: 'absolute',
             top: '0',
-            right: '-20vw',
-            width: '110%',
-            height: '100%',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            width: '1080px',
+            height: '1350px',
             objectFit: 'cover',
             objectPosition: '85% 15%',
+            opacity: 0.38,
           }}
         />
         {/* Left-side safe-zone gradient — solid BG fading to transparent */}
