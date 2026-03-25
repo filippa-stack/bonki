@@ -43,14 +43,14 @@ const TAGLINES: Record<string, string> = {
   sexualitetskort: 'Kropp, gränser och identitet',
 };
 
-/** Creature-color tile backgrounds — chosen to complement each illustration */
+/** Bright saturated tile backgrounds — vibrant flat-color aesthetic */
 const TILE_COLORS: Record<string, string> = {
-  jag_i_mig: '#245852',       // Muted teal — pulled back to balance with Still Us
-  jag_med_andra: '#B07A3A',   // Warm amber-orange — resonant, not dusty
-  jag_i_varlden: '#2A4A6B',   // Richer dusk blue — more saturated, separates from Still Us
-  sexualitetskort: '#5E3848',  // Plum-mauve — distinct from syskon's warm tone
-  vardagskort: '#1A2E28',      // Richer forest charcoal — lifted from pure black
-  syskonkort: '#6B4228',       // Warm sienna-brown — earthy, clearly different from närhet's cool plum
+  jag_i_mig: '#CB7AB2',
+  jag_med_andra: '#A62755',
+  jag_i_varlden: '#C6D423',
+  sexualitetskort: '#DD958B',
+  vardagskort: '#8BDDB0',
+  syskonkort: '#CF8BDD',
 };
 
 /** Luminance helper — determines if a tile needs light or dark treatment.
@@ -91,56 +91,47 @@ const ILLUSTRATION_OFFSET: Record<string, { top: string; right: string; bottom: 
   syskonkort: { top: '-25%', right: '0%', bottom: '-20%' },
 };
 
-/** Illustration opacities — pushed high for max POP */
+/** Illustration opacities — subtle presence on bright backgrounds */
 const ILLUSTRATION_OPACITY: Record<string, number> = {
-  jag_i_mig: 0.92,
-  jag_med_andra: 0.92,
-  jag_i_varlden: 0.92,
-  sexualitetskort: 0.92,
-  vardagskort: 0.92,
-  syskonkort: 0.92,
+  jag_i_mig: 0.38,
+  jag_med_andra: 0.38,
+  jag_i_varlden: 0.38,
+  sexualitetskort: 0.38,
+  vardagskort: 0.38,
+  syskonkort: 0.38,
 };
 
-/** Per-tile radial glow color behind illustration — creates 3D depth
- *  Calibrated for mid-tone tile palette (Mar 2026): complementary hue glow */
-const ILLUSTRATION_GLOW: Record<string, string> = {
-  jag_i_mig: 'rgba(240, 190, 80, 0.12)',
-  jag_med_andra: 'rgba(160, 130, 220, 0.10)',
-  jag_i_varlden: 'rgba(140, 200, 230, 0.12)',
-  sexualitetskort: 'rgba(220, 140, 160, 0.28)',
-  vardagskort: 'rgba(180, 200, 100, 0.18)',
-  syskonkort: 'rgba(240, 160, 80, 0.28)',
-};
+/** Per-tile radial glow — disabled for flat bright aesthetic */
+const ILLUSTRATION_GLOW: Record<string, string> = {};
 
-/** Per-tile drop-shadow + saturation boost — makes character pop from bg
- *  Shadow colors derived from each tile's own bg for natural grounding */
+/** Per-tile drop-shadow — subtle grounding, no saturation/brightness boost */
 const ILLUSTRATION_SHADOW: Record<string, string> = {
-  jag_i_mig: 'saturate(1.15) brightness(1.1) drop-shadow(0 6px 20px rgba(30, 50, 48, 0.5)) drop-shadow(0 2px 4px rgba(0,0,0,0.2))',
-  jag_med_andra: 'saturate(1.3) contrast(1.1) brightness(1.1) drop-shadow(0 6px 20px rgba(86, 61, 34, 0.5)) drop-shadow(0 2px 4px rgba(0,0,0,0.15))',
-  jag_i_varlden: 'saturate(1.6) brightness(1.5) contrast(1.1) drop-shadow(0 8px 24px rgba(21, 37, 54, 0.6)) drop-shadow(0 2px 4px rgba(0,0,0,0.25))',
-  sexualitetskort: 'saturate(1.8) brightness(1.7) contrast(1.12) drop-shadow(0 8px 24px rgba(180, 100, 80, 0.5)) drop-shadow(0 2px 4px rgba(0,0,0,0.2))',
-  vardagskort: 'saturate(1.6) brightness(1.5) contrast(1.1) drop-shadow(0 8px 24px rgba(15, 35, 30, 0.6)) drop-shadow(0 2px 4px rgba(0,0,0,0.25))',
-  syskonkort: 'saturate(1.8) brightness(1.7) contrast(1.12) drop-shadow(0 8px 24px rgba(200, 130, 60, 0.5)) drop-shadow(0 2px 4px rgba(0,0,0,0.2))',
+  jag_i_mig: 'drop-shadow(0 4px 12px rgba(0,0,0,0.10))',
+  jag_med_andra: 'drop-shadow(0 4px 12px rgba(0,0,0,0.10))',
+  jag_i_varlden: 'drop-shadow(0 4px 12px rgba(0,0,0,0.10))',
+  sexualitetskort: 'drop-shadow(0 4px 12px rgba(0,0,0,0.10))',
+  vardagskort: 'drop-shadow(0 4px 12px rgba(0,0,0,0.10))',
+  syskonkort: 'drop-shadow(0 4px 12px rgba(0,0,0,0.10))',
 };
 
-/** Title colors — dark text on lighter tiles, light on darker ones */
+/** Title colors — dark text on bright tiles, light on dark ones */
 const ACCENT_COLORS: Record<string, string> = {
-  jag_i_mig: '#FDF6E3',       // Light on deep teal
-  jag_med_andra: '#FDF6E3',   // Light on warm amber
-  jag_i_varlden: '#FDF6E3',   // Light on dusk blue
-  sexualitetskort: '#FDF6E3', // Light on bark brown
-  vardagskort: '#FDF6E3',     // Light on dark petrol
-  syskonkort: '#FDF6E3',      // Light on sienna
+  jag_i_mig: '#FFFFFF',
+  jag_med_andra: '#FDF6E3',
+  jag_i_varlden: '#1A1A2E',
+  sexualitetskort: '#1A1A2E',
+  vardagskort: '#1A1A2E',
+  syskonkort: '#1A1A2E',
 };
 
-/** Tagline colors — tinted to each tile's family */
+/** Tagline colors — matched to title tone per tile */
 const TAGLINE_COLORS: Record<string, string> = {
-  jag_i_mig: 'hsla(178, 30%, 82%, 0.90)',
-  jag_med_andra: 'hsla(30, 30%, 85%, 0.90)',
-  jag_i_varlden: 'hsla(210, 35%, 82%, 0.90)',
-  sexualitetskort: 'hsla(300, 30%, 82%, 0.90)',
-  vardagskort: 'hsla(190, 25%, 80%, 0.90)',
-  syskonkort: 'hsla(15, 30%, 82%, 0.90)',
+  jag_i_mig: 'hsla(0, 0%, 100%, 0.80)',
+  jag_med_andra: 'hsla(0, 0%, 95%, 0.80)',
+  jag_i_varlden: 'hsla(0, 0%, 10%, 0.65)',
+  sexualitetskort: 'hsla(0, 0%, 10%, 0.65)',
+  vardagskort: 'hsla(0, 0%, 10%, 0.65)',
+  syskonkort: 'hsla(0, 0%, 10%, 0.65)',
 };
 
 /** Tile height rhythm — alternating for visual breathing */

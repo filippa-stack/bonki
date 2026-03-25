@@ -30,13 +30,13 @@ function hexToRgba(hex: string, alpha: number): string {
 
 /** Product-specific tile colors — must match ProductLibrary TILE_COLORS */
 const PRODUCT_TILE_COLORS: Record<string, string> = {
-  still_us: '#1A1C22',
-  jag_i_mig: '#2D6B62',
-  jag_med_andra: '#B07A3A',
-  jag_i_varlden: '#2A4A6B',
-  sexualitetskort: '#A8766D',
-  vardagskort: '#0A1A18',
-  syskonkort: '#3A1820',
+  still_us: '#94BCE1',
+  jag_i_mig: '#CB7AB2',
+  jag_med_andra: '#A62755',
+  jag_i_varlden: '#C6D423',
+  sexualitetskort: '#DD958B',
+  vardagskort: '#8BDDB0',
+  syskonkort: '#CF8BDD',
 };
 
 interface ResumeData {
