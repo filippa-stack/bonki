@@ -764,11 +764,17 @@ export default function ProductLibrary() {
                 flexDirection: 'column',
                 position: 'relative',
                 overflow: 'hidden',
-                border: '1.5px solid rgba(255, 255, 255, 0.15)',
-                boxShadow: '0 0 80px rgba(0, 71, 171, 0.35), 0 0 40px rgba(0, 71, 171, 0.20)',
+                border: '1.5px solid rgba(255, 255, 255, 0.30)',
+                boxShadow: [
+                  '0 16px 40px rgba(0, 35, 85, 0.5)',
+                  '0 6px 16px rgba(0, 35, 85, 0.3)',
+                  '0 0 72px rgba(0, 71, 171, 0.25)',
+                  'inset 0 3px 6px rgba(255, 255, 255, 0.45)',
+                  'inset 0 -4px 10px rgba(0, 20, 60, 0.20)',
+                ].join(', '),
               }}
             >
-              {/* Cobalt glow behind illustration */}
+              {/* Dual-layer radial glow — wide ambient + tight concentrated (like JiM) */}
               <div
                 aria-hidden="true"
                 style={{
@@ -776,7 +782,17 @@ export default function ProductLibrary() {
                   inset: 0,
                   zIndex: 0,
                   pointerEvents: 'none',
-                  background: 'radial-gradient(ellipse 80% 70% at 50% 35%, rgba(0, 100, 220, 0.25) 0%, transparent 70%)',
+                  background: 'radial-gradient(ellipse 80% 90% at 65% 55%, rgba(80, 160, 255, 0.18) 0%, transparent 65%)',
+                }}
+              />
+              <div
+                aria-hidden="true"
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  zIndex: 0,
+                  pointerEvents: 'none',
+                  background: 'radial-gradient(ellipse 45% 55% at 70% 50%, rgba(80, 160, 255, 0.30) 0%, transparent 70%)',
                 }}
               />
               {/* Illustration — larger, filling tile */}
@@ -799,7 +815,7 @@ export default function ProductLibrary() {
                     objectFit: 'contain',
                     objectPosition: 'center 12%',
                     opacity: 1,
-                    filter: 'brightness(1.3) saturate(1.55) contrast(1.12)',
+                    filter: 'brightness(1.35) saturate(1.6) contrast(1.15) drop-shadow(0 6px 20px rgba(0, 30, 90, 0.5)) drop-shadow(0 2px 4px rgba(0,0,0,0.2))',
                   }}
                 />
               </div>
@@ -813,7 +829,7 @@ export default function ProductLibrary() {
                   height: '50%',
                   zIndex: 2,
                   pointerEvents: 'none',
-                  background: 'linear-gradient(to top, rgba(0, 30, 80, 0.88) 0%, rgba(0, 40, 110, 0.5) 45%, transparent 100%)',
+                  background: 'linear-gradient(to top, rgba(0, 30, 100, 0.90) 0%, rgba(0, 50, 140, 0.5) 45%, transparent 100%)',
                 }}
               />
 
@@ -836,7 +852,7 @@ export default function ProductLibrary() {
                   color: '#FDF6E3',
                   lineHeight: 1.15,
                   letterSpacing: '-0.01em',
-                  textShadow: '0 1px 8px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 0, 0, 0.5)',
+                  textShadow: '0 1px 8px rgba(0, 20, 80, 0.8), 0 0 20px rgba(0, 40, 120, 0.5)',
                 }}>
                   Still Us
                 </h3>
@@ -844,10 +860,10 @@ export default function ProductLibrary() {
                   fontFamily: "var(--font-body)",
                   fontSize: '15px',
                   fontWeight: 500,
-                  color: 'hsla(215, 60%, 85%, 0.85)',
+                  color: 'hsla(215, 60%, 90%, 0.9)',
                   marginTop: '4px',
                   lineHeight: 1.4,
-                  textShadow: '0 0 12px rgba(0, 0, 0, 0.8)',
+                  textShadow: '0 0 12px rgba(0, 20, 80, 0.8)',
                 }}>
                   22 samtalsövningar för er som vill stanna kvar
                 </p>
@@ -864,8 +880,8 @@ export default function ProductLibrary() {
                     fontSize: '10px',
                     fontWeight: 500,
                     letterSpacing: '0.04em',
-                     color: 'hsla(215, 50%, 85%, 0.6)',
-                     background: 'hsla(215, 40%, 50%, 0.08)',
+                    color: 'hsla(215, 60%, 90%, 0.6)',
+                    background: 'hsla(215, 50%, 70%, 0.12)',
                     borderRadius: '12px',
                     padding: '3px 10px',
                   }}>
