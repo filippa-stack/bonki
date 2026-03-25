@@ -774,7 +774,7 @@ export default function ProductLibrary() {
                 ].join(', '),
               }}
             >
-              {/* Tight spotlight — directly behind figures' heads */}
+              {/* Intense radial burst — "shining from behind" */}
               <div
                 aria-hidden="true"
                 style={{
@@ -782,21 +782,54 @@ export default function ProductLibrary() {
                   inset: 0,
                   zIndex: 0,
                   pointerEvents: 'none',
-                  background: 'radial-gradient(ellipse 55% 45% at 48% 22%, rgba(140, 195, 255, 0.40) 0%, rgba(80, 150, 255, 0.15) 45%, transparent 70%)',
+                  background: [
+                    'radial-gradient(ellipse 60% 50% at 48% 20%, rgba(100, 180, 255, 0.50) 0%, rgba(40, 120, 230, 0.20) 40%, transparent 70%)',
+                    'radial-gradient(ellipse 40% 35% at 50% 15%, rgba(180, 215, 255, 0.35) 0%, transparent 55%)',
+                  ].join(', '),
                 }}
               />
-              {/* Warm rim light — subtle edge separation */}
-              <div
-                aria-hidden="true"
-                style={{
-                  position: 'absolute',
-                  inset: 0,
-                  zIndex: 0,
-                  pointerEvents: 'none',
-                  background: 'radial-gradient(ellipse 35% 30% at 50% 18%, rgba(200, 220, 255, 0.25) 0%, transparent 60%)',
-                }}
-              />
-              {/* Illustration — larger, filling tile */}
+
+              {/* Echo outlines — 3 faint silhouette rings behind figures */}
+              {[
+                { scale: 1.08, opacity: 0.30 },
+                { scale: 1.16, opacity: 0.18 },
+                { scale: 1.25, opacity: 0.08 },
+              ].map((echo, i) => (
+                <div
+                  key={i}
+                  aria-hidden="true"
+                  style={{
+                    position: 'absolute',
+                    top: '0%',
+                    left: '-15%',
+                    right: '-15%',
+                    bottom: '-45%',
+                    pointerEvents: 'none',
+                    zIndex: 0,
+                    display: 'flex',
+                    alignItems: 'flex-start',
+                    justifyContent: 'center',
+                    overflow: 'hidden',
+                  }}
+                >
+                  <img
+                    src={illustrationStillUs}
+                    alt=""
+                    draggable={false}
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'contain',
+                      objectPosition: 'center 12%',
+                      opacity: echo.opacity,
+                      transform: `scale(${echo.scale})`,
+                      filter: 'brightness(2) saturate(0) contrast(0.5) blur(1px)',
+                    }}
+                  />
+                </div>
+              ))}
+
+              {/* Illustration — main, filling tile */}
               <div style={{
                 position: 'absolute',
                 top: '0%',
