@@ -418,21 +418,35 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
             pointerEvents: 'none',
           }}
         >
-          <img
-            src={product.heroImage}
-            alt=""
-            aria-hidden="true"
-            style={{
-              width: '1080px',
-              height: '1350px',
-              objectFit: 'cover',
-              objectPosition: HERO_OBJECT_POSITION[product.id] ?? '50% 55%',
-              opacity: 0.38,
-              position: 'absolute',
-              left: '50%',
-              transform: 'translateX(-50%)',
-            }}
-          />
+          {product.id === 'vardagskort' ? (
+            <div
+              style={{
+                position: 'absolute',
+                inset: 0,
+                backgroundImage: `url(${product.heroImage})`,
+                backgroundRepeat: 'no-repeat',
+                backgroundSize: '65% auto',
+                backgroundPosition: 'center 40%',
+                opacity: 0.38,
+              }}
+            />
+          ) : (
+            <img
+              src={product.heroImage}
+              alt=""
+              aria-hidden="true"
+              style={{
+                width: '1080px',
+                height: '1350px',
+                objectFit: 'cover',
+                objectPosition: HERO_OBJECT_POSITION[product.id] ?? '50% 55%',
+                opacity: 0.38,
+                position: 'absolute',
+                left: '50%',
+                transform: 'translateX(-50%)',
+              }}
+            />
+          )}
           {/* Multi-stop scrim: product color blend — much lighter for Vardag */}
           <div
             style={{
