@@ -322,31 +322,6 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
         }}
       />
 
-      {/* Age badge — Parchment circle, top-right */}
-      {ageLabel && (
-        <span
-          style={{
-            position: 'absolute',
-            top: '12px',
-            right: '12px',
-            width: '32px',
-            height: '32px',
-            borderRadius: '50%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontFamily: "var(--font-body)",
-            fontSize: '12px',
-            fontWeight: 600,
-            color: '#2C2420',
-            background: '#F5EDD2',
-            zIndex: 3,
-            boxShadow: '0 2px 8px rgba(0,0,0,0.12)',
-          }}
-        >
-          {ageLabel}
-        </span>
-      )}
 
       {/* Resume indicator */}
       {hasActiveSession && (
@@ -424,7 +399,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
             {tagline}
           </p>
           )}
-          {/* Free badge marker */}
+          {/* Free badge marker with age label */}
           <p
             style={{
               fontFamily: "var(--font-body)",
@@ -437,7 +412,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
               textShadow: `0 0 10px ${bgRgba(0.8)}`,
             }}
           >
-            ✦ Samtal 1 gratis
+            ✦ Samtal 1 gratis{ageLabel ? ` · ${ageLabel}` : ''}
           </p>
         </div>
     </motion.div>
