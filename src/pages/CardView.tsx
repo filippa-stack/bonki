@@ -2749,7 +2749,7 @@ export default function CardView() {
             }}>
               {/* Question text — centered */}
               <div style={{
-                flex: '1 1 auto',
+                flex: '0 0 auto',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
