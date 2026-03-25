@@ -774,7 +774,7 @@ export default function ProductLibrary() {
                 ].join(', '),
               }}
             >
-              {/* Spotlight glow — focused behind figures */}
+              {/* Tight spotlight — directly behind figures' heads */}
               <div
                 aria-hidden="true"
                 style={{
@@ -782,9 +782,10 @@ export default function ProductLibrary() {
                   inset: 0,
                   zIndex: 0,
                   pointerEvents: 'none',
-                  background: 'radial-gradient(ellipse 70% 60% at 50% 30%, rgba(120, 180, 255, 0.35) 0%, rgba(60, 140, 255, 0.15) 40%, transparent 70%)',
+                  background: 'radial-gradient(ellipse 55% 45% at 48% 22%, rgba(140, 195, 255, 0.40) 0%, rgba(80, 150, 255, 0.15) 45%, transparent 70%)',
                 }}
               />
+              {/* Warm rim light — subtle edge separation */}
               <div
                 aria-hidden="true"
                 style={{
@@ -792,7 +793,7 @@ export default function ProductLibrary() {
                   inset: 0,
                   zIndex: 0,
                   pointerEvents: 'none',
-                  background: 'radial-gradient(ellipse 40% 40% at 50% 25%, rgba(180, 210, 255, 0.22) 0%, transparent 65%)',
+                  background: 'radial-gradient(ellipse 35% 30% at 50% 18%, rgba(200, 220, 255, 0.25) 0%, transparent 60%)',
                 }}
               />
               {/* Illustration — larger, filling tile */}
@@ -826,10 +827,10 @@ export default function ProductLibrary() {
                 style={{
                   position: 'absolute',
                   left: 0, right: 0, bottom: 0,
-                  height: '55%',
+                  height: '58%',
                   zIndex: 2,
                   pointerEvents: 'none',
-                  background: 'linear-gradient(to top, rgba(0, 25, 80, 0.95) 0%, rgba(0, 35, 110, 0.7) 35%, rgba(0, 50, 140, 0.2) 65%, transparent 100%)',
+                  background: 'linear-gradient(to top, rgba(0, 25, 80, 0.96) 0%, rgba(0, 35, 100, 0.75) 25%, rgba(0, 45, 130, 0.35) 50%, rgba(0, 55, 150, 0.08) 75%, transparent 100%)',
                 }}
               />
 
