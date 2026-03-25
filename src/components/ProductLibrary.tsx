@@ -114,24 +114,24 @@ const ILLUSTRATION_SHADOW: Record<string, string> = {
   syskonkort: 'drop-shadow(0 4px 12px rgba(0,0,0,0.10))',
 };
 
-/** Title colors — dark text on bright tiles, light on dark ones */
+/** Title colors — white on all tiles for max readability */
 const ACCENT_COLORS: Record<string, string> = {
   jag_i_mig: '#FFFFFF',
-  jag_med_andra: '#FDF6E3',
-  jag_i_varlden: '#1A1A2E',
-  sexualitetskort: '#1A1A2E',
-  vardagskort: '#1A1A2E',
-  syskonkort: '#1A1A2E',
+  jag_med_andra: '#FFFFFF',
+  jag_i_varlden: '#FFFFFF',
+  sexualitetskort: '#FFFFFF',
+  vardagskort: '#FFFFFF',
+  syskonkort: '#FFFFFF',
 };
 
-/** Tagline colors — matched to title tone per tile */
+/** Tagline colors — white with slight transparency */
 const TAGLINE_COLORS: Record<string, string> = {
-  jag_i_mig: 'hsla(0, 0%, 100%, 0.80)',
-  jag_med_andra: 'hsla(0, 0%, 95%, 0.80)',
-  jag_i_varlden: 'hsla(0, 0%, 10%, 0.65)',
-  sexualitetskort: 'hsla(0, 0%, 10%, 0.65)',
-  vardagskort: 'hsla(0, 0%, 10%, 0.65)',
-  syskonkort: 'hsla(0, 0%, 10%, 0.65)',
+  jag_i_mig: 'hsla(0, 0%, 100%, 0.85)',
+  jag_med_andra: 'hsla(0, 0%, 100%, 0.85)',
+  jag_i_varlden: 'hsla(0, 0%, 100%, 0.85)',
+  sexualitetskort: 'hsla(0, 0%, 100%, 0.85)',
+  vardagskort: 'hsla(0, 0%, 100%, 0.85)',
+  syskonkort: 'hsla(0, 0%, 100%, 0.85)',
 };
 
 /** Tile height rhythm — alternating for visual breathing */
