@@ -48,7 +48,7 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
         style={{
           position: 'absolute',
           inset: 0,
-          zIndex: -1,
+          zIndex: 0,
           pointerEvents: 'none',
           overflow: 'hidden',
         }}
