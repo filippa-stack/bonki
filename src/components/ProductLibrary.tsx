@@ -723,9 +723,10 @@ export default function ProductLibrary() {
                   fontVariationSettings: "'opsz' 24",
                   fontSize: '28px',
                   fontWeight: 700,
-                  color: '#1A1A2E',
+                  color: '#FFFFFF',
                   lineHeight: 1.15,
                   letterSpacing: '-0.01em',
+                  textShadow: '0 1px 3px rgba(0,0,0,0.9), 0 0 8px rgba(0,0,0,0.7), 0 0 20px rgba(0,0,0,0.5), 0 0 40px rgba(0,0,0,0.3)',
                 }}>
                   Still Us
                 </h3>
@@ -733,9 +734,10 @@ export default function ProductLibrary() {
                   fontFamily: "var(--font-body)",
                   fontSize: '15px',
                   fontWeight: 500,
-                  color: 'hsla(0, 0%, 10%, 0.65)',
+                  color: 'hsla(0, 0%, 100%, 0.85)',
                   marginTop: '4px',
                   lineHeight: 1.4,
+                  textShadow: '0 1px 3px rgba(0,0,0,0.8), 0 0 8px rgba(0,0,0,0.6), 0 0 20px rgba(0,0,0,0.4)',
                 }}>
                   22 samtalsövningar för er som vill stanna kvar
                 </p>
@@ -752,7 +754,7 @@ export default function ProductLibrary() {
                     fontSize: '10px',
                     fontWeight: 500,
                     letterSpacing: '0.04em',
-                    color: 'hsla(0, 0%, 10%, 0.50)',
+                    color: 'hsla(0, 0%, 100%, 0.60)',
                     background: 'hsla(0, 0%, 0%, 0.06)',
                     borderRadius: '12px',
                     padding: '3px 10px',
