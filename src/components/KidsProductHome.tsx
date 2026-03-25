@@ -419,15 +419,18 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
           }}
         >
           {product.id === 'vardagskort' ? (
-            <div
+            <img
+              src={product.heroImage}
+              alt=""
+              aria-hidden="true"
               style={{
                 position: 'absolute',
-                inset: 0,
-                backgroundImage: `url(${product.heroImage})`,
-                backgroundRepeat: 'no-repeat',
-                backgroundSize: '65% auto',
-                backgroundPosition: 'center 40%',
+                top: '-8%',
+                left: '-35%',
+                width: '120%',
+                height: 'auto',
                 opacity: 0.38,
+                pointerEvents: 'none',
               }}
             />
           ) : (
