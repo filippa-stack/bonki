@@ -268,8 +268,8 @@ function CategoryTile({
           bottom: 0,
           left: 0,
           right: 0,
-          height: squareTile ? '60%' : '75%',
-          background: `linear-gradient(to top, rgba(${shieldRgb}, 0.85) 0%, rgba(${shieldRgb}, 0.60) 30%, rgba(${shieldRgb}, 0.25) 55%, transparent 100%)`,
+          height: squareTile ? '70%' : '75%',
+          background: `linear-gradient(to top, rgba(${shieldRgb}, 0.95) 0%, rgba(${shieldRgb}, 0.80) 35%, rgba(${shieldRgb}, 0.40) 60%, transparent 100%)`,
           pointerEvents: 'none',
           zIndex: 2,
         }}
@@ -282,7 +282,7 @@ function CategoryTile({
           bottom: 0,
           left: 0,
           right: 0,
-          padding: squareTile ? '12px 14px' : '14px 16px',
+          padding: squareTile ? '14px 16px' : '14px 16px',
           zIndex: 3,
         }}
       >
@@ -290,12 +290,12 @@ function CategoryTile({
           style={{
             fontFamily: 'var(--font-display)',
             fontVariationSettings: "'opsz' 17",
-            fontSize: squareTile ? '16px' : '18px',
-            fontWeight: 600,
-            color: LANTERN_GLOW,
+            fontSize: squareTile ? '18px' : '20px',
+            fontWeight: 700,
+            color: '#FFFFFF',
             lineHeight: 1.2,
             display: 'block',
-            textShadow: `0 1px 6px rgba(0,0,0,0.7), 0 0 16px rgba(${shieldRgb}, 0.8)`,
+            textShadow: `0 2px 8px rgba(0,0,0,0.8), 0 0 20px rgba(${shieldRgb}, 0.9)`,
           }}
         >
           {cat.title}
