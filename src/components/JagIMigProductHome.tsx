@@ -53,21 +53,23 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
         }}
       />
 
-      {/* ── Hero illustration ── */}
+      {/* ── Hero illustration — matching Vardag sizing ── */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6 }}
-        style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 0, pointerEvents: 'none', overflow: 'hidden' }}
-      >
-        <img src={heroImage} alt="" style={{ width: '100%', height: '100vh', objectFit: 'cover', objectPosition: '50% 12%', opacity: 0.32, position: 'absolute', top: 0, left: 0 }} />
-        {/* Scrim: gentle fade so tiles remain readable */}
-        <div style={{
-          position: 'absolute', bottom: 0, left: 0, right: 0, height: '55%',
-          background: `linear-gradient(to top, ${BG} 0%, ${BG}F0 30%, ${BG}99 60%, transparent 100%)`,
+        style={{
+          position: 'absolute',
+          inset: 0,
+          zIndex: 0,
           pointerEvents: 'none',
-        }} />
-      </motion.div>
+          backgroundImage: `url(${heroImage})`,
+          backgroundRepeat: 'no-repeat',
+          backgroundSize: '30vw auto',
+          backgroundPosition: 'center 45%',
+          opacity: 0.38,
+        }}
+      />
 
       {/* ── Content ── */}
       <div style={{ position: 'relative', zIndex: 1, minHeight: '100vh', display: 'flex', flexDirection: 'column', paddingTop: 'clamp(28px, 8vh, 80px)', paddingRight: '5vw', paddingBottom: '80px', paddingLeft: '5vw' }}>
