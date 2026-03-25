@@ -774,7 +774,7 @@ export default function ProductLibrary() {
                 ].join(', '),
               }}
             >
-              {/* Dual-layer radial glow — wide ambient + tight concentrated (like JiM) */}
+              {/* Spotlight glow — focused behind figures */}
               <div
                 aria-hidden="true"
                 style={{
@@ -782,7 +782,7 @@ export default function ProductLibrary() {
                   inset: 0,
                   zIndex: 0,
                   pointerEvents: 'none',
-                  background: 'radial-gradient(ellipse 80% 90% at 65% 55%, rgba(80, 160, 255, 0.18) 0%, transparent 65%)',
+                  background: 'radial-gradient(ellipse 70% 60% at 50% 30%, rgba(120, 180, 255, 0.35) 0%, rgba(60, 140, 255, 0.15) 40%, transparent 70%)',
                 }}
               />
               <div
@@ -792,7 +792,7 @@ export default function ProductLibrary() {
                   inset: 0,
                   zIndex: 0,
                   pointerEvents: 'none',
-                  background: 'radial-gradient(ellipse 45% 55% at 70% 50%, rgba(80, 160, 255, 0.30) 0%, transparent 70%)',
+                  background: 'radial-gradient(ellipse 40% 40% at 50% 25%, rgba(180, 210, 255, 0.22) 0%, transparent 65%)',
                 }}
               />
               {/* Illustration — larger, filling tile */}
@@ -815,7 +815,7 @@ export default function ProductLibrary() {
                     objectFit: 'contain',
                     objectPosition: 'center 12%',
                     opacity: 1,
-                    filter: 'brightness(1.35) saturate(1.6) contrast(1.15) drop-shadow(0 6px 20px rgba(0, 30, 90, 0.5)) drop-shadow(0 2px 4px rgba(0,0,0,0.2))',
+                    filter: 'brightness(1.6) saturate(1.8) contrast(1.2) drop-shadow(0 4px 16px rgba(100, 170, 255, 0.4)) drop-shadow(0 8px 30px rgba(0, 40, 120, 0.5))',
                   }}
                 />
               </div>
@@ -826,10 +826,10 @@ export default function ProductLibrary() {
                 style={{
                   position: 'absolute',
                   left: 0, right: 0, bottom: 0,
-                  height: '50%',
+                  height: '55%',
                   zIndex: 2,
                   pointerEvents: 'none',
-                  background: 'linear-gradient(to top, rgba(0, 30, 100, 0.90) 0%, rgba(0, 50, 140, 0.5) 45%, transparent 100%)',
+                  background: 'linear-gradient(to top, rgba(0, 25, 80, 0.95) 0%, rgba(0, 35, 110, 0.7) 35%, rgba(0, 50, 140, 0.2) 65%, transparent 100%)',
                 }}
               />
 
