@@ -423,11 +423,14 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
             alt=""
             aria-hidden="true"
             style={{
-              width: '100%',
-              height: '100%',
+              width: '1080px',
+              height: '1350px',
               objectFit: 'cover',
               objectPosition: HERO_OBJECT_POSITION[product.id] ?? '50% 55%',
-              filter: 'none',
+              opacity: 0.38,
+              position: 'absolute',
+              left: '50%',
+              transform: 'translateX(-50%)',
             }}
           />
           {/* Multi-stop scrim: product color blend — much lighter for Vardag */}
