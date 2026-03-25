@@ -363,7 +363,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
             lineHeight: 1.15,
             color: accentColor || '#FDF6E3',
             letterSpacing: '-0.01em',
-            textShadow: `0 0 6px ${bgRgba(1)}, 0 0 12px ${bgRgba(1)}, 0 0 24px ${bgRgba(0.95)}, 0 0 48px ${bgRgba(0.8)}, 0 2px 4px ${bgRgba(1)}`,
+            textShadow: '0 1px 3px rgba(0,0,0,0.9), 0 0 8px rgba(0,0,0,0.7), 0 0 20px rgba(0,0,0,0.5), 0 0 40px rgba(0,0,0,0.3)',
           }}
         >
           {name}
@@ -378,7 +378,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
               opacity: 0.9,
               marginTop: '4px',
               lineHeight: 1.4,
-              textShadow: `0 0 6px ${bgRgba(1)}, 0 0 14px ${bgRgba(0.95)}, 0 0 28px ${bgRgba(0.8)}`,
+              textShadow: '0 1px 3px rgba(0,0,0,0.8), 0 0 8px rgba(0,0,0,0.6), 0 0 20px rgba(0,0,0,0.4)',
             }}
           >
             {tagline}
@@ -391,10 +391,10 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
               fontSize: '10px',
               fontWeight: 500,
               letterSpacing: '0.04em',
-              color: taglineColor || 'hsla(100, 40%, 80%, 0.50)',
+              color: 'hsla(0, 0%, 100%, 0.70)',
               opacity: 0.7,
               marginTop: '6px',
-              textShadow: `0 0 6px ${bgRgba(1)}, 0 0 14px ${bgRgba(0.95)}, 0 0 28px ${bgRgba(0.8)}`,
+              textShadow: '0 1px 3px rgba(0,0,0,0.8), 0 0 8px rgba(0,0,0,0.6), 0 0 20px rgba(0,0,0,0.4)',
             }}
           >
             ✦ Samtal 1 gratis{ageLabel ? ` · ${ageLabel}` : ''}
