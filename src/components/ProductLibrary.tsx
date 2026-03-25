@@ -269,53 +269,15 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
         overflow: 'hidden',
         backgroundImage: 'none',
         border: light
-          ? '1.5px solid rgba(0, 0, 0, 0.10)'
-          : '1.5px solid rgba(255, 255, 255, 0.30)',
-        boxShadow: light
-          ? [
-              `0 16px 40px ${toShadowColor(bg, 0.35)}`,
-              `0 6px 16px ${toShadowColor(bg, 0.2)}`,
-              '0 1px 3px rgba(0, 0, 0, 0.08)',
-              `0 0 60px ${toShadowColor(bg, 0.15)}`,
-              `inset 0 3px 6px rgba(255, 255, 255, 0.25)`,
-              `inset 0 -4px 10px ${toShadowColor(bg, 0.10)}`,
-            ].join(', ')
-          : [
-              `0 16px 40px ${toShadowColor(bg, 0.4)}`,
-              `0 6px 16px ${toShadowColor(bg, 0.25)}`,
-              '0 1px 3px rgba(0, 0, 0, 0.10)',
-              `0 0 72px ${toShadowColor(bg, 0.18)}`,
-              'inset 0 3px 6px rgba(255, 255, 255, 0.45)',
-              `inset 0 -4px 10px ${toShadowColor(bg, 0.14)}`,
-            ].join(', '),
+          ? '1px solid rgba(0, 0, 0, 0.08)'
+          : '1px solid rgba(255, 255, 255, 0.15)',
+        boxShadow: [
+          `0 8px 24px rgba(0, 0, 0, 0.12)`,
+          `0 2px 6px rgba(0, 0, 0, 0.06)`,
+        ].join(', '),
       }}
     >
-      {/* Dual-layer radial glow behind illustration — wide ambient + tight concentrated */}
-      {illustration && productId && ILLUSTRATION_GLOW[productId] && (
-        <>
-          <div
-            aria-hidden="true"
-            style={{
-              position: 'absolute',
-              inset: 0,
-              zIndex: 0,
-              pointerEvents: 'none',
-              background: `radial-gradient(ellipse 80% 90% at 65% 55%, ${ILLUSTRATION_GLOW[productId]} 0%, transparent 65%)`,
-            }}
-          />
-          <div
-            aria-hidden="true"
-            style={{
-              position: 'absolute',
-              inset: 0,
-              zIndex: 0,
-              pointerEvents: 'none',
-              background: `radial-gradient(ellipse 45% 55% at 70% 50%, ${ILLUSTRATION_GLOW[productId].replace(/[\d.]+\)$/, '0.30)')} 0%, transparent 70%)`,
-            }}
-          />
-        </>
-      )}
-      {/* Illustration — right-aligned, bleeds off edge dramatically, with depth shadow */}
+      {/* Illustration — right-aligned, bleeds off edge dramatically */}
       {illustration && (
         <div
           style={{
