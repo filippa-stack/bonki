@@ -114,24 +114,24 @@ const ILLUSTRATION_SHADOW: Record<string, string> = {
   syskonkort: 'drop-shadow(0 4px 12px rgba(0,0,0,0.10))',
 };
 
-/** Title colors — dark text on bright tiles, light on dark ones */
+/** Title colors — white on all tiles for max readability */
 const ACCENT_COLORS: Record<string, string> = {
   jag_i_mig: '#FFFFFF',
-  jag_med_andra: '#FDF6E3',
-  jag_i_varlden: '#1A1A2E',
-  sexualitetskort: '#1A1A2E',
-  vardagskort: '#1A1A2E',
-  syskonkort: '#1A1A2E',
+  jag_med_andra: '#FFFFFF',
+  jag_i_varlden: '#FFFFFF',
+  sexualitetskort: '#FFFFFF',
+  vardagskort: '#FFFFFF',
+  syskonkort: '#FFFFFF',
 };
 
-/** Tagline colors — matched to title tone per tile */
+/** Tagline colors — white with slight transparency */
 const TAGLINE_COLORS: Record<string, string> = {
-  jag_i_mig: 'hsla(0, 0%, 100%, 0.80)',
-  jag_med_andra: 'hsla(0, 0%, 95%, 0.80)',
-  jag_i_varlden: 'hsla(0, 0%, 10%, 0.65)',
-  sexualitetskort: 'hsla(0, 0%, 10%, 0.65)',
-  vardagskort: 'hsla(0, 0%, 10%, 0.65)',
-  syskonkort: 'hsla(0, 0%, 10%, 0.65)',
+  jag_i_mig: 'hsla(0, 0%, 100%, 0.85)',
+  jag_med_andra: 'hsla(0, 0%, 100%, 0.85)',
+  jag_i_varlden: 'hsla(0, 0%, 100%, 0.85)',
+  sexualitetskort: 'hsla(0, 0%, 100%, 0.85)',
+  vardagskort: 'hsla(0, 0%, 100%, 0.85)',
+  syskonkort: 'hsla(0, 0%, 100%, 0.85)',
 };
 
 /** Tile height rhythm — alternating for visual breathing */
@@ -363,7 +363,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
             lineHeight: 1.15,
             color: accentColor || '#FDF6E3',
             letterSpacing: '-0.01em',
-            textShadow: `0 0 6px ${bgRgba(1)}, 0 0 12px ${bgRgba(1)}, 0 0 24px ${bgRgba(0.95)}, 0 0 48px ${bgRgba(0.8)}, 0 2px 4px ${bgRgba(1)}`,
+            textShadow: '0 1px 3px rgba(0,0,0,0.9), 0 0 8px rgba(0,0,0,0.7), 0 0 20px rgba(0,0,0,0.5), 0 0 40px rgba(0,0,0,0.3)',
           }}
         >
           {name}
@@ -378,7 +378,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
               opacity: 0.9,
               marginTop: '4px',
               lineHeight: 1.4,
-              textShadow: `0 0 6px ${bgRgba(1)}, 0 0 14px ${bgRgba(0.95)}, 0 0 28px ${bgRgba(0.8)}`,
+              textShadow: '0 1px 3px rgba(0,0,0,0.8), 0 0 8px rgba(0,0,0,0.6), 0 0 20px rgba(0,0,0,0.4)',
             }}
           >
             {tagline}
@@ -391,10 +391,10 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
               fontSize: '10px',
               fontWeight: 500,
               letterSpacing: '0.04em',
-              color: taglineColor || 'hsla(100, 40%, 80%, 0.50)',
+              color: 'hsla(0, 0%, 100%, 0.70)',
               opacity: 0.7,
               marginTop: '6px',
-              textShadow: `0 0 6px ${bgRgba(1)}, 0 0 14px ${bgRgba(0.95)}, 0 0 28px ${bgRgba(0.8)}`,
+              textShadow: '0 1px 3px rgba(0,0,0,0.8), 0 0 8px rgba(0,0,0,0.6), 0 0 20px rgba(0,0,0,0.4)',
             }}
           >
             ✦ Samtal 1 gratis{ageLabel ? ` · ${ageLabel}` : ''}
@@ -723,9 +723,10 @@ export default function ProductLibrary() {
                   fontVariationSettings: "'opsz' 24",
                   fontSize: '28px',
                   fontWeight: 700,
-                  color: '#1A1A2E',
+                  color: '#FFFFFF',
                   lineHeight: 1.15,
                   letterSpacing: '-0.01em',
+                  textShadow: '0 1px 3px rgba(0,0,0,0.9), 0 0 8px rgba(0,0,0,0.7), 0 0 20px rgba(0,0,0,0.5), 0 0 40px rgba(0,0,0,0.3)',
                 }}>
                   Still Us
                 </h3>
@@ -733,9 +734,10 @@ export default function ProductLibrary() {
                   fontFamily: "var(--font-body)",
                   fontSize: '15px',
                   fontWeight: 500,
-                  color: 'hsla(0, 0%, 10%, 0.65)',
+                  color: 'hsla(0, 0%, 100%, 0.85)',
                   marginTop: '4px',
                   lineHeight: 1.4,
+                  textShadow: '0 1px 3px rgba(0,0,0,0.8), 0 0 8px rgba(0,0,0,0.6), 0 0 20px rgba(0,0,0,0.4)',
                 }}>
                   22 samtalsövningar för er som vill stanna kvar
                 </p>
@@ -752,7 +754,7 @@ export default function ProductLibrary() {
                     fontSize: '10px',
                     fontWeight: 500,
                     letterSpacing: '0.04em',
-                    color: 'hsla(0, 0%, 10%, 0.50)',
+                    color: 'hsla(0, 0%, 100%, 0.60)',
                     background: 'hsla(0, 0%, 0%, 0.06)',
                     borderRadius: '12px',
                     padding: '3px 10px',
