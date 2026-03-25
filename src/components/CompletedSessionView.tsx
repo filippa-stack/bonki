@@ -14,6 +14,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpaceContext as useCoupleSpace } from '@/contexts/CoupleSpaceContext';
 import Header from '@/components/Header';
+import { useCardImage } from '@/hooks/useCardImage';
 import { BEAT_1, BEAT_2, BEAT_3, EASE, EMOTION } from '@/lib/motion';
 
 const STEP_LABELS = ['Kom igång', 'Gå djupare', 'Föreställ er', 'I verkligheten'];
