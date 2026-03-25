@@ -452,7 +452,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
             />
           )}
           {/* Multi-stop scrim: product color blend — skip for Vardag */}
-          {product.id !== 'vardagskort' && (
+          {product.id !== 'vardagskort' && product.id !== 'jag_i_mig' && (
             <div
               style={{
                 position: 'absolute',
