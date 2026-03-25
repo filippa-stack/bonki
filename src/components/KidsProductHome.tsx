@@ -261,29 +261,19 @@ function CategoryTile({
       )}
 
 
-      {/* Gradient shield for text readability */}
+      {/* Text overlay — frosted glass strip, no gradient over illustration */}
       <div
         style={{
           position: 'absolute',
           bottom: 0,
           left: 0,
           right: 0,
-          height: squareTile ? '70%' : '75%',
-          background: `linear-gradient(to top, rgba(${shieldRgb}, 0.95) 0%, rgba(${shieldRgb}, 0.80) 35%, rgba(${shieldRgb}, 0.40) 60%, transparent 100%)`,
-          pointerEvents: 'none',
-          zIndex: 2,
-        }}
-      />
-
-      {/* Text overlay */}
-      <div
-        style={{
-          position: 'absolute',
-          bottom: 0,
-          left: 0,
-          right: 0,
-          padding: squareTile ? '14px 16px' : '14px 16px',
+          padding: squareTile ? '10px 14px' : '12px 16px',
           zIndex: 3,
+          background: `rgba(${shieldRgb}, 0.55)`,
+          backdropFilter: 'blur(12px)',
+          WebkitBackdropFilter: 'blur(12px)',
+          borderRadius: squareTile ? '0 0 38px 38px' : '0 0 22px 22px',
         }}
       >
         <span
@@ -295,7 +285,7 @@ function CategoryTile({
             color: '#FFFFFF',
             lineHeight: 1.2,
             display: 'block',
-            textShadow: `0 2px 8px rgba(0,0,0,0.8), 0 0 20px rgba(${shieldRgb}, 0.9)`,
+            textShadow: '0 1px 4px rgba(0,0,0,0.5)',
           }}
         >
           {cat.title}
