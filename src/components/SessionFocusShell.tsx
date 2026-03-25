@@ -79,7 +79,7 @@ export default function SessionFocusShell({
         position: 'fixed',
         inset: 0,
         zIndex: 10,
-        backgroundColor: EMBER_NIGHT,
+        backgroundColor: '#4B759B',
         display: 'flex',
         flexDirection: 'column',
         overflow: 'hidden',
