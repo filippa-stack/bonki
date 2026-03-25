@@ -2701,182 +2701,190 @@ export default function CardView() {
             }} />
           </div>
 
-          {/* ── Content area ── */}
+          {/* ── Content area — illustration bg + white question card ── */}
           <div style={{
             flex: '1 1 auto',
             display: 'flex',
             flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
             position: 'relative',
             overflow: 'hidden',
+            padding: '12px 16px',
           }}>
-            {/* Creature companion — 48px circle */}
+            {/* Illustration background — behind the white card */}
             {cardImageUrl && (
-              <div style={{
-                position: 'absolute',
-                top: '16px',
-                left: '16px',
-                width: '48px',
-                height: '48px',
-                borderRadius: '50%',
-                overflow: 'hidden',
-                boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-                zIndex: 2,
-                flexShrink: 0,
-              }}>
-                <img
-                  src={cardImageUrl}
-                  alt=""
-                  draggable={false}
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
-                  }}
-                />
-              </div>
+              <img
+                src={cardImageUrl}
+                alt=""
+                draggable={false}
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'contain',
+                  objectPosition: '50% 40%',
+                  opacity: 0.45,
+                  pointerEvents: 'none',
+                  zIndex: 0,
+                }}
+              />
             )}
 
-            {/* Question text — centered and dominant */}
+            {/* White question card */}
             <div style={{
+              position: 'relative',
+              zIndex: 1,
+              width: '100%',
+              maxWidth: '520px',
               flex: '1 1 auto',
               display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: '80px 24px 0',
-              position: 'relative',
+              flexDirection: 'column',
+              backgroundColor: '#FAF7F2',
+              borderRadius: '24px',
+              padding: '24px',
+              boxShadow: '0 8px 32px rgba(0,0,0,0.15)',
+              minHeight: 0,
+              overflow: 'hidden',
             }}>
-              <AnimatePresence mode="wait">
-                <motion.p
-                  key={`kids-q-${localPromptIndex}`}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.15, ease: [0.22, 1, 0.36, 1] }}
-                  className="font-serif"
-                  style={{
-                    fontSize: '24px',
-                    fontWeight: 600,
-                    color: LANTERN_GLOW,
-                    textAlign: 'center',
-                    lineHeight: 1.35,
-                    maxWidth: 'calc(100vw - 48px)',
-                    textWrap: 'balance',
-                    position: 'relative',
-                    zIndex: 1,
-                  }}
-                >
-                  {questionText}
-                </motion.p>
-              </AnimatePresence>
-            </div>
-
-            {/* Note nudge — near bottom of content area */}
-            <div style={{
-              flex: '0 0 auto',
-              padding: '0 24px',
-              marginBottom: '16px',
-            }}>
-              {!kidsNoteExpanded ? (
-                <button
-                  onClick={() => {
-                    setKidsNoteExpanded(true);
-                    kidsNoteInteractedRef.current = true;
-                    setTimeout(() => kidsNoteTextareaRef.current?.focus(), 150);
-                  }}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '6px',
-                    width: '100%',
-                    padding: '12px',
-                    background: 'none',
-                    border: 'none',
-                    cursor: 'pointer',
-                  }}
-                >
-                  <Pencil size={showFullNudge ? 14 : 12} style={{ color: DRIFTWOOD, opacity: 0.6 }} />
-                  {showFullNudge && (
-                    <span style={{
-                      fontFamily: 'var(--font-sans)',
-                      fontSize: '14px',
-                      fontWeight: 400,
-                      color: DRIFTWOOD,
-                    }}>
-                      Skriv vad ni vill minnas
-                    </span>
-                  )}
-                </button>
-              ) : (
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: 'auto' }}
-                  transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-                >
-                  <p style={{
-                    fontFamily: 'var(--font-serif)',
-                    fontSize: '12px',
-                    fontStyle: 'italic',
-                    color: DRIFTWOOD,
-                    textAlign: 'center',
-                    marginBottom: '8px',
-                  }}>
-                    Det ni skriver sparas i era samtal
-                  </p>
-                  <div style={{ position: 'relative' }}>
-                    <textarea
-                      ref={kidsNoteTextareaRef}
-                      value={kidsNoteLocalText}
-                      onChange={(e) => {
-                        setKidsNoteLocalText(e.target.value);
-                        kidsNoteSession.setText(e.target.value);
-                      }}
-                      placeholder="Skriv här…"
-                      autoCorrect="on"
-                      autoCapitalize="sentences"
-                      className="w-full resize-none focus:outline-none focus:ring-0"
-                      style={{
-                        minHeight: '72px',
-                        maxHeight: '120px',
-                        fontFamily: 'var(--font-serif)',
-                        fontSize: '15px',
-                        lineHeight: 1.6,
-                        color: BARK,
-                        backgroundColor: PARCHMENT,
-                        border: 'none',
-                        borderRadius: '12px',
-                        padding: '16px',
-                        overflow: 'auto',
-                      }}
-                    />
-                    <p style={{
-                      fontFamily: 'var(--font-sans)',
-                      fontSize: '11px',
-                      color: DRIFTWOOD,
-                      opacity: 0.45,
+              {/* Question text — centered */}
+              <div style={{
+                flex: '1 1 auto',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+                <AnimatePresence mode="wait">
+                  <motion.p
+                    key={`kids-q-${localPromptIndex}`}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.15, ease: [0.22, 1, 0.36, 1] }}
+                    className="font-serif"
+                    style={{
+                      fontSize: '24px',
+                      fontWeight: 600,
+                      color: BARK,
                       textAlign: 'center',
-                      marginTop: '8px',
+                      lineHeight: 1.35,
+                      maxWidth: 'calc(100vw - 80px)',
+                      textWrap: 'balance',
+                    }}
+                  >
+                    {questionText}
+                  </motion.p>
+                </AnimatePresence>
+              </div>
+
+              {/* Note nudge — inside the white card at bottom */}
+              <div style={{
+                flex: '0 0 auto',
+                marginTop: '16px',
+              }}>
+                {!kidsNoteExpanded ? (
+                  <button
+                    onClick={() => {
+                      setKidsNoteExpanded(true);
+                      kidsNoteInteractedRef.current = true;
+                      setTimeout(() => kidsNoteTextareaRef.current?.focus(), 150);
+                    }}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '6px',
+                      width: '100%',
+                      padding: '12px',
+                      background: 'none',
+                      border: 'none',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    <Pencil size={showFullNudge ? 14 : 12} style={{ color: '#6B5E52', opacity: 0.6 }} />
+                    {showFullNudge && (
+                      <span style={{
+                        fontFamily: 'var(--font-sans)',
+                        fontSize: '14px',
+                        fontWeight: 400,
+                        color: '#6B5E52',
+                      }}>
+                        Skriv vad ni vill minnas
+                      </span>
+                    )}
+                  </button>
+                ) : (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+                  >
+                    <p style={{
+                      fontFamily: 'var(--font-serif)',
+                      fontSize: '12px',
+                      fontStyle: 'italic',
+                      color: '#6B5E52',
+                      textAlign: 'center',
+                      marginBottom: '8px',
                     }}>
                       Det ni skriver sparas i era samtal
                     </p>
-                    <button
-                      onClick={() => setKidsNoteExpanded(false)}
-                      aria-label="Stäng anteckning"
-                      style={{
-                        position: 'absolute',
-                        top: '8px',
-                        right: '8px',
-                        background: 'none',
-                        border: 'none',
-                        cursor: 'pointer',
-                        padding: '4px',
-                      }}
-                    >
-                      <ChevronDown size={16} style={{ color: DRIFTWOOD, opacity: 0.5 }} />
-                    </button>
-                  </div>
-                </motion.div>
-              )}
+                    <div style={{ position: 'relative' }}>
+                      <textarea
+                        ref={kidsNoteTextareaRef}
+                        value={kidsNoteLocalText}
+                        onChange={(e) => {
+                          setKidsNoteLocalText(e.target.value);
+                          kidsNoteSession.setText(e.target.value);
+                        }}
+                        placeholder="Skriv här…"
+                        autoCorrect="on"
+                        autoCapitalize="sentences"
+                        className="w-full resize-none focus:outline-none focus:ring-0"
+                        style={{
+                          minHeight: '72px',
+                          maxHeight: '120px',
+                          fontFamily: 'var(--font-serif)',
+                          fontSize: '15px',
+                          lineHeight: 1.6,
+                          color: BARK,
+                          backgroundColor: PARCHMENT,
+                          border: 'none',
+                          borderRadius: '12px',
+                          padding: '16px',
+                          overflow: 'auto',
+                        }}
+                      />
+                      <p style={{
+                        fontFamily: 'var(--font-sans)',
+                        fontSize: '11px',
+                        color: '#6B5E52',
+                        opacity: 0.45,
+                        textAlign: 'center',
+                        marginTop: '8px',
+                      }}>
+                        Det ni skriver sparas i era samtal
+                      </p>
+                      <button
+                        onClick={() => setKidsNoteExpanded(false)}
+                        aria-label="Stäng anteckning"
+                        style={{
+                          position: 'absolute',
+                          top: '8px',
+                          right: '8px',
+                          background: 'none',
+                          border: 'none',
+                          cursor: 'pointer',
+                          padding: '4px',
+                        }}
+                      >
+                        <ChevronDown size={16} style={{ color: '#6B5E52', opacity: 0.5 }} />
+                      </button>
+                    </div>
+                  </motion.div>
+                )}
+              </div>
             </div>
           </div>
 
