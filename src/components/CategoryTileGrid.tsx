@@ -179,7 +179,7 @@ function CategoryTile({
             opacity: nameOpacity,
             lineHeight: 1.2,
             display: 'block',
-            textShadow: '0 1px 4px rgba(0,0,0,0.5)',
+            textShadow: '0 1px 3px rgba(0,0,0,0.9), 0 2px 8px rgba(0,0,0,0.7), 0 0 24px rgba(0,0,0,0.5)',
           }}
         >
           {cat.title}
