@@ -164,11 +164,11 @@ export const stillUsProduct: ProductManifest = {
   accentColor: 'hsl(215, 100%, 34%)',       // cobalt blue #0047AB
   accentColorMuted: 'hsl(215, 60%, 80%)',
   secondaryAccent: 'hsl(215, 70%, 18%)',   // deep navy tone
-  backgroundColor: '#0A1628',
-  ctaButtonColor: '#0047AB',
-  tileLight: '#0A1628',
-  tileMid: '#0D2E6B',
-  tileDeep: '#071020',
+  backgroundColor: '#4B759B',
+  ctaButtonColor: '#94BCE1',
+  tileLight: '#94BCE1',
+  tileMid: '#6F9CC5',
+  tileDeep: '#4B759B',
   pronounMode: 'ni',
   freeCardId: 'su-intro',
   paywallDescription: 'Fördjupa samtalet — vecka för vecka, lager för lager.',
