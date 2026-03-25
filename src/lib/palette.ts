@@ -19,9 +19,9 @@ export const DRIFTWOOD = '#6B5E52';
 export const GHOST_GLOW = '#D4F5C0';
 
 // ── Still Us tokens ──
-export const EMBER_NIGHT = '#0D1B2A';
-export const EMBER_MID = '#1B3A5C';
-export const EMBER_GLOW = '#D6E4F0';
+export const EMBER_NIGHT = '#0A1628';
+export const EMBER_MID = '#0D2E6B';
+export const EMBER_GLOW = '#D0DFEF';
 
 // ── Per-product tile colors ──
 export interface ProductTileColors {
@@ -62,8 +62,8 @@ export const productTileColors: Record<string, ProductTileColors> = {
     tileDeep: '#6E4A44',
   },
   still_us: {
-    tileLight: '#0D1B2A',
-    tileMid: '#1B3A5C',
-    tileDeep: '#0A1424',
+    tileLight: '#0A1628',
+    tileMid: '#0D2E6B',
+    tileDeep: '#071020',
   },
 };
