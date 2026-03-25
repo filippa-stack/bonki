@@ -399,7 +399,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
             {tagline}
           </p>
           )}
-          {/* Free badge marker */}
+          {/* Free badge marker with age label */}
           <p
             style={{
               fontFamily: "var(--font-body)",
@@ -412,7 +412,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
               textShadow: `0 0 10px ${bgRgba(0.8)}`,
             }}
           >
-            ✦ Samtal 1 gratis
+            ✦ Samtal 1 gratis{ageLabel ? ` · ${ageLabel}` : ''}
           </p>
         </div>
     </motion.div>
