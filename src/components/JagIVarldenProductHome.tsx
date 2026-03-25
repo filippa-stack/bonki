@@ -58,19 +58,19 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
           alt=""
           style={{
             position: 'absolute',
-            top: '-10vh',
-            right: '-15vw',
-            width: '140%',
-            height: '120%',
+            top: '0',
+            right: '-20vw',
+            width: '110%',
+            height: '100%',
             objectFit: 'cover',
-            objectPosition: '70% 20%',
+            objectPosition: '85% 15%',
           }}
         />
         {/* Left-side safe-zone gradient — solid BG fading to transparent */}
         <div style={{
           position: 'absolute',
           inset: 0,
-          background: `linear-gradient(to right, ${BG} 0%, ${BG}E0 20%, ${BG}80 45%, transparent 70%)`,
+          background: `linear-gradient(to right, ${BG} 0%, ${BG}F0 15%, ${BG}A0 30%, transparent 55%)`,
           pointerEvents: 'none',
         }} />
         {/* Top text-zone scrim */}
@@ -80,7 +80,7 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
           left: 0,
           right: 0,
           height: '35%',
-          background: `linear-gradient(to bottom, ${BG}D0 0%, ${BG}80 60%, transparent 100%)`,
+          background: `linear-gradient(to bottom, ${BG}B0 0%, ${BG}60 50%, transparent 100%)`,
           pointerEvents: 'none',
         }} />
       </motion.div>
