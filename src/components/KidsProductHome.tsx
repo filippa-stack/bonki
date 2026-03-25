@@ -254,29 +254,14 @@ function CategoryTile({
               objectFit: 'cover',
               objectPosition: style.objectPosition,
               opacity: style.opacity,
-              filter: squareTile
-                ? `saturate(1.35) brightness(1.2) drop-shadow(0 6px 16px rgba(0,0,0,0.5))`
-                : `saturate(1.2) brightness(1.1) drop-shadow(0 4px 12px rgba(0,0,0,0.4))`,
+              filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.10))',
             }}
           />
         </div>
       )}
 
-      {/* Chromatic inner glow — atmospheric warmth from product color */}
-      {(
-        <div
-          aria-hidden="true"
-          style={{
-            position: 'absolute',
-            inset: 0,
-            zIndex: 0,
-            pointerEvents: 'none',
-            background: `radial-gradient(ellipse 90% 80% at 50% 40%, ${chromaticGlow} 0%, transparent 70%)`,
-          }}
-        />
-      )}
 
-      {/* Gradient shield for text readability — dark obsidian base */}
+      {/* Gradient shield for text readability */}
       <div
         style={{
           position: 'absolute',
@@ -284,7 +269,7 @@ function CategoryTile({
           left: 0,
           right: 0,
           height: squareTile ? '60%' : '75%',
-          background: 'linear-gradient(to top, rgba(10, 6, 2, 0.88) 0%, rgba(10, 6, 2, 0.72) 25%, rgba(10, 6, 2, 0.35) 55%, transparent 100%)',
+          background: `linear-gradient(to top, rgba(${shieldRgb}, 0.85) 0%, rgba(${shieldRgb}, 0.60) 30%, rgba(${shieldRgb}, 0.25) 55%, transparent 100%)`,
           pointerEvents: 'none',
           zIndex: 2,
         }}
@@ -423,23 +408,6 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
         }}
       />
 
-      {/* ── Ghost glow — product-tinted atmospheric warmth behind title ── */}
-      {isVardag && (
-        <div
-          aria-hidden="true"
-          style={{
-            position: 'absolute',
-            top: '10vh',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            width: '120vw',
-            height: '300px',
-            background: 'radial-gradient(ellipse 55% 60% at 50% 40%, hsla(92, 40%, 60%, 0.14) 0%, hsla(92, 40%, 60%, 0.05) 50%, transparent 100%)',
-            pointerEvents: 'none',
-            zIndex: 0,
-          }}
-        />
-      )}
 
       {/* ── Hero illustration — large, atmospheric, bleeds off top ── */}
       {product.heroImage && (
@@ -466,7 +434,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
               height: '100%',
               objectFit: 'cover',
               objectPosition: HERO_OBJECT_POSITION[product.id] ?? '50% 55%',
-              filter: 'saturate(1.2) brightness(1.1)',
+              filter: 'none',
             }}
           />
           {/* Multi-stop scrim: product color blend — much lighter for Vardag */}
