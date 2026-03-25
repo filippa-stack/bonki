@@ -346,7 +346,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
   const progress = useKidsProductProgress(product);
   const tileImages = useFirstCardImages(product, progress);
 
-  const bg = product.tileLight ?? product.backgroundColor;
+  const bg = product.backgroundColor;
   const tileLight = product.tileLight ?? bg;
   const isSU = product.slug === 'still-us';
   
