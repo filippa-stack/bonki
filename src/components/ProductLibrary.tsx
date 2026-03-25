@@ -363,7 +363,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
             lineHeight: 1.15,
             color: accentColor || '#FDF6E3',
             letterSpacing: '-0.01em',
-            textShadow: `0 2px 8px ${bgRgba(1)}, 0 0 20px ${bgRgba(0.9)}, 0 0 40px ${bgRgba(0.5)}`,
+            textShadow: `0 0 6px ${bgRgba(1)}, 0 0 12px ${bgRgba(1)}, 0 0 24px ${bgRgba(0.95)}, 0 0 48px ${bgRgba(0.8)}, 0 2px 4px ${bgRgba(1)}`,
           }}
         >
           {name}
@@ -378,7 +378,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
               opacity: 0.9,
               marginTop: '4px',
               lineHeight: 1.4,
-              textShadow: `0 0 10px ${bgRgba(0.8)}`,
+              textShadow: `0 0 6px ${bgRgba(1)}, 0 0 14px ${bgRgba(0.95)}, 0 0 28px ${bgRgba(0.8)}`,
             }}
           >
             {tagline}
@@ -394,7 +394,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
               color: taglineColor || 'hsla(100, 40%, 80%, 0.50)',
               opacity: 0.7,
               marginTop: '6px',
-              textShadow: `0 0 10px ${bgRgba(0.8)}`,
+              textShadow: `0 0 6px ${bgRgba(1)}, 0 0 14px ${bgRgba(0.95)}, 0 0 28px ${bgRgba(0.8)}`,
             }}
           >
             ✦ Samtal 1 gratis{ageLabel ? ` · ${ageLabel}` : ''}
