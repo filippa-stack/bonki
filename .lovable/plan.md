@@ -1,54 +1,72 @@
 
 
-# Product Color & Illustration Opacity Update
+# Extend Hero Illustration Behind Tiles as Watermark
 
-## Summary
+## What changes
 
-Three changes: update product color assignments, use light color for home screen backgrounds, and remove all illustration dimming on tiles.
+Two surgical edits per product home screen: (1) increase hero container height so the illustration physically reaches behind the tile grid, and (2) soften the scrim gradient so a subtle watermark remains visible through the tiles.
 
-## 1. Update product data — new `tileLight` values
+## Current vs Target
 
-Two products have new light colors. Update in their data files:
+```text
+CURRENT                          TARGET (from mockups)
+┌─────────────────┐              ┌─────────────────┐
+│  illustration    │              │  illustration    │
+│  (65-75vh tall)  │              │  (100vh tall)    │
+│                  │              │                  │
+│▓▓▓▓ scrim ▓▓▓▓▓▓│ ← kills     │░░ soft scrim ░░░░│ ← fades but
+│████ solid bg ████│   image      │░░░░░░░░░░░░░░░░░│   ~6-8% remains
+│  [tile grid]     │              │  [tile grid]     │ ← watermark
+│████████████████ █│              │░░░░░░░░░░░░░░░░░│   visible here
+└─────────────────┘              └─────────────────┘
+```
 
-### `src/data/products/jag-i-mig.ts`
-- `tileLight`: `#CB7AB2` → `#27A69C`
-- Also update `ctaButtonColor` and `tileMid` to harmonize with the new teal
+## Changes per file
 
-### `src/data/products/jag-med-andra.ts`
-- `tileLight`: `#A62755` → `#CB7AB2`
-- Also update `ctaButtonColor` and `tileMid` to harmonize
+### `src/components/KidsProductHome.tsx` (shared home)
 
-All other products already have correct light/dark values.
+**Line 416** — hero container height:
+- `height: '65vh'` → `height: '100vh'`
 
-## 2. Home screen background = light color
+**Line 441** — scrim gradient (softer, lets ~6% through at bottom):
+```
+background: `linear-gradient(to top, ${bg}F0 0%, ${bg}E0 15%, ${bg}C0 35%, ${bg}80 55%, ${bg}40 70%, transparent 100%)`
+```
 
-### `src/components/KidsProductHome.tsx`
-- Change page background from `product.backgroundColor` (dark) to `product.tileLight` (light)
-- Line 349: `const bg = product.backgroundColor` → `const bg = product.tileLight ?? product.backgroundColor`
-- The scrim gradients and text shadows already reference `bg`, so they'll adapt automatically
+Per-product hero positioning stays exactly as-is:
 
-## 3. Portal, session & completion pages keep dark color
+| Product | top offset | objectPosition | container height |
+|---|---|---|---|
+| Jag i mig | `-14vh` | `50% 18%` | `100vh` (was 65vh) |
+| Jag med andra | `-12vh` | `50% 30%` | `100vh` |
+| Jag i världen | `-20vh` | `50% 35%` | `100vh` |
+| Vardag | `-14vh` | `50% 20%` | `100vh` |
+| Syskon | `-12vh` | `50% 25%` | `100vh` |
+| Sexualitet | `-10vh` | `50% 25%` | `100vh` |
+| Still us | `-8vh` | `50% 40%` | `100vh` |
 
-These already use `product.backgroundColor` — no changes needed:
-- `KidsCardPortal.tsx` page bg (line 229) — uses `product.backgroundColor` ✓
-- `CardView.tsx` session/completion screens — uses `product.backgroundColor` ✓
-- `CompletedSessionView.tsx` — uses `product.backgroundColor` ✓
+### Standalone product homes (same two-line pattern each)
 
-## 4. Full opacity on all tile illustrations
+**`JagIVarldenProductHome.tsx`** line 63:
+- `height: '75vh'` → `height: '100vh'`
+- Scrim: same softer gradient using `${BG}` variable
 
-### `src/components/KidsProductHome.tsx`
-- `TILE_ILLUSTRATION_STYLES` (lines 66-72): all `opacity: 0.38` → `1`
-- `SQUARE_TILE_ILLUSTRATION_STYLES` (lines 75-81): all `opacity: 0.38` → `1`
+**`JagMedAndraProductHome.tsx`** line 63:
+- `height: '65vh'` → `height: '100vh'`
+- Scrim: same softer gradient
 
-### `src/components/CategoryTileGrid.tsx`
-- `DEFAULT_TILE_CREATURE_STYLES` (lines 17-23): all opacity values → `1`
+**`VardagProductHome.tsx`** line 63:
+- `height: '70vh'` → `height: '100vh'`
+- Scrim: same softer gradient
 
-## Files touched
-1. `src/data/products/jag-i-mig.ts` — tileLight color
-2. `src/data/products/jag-med-andra.ts` — tileLight color
-3. `src/components/KidsProductHome.tsx` — bg source + tile opacity
-4. `src/components/CategoryTileGrid.tsx` — tile opacity
+**`SexualitetProductHome.tsx`** line 64:
+- `height: '65vh'` → `height: '100vh'`
+- Scrim: same softer gradient
+
+**`SyskonProductHome.tsx`** line 62:
+- `height: '70vh'` → `height: '100vh'`
+- Scrim: same softer gradient
 
 ## What stays the same
-All copy, links, CTAs, navigation, session logic, animations, portal structure.
+All top offsets, objectPosition values, side bleed (`left: -5vw, right: -5vw`), tile grid layout, colors, UX, navigation, animations, portal/session/completion pages.
 
