@@ -56,12 +56,12 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
         <div
           style={{
             position: 'absolute',
-            top: '39px',
-            left: '134px',
             right: 0,
             bottom: 0,
+            width: '268px',
+            height: '335px',
             backgroundImage: `url(${heroImage})`,
-            backgroundSize: 'cover',
+            backgroundSize: '268px 335px',
             backgroundPosition: 'right bottom',
             backgroundRepeat: 'no-repeat',
             opacity: 0.38,
