@@ -186,7 +186,7 @@ function CategoryTile({
         width: '100%',
         ...(fillHeight ? { height: '100%' } : squareTile ? { aspectRatio: wideSpan ? '5 / 4' : '2 / 3' } : { minHeight: compactHeight ? '120px' : '140px' }),
 
-        borderRadius: squareTile ? '28px' : '22px',
+        borderRadius: squareTile ? '38px' : '22px',
         cursor: isLocked ? 'default' : 'pointer',
         textAlign: 'left',
         backgroundColor: tileBg,
