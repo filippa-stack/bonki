@@ -659,12 +659,17 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
           animate="visible"
           style={{
             display: 'grid',
-            ...(useSquareGrid
+            ...(product.id === 'vardagskort'
               ? {
                   gridTemplateColumns: '1fr 1fr',
                   gap: '8px',
                 }
-              : { gridTemplateColumns: '1fr', gap: '12px' }),
+              : useSquareGrid
+                ? {
+                    gridTemplateColumns: '1fr 1fr',
+                    gap: '8px',
+                  }
+                : { gridTemplateColumns: '1fr', gap: '12px' }),
             width: '100%',
             marginBottom: '10vh',
           }}
@@ -689,13 +694,16 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
             // No lock — paid users get full access, numbering communicates order
             const isLocked = false;
 
-            const isLastOdd = useSquareGrid && product.categories.length % 2 === 1 && index === product.categories.length - 1;
+            // Vardag layout: first 2 tiles are square (2-col), remaining span full width
+            const isVardag = product.id === 'vardagskort';
+            const isVardagWide = isVardag && index >= 2;
+            const isLastOdd = !isVardag && useSquareGrid && product.categories.length % 2 === 1 && index === product.categories.length - 1;
 
             return (
            <div
                 key={cat.id}
                 style={{
-                  ...(isLastOdd ? { gridColumn: '1 / -1' } : {}),
+                  ...(isLastOdd || isVardagWide ? { gridColumn: '1 / -1' } : {}),
                   
                 }}
               >
@@ -712,7 +720,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
                   showLayerNumber={isSU}
                   compactHeight={false}
                   squareTile={useSquareGrid}
-                  wideSpan={isLastOdd}
+                  wideSpan={isLastOdd || isVardagWide}
                   fillHeight={false}
                 />
               </div>
