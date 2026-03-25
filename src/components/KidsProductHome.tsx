@@ -261,7 +261,7 @@ function CategoryTile({
       )}
 
 
-      {/* Text overlay — frosted glass strip, no gradient over illustration */}
+      {/* Text overlay — bold text shadow only, no overlay */}
       <div
         style={{
           position: 'absolute',
@@ -270,10 +270,6 @@ function CategoryTile({
           right: 0,
           padding: squareTile ? '10px 14px' : '12px 16px',
           zIndex: 3,
-          background: `rgba(${shieldRgb}, 0.55)`,
-          backdropFilter: 'blur(12px)',
-          WebkitBackdropFilter: 'blur(12px)',
-          borderRadius: squareTile ? '0 0 38px 38px' : '0 0 22px 22px',
         }}
       >
         <span
@@ -285,7 +281,7 @@ function CategoryTile({
             color: '#FFFFFF',
             lineHeight: 1.2,
             display: 'block',
-            textShadow: '0 1px 4px rgba(0,0,0,0.5)',
+            textShadow: '0 1px 3px rgba(0,0,0,0.9), 0 2px 8px rgba(0,0,0,0.7), 0 0 24px rgba(0,0,0,0.5)',
           }}
         >
           {cat.title}
