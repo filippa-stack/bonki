@@ -196,9 +196,10 @@ export default function KidsCardPortal() {
     [isLast, isFirst, goNext, goPrev],
   );
 
-  // Tile background color from product
-  const tileBg = product?.tileLight ?? MIDNIGHT_INK;
-  const tileBgRgb = hexToRgb(tileBg);
+  // Tile background colors from product
+  const tileLight = product?.tileLight ?? MIDNIGHT_INK;
+  const tileDark = product?.backgroundColor ?? MIDNIGHT_INK;
+  const tileBgRgb = hexToRgb(tileLight);
 
   // Slide animation variants (direction-aware)
   const slideVariants = {
@@ -352,7 +353,7 @@ export default function KidsCardPortal() {
                 borderRadius: portalPhase === 'phase2' || portalPhase === 'phase3' ? '0px' : '20px',
                 overflow: 'hidden',
                 cursor: 'pointer',
-                backgroundColor: tileBg,
+                backgroundColor: tileDark,
                 padding: '10px 10px 16px',
                 display: 'flex',
                 flexDirection: 'column',
@@ -389,7 +390,7 @@ export default function KidsCardPortal() {
                   borderRadius: '16px',
                   overflow: 'hidden',
                   position: 'relative',
-                  backgroundColor: tileBg,
+                  backgroundColor: tileLight,
                   minHeight: 0,
                 }}
               >
@@ -422,7 +423,7 @@ export default function KidsCardPortal() {
                       width: 20,
                       height: 20,
                       borderRadius: '50%',
-                      background: tileBg,
+                      background: tileDark,
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
@@ -442,7 +443,7 @@ export default function KidsCardPortal() {
                       width: 8,
                       height: 8,
                       borderRadius: '50%',
-                      background: tileBg,
+                      background: tileDark,
                       zIndex: 7,
                       boxShadow: '0 1px 4px rgba(0,0,0,0.3)',
                     }}
@@ -586,7 +587,7 @@ export default function KidsCardPortal() {
         cards={categoryCards}
         currentCardId={card.id}
         completedCardIds={completedSet}
-        tileLight={tileBg}
+        tileLight={tileLight}
         onSelectCard={goToIndex}
       />
     </div>
