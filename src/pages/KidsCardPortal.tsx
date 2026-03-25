@@ -233,19 +233,7 @@ export default function KidsCardPortal() {
         overflow: 'hidden',
       }}
     >
-      {/* Background radial glow */}
-      <div
-        style={{
-          position: 'absolute',
-          top: '-15%',
-          left: '-25%',
-          right: '-25%',
-          bottom: '30%',
-          background: `radial-gradient(ellipse at 50% 35%, rgba(${tileBgRgb}, 0.35) 0%, transparent 70%)`,
-          pointerEvents: 'none',
-          zIndex: 0,
-        }}
-      />
+      {/* Background — product color already fills viewport */}
 
       {/* ── Still Us: warm light flood overlay ── */}
       {isStillUs && (portalPhase === 'phase2' || portalPhase === 'phase3') && (
