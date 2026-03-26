@@ -38,13 +38,12 @@ const SHORT_INTROS: Record<string, string> = {
   vardagskort: 'Kort för alla de små sakerna som bygger en familj.',
   syskonkort: 'Frågor som hjälper er prata om det som finns mellan er.',
   sexualitetskort: 'Om kropp, samtycke, normer och identitet — utan att moralisera.',
-  still_us:
-    '22 veckor av samtal som bygger det som saknas i de flesta relationer — ett sätt att prata om det som är svårt, innan det blir för svårt.',
+  still_us: 'För par som fortfarande fungerar, men som märkt att något tystnat.',
 };
 
 /** Still Us–specific overrides */
-const STILL_US_FREE_CARD_LABEL = 'Vecka 1';
-const STILL_US_CTA = 'Börja vecka 1';
+const STILL_US_FREE_CARD_LABEL = 'Ert första samtal';
+const STILL_US_CTA = 'Börja med Ert första samtal';
 
 // ── Server-side "seen" helpers ──
 
