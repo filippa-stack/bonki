@@ -18,7 +18,9 @@ import { CIRCADIAN_COLORS, CIRCADIAN_COLORS_LIGHT, CIRCADIAN_FILLS, CIRCADIAN_FI
 import Header from '@/components/Header';
 import CardStatusBadge from '@/components/CardStatusBadge';
 import FreeCardBadge from '@/components/FreeCardBadge';
+import PaywallBottomSheet from '@/components/PaywallBottomSheet';
 import { KIDS_PRODUCT_IDS } from '@/hooks/useKidsProductProgress';
+import type { ProductManifest } from '@/types/product';
 
 import mirrorJagIMig from '@/assets/mirror-jag-i-mig.png';
 import stillUsIllustration from '@/assets/illustration-still-us-home.png';
@@ -112,6 +114,20 @@ export default function Category() {
     return allProducts.find(p => p.categories.some(c => c.id === categoryId));
   }, [categoryId]);
 
+  const { hasAccess: productIsPurchased } = useProductAccess(product?.id ?? '');
+  const [priceSek, setPriceSek] = useState<number | null>(null);
+  const [paywallCard, setPaywallCard] = useState<{ id: string; title: string } | null>(null);
+
+  useEffect(() => {
+    if (!product?.id) return;
+    supabase
+      .from('products')
+      .select('price_sek')
+      .eq('id', product.id)
+      .single()
+      .then(({ data }) => setPriceSek(data?.price_sek ?? 195));
+  }, [product?.id]);
+
   const isKidsProduct = !!product && KIDS_PRODUCT_IDS.includes(product.id);
 
   const isStillUsCategory = useMemo(() => {
@@ -189,6 +205,9 @@ export default function Category() {
         navigate={navigate}
         isReturningUser={completedCardIds.length >= 1}
         freeCardId={product?.freeCardId}
+        product={product}
+        productIsPurchased={productIsPurchased}
+        priceSek={priceSek}
       />
     );
   }
@@ -210,7 +229,13 @@ export default function Category() {
               <FreeCardBadge />
             )}
             <button
-              onClick={() => navigate(`/card/${card.id}`)}
+              onClick={() => {
+                if (product && card.id !== product.freeCardId && !productIsPurchased) {
+                  setPaywallCard({ id: card.id, title: card.title });
+                } else {
+                  navigate(`/card/${card.id}`);
+                }
+              }}
               className="w-full text-left rounded-xl p-5"
               style={{ backgroundColor: 'var(--tile-bg)' }}
             >
@@ -219,6 +244,29 @@ export default function Category() {
           </div>
         ))}
       </div>
+
+      {/* Paywall bottom sheet */}
+      {product && paywallCard && (
+        <PaywallBottomSheet
+          open={!!paywallCard}
+          onDismiss={() => setPaywallCard(null)}
+          product={product}
+          tappedCardName={paywallCard.title}
+          tappedCardId={paywallCard.id}
+          priceSek={priceSek}
+          freeCardCompleted={product.freeCardId ? completedCardIds.includes(product.freeCardId) : true}
+          onNavigateToFreeCard={product.freeCardId ? () => {
+            setPaywallCard(null);
+            const freeCard = product.cards.find(c => c.id === product.freeCardId);
+            const catId = freeCard?.categoryId;
+            if (catId) {
+              navigate(`/product/${product.slug}/portal/${catId}?card=${product.freeCardId}`);
+            } else {
+              navigate(`/card/${product.freeCardId}`);
+            }
+          } : undefined}
+        />
+      )}
     </div>
   );
 }
@@ -522,6 +570,9 @@ interface StillUsCategoryViewProps {
   navigate: (path: string) => void;
   isReturningUser?: boolean;
   freeCardId?: string;
+  product?: ProductManifest;
+  productIsPurchased?: boolean;
+  priceSek?: number | null;
 }
 
 function StillUsCategoryView({
@@ -534,8 +585,12 @@ function StillUsCategoryView({
   navigate,
   isReturningUser = false,
   freeCardId,
+  product,
+  productIsPurchased = true,
+  priceSek = null,
 }: StillUsCategoryViewProps) {
   const completedCount = cards.filter(c => completedCardIds.includes(c.id)).length;
+  const [paywallCard, setPaywallCard] = useState<{ id: string; title: string } | null>(null);
 
   return (
     <div className="min-h-screen relative overflow-hidden" style={{ backgroundColor: EMBER_NIGHT }}>
@@ -638,7 +693,13 @@ function StillUsCategoryView({
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.06, duration: 0.5, ease: EASE }}
               whileTap={{ scale: 0.97 }}
-              onClick={() => navigate(isReturningUser ? `/card/${card.id}` : `/preview/${card.id}`)}
+              onClick={() => {
+                if (product && card.id !== freeCardId && !productIsPurchased) {
+                  setPaywallCard({ id: card.id, title: card.title });
+                } else {
+                  navigate(isReturningUser ? `/card/${card.id}` : `/preview/${card.id}`);
+                }
+              }}
               style={{
                 position: 'relative',
                 overflow: 'hidden',
@@ -780,6 +841,28 @@ function StillUsCategoryView({
           </motion.div>
         );
       })()}
+      {/* Paywall bottom sheet */}
+      {product && paywallCard && (
+        <PaywallBottomSheet
+          open={!!paywallCard}
+          onDismiss={() => setPaywallCard(null)}
+          product={product}
+          tappedCardName={paywallCard.title}
+          tappedCardId={paywallCard.id}
+          priceSek={priceSek ?? null}
+          freeCardCompleted={freeCardId ? completedCardIds.includes(freeCardId) : true}
+          onNavigateToFreeCard={freeCardId ? () => {
+            setPaywallCard(null);
+            const freeCard = product.cards.find(c => c.id === freeCardId);
+            const catId = freeCard?.categoryId;
+            if (catId) {
+              navigate(`/product/${product.slug}/portal/${catId}?card=${freeCardId}`);
+            } else {
+              navigate(`/card/${freeCardId}`);
+            }
+          } : undefined}
+        />
+      )}
     </div>
   );
 }

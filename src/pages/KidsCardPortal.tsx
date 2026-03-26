@@ -10,6 +10,7 @@
 
 import { useState, useMemo, useCallback, useRef, useEffect } from 'react';
 import FreeCardBadge from '@/components/FreeCardBadge';
+import PaywallBottomSheet from '@/components/PaywallBottomSheet';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence, type PanInfo } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Check } from 'lucide-react';
@@ -17,6 +18,8 @@ import { allProducts } from '@/data/products';
 import { useKidsProductProgress } from '@/hooks/useKidsProductProgress';
 import { useCardImage } from '@/hooks/useCardImage';
 import { useProductTheme } from '@/hooks/useProductTheme';
+import { useProductAccess } from '@/hooks/useProductAccess';
+import { supabase } from '@/integrations/supabase/client';
 import PortalBrowseSheet from '@/components/PortalBrowseSheet';
 import {
   MIDNIGHT_INK,
@@ -114,6 +117,21 @@ export default function KidsCardPortal() {
 
   const isStillUs = productSlug === 'still-us';
 
+  const { hasAccess: productIsPurchased } = useProductAccess(product?.id ?? '');
+  const [priceSek, setPriceSek] = useState<number | null>(null);
+  const [paywallOpen, setPaywallOpen] = useState(false);
+
+  // Fetch price for paywall
+  useEffect(() => {
+    if (!product?.id) return;
+    supabase
+      .from('products')
+      .select('price_sek')
+      .eq('id', product.id)
+      .single()
+      .then(({ data }) => setPriceSek(data?.price_sek ?? 195));
+  }, [product?.id]);
+
   const promptCount = card ? getPromptCount(card) : 0;
   const isFirst = currentIndex <= 0;
   const isLast = currentIndex >= categoryCards.length - 1;
@@ -128,6 +146,13 @@ export default function KidsCardPortal() {
 
   const startSession = useCallback(() => {
     if (!card || navigating.current || portalPhase !== 'idle') return;
+
+    // Paywall intercept: non-free card + not purchased
+    if (product && card.id !== product.freeCardId && !productIsPurchased) {
+      setPaywallOpen(true);
+      return;
+    }
+
     navigating.current = true;
 
     if (isStillUs) {
@@ -157,7 +182,7 @@ export default function KidsCardPortal() {
         }, 500);
       }, 150);
     }
-  }, [navigate, card, portalPhase, isStillUs]);
+  }, [navigate, card, portalPhase, isStillUs, product, productIsPurchased]);
 
   const goToIndex = useCallback((index: number) => {
     setDirection(index > currentIndex ? 1 : -1);
@@ -637,6 +662,28 @@ export default function KidsCardPortal() {
         tileLight={tileLight}
         onSelectCard={goToIndex}
       />
+
+      {/* ═══ Paywall Bottom Sheet ═══ */}
+      {product && card && (
+        <PaywallBottomSheet
+          open={paywallOpen}
+          onDismiss={() => setPaywallOpen(false)}
+          product={product}
+          tappedCardName={card.title}
+          tappedCardId={card.id}
+          priceSek={priceSek}
+          freeCardCompleted={product.freeCardId ? completedSet.has(product.freeCardId) : true}
+          onNavigateToFreeCard={product.freeCardId ? () => {
+            const freeCard = product.cards.find(c => c.id === product.freeCardId);
+            const catId = freeCard?.categoryId;
+            if (catId) {
+              navigate(`/product/${product.slug}/portal/${catId}?card=${product.freeCardId}`);
+            } else {
+              navigate(`/card/${product.freeCardId}`);
+            }
+          } : undefined}
+        />
+      )}
     </div>
   );
 }
