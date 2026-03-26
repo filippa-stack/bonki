@@ -1,7 +1,7 @@
 import { Category, Card } from '@/types';
 
 /** Bump this whenever categories or cards change in this file */
-export const CONTENT_VERSION = 10;
+export const CONTENT_VERSION = 11;
 
 export const categories: Category[] = [
   {
@@ -37,7 +37,7 @@ export const categories: Category[] = [
     title: 'Arvet ni delar',
     entryLine: 'Arvet som formar ert hem.',
     description: 'Släkt, traditioner och förväntningar',
-    cardCount: 2,
+    cardCount: 1,
   },
   {
     id: 'category-9',
@@ -51,7 +51,7 @@ export const categories: Category[] = [
     title: 'Vad ni satsar på',
     entryLine: 'Gemensamma ramar och risker.',
     description: 'Risk, ekonomi och vad som är värt att satsa på',
-    cardCount: 2,
+    cardCount: 1,
   },
   {
     id: 'daily-life',
@@ -70,7 +70,7 @@ export const categories: Category[] = [
 ];
 
 export const cards: Card[] = [
-  // ── Card 0 · Grunden ─────────────────────────────────────
+  // ── Card 0 · Grunden ──────────────────────────────────
   {
     id: 'smallest-we',
     title: 'Ert minsta "vi"',
@@ -78,37 +78,20 @@ export const cards: Card[] = [
     categoryId: 'emotional-intimacy',
     sections: [
       {
-        id: 'opening-7a',
+        id: 'opening-smallest-we',
         type: 'opening',
-        title: 'Början',
-        content: 'Små saker som håller er nära.',
+        title: 'Frågor',
+        content: '',
         prompts: [
-          'Vad är det lilla mellan er som du skulle sakna mest — om det inte längre fanns?',
           'Vad är det som gör att ni känner er som ett par — bortom det praktiska ni delar?',
-        ],
-      },
-      {
-        id: 'reflective-7a',
-        type: 'reflective',
-        title: 'Fördjupning',
-        content: 'Stanna upp och känn efter.',
-        prompts: [
-          'Tänk på den senaste gången du kände att ni hade glidit isär lite — vad var det som fick dig att märka det?',
+          'Vad har ni börjat göra tillsammans det senaste året — om än något litet — som ni inte riktigt planerade?',
           'Förändras du mot din partner när ni inte haft tid för varandra — och i så fall, hur?',
-        ],
-      },
-      {
-        id: 'scenario-7a',
-        type: 'scenario',
-        title: 'I vardagen',
-        content: 'Allt fungerar. Men något som tidigare var självklart har blivit tyst.',
-        prompts: [
-          'Vilka är de tidiga tecknen, för dig, på att ni börjar glida isär — innan det är uppenbart?',
+          'Om något litet mellan er tyst försvann, vad tror du att du skulle märka först?',
         ],
       },
     ],
   },
-  // ── Card 1 · Grunden ─────────────────────────────────────
+  // ── Card 1 · Grunden ──────────────────────────────────
   {
     id: 'family-ab',
     title: 'När ert "vi" blir "Familjen AB"',
@@ -116,37 +99,20 @@ export const cards: Card[] = [
     categoryId: 'emotional-intimacy',
     sections: [
       {
-        id: 'opening-10',
+        id: 'opening-family-ab',
         type: 'opening',
-        title: 'Början',
-        content: 'När samarbete tar över känslan.',
+        title: 'Frågor',
+        content: '',
         prompts: [
-          'Finns det ett läge ni brukar ha tillsammans — eller brukade ha — som du saknar när vardagen tar över?',
-          'Vad behöver ni från varandra för att ett samtal ska bli mer än praktiskt?',
-        ],
-      },
-      {
-        id: 'reflective-10',
-        type: 'reflective',
-        title: 'Fördjupning',
-        content: 'Utforska gränsen mellan effektivitet och avstånd.',
-        prompts: [
-          'Finns det något mellan er som försvunnit så tyst att ni först nu tänker på det?',
+          'När ni väl sitter ner och pratar — hur snabbt hamnar ni i det praktiska?',
+          'Finns det en stämning ni brukar ha — eller brukade ha — mellan er, som du saknar när vardagen tar över?',
           'Vad är skillnaden för dig mellan att vara på samma ställe och att faktiskt vara med varandra?',
-        ],
-      },
-      {
-        id: 'scenario-10',
-        type: 'scenario',
-        title: 'I vardagen',
-        content: 'Ni löser vardagen smidigt. Samtalen handlar om tider, ansvar och barn.',
-        prompts: [
-          'Finns det något mellan er som har slutat leva — även om allt fortfarande fungerar?',
+          'Ni löser vardagen smidigt. Allt fungerar. Men samtalen handlar nästan bara om tider, ansvar och barn. Ingen längtar — men ingen klagar heller.\n\nVar går gränsen för när en relation som fungerar bra på det praktiska planet börjar kännas som att den går på tomgång?',
         ],
       },
     ],
   },
-  // ── Card 2 · Grunden ─────────────────────────────────────
+  // ── Card 2 · Grunden ──────────────────────────────────
   {
     id: 'identity-shift',
     title: 'Identitetsskiftet',
@@ -154,37 +120,20 @@ export const cards: Card[] = [
     categoryId: 'emotional-intimacy',
     sections: [
       {
-        id: 'opening-8a',
+        id: 'opening-identity-shift',
         type: 'opening',
-        title: 'Början',
-        content: 'Vem har du blivit — och vem saknar du?',
+        title: 'Frågor',
+        content: '',
         prompts: [
-          'Vad har hamnat i bakgrunden sedan du blev förälder — något du brukade göra, tänka på, eller vara?',
-          'Vad har du anpassat dig till sedan ni fick barn — något som till en början inte var ditt val?',
-        ],
-      },
-      {
-        id: 'reflective-8a',
-        type: 'reflective',
-        title: 'Fördjupning',
-        content: 'Utforska vad anpassningen kostar.',
-        prompts: [
-          'Tänk på något du anpassat dig till sedan ni fick barn. Känns det som att du valde det — eller som att det bara blev så?',
-          'När det är bra mellan er — är det lättare då att vara den du är utanför föräldraskapet?',
-        ],
-      },
-      {
-        id: 'scenario-8a',
-        type: 'scenario',
-        title: 'I vardagen',
-        content: 'Behov som hålls tillbaka för att vardagen ska fungera.',
-        prompts: [
-          'Välj en förändring sedan ni fick barn som du vet inte var ditt val. Hur känns det idag — har du gjort fred med den, eller skaver den fortfarande?',
+          'Vilken del av dig tar mindre plats sedan du blev förälder - något du brukade göra, tänka på eller vara?',
+          'Finns det något du anpassat dig till som faktiskt fungerar för dig?',
+          'Hur vet du när anpassningen till vardagen börjar kännas som att du ger upp något?',
+          'En av er håller tillbaka behov för att vardagen ska fungera.\n\nNär du tänker på hur du förändrats sedan ni fick barn — vilka förändringar känns som dina egna val, och vilka hände bara med dig?',
         ],
       },
     ],
   },
-  // ── Card 3 · Grunden ─────────────────────────────────────
+  // ── Card 3 · Normen ───────────────────────────────────
   {
     id: 'listening-presence',
     title: 'När dagen är slut',
@@ -192,37 +141,20 @@ export const cards: Card[] = [
     categoryId: 'communication',
     sections: [
       {
-        id: 'opening-1',
+        id: 'opening-listening-presence',
         type: 'opening',
-        title: 'Början',
-        content: 'De här frågorna öppnar samtalet varsamt.',
+        title: 'Frågor',
+        content: '',
         prompts: [
           'Vad behöver hända — eller sägas — innan du faktiskt kan sluta tänka på dagen?',
-          'Finns det ett ögonblick på kvällen när du faktiskt känner att dagen är klar — eller är det mer att den bara ebbar ut?',
-        ],
-      },
-      {
-        id: 'reflective-1',
-        type: 'reflective',
-        title: 'Fördjupning',
-        content: 'Ta er tid med de här.',
-        prompts: [
+          'Vad gör ni med tiden mellan barnens läggning och er egen — och hur bestäms det?',
           'Är det något du fortsätter att göra på kvällarna som egentligen inte behöver göras — men som känns fel att sluta med?',
-          'Tänk dig att du fortsätter med kvällssysslor och din partner redan har satt sig — vad tror du hen tänker om det?',
-        ],
-      },
-      {
-        id: 'scenario-1',
-        type: 'scenario',
-        title: 'I vardagen',
-        content: 'Efter läggning gör ni olika saker. Ingen säger något, men båda drar egna slutsatser.',
-        prompts: [
-          'Vad gör du — utan att säga det rakt ut — när du känner att kvällen är slut, men din partner inte verkar märka det?',
+          'Efter läggning gör ni olika saker. En fortsätter "lite till", den andra sätter sig. Ingen säger något, men båda drar egna slutsatser.\n\nHur signalerar du att kvällen är slut för dig — utan att säga det rakt ut?',
         ],
       },
     ],
   },
-  // ── Card 4 · Normen ──────────────────────────────────────
+  // ── Card 4 · Normen ───────────────────────────────────
   {
     id: 'conflict-repair',
     title: 'Rollerna ni tar (och får)',
@@ -230,37 +162,20 @@ export const cards: Card[] = [
     categoryId: 'communication',
     sections: [
       {
-        id: 'opening-3',
+        id: 'opening-conflict-repair',
         type: 'opening',
-        title: 'Början',
-        content: 'Roller formas ofta utan att ni väljer dem.',
+        title: 'Frågor',
+        content: '',
         prompts: [
-          'Finns det något hemma du vet att du gör bättre — men som du ibland önskar att du inte behövde vara bäst på?',
-          'Vilken roll i familjen skulle du vilja ha mer utrymme för — något du skulle vilja göra mer av, eller ta mer plats i?',
-        ],
-      },
-      {
-        id: 'reflective-3',
-        type: 'reflective',
-        title: 'Fördjupning',
-        content: 'De här frågorna utforskar mönster och historia.',
-        prompts: [
-          'Vilken roll hemma har du som du inte skulle vilja ge bort — men som du ibland önskar att du kunde dela?',
-          'Om du är den som oftast vet hur något ska göras hemma — vad händer med din partners vilja att ta initiativ?',
-        ],
-      },
-      {
-        id: 'scenario-3',
-        type: 'scenario',
-        title: 'I vardagen',
-        content: 'En uppgift har blivit "din". Den andra kliver undan. Med tiden blir skillnaden självklar.',
-        prompts: [
-          'En uppgift har tillhört dig så länge att den blivit en del av vem du är hemma. Vad skulle förändras mellan er om du släppte den?',
+          'Vilken roll hemma skulle du vilja ha mer utrymme för?',
+          'Vilka roller hemma har du hamnat i — utan att egentligen ha bestämt dig för dem?',
+          'Är det någon roll du har hemma som känns meningsfull — men som du också ibland känner att du sitter fast i?',
+          'En uppgift har blivit "din". Den andra kliver undan. Med tiden blir ansvaret ditt.\n\nNär en uppgift hemma har varit din tillräckligt länge — vad gör det med dig? Vad skulle förändras mellan er om du släppte den?',
         ],
       },
     ],
   },
-  // ── Card 5 · Normen ──────────────────────────────────────
+  // ── Card 5 · Normen ───────────────────────────────────
   {
     id: 'expressing-needs',
     title: 'Mitt sätt, ditt sätt',
@@ -268,37 +183,20 @@ export const cards: Card[] = [
     categoryId: 'communication',
     sections: [
       {
-        id: 'opening-2',
+        id: 'opening-expressing-needs',
         type: 'opening',
-        title: 'Början',
-        content: 'Börja där det känns naturligt.',
+        title: 'Frågor',
+        content: '',
         prompts: [
-          'När känns det som att ditt sätt att göra saker med barnen ifrågasätts?',
+          'I vilka situationer känner du dig mest trygg i ditt sätt att vara förälder?',
           'Tänk på ett tillfälle nyligen när ni hanterade något med barnen på väldigt olika sätt — hur kändes det för dig i stunden?',
-        ],
-      },
-      {
-        id: 'reflective-2',
-        type: 'reflective',
-        title: 'Fördjupning',
-        content: 'De här frågorna bjuder in till att titta inåt.',
-        prompts: [
-          'Tänk på ett tillfälle nyligen när du märkte att du förklarade dig mer än du ville — som om du behövde rättfärdiga ditt sätt att göra saker. Känner du igen det?',
-          'Händer det att din partners sätt att hantera saker får dig att tvivla på dina egna instinkter?',
-        ],
-      },
-      {
-        id: 'scenario-2',
-        type: 'scenario',
-        title: 'I vardagen',
-        content: 'Ni gör samma saker, men på olika sätt. Barnet börjar navigera mellan er.',
-        prompts: [
-          'När barnen märker att ni gör saker på olika sätt — vad händer mellan er i det ögonblicket?',
+          'Har du märkt att du ibland förklarar dig mer än du ville — som om du behövde rättfärdiga ditt sätt att göra saker?',
+          'Ni gör samma saker, men på olika sätt. Barnet märker och kommenterar skillnaderna.\n\nNär barnet märker att ni gör saker på olika sätt — vad tror du det lär sig om er?',
         ],
       },
     ],
   },
-  // ── Card 6 · Normen ──────────────────────────────────────
+  // ── Card 6 · Normen ───────────────────────────────────
   {
     id: 'facing-adversity',
     title: 'Att möta motgångar',
@@ -306,37 +204,20 @@ export const cards: Card[] = [
     categoryId: 'communication',
     sections: [
       {
-        id: 'opening-16',
+        id: 'opening-facing-adversity',
         type: 'opening',
-        title: 'Början',
-        content: 'Motgångar visar hur ni fungerar ihop.',
+        title: 'Frågor',
+        content: '',
         prompts: [
-          'När det är svårt — vad brukar du göra? Vill du prata om det, ta tag i det praktiska, eller behöver du utrymme först?',
-          'Vad gör faktiskt skillnad — från din partners sida — när du är mitt i något svårt?',
-        ],
-      },
-      {
-        id: 'reflective-16',
-        type: 'reflective',
-        title: 'Fördjupning',
-        content: 'Utforska era olika strategier.',
-        prompts: [
-          'Tänk på senaste gången din partner var stressad. Vad antog du — innan hen berättade vad som faktiskt pågick?',
-          'Behöver du din partner nära dig när du kämpar — eller fungerar ni bättre med lite avstånd innan ni kan mötas igen?',
-        ],
-      },
-      {
-        id: 'scenario-16',
-        type: 'scenario',
-        title: 'I vardagen',
-        content: 'Ni möter en svår period. Två impulser krockar: agera nu, eller vänta.',
-        prompts: [
-          'Ni har just fått svåra besked. En av er vill agera, den andra behöver stillhet. Vad säger ni till varandra — eller vad låter ni bli att säga?',
+          'När något känns svårt — vilken brukar vara din första reaktion, nästan utan att tänka?',
+          'När du är i något svårt, hur stöttar din partner dig - som faktiskt gör skillnad för dig?',
+          'Vad är det du behöver att din partner förstår om dig — som du inte brukar säga rakt ut — när du har det svårt?',
+          'Ni möter en svår period. En vill planera och agera, den andra behöver pausa och reflektera.\n\nVad händer mellan er i glappet — innan ni hittat ett gemensamt sätt att hantera det?',
         ],
       },
     ],
   },
-  // ── Card 7 · Normen ──────────────────────────────────────
+  // ── Card 7 · Normen ───────────────────────────────────
   {
     id: 'behind-the-scenes',
     title: 'Framför och bakom kulisserna',
@@ -344,37 +225,20 @@ export const cards: Card[] = [
     categoryId: 'category-8',
     sections: [
       {
-        id: 'opening-17',
+        id: 'opening-behind-the-scenes',
         type: 'opening',
-        title: 'Början',
-        content: 'Att vara på samma sida — vad innebär det egentligen?',
+        title: 'Frågor',
+        content: '',
         prompts: [
-          'Vad gör din partner — konkret — som får dig att känna att du inte behöver bära föräldraskapet ensam?',
-          'Efter ett ögonblick där ni hanterade något på olika sätt inför barnen — vad behöver du efteråt?',
-        ],
-      },
-      {
-        id: 'reflective-17',
-        type: 'reflective',
-        title: 'Fördjupning',
-        content: 'Utforska skillnaden mellan fasad och äkta enighet.',
-        prompts: [
-          'Är det skillnad för dig mellan att visa en enad front mot barnen och att faktiskt känna att ni är på samma lag?',
-          'Vad händer mellan er när ni faktiskt arbetar igenom en oenighet i efterhand — jämfört med när ni bara låter det passera?',
-        ],
-      },
-      {
-        id: 'scenario-17',
-        type: 'scenario',
-        title: 'I vardagen',
-        content: 'Efter en jobbig kväll tappar en av er tålamodet inför barnet. Den andra reagerar på det, men ni tar inte diskussionen där och då.',
-        prompts: [
-          'När en av er tappat tålamodet inför barnen — vad är det första som händer mellan er efteråt?',
+          'Vad brukar vara det första tecknet på att ni är okej igen — efter att något gått snett mellan er?',
+          'Vad gör det svårare för dig att ta första steget tillbaka — efter en dålig stund?',
+          'Vad är skillnaden för er mellan att låta något passera — och att faktiskt göra upp?',
+          'Efter en jobbig kväll tappar en av er tålamodet inför barnet. Den andra reagerar på det, men ni tar inte diskussionen där och då.\n\nNär en av er tappat tålamodet inför barnet — vad händer mellan er efteråt?',
         ],
       },
     ],
   },
-  // ── Card 8 · Normen ──────────────────────────────────────
+  // ── Card 8 · Normen ───────────────────────────────────
   {
     id: 'thoughtful-space',
     title: 'Omtänksamt utrymme',
@@ -382,37 +246,20 @@ export const cards: Card[] = [
     categoryId: 'category-8',
     sections: [
       {
-        id: 'opening-18',
+        id: 'opening-thoughtful-space',
         type: 'opening',
-        title: 'Början',
-        content: 'Utrymme kan vara kärlek — eller avstånd.',
-        prompts: [
-          'Vad brukar du göra — eller sluta göra — strax innan du når gränsen och behöver vara ifred?',
-          'Vad vill du egentligen ha från din partner när du drar dig undan — även om du inte säger det?',
-        ],
-      },
-      {
-        id: 'reflective-18',
-        type: 'reflective',
-        title: 'Fördjupning',
-        content: 'Utforska gränsen mellan omsorg och övergivande.',
-        prompts: [
-          'Är det skillnad för dig mellan att få utrymme för att din partner respekterar att du behöver det — och att bli lämnad ensam?',
-          'Tänk på senaste gången din partner drog sig undan. Visade det sig att hen ville ha närhet — eller att hen verkligen behövde vara ifred?',
-        ],
-      },
-      {
-        id: 'scenario-18',
-        type: 'scenario',
-        title: 'I vardagen',
+        title: 'Frågor',
         content: '',
         prompts: [
-          'Beskriv hur det känns i kroppen — i ögonblicket efter att en av er har dragit sig undan och dörren stängs.',
+          'Vad är det första du märker i dig — precis innan du är helt slut och behöver utrymme?',
+          'Vad vill du egentligen ha från din partner när du drar dig undan — även om du inte säger det?',
+          'Är det skillnad för dig mellan att få utrymme för att din partner respekterar att du behöver det — och att bli lämnad ensam?',
+          'En drar sig undan för att orka, den andra känner sig övergiven. Båda försöker skydda relationen.\n\nNär börjar utrymmet ni ger varandra bli ett avstånd — istället för en omsorg?',
         ],
       },
     ],
   },
-  // ── Card 9 · Konflikten ──────────────────────────────────
+  // ── Card 9 · Konflikten ───────────────────────────────
   {
     id: 'self-esteem-wavering',
     title: 'När självkänslan svajar',
@@ -420,37 +267,20 @@ export const cards: Card[] = [
     categoryId: 'category-8',
     sections: [
       {
-        id: 'opening-15',
+        id: 'opening-self-esteem-wavering',
         type: 'opening',
-        title: 'Början',
-        content: 'Självkänsla påverkar allt — även er.',
+        title: 'Frågor',
+        content: '',
         prompts: [
-          'När ditt självförtroende sviktar — tar din partner upp det, eller låter hen det passera?',
-          'När en av er går igenom en svårare period med självförtroendet — förändras sättet ni pratar med varandra på?',
-        ],
-      },
-      {
-        id: 'reflective-15',
-        type: 'reflective',
-        title: 'Fördjupning',
-        content: 'Utforska vad som döljs bakom fasaden.',
-        prompts: [
-          'Vad gör det lättare att hålla tyst om hur du mår i relationen?',
-          'Finns det något du bad om eller sa rakt ut förut — som du har slutat med?',
-        ],
-      },
-      {
-        id: 'scenario-15',
-        type: 'scenario',
-        title: 'I vardagen',
-        content: 'En motgång som gör att någon börjar ta mindre plats. Det märks inte i ord — men i ton, initiativ, och tystnad.',
-        prompts: [
-          'Din partner har börjat ta mindre plats — i samtalen, i besluten, i initiativet. Vad gör du med det du märker?',
+          'Hur märker du själv om ditt självförtroende skulle börja svikta — vad är det första som förändras?',
+          'När en av er går igenom en svårare period med självförtroendet — vad händer då mellan er?',
+          'Vad slutar du be om — eller ta plats med — när du inte känner dig trygg i dig själv?',
+          'En av er tar mindre plats än vanligt. Det sägs inte rakt ut, men det märks.\n\nVad behöver du från din partner i de perioderna — som du kanske inte ber om?',
         ],
       },
     ],
   },
-  // ── Card 10 · Konflikten ─────────────────────────────────
+  // ── Card 10 · Konflikten ──────────────────────────────
   {
     id: 'different-parenting-styles',
     title: 'Uppfostran ni ärvt',
@@ -458,37 +288,20 @@ export const cards: Card[] = [
     categoryId: 'parenting-together',
     sections: [
       {
-        id: 'opening-4',
+        id: 'opening-different-parenting-styles',
         type: 'opening',
-        title: 'Början',
-        content: 'Varje förälder bär med sig sin egen historia.',
+        title: 'Frågor',
+        content: '',
         prompts: [
-          'Har du någonsin reagerat på något med barnen och direkt tänkt — just så här skulle mina föräldrar ha gjort?',
-          'Vad från din egen uppväxt är du mest säker på att du vill föra vidare — även om ni ser det på olika sätt?',
-        ],
-      },
-      {
-        id: 'reflective-4',
-        type: 'reflective',
-        title: 'Fördjupning',
-        content: 'Fundera på rötterna till era reaktioner.',
-        prompts: [
-          'Tänk på en gång du reagerade starkare än situationen verkade kräva. När du tänker tillbaka — handlade det om det som hände, eller om något äldre?',
-          'Gör det lättare eller svårare mellan er — när en av er reagerar utifrån sin historia?',
-        ],
-      },
-      {
-        id: 'scenario-4',
-        type: 'scenario',
-        title: 'I vardagen',
-        content: 'En vardagssituation väcker starka reaktioner. Den ena reagerar på händelsen, den andra på känslan som väcks.',
-        prompts: [
-          'När ni reagerat olika på något med barnen — brukar ni kunna prata om det utan att det blir en tävling om vem som hade rätt?',
+          'Vad från din egen uppväxt är du mest säker på att du vill föra vidare?',
+          'Har du någonsin reagerat på något med barnet och direkt tänkt - just så här skulle mina föräldrar ha gjort?',
+          'Kan du skilja på om du reagerar på det som faktiskt händer — eller på något det påminner dig om?',
+          'En vardagssituation väcker starka reaktioner. Den ena reagerar på händelsen, den andra på känslan som väcks.\n\nHur pratar ni om en situation där ni reagerat helt olika — utan att det blir en fråga om vem som hade rätt?',
         ],
       },
     ],
   },
-  // ── Card 11 · Konflikten ─────────────────────────────────
+  // ── Card 11 · Konflikten ──────────────────────────────
   {
     id: 'parenting-boundaries',
     title: 'Att säga ifrån',
@@ -496,37 +309,20 @@ export const cards: Card[] = [
     categoryId: 'parenting-together',
     sections: [
       {
-        id: 'opening-6a',
+        id: 'opening-parenting-boundaries',
         type: 'opening',
-        title: 'Början',
-        content: 'Gränssättning berör ofta mer än det som syns.',
+        title: 'Frågor',
+        content: '',
         prompts: [
-          'Vilken typ av situation med barnen är du mest osäker på att ni hanterar gränssättningen bra i — och varför?',
+          'Efter att du satt en gräns med barnen — hur vet du om det landade rätt?',
           'Vad är det barnen gör som väcker den starkaste reaktionen i dig — den som ibland till och med överraskar dig själv?',
-        ],
-      },
-      {
-        id: 'reflective-6a',
-        type: 'reflective',
-        title: 'Fördjupning',
-        content: 'Utforska vad som driver era reaktioner.',
-        prompts: [
-          'Senaste gången du reagerade starkt på något barnen gjorde — handlade det mer om det du såg framför dig, eller om det du var rädd skulle hända sen?',
-          'Vad händer mellan er i stunden — medan barnet tittar på — när ni är oense om en gräns?',
-        ],
-      },
-      {
-        id: 'scenario-6a',
-        type: 'scenario',
-        title: 'I vardagen',
-        content: 'Ett beteende väcker olika impulser. Agera direkt — eller avvakta.',
-        prompts: [
-          'När en av er vill agera direkt och den andra vill avvakta — hur känns det i stunden?',
+          'Vad händer mellan er när ni inte är överens om hur hårt eller mjukt en gräns ska sättas?',
+          'Ett beteende väcker olika impulser. Den ena vill agera direkt, den andra vill avvakta.\n\nVad tror du att din partner försöker skydda - i de stunderna där ni agerar olika snabbt?',
         ],
       },
     ],
   },
-  // ── Card 12 · Konflikten ─────────────────────────────────
+  // ── Card 12 · Konflikten ──────────────────────────────
   {
     id: 'parenting-exhaustion',
     title: 'Mina, dina, era värderingar',
@@ -534,75 +330,20 @@ export const cards: Card[] = [
     categoryId: 'parenting-together',
     sections: [
       {
-        id: 'opening-5',
+        id: 'opening-parenting-exhaustion',
         type: 'opening',
-        title: 'Början',
-        content: 'Värderingar syns tydligast i vardagen.',
+        title: 'Frågor',
+        content: '',
         prompts: [
-          'Var i er vardag ser du det tydligaste glappet mellan vad ni säger att ni tror på — och hur ni faktiskt gör?',
-          'Tänk på ett ögonblick när det var tydligt att ni vardera försökte lära barnen något lite olika — vad hände?',
-        ],
-      },
-      {
-        id: 'reflective-5',
-        type: 'reflective',
-        title: 'Fördjupning',
-        content: 'De här frågorna bjuder in till ärlighet om era val.',
-        prompts: [
-          'Tänk på ett ögonblick nyligen när du agerade på ett sätt som inte riktigt stämde med vad du faktiskt tror på — vad var det?',
-          'Gör relationen det lättare eller svårare att leva som du egentligen vill?',
-        ],
-      },
-      {
-        id: 'scenario-5',
-        type: 'scenario',
-        title: 'I vardagen',
-        content: 'Barnet beter sig respektlöst. Gränsen sätts — men det som följer handlar mer om tonen och ordvalet än om barnet.',
-        prompts: [
-          'Tänk på senaste gången ni reagerade olika i ett spänt ögonblick med barnen. Vad försökte du skydda?',
+          'Vad hoppas du att barnen lär sig av att se hur ni är mot varandra?',
+          'Vilken värdering är viktigast för dig i teorin — men svårast att faktiskt följa hemma?',
+          'Gör er relation det lättare eller svårare att leva som du egentligen vill?',
+          'Barnet beter sig respektlöst. En markerar direkt mot barnet. Den andra reagerar mer på hur gränsen sätts: ton, ordval eller situation.\n\nNär ni reagerar olika i ett spänt ögonblick med barnet - vad försökte du skydda?',
         ],
       },
     ],
   },
-  // ── Card 13 · Konflikten ─────────────────────────────────
-  {
-    id: 'family-voices',
-    title: 'Röster från släkten',
-    subtitle: 'Släktens påverkan och er samhörighet',
-    categoryId: 'individual-needs',
-    sections: [
-      {
-        id: 'opening-11',
-        type: 'opening',
-        title: 'Början',
-        content: 'Släktens röster bär både värme och vikt.',
-        prompts: [
-          'Är det skillnad för dig mellan att familjen är engagerad och att familjen är i vägen?',
-          'När har ni skilt er åt i hur ni hanterar familjen — och vad fick det för konsekvenser för er?',
-        ],
-      },
-      {
-        id: 'reflective-11',
-        type: 'reflective',
-        title: 'Fördjupning',
-        content: 'Utforska gränsen mellan stöd och påverkan.',
-        prompts: [
-          'När ni väljer olika sida i en fråga som rör släkten — hanterar ni det som ett lag eller som två individer?',
-          'Hur har det påverkat er som par att anpassa er till familjens förväntningar — och har det någonsin fungerat till er fördel?',
-        ],
-      },
-      {
-        id: 'scenario-11',
-        type: 'scenario',
-        title: 'I vardagen',
-        content: 'En släkting ifrågasätter er inför barnet. Det som sårar mest är inte orden, utan att ni inte är helt synkade i stunden.',
-        prompts: [
-          'När en släkting ifrågasätter er inför barnen och ni inte hunnit prata ihop er — hur hittar ni tillbaka till att stå enade?',
-        ],
-      },
-    ],
-  },
-  // ── Card 14 · Längtan ────────────────────────────────────
+  // ── Card 13 · Längtan ─────────────────────────────────
   {
     id: 'our-traditions',
     title: 'Mina, dina, era traditioner',
@@ -610,37 +351,20 @@ export const cards: Card[] = [
     categoryId: 'individual-needs',
     sections: [
       {
-        id: 'opening-12',
+        id: 'opening-our-traditions',
         type: 'opening',
-        title: 'Början',
-        content: 'Traditioner berättar vilka ni är.',
+        title: 'Frågor',
+        content: '',
         prompts: [
-          'Finns det en tradition från din partners bakgrund som du följer med i — utan att riktigt förstå varför den är viktig för hen?',
-          'Har ni skapat en tradition som är bara er — som inte kommer från någon av era familjer?',
-        ],
-      },
-      {
-        id: 'reflective-12',
-        type: 'reflective',
-        title: 'Fördjupning',
-        content: 'Vad behåller ni — och vad släpper ni?',
-        prompts: [
-          'Finns det en tradition ni följer som du känner att det är dags att göra till er egen — istället för att bara ärva den?',
-          'Har du någonsin behållit en tradition mer för din partners skull än för din egen — och vet hen om det?',
-        ],
-      },
-      {
-        id: 'scenario-12',
-        type: 'scenario',
-        title: 'I vardagen',
-        content: 'Traditioner är inte neutrala. De bär på vems värld som fick mest plats.',
-        prompts: [
-          'Vad har det kostat dig att låta en tradition som inte är din ta plats — och har du någonsin sagt det högt?',
+          'Finns det något ni gör nu som familj, som började i en av era uppväxter - men som nu känns som ert eget?',
+          'Har ni skapat något tillsammans - en vana, ett sätt att fira, ett återkommande ögonblick — som inte fanns i någon av era familjer innan?',
+          'Vilka förväntningar på hur ett hem ska fungera har ni ärvt var för sig — men aldrig riktigt pratat igenom som era gemensamma?',
+          'Barnet frågar varför ni gör saker på ett visst sätt. Ni märker att svaret inte är "för att vi valt det" — utan "för att det alltid varit så".\nVad vill ni att svaret ska vara - när barnet frågar varför er familj gör som ni gör?',
         ],
       },
     ],
   },
-  // ── Card 15 · Längtan ────────────────────────────────────
+  // ── Card 14 · Längtan ─────────────────────────────────
   {
     id: 'our-philosophy',
     title: 'Er filosofi',
@@ -648,37 +372,20 @@ export const cards: Card[] = [
     categoryId: 'category-9',
     sections: [
       {
-        id: 'opening-19',
+        id: 'opening-our-philosophy',
         type: 'opening',
-        title: 'Början',
-        content: 'Värderingar testas i vardagen.',
+        title: 'Frågor',
+        content: '',
         prompts: [
-          'I vilka sammanhang är det svårast att faktiskt leva som du tror på — särskilt inför barnen?',
-          'Vilken värdering är den första som glider — när det blir stressigt?',
-        ],
-      },
-      {
-        id: 'reflective-19',
-        type: 'reflective',
-        title: 'Fördjupning',
-        content: 'Utforska vad ni verkligen prioriterar.',
-        prompts: [
-          'När du agerat på ett sätt som inte stämmer med vad du tror på — brukar du ta upp det med din partner, eller håller du det för dig själv?',
-          'Tänk på en gång din partner kompromissade med något du vet är viktigt för hen. Påverkade det hur du såg på hen — eller kände du likadant?',
-        ],
-      },
-      {
-        id: 'scenario-19',
-        type: 'scenario',
-        title: 'I vardagen',
-        content: 'Barnet gör upprepade val som går emot era värderingar. Frustrationen växer.',
-        prompts: [
-          'Vad händer mellan er när frustrationen gör att en av er agerar på ett sätt som den andra inte kan stå bakom?',
+          'Finns det något ni hanterade tillsammans nyligen där du efteråt tänkte — ja, det där var vi, som vi vill vara?',
+          'Vilken av dina värderingar är du mest benägen att låta glida när vardagen pressar?',
+          'Är det viktigare för er att vara konsekventa eller att kunna anpassa er?',
+          'Vardagen har pressat er länge. Ni märker att ni börjat ta genvägar - i tonen mot varandra, i tålamodet, i det ni tidigare aldrig hade accepterat. Ingen av er valde det. Det bara hände.\n— Hur tar ni er tillbaka till det ni egentligen vill stå för när ni märker att ni glidit?',
         ],
       },
     ],
   },
-  // ── Card 16 · Längtan ────────────────────────────────────
+  // ── Card 15 · Längtan ─────────────────────────────────
   {
     id: 'when-life-tilts',
     title: 'När livet lutar',
@@ -686,37 +393,20 @@ export const cards: Card[] = [
     categoryId: 'category-9',
     sections: [
       {
-        id: 'opening-20',
+        id: 'opening-when-life-tilts',
         type: 'opening',
-        title: 'Början',
-        content: 'Drömmar kräver mod — av er båda.',
+        title: 'Frågor',
+        content: '',
         prompts: [
-          'Vad vill du för dig själv — något som inte bara är ditt att lösa, utan som också skulle påverka er som par?',
-          'Tänk på något du lagt åt sidan för relationens skull. Kändes det som ditt beslut — eller som att du inte hade något val?',
-        ],
-      },
-      {
-        id: 'reflective-20',
-        type: 'reflective',
-        title: 'Fördjupning',
-        content: 'Utforska gränsen mellan stöd och obalans.',
-        prompts: [
-          'Har det hänt att du stöttat din partners mål och i efterhand känt att det kostade för mycket? Vad var det som kostade mest?',
-          'Finns det något ni slutat prata om som ni brukade ta upp — utan att ni bestämde att sluta?',
-        ],
-      },
-      {
-        id: 'scenario-20',
-        type: 'scenario',
-        title: 'I vardagen',
-        content: 'Någon vill satsa på något som tar mycket energi. Balansen skiftar.',
-        prompts: [
-          'Vad har ni i efterhand önskat att ni pratat om — innan något stort tog fart?',
+          'Finns det något du drömmer om för egen del — som skulle förändra er vardag?',
+          'Hur känns det att stötta din partners dröm — när det kostar dig något?',
+          'När börjar stödet till din partner kosta mer än du klarar av?',
+          'En av er vill satsa helhjärtat på något som under en tid tar mycket energi. Den andra stöttar, men oroar sig för balansen.\n\nVad behöver finnas på plats mellan er för att den perioden ska stärka relationen — istället för att tära på den?',
         ],
       },
     ],
   },
-  // ── Card 17 · Längtan ────────────────────────────────────
+  // ── Card 16 · Längtan ─────────────────────────────────
   {
     id: 'worth-spending-on',
     title: 'Värt att spendera på',
@@ -724,75 +414,20 @@ export const cards: Card[] = [
     categoryId: 'category-6',
     sections: [
       {
-        id: 'opening-14',
+        id: 'opening-worth-spending-on',
         type: 'opening',
-        title: 'Början',
-        content: 'Vad är värt vad — och för vem?',
+        title: 'Frågor',
+        content: '',
         prompts: [
-          'Vad prioriterar du i familjen som din partner ibland tycker kostar för mycket — i tid, pengar eller energi?',
-          'Finns det något du vill spendera tid eller pengar på som du inte berättar för din partner — för att du vet att hen inte skulle förstå?',
-        ],
-      },
-      {
-        id: 'reflective-14',
-        type: 'reflective',
-        title: 'Fördjupning',
-        content: 'Utforska vad som driver era val.',
-        prompts: [
-          'Tänk på senaste gången du ville satsa på något och kände att din partner inte förstod varför det var viktigt. Vad gjorde det med dig?',
-          'Tänk på en prioritering du gick med på utan att riktigt förstå. Hur känns den idag?',
-        ],
-      },
-      {
-        id: 'scenario-14',
-        type: 'scenario',
-        title: 'I vardagen',
-        content: 'Ni står inför en satsning. Frågan om vad som är "värt det" väcker olika svar.',
-        prompts: [
-          'Tänk på den senaste satsningen ni var oense om. Vad gjorde den värd det för dig — eller vad fick dig att tveka?',
+          'Vad saknade du som barn som du nu vill ge dina egna barn?',
+          'Vad skulle ni vilja investera i som familj — som verkligen känns värt det?',
+          'Tänk på en satsning ni gjort som familj som kändes rätt — och en som i efterhand inte var värd det. Vad skilde dem åt?',
+          'Ni står inför en investering som kräver tid, pengar eller energi. Ni märker att ni har olika bilder av vad som är "värt det."\n\nNär ni inte är överens om en prioritering — vad behöver var och en av er veta för att kunna mötas? Trygghet, mening, eller något annat.',
         ],
       },
     ],
   },
-  // ── Card 18 · Valet ──────────────────────────────────────
-  {
-    id: 'risk-under-responsibility',
-    title: 'Risk under ansvar',
-    subtitle: 'Mod, trygghet och gemensamma ramar',
-    categoryId: 'category-6',
-    sections: [
-      {
-        id: 'opening-13',
-        type: 'opening',
-        title: 'Början',
-        content: 'Ekonomiska beslut berör mer än pengar.',
-        prompts: [
-          'Vad behöver finnas på plats för att du ska känna dig trygg med ett ekonomiskt beslut ni fattar tillsammans?',
-          'Vad tror du din partner faktiskt lär sig om dig av att se hur du hanterar osäkerhet?',
-        ],
-      },
-      {
-        id: 'reflective-13',
-        type: 'reflective',
-        title: 'Fördjupning',
-        content: 'Utforska gränsen mellan mod och ansvar.',
-        prompts: [
-          'Tänk på ett ekonomiskt beslut ni fattat. Skulle du kalla det modigt, ansvarsfullt — eller både och?',
-          'Tänk på senaste gången ni stod inför ett osäkert beslut. Kändes det tryggare att undvika risken — eller att veta att ni kunde hantera konsekvenserna?',
-        ],
-      },
-      {
-        id: 'scenario-13',
-        type: 'scenario',
-        title: 'I vardagen',
-        content: 'En av er vill starta eget eller studera vidare, vilket innebär lägre inkomster under en period.',
-        prompts: [
-          'Vilka är de tidiga tecknen för dig på att en risk håller på att tippa över — att bli för kostsam?',
-        ],
-      },
-    ],
-  },
-  // ── Card 19 · Valet ──────────────────────────────────────
+  // ── Card 17 · Valet ───────────────────────────────────
   {
     id: 'adrift',
     title: 'På drift',
@@ -800,75 +435,41 @@ export const cards: Card[] = [
     categoryId: 'daily-life',
     sections: [
       {
-        id: 'opening-21',
+        id: 'opening-adrift',
         type: 'opening',
-        title: 'Början',
-        content: 'Ibland märks förändringen inte förrän efteråt.',
+        title: 'Frågor',
+        content: '',
         prompts: [
-          'Har det hänt nyligen att ni var tillsammans men du ändå kände dig ensam?',
-          'När kände du senast att din partner valde dig — inte bara att du var där?',
-        ],
-      },
-      {
-        id: 'reflective-21',
-        type: 'reflective',
-        title: 'Fördjupning',
-        content: 'Utforska vad avstånd egentligen handlar om.',
-        prompts: [
+          'Har det hänt att ni varit tillsammans men du ändå känt dig ensam — och vad tror du det berodde på?',
+          'Vad är det första du brukar göra när du märker att avståndet mellan er har växt — säger du något, eller väntar du?',
           'Växer distansen mellan er mer efter bråk — eller tyst, under perioder när ingenting är fel?',
-          'Tänk på en period nyligen när det var avstånd mellan er. Tänkte du mer kritiskt om din partner då än du brukar?',
-        ],
-      },
-      {
-        id: 'scenario-21',
-        type: 'scenario',
-        title: 'I vardagen',
-        content: 'Ni bråkar sällan. Men ni skrattar inte heller som förr. Närhet skjuts upp till "sen".',
-        prompts: [
-          'Vad är det som gör att du börjar undra om det här är mer än en tyst period?',
+          'Ni bråkar sällan. Men ni skrattar inte heller som förr. Närhet skjuts upp till "sen".\n\nHur avgör ni om ni bara går igenom en tyst period — eller om något faktiskt håller på att förändras mellan er?',
         ],
       },
     ],
   },
-  // ── Card 20 · Valet ──────────────────────────────────────
+  // ── Card 18 · Valet ───────────────────────────────────
   {
     id: 'love-languages',
-    title: 'Kärleksspråk',
-    subtitle: 'Närhet och hur signaler uppfattas',
+    title: 'Att nå fram',
+    subtitle: 'Närhet och att nå fram till varandra',
     categoryId: 'daily-life',
     sections: [
       {
-        id: 'opening-9',
+        id: 'opening-love-languages',
         type: 'opening',
-        title: 'Början',
-        content: 'Närhet börjar med att förstå varandras språk.',
+        title: 'Frågor',
+        content: '',
         prompts: [
+          'Hur visar du att du vill vara nära — och tror du att din partner läser det rätt?',
           'Vilken liten sak gör din partner — eller skulle kunna göra — som får dig att känna dig genuint omhändertagen?',
-          'Märker du att din önskan om närhet vanligtvis når fram — eller missas den ibland?',
-        ],
-      },
-      {
-        id: 'reflective-9',
-        type: 'reflective',
-        title: 'Fördjupning',
-        content: 'Utforska hur ni läser varandra.',
-        prompts: [
-          'Vad gör din partner när hen vill vara nära dig — och vet hen att du förstår det?',
-          'När din partner säger "inte ikväll" — när känns det som ett avvisande, och när känns det som ärlighet?',
-        ],
-      },
-      {
-        id: 'scenario-9',
-        type: 'scenario',
-        title: 'I vardagen',
-        content: 'Trötthet och längtan krockar. Press och tolkningar smyger sig in — trots goda intentioner.',
-        prompts: [
-          'Hur skiljer ni hos er på ett "nej" till sex och ett "nej" till varandra?',
+          'Vad gör din partner som du ibland misstolkar — som egentligen är deras sätt att söka närhet?',
+          'Trötthet och längtan krockar. Den ena vill vara nära, den andra orkar inte. Trots goda intentioner smyger sig både press och tolkningar in.\n\nVad händer mellan er när "jag vill" möter "jag orkar inte"?',
         ],
       },
     ],
   },
-  // ── Card 21 · Valet ──────────────────────────────────────
+  // ── Card 19 · Valet ───────────────────────────────────
   {
     id: 'choosing-to-stay',
     title: 'Att fortsätta välja',
@@ -876,32 +477,15 @@ export const cards: Card[] = [
     categoryId: 'category-10',
     sections: [
       {
-        id: 'opening-22',
+        id: 'opening-choosing-to-stay',
         type: 'opening',
-        title: 'Början',
-        content: 'Att stanna är också ett val.',
+        title: 'Frågor',
+        content: '',
         prompts: [
-          'Det finns ögonblick när du vet att du kunde gå — och ändå stannar. Vad är det som håller dig kvar som du inte kan förklara?',
-          'Vad gör din partner som påminner dig om varför du är kvar?',
-        ],
-      },
-      {
-        id: 'reflective-22',
-        type: 'reflective',
-        title: 'Fördjupning',
-        content: 'Utforska skillnaden mellan att stanna och att välja.',
-        prompts: [
-          'Tänk på ett ögonblick nyligen när du kände att du aktivt valde att vara kvar. Vad var det som utlöste den känslan?',
-          'Hur märks det i er vardag att din partner har valt att stanna — inte i ord, utan i det hen gör?',
-        ],
-      },
-      {
-        id: 'scenario-22',
-        type: 'scenario',
-        title: 'I vardagen',
-        content: 'Relationen fungerar. Inget är trasigt. Men ni vet båda att man också kan gå.',
-        prompts: [
-          'Vad händer i dig när du påminner dig om att du inte stannar för att du måste — utan för att du vill?',
+          'Vad fick dig att välja din partner från början — och vad är det som får dig att välja igen idag?',
+          'Vad har förändrats i hur du ser på er relation sedan ni började med de här samtalen?',
+          'Hur ser det ut att välja relationen när det inte finns någon kris — utan att något tvingar fram ett val?',
+          'Relationen fungerar. Inget är trasigt. Men ibland finns en tyst insikt: att man kan lämna — även utan konflikt.\n\nVad gör den insikten med er — är det den som gör valet verkligt, eller är den skrämmande?',
         ],
       },
     ],
