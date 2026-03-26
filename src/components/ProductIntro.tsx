@@ -406,7 +406,7 @@ export default function ProductIntro({
                   fontWeight: 600,
                   letterSpacing: '1.5px',
                   textTransform: 'uppercase',
-                  color: DRIFTWOOD,
+                  color: LANTERN_GLOW,
                   marginBottom: '3px',
                 }}
               >
@@ -429,7 +429,7 @@ export default function ProductIntro({
                   style={{
                     fontFamily: 'var(--font-sans)',
                     fontSize: '13px',
-                    color: DRIFTWOOD,
+                    color: LANTERN_GLOW,
                     marginTop: '2px',
                   }}
                 >
