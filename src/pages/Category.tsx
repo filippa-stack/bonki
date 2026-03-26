@@ -693,7 +693,13 @@ function StillUsCategoryView({
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.06, duration: 0.5, ease: EASE }}
               whileTap={{ scale: 0.97 }}
-              onClick={() => navigate(isReturningUser ? `/card/${card.id}` : `/preview/${card.id}`)}
+              onClick={() => {
+                if (product && card.id !== freeCardId && !productIsPurchased) {
+                  setPaywallCard({ id: card.id, title: card.title });
+                } else {
+                  navigate(isReturningUser ? `/card/${card.id}` : `/preview/${card.id}`);
+                }
+              }}
               style={{
                 position: 'relative',
                 overflow: 'hidden',
@@ -835,6 +841,28 @@ function StillUsCategoryView({
           </motion.div>
         );
       })()}
+      {/* Paywall bottom sheet */}
+      {product && paywallCard && (
+        <PaywallBottomSheet
+          open={!!paywallCard}
+          onDismiss={() => setPaywallCard(null)}
+          product={product}
+          tappedCardName={paywallCard.title}
+          tappedCardId={paywallCard.id}
+          priceSek={priceSek ?? null}
+          freeCardCompleted={freeCardId ? completedCardIds.includes(freeCardId) : true}
+          onNavigateToFreeCard={freeCardId ? () => {
+            setPaywallCard(null);
+            const freeCard = product.cards.find(c => c.id === freeCardId);
+            const catId = freeCard?.categoryId;
+            if (catId) {
+              navigate(`/product/${product.slug}/portal/${catId}?card=${freeCardId}`);
+            } else {
+              navigate(`/card/${freeCardId}`);
+            }
+          } : undefined}
+        />
+      )}
     </div>
   );
 }
