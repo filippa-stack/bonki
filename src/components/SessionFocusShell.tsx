@@ -160,7 +160,7 @@ export default function SessionFocusShell({
           />
         )}
 
-        {/* White question card */}
+        {/* White question card — sizes to content */}
         <div
           style={{
             position: 'relative',
@@ -173,8 +173,8 @@ export default function SessionFocusShell({
             alignItems: 'center',
             justifyContent: 'center',
             backgroundColor: '#FAF7F2',
-            borderRadius: '38px',
-            padding: '32px 28px 24px',
+            borderRadius: '28px',
+            padding: '28px 24px 20px',
             boxShadow: '0 8px 32px rgba(0,0,0,0.15)',
             overflow: 'hidden',
           }}
