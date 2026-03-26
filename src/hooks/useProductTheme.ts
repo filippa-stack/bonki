@@ -38,13 +38,17 @@ export function useProductTheme(
       root.style.setProperty('--text-primary', 'hsl(38, 25%, 92%)');
       root.style.setProperty('--text-secondary', 'hsl(38, 15%, 65%)');
 
-      // Kids product enhancements
+      // Product-specific question colors
       if (pronounMode === 'du') {
+        // Kids: light tinted text for dark backgrounds
         const hue = p.split(',')[0]?.trim() ?? '215';
         root.style.setProperty('--kids-question-color', `hsl(${hue}, 20%, 88%)`);
         root.style.setProperty('--kids-counter-bg', `hsla(${p}, 0.15)`);
         root.style.setProperty('--kids-counter-color', `hsla(${p}, 0.85)`);
         root.style.setProperty('--kids-counter-border', `hsla(${p}, 0.25)`);
+      } else {
+        // Still Us (ni): questions render inside white card — use dark text
+        root.style.setProperty('--kids-question-color', 'hsl(20, 16%, 15%)');
       }
     }
 
