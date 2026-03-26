@@ -140,7 +140,7 @@ export default function Onboarding() {
           {...fadeUp(0.75)}
           style={{
             fontFamily: 'var(--font-sans)',
-            fontSize: '15px',
+            fontSize: '16px',
             color: '#FDF6E3',
             lineHeight: 1.55,
             opacity: 0.8,
