@@ -662,6 +662,28 @@ export default function KidsCardPortal() {
         tileLight={tileLight}
         onSelectCard={goToIndex}
       />
+
+      {/* ═══ Paywall Bottom Sheet ═══ */}
+      {product && card && (
+        <PaywallBottomSheet
+          open={paywallOpen}
+          onDismiss={() => setPaywallOpen(false)}
+          product={product}
+          tappedCardName={card.title}
+          tappedCardId={card.id}
+          priceSek={priceSek}
+          freeCardCompleted={product.freeCardId ? completedSet.has(product.freeCardId) : true}
+          onNavigateToFreeCard={product.freeCardId ? () => {
+            const freeCard = product.cards.find(c => c.id === product.freeCardId);
+            const catId = freeCard?.categoryId;
+            if (catId) {
+              navigate(`/product/${product.slug}/portal/${catId}?card=${product.freeCardId}`);
+            } else {
+              navigate(`/card/${product.freeCardId}`);
+            }
+          } : undefined}
+        />
+      )}
     </div>
   );
 }

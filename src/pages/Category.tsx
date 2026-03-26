@@ -18,6 +18,7 @@ import { CIRCADIAN_COLORS, CIRCADIAN_COLORS_LIGHT, CIRCADIAN_FILLS, CIRCADIAN_FI
 import Header from '@/components/Header';
 import CardStatusBadge from '@/components/CardStatusBadge';
 import FreeCardBadge from '@/components/FreeCardBadge';
+import PaywallBottomSheet from '@/components/PaywallBottomSheet';
 import { KIDS_PRODUCT_IDS } from '@/hooks/useKidsProductProgress';
 
 import mirrorJagIMig from '@/assets/mirror-jag-i-mig.png';
