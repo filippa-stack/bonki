@@ -993,7 +993,7 @@ export default function CardView() {
       secondaryAccent: 'hsl(41, 78%, 48%)',
       backgroundColor: '#FFFDF8',
       pronounMode: 'ni' as const,
-      freeCardId: 'su-intro',
+      freeCardId: 'su-mock-0',
       categories: [],
       cards: [],
     };
@@ -1383,11 +1383,11 @@ export default function CardView() {
                 textWrap: 'balance',
               }}
             >
-              {cardId === 'su-intro'
+              {cardId === 'su-mock-0'
                 ? 'Ert första samtal är klart. Nu börjar resan.'
                 : 'Varje samtal är ett val. Ni valde rätt.'}
             </h2>
-            {cardId === 'su-intro' && (
+            {cardId === 'su-mock-0' && (
               <p
                 className="font-sans"
                 style={{
@@ -1399,7 +1399,7 @@ export default function CardView() {
                   textWrap: 'balance',
                 }}
               >
-                Vi rekommenderar att börja med Vardagen — men ni väljer själva.
+                Det här var ert första steg. Nästa samtal väntar.
               </p>
             )}
           </motion.div>
@@ -1499,15 +1499,11 @@ export default function CardView() {
             className="max-w-md mx-auto flex flex-col items-center"
             style={{ paddingBottom: 'calc(72px + env(safe-area-inset-bottom, 0px))', marginTop: '48px' }}
           >
-            {cardId === 'su-intro' ? (
-              /* su-intro: unique CTA → first category portal or paywall */
+            {cardId === 'su-mock-0' ? (
+              /* su-mock-0: unique CTA → next card */
               <>
                 <button
-                  onClick={() => {
-                    // Check access — if no access, go to paywall
-                    const dest = '/product/still-us/portal/su-mock-vardagen';
-                    navigateWithFeedback(dest);
-                  }}
+                  onClick={() => navigateWithFeedback(postCompletionNav.destination)}
                   style={{
                     display: 'flex',
                     alignItems: 'center',
@@ -1526,7 +1522,7 @@ export default function CardView() {
                     cursor: 'pointer',
                   }}
                 >
-                  Fortsätt till Vardagen <ArrowRight size={16} style={{ opacity: 0.7 }} />
+                  Nästa samtal <ArrowRight size={16} style={{ opacity: 0.7 }} />
                 </button>
                 <button
                   onClick={() => navigateWithFeedback('/product/still-us')}
@@ -2349,18 +2345,6 @@ export default function CardView() {
   // ─────────────────────────────────────────────────────────────
   if (isStillUsFocusMode && currentSection) {
     const sectionPromptCount = getEffectivePromptCount(currentSection);
-    if (cardId === 'su-intro') {
-      console.log('[su-intro-debug]', {
-        sectionPromptCount,
-        localPromptIndex,
-        currentStepIndex,
-        effectiveStepsLength: effectiveSteps.length,
-        sectionType: currentSection?.type,
-        promptsLength: currentSection?.prompts?.length,
-        isLastPromptInStage: localPromptIndex >= sectionPromptCount - 1,
-        productId: product?.id,
-      });
-    }
     const isLastPromptInStage = localPromptIndex >= sectionPromptCount - 1;
     const isLastStage = currentStepIndex >= effectiveSteps.length - 1;
     const currentStageKey = effectiveSteps[currentStepIndex];

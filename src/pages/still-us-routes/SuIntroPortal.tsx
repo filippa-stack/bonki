@@ -15,11 +15,11 @@ const BG = COLORS.emberNight;
 
 export default function SuIntroPortal() {
   const navigate = useNavigate();
-  const imageSrc = useCardImage('su-intro');
+  const imageSrc = useCardImage('su-mock-0');
 
   const handleStart = () => {
     localStorage.setItem('bonki-last-active-product', 'still-us');
-    navigate('/card/su-intro');
+    navigate('/card/su-mock-0');
   };
 
   return (

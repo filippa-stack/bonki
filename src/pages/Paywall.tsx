@@ -143,7 +143,7 @@ export default function Paywall() {
           lineHeight: 1.6,
           marginBottom: '8px',
         }}>
-          Vad ni startade ikväll är en resa genom 20 samtal — ämnen som de flesta par aldrig tar upp. Inte för att de inte vill, utan för att de inte vet hur.
+          Vad ni startade ikväll är en resa genom 21 samtal — ämnen som de flesta par aldrig tar upp. Inte för att de inte vill, utan för att de inte vet hur.
         </p>
 
         <p style={{

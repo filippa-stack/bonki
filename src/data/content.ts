@@ -1,7 +1,7 @@
 import { Category, Card } from '@/types';
 
 /** Bump this whenever categories or cards change in this file */
-export const CONTENT_VERSION = 11;
+export const CONTENT_VERSION = 12;
 
 export const categories: Category[] = [
   {
@@ -70,7 +70,29 @@ export const categories: Category[] = [
 ];
 
 export const cards: Card[] = [
-  // ── Card 0 · Grunden ──────────────────────────────────
+  // ── Card 0 · Vardagen — Ert första samtal ──────────────────
+  {
+    id: 'first-conversation',
+    title: 'Ert första samtal',
+    subtitle: 'Ett första samtal — för att landa tillsammans.',
+    categoryId: 'su-mock-vardagen',
+    sections: [
+      {
+        id: 'opening-first-conversation',
+        type: 'opening',
+        title: 'Frågor',
+        content: '',
+        prompts: [
+          'Finns det något din partner gör — kanske utan att tänka på det — som alltid får dig att må lite bättre?',
+          'När kände du dig senast glad att det är just den här personen som sitter bredvid dig?',
+          'Finns det något du önskar att din partner visste om dig just nu — utan att du behövt säga det?',
+          'Hur ofta pratar ni om er — så här?',
+          'Vad skulle det betyda för er om ni hade de här samtalen — regelbundet?',
+        ],
+      },
+    ],
+  },
+  // ── Card 1 · Grunden ──────────────────────────────────
   {
     id: 'smallest-we',
     title: 'Ert minsta "vi"',
