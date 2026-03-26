@@ -498,8 +498,9 @@ export default function KidsCardPortal() {
               style={{
                 fontFamily: 'var(--font-sans)',
                 fontSize: '15px',
+                fontWeight: 600,
                 color: LANTERN_GLOW,
-                opacity: 0.7,
+                opacity: 0.85,
                 marginTop: '5px',
               }}
             >
