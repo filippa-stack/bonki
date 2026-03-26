@@ -1341,13 +1341,32 @@ export default function CardView() {
     return (
       <motion.div
         className="min-h-screen"
-        style={{ backgroundColor: EMBER_NIGHT }}
+        style={{ backgroundColor: EMBER_NIGHT, position: 'relative', overflow: 'hidden' }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
       >
+        {/* Background illustration — fills viewport */}
+        {cardImageUrl && (
+          <img
+            src={cardImageUrl}
+            alt=""
+            draggable={false}
+            style={{
+              position: 'fixed',
+              inset: '-20%',
+              width: '140%',
+              height: '140%',
+              objectFit: 'cover',
+              objectPosition: '50% 40%',
+              opacity: 0.5,
+              pointerEvents: 'none',
+              zIndex: 0,
+            }}
+          />
+        )}
         <Header title="" variant="immersive" />
-        <div className="px-6 pb-16 relative" style={{ paddingTop: '48px' }}>
+        <div className="px-6 pb-16 relative" style={{ paddingTop: '48px', position: 'relative', zIndex: 1 }}>
           {/* Back arrow */}
           <motion.div
             initial={{ opacity: 0 }}
