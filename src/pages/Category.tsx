@@ -17,6 +17,7 @@ import { useProductAccess } from '@/hooks/useProductAccess';
 import { CIRCADIAN_COLORS, CIRCADIAN_COLORS_LIGHT, CIRCADIAN_FILLS, CIRCADIAN_FILLS_HOVER } from '@/components/CircadianMenu';
 import Header from '@/components/Header';
 import CardStatusBadge from '@/components/CardStatusBadge';
+import FreeCardBadge from '@/components/FreeCardBadge';
 import { KIDS_PRODUCT_IDS } from '@/hooks/useKidsProductProgress';
 
 import mirrorJagIMig from '@/assets/mirror-jag-i-mig.png';
@@ -203,7 +204,10 @@ export default function Category() {
       <Header title={category?.title} showBack backTo={backTo} />
       <div className="px-5 pt-4 pb-24 flex flex-col relative z-[1]">
         {cards.map((card, index) => (
-          <div key={card.id} style={{ marginBottom: index === cards.length - 1 ? 0 : '16px' }}>
+          <div key={card.id} style={{ marginBottom: index === cards.length - 1 ? 0 : '16px', position: 'relative' }}>
+            {product?.freeCardId === card.id && !completedCardIds.includes(card.id) && (
+              <FreeCardBadge />
+            )}
             <button
               onClick={() => navigate(`/card/${card.id}`)}
               className="w-full text-left rounded-xl p-5"

@@ -9,6 +9,7 @@
  */
 
 import { useState, useMemo, useCallback, useRef, useEffect } from 'react';
+import FreeCardBadge from '@/components/FreeCardBadge';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence, type PanInfo } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Check } from 'lucide-react';
@@ -421,6 +422,10 @@ export default function KidsCardPortal() {
                   >
                     <Check size={12} strokeWidth={2.5} color={LANTERN_GLOW} />
                   </div>
+                )}
+                {/* GRATIS badge for free card */}
+                {product?.freeCardId === card.id && !completedSet.has(card.id) && (
+                  <FreeCardBadge />
                 )}
                 {!completedSet.has(card.id) && activeSet.has(card.id) && (
                   <div
