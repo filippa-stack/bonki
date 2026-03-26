@@ -55,7 +55,7 @@ export default function Onboarding() {
         }}
       >
         <img
-          src={illustrationHome}
+          src={bonkiLogo}
           alt=""
           aria-hidden
           style={{
