@@ -92,7 +92,7 @@ export default function BottomNav() {
       className="fixed bottom-0 left-0 right-0 z-40"
       style={{
         paddingBottom: 'env(safe-area-inset-bottom, 0px)',
-        background: 'transparent',
+        background: 'linear-gradient(to top, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.3) 60%, transparent 100%)',
         border: 'none',
         boxShadow: 'none',
       }}
@@ -102,7 +102,7 @@ export default function BottomNav() {
           {items.map((item) => {
             const active = item.match(pathname, search);
             const Icon = item.icon;
-            const color = active ? BONKI_ORANGE : DRIFTWOOD;
+            const color = active ? BONKI_ORANGE : '#FDF6E3';
 
             return (
               <motion.button

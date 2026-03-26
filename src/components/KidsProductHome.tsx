@@ -261,6 +261,21 @@ function CategoryTile({
       )}
 
 
+      {/* Bottom scrim for text readability */}
+      <div
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          height: '55%',
+          background: `linear-gradient(to top, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.25) 50%, transparent 100%)`,
+          borderRadius: 'inherit',
+          zIndex: 2,
+          pointerEvents: 'none',
+        }}
+      />
+
       {/* Text overlay — bold text shadow only, no overlay */}
       <div
         style={{
