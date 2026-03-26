@@ -172,30 +172,30 @@ export default function Onboarding() {
           }}
           style={{
             width: '100%',
-            padding: '18px 24px',
-            background: 'linear-gradient(135deg, hsla(40, 78%, 61%, 0.12) 0%, hsla(40, 70%, 50%, 0.06) 100%)',
+            height: '56px',
+            background: 'linear-gradient(135deg, hsla(40, 78%, 61%, 0.15) 0%, hsla(40, 70%, 50%, 0.08) 100%)',
             backdropFilter: 'blur(20px)',
             WebkitBackdropFilter: 'blur(20px)',
-            border: '1px solid hsla(40, 78%, 61%, 0.18)',
-            borderRadius: '16px',
+            border: '1px solid hsla(40, 78%, 61%, 0.22)',
+            borderRadius: '14px',
             cursor: 'pointer',
             textAlign: 'center',
             transition: 'all 200ms ease',
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.background = 'linear-gradient(135deg, hsla(40, 78%, 61%, 0.20) 0%, hsla(40, 70%, 50%, 0.10) 100%)';
+            e.currentTarget.style.background = 'linear-gradient(135deg, hsla(40, 78%, 61%, 0.22) 0%, hsla(40, 70%, 50%, 0.12) 100%)';
             e.currentTarget.style.borderColor = 'hsla(40, 78%, 61%, 0.30)';
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.background = 'linear-gradient(135deg, hsla(40, 78%, 61%, 0.12) 0%, hsla(40, 70%, 50%, 0.06) 100%)';
-            e.currentTarget.style.borderColor = 'hsla(40, 78%, 61%, 0.18)';
+            e.currentTarget.style.background = 'linear-gradient(135deg, hsla(40, 78%, 61%, 0.15) 0%, hsla(40, 70%, 50%, 0.08) 100%)';
+            e.currentTarget.style.borderColor = 'hsla(40, 78%, 61%, 0.22)';
           }}
         >
           <span
             style={{
               fontFamily: 'var(--font-display)',
-              fontSize: '1.05rem',
-              fontWeight: 400,
+              fontSize: '1.15rem',
+              fontWeight: 500,
               color: '#FDF6E3',
               letterSpacing: '-0.01em',
             }}
