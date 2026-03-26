@@ -54,7 +54,7 @@ export default function CardComplete({
   const [handoffReady, setHandoffReady] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const weekNumber = cardIndex + 1;
-  const gorExercise = getGorExercise(cardIndex);
+  const gorExercise = getGorExercise(cards[cardIndex]?.id ?? '');
 
   // 3-second safety delay for handoff
   useEffect(() => {
