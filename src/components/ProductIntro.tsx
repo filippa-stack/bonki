@@ -467,6 +467,32 @@ export default function ProductIntro({
             {ctaLabel}
           </button>
 
+          {/* Skip link — goes to product home without starting free card */}
+          <button
+            onClick={() => {
+              markProductIntroSeenServer(productId);
+              onComplete();
+            }}
+            style={{
+              display: 'block',
+              width: '100%',
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              fontFamily: 'var(--font-sans)',
+              fontSize: '14px',
+              color: `${LANTERN_GLOW}99`,
+              textAlign: 'center',
+              marginTop: '14px',
+              padding: '4px 0',
+              textDecoration: 'underline',
+              textDecorationColor: `${LANTERN_GLOW}40`,
+              textUnderlineOffset: '3px',
+            }}
+          >
+            Inte just nu
+          </button>
+
           {/* Sexualitet safety line */}
           {sexSafetyLine && (
             <p
