@@ -5,7 +5,7 @@ import heroImage from '@/assets/illustration-jag-i-varlden.png';
 const categories: Category[] = [
   { id: 'jiv-vem-ar-jag', title: 'Vem är jag', subtitle: 'Det som formar dig inifrån – identitet, roller och självbild.', description: 'Identitet, självkänsla, roller och bekräftelse', cardCount: 4 },
   { id: 'jiv-jag-och-andra', title: 'Jag & andra', subtitle: 'Hur vi pratar, bråkar och bryr oss om varandra.', description: 'Vänskap, kommunikation, medkänsla, konflikter och mobbning', cardCount: 5 },
-  { id: 'jiv-varlden-omkring-mig', title: 'Världen omkring mig', subtitle: 'Normer, press och frågor som påverkar oss alla.', description: 'Sociala medier, fördomar, prestation, hälsa och psykisk ohälsa', cardCount: 5 },
+  { id: 'jiv-varlden-omkring-mig', title: 'Världen runt mig', subtitle: 'Normer, press och frågor som påverkar oss alla.', description: 'Sociala medier, fördomar, prestation, hälsa och psykisk ohälsa', cardCount: 5 },
   { id: 'jiv-vad-tror-jag-pa', title: 'Vad tror jag på', subtitle: 'Värderingar, mening och det som är större än oss.', description: 'Kärlek, sexualitet, moral & etik, frihet, existens och aktivism', cardCount: 6 },
 ];
 
