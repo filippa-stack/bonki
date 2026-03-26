@@ -188,6 +188,7 @@ export default function Category() {
         backTo={backTo}
         navigate={navigate}
         isReturningUser={completedCardIds.length >= 1}
+        freeCardId={product?.freeCardId}
       />
     );
   }
