@@ -1,7 +1,7 @@
 /**
  * Still Us — Kids Architecture Product
  *
- * Maps the 20 Still Us cards into a ProductManifest using the 4 clinical
+ * Maps the 21 Still Us cards into a ProductManifest using the 4 clinical
  * layers as categories. This lets the existing kids infrastructure
  * (KidsProductHome → KidsCardPortal → CardView → CompletedSessionView)
  * render Still Us content for A/B comparison.
@@ -70,26 +70,6 @@ const cards: Card[] = CARD_SEQUENCE.map(buildMockCard).filter((c): c is Card => 
 
 // ── Intro card (freemium / ice-breaker) ─────────────────────
 
-const introCard: Card = {
-  id: 'su-intro',
-  title: 'Ert första samtal',
-  subtitle: 'Ett första samtal — för att landa tillsammans.',
-  categoryId: '__su-intro__',
-  sections: [
-    {
-      id: 'su-intro-opening',
-      type: 'opening',
-      title: 'Frågor',
-      content: '',
-      prompts: [
-        'Finns det något din partner gör — kanske utan att tänka på det — som alltid får dig att må lite bättre?',
-        'När kände du dig senast glad att det är just den här personen som sitter bredvid dig?',
-        'Finns det något du önskar att din partner visste om dig just nu — utan att du behövt säga det?',
-        'Vad skulle det betyda för er om ni hade de här samtalen regelbundet?',
-      ],
-    },
-  ],
-};
 
 // ── Manifest ────────────────────────────────────────────────
 
@@ -99,7 +79,7 @@ export const stillUsProduct: ProductManifest = {
   name: 'Still Us',
   slug: 'still-us',
   tagline: 'Vi finns kvar',
-  description: '20 samtal fördelade på fyra lager.',
+  description: '21 samtal fördelade på fyra lager.',
   headerTitle: 'Still Us',
   accentColor: 'hsl(215, 100%, 34%)',
   accentColorMuted: 'hsl(215, 60%, 80%)',
@@ -110,8 +90,8 @@ export const stillUsProduct: ProductManifest = {
   tileMid: '#6F9CC5',
   tileDeep: '#4B759B',
   pronounMode: 'ni',
-  freeCardId: 'su-intro',
+  freeCardId: 'su-mock-0',
   paywallDescription: 'Fördjupa samtalet — vecka för vecka, lager för lager.',
   categories,
-  cards: [introCard, ...cards],
+  cards: cards,
 };
