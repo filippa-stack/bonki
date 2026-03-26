@@ -53,6 +53,7 @@ import LockedReflectionDisplay from '@/components/LockedReflectionDisplay';
 import GorTillsammansOverlay, { hasSeenGorTillsammans } from '@/components/GorTillsammansOverlay';
 import IllustrationPeek from '@/components/IllustrationPeek';
 import { getGorExercise } from '@/data/gorExercises';
+import { cards } from '@/data/content';
 import { useVerdigrisTheme } from '@/components/VerdigrisAtmosphere';
 import { CIRCADIAN_COLORS, CIRCADIAN_COLORS_LIGHT } from '@/components/CircadianMenu';
 import { useDevState } from '@/contexts/DevStateContext';
