@@ -74,6 +74,8 @@ export default function BottomNav() {
   // Hide during active sessions (card sessions, Still Us sessions)
   // Show on /card/ when viewing archive or completed session
   const params = new URLSearchParams(search);
+  const isOnboarding = params.get('devState') === 'onboarding';
+  if (isOnboarding) return null;
   const isCardArchiveOrComplete = params.get('from') === 'archive' || params.get('view') === 'completed';
   if (pathname.startsWith('/card/') && !isCardArchiveOrComplete) return null;
   if (pathname.startsWith('/check-in/')) return null;
