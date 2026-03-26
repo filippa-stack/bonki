@@ -339,20 +339,6 @@ export default function ProductIntro({
               {signoffText}
             </p>
           )}
-          {isStillUs && (
-            <p
-              style={{
-                fontFamily: 'var(--font-serif)',
-                fontStyle: 'italic',
-                fontSize: '14px',
-                color: `${LANTERN_GLOW}E6`,
-                textAlign: 'center',
-                marginTop: '12px',
-              }}
-            >
-              Er första vecka väntar. Den är gratis.
-            </p>
-          )}
         </motion.div>
 
 
@@ -422,7 +408,7 @@ export default function ProductIntro({
                   lineHeight: 1.2,
                 }}
               >
-                {isStillUs ? 'Ert minsta "vi"' : resolvedFreeCardTitle}
+                {isStillUs ? 'Ert första samtal' : resolvedFreeCardTitle}
               </p>
               {!isStillUs && freeCardCategoryName && (
                 <p
