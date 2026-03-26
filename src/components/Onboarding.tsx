@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { useApp } from '@/contexts/AppContext';
 import { trackOnboardingEvent } from '@/lib/trackOnboarding';
-import illustrationHome from '@/assets/illustration-still-us-home.png';
+import bonkiLogo from '@/assets/bonki-logo.png';
 
 const EASE: [number, number, number, number] = [0.4, 0.0, 0.2, 1];
 
@@ -55,7 +55,7 @@ export default function Onboarding() {
         }}
       >
         <img
-          src={illustrationHome}
+          src={bonkiLogo}
           alt=""
           aria-hidden
           style={{
