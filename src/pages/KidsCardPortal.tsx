@@ -576,7 +576,7 @@ export default function KidsCardPortal() {
                 textAlign: 'center',
               }}
             >
-              {currentIndex + 1} av {categoryCards.length}
+              Samtal {currentIndex + 1} av {categoryCards.length}
             </span>
             <button
               onClick={goNext}
