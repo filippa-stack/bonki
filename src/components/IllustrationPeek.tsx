@@ -6,18 +6,20 @@ import { EASE } from '@/lib/motion';
 interface IllustrationPeekProps {
   imageUrl: string;
   cardTitle: string;
+  /** Product background color — used as overlay bg when expanded */
+  productBgColor?: string;
 }
 
 /**
  * Floating thumbnail bubble + fullscreen reveal overlay.
- * Shows during active sessions so children can peek at the illustration.
+ * Positioned top-right below header. Uses product bg color when expanded.
  */
-export default function IllustrationPeek({ imageUrl, cardTitle }: IllustrationPeekProps) {
+export default function IllustrationPeek({ imageUrl, cardTitle, productBgColor }: IllustrationPeekProps) {
   const [open, setOpen] = useState(false);
 
   return (
     <>
-      {/* ── Floating bubble ── */}
+      {/* ── Floating bubble — top-right, below header ── */}
       <motion.button
         onClick={() => setOpen(true)}
         initial={{ opacity: 0, scale: 0.8 }}
@@ -26,17 +28,17 @@ export default function IllustrationPeek({ imageUrl, cardTitle }: IllustrationPe
         aria-label={`Visa illustration: ${cardTitle}`}
         style={{
           position: 'fixed',
-          bottom: 'calc(72px + env(safe-area-inset-bottom, 0px))',
-          left: '20px',
+          top: 'calc(env(safe-area-inset-top, 0px) + 64px)',
+          right: '16px',
           zIndex: 40,
-          width: '52px',
-          height: '52px',
+          width: '48px',
+          height: '48px',
           borderRadius: '50%',
           overflow: 'hidden',
-          border: '2.5px solid var(--surface-raised)',
-          boxShadow: '0 4px 20px -4px hsla(30, 20%, 20%, 0.20), 0 8px 32px -8px hsla(30, 18%, 20%, 0.15)',
+          border: '2px solid hsla(0, 0%, 100%, 0.25)',
+          boxShadow: '0 4px 20px -4px hsla(0, 0%, 0%, 0.25)',
           cursor: 'pointer',
-          background: 'var(--surface-raised)',
+          background: productBgColor ?? 'var(--surface-raised)',
           padding: 0,
         }}
         whileTap={{ scale: 0.9 }}
@@ -67,8 +69,7 @@ export default function IllustrationPeek({ imageUrl, cardTitle }: IllustrationPe
               position: 'fixed',
               inset: 0,
               zIndex: 9998,
-              background: 'var(--surface-base, #FAF7F2)',
-              opacity: 0.96,
+              background: productBgColor ?? 'var(--surface-base, #FAF7F2)',
               backdropFilter: 'blur(16px)',
               WebkitBackdropFilter: 'blur(16px)',
               display: 'flex',
@@ -87,7 +88,7 @@ export default function IllustrationPeek({ imageUrl, cardTitle }: IllustrationPe
                 position: 'absolute',
                 top: 'calc(16px + env(safe-area-inset-top, 0px))',
                 right: '16px',
-                background: 'hsla(0, 0%, 50%, 0.12)',
+                background: 'hsla(0, 0%, 100%, 0.15)',
                 border: 'none',
                 borderRadius: '50%',
                 width: '36px',
@@ -98,7 +99,7 @@ export default function IllustrationPeek({ imageUrl, cardTitle }: IllustrationPe
                 cursor: 'pointer',
               }}
             >
-              <X size={18} strokeWidth={1.5} color="var(--text-tertiary, hsla(30, 20%, 20%, 0.7))" />
+              <X size={18} strokeWidth={1.5} color="hsla(0, 0%, 100%, 0.8)" />
             </button>
 
             {/* Illustration */}
@@ -130,7 +131,7 @@ export default function IllustrationPeek({ imageUrl, cardTitle }: IllustrationPe
                 fontFamily: 'var(--font-serif)',
                 fontSize: '18px',
                 fontWeight: 600,
-                color: 'var(--text-primary, hsla(30, 20%, 20%, 0.75))',
+                color: 'hsla(0, 0%, 100%, 0.85)',
                 marginTop: '20px',
                 textAlign: 'center',
               }}

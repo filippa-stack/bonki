@@ -2958,7 +2958,7 @@ export default function CardView() {
 
         {/* Floating illustration peek — kids products */}
         {cardImageUrl && card && (
-          <IllustrationPeek imageUrl={cardImageUrl} cardTitle={card.title} />
+          <IllustrationPeek imageUrl={cardImageUrl} cardTitle={card.title} productBgColor={product?.backgroundColor} />
         )}
       </>
     );
@@ -3002,7 +3002,7 @@ export default function CardView() {
 
       {/* Floating illustration peek — kids/family products only */}
       {!showStartScreen && cardImageUrl && card && product?.id !== 'still_us' && (isLive || devState === 'browse') && (
-        <IllustrationPeek imageUrl={cardImageUrl} cardTitle={card.title} />
+        <IllustrationPeek imageUrl={cardImageUrl} cardTitle={card.title} productBgColor={product?.backgroundColor} />
       )}
 
 
