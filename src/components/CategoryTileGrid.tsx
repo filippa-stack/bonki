@@ -152,6 +152,21 @@ function CategoryTile({
       )}
 
 
+      {/* Bottom scrim gradient for text readability */}
+      <div
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          height: '60%',
+          background: 'linear-gradient(to top, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.25) 50%, transparent 100%)',
+          borderRadius: 'inherit',
+          zIndex: 2,
+          pointerEvents: 'none',
+        }}
+      />
+
       {/* Text overlay (z-index 3) */}
       <div
         style={{
@@ -173,7 +188,7 @@ function CategoryTile({
             opacity: nameOpacity,
             lineHeight: 1.2,
             display: 'block',
-            textShadow: 'none',
+            textShadow: '0 1px 3px rgba(0,0,0,0.9), 0 2px 8px rgba(0,0,0,0.7)',
           }}
         >
           {cat.title}
@@ -187,7 +202,7 @@ function CategoryTile({
             lineHeight: 1.3,
             marginTop: '3px',
             display: 'block',
-            textShadow: 'none',
+            textShadow: '0 1px 3px rgba(0,0,0,0.8), 0 2px 6px rgba(0,0,0,0.5)',
           }}
         >
           {tile.sub}
