@@ -20,6 +20,7 @@ import CardStatusBadge from '@/components/CardStatusBadge';
 import FreeCardBadge from '@/components/FreeCardBadge';
 import PaywallBottomSheet from '@/components/PaywallBottomSheet';
 import { KIDS_PRODUCT_IDS } from '@/hooks/useKidsProductProgress';
+import type { ProductManifest } from '@/types/product';
 
 import mirrorJagIMig from '@/assets/mirror-jag-i-mig.png';
 import stillUsIllustration from '@/assets/illustration-still-us-home.png';
