@@ -2955,6 +2955,11 @@ export default function CardView() {
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
+
+        {/* Floating illustration peek — kids products */}
+        {cardImageUrl && card && (
+          <IllustrationPeek imageUrl={cardImageUrl} cardTitle={card.title} />
+        )}
       </>
     );
   }
