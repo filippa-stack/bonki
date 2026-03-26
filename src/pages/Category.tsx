@@ -569,6 +569,9 @@ interface StillUsCategoryViewProps {
   navigate: (path: string) => void;
   isReturningUser?: boolean;
   freeCardId?: string;
+  product?: ProductManifest;
+  productIsPurchased?: boolean;
+  priceSek?: number | null;
 }
 
 function StillUsCategoryView({
@@ -581,8 +584,12 @@ function StillUsCategoryView({
   navigate,
   isReturningUser = false,
   freeCardId,
+  product,
+  productIsPurchased = true,
+  priceSek = null,
 }: StillUsCategoryViewProps) {
   const completedCount = cards.filter(c => completedCardIds.includes(c.id)).length;
+  const [paywallCard, setPaywallCard] = useState<{ id: string; title: string } | null>(null);
 
   return (
     <div className="min-h-screen relative overflow-hidden" style={{ backgroundColor: EMBER_NIGHT }}>
