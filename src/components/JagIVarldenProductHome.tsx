@@ -57,7 +57,7 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
           style={{
             position: 'absolute',
           width: '110%',
-          top: '15%',
+          top: '35%',
           right: '-30%',
           backgroundImage: `url(${heroImage})`,
           backgroundSize: 'contain',
