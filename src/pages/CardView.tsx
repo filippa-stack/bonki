@@ -2731,7 +2731,7 @@ export default function CardView() {
               />
             )}
 
-            {/* White question card */}
+            {/* White question card — sizes to content */}
             <div style={{
               position: 'relative',
               zIndex: 1,
@@ -2741,8 +2741,8 @@ export default function CardView() {
               display: 'flex',
               flexDirection: 'column',
               backgroundColor: '#FAF7F2',
-              borderRadius: '38px',
-              padding: '48px 28px 28px',
+              borderRadius: '28px',
+              padding: '28px 24px 20px',
               boxShadow: '0 8px 32px rgba(0,0,0,0.15)',
               overflow: 'hidden',
             }}>
