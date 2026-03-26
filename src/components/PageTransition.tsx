@@ -26,7 +26,7 @@ const PageTransition = forwardRef<HTMLDivElement, PageTransitionProps>(
           duration: isCardRoute ? 0.35 : 0.22,
           ease: isCardRoute ? [0.22, 1, 0.36, 1] : 'easeInOut',
         }}
-        style={{ width: '100%', minHeight: '100%' }}
+        style={{ width: '100%', minHeight: '100dvh' }}
         className={className}
       >
         {children}
