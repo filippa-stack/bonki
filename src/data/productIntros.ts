@@ -41,8 +41,8 @@ export const productIntros: Record<string, ProductIntroData> = {
     slides: [
       {
         heading: 'Välkommen till\nJag i Mig',
-        body: 'Det här är ett samtal mellan dig och ditt barn om vem hen är - just nu, idag.\n\nInte den version som skyndar sig till skolan på morgonen. Inte den som svarar "bra" på hur var din dag. Utan den riktiga. Den som har en favoritkänsla, en hemlig rädsla, en dröm som ingen frågat om än.\n\nFrågorna här inne är enkla. Ditt enda jobb är att lyssna - inte rätta, inte förklara. Ditt barn vet mer om sig själv än du tror. De behöver bara bli frågade.',
-        signoff: 'Välj ett kort. Hitta en lugn stund. Och låt samtalet ta er dit det vill.',
+        body: 'Det här är ett samtal om vem ditt barn är — just nu, idag. Inte den som svarar "bra" på hur var din dag. Utan den riktiga. Den som har en favoritkänsla, en hemlig rädsla, en dröm som ingen frågat om än.\n\nFrågorna är enkla. Ditt enda jobb är att lyssna.',
+        signoff: 'Välj ett kort, hitta en lugn stund, och låt samtalet ta er dit det vill.',
       },
     ],
     ctaLabel: 'Sätt igång',

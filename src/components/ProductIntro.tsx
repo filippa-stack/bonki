@@ -32,7 +32,7 @@ const PRODUCT_ILLUSTRATION: Record<string, string> = {
 
 /** One-sentence intro per product */
 const SHORT_INTROS: Record<string, string> = {
-  jag_i_mig: 'Kort som hjälper ert barn sätta ord på det som känns.',
+  jag_i_mig: 'Det här är ett samtal om vem ditt barn är — just nu, idag.',
   jag_med_andra: 'Frågor om det trygga och det svåra i att vara med andra.',
   jag_i_varlden: 'Världen vidgas — frågor om vem jag är och vart vi är på väg.',
   vardagskort: 'Kort för alla de små sakerna som bygger en familj.',
