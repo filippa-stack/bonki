@@ -166,8 +166,8 @@ function CategoryTile({
         <span
           style={{
             fontFamily: 'var(--font-display)',
-            fontVariationSettings: "'opsz' 17",
-            fontSize: '17px',
+            fontVariationSettings: "'opsz' 24",
+            fontSize: '24px',
             fontWeight: 600,
             color: LANTERN,
             opacity: nameOpacity,
