@@ -2715,7 +2715,7 @@ export default function CardView() {
             overflow: 'hidden',
             padding: '12px 16px',
           }}>
-            {/* Illustration background — behind the white card */}
+            {/* Illustration background — fills entire viewport behind the white card */}
             {cardImageUrl && (
               <img
                 src={cardImageUrl}
@@ -2723,11 +2723,11 @@ export default function CardView() {
                 draggable={false}
                 style={{
                   position: 'absolute',
-                  inset: '-10%',
-                  width: '120%',
-                  height: '120%',
-                  objectFit: 'contain',
-                  objectPosition: '50% 45%',
+                  inset: '-20%',
+                  width: '140%',
+                  height: '140%',
+                  objectFit: 'cover',
+                  objectPosition: '50% 40%',
                   opacity: 0.7,
                   pointerEvents: 'none',
                   zIndex: 0,
