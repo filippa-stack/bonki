@@ -196,7 +196,7 @@ export default function PaywallFullScreen() {
         </h1>
 
         {/* VALUE PROPOSITION BLOCK */}
-        <div style={{ marginTop: '32px', paddingLeft: '16px', paddingRight: '16px' }}>
+        <div style={{ marginTop: '32px', paddingLeft: '8px', paddingRight: '8px' }}>
           {[
             { text: valueLine, color: LANTERN_GLOW },
             { text: 'Utvecklad tillsammans med psykolog · 29 års klinisk erfarenhet', color: DRIFTWOOD },
