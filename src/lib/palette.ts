@@ -32,8 +32,8 @@ export interface ProductTileColors {
 
 export const productTileColors: Record<string, ProductTileColors> = {
   jag_i_mig: {
-    tileLight: '#CB7AB2',
-    tileMid: '#A85E94',
+    tileLight: '#27A69C',
+    tileMid: '#1D8A82',
     tileDeep: '#115D57',
   },
   jag_med_andra: {
