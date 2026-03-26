@@ -258,7 +258,7 @@ export default function PromptItem({ prompt, index, sectionType, preamble, ancho
         ) : (
           /* ── Default: centered question text with soft cushion ── */
           (() => {
-            const isLongText = prompt.text.length > 120 && sectionType === 'scenario';
+            const isLongText = prompt.text.length > 120;
             return (
               <motion.div
                 key={`question-${index}-${prompt.text.slice(0, 20)}`}
