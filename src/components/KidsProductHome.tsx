@@ -456,7 +456,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
               aria-hidden="true"
               style={{
                 position: 'absolute',
-                top: '-5%',
+                top: '15%',
                 right: '-30%',
                 width: '110%',
                 height: 'auto',
