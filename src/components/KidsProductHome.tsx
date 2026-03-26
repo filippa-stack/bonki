@@ -305,15 +305,15 @@ function CategoryTile({
         {total > 0 && (
           <div style={{ marginTop: '6px', display: 'flex', alignItems: 'center', gap: '8px' }}>
             <div style={{
-              width: '36px', height: '4px', borderRadius: '2px',
-              backgroundColor: 'rgba(255,255,255,0.18)',
+              width: '44px', height: '5px', borderRadius: '3px',
+              backgroundColor: 'rgba(255,255,255,0.25)',
               overflow: 'hidden',
               flexShrink: 0,
             }}>
               <div style={{
                 width: `${total > 0 ? (completed / total) * 100 : 0}%`,
                 height: '100%',
-                borderRadius: '2px',
+                borderRadius: '3px',
                 backgroundColor: SAFFRON_FLAME,
                 opacity: completed > 0 ? 1 : 0,
                 transition: 'width 0.4s ease',
