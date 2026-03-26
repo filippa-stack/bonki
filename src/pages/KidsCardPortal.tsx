@@ -535,31 +535,36 @@ export default function KidsCardPortal() {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            gap: '10px',
+            gap: '8px',
             marginTop: '8px',
-            paddingBottom: `calc(env(safe-area-inset-bottom, 0px) + 12px)`,
+            paddingBottom: `calc(env(safe-area-inset-bottom, 0px) + 72px)`,
             flexShrink: 0,
             opacity: portalPhase !== 'idle' ? 0 : 1,
             transition: 'opacity 200ms ease-in',
           }}
         >
           {/* Prev / Next arrows */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '32px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
             <button
               onClick={goPrev}
               disabled={isFirst}
               aria-label="Föregående samtal"
               style={{
-                background: 'none',
+                background: isFirst ? 'none' : `${LANTERN_GLOW}15`,
                 border: 'none',
+                borderRadius: '50%',
                 cursor: isFirst ? 'default' : 'pointer',
                 color: LANTERN_GLOW,
-                opacity: isFirst ? 0.2 : 0.7,
-                padding: '8px',
-                transition: 'opacity 200ms',
+                opacity: isFirst ? 0.2 : 0.8,
+                width: '40px',
+                height: '40px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                transition: 'opacity 200ms, background 200ms',
               }}
             >
-              <ChevronLeft size={24} strokeWidth={1.5} />
+              <ChevronLeft size={22} strokeWidth={2} />
             </button>
             <span
               style={{
@@ -567,6 +572,8 @@ export default function KidsCardPortal() {
                 fontSize: '15px',
                 color: LANTERN_GLOW,
                 opacity: 0.6,
+                minWidth: '48px',
+                textAlign: 'center',
               }}
             >
               {currentIndex + 1} av {categoryCards.length}
@@ -576,16 +583,21 @@ export default function KidsCardPortal() {
               disabled={isLast}
               aria-label="Nästa samtal"
               style={{
-                background: 'none',
+                background: isLast ? 'none' : `${LANTERN_GLOW}15`,
                 border: 'none',
+                borderRadius: '50%',
                 cursor: isLast ? 'default' : 'pointer',
                 color: LANTERN_GLOW,
-                opacity: isLast ? 0.2 : 0.7,
-                padding: '8px',
-                transition: 'opacity 200ms',
+                opacity: isLast ? 0.2 : 0.8,
+                width: '40px',
+                height: '40px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                transition: 'opacity 200ms, background 200ms',
               }}
             >
-              <ChevronRight size={24} strokeWidth={1.5} />
+              <ChevronRight size={22} strokeWidth={2} />
             </button>
           </div>
 
@@ -593,20 +605,18 @@ export default function KidsCardPortal() {
           <button
             onClick={() => setBrowseOpen(true)}
             style={{
-              background: `${LANTERN_GLOW}12`,
-              border: `1px solid ${LANTERN_GLOW}30`,
-              borderRadius: '16px',
+              background: `${LANTERN_GLOW}18`,
+              border: `1px solid ${LANTERN_GLOW}35`,
+              borderRadius: '20px',
               cursor: 'pointer',
               fontFamily: 'var(--font-sans)',
               fontSize: '15px',
               color: LANTERN_GLOW,
-              padding: '6px 20px',
-              opacity: 0.75,
-              textDecoration: 'underline',
-              textUnderlineOffset: '3px',
+              padding: '8px 22px',
+              opacity: 0.85,
             }}
           >
-            Utforska alla samtal
+            Utforska alla samtal ↓
           </button>
         </div>
       </div>
