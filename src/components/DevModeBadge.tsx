@@ -79,6 +79,14 @@ const PAGES = [
   { path: '/?devState=productIntro&product=vardagskort', label: '🎴 Intro: Vardagskort' },
   { path: '/?devState=productIntro&product=syskonkort', label: '🎴 Intro: Syskonkort' },
   { path: '/?devState=productIntro&product=sexualitetskort', label: '🎴 Intro: Sexualitetskort' },
+  // ── Paywall Full Screen ──
+  { path: '/paywall-full?product=still_us', label: '💳 Paywall: Still Us' },
+  { path: '/paywall-full?product=jag_i_mig', label: '💳 Paywall: Jag i Mig' },
+  { path: '/paywall-full?product=jag_med_andra', label: '💳 Paywall: Jag med Andra' },
+  { path: '/paywall-full?product=jag_i_varlden', label: '💳 Paywall: Jag i Världen' },
+  { path: '/paywall-full?product=vardagskort', label: '💳 Paywall: Vardagskort' },
+  { path: '/paywall-full?product=syskonkort', label: '💳 Paywall: Syskonkort' },
+  { path: '/paywall-full?product=sexualitetskort', label: '💳 Paywall: Sexualitetskort' },
   // ── Product Welcome Pages ──
   { path: '/product/still-us', label: '🏠 Still Us Home' },
   { path: '/product/jag-i-mig', label: '🏠 Jag i Mig Home' },
