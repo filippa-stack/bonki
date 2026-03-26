@@ -478,10 +478,10 @@ export default function KidsCardPortal() {
             {card.subtitle && (
               <p
                 style={{
-                  fontFamily: 'var(--font-serif)',
+                  fontFamily: 'var(--font-sans)',
                   fontSize: '15px',
+                  fontWeight: 500,
                   color: LANTERN_GLOW,
-                  opacity: 0.95,
                   lineHeight: 1.4,
                   margin: 0,
                   display: '-webkit-box',
