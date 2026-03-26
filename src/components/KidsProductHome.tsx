@@ -263,11 +263,11 @@ function CategoryTile({
               fontFamily: 'var(--font-sans)',
               fontSize: '13px',
               fontWeight: 600,
-              color: 'rgba(255,255,255,0.5)',
+              color: 'rgba(255,255,255,0.85)',
               lineHeight: 1,
               marginBottom: '4px',
               display: 'block',
-              textShadow: '0 1px 3px rgba(0,0,0,0.6)',
+              textShadow: '0 1px 3px rgba(0,0,0,0.9), 0 2px 6px rgba(0,0,0,0.5)',
               letterSpacing: '0.04em',
             }}
           >
