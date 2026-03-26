@@ -739,7 +739,7 @@ export default function ProductLibrary() {
                   lineHeight: 1.4,
                   textShadow: '0 1px 3px rgba(0,0,0,0.8), 0 0 8px rgba(0,0,0,0.6), 0 0 20px rgba(0,0,0,0.4)',
                 }}>
-                  20 samtalsövningar för er som vill stanna kvar
+                  21 samtalsövningar för er som vill stanna kvar
                 </p>
                 {/* Trust signal badges */}
                 <div style={{

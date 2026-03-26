@@ -571,7 +571,7 @@ function ActionCard({
 
   const handleRestart = async () => {
     const confirmed = window.confirm(
-      'Vill ni verkligen börja om hela resan? Alla 20 veckor börjar från början.'
+      'Vill ni verkligen börja om hela resan? Alla 21 veckor börjar från början.'
     );
     if (!confirmed) return;
     try {
@@ -1010,7 +1010,7 @@ function ActionCard({
     case 'ceremony':
       label = 'PROGRAMMET KLART';
       title = 'Ni har gått hela vägen.';
-      body = '20 veckor av samtal — det är stort.';
+      body = '21 veckor av samtal — det är stort.';
       ctaLabel = 'Se er resa';
       ctaAction = 'ceremony';
       isAccent = true;

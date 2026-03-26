@@ -1,5 +1,5 @@
 /**
- * JourneyProgress — 20-dot progress bar for the Still Us home screen.
+ * JourneyProgress — 21-dot progress bar for the Still Us home screen.
  * Shows completed, current, and upcoming cards with layer groupings.
  */
 

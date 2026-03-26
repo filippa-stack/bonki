@@ -355,13 +355,13 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
 
   // ── Intro session completion state (Still Us only) ──
   const [introCompleted, setIntroCompleted] = useState(() => {
-    if (isSU && isDemoCardCompleted('still_us', 'su-intro')) return true;
+    if (isSU && isDemoCardCompleted('still_us', 'su-mock-0')) return true;
     return false;
   });
   useEffect(() => {
     if (!isSU) return;
     // Check demo completed
-    if (isDemoCardCompleted('still_us', 'su-intro')) {
+    if (isDemoCardCompleted('still_us', 'su-mock-0')) {
       setIntroCompleted(true);
       return;
     }
@@ -372,7 +372,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
       .from('couple_sessions')
       .select('id')
       .eq('couple_space_id', space.id)
-      .eq('card_id', 'su-intro')
+      .eq('card_id', 'su-mock-0')
       .eq('status', 'completed')
       .limit(1)
       .maybeSingle()
@@ -665,7 +665,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
             {!useSquareGrid && <div style={{ height: 'clamp(48px, 12vh, 100px)' }} />}
 
             {/* ═══ Resume Pill (conditional) ═══ */}
-            {!progress.loading && progress.activeSession && progress.activeSession.cardId !== 'su-intro' && (() => {
+            {!progress.loading && progress.activeSession && progress.activeSession.cardId !== 'su-mock-0' && (() => {
               const card = product.cards.find(c => c.id === progress.activeSession!.cardId);
               if (!card) return null;
               const accentColor = product.tileLight ?? DEEP_SAFFRON;
@@ -821,7 +821,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
             style={{ display: 'flex', justifyContent: 'center', width: '100%', marginTop: '16px', marginBottom: '10vh' }}
           >
             <button
-              onClick={() => navigate('/card/su-intro?from=archive')}
+              onClick={() => navigate('/card/su-mock-0?from=archive')}
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
