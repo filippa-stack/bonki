@@ -664,6 +664,10 @@ function StillUsCategoryView({
                 ].join(', '),
               }}
             >
+              {/* GRATIS badge for free card */}
+              {freeCardId === card.id && !isCompleted && (
+                <FreeCardBadge />
+              )}
 
               <div style={{ flex: 1, minWidth: 0 }}>
                 <span
