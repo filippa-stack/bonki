@@ -51,6 +51,7 @@ import TillbakaSessionLiveComponent from "./components/TillbakaSessionLive";
 import TillbakaComplete from "./pages/TillbakaComplete";
 import Journey from "./pages/Journey";
 import Paywall from "./pages/Paywall";
+import PaywallFullScreen from "./pages/PaywallFullScreen";
 import SoloReflect from "./pages/SoloReflect";
 import JourneyPreview from "./pages/JourneyPreview";
 import DissolutionSettings from "./pages/DissolutionSettings";
@@ -128,6 +129,7 @@ function ProtectedRoutes() {
               <Route path="/solo-reflect/:cardId" element={<PageTransition><SoloReflect /></PageTransition>} />
               <Route path="/journey-preview" element={<PageTransition><JourneyPreview /></PageTransition>} />
               <Route path="/unlock" element={<PageTransition><Paywall /></PageTransition>} />
+              <Route path="/paywall-full" element={<PageTransition><PaywallFullScreen /></PageTransition>} />
               <Route path="/ceremony" element={<PageTransition><CompletionCeremony /></PageTransition>} />
               <Route path="/settings/dissolve" element={<PageTransition><DissolutionSettings /></PageTransition>} />
               <Route path="*" element={<NotFound />} />

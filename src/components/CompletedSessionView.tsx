@@ -15,6 +15,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpaceContext as useCoupleSpace } from '@/contexts/CoupleSpaceContext';
 import Header from '@/components/Header';
 import { useCardImage } from '@/hooks/useCardImage';
+import { useProductAccess } from '@/hooks/useProductAccess';
 import { BEAT_1, BEAT_2, BEAT_3, EASE, EMOTION } from '@/lib/motion';
 
 const STEP_LABELS = ['Kom igång', 'Gå djupare', 'Föreställ er', 'I verkligheten'];
@@ -65,6 +66,8 @@ export default function CompletedSessionView({
   const completionMessages = useMemo(() => getCompletionMessages(pronounMode, ageLabel), [pronounMode, ageLabel]);
   const isChildProduct = product && product.id !== 'still_us';
   const cardIllustration = useCardImage(cardId);
+  const { hasAccess: productIsPurchased } = useProductAccess(product?.id ?? '');
+  const isFreeCard = product?.freeCardId === cardId;
 
   const headline = useMemo(() =>
     completionMessages[Math.floor(Math.random() * completionMessages.length)],
@@ -378,7 +381,13 @@ export default function CompletedSessionView({
             {isChildProduct && nextDest ? (
               <>
                 <button
-                  onClick={() => navigate(nextDest)}
+                  onClick={() => {
+                    if (isFreeCard && !productIsPurchased) {
+                      navigate(`/paywall-full?product=${product!.id}`);
+                    } else {
+                      navigate(nextDest);
+                    }
+                  }}
                   className="cta-primary"
                   style={{ display: 'flex', alignItems: 'center', gap: '6px' }}
                 >
@@ -394,9 +403,15 @@ export default function CompletedSessionView({
               </>
             ) : (
               <button
-                onClick={() => navigate(
-                  isChildProduct ? `/product/${product!.slug}` : '/'
-                )}
+                onClick={() => {
+                  if (isFreeCard && !productIsPurchased) {
+                    navigate(`/paywall-full?product=${product!.id}`);
+                  } else {
+                    navigate(
+                      isChildProduct ? `/product/${product!.slug}` : '/'
+                    );
+                  }
+                }}
                 className="cta-primary"
               >
                 {isChildProduct ? 'Tillbaka till ' + product!.name : 'Fortsätt utforska'}
