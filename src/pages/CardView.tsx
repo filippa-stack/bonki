@@ -1029,9 +1029,10 @@ export default function CardView() {
     const categoryDest = postCompletionNav.homeDest;
     const productHomeDest = product ? `/product/${product.slug}` : '/';
 
-    // Resolve exercise for su-mock cards (su-mock-N → cardIndex N)
+    // Resolve exercise for su-mock cards (su-mock-N → content card ID)
     const suMockMatch = cardId?.match(/^su-mock-(\d+)$/);
-    const gorExerciseSU = suMockMatch ? getGorExercise(parseInt(suMockMatch[1], 10)) : null;
+    const gorContentCardId = suMockMatch ? cards[parseInt(suMockMatch[1], 10)]?.id : null;
+    const gorExerciseSU = gorContentCardId ? getGorExercise(gorContentCardId) : null;
 
     return (
       <motion.div
@@ -1314,7 +1315,8 @@ export default function CardView() {
 
     // Resolve Gör exercise for su-mock cards
     const suMockMatchSU = cardId?.match(/^su-mock-(\d+)$/);
-    const gorExerciseSU = suMockMatchSU ? getGorExercise(parseInt(suMockMatchSU[1], 10)) : null;
+    const gorContentCardIdSU = suMockMatchSU ? cards[parseInt(suMockMatchSU[1], 10)]?.id : null;
+    const gorExerciseSU = gorContentCardIdSU ? getGorExercise(gorContentCardIdSU) : null;
 
     return (
       <motion.div
