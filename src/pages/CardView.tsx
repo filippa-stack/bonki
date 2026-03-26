@@ -1051,6 +1051,25 @@ export default function CardView() {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
       >
+        {/* Background illustration — fills viewport */}
+        {cardImageUrl && (
+          <img
+            src={cardImageUrl}
+            alt=""
+            draggable={false}
+            style={{
+              position: 'fixed',
+              inset: '-20%',
+              width: '140%',
+              height: '140%',
+              objectFit: 'cover',
+              objectPosition: '50% 40%',
+              opacity: 0.7,
+              pointerEvents: 'none',
+              zIndex: 0,
+            }}
+          />
+        )}
         {/* Back arrow — top left */}
         <button
           onClick={() => navigate(productHomeDest)}
