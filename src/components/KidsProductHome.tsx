@@ -684,14 +684,14 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
                     maxWidth: '340px',
                     margin: '0 auto',
                     padding: '12px 20px',
-                    background: `rgba(0,0,0,0.45)`,
+                    background: `${accentColor}55`,
                     backdropFilter: 'blur(24px)',
                     WebkitBackdropFilter: 'blur(24px)',
                     borderRadius: '40px',
-                    border: `1px solid rgba(255,255,255,0.15)`,
+                    border: `1px solid ${accentColor}40`,
                     cursor: 'pointer',
                     textAlign: 'left',
-                    boxShadow: `0 4px 16px rgba(0,0,0,0.3)`,
+                    boxShadow: `0 2px 12px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.12)`,
                   }}
                 >
                   <div style={{ flex: 1, minWidth: 0 }}>
