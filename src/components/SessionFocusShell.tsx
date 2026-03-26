@@ -169,7 +169,7 @@ export default function SessionFocusShell({
             zIndex: 1,
             width: '100%',
             maxWidth: '520px',
-            flex: '0 0 auto',
+            flex: '0 1 auto',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -178,7 +178,7 @@ export default function SessionFocusShell({
             borderRadius: '28px',
             padding: '28px 24px 20px',
             boxShadow: '0 8px 32px rgba(0,0,0,0.15)',
-            overflow: 'hidden',
+            overflow: 'auto',
           }}
         >
           {children}
