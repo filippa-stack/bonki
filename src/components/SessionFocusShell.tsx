@@ -137,7 +137,7 @@ export default function SessionFocusShell({
           justifyContent: 'center',
           width: '100%',
           position: 'relative',
-          overflow: 'hidden',
+          overflow: 'visible',
           padding: '12px 16px',
         }}
       >
