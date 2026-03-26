@@ -521,6 +521,7 @@ interface StillUsCategoryViewProps {
   backTo: string;
   navigate: (path: string) => void;
   isReturningUser?: boolean;
+  freeCardId?: string;
 }
 
 function StillUsCategoryView({
@@ -532,6 +533,7 @@ function StillUsCategoryView({
   backTo,
   navigate,
   isReturningUser = false,
+  freeCardId,
 }: StillUsCategoryViewProps) {
   const completedCount = cards.filter(c => completedCardIds.includes(c.id)).length;
 
