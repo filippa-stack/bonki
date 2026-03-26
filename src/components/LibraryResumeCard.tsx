@@ -32,7 +32,7 @@ function hexToRgba(hex: string, alpha: number): string {
 const PRODUCT_TILE_COLORS: Record<string, string> = {
   still_us: '#94BCE1',
   jag_i_mig: '#CB7AB2',
-  jag_med_andra: '#A62755',
+  jag_med_andra: '#CB7AB2',
   jag_i_varlden: '#C6D423',
   sexualitetskort: '#DD958B',
   vardagskort: '#8BDDB0',
