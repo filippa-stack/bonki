@@ -10,24 +10,24 @@ import { LANTERN_GLOW, DRIFTWOOD, MIDNIGHT_INK, BONKI_ORANGE, DEEP_SAFFRON, prod
 
 // ── Illustration imports (same as product homes) ──
 import jimImage from '@/assets/illustration-jag-i-mig.png';
-import slothImage from '@/assets/sloth-jag-med-andra.png';
-import peacockImage from '@/assets/peacock-jag-i-varlden.png';
+import jmaImage from '@/assets/illustration-jag-med-andra.png';
+import jivImage from '@/assets/illustration-jag-i-varlden.png';
 import illustrationVardag from '@/assets/illustration-vardag.png';
 import illustrationSyskon from '@/assets/illustration-syskon.png';
 import illustrationSexualitet from '@/assets/illustration-sexualitet.png';
-import creatureSal from '@/assets/creature-sal-still-us.png';
+import illustrationStillUs from '@/assets/illustration-still-us.png';
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
 /** Per-product creature illustration */
 const PRODUCT_ILLUSTRATION: Record<string, string> = {
   jag_i_mig: jimImage,
-  jag_med_andra: slothImage,
-  jag_i_varlden: peacockImage,
+  jag_med_andra: jmaImage,
+  jag_i_varlden: jivImage,
   vardagskort: illustrationVardag,
   syskonkort: illustrationSyskon,
   sexualitetskort: illustrationSexualitet,
-  still_us: creatureSal,
+  still_us: illustrationStillUs,
 };
 
 /** One-sentence intro per product */
