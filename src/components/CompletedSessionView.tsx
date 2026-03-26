@@ -381,7 +381,13 @@ export default function CompletedSessionView({
             {isChildProduct && nextDest ? (
               <>
                 <button
-                  onClick={() => navigate(nextDest)}
+                  onClick={() => {
+                    if (isFreeCard && !productIsPurchased) {
+                      navigate(`/paywall-full?product=${product!.id}`);
+                    } else {
+                      navigate(nextDest);
+                    }
+                  }}
                   className="cta-primary"
                   style={{ display: 'flex', alignItems: 'center', gap: '6px' }}
                 >
@@ -397,9 +403,15 @@ export default function CompletedSessionView({
               </>
             ) : (
               <button
-                onClick={() => navigate(
-                  isChildProduct ? `/product/${product!.slug}` : '/'
-                )}
+                onClick={() => {
+                  if (isFreeCard && !productIsPurchased) {
+                    navigate(`/paywall-full?product=${product!.id}`);
+                  } else {
+                    navigate(
+                      isChildProduct ? `/product/${product!.slug}` : '/'
+                    );
+                  }
+                }}
                 className="cta-primary"
               >
                 {isChildProduct ? 'Tillbaka till ' + product!.name : 'Fortsätt utforska'}
