@@ -481,13 +481,10 @@ export default function ProductIntro({
               cursor: 'pointer',
               fontFamily: 'var(--font-sans)',
               fontSize: '14px',
-              color: `${LANTERN_GLOW}99`,
+              color: DRIFTWOOD,
               textAlign: 'center',
-              marginTop: '14px',
+              marginTop: '16px',
               padding: '4px 0',
-              textDecoration: 'underline',
-              textDecorationColor: `${LANTERN_GLOW}40`,
-              textUnderlineOffset: '3px',
             }}
           >
             Inte just nu
