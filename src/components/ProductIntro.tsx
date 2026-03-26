@@ -303,110 +303,59 @@ export default function ProductIntro({
           </motion.p>
         )}
 
-        {/* 3. Short intro — one sentence */}
-        <motion.p
+        {/* 3. Full body text — all paragraphs visible */}
+        <motion.div
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.45, duration: 0.6, ease: EASE }}
-          style={{
-            fontFamily: 'var(--font-sans)',
-            fontSize: '15px',
-            color: `${LANTERN_GLOW}D9`, // 85% opacity
-            textAlign: 'center',
-            lineHeight: 1.55,
-            marginTop: '8px',
-            margin: '8px 0 0',
-          }}
+          style={{ textAlign: 'center', marginTop: '8px' }}
         >
-          {shortIntro}
-        </motion.p>
-
-        {/* 4. "Läs mer" expandable */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.55, duration: 0.5, ease: EASE }}
-          style={{ textAlign: 'center', marginTop: '4px' }}
-        >
-          <button
-            onClick={() => setExpanded(!expanded)}
-            style={{
-              background: 'none',
-              border: 'none',
-              fontFamily: 'var(--font-sans)',
-              fontSize: '13px',
-              color: DRIFTWOOD,
-              cursor: 'pointer',
-              padding: '6px 12px',
-            }}
-          >
-            {expanded ? 'Visa mindre' : 'Läs mer'}
-          </button>
-
-          <AnimatePresence>
-            {expanded && (
-              <motion.div
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: 'auto', opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                transition={{ duration: 0.4, ease: EASE }}
-                style={{ overflow: 'hidden' }}
-              >
-                <div style={{ padding: '8px 4px 16px' }}>
-                  {fullBodyText.split('\n\n').map((para, i) => (
-                    <p
-                      key={i}
-                      style={{
-                        fontFamily: 'var(--font-sans)',
-                        fontSize: '14px',
-                        color: `${LANTERN_GLOW}CC`, // 80% opacity
-                        textAlign: 'center',
-                        lineHeight: 1.6,
-                        marginTop: i === 0 ? 0 : '12px',
-                        margin: i === 0 ? '0' : '12px 0 0',
-                      }}
-                    >
-                      {para}
-                    </p>
-                  ))}
-                  {signoffText && (
-                    <p
-                      style={{
-                        fontFamily: 'var(--font-serif)',
-                        fontStyle: 'italic',
-                        fontSize: '14px',
-                        color: `${LANTERN_GLOW}CC`,
-                        textAlign: 'center',
-                        marginTop: '16px',
-                      }}
-                    >
-                      {signoffText}
-                    </p>
-                  )}
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+          {fullBodyText.split('\n\n').map((para, i) => (
+            <p
+              key={i}
+              style={{
+                fontFamily: 'var(--font-sans)',
+                fontSize: '15px',
+                color: `${LANTERN_GLOW}D9`,
+                textAlign: 'center',
+                lineHeight: 1.55,
+                marginTop: i === 0 ? 0 : '10px',
+                margin: i === 0 ? '0' : '10px 0 0',
+              }}
+            >
+              {para}
+            </p>
+          ))}
+          {signoffText && (
+            <p
+              style={{
+                fontFamily: 'var(--font-serif)',
+                fontStyle: 'italic',
+                fontSize: '14px',
+                color: `${LANTERN_GLOW}CC`,
+                textAlign: 'center',
+                marginTop: '14px',
+              }}
+            >
+              {signoffText}
+            </p>
+          )}
+          {isStillUs && (
+            <p
+              style={{
+                fontFamily: 'var(--font-serif)',
+                fontStyle: 'italic',
+                fontSize: '14px',
+                color: `${LANTERN_GLOW}CC`,
+                textAlign: 'center',
+                marginTop: '12px',
+              }}
+            >
+              Er första vecka väntar. Den är gratis.
+            </p>
+          )}
         </motion.div>
 
-        {/* 5. Signoff line */}
-        {isStillUs && (
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.55, duration: 0.5, ease: EASE }}
-            style={{
-              fontFamily: 'var(--font-serif)',
-              fontStyle: 'italic',
-              fontSize: '14px',
-              color: `${LANTERN_GLOW}CC`,
-              textAlign: 'center',
-              marginTop: '12px',
-            }}
-          >
-            Er första vecka väntar. Den är gratis.
-          </motion.p>
-        )}
 
         {/* 6. First card preview */}
         {resolvedFreeCardTitle && (
