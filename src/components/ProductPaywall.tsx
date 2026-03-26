@@ -11,6 +11,7 @@ import {
   LANTERN_GLOW,
   DRIFTWOOD,
   BONKI_ORANGE,
+  productTileColors,
 } from '@/lib/palette';
 
 /** Warm neutral for readable secondary text on dark backgrounds (4.7:1 on Midnight Ink) */
@@ -47,7 +48,8 @@ export default function ProductPaywall({ product, onAccessGranted, cardId, curre
   const isStillUs = product.id === 'still_us';
 
   // CTA button is always Bonki Orange; product color goes on background
-  const ctaColor = BONKI_ORANGE;
+  const tileColors = productTileColors[product.id];
+  const ctaColor = tileColors?.tileLight ?? BONKI_ORANGE;
   const pageBg = product.backgroundColor ?? MIDNIGHT_INK;
 
   // Dev bypass via long-press on price line
