@@ -67,7 +67,7 @@ export const productIntros: Record<string, ProductIntroData> = {
       {
         heading: 'Välkommen till\nJag i Världen',
         body: 'Du lever i en tid där alla har åsikter om vem du ska vara. Men vad tänker du?\n\nDet här är frågor om de stora sakerna. Identitet, rättvisa, mod, skam, kärlek, psykisk hälsa, vad det innebär att vara fri. De är inte till för att testa dig. De är till för att du ska få tänka högt.',
-        signoff: 'Hoppa över det som inte känns aktuellt. Stanna vid det som gör att du tänker till.',
+        signoff: 'Hoppa över det som inte känns aktuellt just nu. Stanna vid det som gör att du tänker till.',
       },
     ],
     ctaLabel: 'Sätt igång',
