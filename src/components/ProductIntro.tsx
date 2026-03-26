@@ -15,7 +15,7 @@ import jivImage from '@/assets/illustration-jag-i-varlden.png';
 import illustrationVardag from '@/assets/illustration-vardag.png';
 import illustrationSyskon from '@/assets/illustration-syskon.png';
 import illustrationSexualitet from '@/assets/illustration-sexualitet.png';
-import illustrationStillUs from '@/assets/illustration-still-us.png';
+import illustrationStillUs from '@/assets/illustration-still-us-home.png';
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
@@ -38,13 +38,12 @@ const SHORT_INTROS: Record<string, string> = {
   vardagskort: 'Kort för alla de små sakerna som bygger en familj.',
   syskonkort: 'Frågor som hjälper er prata om det som finns mellan er.',
   sexualitetskort: 'Om kropp, samtycke, normer och identitet — utan att moralisera.',
-  still_us:
-    '22 veckor av samtal som bygger det som saknas i de flesta relationer — ett sätt att prata om det som är svårt, innan det blir för svårt.',
+  still_us: 'För par som fortfarande fungerar, men som märkt att något tystnat.',
 };
 
 /** Still Us–specific overrides */
-const STILL_US_FREE_CARD_LABEL = 'Vecka 1';
-const STILL_US_CTA = 'Börja vecka 1';
+const STILL_US_FREE_CARD_LABEL = 'Ert första samtal';
+const STILL_US_CTA = 'Börja med Ert första samtal';
 
 // ── Server-side "seen" helpers ──
 
@@ -340,20 +339,6 @@ export default function ProductIntro({
               {signoffText}
             </p>
           )}
-          {isStillUs && (
-            <p
-              style={{
-                fontFamily: 'var(--font-serif)',
-                fontStyle: 'italic',
-                fontSize: '14px',
-                color: `${LANTERN_GLOW}E6`,
-                textAlign: 'center',
-                marginTop: '12px',
-              }}
-            >
-              Er första vecka väntar. Den är gratis.
-            </p>
-          )}
         </motion.div>
 
 
@@ -423,7 +408,7 @@ export default function ProductIntro({
                   lineHeight: 1.2,
                 }}
               >
-                {isStillUs ? 'Ert minsta "vi"' : resolvedFreeCardTitle}
+                {isStillUs ? 'Ert första samtal' : resolvedFreeCardTitle}
               </p>
               {!isStillUs && freeCardCategoryName && (
                 <p
