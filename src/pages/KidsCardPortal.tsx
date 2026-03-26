@@ -11,7 +11,7 @@
 import { useState, useMemo, useCallback, useRef, useEffect } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence, type PanInfo } from 'framer-motion';
-import { ChevronLeft, Check } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Check } from 'lucide-react';
 import { allProducts } from '@/data/products';
 import { useKidsProductProgress } from '@/hooks/useKidsProductProgress';
 import { useCardImage } from '@/hooks/useCardImage';
