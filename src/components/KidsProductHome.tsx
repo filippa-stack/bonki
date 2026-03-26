@@ -290,9 +290,9 @@ function CategoryTile({
         <span
           style={{
             fontFamily: 'var(--font-display)',
-            fontVariationSettings: "'opsz' 17",
-            fontSize: squareTile ? '18px' : '20px',
-            fontWeight: 700,
+            fontVariationSettings: "'opsz' 24",
+            fontSize: '24px',
+            fontWeight: 600,
             color: '#FFFFFF',
             lineHeight: 1.2,
             display: 'block',
