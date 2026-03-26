@@ -10,6 +10,7 @@ import { EASE, EMOTION } from '@/lib/motion';
 import { COLORS, cardIdFromSlug } from '@/lib/stillUsTokens';
 import { advanceCard, buildSliderAnchors } from '@/lib/stillUsRpc';
 import { getGorExercise } from '@/data/gorExercises';
+import { cards } from '@/data/content';
 
 type Phase = 'takeaway' | 'handoff' | 'partner_writing' | 'committing';
 
