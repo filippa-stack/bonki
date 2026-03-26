@@ -1051,25 +1051,6 @@ export default function CardView() {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
       >
-        {/* Background illustration — fills viewport */}
-        {cardImageUrl && (
-          <img
-            src={cardImageUrl}
-            alt=""
-            draggable={false}
-            style={{
-              position: 'fixed',
-              inset: '-20%',
-              width: '140%',
-              height: '140%',
-              objectFit: 'cover',
-              objectPosition: '50% 40%',
-              opacity: 0.7,
-              pointerEvents: 'none',
-              zIndex: 0,
-            }}
-          />
-        )}
         {/* Back arrow — top left */}
         <button
           onClick={() => navigate(productHomeDest)}
@@ -1341,32 +1322,13 @@ export default function CardView() {
     return (
       <motion.div
         className="min-h-screen"
-        style={{ backgroundColor: EMBER_NIGHT, position: 'relative', overflow: 'hidden' }}
+        style={{ backgroundColor: EMBER_NIGHT }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
       >
-        {/* Background illustration — fills viewport */}
-        {cardImageUrl && (
-          <img
-            src={cardImageUrl}
-            alt=""
-            draggable={false}
-            style={{
-              position: 'fixed',
-              inset: '-20%',
-              width: '140%',
-              height: '140%',
-              objectFit: 'cover',
-              objectPosition: '50% 40%',
-              opacity: 0.5,
-              pointerEvents: 'none',
-              zIndex: 0,
-            }}
-          />
-        )}
         <Header title="" variant="immersive" />
-        <div className="px-6 pb-16 relative" style={{ paddingTop: '48px', position: 'relative', zIndex: 1 }}>
+        <div className="px-6 pb-16 relative" style={{ paddingTop: '48px' }}>
           {/* Back arrow */}
           <motion.div
             initial={{ opacity: 0 }}
@@ -2254,9 +2216,9 @@ export default function CardView() {
           </div>
         }
         topSlot={
-           <div style={{
+          <div style={{
             width: '100%',
-            background: `linear-gradient(180deg, ${MIDNIGHT_INK_A} 0%, ${MIDNIGHT_INK_A}cc 70%, transparent 100%)`,
+            backgroundColor: MIDNIGHT_INK_A,
             paddingTop: 'env(safe-area-inset-top, 0px)',
           }}>
             <div style={{
@@ -2448,7 +2410,7 @@ export default function CardView() {
           topSlot={
             <div style={{
               width: '100%',
-              background: `linear-gradient(180deg, ${product?.backgroundColor ?? MIDNIGHT_INK_LOCAL} 0%, ${product?.backgroundColor ?? MIDNIGHT_INK_LOCAL}cc 70%, transparent 100%)`,
+              backgroundColor: product?.backgroundColor ?? MIDNIGHT_INK_LOCAL,
               paddingTop: 'env(safe-area-inset-top, 0px)',
             }}>
               {/* Nav bar — 52px */}
@@ -2677,14 +2639,12 @@ export default function CardView() {
             flex: '0 0 auto',
             height: '56px',
             marginTop: 'env(safe-area-inset-top, 0px)',
-            background: `linear-gradient(180deg, ${product?.backgroundColor ?? MIDNIGHT_INK} 0%, ${product?.backgroundColor ?? MIDNIGHT_INK}cc 70%, transparent 100%)`,
+            backgroundColor: product?.backgroundColor ?? MIDNIGHT_INK,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
             paddingLeft: '4px',
             paddingRight: '4px',
-            position: 'relative',
-            zIndex: 10,
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
               <button
@@ -2753,10 +2713,9 @@ export default function CardView() {
             justifyContent: 'center',
             position: 'relative',
             overflow: 'hidden',
-            padding: '0 16px 12px',
-            paddingTop: '0',
+            padding: '12px 16px',
           }}>
-            {/* Illustration background — fills entire viewport behind the white card */}
+            {/* Illustration background — behind the white card */}
             {cardImageUrl && (
               <img
                 src={cardImageUrl}
@@ -2764,11 +2723,11 @@ export default function CardView() {
                 draggable={false}
                 style={{
                   position: 'absolute',
-                  inset: '-20%',
-                  width: '140%',
-                  height: '140%',
-                  objectFit: 'cover',
-                  objectPosition: '50% 50%',
+                  inset: '-10%',
+                  width: '120%',
+                  height: '120%',
+                  objectFit: 'contain',
+                  objectPosition: '50% 45%',
                   opacity: 0.7,
                   pointerEvents: 'none',
                   zIndex: 0,
