@@ -11,7 +11,7 @@
 import { useState, useMemo, useCallback, useRef, useEffect } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence, type PanInfo } from 'framer-motion';
-import { ChevronLeft, Check } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Check } from 'lucide-react';
 import { allProducts } from '@/data/products';
 import { useKidsProductProgress } from '@/hooks/useKidsProductProgress';
 import { useCardImage } from '@/hooks/useCardImage';
@@ -300,19 +300,7 @@ export default function KidsCardPortal() {
         >
           {category.title}
         </span>
-        <span
-          style={{
-            fontFamily: 'var(--font-sans)',
-            fontSize: '12px',
-            fontWeight: 600,
-            color: LANTERN_GLOW,
-            opacity: 0.5,
-            minWidth: '28px',
-            textAlign: 'right',
-          }}
-        >
-          {currentIndex + 1}/{categoryCards.length}
-        </span>
+        <div style={{ width: '28px' }} />
       </div>
 
       {/* ═══ Main area ═══ */}
@@ -517,66 +505,106 @@ export default function KidsCardPortal() {
             >
               {promptCount} frågor · {estimateMinutes(promptCount, productSlug)}
             </p>
-            <p
+            {/* ── Start session button ── */}
+            <button
+              onClick={startSession}
               style={{
+                display: 'inline-block',
+                marginTop: '14px',
+                padding: '10px 28px',
+                borderRadius: '24px',
+                border: `1.5px solid ${SAFFRON_FLAME}`,
+                background: `${SAFFRON_FLAME}18`,
+                cursor: 'pointer',
                 fontFamily: 'var(--font-display)',
                 fontSize: '15px',
                 fontWeight: 600,
                 color: SAFFRON_FLAME,
-                opacity: 1,
-                marginTop: '12px',
-                textShadow: `0 0 12px ${SAFFRON_FLAME}66, 0 0 24px ${SAFFRON_FLAME}33`,
                 letterSpacing: '0.3px',
+                textShadow: `0 0 12px ${SAFFRON_FLAME}44`,
               }}
             >
-              Tryck på bilden när ni är redo.
-            </p>
+              Starta samtal
+            </button>
           </motion.div>
         </AnimatePresence>
 
-        {/* ═══ Navigation links ═══ */}
+        {/* ═══ Navigation controls ═══ */}
         <div
           style={{
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            gap: '8px',
-            marginTop: '6px',
+            gap: '10px',
+            marginTop: '8px',
             paddingBottom: `calc(env(safe-area-inset-bottom, 0px) + 12px)`,
             flexShrink: 0,
             opacity: portalPhase !== 'idle' ? 0 : 1,
             transition: 'opacity 200ms ease-in',
           }}
         >
-          {!isLast && (
+          {/* Prev / Next arrows */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '32px' }}>
             <button
-              onClick={goNext}
+              onClick={goPrev}
+              disabled={isFirst}
+              aria-label="Föregående samtal"
               style={{
                 background: 'none',
                 border: 'none',
-                cursor: 'pointer',
-                fontFamily: 'var(--font-sans)',
-                fontSize: '13px',
+                cursor: isFirst ? 'default' : 'pointer',
                 color: LANTERN_GLOW,
-                opacity: 0.6,
-                padding: '6px 16px',
+                opacity: isFirst ? 0.2 : 0.7,
+                padding: '8px',
+                transition: 'opacity 200ms',
               }}
             >
-              Nästa kort →
+              <ChevronLeft size={24} strokeWidth={1.5} />
             </button>
-          )}
-          <button
-            onClick={() => setBrowseOpen(true)}
+            <span
+              style={{
+                fontFamily: 'var(--font-sans)',
+                fontSize: '15px',
+                color: LANTERN_GLOW,
+                opacity: 0.6,
+              }}
+            >
+              {currentIndex + 1} av {categoryCards.length}
+            </span>
+            <button
+              onClick={goNext}
+              disabled={isLast}
+              aria-label="Nästa samtal"
               style={{
                 background: 'none',
                 border: 'none',
-                cursor: 'pointer',
-                fontFamily: 'var(--font-sans)',
-                fontSize: '12px',
+                cursor: isLast ? 'default' : 'pointer',
                 color: LANTERN_GLOW,
-                padding: '4px 16px',
-                opacity: 0.45,
+                opacity: isLast ? 0.2 : 0.7,
+                padding: '8px',
+                transition: 'opacity 200ms',
               }}
+            >
+              <ChevronRight size={24} strokeWidth={1.5} />
+            </button>
+          </div>
+
+          {/* Browse all */}
+          <button
+            onClick={() => setBrowseOpen(true)}
+            style={{
+              background: `${LANTERN_GLOW}12`,
+              border: `1px solid ${LANTERN_GLOW}30`,
+              borderRadius: '16px',
+              cursor: 'pointer',
+              fontFamily: 'var(--font-sans)',
+              fontSize: '15px',
+              color: LANTERN_GLOW,
+              padding: '6px 20px',
+              opacity: 0.75,
+              textDecoration: 'underline',
+              textUnderlineOffset: '3px',
+            }}
           >
             Utforska alla samtal
           </button>
