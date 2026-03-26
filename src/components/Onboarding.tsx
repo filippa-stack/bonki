@@ -100,7 +100,7 @@ export default function Onboarding() {
             fontWeight: 500,
             letterSpacing: '0.16em',
             textTransform: 'uppercase',
-            color: '#6B5E52',
+            color: 'hsla(34, 20%, 60%, 0.85)',
             marginBottom: '14px',
           }}
         >
