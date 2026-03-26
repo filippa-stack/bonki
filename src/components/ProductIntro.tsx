@@ -9,7 +9,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { LANTERN_GLOW, DRIFTWOOD, MIDNIGHT_INK, BONKI_ORANGE, DEEP_SAFFRON, productTileColors } from '@/lib/palette';
 
 // ── Illustration imports (same as product homes) ──
-import apaImage from '@/assets/apa-jag-i-mig.png';
+import jimImage from '@/assets/illustration-jag-i-mig.png';
 import slothImage from '@/assets/sloth-jag-med-andra.png';
 import peacockImage from '@/assets/peacock-jag-i-varlden.png';
 import illustrationVardag from '@/assets/illustration-vardag.png';
@@ -21,7 +21,7 @@ const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
 /** Per-product creature illustration */
 const PRODUCT_ILLUSTRATION: Record<string, string> = {
-  jag_i_mig: apaImage,
+  jag_i_mig: jimImage,
   jag_med_andra: slothImage,
   jag_i_varlden: peacockImage,
   vardagskort: illustrationVardag,
