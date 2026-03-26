@@ -708,13 +708,13 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
                   <span
                     style={{
                       fontFamily: 'var(--font-sans)',
-                      fontSize: '10px',
+                      fontSize: '15px',
                       fontWeight: 700,
                       letterSpacing: '0.04em',
-                      color: DEEP_SAFFRON,
-                      opacity: 0.7,
+                      color: '#FFFFFF',
                       flexShrink: 0,
                       marginLeft: '12px',
+                      textShadow: '0 1px 3px rgba(0,0,0,0.4)',
                     }}
                   >
                     Fortsätt →
