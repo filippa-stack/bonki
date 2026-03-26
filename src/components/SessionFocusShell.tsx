@@ -169,7 +169,7 @@ export default function SessionFocusShell({
             zIndex: 1,
             width: '100%',
             maxWidth: '520px',
-            flex: '0 1 auto',
+            flex: '0 0 auto',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
