@@ -54,8 +54,8 @@ export const productIntros: Record<string, ProductIntroData> = {
     slides: [
       {
         heading: 'Välkommen till\nJag med Andra',
-        body: 'Ditt barn har börjat titta utåt. Kompisarna har blivit viktigare, blickarna fler, och frågor som förut var enkla - vem får vara med, vad är rättvist, vem bestämmer - har plötsligt blivit på riktigt.\n\nDet här är kort för den ålder där man börjar förstå att andra människor har en insida också. Att mod inte alltid syns. Att skam kan göra att man blir tyst. Att vänskap kräver mer än att bara vara i samma rum.\n\nFrågorna har inga rätta svar. De är till för att öppna det som sällan får plats i vardagen - mellan er, eller i en grupp. Det viktigaste är inte vad som sägs, utan att det får sägas.',
-        signoff: 'Ni bestämmer tempot. Hoppa över det som inte passar. Stanna kvar där det blir intressant.',
+        body: 'Ditt barn har börjat titta utåt. Kompisarna har blivit viktigare, blickarna fler, och frågor som förut var enkla — vem får vara med, vad är rättvist, vem bestämmer — har plötsligt blivit på riktigt.\n\nDet här är kort för den ålder där man börjar förstå att andra också har en insida. Att mod inte alltid syns. Att skam kan göra att man blir tyst. Frågorna har inga rätta svar — de är till för att öppna det som sällan får plats i vardagen.',
+        signoff: 'Hoppa över det som inte passar. Stanna kvar där det blir intressant.',
       },
     ],
     ctaLabel: 'Sätt igång',
@@ -67,7 +67,7 @@ export const productIntros: Record<string, ProductIntroData> = {
     slides: [
       {
         heading: 'Välkommen till\nJag i Världen',
-        body: 'Du lever i en tid där alla har åsikter om vem du ska vara. Sociala medier, kompisar, vuxna, samhället - alla har en bild. Men vad tänker du?\n\nDet här är frågor om de stora sakerna. Identitet, rättvisa, mod, skam, kärlek, psykisk hälsa, vad det innebär att vara fri. De är inte till för att testa dig. De är till för att du ska få tänka högt - ensam, med en vän, med en förälder, i en grupp.\n\nDet finns inga rätta svar. Det finns bara dina.',
+        body: 'Du lever i en tid där alla har åsikter om vem du ska vara. Men vad tänker du?\n\nDet här är frågor om de stora sakerna. Identitet, rättvisa, mod, skam, kärlek, psykisk hälsa, vad det innebär att vara fri. De är inte till för att testa dig. De är till för att du ska få tänka högt.',
         signoff: 'Hoppa över det som inte känns aktuellt. Stanna vid det som gör att du tänker till.',
       },
     ],
@@ -80,7 +80,7 @@ export const productIntros: Record<string, ProductIntroData> = {
     slides: [
       {
         heading: 'Välkommen till Vardag',
-        body: 'Morgonstressen. Middagen. Läggdagsbråket. Det är lätt att vardagen bara händer - utan att ni stannar upp och pratar om hur den egentligen ser ut för var och en.\n\nDet här är kort för alla de små sakerna som bygger en familj: rutiner, helger, skola, kompisar, mat, sömn. Frågorna är inte djupa på det komplicerade sättet - de är djupa på det vardagliga sättet. Som att ta reda på vad ditt barn faktiskt tänkte på vägen hem. Eller vad helgen egentligen betyder för dem.',
+        body: 'Morgonstressen. Middagen. Läggdagsbråket. Det är lätt att vardagen bara händer — utan att ni stannar upp och pratar om hur den egentligen ser ut för var och en.\n\nDet här är kort för alla de små sakerna som bygger en familj. Frågorna är inte djupa på det komplicerade sättet — de är djupa på det vardagliga sättet. Som att ta reda på vad ditt barn faktiskt tänkte på vägen hem.',
         signoff: 'Perfekt för middagsbordet, bilen, eller en söndag som behöver lite mer av varandra.',
       },
     ],
@@ -93,8 +93,7 @@ export const productIntros: Record<string, ProductIntroData> = {
     slides: [
       {
         heading: 'Välkommen till Syskon',
-        body: 'Syskon är de första människorna vi lär oss dela med, bråka med, längta efter och bli galna på - ibland allt på samma dag.\n\nDet här är frågor som hjälper er prata om det som finns mellan er. Inte bara de roliga minnena, utan också det som är svårt: orättvisor, jämförelser, känslan av att inte räcka till. Och det fina: den där kunskapen om varandra som ingen annan har.\n\nNi kan använda korten alla tillsammans, eller två och två. Ibland blir svaren överraskande. Det är meningen.',
-        signoff: 'Börja där det känns naturligt. Hoppa över det som inte passar. Stanna kvar i det som öppnar sig.',
+        body: 'Syskon är de första människorna vi lär oss dela med, bråka med, längta efter och bli galna på — ibland allt på samma dag.\n\nDet här är frågor som hjälper er prata om det som finns mellan er. Inte bara det roliga, utan också det svåra: orättvisor, jämförelser, känslan av att inte räcka till. Och det fina — den där kunskapen om varandra som ingen annan har.',
       },
     ],
     ctaLabel: 'Sätt igång',
@@ -106,8 +105,8 @@ export const productIntros: Record<string, ProductIntroData> = {
     slides: [
       {
         heading: 'Välkommen till Sexualitet',
-        body: 'Det här handlar om det som de flesta tycker är svårt att prata om - och som därför behöver pratas om mest.\n\nKorten tar upp kropp, samtycke, normer, gränser, identitet och känslor kopplade till sex och sexualitet. De gör det utan att moralisera. Syftet är inte att tala om vad som är rätt eller fel, utan att ge dig utrymme att tänka, fråga och formulera var du står.\n\nDu kan använda korten på egen hand, med en kompis, en partner, en förälder, eller i en grupp. Det viktigaste är att samtalet känns tryggt. Om en fråga inte passar just nu - hoppa över den. Den finns kvar.',
-        signoff: 'Och om något väcker frågor eller oro: UMO.se och BRIS finns alltid tillgängliga.',
+        body: 'Det här handlar om det som de flesta tycker är svårt att prata om — och som därför behöver pratas om mest.\n\nKorten tar upp kropp, samtycke, normer, gränser, identitet och känslor kopplade till sex och sexualitet — utan att moralisera. Syftet är inte att tala om rätt eller fel, utan att ge utrymme att tänka, fråga och formulera var du står.',
+        signoff: 'Hoppa över det som inte passar just nu. Den finns kvar.',
       },
     ],
     ctaLabel: 'Sätt igång',
