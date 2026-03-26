@@ -599,17 +599,17 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
                 style={{
                   fontFamily: 'var(--font-display)',
                   fontSize: 'clamp(15px, 4.2vw, 19px)',
-                  fontWeight: 500,
+                  fontWeight: 600,
                   fontStyle: 'italic',
                   color: LANTERN_GLOW,
                   marginTop: '8px',
                   letterSpacing: '0.03em',
                   textShadow: [
-                    `0 0 12px ${bg}`,
+                    `0 1px 3px rgba(0,0,0,0.9)`,
+                    `0 2px 8px rgba(0,0,0,0.7)`,
                     `0 0 24px ${bg}`,
                     `0 0 48px ${bg}`,
                     `0 0 72px ${bg}`,
-                    `0 2px 4px rgba(0,0,0,0.9)`,
                   ].join(', '),
                 }}
               >
