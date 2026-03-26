@@ -113,6 +113,20 @@ export default function Category() {
     return allProducts.find(p => p.categories.some(c => c.id === categoryId));
   }, [categoryId]);
 
+  const { hasAccess: productIsPurchased } = useProductAccess(product?.id ?? '');
+  const [priceSek, setPriceSek] = useState<number | null>(null);
+  const [paywallCard, setPaywallCard] = useState<{ id: string; title: string } | null>(null);
+
+  useEffect(() => {
+    if (!product?.id) return;
+    supabase
+      .from('products')
+      .select('price_sek')
+      .eq('id', product.id)
+      .single()
+      .then(({ data }) => setPriceSek(data?.price_sek ?? 195));
+  }, [product?.id]);
+
   const isKidsProduct = !!product && KIDS_PRODUCT_IDS.includes(product.id);
 
   const isStillUsCategory = useMemo(() => {
@@ -190,6 +204,10 @@ export default function Category() {
         navigate={navigate}
         isReturningUser={completedCardIds.length >= 1}
         freeCardId={product?.freeCardId}
+        product={product}
+        productIsPurchased={productIsPurchased}
+        priceSek={priceSek}
+      />
       />
     );
   }
