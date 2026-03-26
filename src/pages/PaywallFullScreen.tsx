@@ -195,57 +195,27 @@ export default function PaywallFullScreen() {
           {product.name}
         </h1>
 
-        {valueLine && (
-          <p
-            style={{
-              fontFamily: 'var(--font-sans)',
-              fontSize: '17px',
-              fontWeight: 400,
-              color: LANTERN_GLOW,
-              textAlign: 'center',
-              margin: 0,
-              marginTop: '20px',
-              lineHeight: 1.5,
-              display: '-webkit-box',
-              WebkitLineClamp: 2,
-              WebkitBoxOrient: 'vertical',
-              overflow: 'hidden',
-            }}
-          >
-            {valueLine}
-          </p>
-        )}
-
-        {/* GROUP 2 — TRUST */}
-        <p
-          style={{
-            fontFamily: 'var(--font-sans)',
-            fontSize: '13px',
-            fontStyle: 'italic',
-            color: DRIFTWOOD,
-            textAlign: 'center',
-            margin: 0,
-            marginTop: '32px',
-          }}
-        >
-          Utvecklad tillsammans med psykolog · 29 års klinisk erfarenhet
-        </p>
-
-        {product.id !== 'still_us' && (
-          <p
-            style={{
-              fontFamily: 'var(--font-sans)',
-              fontSize: '13px',
-              fontStyle: 'italic',
-              color: DRIFTWOOD,
-              textAlign: 'center',
-              margin: 0,
-              marginTop: '6px',
-            }}
-          >
-            Spara barnens svar. Se dem växa — samtal för samtal.
-          </p>
-        )}
+        {/* VALUE PROPOSITION BLOCK */}
+        <div style={{ marginTop: '32px', paddingLeft: '16px', paddingRight: '16px' }}>
+          {[
+            valueLine,
+            'Utvecklad tillsammans med psykolog · 29 års klinisk erfarenhet',
+            ...(product.id !== 'still_us' ? ['Spara barnens svar. Se dem växa — samtal för samtal.'] : []),
+          ].map((text, i) => (
+            <div
+              key={i}
+              style={{
+                display: 'flex',
+                alignItems: 'baseline',
+                gap: '12px',
+                marginTop: i === 0 ? 0 : '16px',
+              }}
+            >
+              <span style={{ color: SAFFRON_FLAME, fontSize: '16px', lineHeight: 1, flexShrink: 0 }}>●</span>
+              <span style={{ fontFamily: 'var(--font-sans)', fontSize: '14px', fontWeight: 400, color: LANTERN_GLOW, lineHeight: 1.5 }}>{text}</span>
+            </div>
+          ))}
+        </div>
 
         {/* GROUP 3 — OFFER */}
         <p
