@@ -15,7 +15,7 @@ import jivImage from '@/assets/illustration-jag-i-varlden.png';
 import illustrationVardag from '@/assets/illustration-vardag.png';
 import illustrationSyskon from '@/assets/illustration-syskon.png';
 import illustrationSexualitet from '@/assets/illustration-sexualitet.png';
-import illustrationStillUs from '@/assets/illustration-still-us.png';
+import illustrationStillUs from '@/assets/illustration-still-us-home.png';
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
