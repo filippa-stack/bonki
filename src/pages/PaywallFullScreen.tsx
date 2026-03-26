@@ -247,6 +247,23 @@ export default function PaywallFullScreen() {
           Utvecklad tillsammans med psykolog · 29 års klinisk erfarenhet
         </p>
 
+        {/* 4b. Journal hook (kids only) */}
+        {product.id !== 'still_us' && (
+          <p
+            style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: '13px',
+              fontStyle: 'italic',
+              color: DRIFTWOOD,
+              textAlign: 'center',
+              margin: 0,
+              marginTop: '8px',
+            }}
+          >
+            Spara barnens svar. Se dem växa — samtal för samtal.
+          </p>
+        )}
+
         {/* 5. Scope */}
         <p
           style={{
