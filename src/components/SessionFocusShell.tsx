@@ -137,8 +137,8 @@ export default function SessionFocusShell({
           justifyContent: 'center',
           width: '100%',
           position: 'relative',
+          overflow: 'hidden',
           padding: '0 16px 12px',
-          paddingTop: '0',
         }}
       >
         {/* Illustration background — fills entire viewport behind the white card */}
