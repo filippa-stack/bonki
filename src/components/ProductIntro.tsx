@@ -292,10 +292,11 @@ export default function ProductIntro({
             style={{
               fontFamily: 'var(--font-sans)',
               fontSize: '15px',
-              color: DRIFTWOOD,
+              color: productAccent,
               textAlign: 'center',
               marginTop: '4px',
               margin: '4px 0 0',
+              opacity: 0.9,
             }}
           >
             {product.tagline}
