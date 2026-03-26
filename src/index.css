@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ── Global minimum font size (15px) for readability ── */
+p, span, a, li, td, th, label,
+button, input, textarea, select,
+summary, figcaption, blockquote, cite,
+dt, dd, legend, caption {
+  font-size: max(15px, 1em);
+}
+/* Exclude icon-only elements and nav labels from the floor */
+svg, [aria-hidden="true"] { font-size: unset; }
 @keyframes skeletonPulse {
   0%, 100% { opacity: 0.5; }
   50% { opacity: 1; }
