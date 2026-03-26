@@ -341,18 +341,6 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
         </div>
       )}
 
-      {/* Subtle gradient scrim behind text only */}
-      <div style={{
-        position: 'absolute',
-        left: 0, bottom: 0,
-        width: '60%',
-        height: '50%',
-        zIndex: 1,
-        pointerEvents: 'none',
-        background: 'linear-gradient(to top right, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.1) 50%, transparent 100%)',
-        borderRadius: 'inherit',
-      }} />
-
       {/* Text — left-aligned, lower-third emphasis */}
       <div style={{
         position: 'absolute',
