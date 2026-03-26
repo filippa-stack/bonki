@@ -27,7 +27,7 @@ export type ActionCardKind =
   | 'session2_active'        // 6: Session 2 in progress / paused
   | 'card_complete'          // 7: Card complete → advance
   | 'tier2_setup'            // 7b: Tier 2 setup intercept
-  | 'ceremony'               // 8: All 22 done
+  | 'ceremony'               // 8: All 20 done
   | 'maintenance'            // 9: Phase 3 maintenance
   | 'partner_locked'         // 9b: Partner locked (free_trial, card > 0)
   | 'migration_pending'      // 10: Migration in progress
