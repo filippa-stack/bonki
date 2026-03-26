@@ -308,16 +308,17 @@ function CategoryTile({
             </div>
             <span
               style={{
-                fontSize: '15px',
+                fontSize: '13px',
                 fontWeight: 600,
                 color: completed > 0 ? SAFFRON_FLAME : '#FFFFFF',
                 opacity: completed > 0 ? 0.9 : 0.7,
                 lineHeight: 1.3,
                 letterSpacing: '0.03em',
+                whiteSpace: 'nowrap',
                 textShadow: `0 1px 4px rgba(0,0,0,0.7)`,
               }}
             >
-              {completed} av {total} samtal
+              {completed}/{total} samtal
             </span>
           </div>
         )}
