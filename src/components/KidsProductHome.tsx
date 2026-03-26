@@ -197,39 +197,9 @@ function CategoryTile({
         transition: 'opacity 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease',
       }}
     >
-      {/* Layer number badge */}
-      {showLayerNumber && (
-        <div
-          style={{
-            position: 'absolute',
-            top: '10px',
-            left: '12px',
-            zIndex: 4,
-            width: '24px',
-            height: '24px',
-            borderRadius: '50%',
-            backgroundColor: isLocked ? 'rgba(0,0,0,0.25)' : 'rgba(0,0,0,0.45)',
-            border: isLocked ? '1px solid rgba(255,255,255,0.08)' : '1px solid rgba(255,255,255,0.25)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            backdropFilter: 'blur(12px)',
-          }}
-        >
-          <span
-            style={{
-              fontFamily: 'var(--font-sans)',
-              fontSize: '13px',
-              fontWeight: 700,
-              color: isLocked ? 'rgba(255,255,255,0.5)' : '#FFFFFF',
-              lineHeight: 1,
-              textShadow: '0 1px 3px rgba(0,0,0,0.8)',
-            }}
-          >
-            {index + 1}
-          </span>
-        </div>
-      )}
+
+      {/* Text overlay — bold text shadow only, no overlay */}
+      {/* (Layer number now inline with title at bottom) */}
 
       {/* Tile illustration layer */}
       {tileImage && (
