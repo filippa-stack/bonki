@@ -200,7 +200,7 @@ export default function PaywallFullScreen() {
           {[
             { text: valueLine, color: LANTERN_GLOW },
             { text: 'Utvecklad tillsammans med psykolog · 29 års klinisk erfarenhet', color: DRIFTWOOD },
-            ...(product.id !== 'still_us' ? [{ text: 'Spara barnens svar. Se dem växa — samtal för samtal.', color: DRIFTWOOD }] : []),
+            ...(product.id !== 'still_us' ? [{ text: 'Spara ditt barns svar. Se dem växa — samtal för samtal.', color: DRIFTWOOD }] : []),
           ].map((row, i) => (
             <div
               key={i}
