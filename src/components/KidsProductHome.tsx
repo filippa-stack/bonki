@@ -208,22 +208,22 @@ function CategoryTile({
             width: '24px',
             height: '24px',
             borderRadius: '50%',
-            backgroundColor: isLocked ? 'rgba(255,255,255,0.10)' : 'rgba(255,255,255,0.22)',
-            border: isLocked ? '1px solid rgba(255,255,255,0.06)' : '1px solid rgba(255,255,255,0.18)',
+            backgroundColor: isLocked ? 'rgba(0,0,0,0.25)' : 'rgba(0,0,0,0.45)',
+            border: isLocked ? '1px solid rgba(255,255,255,0.08)' : '1px solid rgba(255,255,255,0.25)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            backdropFilter: 'blur(8px)',
+            backdropFilter: 'blur(12px)',
           }}
         >
           <span
             style={{
               fontFamily: 'var(--font-sans)',
-              fontSize: '12px',
+              fontSize: '13px',
               fontWeight: 700,
-              color: isLocked ? 'rgba(255,255,255,0.45)' : LANTERN_GLOW,
+              color: isLocked ? 'rgba(255,255,255,0.5)' : '#FFFFFF',
               lineHeight: 1,
-              textShadow: '0 1px 3px rgba(0,0,0,0.5)',
+              textShadow: '0 1px 3px rgba(0,0,0,0.8)',
             }}
           >
             {index + 1}
