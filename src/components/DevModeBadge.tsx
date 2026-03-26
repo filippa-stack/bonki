@@ -68,6 +68,18 @@ const PAGES = [
   { path: '/shared', label: '🤝 Shared Summary' },
   { path: '/shared?devState=archiveWithHistory', label: '📚 Shared w/ History' },
   { path: '/shared?devState=archiveEmpty', label: '🫙 Shared (empty)' },
+  // ── Onboarding & Paywall ──
+  { path: '/?devState=onboarding', label: '👋 Onboarding' },
+  { path: '/unlock', label: '💳 Paywall' },
+  // ── Product Welcome Pages ──
+  { path: '/product/still-us', label: '🏠 Still Us Home' },
+  { path: '/product/jag-i-mig', label: '🏠 Jag i Mig Home' },
+  { path: '/product/jag-med-andra', label: '🏠 Jag med Andra Home' },
+  { path: '/product/jag-i-varlden', label: '🏠 Jag i Världen Home' },
+  { path: '/product/vardagskort', label: '🏠 Vardagskort Home' },
+  { path: '/product/syskonkort', label: '🏠 Syskonkort Home' },
+  { path: '/product/sexualitetskort', label: '🏠 Sexualitetskort Home' },
+  // ── Categories ──
   { path: '/category/emotional-intimacy', label: '📂 Emotional Intimacy' },
   { path: '/category/communication', label: '📂 Communication' },
   { path: '/category/daily-life', label: '📂 Daily Life' },
@@ -78,14 +90,10 @@ const PAGES = [
   { path: '/category/category-8', label: '📂 Category 8' },
   { path: '/category/category-9', label: '📂 Category 9' },
   { path: '/category/category-10', label: '📂 Category 10' },
+  // ── Cards ──
   { path: '/card/smallest-we', label: '🃏 Card: smallest-we' },
   { path: '/card/listening-presence', label: '🃏 Card: listening-presence' },
-  { path: '/product/jag-i-mig', label: '🎴 Jag i Mig' },
-  { path: '/product/jag-med-andra', label: '🎴 Jag med Andra' },
-  { path: '/product/jag-i-varlden', label: '🎴 Jag i Världen' },
-  { path: '/product/vardagskort', label: '🎴 Vardagskort' },
-  { path: '/product/syskonkort', label: '🎴 Syskonkort' },
-  { path: '/product/sexualitetskort', label: '🎴 Sexualitetskort' },
+  // ── Diary ──
   { path: '/diary/jag_i_mig', label: '📖 Dagbok: JIM' },
   { path: '/diary/jag_med_andra', label: '📖 Dagbok: JMA' },
   { path: '/diary/jag_i_varlden', label: '📖 Dagbok: JIV' },
