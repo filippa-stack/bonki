@@ -2723,9 +2723,9 @@ export default function CardView() {
                 draggable={false}
                 style={{
                   position: 'absolute',
-                  inset: '-10%',
-                  width: '120%',
-                  height: '120%',
+                  inset: '-22%',
+                  width: '144%',
+                  height: '144%',
                   objectFit: 'contain',
                   objectPosition: '50% 45%',
                   opacity: 0.7,
