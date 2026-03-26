@@ -201,7 +201,7 @@ export default function ProductIntro({
               height: '100%',
               objectFit: 'cover',
               objectPosition: 'center 30%',
-              opacity: 0.38,
+              opacity: 0.5,
               filter: 'brightness(1.15) saturate(0.95)',
             }}
           />
@@ -260,7 +260,7 @@ export default function ProductIntro({
         }}
       >
         {/* Spacer to push content below illustration zone */}
-        <div style={{ flex: '0 0 30%' }} />
+        <div style={{ flex: '0 0 24%' }} />
 
         {/* 2. Welcome header */}
         <motion.h1
