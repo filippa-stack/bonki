@@ -341,14 +341,15 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
         </div>
       )}
 
-      {/* Gradient scrim behind text for readability */}
+      {/* Subtle gradient scrim behind text only */}
       <div style={{
         position: 'absolute',
-        left: 0, bottom: 0, top: 0,
-        width: '70%',
+        left: 0, bottom: 0,
+        width: '60%',
+        height: '50%',
         zIndex: 1,
         pointerEvents: 'none',
-        background: 'linear-gradient(to right, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.2) 60%, transparent 100%)',
+        background: 'linear-gradient(to top right, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.1) 50%, transparent 100%)',
         borderRadius: 'inherit',
       }} />
 
