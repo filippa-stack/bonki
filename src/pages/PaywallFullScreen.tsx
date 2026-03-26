@@ -180,47 +180,32 @@ export default function PaywallFullScreen() {
           padding: '0 24px',
         }}
       >
-        {/* 1. Completion echo */}
-        <p
-          style={{
-            fontFamily: 'var(--font-sans)',
-            fontSize: '14px',
-            color: DRIFTWOOD,
-            textAlign: 'center',
-            margin: 0,
-          }}
-        >
-          Ert första samtal — klart.
-        </p>
-
-        {/* 2. Product name */}
+        {/* GROUP 1 — HERO */}
         <h1
           style={{
             fontFamily: 'var(--font-display)',
-            fontVariationSettings: "'opsz' 28",
-            fontSize: '28px',
+            fontVariationSettings: "'opsz' 32",
+            fontSize: '32px',
             fontWeight: 600,
             color: LANTERN_GLOW,
             textAlign: 'center',
             margin: 0,
-            marginTop: '12px',
             lineHeight: 1.2,
           }}
         >
           {product.name}
         </h1>
 
-        {/* 3. Value line */}
         {valueLine && (
           <p
             style={{
               fontFamily: 'var(--font-sans)',
-              fontSize: '16px',
+              fontSize: '17px',
               fontWeight: 400,
               color: LANTERN_GLOW,
               textAlign: 'center',
               margin: 0,
-              marginTop: '16px',
+              marginTop: '20px',
               lineHeight: 1.5,
               display: '-webkit-box',
               WebkitLineClamp: 2,
@@ -232,7 +217,7 @@ export default function PaywallFullScreen() {
           </p>
         )}
 
-        {/* 4. Credibility */}
+        {/* GROUP 2 — TRUST */}
         <p
           style={{
             fontFamily: 'var(--font-sans)',
@@ -241,13 +226,12 @@ export default function PaywallFullScreen() {
             color: DRIFTWOOD,
             textAlign: 'center',
             margin: 0,
-            marginTop: '12px',
+            marginTop: '32px',
           }}
         >
           Utvecklad tillsammans med psykolog · 29 års klinisk erfarenhet
         </p>
 
-        {/* 4b. Journal hook (kids only) */}
         {product.id !== 'still_us' && (
           <p
             style={{
@@ -257,28 +241,14 @@ export default function PaywallFullScreen() {
               color: DRIFTWOOD,
               textAlign: 'center',
               margin: 0,
-              marginTop: '8px',
+              marginTop: '6px',
             }}
           >
             Spara barnens svar. Se dem växa — samtal för samtal.
           </p>
         )}
 
-        {/* 5. Scope */}
-        <p
-          style={{
-            fontFamily: 'var(--font-sans)',
-            fontSize: '13px',
-            color: DRIFTWOOD,
-            textAlign: 'center',
-            margin: 0,
-            marginTop: '20px',
-          }}
-        >
-          {totalCards} samtal · {totalCategories} kategorier · Engångsköp
-        </p>
-
-        {/* 6. Price */}
+        {/* GROUP 3 — OFFER */}
         <p
           onMouseDown={handlePricePressStart}
           onMouseUp={handlePricePressEnd}
@@ -287,20 +257,19 @@ export default function PaywallFullScreen() {
           onTouchEnd={handlePricePressEnd}
           style={{
             fontFamily: 'var(--font-display)',
-            fontVariationSettings: "'opsz' 32",
-            fontSize: '32px',
+            fontVariationSettings: "'opsz' 36",
+            fontSize: '36px',
             fontWeight: 600,
             color: SAFFRON_FLAME,
             textAlign: 'center',
             margin: 0,
-            marginTop: '24px',
+            marginTop: '40px',
             cursor: 'default',
           }}
         >
           {priceSek !== null ? `${priceSek} kr` : '…'}
         </p>
 
-        {/* 7. Trust line */}
         <p
           style={{
             fontFamily: 'var(--font-sans)',
@@ -311,10 +280,10 @@ export default function PaywallFullScreen() {
             marginTop: '8px',
           }}
         >
-          Engångsköp · Ingen prenumeration · Tillgång för alltid
+          {totalCards} samtal · Engångsköp · Tillgång för alltid
         </p>
 
-        {/* 8. CTA */}
+        {/* GROUP 4 — ACTION */}
         <button
           onClick={handlePurchase}
           disabled={loading}
