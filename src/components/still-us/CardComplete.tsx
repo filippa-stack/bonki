@@ -10,6 +10,7 @@ import { EASE, EMOTION } from '@/lib/motion';
 import { COLORS, cardIdFromSlug } from '@/lib/stillUsTokens';
 import { advanceCard, buildSliderAnchors } from '@/lib/stillUsRpc';
 import { getGorExercise } from '@/data/gorExercises';
+import { cards } from '@/data/content';
 
 type Phase = 'takeaway' | 'handoff' | 'partner_writing' | 'committing';
 
@@ -53,7 +54,7 @@ export default function CardComplete({
   const [handoffReady, setHandoffReady] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const weekNumber = cardIndex + 1;
-  const gorExercise = getGorExercise(cardIndex);
+  const gorExercise = getGorExercise(cards[cardIndex]?.id ?? '');
 
   // 3-second safety delay for handoff
   useEffect(() => {
