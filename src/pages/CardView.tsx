@@ -2677,12 +2677,14 @@ export default function CardView() {
             flex: '0 0 auto',
             height: '56px',
             marginTop: 'env(safe-area-inset-top, 0px)',
-            backgroundColor: product?.backgroundColor ?? MIDNIGHT_INK,
+            background: `linear-gradient(180deg, ${product?.backgroundColor ?? MIDNIGHT_INK} 0%, ${product?.backgroundColor ?? MIDNIGHT_INK}cc 70%, transparent 100%)`,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
             paddingLeft: '4px',
             paddingRight: '4px',
+            position: 'relative',
+            zIndex: 10,
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
               <button
@@ -2751,7 +2753,8 @@ export default function CardView() {
             justifyContent: 'center',
             position: 'relative',
             overflow: 'hidden',
-            padding: '12px 16px',
+            padding: '0 16px 12px',
+            paddingTop: '0',
           }}>
             {/* Illustration background — fills entire viewport behind the white card */}
             {cardImageUrl && (
@@ -2765,7 +2768,7 @@ export default function CardView() {
                   width: '140%',
                   height: '140%',
                   objectFit: 'cover',
-                  objectPosition: '50% 40%',
+                  objectPosition: '50% 50%',
                   opacity: 0.7,
                   pointerEvents: 'none',
                   zIndex: 0,

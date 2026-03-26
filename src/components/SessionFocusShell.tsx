@@ -138,7 +138,7 @@ export default function SessionFocusShell({
           width: '100%',
           position: 'relative',
           overflow: 'hidden',
-          padding: '12px 16px',
+          padding: '0 16px 12px',
         }}
       >
         {/* Illustration background — fills entire viewport behind the white card */}
@@ -152,7 +152,7 @@ export default function SessionFocusShell({
               width: '140%',
               height: '140%',
               objectFit: 'cover',
-              objectPosition: '50% 40%',
+              objectPosition: '50% 50%',
               opacity: 0.7,
               pointerEvents: 'none',
               zIndex: 0,
