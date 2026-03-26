@@ -2254,9 +2254,9 @@ export default function CardView() {
           </div>
         }
         topSlot={
-          <div style={{
+           <div style={{
             width: '100%',
-            backgroundColor: MIDNIGHT_INK_A,
+            background: `linear-gradient(180deg, ${MIDNIGHT_INK_A} 0%, ${MIDNIGHT_INK_A}cc 70%, transparent 100%)`,
             paddingTop: 'env(safe-area-inset-top, 0px)',
           }}>
             <div style={{
@@ -2448,7 +2448,7 @@ export default function CardView() {
           topSlot={
             <div style={{
               width: '100%',
-              backgroundColor: product?.backgroundColor ?? MIDNIGHT_INK_LOCAL,
+              background: `linear-gradient(180deg, ${product?.backgroundColor ?? MIDNIGHT_INK_LOCAL} 0%, ${product?.backgroundColor ?? MIDNIGHT_INK_LOCAL}cc 70%, transparent 100%)`,
               paddingTop: 'env(safe-area-inset-top, 0px)',
             }}>
               {/* Nav bar — 52px */}
