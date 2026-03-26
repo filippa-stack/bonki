@@ -454,10 +454,6 @@ h1, h2, h3,
       inset 0 -1px 4px rgba(0, 0, 0, 0.08);
   }
 
-/* ── Global minimum font size for readability ── */
-* {
-  font-size: max(var(--_fs, inherit), 15px);
-}
 
   .row-bloom::before {
     content: '';
