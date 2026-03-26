@@ -124,6 +124,8 @@ export default function ProductIntro({
   const creatureImage = PRODUCT_ILLUSTRATION[productId];
   const shortIntro = SHORT_INTROS[productId] ?? '';
   const isSexualitet = productId === 'sexualitetskort';
+  const tileColors = productTileColors[productId];
+  const productAccent = tileColors?.tileLight ?? BONKI_ORANGE;
 
   // Full body text from productIntros data
   const fullBodyText = introData.slides.map((s) => s.body).join('\n\n');
