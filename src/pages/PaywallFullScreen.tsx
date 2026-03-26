@@ -63,7 +63,6 @@ export default function PaywallFullScreen() {
   }
 
   const totalCards = product.cards.length;
-  const totalCategories = product.categories.length;
   const valueLine = VALUE_LINES[product.id] ?? '';
 
   const handlePurchase = async () => {
