@@ -697,12 +697,13 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <p style={{
                       fontFamily: 'var(--font-sans)',
-                      fontSize: '9px',
-                      fontWeight: 600,
+                      fontSize: '15px',
+                      fontWeight: 700,
                       letterSpacing: '0.1em',
                       textTransform: 'uppercase',
-                      color: DRIFTWOOD,
+                      color: LANTERN_GLOW,
                       marginBottom: '3px',
+                      textShadow: '0 1px 3px rgba(0,0,0,0.5)',
                     }}>
                       Fortsätt där ni slutade
                     </p>
