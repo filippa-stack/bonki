@@ -2349,6 +2349,18 @@ export default function CardView() {
   // ─────────────────────────────────────────────────────────────
   if (isStillUsFocusMode && currentSection) {
     const sectionPromptCount = getEffectivePromptCount(currentSection);
+    if (cardId === 'su-intro') {
+      console.log('[su-intro-debug]', {
+        sectionPromptCount,
+        localPromptIndex,
+        currentStepIndex,
+        effectiveStepsLength: effectiveSteps.length,
+        sectionType: currentSection?.type,
+        promptsLength: currentSection?.prompts?.length,
+        isLastPromptInStage: localPromptIndex >= sectionPromptCount - 1,
+        productId: product?.id,
+      });
+    }
     const isLastPromptInStage = localPromptIndex >= sectionPromptCount - 1;
     const isLastStage = currentStepIndex >= effectiveSteps.length - 1;
     const currentStageKey = effectiveSteps[currentStepIndex];
@@ -2399,7 +2411,7 @@ export default function CardView() {
       <>
         {_devDebug}
         <SessionFocusShell
-          key={`focus-${currentStepIndex}-${localPromptIndex}`}
+          key={`focus-${currentStepIndex}`}
           productBgColor={product?.backgroundColor}
           illustrationSrc={cardImageUrl}
           onExit={() => setShowLeaveConfirm(true)}
