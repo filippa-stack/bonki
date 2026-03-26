@@ -59,8 +59,8 @@ export default function Onboarding() {
           alt=""
           aria-hidden
           style={{
-            width: '260px',
-            height: '260px',
+            width: '200px',
+            height: 'auto',
             objectFit: 'contain',
             opacity: 0.88,
             filter: 'brightness(1.15) saturate(1.1)',
@@ -140,7 +140,7 @@ export default function Onboarding() {
           {...fadeUp(0.75)}
           style={{
             fontFamily: 'var(--font-sans)',
-            fontSize: '15px',
+            fontSize: '16px',
             color: '#FDF6E3',
             lineHeight: 1.55,
             opacity: 0.8,
