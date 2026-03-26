@@ -148,9 +148,9 @@ export default function SessionFocusShell({
             alt=""
             style={{
               position: 'absolute',
-              inset: '-22%',
-              width: '144%',
-              height: '144%',
+              inset: '-32%',
+              width: '164%',
+              height: '164%',
               objectFit: 'contain',
               objectPosition: '50% 45%',
               opacity: 0.7,
