@@ -2,6 +2,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { House, BookOpen } from 'lucide-react';
 import { MIDNIGHT_INK, BONKI_ORANGE, DRIFTWOOD } from '@/lib/palette';
+import { useApp } from '@/contexts/AppContext';
 
 /** Two small circles leaning toward each other — Still Us icon */
 function StillUsIcon({ style }: { style?: React.CSSProperties }) {
@@ -70,10 +71,16 @@ const items: NavItem[] = [
 export default function BottomNav() {
   const navigate = useNavigate();
   const { pathname, search } = useLocation();
+  const { hasCompletedOnboarding } = useApp();
+
+  // Hide during onboarding
+  if (!hasCompletedOnboarding) return null;
 
   // Hide during active sessions (card sessions, Still Us sessions)
   // Show on /card/ when viewing archive or completed session
   const params = new URLSearchParams(search);
+  const isOnboarding = params.get('devState') === 'onboarding';
+  if (isOnboarding) return null;
   const isCardArchiveOrComplete = params.get('from') === 'archive' || params.get('view') === 'completed';
   if (pathname.startsWith('/card/') && !isCardArchiveOrComplete) return null;
   if (pathname.startsWith('/check-in/')) return null;

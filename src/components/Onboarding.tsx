@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { useApp } from '@/contexts/AppContext';
 import { trackOnboardingEvent } from '@/lib/trackOnboarding';
-import bonkiLogo from '@/assets/bonki-logo.png';
+import bonkiLogo from '@/assets/bonki-logo-transparent.png';
 
 const EASE: [number, number, number, number] = [0.4, 0.0, 0.2, 1];
 
@@ -131,9 +131,24 @@ export default function Onboarding() {
             height: '1.5px',
             backgroundColor: 'hsla(40, 78%, 61%, 0.35)',
             marginTop: '20px',
-            marginBottom: '20px',
+            marginBottom: '16px',
           }}
         />
+
+        {/* Body text */}
+        <motion.p
+          {...fadeUp(0.75)}
+          style={{
+            fontFamily: 'var(--font-sans)',
+            fontSize: '15px',
+            color: '#FDF6E3',
+            lineHeight: 1.55,
+            opacity: 0.8,
+            margin: 0,
+          }}
+        >
+          Bonki hjälper er prata — med varandra, med era barn, och om det som är svårt att hitta ord för. Ett samtal i taget.
+        </motion.p>
       </div>
 
       {/* ── Single CTA ── */}
