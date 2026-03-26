@@ -2712,7 +2712,7 @@ export default function CardView() {
             alignItems: 'center',
             justifyContent: 'center',
             position: 'relative',
-            overflow: 'hidden',
+            overflow: 'visible',
             padding: '12px 16px',
           }}>
             {/* Illustration background — behind the white card */}
