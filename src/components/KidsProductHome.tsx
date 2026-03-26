@@ -545,6 +545,20 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
         </motion.div>
       )}
 
+      {/* ── Top scrim for header text readability ── */}
+      <div
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          height: '28vh',
+          background: `linear-gradient(to bottom, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.15) 50%, transparent 100%)`,
+          zIndex: 1,
+          pointerEvents: 'none',
+        }}
+      />
+
       {/* ── Content ── */}
       <div
         style={{
