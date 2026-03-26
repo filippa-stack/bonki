@@ -130,14 +130,16 @@ export default function SessionFocusShell({
       {/* Main content area — illustration bg + white card */}
       <div
         style={{
-          flex: '1 1 auto',
+          flex: '1 1 0',
+          minHeight: 0,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
           width: '100%',
           position: 'relative',
-          overflow: 'visible',
+          overflowY: 'auto',
+          overflowX: 'hidden',
           padding: '12px 16px',
         }}
       >
