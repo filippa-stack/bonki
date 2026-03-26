@@ -300,19 +300,7 @@ export default function KidsCardPortal() {
         >
           {category.title}
         </span>
-        <span
-          style={{
-            fontFamily: 'var(--font-sans)',
-            fontSize: '12px',
-            fontWeight: 600,
-            color: LANTERN_GLOW,
-            opacity: 0.5,
-            minWidth: '28px',
-            textAlign: 'right',
-          }}
-        >
-          {currentIndex + 1}/{categoryCards.length}
-        </span>
+        <div style={{ width: '28px' }} />
       </div>
 
       {/* ═══ Main area ═══ */}
