@@ -28,7 +28,7 @@ export const productIntros: Record<string, ProductIntroData> = {
     slides: [
       {
         heading: 'Välkommen till Still Us',
-        body: 'Ni pratar varje dag. Om hämtningen, middagen, helgen. Men när pratade ni senast med varandra — på riktigt?\n\nStill Us är för par som fortfarande fungerar, men som märkt att något tystnat. Korten tar er förbi det praktiska och in i det som finns under.\n\nInget kan göras ensam. Varje kort kräver er båda. Det här är inte terapi — det är det samtal ni redan vill ha, men inte hittar vägen in till.',
+        body: 'Ni pratar varje dag. Om hämtningen, middagen, helgen. Men när pratade ni senast med varandra — på riktigt?\n\nStill Us är för par som fortfarande fungerar, men som märkt att något tystnat. Samtalen tar er förbi det praktiska och in i det som finns under.\n\nInget kan göras ensam. Varje samtal kräver er båda. Det här är inte terapi — det är det samtal ni redan vill ha, men inte hittar vägen in till.',
       },
     ],
     ctaLabel: 'Börja utforska',
@@ -41,7 +41,7 @@ export const productIntros: Record<string, ProductIntroData> = {
       {
         heading: 'Välkommen till\nJag i Mig',
         body: 'Det här är ett samtal om vem ditt barn är — just nu, idag. Inte den som svarar "bra" på hur var din dag. Utan den riktiga. Den som har en favoritkänsla, en hemlig rädsla, en dröm som ingen frågat om än.\n\nFrågorna är enkla. Ditt enda jobb är att lyssna.',
-        signoff: 'Välj ett kort, hitta en lugn stund, och låt samtalet ta er dit det vill.',
+        signoff: 'Välj ett samtal, hitta en lugn stund, och låt det ta er dit det vill.',
       },
     ],
     ctaLabel: 'Sätt igång',
@@ -53,7 +53,7 @@ export const productIntros: Record<string, ProductIntroData> = {
     slides: [
       {
         heading: 'Välkommen till\nJag med Andra',
-        body: 'Ditt barn har börjat titta utåt. Kompisarna har blivit viktigare, blickarna fler, och frågor som förut var enkla — vem får vara med, vad är rättvist, vem bestämmer — har plötsligt blivit på riktigt.\n\nDet här är kort för den ålder där man börjar förstå att andra också har en insida. Att mod inte alltid syns. Att skam kan göra att man blir tyst. Frågorna har inga rätta svar — de är till för att öppna det som sällan får plats i vardagen.',
+        body: 'Ditt barn har börjat titta utåt. Kompisarna har blivit viktigare, blickarna fler, och frågor som förut var enkla — vem får vara med, vad är rättvist, vem bestämmer — har plötsligt blivit på riktigt.\n\nDet här är samtal för den ålder där man börjar förstå att andra också har en insida. Att mod inte alltid syns. Att skam kan göra att man blir tyst. Frågorna har inga rätta svar — de är till för att öppna det som sällan får plats i vardagen.',
         signoff: 'Hoppa över det som inte passar. Stanna kvar där det blir intressant.',
       },
     ],
@@ -79,7 +79,7 @@ export const productIntros: Record<string, ProductIntroData> = {
     slides: [
       {
         heading: 'Välkommen till Vardag',
-        body: 'Morgonstressen. Middagen. Läggdagsbråket. Det är lätt att vardagen bara händer — utan att ni stannar upp och pratar om hur den egentligen ser ut för var och en.\n\nDet här är kort för alla de små sakerna som bygger en familj. Frågorna är inte djupa på det komplicerade sättet — de är djupa på det vardagliga sättet. Som att ta reda på vad ditt barn faktiskt tänkte på vägen hem.',
+        body: 'Morgonstressen. Middagen. Läggdagsbråket. Det är lätt att vardagen bara händer — utan att ni stannar upp och pratar om hur den egentligen ser ut för var och en.\n\nDet här är samtal för alla de små sakerna som bygger en familj. Frågorna är inte djupa på det komplicerade sättet — de är djupa på det vardagliga sättet. Som att ta reda på vad ditt barn faktiskt tänkte på vägen hem.',
         signoff: 'Perfekt för middagsbordet, bilen, eller en söndag som behöver lite mer av varandra.',
       },
     ],
@@ -104,7 +104,7 @@ export const productIntros: Record<string, ProductIntroData> = {
     slides: [
       {
         heading: 'Välkommen till Sexualitet',
-        body: 'Det här handlar om det som de flesta tycker är svårt att prata om — och som därför behöver pratas om mest.\n\nKorten tar upp kropp, samtycke, normer, gränser, identitet och känslor kopplade till sex och sexualitet — utan att moralisera. Syftet är inte att tala om rätt eller fel, utan att ge utrymme att tänka, fråga och formulera var du står.',
+        body: 'Det här handlar om det som de flesta tycker är svårt att prata om — och som därför behöver pratas om mest.\n\nSamtalen tar upp kropp, samtycke, normer, gränser, identitet och känslor kopplade till sex och sexualitet — utan att moralisera. Syftet är inte att tala om rätt eller fel, utan att ge utrymme att tänka, fråga och formulera var du står.',
         signoff: 'Hoppa över det som inte passar just nu. Den finns kvar.',
       },
     ],
