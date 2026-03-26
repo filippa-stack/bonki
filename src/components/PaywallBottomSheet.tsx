@@ -276,7 +276,7 @@ export default function PaywallBottomSheet({
                     marginTop: '8px',
                   }}
                 >
-                  Spara barnens svar. Se dem växa — samtal för samtal.
+                  Spara ditt barns svar. Se dem växa — samtal för samtal.
                 </p>
               )}
 
