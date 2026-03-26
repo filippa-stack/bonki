@@ -1,5 +1,5 @@
 /**
- * Preview texts for all 22 Still Us cards.
+ * Preview texts for all 20 Still Us cards.
  * Shown on the card preview screen between category list and session start.
  * Each entry is an array of 3 paragraphs.
  */
