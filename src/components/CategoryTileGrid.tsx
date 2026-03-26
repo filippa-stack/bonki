@@ -202,7 +202,7 @@ function CategoryTile({
             lineHeight: 1.3,
             marginTop: '3px',
             display: 'block',
-            textShadow: 'none',
+            textShadow: '0 1px 3px rgba(0,0,0,0.8), 0 2px 6px rgba(0,0,0,0.5)',
           }}
         >
           {tile.sub}
