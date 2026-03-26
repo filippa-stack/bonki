@@ -759,13 +759,17 @@ export default function ProductLibrary() {
                 }}>
                   <span style={{
                     fontFamily: "var(--font-body)",
-                    fontSize: '10px',
-                    fontWeight: 500,
+                    fontSize: '11px',
+                    fontWeight: 600,
                     letterSpacing: '0.04em',
-                    color: 'hsla(0, 0%, 100%, 0.60)',
-                    background: 'hsla(0, 0%, 0%, 0.06)',
-                    borderRadius: '12px',
-                    padding: '3px 10px',
+                    color: 'hsla(0, 0%, 100%, 0.9)',
+                    background: 'hsla(0, 0%, 100%, 0.15)',
+                    backdropFilter: 'blur(8px)',
+                    WebkitBackdropFilter: 'blur(8px)',
+                    border: '1px solid hsla(0, 0%, 100%, 0.25)',
+                    borderRadius: '20px',
+                    padding: '4px 12px',
+                    boxShadow: '0 0 12px hsla(0, 0%, 100%, 0.08), inset 0 1px 0 hsla(0, 0%, 100%, 0.15)',
                   }}>
                     ✦ Samtal 1 gratis
                   </span>
