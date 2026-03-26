@@ -385,7 +385,7 @@ export default function Home() {
         {/* Spacer */}
         <div style={{ height: 'clamp(24px, 6vh, 48px)' }} />
 
-        {/* ── Zone 3: Journey Progress (22 dots) ── */}
+        {/* ── Zone 3: Journey Progress (20 dots) ── */}
         <motion.div
           initial={REDUCED ? false : { opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -571,7 +571,7 @@ function ActionCard({
 
   const handleRestart = async () => {
     const confirmed = window.confirm(
-      'Vill ni verkligen börja om hela resan? Alla 22 veckor börjar från början.'
+      'Vill ni verkligen börja om hela resan? Alla 20 veckor börjar från början.'
     );
     if (!confirmed) return;
     try {
@@ -1010,7 +1010,7 @@ function ActionCard({
     case 'ceremony':
       label = 'PROGRAMMET KLART';
       title = 'Ni har gått hela vägen.';
-      body = '22 veckor av samtal — det är stort.';
+      body = '20 veckor av samtal — det är stort.';
       ctaLabel = 'Se er resa';
       ctaAction = 'ceremony';
       isAccent = true;

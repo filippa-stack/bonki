@@ -1,5 +1,5 @@
 /**
- * Preview texts for all 22 Still Us cards.
+ * Preview texts for all 20 Still Us cards.
  * Shown on the card preview screen between category list and session start.
  * Each entry is an array of 3 paragraphs.
  */
@@ -69,11 +69,6 @@ export const CARD_PREVIEW_TEXTS: Record<string, string[]> = {
     'Ni delar förmodligen de stora sakerna. Men vardagen består inte av stora saker. Den består av hundra små val där era värderingar glider isär en millimeter i taget.',
     'Det här samtalet handlar om var era vardagliga val pekar. Inte era uttalade värderingar — era faktiska.',
   ],
-  'family-voices': [
-    'Varje relation rymmer fler röster än två. Hur din mamma pratade med din pappa. Vad som sades — och inte sades — vid köksbordet hemma. Vilken typ av kärlek du lärde dig att förvänta dig, och vilken typ du lärde dig att tolerera.',
-    'Samma sak för din partner. Andra röster. Andra mönster. Andra definitioner av vad en familj är.',
-    'Det här samtalet handlar om vilka röster ni bär med er — och vilka ni vill att ert eget hem ska låta som.',
-  ],
   'our-traditions': [
     'Julen. Födelsedagar. Söndagar. Semester. Hur man firar. Hur man sörjer. Vem man ringer först.',
     'Ni kommer från olika familjer med olika sätt att göra saker på. Och nu ska ni bygga ett gemensamt sätt — ofta utan att ha pratat igenom det, bara genom att den som agerar först sätter normen.',
@@ -93,11 +88,6 @@ export const CARD_PREVIEW_TEXTS: Record<string, string[]> = {
     'Pengar, tid, energi — det finns aldrig tillräckligt av något av det. Och hur ni fördelar det som finns avslöjar mer om er än ni kanske tror.',
     'En av er sparar som trygghet. En spenderar som frihet. En av er investerar i hemmet. En i upplevelser. Det är sällan en konflikt om siffror. Det är en konflikt om vad som gör livet värt att leva — och att ni definierar det olika.',
     'Det här samtalet handlar om var ni lägger det som är ändligt. Och vad det säger om vad ni faktiskt värderar.',
-  ],
-  'risk-under-responsibility': [
-    'Att vara ansvarig för barn gör något med relationen till risk. En av er blev försiktigare. En av er kämpar mot känslan av att allt krympt.',
-    'Det är inte alltid pengar. Det kan vara karriärbyte. Flytt. Att säga upp sig. Att starta något. Att våga en sak som bara är för en av er — men som påverkar båda.',
-    'Det här samtalet handlar om hur ni förhåller er till mod och trygghet. Var gränsen går. Och vem som bestämmer var den går.',
   ],
   'adrift': [
     'Det började inte med en händelse. Det var inte ett bråk, inte en kris, inte ett svek. Det var bara att vardagen tog allt utrymme, och det som fanns mellan er — det specifika, det som bara var ert — fick aldrig syre.',

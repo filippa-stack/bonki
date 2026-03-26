@@ -81,7 +81,7 @@ export default function JourneyPreview() {
             lineHeight: 1.5,
           }}
         >
-          22 samtal. 4 lager. En rörelse från det trygga till det modiga.
+          20 samtal. 4 lager. En rörelse från det trygga till det modiga.
         </p>
       </div>
 

@@ -1,9 +1,9 @@
 /**
- * Still Us v3.0 — Canonical 22-card sequence & phase constants.
+ * Still Us v3.0 — Canonical 20-card sequence & phase constants.
  * Cards are delivered in this exact clinical order. No user choice.
  */
 
-export const TOTAL_PROGRAM_CARDS = 22;
+export const TOTAL_PROGRAM_CARDS = 20;
 export const FREE_TRIAL_CARDS = 1; // Card 0 is free
 export const TOTAL_TILLBAKA_CARDS = 12;
 export const RESTART_MIN_TILLBAKA = 4;
@@ -12,20 +12,20 @@ export const RESTART_MIN_TILLBAKA = 4;
 export const LAYERS = [
   { id: 'layer-1', name: 'Vardagen', cards: [0, 1, 2, 3] },
   { id: 'layer-2', name: 'Tillsammans', cards: [4, 5, 6, 7, 8, 9] },
-  { id: 'layer-3', name: 'Grunden', cards: [10, 11, 12, 13, 14, 15, 16] },
-  { id: 'layer-4', name: 'Riktningen', cards: [17, 18, 19, 20, 21] },
+  { id: 'layer-3', name: 'Grunden', cards: [10, 11, 12, 13, 14, 15] },
+  { id: 'layer-4', name: 'Riktningen', cards: [16, 17, 18, 19] },
 ] as const;
 
 /** Slider check-in phase progression */
 export type SliderPhase = 'A' | 'B' | 'C';
 
 export function getSliderPhase(cardIndex: number): SliderPhase {
-  if (cardIndex <= 6) return 'A';   // Cards 0-6: sliders only
-  if (cardIndex <= 14) return 'B';  // Cards 7-14: sliders + reflection
-  return 'C';                        // Cards 15-21: sliders + deeper reflection
+  if (cardIndex <= 5) return 'A';   // Cards 0-5: sliders only
+  if (cardIndex <= 12) return 'B';  // Cards 6-12: sliders + reflection
+  return 'C';                        // Cards 13-19: sliders + deeper reflection
 }
 
-/** The canonical 22-card order — card IDs mapped to index */
+/** The canonical 20-card order — card IDs mapped to index */
 export const CARD_SEQUENCE: { index: number; cardId: string; title: string; layerIndex: number }[] = [
   { index: 0, cardId: 'su-01-smallest-we', title: 'Ert minsta "vi"', layerIndex: 0 },
   { index: 1, cardId: 'su-02-family-ab', title: 'När ert "vi" blir "Familjen AB"', layerIndex: 0 },
@@ -40,15 +40,13 @@ export const CARD_SEQUENCE: { index: number; cardId: string; title: string; laye
   { index: 10, cardId: 'su-11-inherited-parenting', title: 'Uppfostran ni ärvt', layerIndex: 2 },
   { index: 11, cardId: 'su-12-boundaries', title: 'Att säga ifrån', layerIndex: 2 },
   { index: 12, cardId: 'su-13-values', title: 'Mina, dina, era värderingar', layerIndex: 2 },
-  { index: 13, cardId: 'su-14-family-voices', title: 'Röster från släkten', layerIndex: 2 },
-  { index: 14, cardId: 'su-15-traditions', title: 'Mina, dina, era traditioner', layerIndex: 2 },
-  { index: 15, cardId: 'su-16-philosophy', title: 'Er filosofi', layerIndex: 2 },
-  { index: 16, cardId: 'su-17-life-tilts', title: 'När livet lutar', layerIndex: 2 },
-  { index: 17, cardId: 'su-18-worth-spending', title: 'Värt att spendera på', layerIndex: 3 },
-  { index: 18, cardId: 'su-19-risk', title: 'Risk under ansvar', layerIndex: 3 },
-  { index: 19, cardId: 'su-20-adrift', title: 'På drift', layerIndex: 3 },
-  { index: 20, cardId: 'su-21-love-languages', title: 'Kärleksspråk', layerIndex: 3 },
-  { index: 21, cardId: 'su-22-choosing', title: 'Att fortsätta välja', layerIndex: 3 },
+  { index: 13, cardId: 'su-14-traditions', title: 'Mina, dina, era traditioner', layerIndex: 2 },
+  { index: 14, cardId: 'su-15-philosophy', title: 'Er filosofi', layerIndex: 2 },
+  { index: 15, cardId: 'su-16-life-tilts', title: 'När livet lutar', layerIndex: 2 },
+  { index: 16, cardId: 'su-17-worth-spending', title: 'Värt att spendera på', layerIndex: 3 },
+  { index: 17, cardId: 'su-18-adrift', title: 'På drift', layerIndex: 3 },
+  { index: 18, cardId: 'su-19-att-na-fram', title: 'Att nå fram', layerIndex: 3 },
+  { index: 19, cardId: 'su-20-choosing', title: 'Att fortsätta välja', layerIndex: 3 },
 ];
 
 /** Stale card thresholds */
