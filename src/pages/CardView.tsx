@@ -2303,6 +2303,7 @@ export default function CardView() {
   }
 
   const exitBackTo = isFromArchive ? '/shared' : (
+    product && category ? `/product/${product.slug}/portal/${category.id}` :
     product ? `/product/${product.slug}` : '/'
   );
 
