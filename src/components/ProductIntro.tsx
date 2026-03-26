@@ -296,7 +296,6 @@ export default function ProductIntro({
               textAlign: 'center',
               marginTop: '4px',
               margin: '4px 0 0',
-              opacity: 0.9,
             }}
           >
             {product.tagline}
@@ -316,7 +315,7 @@ export default function ProductIntro({
               style={{
                 fontFamily: 'var(--font-sans)',
                 fontSize: '15px',
-                color: `${LANTERN_GLOW}D9`,
+                color: LANTERN_GLOW,
                 textAlign: 'center',
                 lineHeight: 1.55,
                 marginTop: i === 0 ? 0 : '10px',
@@ -332,7 +331,7 @@ export default function ProductIntro({
                 fontFamily: 'var(--font-serif)',
                 fontStyle: 'italic',
                 fontSize: '14px',
-                color: `${LANTERN_GLOW}CC`,
+                color: `${LANTERN_GLOW}E6`,
                 textAlign: 'center',
                 marginTop: '14px',
               }}
@@ -346,7 +345,7 @@ export default function ProductIntro({
                 fontFamily: 'var(--font-serif)',
                 fontStyle: 'italic',
                 fontSize: '14px',
-                color: `${LANTERN_GLOW}CC`,
+                color: `${LANTERN_GLOW}E6`,
                 textAlign: 'center',
                 marginTop: '12px',
               }}
