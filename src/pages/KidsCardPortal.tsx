@@ -479,9 +479,9 @@ export default function KidsCardPortal() {
               <p
                 style={{
                   fontFamily: 'var(--font-serif)',
-                  fontSize: '14px',
+                  fontSize: '15px',
                   color: LANTERN_GLOW,
-                  opacity: 0.85,
+                  opacity: 0.95,
                   lineHeight: 1.4,
                   margin: 0,
                   display: '-webkit-box',
@@ -497,7 +497,7 @@ export default function KidsCardPortal() {
             <p
               style={{
                 fontFamily: 'var(--font-sans)',
-                fontSize: '12px',
+                fontSize: '15px',
                 color: LANTERN_GLOW,
                 opacity: 0.7,
                 marginTop: '5px',
@@ -511,17 +511,17 @@ export default function KidsCardPortal() {
               style={{
                 display: 'inline-block',
                 marginTop: '14px',
-                padding: '10px 28px',
+                padding: '10px 32px',
                 borderRadius: '24px',
-                border: `1.5px solid ${SAFFRON_FLAME}`,
-                background: `${SAFFRON_FLAME}18`,
+                border: 'none',
+                background: SAFFRON_FLAME,
                 cursor: 'pointer',
-                fontFamily: 'var(--font-display)',
+                fontFamily: 'var(--font-sans)',
                 fontSize: '15px',
                 fontWeight: 600,
-                color: SAFFRON_FLAME,
+                color: '#1a1a1a',
                 letterSpacing: '0.3px',
-                textShadow: `0 0 12px ${SAFFRON_FLAME}44`,
+                boxShadow: `0 4px 16px ${SAFFRON_FLAME}55`,
               }}
             >
               Starta samtal
