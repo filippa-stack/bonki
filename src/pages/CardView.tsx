@@ -1051,6 +1051,25 @@ export default function CardView() {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
       >
+        {/* Background illustration — fills viewport */}
+        {cardImageUrl && (
+          <img
+            src={cardImageUrl}
+            alt=""
+            draggable={false}
+            style={{
+              position: 'fixed',
+              inset: '-20%',
+              width: '140%',
+              height: '140%',
+              objectFit: 'cover',
+              objectPosition: '50% 40%',
+              opacity: 0.7,
+              pointerEvents: 'none',
+              zIndex: 0,
+            }}
+          />
+        )}
         {/* Back arrow — top left */}
         <button
           onClick={() => navigate(productHomeDest)}
@@ -1322,13 +1341,32 @@ export default function CardView() {
     return (
       <motion.div
         className="min-h-screen"
-        style={{ backgroundColor: EMBER_NIGHT }}
+        style={{ backgroundColor: EMBER_NIGHT, position: 'relative', overflow: 'hidden' }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
       >
+        {/* Background illustration — fills viewport */}
+        {cardImageUrl && (
+          <img
+            src={cardImageUrl}
+            alt=""
+            draggable={false}
+            style={{
+              position: 'fixed',
+              inset: '-20%',
+              width: '140%',
+              height: '140%',
+              objectFit: 'cover',
+              objectPosition: '50% 40%',
+              opacity: 0.5,
+              pointerEvents: 'none',
+              zIndex: 0,
+            }}
+          />
+        )}
         <Header title="" variant="immersive" />
-        <div className="px-6 pb-16 relative" style={{ paddingTop: '48px' }}>
+        <div className="px-6 pb-16 relative" style={{ paddingTop: '48px', position: 'relative', zIndex: 1 }}>
           {/* Back arrow */}
           <motion.div
             initial={{ opacity: 0 }}
@@ -2715,7 +2753,7 @@ export default function CardView() {
             overflow: 'hidden',
             padding: '12px 16px',
           }}>
-            {/* Illustration background — behind the white card */}
+            {/* Illustration background — fills entire viewport behind the white card */}
             {cardImageUrl && (
               <img
                 src={cardImageUrl}
@@ -2723,11 +2761,11 @@ export default function CardView() {
                 draggable={false}
                 style={{
                   position: 'absolute',
-                  inset: '-10%',
-                  width: '120%',
-                  height: '120%',
-                  objectFit: 'contain',
-                  objectPosition: '50% 45%',
+                  inset: '-20%',
+                  width: '140%',
+                  height: '140%',
+                  objectFit: 'cover',
+                  objectPosition: '50% 40%',
                   opacity: 0.7,
                   pointerEvents: 'none',
                   zIndex: 0,
