@@ -202,8 +202,8 @@ export default function ProductIntro({
               height: '100%',
               objectFit: 'cover',
               objectPosition: 'center 30%',
-              opacity: 0.28,
-              filter: 'brightness(1.1) saturate(0.9)',
+              opacity: 0.38,
+              filter: 'brightness(1.15) saturate(0.95)',
             }}
           />
           {/* Bottom fade into bg */}
@@ -331,9 +331,10 @@ export default function ProductIntro({
                 fontFamily: 'var(--font-serif)',
                 fontStyle: 'italic',
                 fontSize: '14px',
-                color: `${LANTERN_GLOW}E6`,
+                color: productAccent,
                 textAlign: 'center',
-                marginTop: '14px',
+                marginTop: '18px',
+                opacity: 0.85,
               }}
             >
               {signoffText}
@@ -402,11 +403,11 @@ export default function ProductIntro({
               <p
                 style={{
                   fontFamily: 'var(--font-sans)',
-                  fontSize: '11px',
-                  fontWeight: 600,
+                  fontSize: '10px',
+                  fontWeight: 500,
                   letterSpacing: '1.5px',
                   textTransform: 'uppercase',
-                  color: LANTERN_GLOW,
+                  color: `${LANTERN_GLOW}99`,
                   marginBottom: '3px',
                 }}
               >
@@ -415,9 +416,9 @@ export default function ProductIntro({
               <p
                 style={{
                   fontFamily: 'var(--font-serif)',
-                  fontSize: '22px',
+                  fontSize: '20px',
                   fontWeight: 600,
-                  color: productAccent,
+                  color: LANTERN_GLOW,
                   letterSpacing: '-0.01em',
                   lineHeight: 1.2,
                 }}
@@ -428,8 +429,8 @@ export default function ProductIntro({
                 <p
                   style={{
                     fontFamily: 'var(--font-sans)',
-                    fontSize: '13px',
-                    color: LANTERN_GLOW,
+                    fontSize: '12px',
+                    color: `${LANTERN_GLOW}80`,
                     marginTop: '2px',
                   }}
                 >
