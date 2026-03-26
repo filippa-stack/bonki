@@ -6,7 +6,7 @@ import { productIntros } from '@/data/productIntros';
 import { allProducts } from '@/data/products';
 import { useCardImage } from '@/hooks/useCardImage';
 import { supabase } from '@/integrations/supabase/client';
-import { LANTERN_GLOW, DRIFTWOOD, MIDNIGHT_INK, BONKI_ORANGE, DEEP_SAFFRON } from '@/lib/palette';
+import { LANTERN_GLOW, DRIFTWOOD, MIDNIGHT_INK, BONKI_ORANGE, DEEP_SAFFRON, productTileColors } from '@/lib/palette';
 
 // ── Illustration imports (same as product homes) ──
 import apaImage from '@/assets/apa-jag-i-mig.png';
@@ -124,6 +124,8 @@ export default function ProductIntro({
   const creatureImage = PRODUCT_ILLUSTRATION[productId];
   const shortIntro = SHORT_INTROS[productId] ?? '';
   const isSexualitet = productId === 'sexualitetskort';
+  const tileColors = productTileColors[productId];
+  const productAccent = tileColors?.tileLight ?? BONKI_ORANGE;
 
   // Full body text from productIntros data
   const fullBodyText = introData.slides.map((s) => s.body).join('\n\n');
@@ -426,8 +428,8 @@ export default function ProductIntro({
                 width: '44px',
                 height: '52px',
                 borderRadius: '8px',
-                background: `linear-gradient(145deg, ${accentColor ?? 'var(--accent-saffron)'}30, ${accentColor ?? 'var(--accent-saffron)'}15)`,
-                border: `1px solid ${accentColor ?? 'var(--accent-saffron)'}25`,
+                background: `linear-gradient(145deg, ${productAccent}30, ${productAccent}15)`,
+                border: `1px solid ${productAccent}25`,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -466,7 +468,7 @@ export default function ProductIntro({
                   fontFamily: 'var(--font-serif)',
                   fontSize: '22px',
                   fontWeight: 600,
-                  color: DEEP_SAFFRON,
+                  color: productAccent,
                   letterSpacing: '-0.01em',
                   lineHeight: 1.2,
                 }}
@@ -505,7 +507,7 @@ export default function ProductIntro({
             style={{
               width: '100%',
               height: '56px',
-              backgroundColor: BONKI_ORANGE,
+              backgroundColor: productAccent,
               border: 'none',
               borderRadius: '14px',
               cursor: 'pointer',
@@ -537,7 +539,7 @@ export default function ProductIntro({
                 fontFamily: 'var(--font-sans)',
                 fontStyle: 'italic',
                 fontSize: '13px',
-                color: DEEP_SAFFRON,
+                color: productAccent,
                 textAlign: 'center',
                 marginTop: '12px',
                 lineHeight: 1.5,
