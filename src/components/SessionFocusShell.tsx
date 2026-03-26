@@ -120,14 +120,33 @@ export default function SessionFocusShell({
         </div>
       )}
 
+      {/* Illustration background — fills entire viewport */}
+      {illustrationSrc && (
+        <img
+          src={illustrationSrc}
+          alt=""
+          style={{
+            position: 'absolute',
+            inset: '-20%',
+            width: '140%',
+            height: '140%',
+            objectFit: 'cover',
+            objectPosition: '50% 50%',
+            opacity: 0.7,
+            pointerEvents: 'none',
+            zIndex: 0,
+          }}
+        />
+      )}
+
       {/* Top chrome — nav bar */}
       {topSlot && (
-        <div style={{ flex: '0 0 auto', zIndex: 30 }}>
+        <div style={{ flex: '0 0 auto', zIndex: 30, position: 'relative' }}>
           {topSlot}
         </div>
       )}
 
-      {/* Main content area — illustration bg + white card */}
+      {/* Main content area */}
       <div
         style={{
           flex: '1 1 auto',
@@ -141,24 +160,6 @@ export default function SessionFocusShell({
           padding: '0 16px 12px',
         }}
       >
-        {/* Illustration background — fills entire viewport behind the white card */}
-        {illustrationSrc && (
-          <img
-            src={illustrationSrc}
-            alt=""
-            style={{
-              position: 'absolute',
-              inset: '-20%',
-              width: '140%',
-              height: '140%',
-              objectFit: 'cover',
-              objectPosition: '50% 50%',
-              opacity: 0.7,
-              pointerEvents: 'none',
-              zIndex: 0,
-            }}
-          />
-        )}
 
         {/* White question card */}
         <div
