@@ -198,10 +198,10 @@ export default function PaywallFullScreen() {
         {/* VALUE PROPOSITION BLOCK */}
         <div style={{ marginTop: '32px', paddingLeft: '16px', paddingRight: '16px' }}>
           {[
-            valueLine,
-            'Utvecklad tillsammans med psykolog · 29 års klinisk erfarenhet',
-            ...(product.id !== 'still_us' ? ['Spara barnens svar. Se dem växa — samtal för samtal.'] : []),
-          ].map((text, i) => (
+            { text: valueLine, color: LANTERN_GLOW },
+            { text: 'Utvecklad tillsammans med psykolog · 29 års klinisk erfarenhet', color: DRIFTWOOD },
+            ...(product.id !== 'still_us' ? [{ text: 'Spara barnens svar. Se dem växa — samtal för samtal.', color: DRIFTWOOD }] : []),
+          ].map((row, i) => (
             <div
               key={i}
               style={{
@@ -211,8 +211,8 @@ export default function PaywallFullScreen() {
                 marginTop: i === 0 ? 0 : '16px',
               }}
             >
-              <span style={{ color: SAFFRON_FLAME, fontSize: '16px', lineHeight: 1, flexShrink: 0 }}>●</span>
-              <span style={{ fontFamily: 'var(--font-sans)', fontSize: '14px', fontWeight: 400, color: LANTERN_GLOW, lineHeight: 1.5 }}>{text}</span>
+              <span style={{ color: SAFFRON_FLAME, fontSize: '8px', lineHeight: 1, flexShrink: 0, position: 'relative', top: '-1px' }}>●</span>
+              <span style={{ fontFamily: 'var(--font-sans)', fontSize: '14px', fontWeight: 400, color: row.color, lineHeight: 1.5 }}>{row.text}</span>
             </div>
           ))}
         </div>
