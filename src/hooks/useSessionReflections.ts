@@ -177,6 +177,7 @@ export function useSessionReflections(
   // ─── 5. Mark ready: draft → ready (terminal action) ───
   const markReady = useCallback(async (explicitText?: string) => {
     if (!user) return;
+    console.log('[reflection-debug] markReady called', { sessionId: sessionIdRef.current, stepIndex, explicitText: explicitText?.substring(0, 30), localRef: localTextRef.current?.substring(0, 30) });
 
     // Cancel any pending autosave to prevent draft overwriting ready state
     if (pendingSave.current) {
