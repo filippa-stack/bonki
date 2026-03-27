@@ -274,10 +274,10 @@ export default function PromptItem({ prompt, index, sectionType, preamble, ancho
                   background: 'none',
                   borderRadius: '28px',
                   padding: inlineScenarioPreamble
-                    ? '20px 20px 16px'
+                    ? '20px 20px 20px'
                     : isLongText
-                      ? '28px 20px 20px'
-                      : '32px 20px 16px',
+                      ? '24px 20px 24px'
+                      : '24px 20px 24px',
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: inlineScenarioPreamble || isLongText ? 'flex-start' : 'center',
