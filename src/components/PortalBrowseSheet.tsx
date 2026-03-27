@@ -141,6 +141,7 @@ export default function PortalBrowseSheet({
               {cards.map((card, index) => {
                 const isCurrent = card.id === currentCardId;
                 const isCompleted = completedCardIds.has(card.id);
+                const isActive = !isCompleted && activeCardIds?.has(card.id);
 
                 return (
                   <button
@@ -191,6 +192,18 @@ export default function PortalBrowseSheet({
                       >
                         <Check size={10} strokeWidth={2.5} color={LANTERN_GLOW} />
                       </div>
+                    )}
+                    {isActive && (
+                      <span
+                        style={{
+                          width: 8,
+                          height: 8,
+                          borderRadius: '50%',
+                          background: SAFFRON_FLAME,
+                          flexShrink: 0,
+                          animation: 'pulse-dot 2s ease-in-out infinite',
+                        }}
+                      />
                     )}
                   </button>
                 );
