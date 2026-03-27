@@ -871,8 +871,7 @@ export default function SharedSummary() {
                       )}
                     </AnimatePresence>
                   </div>
-                );
-              })()}
+              )}
             </div>
           )
         )}
