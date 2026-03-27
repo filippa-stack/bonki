@@ -624,79 +624,8 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
             {/* Spacer — pushes content below hero face zone */}
             {!useSquareGrid && <div style={{ height: 'clamp(48px, 12vh, 100px)' }} />}
 
-            {/* ═══ Resume Pill (conditional) ═══ */}
-            {!progress.loading && progress.activeSession && progress.activeSession.cardId !== 'su-mock-0' && (() => {
-              const card = product.cards.find(c => c.id === progress.activeSession!.cardId);
-              if (!card) return null;
-              const accentColor = product.tileLight ?? DEEP_SAFFRON;
-              return (
-                <motion.button
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.3, duration: 0.5, ease: EASE }}
-                  onClick={() => navigate(`/card/${card.id}`, { state: { resumed: true } })}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    width: '88%',
-                    maxWidth: '340px',
-                    margin: '0 auto',
-                    padding: '12px 20px',
-                    background: `${accentColor}55`,
-                    backdropFilter: 'blur(24px)',
-                    WebkitBackdropFilter: 'blur(24px)',
-                    borderRadius: '40px',
-                    border: `1px solid ${accentColor}40`,
-                    cursor: 'pointer',
-                    textAlign: 'left',
-                    boxShadow: `0 2px 12px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.12)`,
-                  }}
-                >
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <p style={{
-                      fontFamily: 'var(--font-sans)',
-                      fontSize: '11px',
-                      fontWeight: 700,
-                      letterSpacing: '0.08em',
-                      textTransform: 'uppercase',
-                      color: LANTERN_GLOW,
-                      marginBottom: '3px',
-                      textShadow: '0 1px 3px rgba(0,0,0,0.5)',
-                      whiteSpace: 'nowrap',
-                    }}>
-                      Fortsätt där ni slutade
-                    </p>
-                    <p style={{
-                      fontFamily: 'var(--font-display)',
-                      fontSize: '15px',
-                      fontWeight: 600,
-                      color: LANTERN_GLOW,
-                      lineHeight: 1.3,
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'nowrap',
-                    }}>
-                      {card.title}
-                    </p>
-                  </div>
-                  <span
-                    style={{
-                      fontFamily: 'var(--font-sans)',
-                      fontSize: '15px',
-                      fontWeight: 700,
-                      letterSpacing: '0.04em',
-                      color: '#FFFFFF',
-                      flexShrink: 0,
-                      marginLeft: '12px',
-                      textShadow: '0 1px 3px rgba(0,0,0,0.4)',
-                    }}
-                  >
-                    Fortsätt →
-                  </span>
-                </motion.button>
-              );
-            })()}
+            {/* ═══ Next Action Banner (persistent) ═══ */}
+            <NextActionBanner product={product} progress={progress} />
           </motion.div>
         </motion.div>
 
