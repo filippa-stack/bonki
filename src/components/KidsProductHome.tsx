@@ -23,7 +23,7 @@ import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { isDemoCardCompleted } from '@/lib/demoSession';
 import ProductHomeBackButton from '@/components/ProductHomeBackButton';
 import NextActionBanner from '@/components/NextActionBanner';
-import { ChevronRight, Play } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
 import {
   MIDNIGHT_INK,
   DEEP_DUSK,
@@ -342,34 +342,8 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
   
   const useSquareGrid = true; // 2×2 grid for all products
 
-  // ── Intro session completion state (Still Us only) ──
-  const [introCompleted, setIntroCompleted] = useState(() => {
-    if (isSU && isDemoCardCompleted('still_us', 'su-mock-0')) return true;
-    return false;
-  });
-  useEffect(() => {
-    if (!isSU) return;
-    // Check demo completed
-    if (isDemoCardCompleted('still_us', 'su-mock-0')) {
-      setIntroCompleted(true);
-      return;
-    }
-    // Check DB
-    if (!space?.id) return;
-    let cancelled = false;
-    supabase
-      .from('couple_sessions')
-      .select('id')
-      .eq('couple_space_id', space.id)
-      .eq('card_id', 'su-mock-0')
-      .eq('status', 'completed')
-      .limit(1)
-      .maybeSingle()
-      .then(({ data }) => {
-        if (!cancelled && data) setIntroCompleted(true);
-      });
-    return () => { cancelled = true; };
-  }, [isSU, space?.id]);
+
+
 
 
   return (
