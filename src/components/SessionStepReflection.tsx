@@ -185,19 +185,17 @@ export default function SessionStepReflection({
             strokeWidth={1.5}
             style={{ color: triggerColor, opacity: 0.72 }}
           />
-          {!compactNoteTrigger && (
-            <span
-              style={{
-                fontFamily: 'var(--font-sans)',
-                fontSize: '14px',
-                color: triggerColor,
-                opacity: 0.78,
-                letterSpacing: '0.01em',
-              }}
-            >
-              {triggerLabel}
-            </span>
-          )}
+          <span
+            style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: '14px',
+              color: triggerColor,
+              opacity: 0.78,
+              letterSpacing: '0.01em',
+            }}
+          >
+            {triggerLabel}
+          </span>
         </motion.button>
       )}
 
