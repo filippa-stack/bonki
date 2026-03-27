@@ -58,6 +58,7 @@ export default function PortalBrowseSheet({
   cards,
   currentCardId,
   completedCardIds,
+  activeCardIds,
   tileLight,
   onSelectCard,
 }: PortalBrowseSheetProps) {
