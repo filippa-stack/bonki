@@ -55,11 +55,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let initialSessionResolved = false;
+
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
-        setLoading(false);
+
+        // Only release loading gate from here AFTER getSession has resolved,
+        // so downstream hooks never see a premature null user.
+        if (initialSessionResolved) {
+          setLoading(false);
+        }
 
         // After sign-in, save any pending legal consent
         if (event === 'SIGNED_IN' && session?.user) {
@@ -69,6 +76,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     );
 
     supabase.auth.getSession().then(({ data: { session } }) => {
+      initialSessionResolved = true;
       setSession(session);
       setUser(session?.user ?? null);
       setLoading(false);
