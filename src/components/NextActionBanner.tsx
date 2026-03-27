@@ -53,7 +53,7 @@ export default function NextActionBanner({
     if (!card) return null;
     label = 'Fortsätt ert samtal';
     subtitle = card.title;
-    ctaText = 'Fortsätt →';
+    ctaText = 'Öppna →';
     labelColor = LANTERN_GLOW;
     onClick = () => navigate(`/card/${card.id}`, { state: { resumed: true } });
 
@@ -75,7 +75,7 @@ export default function NextActionBanner({
     const hasCompletions = completedCount > 0;
     label = hasCompletions ? 'Nästa samtal' : 'Börja här';
     subtitle = card.title;
-    ctaText = hasCompletions ? 'Nästa →' : 'Öppna →';
+    ctaText = 'Öppna →';
     labelColor = LANTERN_GLOW;
     onClick = () => navigate(`/product/${product.slug}/portal/${nextSuggestedCategoryId}?card=${nextSuggestedCardId}`);
 
