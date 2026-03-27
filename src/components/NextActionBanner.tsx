@@ -76,7 +76,7 @@ export default function NextActionBanner({
     label = hasCompletions ? 'Nästa samtal' : 'Börja här';
     subtitle = card.title;
     ctaText = hasCompletions ? 'Nästa →' : 'Börja →';
-    labelColor = DRIFTWOOD;
+    labelColor = LANTERN_GLOW;
     onClick = () => navigate(`/product/${product.slug}/portal/${nextSuggestedCategoryId}?card=${nextSuggestedCardId}`);
 
   // STATE 4: Fallback — no banner
