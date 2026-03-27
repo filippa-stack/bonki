@@ -366,6 +366,7 @@ export default function SharedSummary() {
 
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [showOlderFor, setShowOlderFor] = useState<string | null>(null);
+  const [noNotesOpen, setNoNotesOpen] = useState(false);
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: 'var(--surface-base)' }}>
@@ -791,9 +792,7 @@ export default function SharedSummary() {
               )}
 
               {/* Section 2: Sessions without notes — collapsible */}
-              {withoutNotes.length > 0 && (() => {
-                const [noNotesOpen, setNoNotesOpen] = useState(false);
-                return (
+              {withoutNotes.length > 0 && (
                   <div style={{ marginTop: '24px' }}>
                     <button
                       onClick={() => setNoNotesOpen(!noNotesOpen)}
