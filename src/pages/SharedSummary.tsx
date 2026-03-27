@@ -7,7 +7,7 @@ import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { supabase } from '@/integrations/supabase/client';
 import { useDevState } from '@/contexts/DevStateContext';
 import ArchiveTakeaway from '@/components/ArchiveTakeaway';
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, ChevronDown, Check } from 'lucide-react';
 import Header from '@/components/Header';
 import { RECOMMENDED_CATEGORY_ORDER } from '@/lib/recommendedOrder';
 import { EMOTION, BEAT_1 } from '@/lib/motion';
@@ -49,6 +49,7 @@ const STEP_ORDER = ['opening', 'reflective', 'scenario', 'exercise'] as const;
 interface ReflectionRow {
   stepIndex: number;
   text: string;
+  updatedAt: string;
 }
 
 interface CompletedEntry {
