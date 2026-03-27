@@ -620,7 +620,13 @@ export default function SharedSummary() {
                                       opacity: 0.5,
                                       marginTop: '4px',
                                     }}>
-                                      {formatFullDate(item.updatedAt)}
+                                      {(() => {
+                                        const d = new Date(item.updatedAt);
+                                        const day = d.getDate();
+                                        const month = d.toLocaleString('sv-SE', { month: 'short' }).replace('.', '');
+                                        const year = d.getFullYear();
+                                        return `${day} ${month} ${year}`;
+                                      })()}
                                     </p>
                                   )}
                                 </div>
@@ -784,75 +790,90 @@ export default function SharedSummary() {
                 </>
               )}
 
-              {/* Divider + Section 2: Sessions without notes */}
-              {bothExist && (
-                <>
-                  <div style={{ margin: '28px 0', display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <div style={{ flex: 1, height: '1px', background: 'linear-gradient(90deg, hsl(var(--border) / 0) 0%, hsl(var(--border) / 0.15) 50%, hsl(var(--border) / 0) 100%)' }} />
-                  </div>
-                  <p
-                    className="type-meta text-center"
-                    style={{
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.08em',
-                      color: 'var(--color-text-tertiary)',
-                      marginBottom: '16px',
-                    }}
-                  >
-                    Utan anteckningar
-                  </p>
-                </>
-              )}
-
-              {withoutNotes.map((group, index) => {
-                const entry = group.latest;
+              {/* Section 2: Sessions without notes — collapsible */}
+              {withoutNotes.length > 0 && (() => {
+                const [noNotesOpen, setNoNotesOpen] = useState(false);
                 return (
-                  <motion.div
-                    key={group.cardId}
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{
-                      delay: (withNotes.length + index) * BEAT_1,
-                      duration: EMOTION,
-                      ease,
-                    }}
-                  >
-                    <div
-                      className="w-full text-left"
+                  <div style={{ marginTop: '24px' }}>
+                    <button
+                      onClick={() => setNoNotesOpen(!noNotesOpen)}
                       style={{
-                        backgroundColor: 'var(--surface-raised)',
+                        width: '100%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        background: 'none',
                         border: 'none',
-                        borderRadius: '14px',
-                        padding: '18px 16px 18px 20px',
-                        borderLeft: `3px solid ${getCategoryAccent(group.categoryId)}`,
-                        opacity: 0.50,
-                        boxShadow: '0 1px 2px hsla(30, 15%, 25%, 0.03)',
+                        cursor: 'pointer',
+                        padding: '8px 4px',
                       }}
                     >
-                      <p
-                        className="font-serif"
-                        style={{
-                          fontSize: '15px',
-                          fontWeight: 500,
-                          color: 'var(--color-text-primary)',
-                          lineHeight: 1.3,
-                        }}
-                      >
-                        {entry.cardTitle}
-                      </p>
-                      <p
-                        className="type-meta"
+                      <span style={{
+                        fontSize: '13px',
+                        color: 'var(--color-text-tertiary)',
+                        opacity: 0.6,
+                      }}>
+                        Genomförda samtal utan anteckningar ({withoutNotes.length})
+                      </span>
+                      <ChevronDown
+                        size={14}
                         style={{
                           color: 'var(--color-text-tertiary)',
-                          marginTop: '6px',
+                          opacity: 0.4,
+                          transform: noNotesOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                          transition: 'transform 200ms ease',
                         }}
-                      >
-                        {entry.categoryTitle}{entry.categoryTitle && ' · '}{formatDate(entry.completedAt)}
-                      </p>
-                    </div>
-                  </motion.div>
+                      />
+                    </button>
+                    <AnimatePresence>
+                      {noNotesOpen && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: 'auto' }}
+                          exit={{ opacity: 0, height: 0 }}
+                          transition={{ duration: 0.2, ease }}
+                          className="overflow-hidden"
+                        >
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', paddingTop: '4px' }}>
+                            {withoutNotes.map((group) => {
+                              const entry = group.latest;
+                              const d = new Date(entry.completedAt);
+                              const day = d.getDate();
+                              const month = d.toLocaleString('sv-SE', { month: 'short' }).replace('.', '');
+                              return (
+                                <div
+                                  key={group.cardId}
+                                  style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'space-between',
+                                    padding: '8px 4px',
+                                  }}
+                                >
+                                  <span style={{
+                                    fontSize: '13px',
+                                    color: 'var(--color-text-primary)',
+                                    opacity: 0.6,
+                                  }}>
+                                    {entry.cardTitle}
+                                  </span>
+                                  <span style={{
+                                    fontSize: '13px',
+                                    color: 'var(--color-text-tertiary)',
+                                    opacity: 0.6,
+                                  }}>
+                                    {day} {month}
+                                  </span>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
                 );
-              })}
+              })()}
             </div>
           )
         )}
