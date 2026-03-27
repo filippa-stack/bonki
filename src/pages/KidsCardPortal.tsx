@@ -61,6 +61,8 @@ export default function KidsCardPortal() {
   const { productSlug, categoryId } = useParams<{ productSlug: string; categoryId: string }>();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const devState = useDevState();
+  const bypassPaywall = devState === 'browse' || isDemoMode();
 
   // Resolve product + category
   const product = allProducts.find(p => p.slug === productSlug);
