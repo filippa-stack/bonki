@@ -201,7 +201,7 @@ export default function PortalBrowseSheet({
                           borderRadius: '50%',
                           background: SAFFRON_FLAME,
                           flexShrink: 0,
-                          animation: 'pulse-dot 2s ease-in-out infinite',
+                          animation: 'saffron-pulse 2s ease-in-out infinite',
                         }}
                       />
                     )}
