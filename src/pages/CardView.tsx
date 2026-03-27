@@ -2882,6 +2882,27 @@ export default function CardView() {
                         <ChevronDown size={16} style={{ color: '#6B5E52', opacity: 0.5 }} />
                       </button>
                     </div>
+                    <AnimatePresence>
+                      {kidsNoteSaveIndicator === 'saved' && (
+                        <motion.p
+                          initial={{ opacity: 0, y: -4 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0 }}
+                          transition={{ duration: 0.25 }}
+                          style={{
+                            fontFamily: 'var(--font-sans)',
+                            fontSize: '11px',
+                            color: '#6B5E52',
+                            opacity: 0.55,
+                            textAlign: 'center',
+                            marginTop: '8px',
+                            letterSpacing: '0.02em',
+                          }}
+                        >
+                          ✓ Sparat i era samtal
+                        </motion.p>
+                      )}
+                    </AnimatePresence>
                   </motion.div>
                 )}
               </div>
