@@ -663,6 +663,7 @@ export default function KidsCardPortal() {
         cards={categoryCards}
         currentCardId={card.id}
         completedCardIds={completedSet}
+        activeCardIds={activeSet}
         tileLight={tileLight}
         onSelectCard={goToIndex}
       />
