@@ -3603,11 +3603,15 @@ function SimpleTakeaway({ sessionId, spaceId, cardId, productId, stillUsMode }: 
 
   const handleChange = (value: string) => {
     setText(value);
+    setSaveIndicator('idle');
+    if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
     if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => {
       if (value.trim()) {
         if (isDemo) persistToLocal(value);
         else persistToDb(value);
+        setSaveIndicator('saved');
+        saveTimerRef.current = setTimeout(() => setSaveIndicator('idle'), 2500);
       }
     }, 1000);
   };
