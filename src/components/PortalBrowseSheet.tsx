@@ -27,6 +27,7 @@ interface PortalBrowseSheetProps {
   cards: BrowseCard[];
   currentCardId: string;
   completedCardIds: Set<string>;
+  activeCardIds?: Set<string>;
   tileLight: string;
   onSelectCard: (index: number) => void;
 }
