@@ -7,7 +7,7 @@ import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { supabase } from '@/integrations/supabase/client';
 import { useDevState } from '@/contexts/DevStateContext';
 import ArchiveTakeaway from '@/components/ArchiveTakeaway';
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, ChevronDown, Check } from 'lucide-react';
 import Header from '@/components/Header';
 import { RECOMMENDED_CATEGORY_ORDER } from '@/lib/recommendedOrder';
 import { EMOTION, BEAT_1 } from '@/lib/motion';
@@ -49,6 +49,7 @@ const STEP_ORDER = ['opening', 'reflective', 'scenario', 'exercise'] as const;
 interface ReflectionRow {
   stepIndex: number;
   text: string;
+  updatedAt: string;
 }
 
 interface CompletedEntry {
@@ -118,20 +119,25 @@ function getAllQuestionsWithReflections(
   getCardById: (id: string) => any,
   cardId: string,
   reflections: ReflectionRow[],
-): { question: string; reflection: string | null; stageIndex: number }[] {
+): { question: string; reflection: string | null; stageIndex: number; updatedAt: string | null; isCompletion: boolean }[] {
   const card = getCardById(cardId);
   if (!card) return [];
 
-  const stageReflections = new Map<number, Array<{ local: number; text: string }>>();
+  const stageReflections = new Map<number, Array<{ local: number; text: string; updatedAt: string }>>();
   for (const r of reflections) {
     const stage = Math.floor(r.stepIndex / 100);
     const local = r.stepIndex % 100;
     const list = stageReflections.get(stage) || [];
-    list.push({ local, text: r.text });
+    list.push({ local, text: r.text, updatedAt: r.updatedAt });
     stageReflections.set(stage, list);
   }
 
-  const result: { question: string; reflection: string | null; stageIndex: number }[] = [];
+  // Find the highest step_index to identify the completion reflection
+  const maxStepIndex = reflections.length > 0
+    ? Math.max(...reflections.map(r => r.stepIndex))
+    : -1;
+
+  const result: { question: string; reflection: string | null; stageIndex: number; updatedAt: string | null; isCompletion: boolean }[] = [];
 
   for (let stageIdx = 0; stageIdx < STEP_ORDER.length; stageIdx++) {
     const stageType = STEP_ORDER[stageIdx];
@@ -145,24 +151,29 @@ function getAllQuestionsWithReflections(
       .map((prompt, promptIdx) => {
         const questionText = getDisplayQuestionText(section, prompt, promptIdx);
         if (!questionText) return null;
-        return { question: questionText, reflection: null as string | null, stageIndex: stageIdx };
+        const encodedIdx = stageIdx * 100 + promptIdx;
+        return { question: questionText, reflection: null as string | null, stageIndex: stageIdx, updatedAt: null as string | null, isCompletion: encodedIdx === maxStepIndex };
       })
-      .filter(Boolean) as { question: string; reflection: string | null; stageIndex: number }[];
+      .filter(Boolean) as { question: string; reflection: string | null; stageIndex: number; updatedAt: string | null; isCompletion: boolean }[];
 
     // 1) Exact local-index match when possible
-    const overflow: string[] = [];
+    const overflow: { text: string; updatedAt: string }[] = [];
     for (const ref of stageRows) {
       if (ref.local >= 0 && ref.local < rows.length && rows[ref.local] && !rows[ref.local].reflection) {
         rows[ref.local].reflection = ref.text;
+        rows[ref.local].updatedAt = ref.updatedAt;
       } else {
-        overflow.push(ref.text);
+        overflow.push({ text: ref.text, updatedAt: ref.updatedAt });
       }
     }
 
     // 2) Reassign out-of-range/duplicate indexes to first unanswered question
-    for (const text of overflow) {
+    for (const item of overflow) {
       const target = rows.find((r) => !r.reflection);
-      if (target) target.reflection = text;
+      if (target) {
+        target.reflection = item.text;
+        target.updatedAt = item.updatedAt;
+      }
     }
 
     result.push(...rows);
@@ -229,7 +240,7 @@ export default function SharedSummary() {
       const sessionIds = sessions.map(s => s.id);
       const { data: reflections } = await supabase
         .from('step_reflections')
-        .select('session_id, text, step_index')
+        .select('session_id, text, step_index, updated_at')
         .in('session_id', sessionIds)
         .neq('text', '')
         .order('step_index', { ascending: true });
@@ -240,7 +251,7 @@ export default function SharedSummary() {
       for (const r of reflections || []) {
         if (!r.text?.trim()) continue;
         const list = reflectionMap.get(r.session_id) || [];
-        list.push({ stepIndex: r.step_index, text: r.text });
+        list.push({ stepIndex: r.step_index, text: r.text, updatedAt: r.updated_at });
         reflectionMap.set(r.session_id, list);
       }
 
@@ -355,6 +366,7 @@ export default function SharedSummary() {
 
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [showOlderFor, setShowOlderFor] = useState<string | null>(null);
+  const [noNotesOpen, setNoNotesOpen] = useState(false);
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: 'var(--surface-base)' }}>
@@ -554,6 +566,22 @@ export default function SharedSummary() {
                                   {qi > 0 && (
                                     <div style={{ height: '1px', background: 'linear-gradient(90deg, hsl(var(--border) / 0.12) 0%, hsl(var(--border) / 0) 100%)', margin: '20px 0' }} />
                                   )}
+                                  {item.isCompletion && item.reflection && (
+                                    <p
+                                      className="type-meta"
+                                      style={{
+                                        fontSize: '11px',
+                                        fontWeight: 600,
+                                        textTransform: 'uppercase',
+                                        letterSpacing: '0.06em',
+                                        color: '#D4A03A',
+                                        opacity: 0.7,
+                                        marginBottom: '6px',
+                                      }}
+                                    >
+                                      Ert takeaway
+                                    </p>
+                                  )}
                                   <p
                                     className="type-body"
                                     style={{
@@ -575,11 +603,32 @@ export default function SharedSummary() {
                                         fontStyle: 'italic',
                                         lineHeight: 1.55,
                                         color: 'var(--color-text-primary)',
-                                        marginBottom: '8px',
+                                        marginBottom: '4px',
+                                        ...(item.isCompletion ? {
+                                          borderLeft: '3px solid rgba(212, 160, 58, 0.20)',
+                                          paddingLeft: '14px',
+                                        } : {}),
                                       }}
                                     >
                                       {renderBulletText(item.reflection)}
                                     </div>
+                                  )}
+                                  {item.reflection && item.updatedAt && (
+                                    <p style={{
+                                      fontSize: '12px',
+                                      fontFamily: 'var(--font-sans)',
+                                      color: 'var(--color-text-tertiary)',
+                                      opacity: 0.5,
+                                      marginTop: '4px',
+                                    }}>
+                                      {(() => {
+                                        const d = new Date(item.updatedAt);
+                                        const day = d.getDate();
+                                        const month = d.toLocaleString('sv-SE', { month: 'short' }).replace('.', '');
+                                        const year = d.getFullYear();
+                                        return `${day} ${month} ${year}`;
+                                      })()}
+                                    </p>
                                   )}
                                 </div>
                               ))}
@@ -742,75 +791,87 @@ export default function SharedSummary() {
                 </>
               )}
 
-              {/* Divider + Section 2: Sessions without notes */}
-              {bothExist && (
-                <>
-                  <div style={{ margin: '28px 0', display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <div style={{ flex: 1, height: '1px', background: 'linear-gradient(90deg, hsl(var(--border) / 0) 0%, hsl(var(--border) / 0.15) 50%, hsl(var(--border) / 0) 100%)' }} />
-                  </div>
-                  <p
-                    className="type-meta text-center"
-                    style={{
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.08em',
-                      color: 'var(--color-text-tertiary)',
-                      marginBottom: '16px',
-                    }}
-                  >
-                    Utan anteckningar
-                  </p>
-                </>
-              )}
-
-              {withoutNotes.map((group, index) => {
-                const entry = group.latest;
-                return (
-                  <motion.div
-                    key={group.cardId}
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{
-                      delay: (withNotes.length + index) * BEAT_1,
-                      duration: EMOTION,
-                      ease,
-                    }}
-                  >
-                    <div
-                      className="w-full text-left"
+              {/* Section 2: Sessions without notes — collapsible */}
+              {withoutNotes.length > 0 && (
+                  <div style={{ marginTop: '24px' }}>
+                    <button
+                      onClick={() => setNoNotesOpen(!noNotesOpen)}
                       style={{
-                        backgroundColor: 'var(--surface-raised)',
+                        width: '100%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        background: 'none',
                         border: 'none',
-                        borderRadius: '14px',
-                        padding: '18px 16px 18px 20px',
-                        borderLeft: `3px solid ${getCategoryAccent(group.categoryId)}`,
-                        opacity: 0.50,
-                        boxShadow: '0 1px 2px hsla(30, 15%, 25%, 0.03)',
+                        cursor: 'pointer',
+                        padding: '8px 4px',
                       }}
                     >
-                      <p
-                        className="font-serif"
-                        style={{
-                          fontSize: '15px',
-                          fontWeight: 500,
-                          color: 'var(--color-text-primary)',
-                          lineHeight: 1.3,
-                        }}
-                      >
-                        {entry.cardTitle}
-                      </p>
-                      <p
-                        className="type-meta"
+                      <span style={{
+                        fontSize: '13px',
+                        color: 'var(--color-text-tertiary)',
+                        opacity: 0.6,
+                      }}>
+                        Genomförda samtal utan anteckningar ({withoutNotes.length})
+                      </span>
+                      <ChevronDown
+                        size={14}
                         style={{
                           color: 'var(--color-text-tertiary)',
-                          marginTop: '6px',
+                          opacity: 0.4,
+                          transform: noNotesOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                          transition: 'transform 200ms ease',
                         }}
-                      >
-                        {entry.categoryTitle}{entry.categoryTitle && ' · '}{formatDate(entry.completedAt)}
-                      </p>
-                    </div>
-                  </motion.div>
-                );
-              })}
+                      />
+                    </button>
+                    <AnimatePresence>
+                      {noNotesOpen && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: 'auto' }}
+                          exit={{ opacity: 0, height: 0 }}
+                          transition={{ duration: 0.2, ease }}
+                          className="overflow-hidden"
+                        >
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', paddingTop: '4px' }}>
+                            {withoutNotes.map((group) => {
+                              const entry = group.latest;
+                              const d = new Date(entry.completedAt);
+                              const day = d.getDate();
+                              const month = d.toLocaleString('sv-SE', { month: 'short' }).replace('.', '');
+                              return (
+                                <div
+                                  key={group.cardId}
+                                  style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'space-between',
+                                    padding: '8px 4px',
+                                  }}
+                                >
+                                  <span style={{
+                                    fontSize: '13px',
+                                    color: 'var(--color-text-primary)',
+                                    opacity: 0.6,
+                                  }}>
+                                    {entry.cardTitle}
+                                  </span>
+                                  <span style={{
+                                    fontSize: '13px',
+                                    color: 'var(--color-text-tertiary)',
+                                    opacity: 0.6,
+                                  }}>
+                                    {day} {month}
+                                  </span>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+              )}
             </div>
           )
         )}
