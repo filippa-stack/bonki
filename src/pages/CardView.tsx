@@ -541,8 +541,10 @@ export default function CardView() {
   );
   const [kidsNoteExpanded, setKidsNoteExpanded] = useState(false);
   const [kidsNoteLocalText, setKidsNoteLocalText] = useState('');
+  const [kidsNoteSaveIndicator, setKidsNoteSaveIndicator] = useState<'idle' | 'saved'>('idle');
   const kidsNoteInteractedRef = useRef(false);
   const kidsNoteTextareaRef = useRef<HTMLTextAreaElement>(null);
+  const kidsNoteSaveTimerRef = useRef<ReturnType<typeof setTimeout>>();
   const kidsNoteSuppressSyncRef = useRef(false);
 
   // Reset note UI when prompt changes
