@@ -294,28 +294,29 @@ export default function CardView() {
   useEffect(() => {
     if (devState) return;
     if (!space || !cardId) return;
+    // Fetches latest session (active or completed) — name is legacy
     supabase
       .from('couple_sessions')
       .select('id')
       .eq('couple_space_id', space.id)
       .eq('card_id', cardId)
-      .eq('status', 'completed')
       .order('started_at', { ascending: false })
       .limit(1)
       .maybeSingle()
       .then(({ data }) => {
         setCompletedSessionId(data?.id ?? null);
       });
-    // Count all completed sessions in this space for message rotation
+    // Count completed sessions for this product
     supabase
       .from('couple_sessions')
       .select('id', { count: 'exact', head: true })
       .eq('couple_space_id', space.id)
       .eq('status', 'completed')
+      .eq('product_id', product?.id ?? 'still_us')
       .then(({ count }) => {
         setCompletedSessionCount(count ?? 0);
       });
-  }, [space, cardId, devState, showCompletion]);
+  }, [space, cardId, devState, showCompletion, product?.id]);
 
   // ─── Stale/orphan session detection ───
   const [staleSession, setStaleSession] = useState(false);
