@@ -403,7 +403,8 @@ export default function CardView() {
   // Kids products create sessions immediately so resume banners appear on home/library.
   const eagerSessionRef = useRef(false);
   useEffect(() => {
-    if (!isKidsProduct || devState || isFromArchive || showCompletion) return;
+    const needsEagerSession = isKidsProduct || product?.id === 'still_us';
+    if (!needsEagerSession || devState || isFromArchive || showCompletion) return;
     if (normalizedSession.loading) return;
     if (eagerSessionRef.current) return;
     if (!space?.id || !cardId) return;
@@ -432,7 +433,7 @@ export default function CardView() {
       }
     })();
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isKidsProduct, devState, isFromArchive, showCompletion, normalizedSession.loading, normalizedSession.sessionId, space?.id, cardId]);
+  }, [isKidsProduct, product?.id, devState, isFromArchive, showCompletion, normalizedSession.loading, normalizedSession.sessionId, space?.id, cardId]);
 
   // ─── Single resolver ───
   const cardViewMode: CardViewMode = (() => {
