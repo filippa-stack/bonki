@@ -3671,6 +3671,27 @@ function SimpleTakeaway({ sessionId, spaceId, cardId, productId, stillUsMode }: 
           transition: 'background-color 320ms ease, box-shadow 320ms ease',
         }}
       />
+      <AnimatePresence>
+        {saveIndicator === 'saved' && (
+          <motion.p
+            initial={{ opacity: 0, y: -4 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: '11px',
+              color: stillUsMode ? DRIFTWOOD_T : 'var(--text-secondary)',
+              opacity: 0.55,
+              textAlign: 'center',
+              marginTop: '8px',
+              letterSpacing: '0.02em',
+            }}
+          >
+            ✓ Sparat i era samtal
+          </motion.p>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
