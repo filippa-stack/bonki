@@ -565,6 +565,22 @@ export default function SharedSummary() {
                                   {qi > 0 && (
                                     <div style={{ height: '1px', background: 'linear-gradient(90deg, hsl(var(--border) / 0.12) 0%, hsl(var(--border) / 0) 100%)', margin: '20px 0' }} />
                                   )}
+                                  {item.isCompletion && item.reflection && (
+                                    <p
+                                      className="type-meta"
+                                      style={{
+                                        fontSize: '11px',
+                                        fontWeight: 600,
+                                        textTransform: 'uppercase',
+                                        letterSpacing: '0.06em',
+                                        color: '#D4A03A',
+                                        opacity: 0.7,
+                                        marginBottom: '6px',
+                                      }}
+                                    >
+                                      Ert takeaway
+                                    </p>
+                                  )}
                                   <p
                                     className="type-body"
                                     style={{
@@ -586,11 +602,26 @@ export default function SharedSummary() {
                                         fontStyle: 'italic',
                                         lineHeight: 1.55,
                                         color: 'var(--color-text-primary)',
-                                        marginBottom: '8px',
+                                        marginBottom: '4px',
+                                        ...(item.isCompletion ? {
+                                          borderLeft: '3px solid rgba(212, 160, 58, 0.20)',
+                                          paddingLeft: '14px',
+                                        } : {}),
                                       }}
                                     >
                                       {renderBulletText(item.reflection)}
                                     </div>
+                                  )}
+                                  {item.reflection && item.updatedAt && (
+                                    <p style={{
+                                      fontSize: '12px',
+                                      fontFamily: 'var(--font-sans)',
+                                      color: 'var(--color-text-tertiary)',
+                                      opacity: 0.5,
+                                      marginTop: '4px',
+                                    }}>
+                                      {formatFullDate(item.updatedAt)}
+                                    </p>
                                   )}
                                 </div>
                               ))}
