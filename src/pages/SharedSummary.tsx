@@ -241,7 +241,7 @@ export default function SharedSummary() {
       for (const r of reflections || []) {
         if (!r.text?.trim()) continue;
         const list = reflectionMap.get(r.session_id) || [];
-        list.push({ stepIndex: r.step_index, text: r.text });
+        list.push({ stepIndex: r.step_index, text: r.text, updatedAt: r.updated_at });
         reflectionMap.set(r.session_id, list);
       }
 
