@@ -3563,9 +3563,11 @@ function SimpleTakeaway({ sessionId, spaceId, cardId, productId, stillUsMode }: 
   const [text, setText] = useState('');
   const [rowId, setRowId] = useState<string | null>(null);
   const [isFocused, setIsFocused] = useState(false);
+  const [saveIndicator, setSaveIndicator] = useState<'idle' | 'saved'>('idle');
   const userId = user?.id;
   const isDemo = isDemoMode();
   const debounceRef = useRef<ReturnType<typeof setTimeout>>();
+  const saveTimerRef = useRef<ReturnType<typeof setTimeout>>();
 
   const DRIFTWOOD_T = '#FDF6E3';
   const BARK_T = '#2C2420';
