@@ -176,7 +176,7 @@ export default function SessionFocusShell({
             justifyContent: 'center',
             backgroundColor: '#FAF7F2',
             borderRadius: '28px',
-            padding: '28px 24px 20px',
+            padding: '24px 24px 24px',
             boxShadow: '0 8px 32px rgba(0,0,0,0.15)',
             overflow: 'auto',
           }}
