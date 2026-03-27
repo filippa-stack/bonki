@@ -1,14 +1,37 @@
 
 
-## Fix Auth Race Condition
+## Plan: Broaden eager session creation to include Still Us
 
-**Problem**: `onAuthStateChange` can fire with a `null` session before `getSession()` resolves the stored session, causing `loading` to become `false` prematurely. Downstream hooks see `user = null` and set `space = null`, killing resume banners.
+### What and why
+Line 406 in `CardView.tsx` restricts eager session creation to kids products only. Still Us cards need the same treatment so `normalizedSession.sessionId` is available when `SessionStepReflection` mounts.
 
-**Change**: Single edit in `src/contexts/AuthContext.tsx` lines 57–78. Add an `initialSessionResolved` flag so the auth listener only calls `setLoading(false)` after `getSession()` has run.
+### Change (single file: `src/pages/CardView.tsx`)
 
-### File: `src/contexts/AuthContext.tsx`
+**Line 406** — replace the guard:
+```typescript
+// Before:
+if (!isKidsProduct || devState || isFromArchive || showCompletion) return;
 
-Replace the `useEffect` block (lines 57–78) with the user's provided code that introduces the `initialSessionResolved` guard.
+// After:
+const needsEagerSession = isKidsProduct || product?.id === 'still_us';
+if (!needsEagerSession || devState || isFromArchive || showCompletion) return;
+```
 
-No other files are modified.
+**Line 435** — add `product?.id` to the dependency array:
+```typescript
+// Before:
+}, [isKidsProduct, devState, isFromArchive, showCompletion, normalizedSession.loading, normalizedSession.sessionId, space?.id, cardId]);
+
+// After:
+}, [isKidsProduct, product?.id, devState, isFromArchive, showCompletion, normalizedSession.loading, normalizedSession.sessionId, space?.id, cardId]);
+```
+
+### Verification
+After the edit, search for and confirm all four protected patterns remain untouched:
+1. `suppressUntilRef.current = Date.now() + 2000` in `useNormalizedSessionState.ts`
+2. `prevServerStepRef.current = serverStepIndex` in `CardView.tsx`
+3. `clearTimeout(pendingSave.current)` in `useSessionReflections.ts`
+4. `hasSyncedRef.current = true` in `SessionStepReflection.tsx`
+
+No other files or useEffects are modified.
 
