@@ -83,11 +83,11 @@ const SectionView = forwardRef<SectionViewHandle, SectionViewProps>(
     return (
       <div className="relative" style={{
         paddingTop: isExerciseStep ? '12px'
-          : (section.type === 'scenario') ? '48px'
-          : (isLive && showBackArrow) ? '64px'
-          : backgroundImageUrl ? '24px'  /* Tighter top for kids — illustration adds visual weight below */
-          : '48px',
-        paddingBottom: isExerciseStep ? '8px' : '8px',
+          : (section.type === 'scenario') ? '24px'
+          : (isLive && showBackArrow) ? '48px'
+          : backgroundImageUrl ? '16px'
+          : '16px',
+        paddingBottom: isExerciseStep ? '8px' : '16px',
         paddingLeft: '0',
         paddingRight: (isLive && coupleSpaceId && sessionId && cardId) ? '24px' : '0',
       }}>
