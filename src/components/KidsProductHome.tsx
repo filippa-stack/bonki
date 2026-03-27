@@ -620,50 +620,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
               </p>
 
 
-            {/* ── Still Us: Intro session — glass pill CTA (before completion only) ── */}
-            {isSU && !introCompleted && (
-              <motion.div
-                variants={fadeUp}
-                style={{ display: 'flex', justifyContent: 'center', width: '100%', marginTop: '24px', marginBottom: '8px', minHeight: '44px' }}
-              >
-                <motion.button
-                  whileTap={{ scale: 0.96 }}
-                  onClick={() => {
-                    localStorage.setItem('bonki-last-active-product', product.slug);
-                    navigate('/still-us/intro');
-                  }}
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '8px',
-                    padding: '11px 26px',
-                    background: 'rgba(18, 16, 12, 0.6)',
-                    backdropFilter: 'blur(16px)',
-                    WebkitBackdropFilter: 'blur(16px)',
-                    border: `1.5px solid ${SAFFRON_FLAME}55`,
-                    borderRadius: '100px',
-                    cursor: 'pointer',
-                    boxShadow: `0 4px 20px rgba(0,0,0,0.35), 0 0 24px ${SAFFRON_FLAME}20, inset 0 1px 0 rgba(255,255,255,0.08)`,
-                    transition: 'all 0.3s ease',
-                  }}
-                >
-                  <Play size={12} color={SAFFRON_FLAME} fill={SAFFRON_FLAME} strokeWidth={0} style={{ flexShrink: 0 }} />
-                  <span
-                    style={{
-                      fontFamily: 'var(--font-serif)',
-                      fontSize: '14px',
-                      fontWeight: 500,
-                      color: LANTERN_GLOW,
-                      letterSpacing: '0.02em',
-                      whiteSpace: 'nowrap',
-                    }}
-                  >
-                    Börja här: <span style={{ opacity: 0.7 }}>Ert första samtal</span>
-                  </span>
-                </motion.button>
-              </motion.div>
-            )}
+
             {/* Spacer — pushes content below hero face zone */}
             {!useSquareGrid && <div style={{ height: 'clamp(48px, 12vh, 100px)' }} />}
 
