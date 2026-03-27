@@ -119,20 +119,25 @@ function getAllQuestionsWithReflections(
   getCardById: (id: string) => any,
   cardId: string,
   reflections: ReflectionRow[],
-): { question: string; reflection: string | null; stageIndex: number }[] {
+): { question: string; reflection: string | null; stageIndex: number; updatedAt: string | null; isCompletion: boolean }[] {
   const card = getCardById(cardId);
   if (!card) return [];
 
-  const stageReflections = new Map<number, Array<{ local: number; text: string }>>();
+  const stageReflections = new Map<number, Array<{ local: number; text: string; updatedAt: string }>>();
   for (const r of reflections) {
     const stage = Math.floor(r.stepIndex / 100);
     const local = r.stepIndex % 100;
     const list = stageReflections.get(stage) || [];
-    list.push({ local, text: r.text });
+    list.push({ local, text: r.text, updatedAt: r.updatedAt });
     stageReflections.set(stage, list);
   }
 
-  const result: { question: string; reflection: string | null; stageIndex: number }[] = [];
+  // Find the highest step_index to identify the completion reflection
+  const maxStepIndex = reflections.length > 0
+    ? Math.max(...reflections.map(r => r.stepIndex))
+    : -1;
+
+  const result: { question: string; reflection: string | null; stageIndex: number; updatedAt: string | null; isCompletion: boolean }[] = [];
 
   for (let stageIdx = 0; stageIdx < STEP_ORDER.length; stageIdx++) {
     const stageType = STEP_ORDER[stageIdx];
@@ -146,24 +151,29 @@ function getAllQuestionsWithReflections(
       .map((prompt, promptIdx) => {
         const questionText = getDisplayQuestionText(section, prompt, promptIdx);
         if (!questionText) return null;
-        return { question: questionText, reflection: null as string | null, stageIndex: stageIdx };
+        const encodedIdx = stageIdx * 100 + promptIdx;
+        return { question: questionText, reflection: null as string | null, stageIndex: stageIdx, updatedAt: null as string | null, isCompletion: encodedIdx === maxStepIndex };
       })
-      .filter(Boolean) as { question: string; reflection: string | null; stageIndex: number }[];
+      .filter(Boolean) as { question: string; reflection: string | null; stageIndex: number; updatedAt: string | null; isCompletion: boolean }[];
 
     // 1) Exact local-index match when possible
-    const overflow: string[] = [];
+    const overflow: { text: string; updatedAt: string }[] = [];
     for (const ref of stageRows) {
       if (ref.local >= 0 && ref.local < rows.length && rows[ref.local] && !rows[ref.local].reflection) {
         rows[ref.local].reflection = ref.text;
+        rows[ref.local].updatedAt = ref.updatedAt;
       } else {
-        overflow.push(ref.text);
+        overflow.push({ text: ref.text, updatedAt: ref.updatedAt });
       }
     }
 
     // 2) Reassign out-of-range/duplicate indexes to first unanswered question
-    for (const text of overflow) {
+    for (const item of overflow) {
       const target = rows.find((r) => !r.reflection);
-      if (target) target.reflection = text;
+      if (target) {
+        target.reflection = item.text;
+        target.updatedAt = item.updatedAt;
+      }
     }
 
     result.push(...rows);
