@@ -13,6 +13,8 @@ import FreeCardBadge from '@/components/FreeCardBadge';
 import PaywallBottomSheet from '@/components/PaywallBottomSheet';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence, type PanInfo } from 'framer-motion';
+import { useDevState } from '@/contexts/DevStateContext';
+import { isDemoMode } from '@/lib/demoMode';
 import { ChevronLeft, ChevronRight, Check } from 'lucide-react';
 import { allProducts } from '@/data/products';
 import { useKidsProductProgress } from '@/hooks/useKidsProductProgress';
@@ -59,6 +61,8 @@ export default function KidsCardPortal() {
   const { productSlug, categoryId } = useParams<{ productSlug: string; categoryId: string }>();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const devState = useDevState();
+  const bypassPaywall = devState === 'browse' || isDemoMode();
 
   // Resolve product + category
   const product = allProducts.find(p => p.slug === productSlug);
@@ -147,8 +151,8 @@ export default function KidsCardPortal() {
   const startSession = useCallback(() => {
     if (!card || navigating.current || portalPhase !== 'idle') return;
 
-    // Paywall intercept: non-free card + not purchased
-    if (product && card.id !== product.freeCardId && !productIsPurchased) {
+    // Paywall intercept: non-free card + not purchased (skip in browse/demo mode)
+    if (product && card.id !== product.freeCardId && !productIsPurchased && !bypassPaywall) {
       setPaywallOpen(true);
       return;
     }
