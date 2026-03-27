@@ -25,7 +25,6 @@ import { ChevronRight } from 'lucide-react';
 import {
   MIDNIGHT_INK,
   DEEP_DUSK,
-  DEEP_SAFFRON,
   LANTERN_GLOW,
   DRIFTWOOD,
   SAFFRON_FLAME,
