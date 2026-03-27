@@ -151,8 +151,8 @@ export default function KidsCardPortal() {
   const startSession = useCallback(() => {
     if (!card || navigating.current || portalPhase !== 'idle') return;
 
-    // Paywall intercept: non-free card + not purchased
-    if (product && card.id !== product.freeCardId && !productIsPurchased) {
+    // Paywall intercept: non-free card + not purchased (skip in browse/demo mode)
+    if (product && card.id !== product.freeCardId && !productIsPurchased && !bypassPaywall) {
       setPaywallOpen(true);
       return;
     }
