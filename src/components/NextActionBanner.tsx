@@ -84,45 +84,51 @@ export default function NextActionBanner({
     return null;
   }
 
+  const accentColor = product.tileLight ?? SAFFRON_FLAME;
+  const EASE = [0.4, 0.0, 0.2, 1];
+
   return (
     <motion.button
-      initial={{ opacity: 0, y: 8 }}
+      initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.2, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ delay: 0.3, duration: 0.5, ease: EASE }}
       onClick={onClick}
       style={{
-        width: '100%',
-        padding: '14px 18px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        gap: '12px',
-        background: 'rgba(42, 45, 58, 0.55)',
+        width: '88%',
+        maxWidth: '340px',
+        margin: '0 auto',
+        padding: '12px 20px',
+        background: `${accentColor}55`,
         backdropFilter: 'blur(24px)',
         WebkitBackdropFilter: 'blur(24px)',
-        border: '1px solid rgba(255, 253, 248, 0.08)',
-        borderRadius: '16px',
+        borderRadius: '40px',
+        border: `1px solid ${accentColor}40`,
         cursor: 'pointer',
         textAlign: 'left',
+        boxShadow: '0 2px 12px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.12)',
       }}
     >
-      {/* Left: text block */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', minWidth: 0 }}>
-        <span style={{
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <p style={{
           fontFamily: 'var(--font-sans)',
           fontSize: '11px',
           fontWeight: 700,
-          letterSpacing: '1.5px',
+          letterSpacing: '0.08em',
           textTransform: 'uppercase',
           color: labelColor,
+          marginBottom: '3px',
+          textShadow: '0 1px 3px rgba(0,0,0,0.5)',
           whiteSpace: 'nowrap',
         }}>
           {label}
-        </span>
-        <span style={{
+        </p>
+        <p style={{
           fontFamily: 'var(--font-display)',
-          fontSize: '16px',
-          fontWeight: 500,
+          fontSize: '15px',
+          fontWeight: 600,
           color: LANTERN_GLOW,
           lineHeight: 1.3,
           overflow: 'hidden',
@@ -130,18 +136,20 @@ export default function NextActionBanner({
           whiteSpace: 'nowrap',
         }}>
           {subtitle}
-        </span>
+        </p>
       </div>
-
-      {/* Right: CTA */}
-      <span style={{
-        fontFamily: 'var(--font-sans)',
-        fontSize: '13px',
-        fontWeight: 600,
-        color: SAFFRON_FLAME,
-        whiteSpace: 'nowrap',
-        flexShrink: 0,
-      }}>
+      <span
+        style={{
+          fontFamily: 'var(--font-sans)',
+          fontSize: '15px',
+          fontWeight: 700,
+          letterSpacing: '0.04em',
+          color: '#FFFFFF',
+          flexShrink: 0,
+          marginLeft: '12px',
+          textShadow: '0 1px 3px rgba(0,0,0,0.4)',
+        }}
+      >
         {ctaText}
       </span>
     </motion.button>
