@@ -2855,16 +2855,6 @@ export default function CardView() {
                           overflow: 'auto',
                         }}
                       />
-                      <p style={{
-                        fontFamily: 'var(--font-sans)',
-                        fontSize: '11px',
-                        color: '#6B5E52',
-                        opacity: 0.45,
-                        textAlign: 'center',
-                        marginTop: '8px',
-                      }}>
-                        Det ni skriver sparas i era samtal
-                      </p>
                       <button
                         onClick={() => setKidsNoteExpanded(false)}
                         aria-label="Stäng anteckning"
@@ -3529,16 +3519,6 @@ function KidsCompletionNote({ sessionId, spaceId, cardId, productId }: {
           overflow: 'auto',
         }}
       />
-      <p style={{
-        fontFamily: 'var(--font-sans)',
-        fontSize: '11px',
-        color: DRIFTWOOD,
-        opacity: 0.45,
-        textAlign: 'center',
-        marginTop: '8px',
-      }}>
-        Det ni skriver sparas i era samtal
-      </p>
     </motion.div>
   );
 }
@@ -3658,16 +3638,6 @@ function SimpleTakeaway({ sessionId, spaceId, cardId, productId, stillUsMode }: 
           transition: 'background-color 320ms ease, box-shadow 320ms ease',
         }}
       />
-      <p style={{
-        fontFamily: 'var(--font-sans)',
-        fontSize: '11px',
-        color: stillUsMode ? DRIFTWOOD_T : 'var(--text-secondary)',
-        opacity: 0.45,
-        textAlign: 'center',
-        marginTop: '8px',
-      }}>
-        Det ni skriver sparas i era samtal
-      </p>
     </div>
   );
 }
