@@ -3525,6 +3525,27 @@ function KidsCompletionNote({ sessionId, spaceId, cardId, productId }: {
           overflow: 'auto',
         }}
       />
+      <AnimatePresence>
+        {saveIndicator === 'saved' && (
+          <motion.p
+            initial={{ opacity: 0, y: -4 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: '11px',
+              color: DRIFTWOOD,
+              opacity: 0.55,
+              textAlign: 'center',
+              marginTop: '8px',
+              letterSpacing: '0.02em',
+            }}
+          >
+            ✓ Sparat i era samtal
+          </motion.p>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 }
