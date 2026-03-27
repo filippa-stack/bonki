@@ -230,7 +230,7 @@ export default function SharedSummary() {
       const sessionIds = sessions.map(s => s.id);
       const { data: reflections } = await supabase
         .from('step_reflections')
-        .select('session_id, text, step_index')
+        .select('session_id, text, step_index, updated_at')
         .in('session_id', sessionIds)
         .neq('text', '')
         .order('step_index', { ascending: true });
