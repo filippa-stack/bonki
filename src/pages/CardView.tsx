@@ -541,8 +541,10 @@ export default function CardView() {
   );
   const [kidsNoteExpanded, setKidsNoteExpanded] = useState(false);
   const [kidsNoteLocalText, setKidsNoteLocalText] = useState('');
+  const [kidsNoteSaveIndicator, setKidsNoteSaveIndicator] = useState<'idle' | 'saved'>('idle');
   const kidsNoteInteractedRef = useRef(false);
   const kidsNoteTextareaRef = useRef<HTMLTextAreaElement>(null);
+  const kidsNoteSaveTimerRef = useRef<ReturnType<typeof setTimeout>>();
   const kidsNoteSuppressSyncRef = useRef(false);
 
   // Reset note UI when prompt changes
@@ -2834,8 +2836,17 @@ export default function CardView() {
                         ref={kidsNoteTextareaRef}
                         value={kidsNoteLocalText}
                         onChange={(e) => {
-                          setKidsNoteLocalText(e.target.value);
-                          kidsNoteSession.setText(e.target.value);
+                          const val = e.target.value;
+                          setKidsNoteLocalText(val);
+                          kidsNoteSession.setText(val);
+                          setKidsNoteSaveIndicator('idle');
+                          if (kidsNoteSaveTimerRef.current) clearTimeout(kidsNoteSaveTimerRef.current);
+                          if (val.trim()) {
+                            kidsNoteSaveTimerRef.current = setTimeout(() => {
+                              setKidsNoteSaveIndicator('saved');
+                              setTimeout(() => setKidsNoteSaveIndicator('idle'), 2500);
+                            }, 800);
+                          }
                         }}
                         placeholder="Skriv här…"
                         autoCorrect="on"
@@ -2871,6 +2882,27 @@ export default function CardView() {
                         <ChevronDown size={16} style={{ color: '#6B5E52', opacity: 0.5 }} />
                       </button>
                     </div>
+                    <AnimatePresence>
+                      {kidsNoteSaveIndicator === 'saved' && (
+                        <motion.p
+                          initial={{ opacity: 0, y: -4 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0 }}
+                          transition={{ duration: 0.25 }}
+                          style={{
+                            fontFamily: 'var(--font-sans)',
+                            fontSize: '11px',
+                            color: '#6B5E52',
+                            opacity: 0.55,
+                            textAlign: 'center',
+                            marginTop: '8px',
+                            letterSpacing: '0.02em',
+                          }}
+                        >
+                          ✓ Sparat i era samtal
+                        </motion.p>
+                      )}
+                    </AnimatePresence>
                   </motion.div>
                 )}
               </div>
@@ -3406,10 +3438,12 @@ function KidsCompletionNote({ sessionId, spaceId, cardId, productId }: {
   const [expanded, setExpanded] = useState(false);
   const [text, setText] = useState('');
   const [rowId, setRowId] = useState<string | null>(null);
+  const [saveIndicator, setSaveIndicator] = useState<'idle' | 'saved'>('idle');
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const { user } = useAuth();
   const isDemo = isDemoMode();
   const debounceRef = useRef<ReturnType<typeof setTimeout>>();
+  const saveTimerRef = useRef<ReturnType<typeof setTimeout>>();
 
   const persistToDb = useCallback(async (value: string) => {
     if (!sessionId || !user?.id || !spaceId) return;
@@ -3440,11 +3474,15 @@ function KidsCompletionNote({ sessionId, spaceId, cardId, productId }: {
 
   const handleChange = (value: string) => {
     setText(value);
+    setSaveIndicator('idle');
+    if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
     if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => {
       if (value.trim()) {
         if (isDemo) persistToLocal(value);
         else persistToDb(value);
+        setSaveIndicator('saved');
+        saveTimerRef.current = setTimeout(() => setSaveIndicator('idle'), 2500);
       }
     }, 1000);
   };
@@ -3519,6 +3557,27 @@ function KidsCompletionNote({ sessionId, spaceId, cardId, productId }: {
           overflow: 'auto',
         }}
       />
+      <AnimatePresence>
+        {saveIndicator === 'saved' && (
+          <motion.p
+            initial={{ opacity: 0, y: -4 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: '11px',
+              color: DRIFTWOOD,
+              opacity: 0.55,
+              textAlign: 'center',
+              marginTop: '8px',
+              letterSpacing: '0.02em',
+            }}
+          >
+            ✓ Sparat i era samtal
+          </motion.p>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 }
@@ -3536,9 +3595,11 @@ function SimpleTakeaway({ sessionId, spaceId, cardId, productId, stillUsMode }: 
   const [text, setText] = useState('');
   const [rowId, setRowId] = useState<string | null>(null);
   const [isFocused, setIsFocused] = useState(false);
+  const [saveIndicator, setSaveIndicator] = useState<'idle' | 'saved'>('idle');
   const userId = user?.id;
   const isDemo = isDemoMode();
   const debounceRef = useRef<ReturnType<typeof setTimeout>>();
+  const saveTimerRef = useRef<ReturnType<typeof setTimeout>>();
 
   const DRIFTWOOD_T = '#FDF6E3';
   const BARK_T = '#2C2420';
@@ -3574,11 +3635,15 @@ function SimpleTakeaway({ sessionId, spaceId, cardId, productId, stillUsMode }: 
 
   const handleChange = (value: string) => {
     setText(value);
+    setSaveIndicator('idle');
+    if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
     if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => {
       if (value.trim()) {
         if (isDemo) persistToLocal(value);
         else persistToDb(value);
+        setSaveIndicator('saved');
+        saveTimerRef.current = setTimeout(() => setSaveIndicator('idle'), 2500);
       }
     }, 1000);
   };
@@ -3638,6 +3703,27 @@ function SimpleTakeaway({ sessionId, spaceId, cardId, productId, stillUsMode }: 
           transition: 'background-color 320ms ease, box-shadow 320ms ease',
         }}
       />
+      <AnimatePresence>
+        {saveIndicator === 'saved' && (
+          <motion.p
+            initial={{ opacity: 0, y: -4 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: '11px',
+              color: stillUsMode ? DRIFTWOOD_T : 'var(--text-secondary)',
+              opacity: 0.55,
+              textAlign: 'center',
+              marginTop: '8px',
+              letterSpacing: '0.02em',
+            }}
+          >
+            ✓ Sparat i era samtal
+          </motion.p>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
