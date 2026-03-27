@@ -22,6 +22,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { isDemoCardCompleted } from '@/lib/demoSession';
 import ProductHomeBackButton from '@/components/ProductHomeBackButton';
+import NextActionBanner from '@/components/NextActionBanner';
 import { ChevronRight, Play } from 'lucide-react';
 import {
   MIDNIGHT_INK,
