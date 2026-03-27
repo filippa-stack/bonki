@@ -2836,8 +2836,17 @@ export default function CardView() {
                         ref={kidsNoteTextareaRef}
                         value={kidsNoteLocalText}
                         onChange={(e) => {
-                          setKidsNoteLocalText(e.target.value);
-                          kidsNoteSession.setText(e.target.value);
+                          const val = e.target.value;
+                          setKidsNoteLocalText(val);
+                          kidsNoteSession.setText(val);
+                          setKidsNoteSaveIndicator('idle');
+                          if (kidsNoteSaveTimerRef.current) clearTimeout(kidsNoteSaveTimerRef.current);
+                          if (val.trim()) {
+                            kidsNoteSaveTimerRef.current = setTimeout(() => {
+                              setKidsNoteSaveIndicator('saved');
+                              setTimeout(() => setKidsNoteSaveIndicator('idle'), 2500);
+                            }, 800);
+                          }
                         }}
                         placeholder="Skriv här…"
                         autoCorrect="on"
