@@ -3406,10 +3406,12 @@ function KidsCompletionNote({ sessionId, spaceId, cardId, productId }: {
   const [expanded, setExpanded] = useState(false);
   const [text, setText] = useState('');
   const [rowId, setRowId] = useState<string | null>(null);
+  const [saveIndicator, setSaveIndicator] = useState<'idle' | 'saved'>('idle');
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const { user } = useAuth();
   const isDemo = isDemoMode();
   const debounceRef = useRef<ReturnType<typeof setTimeout>>();
+  const saveTimerRef = useRef<ReturnType<typeof setTimeout>>();
 
   const persistToDb = useCallback(async (value: string) => {
     if (!sessionId || !user?.id || !spaceId) return;
@@ -3440,11 +3442,15 @@ function KidsCompletionNote({ sessionId, spaceId, cardId, productId }: {
 
   const handleChange = (value: string) => {
     setText(value);
+    setSaveIndicator('idle');
+    if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
     if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => {
       if (value.trim()) {
         if (isDemo) persistToLocal(value);
         else persistToDb(value);
+        setSaveIndicator('saved');
+        saveTimerRef.current = setTimeout(() => setSaveIndicator('idle'), 2500);
       }
     }, 1000);
   };
