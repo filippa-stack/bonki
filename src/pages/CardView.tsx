@@ -1061,8 +1061,15 @@ export default function CardView() {
       >
         {/* Back arrow — top left */}
         <button
-          onClick={() => navigate(productHomeDest)}
-          aria-label="Tillbaka"
+          onClick={() => {
+            _setShowCompletion(false);
+            const lastStageIndex = effectiveSteps.length - 1;
+            const lastSection = card.sections.find(s => s.type === effectiveSteps[lastStageIndex]);
+            const lastPromptCount = getEffectivePromptCount(lastSection);
+            setLocalStepIndex(lastStageIndex);
+            setLocalPromptIndex(lastPromptCount - 1);
+          }}
+          aria-label="Tillbaka till sista steget"
           style={{
             position: 'absolute',
             top: 'calc(env(safe-area-inset-top, 0px) + 12px)',
