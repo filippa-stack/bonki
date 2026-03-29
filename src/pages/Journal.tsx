@@ -1006,7 +1006,7 @@ export default function Journal() {
                   const stepName = effectiveIsPar(s.product_id, s.card_id)
                     ? (STILL_US_STEP_NAMES[s.currentStepIndex] ?? `Steg ${s.currentStepIndex + 1}`)
                     : `Fråga ${s.currentStepIndex + 1}`;
-                  const accentColor = getProductColor(s.product_id, s.card_id);
+                  const accent = getProductAccent(s.product_id, s.card_id ?? undefined);
 
                   return (
                     <motion.button
@@ -1016,15 +1016,19 @@ export default function Journal() {
                       transition={{ delay: idx * 0.05, duration: 0.35, ease: EASE }}
                       onClick={() => s.card_id && navigate(`/card/${s.card_id}`)}
                       style={{
-                        width: '100%', backgroundColor: DEEP_DUSK, borderRadius: '16px',
-                        padding: '14px 16px', cursor: 'pointer',
-                        borderTop: 'none', borderRight: 'none', borderBottom: 'none',
-                        borderLeft: `3px solid ${accentColor}`,
+                        width: '100%', backgroundColor: '#2E3142', borderRadius: '16px',
+                        padding: '0 16px 14px', cursor: 'pointer',
+                        border: 'none', overflow: 'hidden', position: 'relative',
                         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
                         textAlign: 'left', WebkitTapHighlightColor: 'transparent',
                       }}
                     >
-                      <div style={{ minWidth: 0 }}>
+                      {/* Top color bar */}
+                      <div style={{
+                        position: 'absolute', top: 0, left: 0, right: 0,
+                        height: '2px', background: `${accent.mid}66`,
+                      }} />
+                      <div style={{ minWidth: 0, paddingTop: '14px' }}>
                         <span style={{
                           fontSize: '16px', fontWeight: 600, color: LANTERN_GLOW,
                           display: 'block', lineHeight: 1.3,
@@ -1040,9 +1044,9 @@ export default function Journal() {
                       <div style={{
                         display: 'flex', alignItems: 'center', gap: '6px',
                         flexShrink: 0, marginLeft: '12px',
-                        color: accentColor, fontSize: '13px', fontWeight: 600,
+                        color: accent.mid, fontSize: '13px', fontWeight: 600, paddingTop: '14px',
                       }}>
-                        <Play size={12} strokeWidth={2.5} fill={accentColor} />
+                        <Play size={12} strokeWidth={2.5} fill={accent.mid} />
                         Fortsätt
                       </div>
                     </motion.button>
