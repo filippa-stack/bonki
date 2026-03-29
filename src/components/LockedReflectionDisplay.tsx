@@ -25,6 +25,8 @@ export default function LockedReflectionDisplay({ sessionId, stepIndex }: Props)
   const [maxStepIndex, setMaxStepIndex] = useState<number>(-1);
   const [loading, setLoading] = useState(true);
 
+  console.log('[archive-debug] LockedReflectionDisplay mounted', { sessionId, stepIndex });
+
   useEffect(() => {
     setEntries([]);
     setMaxStepIndex(-1);
@@ -53,6 +55,8 @@ export default function LockedReflectionDisplay({ sessionId, stepIndex }: Props)
         .order('step_index', { ascending: false })
         .limit(1),
     ]).then(([{ data: rows }, { data: maxRows }]) => {
+      console.log('[archive-debug] step_reflections query result:', JSON.stringify(rows));
+      console.log('[archive-debug] maxRows result:', JSON.stringify(maxRows));
       const validRows = Array.isArray(rows) ? rows : [];
       setEntries(
         validRows
