@@ -1,64 +1,60 @@
 
 
-## Revised Plan: Filter Active Sessions from Still Us Archive View
+## Updated Plan: Fix Screen Flashing — with verified conditions
 
-### Concern Resolution
-1. **Code style**: The existing query (line 298) already uses `.then()` chains — no style change needed. The plan matches.
-2. **Orphaned UI**: No "Pågående samtal" or active-session list section exists anywhere. The archive block (line 2146) depends on `completedSessionId` — when null, nothing renders. No orphan risk.
+### Condition 1: Library remount — CONFIRMED ✅
+`ProductLibrary` renders inside `Index` at route `/`. With `AnimatePresence mode="wait"` and `key={location.pathname}`, navigating away and back fully unmounts/remounts the tree. The `[]` dependency on `useDefaultTheme` will re-fire correctly.
 
-### Implementation — `src/pages/CardView.tsx`
+### Condition 2: Additional routes needing `useDefaultTheme` — FOUND
+These light-themed pages have no theme hook and will show dark-var bleed if visited after a dark product page:
 
-**Single change** to the session lookup query (lines 294-308):
+| Route | File | Action |
+|---|---|---|
+| `/journal` | `Journal.tsx` | Add `useDefaultTheme()` |
+| `/diary/:productId` | `Diary.tsx` | Add `useDefaultTheme()` |
+| `/unlock` | `Paywall.tsx` | Add `useDefaultTheme()` |
+| `/paywall-full` | `PaywallFullScreen.tsx` | Add `useDefaultTheme()` |
+| `/settings/dissolve` | `DissolutionSettings.tsx` | Add `useDefaultTheme()` |
 
-Build the query conditionally — add `.eq('status', 'completed')` only when `isFromArchive` is true:
+These dark-themed Still Us pages should probably call `useVerdigrisTheme` but that's a separate concern — the current fix is about preventing light-page bleed.
 
-```typescript
-useEffect(() => {
-  if (devState) return;
-  if (!space || !cardId) return;
-  
-  let query = supabase
-    .from('couple_sessions')
-    .select('id')
-    .eq('couple_space_id', space.id)
-    .eq('card_id', cardId);
-  
-  // Archive: only show completed sessions
-  if (isFromArchive) {
-    query = query.eq('status', 'completed');
-  }
-  
-  query
-    .order('started_at', { ascending: false })
-    .limit(1)
-    .maybeSingle()
-    .then(({ data }) => {
-      setCompletedSessionId(data?.id ?? null);
-    });
+### Changes (revised from previous plan)
 
-  // Count completed sessions (unchanged)
-  supabase
-    .from('couple_sessions')
-    .select('id', { count: 'exact', head: true })
-    .eq('couple_space_id', space.id)
-    .eq('status', 'completed')
-    .eq('product_id', product?.id ?? 'still_us')
-    .then(({ count }) => {
-      setCompletedSessionCount(count ?? 0);
-    });
-}, [space, cardId, devState, showCompletion, product?.id, isFromArchive]);
-```
+**1. Remove cleanup from `useProductTheme.ts`** — delete the return cleanup function
 
-Key points:
-- Uses `let query` + conditional `.eq()` — standard Supabase builder pattern
-- Adds `isFromArchive` to the dependency array
-- Live/completion modes: unchanged (fetches latest session regardless of status)
-- Archive mode: only completed sessions → active sessions produce `null` → no archive content renders
+**2. Remove CSS var cleanup from `VerdigrisAtmosphere.tsx`** — keep class cleanup only
 
-### Files Changed
-1. `src/pages/CardView.tsx` — session lookup query + dep array
+**3. Create `src/hooks/useDefaultTheme.ts`** — resets vars to `:root` defaults with `// Must match :root defaults in index.css` comment
 
-### Not Touched
-- Four protected patterns remain unmodified
-- No session creation, save, or reflection logic changes
+**4. Call `useDefaultTheme()` in 8 files** (expanded from original 3):
+- `src/components/ProductLibrary.tsx`
+- `src/pages/Login.tsx`
+- `src/pages/SharedSummary.tsx`
+- `src/pages/Journal.tsx`
+- `src/pages/Diary.tsx`
+- `src/pages/Paywall.tsx`
+- `src/pages/PaywallFullScreen.tsx`
+- `src/pages/DissolutionSettings.tsx`
+
+**5. Fix PastelTile forwardRef** in `ProductLibrary.tsx`
+
+### Files changed
+| File | Change |
+|---|---|
+| `src/hooks/useProductTheme.ts` | Remove cleanup return |
+| `src/components/VerdigrisAtmosphere.tsx` | Remove CSS var cleanup (keep class cleanup) |
+| `src/hooks/useDefaultTheme.ts` | New file |
+| `src/components/ProductLibrary.tsx` | Add `useDefaultTheme()` + fix forwardRef |
+| `src/pages/Login.tsx` | Add `useDefaultTheme()` |
+| `src/pages/SharedSummary.tsx` | Add `useDefaultTheme()` |
+| `src/pages/Journal.tsx` | Add `useDefaultTheme()` |
+| `src/pages/Diary.tsx` | Add `useDefaultTheme()` |
+| `src/pages/Paywall.tsx` | Add `useDefaultTheme()` |
+| `src/pages/PaywallFullScreen.tsx` | Add `useDefaultTheme()` |
+| `src/pages/DissolutionSettings.tsx` | Add `useDefaultTheme()` |
+
+### Not touched
+- AnimatePresence / PageTransition logic
+- Session creation, save, or reflection logic
+- All four protected ref patterns
 
