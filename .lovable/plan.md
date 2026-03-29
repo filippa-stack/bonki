@@ -1,49 +1,29 @@
 
 
-## Journal Page Polish — 10/10 Design
+## Fix: Transparent Header & CTA in Kids Sessions
 
-### Changes
+### Root Cause
 
-**1. Product-colored accents via `productTileColors`**
+The illustration background image inside the content area uses `position: absolute; inset: -32%; width: 164%; height: 164%` with `overflow: visible` on its parent. This causes the illustration to bleed **upward over the header** and **downward over the CTA button**, partially obscuring both with a 70%-opacity image layer.
 
-Replace `getProductColor()` (lines 182-184) which returns only saffron variants. Instead, look up `productTileColors[productId]` from `palette.ts` and use `tileMid` as the accent. Fallback to `DEEP_SAFFRON` for unknown products.
+The header and CTA are flex siblings of the content area and have no explicit `z-index` or `position: relative`, so they lose the stacking battle against the overflowing illustration.
 
-This means each reflection card gets the color of its source product — teal for Jag i Mig, pink for Jag med Andra, cobalt for Still Us, etc.
+### Fix
 
-**2. Replace left border with a subtle top-edge color bar + elevated card surface**
+In `src/pages/CardView.tsx`, add `position: relative` and `zIndex: 2` to:
+1. The **header bar** div (line ~2652)
+2. The **CTA wrapper** div (line ~2928)
 
-Instead of `borderLeft: 3px solid`, each `NoteEntryCard` gets:
-- A thin (2px) horizontal color bar at the very top of the card, using the product's `tileMid` at 40% opacity — like a colored bookmark tab
-- Slightly lighter card surface (`#2E3142` instead of `DEEP_DUSK`) to create more lift against the midnight background
-- Remove the `borderLeft` entirely
-
-This is more editorial and magazine-like — the color signals product origin without the heavy sidebar feel.
-
-**3. Takeaway label: "Ni bar med er"**
-
-Instead of "Ert takeaway" or "Reflektion efter samtalet", takeaway entries (id starts with `takeaway-`) get:
-- Label: **"Ni bar med er"** in small caps, using the product's `tileMid` color at 70% opacity
-- A subtle background tint: product `tileDeep` at 8% opacity behind the entire card
-- This distinguishes takeaways from step reflections without using gold or English loanwords
-
-For non-takeaway entries where `questionText` is null, suppress the "— Reflektion efter samtalet" fallback entirely (show nothing).
-
-**4. Fix metadata wrapping**
-
-Change the metadata row (lines 273-287) to use `flex-wrap: wrap` so on narrow viewports the date drops to a second line cleanly instead of overflowing.
-
-**5. Normalize dates within month groups**
-
-Inside a month group, always use `formatRelativeDate` (short: "idag", "fredag", "14 mar") instead of `formatFullDate` (which can produce "24 februari 2026"). The month header already provides that context.
+This ensures both render above the bleeding illustration without changing the visual overflow effect.
 
 ### Files changed
 
 | File | Change |
 |---|---|
-| `src/pages/Journal.tsx` | All changes above — import `productTileColors`, update `getProductColor`, restyle `NoteEntryCard`, takeaway label, metadata wrap, date format |
+| `src/pages/CardView.tsx` | Add `position: 'relative', zIndex: 2` to header div and CTA wrapper div in the kids live session block |
 
 ### Not touched
-- Data fetching, filter logic, session state
-- AnimatePresence, theme hooks, protected ref patterns
-- No database changes
+- Illustration sizing/overflow (the bleed effect is intentional)
+- Still Us rendering blocks
+- Protected ref patterns (`suppressUntilRef`, `prevServerStepRef`, `pendingSave`, `hasSyncedRef`)
 
