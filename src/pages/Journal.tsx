@@ -574,14 +574,19 @@ export default function Journal() {
 
     allTimelineItems.forEach(item => {
       const isPar = effectiveIsPar(item.productId, item.cardId);
+
+      // All empty sessions go to collapsible, regardless of product
+      if (item.type === 'completed') {
+        if (isPar && !activeFilters.has('par')) return;
+        if (!isPar && !activeFilters.has('barn')) return;
+        if (isPar && bothActive && !parExpanded) return;
+        emptySU.push(item);
+        return;
+      }
+
       if (isPar) {
         if (!activeFilters.has('par')) return;
         if (bothActive && !parExpanded) return;
-        // Still Us completed-no-note → collect separately
-        if (item.type === 'completed') {
-          emptySU.push(item);
-          return;
-        }
       } else {
         if (!activeFilters.has('barn')) return;
       }
