@@ -53,6 +53,7 @@ interface CompletedSession {
   product_id: string;
   ended_at: string | null;
   category_id: string | null;
+  status: string;
 }
 
 
@@ -383,9 +384,9 @@ export default function Journal() {
     // Sessions
     supabase
       .from('couple_sessions')
-      .select('id, card_id, product_id, ended_at, category_id')
+      .select('id, card_id, product_id, ended_at, category_id, status')
       .eq('couple_space_id', space.id)
-      .eq('status', 'completed')
+      .in('status', ['completed', 'active'])
       .order('ended_at', { ascending: false })
       .then(({ data }) => { if (!cancelled) setSessions(data ?? []); });
 
@@ -490,7 +491,7 @@ export default function Journal() {
     takeaways?.forEach(t => {
       if (!t.content?.trim()) return;
       const session = sessionMap.get(t.session_id);
-      if (!session || !session.card_id || !session.ended_at) return;
+      if (!session || !session.card_id) return;
       sessionsWithNotes.add(session.id);
       items.push({
         type: 'note',
@@ -501,7 +502,7 @@ export default function Journal() {
         cardName: getCardTitle(session.card_id),
         categoryName: getCategoryName(session.category_id, session.card_id),
         productId: session.product_id,
-        date: t.created_at,
+        date: session.ended_at || t.created_at,
         sessionId: session.id,
       });
     });
@@ -510,7 +511,7 @@ export default function Journal() {
     reflections?.forEach(r => {
       if (!r.text?.trim()) return;
       const session = sessionMap.get(r.session_id);
-      if (!session || !session.card_id || !session.ended_at) return;
+      if (!session || !session.card_id) return;
       sessionsWithNotes.add(session.id);
       items.push({
         type: 'note',
