@@ -215,7 +215,8 @@ export default function ProductHome() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.8, duration: 0.6 }}
-        className="text-center pb-16"
+        className="text-center"
+        style={{ paddingBottom: 'calc(72px + env(safe-area-inset-bottom, 0px))' }}
       >
         <p
           className="font-serif"

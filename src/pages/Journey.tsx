@@ -216,6 +216,7 @@ export default function Journey() {
     <div style={{
       minHeight: '100dvh',
       backgroundColor: COLORS.emberNight,
+      paddingBottom: 'calc(72px + env(safe-area-inset-bottom, 0px))',
     }}>
       {/* ── Multi-cycle toggle ── */}
       {maxCycle > 1 && (

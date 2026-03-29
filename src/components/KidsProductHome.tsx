@@ -542,7 +542,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
           flexDirection: 'column',
           paddingTop: 'clamp(32px, 10vh, 90px)',
           paddingRight: '16px',
-          paddingBottom: '0px',
+          paddingBottom: 'calc(72px + env(safe-area-inset-bottom, 0px))',
           paddingLeft: '16px',
         }}
       >
