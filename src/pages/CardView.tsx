@@ -294,12 +294,16 @@ export default function CardView() {
   useEffect(() => {
     if (devState) return;
     if (!space || !cardId) return;
-    // Fetches latest session (active or completed) — name is legacy
-    supabase
+   // Fetches latest session — archive mode filters to completed only
+    let query = supabase
       .from('couple_sessions')
       .select('id')
       .eq('couple_space_id', space.id)
-      .eq('card_id', cardId)
+      .eq('card_id', cardId);
+    if (isFromArchive) {
+      query = query.eq('status', 'completed');
+    }
+    query
       .order('started_at', { ascending: false })
       .limit(1)
       .maybeSingle()
@@ -316,7 +320,7 @@ export default function CardView() {
       .then(({ count }) => {
         setCompletedSessionCount(count ?? 0);
       });
-  }, [space, cardId, devState, showCompletion, product?.id]);
+  }, [space, cardId, devState, showCompletion, product?.id, isFromArchive]);
 
   // ─── Stale/orphan session detection ───
   const [staleSession, setStaleSession] = useState(false);
