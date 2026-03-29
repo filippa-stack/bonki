@@ -27,12 +27,9 @@ export function useVerdigrisTheme(active: boolean = true, lightLeakColor?: strin
     return () => {
       root.classList.remove('theme-verdigris');
       document.body.classList.remove('verdigris-grain', 'verdigris-lightleak');
-      root.style.removeProperty('--lightleak-color');
-      root.style.removeProperty('--text-primary');
-      root.style.removeProperty('--text-secondary');
-      root.style.removeProperty('--text-tertiary');
-      root.style.removeProperty('--surface-base');
-      root.style.removeProperty('--surface-raised');
+      // CSS vars are NOT removed here — they persist until overwritten by
+      // the next page's theme hook or useDefaultTheme(). Removing them caused
+      // flash during AnimatePresence transition gap.
     };
   }, [active, lightLeakColor]);
 }

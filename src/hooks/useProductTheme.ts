@@ -61,15 +61,7 @@ export function useProductTheme(
     if (manifest?.tileMid) root.style.setProperty('--tile-mid', manifest.tileMid);
     if (manifest?.tileDeep) root.style.setProperty('--tile-deep', manifest.tileDeep);
 
-    return () => {
-      ['--cta-default', '--cta-hover-v2', '--cta-active', '--cta-bg',
-       '--session-header-bg', '--accent-saffron', '--accent-text',
-       '--surface-base', '--product-bg', '--cta-button-color',
-       '--text-primary', '--text-secondary',
-       '--kids-question-color',
-       '--kids-counter-bg', '--kids-counter-color', '--kids-counter-border',
-       '--tile-light', '--tile-mid', '--tile-deep',
-      ].forEach((v) => root.style.removeProperty(v));
-    };
+    // No cleanup — vars persist until overwritten by next page's theme hook
+    // or useDefaultTheme(). Removing them caused flash during AnimatePresence gap.
   }, [primary, accent, bgColor, ctaButtonColor, pronounMode, manifest]);
 }
