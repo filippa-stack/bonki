@@ -1,60 +1,49 @@
 
 
-## Updated Plan: Fix Screen Flashing — with verified conditions
+## Journal Page Polish — 10/10 Design
 
-### Condition 1: Library remount — CONFIRMED ✅
-`ProductLibrary` renders inside `Index` at route `/`. With `AnimatePresence mode="wait"` and `key={location.pathname}`, navigating away and back fully unmounts/remounts the tree. The `[]` dependency on `useDefaultTheme` will re-fire correctly.
+### Changes
 
-### Condition 2: Additional routes needing `useDefaultTheme` — FOUND
-These light-themed pages have no theme hook and will show dark-var bleed if visited after a dark product page:
+**1. Product-colored accents via `productTileColors`**
 
-| Route | File | Action |
-|---|---|---|
-| `/journal` | `Journal.tsx` | Add `useDefaultTheme()` |
-| `/diary/:productId` | `Diary.tsx` | Add `useDefaultTheme()` |
-| `/unlock` | `Paywall.tsx` | Add `useDefaultTheme()` |
-| `/paywall-full` | `PaywallFullScreen.tsx` | Add `useDefaultTheme()` |
-| `/settings/dissolve` | `DissolutionSettings.tsx` | Add `useDefaultTheme()` |
+Replace `getProductColor()` (lines 182-184) which returns only saffron variants. Instead, look up `productTileColors[productId]` from `palette.ts` and use `tileMid` as the accent. Fallback to `DEEP_SAFFRON` for unknown products.
 
-These dark-themed Still Us pages should probably call `useVerdigrisTheme` but that's a separate concern — the current fix is about preventing light-page bleed.
+This means each reflection card gets the color of its source product — teal for Jag i Mig, pink for Jag med Andra, cobalt for Still Us, etc.
 
-### Changes (revised from previous plan)
+**2. Replace left border with a subtle top-edge color bar + elevated card surface**
 
-**1. Remove cleanup from `useProductTheme.ts`** — delete the return cleanup function
+Instead of `borderLeft: 3px solid`, each `NoteEntryCard` gets:
+- A thin (2px) horizontal color bar at the very top of the card, using the product's `tileMid` at 40% opacity — like a colored bookmark tab
+- Slightly lighter card surface (`#2E3142` instead of `DEEP_DUSK`) to create more lift against the midnight background
+- Remove the `borderLeft` entirely
 
-**2. Remove CSS var cleanup from `VerdigrisAtmosphere.tsx`** — keep class cleanup only
+This is more editorial and magazine-like — the color signals product origin without the heavy sidebar feel.
 
-**3. Create `src/hooks/useDefaultTheme.ts`** — resets vars to `:root` defaults with `// Must match :root defaults in index.css` comment
+**3. Takeaway label: "Ni bar med er"**
 
-**4. Call `useDefaultTheme()` in 8 files** (expanded from original 3):
-- `src/components/ProductLibrary.tsx`
-- `src/pages/Login.tsx`
-- `src/pages/SharedSummary.tsx`
-- `src/pages/Journal.tsx`
-- `src/pages/Diary.tsx`
-- `src/pages/Paywall.tsx`
-- `src/pages/PaywallFullScreen.tsx`
-- `src/pages/DissolutionSettings.tsx`
+Instead of "Ert takeaway" or "Reflektion efter samtalet", takeaway entries (id starts with `takeaway-`) get:
+- Label: **"Ni bar med er"** in small caps, using the product's `tileMid` color at 70% opacity
+- A subtle background tint: product `tileDeep` at 8% opacity behind the entire card
+- This distinguishes takeaways from step reflections without using gold or English loanwords
 
-**5. Fix PastelTile forwardRef** in `ProductLibrary.tsx`
+For non-takeaway entries where `questionText` is null, suppress the "— Reflektion efter samtalet" fallback entirely (show nothing).
+
+**4. Fix metadata wrapping**
+
+Change the metadata row (lines 273-287) to use `flex-wrap: wrap` so on narrow viewports the date drops to a second line cleanly instead of overflowing.
+
+**5. Normalize dates within month groups**
+
+Inside a month group, always use `formatRelativeDate` (short: "idag", "fredag", "14 mar") instead of `formatFullDate` (which can produce "24 februari 2026"). The month header already provides that context.
 
 ### Files changed
+
 | File | Change |
 |---|---|
-| `src/hooks/useProductTheme.ts` | Remove cleanup return |
-| `src/components/VerdigrisAtmosphere.tsx` | Remove CSS var cleanup (keep class cleanup) |
-| `src/hooks/useDefaultTheme.ts` | New file |
-| `src/components/ProductLibrary.tsx` | Add `useDefaultTheme()` + fix forwardRef |
-| `src/pages/Login.tsx` | Add `useDefaultTheme()` |
-| `src/pages/SharedSummary.tsx` | Add `useDefaultTheme()` |
-| `src/pages/Journal.tsx` | Add `useDefaultTheme()` |
-| `src/pages/Diary.tsx` | Add `useDefaultTheme()` |
-| `src/pages/Paywall.tsx` | Add `useDefaultTheme()` |
-| `src/pages/PaywallFullScreen.tsx` | Add `useDefaultTheme()` |
-| `src/pages/DissolutionSettings.tsx` | Add `useDefaultTheme()` |
+| `src/pages/Journal.tsx` | All changes above — import `productTileColors`, update `getProductColor`, restyle `NoteEntryCard`, takeaway label, metadata wrap, date format |
 
 ### Not touched
-- AnimatePresence / PageTransition logic
-- Session creation, save, or reflection logic
-- All four protected ref patterns
+- Data fetching, filter logic, session state
+- AnimatePresence, theme hooks, protected ref patterns
+- No database changes
 
