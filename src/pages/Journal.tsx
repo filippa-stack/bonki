@@ -878,6 +878,59 @@ export default function Journal() {
             </div>
           ))}
 
+          {/* ── Still Us empty sessions (collapsible) ── */}
+          {emptyStillUsSessions.length > 0 && (
+            <div style={{ marginTop: '24px', padding: '0 16px' }}>
+              <button
+                onClick={() => setEmptySessionsOpen(prev => !prev)}
+                style={{
+                  width: '100%', background: 'none', border: 'none', cursor: 'pointer',
+                  display: 'flex', alignItems: 'center', gap: '8px',
+                  padding: '6px 0', WebkitTapHighlightColor: 'transparent',
+                }}
+              >
+                <span style={{
+                  fontSize: '11px', fontWeight: 600, letterSpacing: '2px',
+                  color: `${DRIFTWOOD}aa`, textTransform: 'uppercase', lineHeight: 1,
+                }}>
+                  Samtal utan anteckningar ({emptyStillUsSessions.length})
+                </span>
+                <motion.span
+                  animate={{ rotate: emptySessionsOpen ? 180 : 0 }}
+                  transition={{ duration: 0.2 }}
+                  style={{ color: `${DRIFTWOOD}88`, display: 'flex' }}
+                >
+                  <ChevronDown size={14} strokeWidth={1.5} />
+                </motion.span>
+              </button>
+              <AnimatePresence>
+                {emptySessionsOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.25, ease: EASE }}
+                    style={{ overflow: 'hidden' }}
+                  >
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', paddingTop: '8px' }}>
+                      {emptyStillUsSessions.map(m => (
+                        <div key={m.id} style={{
+                          display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                          opacity: 0.5, fontSize: '13px', padding: '4px 0',
+                        }}>
+                          <span style={{ color: DRIFTWOOD }}>{m.cardName}</span>
+                          <span style={{ color: `${DRIFTWOOD}99` }}>
+                            {new Date(m.date).toLocaleDateString('sv-SE', { day: 'numeric', month: 'short' })}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          )}
+
           {/* ── Paused Sessions ── */}
           {filteredPaused.length > 0 && (
             <div>
