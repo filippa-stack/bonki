@@ -11,7 +11,7 @@ import {
   DRIFTWOOD,
   DEEP_DUSK,
   DEEP_SAFFRON,
-  SAFFRON_FLAME,
+  productTileColors,
 } from '@/lib/palette';
 import { cards as stillUsCards, categories as stillUsCategories } from '@/data/content';
 import { allProducts } from '@/data/products';
@@ -179,8 +179,23 @@ function monthLabel(dateStr: string): string {
   return `${SWEDISH_MONTHS[d.getMonth()].toUpperCase()} ${d.getFullYear()}`;
 }
 
-function getProductColor(productId: string, cardId?: string): string {
-  return effectiveIsPar(productId, cardId ?? null) ? DEEP_SAFFRON : SAFFRON_FLAME;
+function getProductAccent(productId: string, cardId?: string): { mid: string; deep: string } {
+  // Resolve effective product from card if needed
+  let effectiveProduct = productId;
+  if (cardId) {
+    for (const prod of allProducts) {
+      if (prod.cards.some(c => c.id === cardId)) {
+        effectiveProduct = prod.id;
+        break;
+      }
+    }
+  }
+  // Map product ID to palette key (products use underscores in palette)
+  const paletteKey = effectiveProduct.replace(/-/g, '_');
+  const colors = productTileColors[paletteKey];
+  return colors
+    ? { mid: colors.tileMid, deep: colors.tileDeep }
+    : { mid: DEEP_SAFFRON, deep: DEEP_SAFFRON };
 }
 
 function splitReflectionBlocks(text: string): string[] {
@@ -194,8 +209,9 @@ function splitReflectionBlocks(text: string): string[] {
 function NoteEntryCard({ entry, navigate, index }: { entry: NoteEntry; navigate: (p: string) => void; index: number }) {
   const [expanded, setExpanded] = useState(false);
   const isLong = entry.text.length > 200;
-  const accentColor = getProductColor(entry.productId, entry.cardId);
+  const accent = getProductAccent(entry.productId, entry.cardId);
   const reflectionBlocks = splitReflectionBlocks(entry.text);
+  const isTakeaway = entry.id.startsWith('takeaway-');
 
   return (
     <motion.div
@@ -203,12 +219,36 @@ function NoteEntryCard({ entry, navigate, index }: { entry: NoteEntry; navigate:
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: Math.min(index * 0.04, 0.3), duration: 0.4, ease: EASE }}
       style={{
-        backgroundColor: DEEP_DUSK,
+        backgroundColor: isTakeaway ? `${accent.deep}14` : '#2E3142',
         borderRadius: '16px',
-        borderLeft: `3px solid ${accentColor}`,
-        padding: '16px 16px 14px',
+        padding: '0 16px 14px',
+        overflow: 'hidden',
+        position: 'relative',
       }}
     >
+      {/* Top color bar */}
+      <div style={{
+        height: '2px',
+        background: `${accent.mid}66`,
+        marginLeft: '-16px',
+        marginRight: '-16px',
+        marginBottom: '16px',
+      }} />
+
+      {/* Takeaway label */}
+      {isTakeaway && (
+        <p style={{
+          margin: '0 0 10px',
+          fontSize: '10px',
+          fontWeight: 600,
+          textTransform: 'uppercase',
+          letterSpacing: '0.08em',
+          color: `${accent.mid}b3`,
+        }}>
+          Ni bar med er
+        </p>
+      )}
+
       {/* Note text */}
       <div style={{ position: 'relative' }}>
           <div
@@ -242,7 +282,7 @@ function NoteEntryCard({ entry, navigate, index }: { entry: NoteEntry; navigate:
             style={{
               background: 'none',
               border: 'none',
-              color: accentColor,
+              color: accent.mid,
               fontSize: '13px',
               fontWeight: 500,
               cursor: 'pointer',
@@ -256,34 +296,37 @@ function NoteEntryCard({ entry, navigate, index }: { entry: NoteEntry; navigate:
         )}
       </div>
 
-      {/* Question anchor */}
-      <p
-        style={{
-          margin: '10px 0 0',
-          fontSize: '13px',
-          fontStyle: 'italic',
-          color: `${DRIFTWOOD}cc`,
-          lineHeight: 1.4,
-        }}
-      >
-        — {entry.questionText ?? 'Reflektion efter samtalet'}
-      </p>
+      {/* Question anchor — only when there's a real question */}
+      {entry.questionText && (
+        <p
+          style={{
+            margin: '10px 0 0',
+            fontSize: '13px',
+            fontStyle: 'italic',
+            color: `${DRIFTWOOD}cc`,
+            lineHeight: 1.4,
+          }}
+        >
+          — {entry.questionText}
+        </p>
+      )}
 
-      {/* Metadata — split into separate pieces for clarity */}
+      {/* Metadata */}
       <div style={{
         marginTop: '10px',
         display: 'flex',
+        flexWrap: 'wrap',
         alignItems: 'center',
-        gap: '6px',
+        gap: '4px 6px',
         fontSize: '12px',
         color: `${DRIFTWOOD}99`,
-        lineHeight: 1,
+        lineHeight: 1.3,
       }}>
         <span>{entry.cardName}</span>
         <span style={{ opacity: 0.4 }}>·</span>
         <span>{entry.categoryName}</span>
         <span style={{ opacity: 0.4 }}>·</span>
-        <span>{formatFullDate(entry.date)}</span>
+        <span>{formatRelativeDate(entry.date)}</span>
       </div>
     </motion.div>
   );
