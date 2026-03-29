@@ -723,7 +723,7 @@ export default function Journal() {
                   WebkitTapHighlightColor: 'transparent',
                 }}
               >
-                {chip === 'barn' ? 'Barn' : 'Par'}
+                {chip === 'barn' ? 'Barn' : 'Föräldrar'}
               </button>
             );
           })}
