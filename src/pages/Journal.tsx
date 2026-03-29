@@ -159,15 +159,6 @@ function formatRelativeDate(dateStr: string): string {
   return `${date.getDate()} ${SWEDISH_MONTHS[date.getMonth()]}`;
 }
 
-function formatFullDate(dateStr: string): string {
-  const date = new Date(dateStr);
-  const now = new Date();
-  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  const target = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-  const diffDays = Math.floor((today.getTime() - target.getTime()) / (1000 * 60 * 60 * 24));
-  if (diffDays < 7) return formatRelativeDate(dateStr);
-  return `${date.getDate()} ${SWEDISH_MONTHS[date.getMonth()]} ${date.getFullYear()}`;
-}
 
 function monthKey(dateStr: string): string {
   const d = new Date(dateStr);
