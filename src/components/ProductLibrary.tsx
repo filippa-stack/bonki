@@ -912,7 +912,7 @@ export default function ProductLibrary() {
         </div>
 
         {/* Bottom safe-area spacing */}
-        <div style={{ paddingBottom: 'calc(48px + env(safe-area-inset-bottom, 0px))' }} />
+        <div style={{ paddingBottom: 'calc(72px + env(safe-area-inset-bottom, 0px))' }} />
       </div>
     </div>
   );

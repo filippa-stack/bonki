@@ -206,7 +206,7 @@ export default function SuIntroPortal() {
       </div>
 
       {/* Bottom spacing */}
-      <div style={{ height: `calc(env(safe-area-inset-bottom, 0px) + 24px)`, flexShrink: 0 }} />
+      <div style={{ height: `calc(72px + env(safe-area-inset-bottom, 0px))`, flexShrink: 0 }} />
     </div>
   );
 }
