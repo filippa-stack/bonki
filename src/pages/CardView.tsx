@@ -2140,6 +2140,8 @@ export default function CardView() {
   // ─────────────────────────────────────────────────────────────
 
   console.log('[ARCHIVE-DEBUG]', { cardId, isFromArchive, productId: product?.id, isStillUsCard, hasCard: !!card, currentSectionType: currentSection?.type, effectiveSteps0: effectiveSteps?.[0] });
+  console.log('[archive-debug] Rendering Still Us archive block');
+  console.log('[archive-debug] completedSessionId:', completedSessionId);
 
   if (isFromArchive && (product?.id === 'still_us' || isStillUsCard || cardId?.startsWith('su-')) && currentSection) {
     const MIDNIGHT_INK_A = product?.backgroundColor ?? '#1A0806';

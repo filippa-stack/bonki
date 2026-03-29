@@ -25,6 +25,8 @@ export default function LockedReflectionDisplay({ sessionId, stepIndex }: Props)
   const [maxStepIndex, setMaxStepIndex] = useState<number>(-1);
   const [loading, setLoading] = useState(true);
 
+  console.log('[archive-debug] LockedReflectionDisplay mounted', { sessionId, stepIndex });
+
   useEffect(() => {
     setEntries([]);
     setMaxStepIndex(-1);
