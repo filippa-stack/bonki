@@ -2659,6 +2659,8 @@ export default function CardView() {
             justifyContent: 'space-between',
             paddingLeft: '4px',
             paddingRight: '4px',
+            position: 'relative',
+            zIndex: 2,
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
               <button
@@ -2929,6 +2931,8 @@ export default function CardView() {
             flex: '0 0 auto',
             padding: '0 24px',
             paddingBottom: 'calc(16px + env(safe-area-inset-bottom, 0px))',
+            position: 'relative',
+            zIndex: 2,
           }}>
             <motion.button
               onClick={handleKidsAdvance}
