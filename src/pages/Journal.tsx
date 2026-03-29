@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
+import { useDefaultTheme } from '@/hooks/useDefaultTheme';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { ChevronRight, ChevronDown, Check, Bookmark, Play } from 'lucide-react';
@@ -330,6 +331,7 @@ function CompletedMarkerRow({ marker, index }: { marker: CompletedMarker; index:
 }
 
 export default function Journal() {
+  useDefaultTheme();
   const navigate = useNavigate();
   const { space } = useCoupleSpaceContext();
   const devState = useDevState();

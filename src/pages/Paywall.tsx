@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import { useDefaultTheme } from '@/hooks/useDefaultTheme';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { supabase } from '@/integrations/supabase/client';
@@ -8,6 +9,7 @@ import { isTestMode } from '@/lib/testMode';
 import { isDemoMode } from '@/lib/demoMode';
 
 export default function Paywall() {
+  useDefaultTheme();
   const navigate = useNavigate();
   const { user } = useAuth();
   const [slug, setSlug] = useState<string | null>(null);

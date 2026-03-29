@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
+import { useDefaultTheme } from '@/hooks/useDefaultTheme';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Bookmark } from 'lucide-react';
@@ -269,6 +270,7 @@ function FilterPill({ label, active, accentColor, onClick }: { label: string; ac
 const ENTRIES_PER_PAGE = 15;
 
 export default function Diary() {
+  useDefaultTheme();
   const { productId } = useParams<{ productId: string }>();
   const navigate = useNavigate();
   const { user } = useAuth();

@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect } from 'react';
+import { useDefaultTheme } from '@/hooks/useDefaultTheme';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '@/contexts/AppContext';
@@ -207,6 +208,7 @@ function renderBulletText(text: string) {
 }
 
 export default function SharedSummary() {
+  useDefaultTheme();
   const navigate = useNavigate();
   const { getCardById, getCategoryById } = useApp();
   const { user } = useAuth();

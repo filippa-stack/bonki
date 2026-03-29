@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { useDefaultTheme } from '@/hooks/useDefaultTheme';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { allProducts } from '@/data/products';
@@ -234,7 +235,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
   name, bg, ageLabel, tagline, onClick, illustration, productId, accentColor, taglineColor,
   illustrationOpacity = 0.90, wide = false,
   hasActiveSession = false, tileHeight = '240px',
-}) {
+}, ref) {
   const toShadowColor = (hex: string, alpha: number) => {
     const r = parseInt(hex.slice(1, 3), 16);
     const g = parseInt(hex.slice(3, 5), 16);
@@ -412,6 +413,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
   );
 });
 export default function ProductLibrary() {
+  useDefaultTheme();
   const navigate = useNavigate();
   const tracked = useRef(false);
   const { purchased } = useAllProductAccess();

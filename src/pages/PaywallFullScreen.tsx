@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { useDefaultTheme } from '@/hooks/useDefaultTheme';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
@@ -28,6 +29,7 @@ const VALUE_LINES: Record<string, string> = {
 };
 
 export default function PaywallFullScreen() {
+  useDefaultTheme();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { user } = useAuth();
