@@ -1,82 +1,74 @@
 
 
-## Fix: Flush pending reflection save on unmount
+## Fix: Show reflections from active sessions in Journal archive
 
-### Problem
-When a user types a reflection and navigates away within 800ms, the unmount cleanup (line 232-235) cancels the pending save. The text never reaches the database despite the UI implying it's saved.
+### Addressing the three raised concerns
 
-### Changes — `src/hooks/useSessionReflections.ts`
+1. **`ended_at` sort order with nulls**: The `.order('ended_at', { ascending: false })` will place `null` values first in PostgreSQL descending order. This is harmless — the `sessionMap` is a flat lookup (`Map<string, CompletedSession>`) used only by ID, never iterated in sort order. The final timeline items are sorted separately at line 544 by their individual `date` field.
 
-**1. Add refs for `stepIndex` and `userId`** (after line 56)
+2. **Date fallback positioning**: Using `session.ended_at || r.updated_at` means active-session reflections appear at the top of the timeline (most recent). This is correct — if the user just wrote something, it should be the most recent item. No change needed.
 
+3. **`status` field in select**: The `CompletedSession` interface (line 50-56) does NOT include `status`. We need to add it to the interface AND to the `.select()` string. The interface is a local type, so adding `status` is safe — it's just ignored downstream. We need it in the select so the `.in()` filter works (though Supabase filters work on the DB side regardless of select). Adding it to the interface keeps types honest.
+
+### Changes — `src/pages/Journal.tsx`
+
+**1. Add `status` to `CompletedSession` interface** (line 50-56)
 ```typescript
-const stepIndexRef = useRef(stepIndex);
-const userIdRef = useRef<string | null>(user?.id ?? null);
+interface CompletedSession {
+  id: string;
+  card_id: string | null;
+  product_id: string;
+  ended_at: string | null;
+  category_id: string | null;
+  status: string;
+}
 ```
 
-**2. Keep those refs in sync** (near existing sessionIdRef sync, after line 61)
+**2. Update sessions query** (lines 384-390)
+- Add `status` to `.select()`
+- Change `.eq('status', 'completed')` → `.in('status', ['completed', 'active'])`
+- Keep `.order('ended_at', { ascending: false })`
 
 ```typescript
-useEffect(() => { stepIndexRef.current = stepIndex; }, [stepIndex]);
-useEffect(() => { userIdRef.current = user?.id ?? null; }, [user]);
+supabase
+  .from('couple_sessions')
+  .select('id, card_id, product_id, ended_at, category_id, status')
+  .eq('couple_space_id', space.id)
+  .in('status', ['completed', 'active'])
+  .order('ended_at', { ascending: false })
+  .then(({ data }) => { if (!cancelled) setSessions(data ?? []); });
 ```
 
-**3. Change unmount cleanup (lines 231-236) from cancel → flush**
-
-Replace:
+**3. Relax `ended_at` guard for takeaways** (line 493)
 ```typescript
-useEffect(() => {
-  return () => {
-    if (pendingSave.current) clearTimeout(pendingSave.current);
-  };
-}, []);
+// Before: if (!session || !session.card_id || !session.ended_at) return;
+// After:
+if (!session || !session.card_id) return;
+const takeawayDate = session.ended_at || t.created_at;
 ```
+Use `takeawayDate` for the `date` field in the pushed item.
 
-With:
+**4. Relax `ended_at` guard for reflections** (line 513)
 ```typescript
-useEffect(() => {
-  return () => {
-    if (pendingSave.current) {
-      clearTimeout(pendingSave.current);
-      pendingSave.current = null;
-      // Flush: fire the save immediately with latest ref values
-      const text = localTextRef.current;
-      const sid = sessionIdRef.current;
-      const uid = userIdRef.current;
-      const si = stepIndexRef.current;
-      if (text?.trim() && sid && uid) {
-        supabase
-          .from('step_reflections')
-          .upsert(
-            {
-              session_id: sid,
-              step_index: si,
-              user_id: uid,
-              text,
-              state: 'draft' as any,
-            },
-            { onConflict: 'session_id,step_index,user_id' }
-          )
-          .then(({ error }) => {
-            if (error) console.error('Flush save failed:', error);
-          });
-      }
-    }
-  };
-}, []);
+// Before: if (!session || !session.card_id || !session.ended_at) return;
+// After:
+if (!session || !session.card_id) return;
 ```
+The `date` field already uses `r.updated_at` (line 524), so no change needed there.
+
+**5. Keep `ended_at` guard for completed-no-note markers** (line 531)
+No change — `if (!s.card_id || !s.ended_at) return;` stays, preventing active sessions from showing as empty completed entries.
 
 ### What stays unchanged
-- **Reset effect** (lines 64-73): `clearTimeout(pendingSave.current)` remains — correctly discards stale data on step/session change
-- `markReady`, autosave debounce logic, all other files untouched
-- All four protected patterns unmodified
-
-### Note: `useCardTakeaway.ts`
-Has the same cancel-on-unmount pattern (lines 110-113). Will be reported but **not fixed** in this change.
+- All four protected ref patterns
+- Session creation/completion logic
+- Resume banner logic
+- Filter chips and other Journal UI
+- The memory note about archive-status-filtering is now outdated and should be updated to reflect that active sessions are included
 
 ### Files changed
 
 | File | Change |
 |---|---|
-| `src/hooks/useSessionReflections.ts` | Add `stepIndexRef`/`userIdRef`, change unmount cleanup from cancel → flush |
+| `src/pages/Journal.tsx` | Add `status` to interface + select; include active sessions; relax `ended_at` guard on takeaways/reflections |
 
