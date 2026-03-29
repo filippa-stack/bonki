@@ -70,13 +70,23 @@ export default function LockedReflectionDisplay({ sessionId, stepIndex }: Props)
 
   if (loading || entries.length === 0) return null;
 
+  // Sort so completion entry (maxStepIndex) renders last
+  const sortedEntries = [...entries].sort((a, b) => {
+    if (a.stepIndex === maxStepIndex) return 1;
+    if (b.stepIndex === maxStepIndex) return -1;
+    return a.stepIndex - b.stepIndex;
+  });
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginBottom: '32px' }}>
-      {entries.map((entry, i) => {
+      {sortedEntries.map((entry, i) => {
         const isCompletion = entry.stepIndex === maxStepIndex;
+        const promptLabel = isCompletion
+          ? null
+          : `Fråga ${(entry.stepIndex % 100) + 1}`;
         return (
           <div key={i}>
-            {isCompletion && (
+            {isCompletion ? (
               <p style={{
                 fontSize: '11px',
                 fontWeight: 600,
@@ -87,6 +97,15 @@ export default function LockedReflectionDisplay({ sessionId, stepIndex }: Props)
                 marginBottom: '6px',
               }}>
                 Ert takeaway
+              </p>
+            ) : promptLabel && (
+              <p style={{
+                fontSize: '12px',
+                opacity: 0.5,
+                color: 'var(--text-secondary)',
+                marginBottom: '4px',
+              }}>
+                {promptLabel}
               </p>
             )}
             <motion.div
@@ -102,9 +121,7 @@ export default function LockedReflectionDisplay({ sessionId, stepIndex }: Props)
                 textAlign: 'left',
                 lineHeight: 1.7,
                 padding: '24px',
-                background: isCompletion
-                  ? 'hsl(36 20% 97% / 0.70)'
-                  : 'hsl(36 20% 97% / 0.70)',
+                background: 'hsl(36 20% 97% / 0.70)',
                 borderRadius: '12px',
                 border: 'none',
                 whiteSpace: 'pre-wrap',

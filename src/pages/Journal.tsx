@@ -564,19 +564,31 @@ export default function Journal() {
 
   const isEmpty = !loading && allTimelineItems.length === 0 && pausedSessions.length === 0 && bookmarks.length === 0;
 
-  // Filter by active chips + privacy logic
-  const visibleItems = useMemo(() => {
+  // Separate Still Us empty-session markers for collapsible section
+  const [emptySessionsOpen, setEmptySessionsOpen] = useState(false);
+
+  const { visibleItems, emptyStillUsSessions } = useMemo(() => {
     const bothActive = activeFilters.has('barn') && activeFilters.has('par');
-    return allTimelineItems.filter(item => {
+    const visible: TimelineItem[] = [];
+    const emptySU: CompletedMarker[] = [];
+
+    allTimelineItems.forEach(item => {
       const isPar = effectiveIsPar(item.productId, item.cardId);
       if (isPar) {
-        if (!activeFilters.has('par')) return false;
-        // When both active, par entries hidden behind privacy row (unless expanded)
-        if (bothActive && !parExpanded) return false;
-        return true;
+        if (!activeFilters.has('par')) return;
+        if (bothActive && !parExpanded) return;
+        // Still Us completed-no-note → collect separately
+        if (item.type === 'completed') {
+          emptySU.push(item);
+          return;
+        }
+      } else {
+        if (!activeFilters.has('barn')) return;
       }
-      return activeFilters.has('barn');
+      visible.push(item);
     });
+
+    return { visibleItems: visible, emptyStillUsSessions: emptySU };
   }, [allTimelineItems, activeFilters, parExpanded]);
 
   // Group by month
