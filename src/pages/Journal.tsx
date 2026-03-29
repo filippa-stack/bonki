@@ -55,15 +55,6 @@ interface CompletedSession {
   category_id: string | null;
 }
 
-interface PausedSession {
-  id: string;
-  card_id: string | null;
-  product_id: string;
-  category_id: string | null;
-  started_at: string;
-  last_activity_at: string;
-  currentStepIndex: number;
-}
 
 interface Bookmark {
   id: string;
