@@ -7,6 +7,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 
 export default function DissolutionSettings() {
+  useDefaultTheme();
   const navigate = useNavigate();
   const { user } = useAuth();
   const [step, setStep] = useState<'warning' | 'confirm'>('warning');

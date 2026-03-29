@@ -270,6 +270,7 @@ function FilterPill({ label, active, accentColor, onClick }: { label: string; ac
 const ENTRIES_PER_PAGE = 15;
 
 export default function Diary() {
+  useDefaultTheme();
   const { productId } = useParams<{ productId: string }>();
   const navigate = useNavigate();
   const { user } = useAuth();

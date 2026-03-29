@@ -29,6 +29,7 @@ const VALUE_LINES: Record<string, string> = {
 };
 
 export default function PaywallFullScreen() {
+  useDefaultTheme();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { user } = useAuth();

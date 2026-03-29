@@ -413,6 +413,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
   );
 });
 export default function ProductLibrary() {
+  useDefaultTheme();
   const navigate = useNavigate();
   const tracked = useRef(false);
   const { purchased } = useAllProductAccess();

@@ -16,6 +16,7 @@ import { TERMS_VERSION, PRIVACY_VERSION } from '@/lib/legal';
 import type { Json } from '@/integrations/supabase/types';
 
 export default function Login() {
+  useDefaultTheme();
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);

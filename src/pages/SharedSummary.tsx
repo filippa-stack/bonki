@@ -208,6 +208,7 @@ function renderBulletText(text: string) {
 }
 
 export default function SharedSummary() {
+  useDefaultTheme();
   const navigate = useNavigate();
   const { getCardById, getCategoryById } = useApp();
   const { user } = useAuth();
