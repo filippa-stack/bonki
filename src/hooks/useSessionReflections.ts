@@ -54,11 +54,15 @@ export function useSessionReflections(
   const [localText, setLocalText] = useState('');
   const localTextRef = useRef('');
   const pendingSave = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const stepIndexRef = useRef(stepIndex);
+  const userIdRef = useRef<string | null>(user?.id ?? null);
 
-  // Keep ref in sync so callbacks always see the latest sessionId
+  // Keep refs in sync so callbacks always see the latest values
   useEffect(() => {
     sessionIdRef.current = normalizedSessionId;
   }, [normalizedSessionId]);
+  useEffect(() => { stepIndexRef.current = stepIndex; }, [stepIndex]);
+  useEffect(() => { userIdRef.current = user?.id ?? null; }, [user]);
 
   // ─── 1. Reset state when session or step changes ───
   useEffect(() => {
@@ -228,10 +232,34 @@ export function useSessionReflections(
     );
   }, [user, stepIndex, devState]);
 
-  // Cleanup pending autosave on unmount
+  // Flush pending autosave on unmount (fire-and-forget)
   useEffect(() => {
     return () => {
-      if (pendingSave.current) clearTimeout(pendingSave.current);
+      if (pendingSave.current) {
+        clearTimeout(pendingSave.current);
+        pendingSave.current = null;
+        const text = localTextRef.current;
+        const sid = sessionIdRef.current;
+        const uid = userIdRef.current;
+        const si = stepIndexRef.current;
+        if (text?.trim() && sid && uid) {
+          supabase
+            .from('step_reflections')
+            .upsert(
+              {
+                session_id: sid,
+                step_index: si,
+                user_id: uid,
+                text,
+                state: 'draft' as any,
+              },
+              { onConflict: 'session_id,step_index,user_id' }
+            )
+            .then(({ error }) => {
+              if (error) console.error('Flush save failed:', error);
+            });
+        }
+      }
     };
   }, []);
 
