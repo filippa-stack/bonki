@@ -1,29 +1,82 @@
 
 
-## Fix: Transparent Header & CTA in Kids Sessions
+## Fix: Flush pending reflection save on unmount
 
-### Root Cause
+### Problem
+When a user types a reflection and navigates away within 800ms, the unmount cleanup (line 232-235) cancels the pending save. The text never reaches the database despite the UI implying it's saved.
 
-The illustration background image inside the content area uses `position: absolute; inset: -32%; width: 164%; height: 164%` with `overflow: visible` on its parent. This causes the illustration to bleed **upward over the header** and **downward over the CTA button**, partially obscuring both with a 70%-opacity image layer.
+### Changes — `src/hooks/useSessionReflections.ts`
 
-The header and CTA are flex siblings of the content area and have no explicit `z-index` or `position: relative`, so they lose the stacking battle against the overflowing illustration.
+**1. Add refs for `stepIndex` and `userId`** (after line 56)
 
-### Fix
+```typescript
+const stepIndexRef = useRef(stepIndex);
+const userIdRef = useRef<string | null>(user?.id ?? null);
+```
 
-In `src/pages/CardView.tsx`, add `position: relative` and `zIndex: 2` to:
-1. The **header bar** div (line ~2652)
-2. The **CTA wrapper** div (line ~2928)
+**2. Keep those refs in sync** (near existing sessionIdRef sync, after line 61)
 
-This ensures both render above the bleeding illustration without changing the visual overflow effect.
+```typescript
+useEffect(() => { stepIndexRef.current = stepIndex; }, [stepIndex]);
+useEffect(() => { userIdRef.current = user?.id ?? null; }, [user]);
+```
+
+**3. Change unmount cleanup (lines 231-236) from cancel → flush**
+
+Replace:
+```typescript
+useEffect(() => {
+  return () => {
+    if (pendingSave.current) clearTimeout(pendingSave.current);
+  };
+}, []);
+```
+
+With:
+```typescript
+useEffect(() => {
+  return () => {
+    if (pendingSave.current) {
+      clearTimeout(pendingSave.current);
+      pendingSave.current = null;
+      // Flush: fire the save immediately with latest ref values
+      const text = localTextRef.current;
+      const sid = sessionIdRef.current;
+      const uid = userIdRef.current;
+      const si = stepIndexRef.current;
+      if (text?.trim() && sid && uid) {
+        supabase
+          .from('step_reflections')
+          .upsert(
+            {
+              session_id: sid,
+              step_index: si,
+              user_id: uid,
+              text,
+              state: 'draft' as any,
+            },
+            { onConflict: 'session_id,step_index,user_id' }
+          )
+          .then(({ error }) => {
+            if (error) console.error('Flush save failed:', error);
+          });
+      }
+    }
+  };
+}, []);
+```
+
+### What stays unchanged
+- **Reset effect** (lines 64-73): `clearTimeout(pendingSave.current)` remains — correctly discards stale data on step/session change
+- `markReady`, autosave debounce logic, all other files untouched
+- All four protected patterns unmodified
+
+### Note: `useCardTakeaway.ts`
+Has the same cancel-on-unmount pattern (lines 110-113). Will be reported but **not fixed** in this change.
 
 ### Files changed
 
 | File | Change |
 |---|---|
-| `src/pages/CardView.tsx` | Add `position: 'relative', zIndex: 2` to header div and CTA wrapper div in the kids live session block |
-
-### Not touched
-- Illustration sizing/overflow (the bleed effect is intentional)
-- Still Us rendering blocks
-- Protected ref patterns (`suppressUntilRef`, `prevServerStepRef`, `pendingSave`, `hasSyncedRef`)
+| `src/hooks/useSessionReflections.ts` | Add `stepIndexRef`/`userIdRef`, change unmount cleanup from cancel → flush |
 
