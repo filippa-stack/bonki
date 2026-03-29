@@ -564,19 +564,31 @@ export default function Journal() {
 
   const isEmpty = !loading && allTimelineItems.length === 0 && pausedSessions.length === 0 && bookmarks.length === 0;
 
-  // Filter by active chips + privacy logic
-  const visibleItems = useMemo(() => {
+  // Separate Still Us empty-session markers for collapsible section
+  const [emptySessionsOpen, setEmptySessionsOpen] = useState(false);
+
+  const { visibleItems, emptyStillUsSessions } = useMemo(() => {
     const bothActive = activeFilters.has('barn') && activeFilters.has('par');
-    return allTimelineItems.filter(item => {
+    const visible: TimelineItem[] = [];
+    const emptySU: CompletedMarker[] = [];
+
+    allTimelineItems.forEach(item => {
       const isPar = effectiveIsPar(item.productId, item.cardId);
       if (isPar) {
-        if (!activeFilters.has('par')) return false;
-        // When both active, par entries hidden behind privacy row (unless expanded)
-        if (bothActive && !parExpanded) return false;
-        return true;
+        if (!activeFilters.has('par')) return;
+        if (bothActive && !parExpanded) return;
+        // Still Us completed-no-note → collect separately
+        if (item.type === 'completed') {
+          emptySU.push(item);
+          return;
+        }
+      } else {
+        if (!activeFilters.has('barn')) return;
       }
-      return activeFilters.has('barn');
+      visible.push(item);
     });
+
+    return { visibleItems: visible, emptyStillUsSessions: emptySU };
   }, [allTimelineItems, activeFilters, parExpanded]);
 
   // Group by month
@@ -865,6 +877,59 @@ export default function Journal() {
               </div>
             </div>
           ))}
+
+          {/* ── Still Us empty sessions (collapsible) ── */}
+          {emptyStillUsSessions.length > 0 && (
+            <div style={{ marginTop: '24px', padding: '0 16px' }}>
+              <button
+                onClick={() => setEmptySessionsOpen(prev => !prev)}
+                style={{
+                  width: '100%', background: 'none', border: 'none', cursor: 'pointer',
+                  display: 'flex', alignItems: 'center', gap: '8px',
+                  padding: '6px 0', WebkitTapHighlightColor: 'transparent',
+                }}
+              >
+                <span style={{
+                  fontSize: '11px', fontWeight: 600, letterSpacing: '2px',
+                  color: `${DRIFTWOOD}aa`, textTransform: 'uppercase', lineHeight: 1,
+                }}>
+                  Samtal utan anteckningar ({emptyStillUsSessions.length})
+                </span>
+                <motion.span
+                  animate={{ rotate: emptySessionsOpen ? 180 : 0 }}
+                  transition={{ duration: 0.2 }}
+                  style={{ color: `${DRIFTWOOD}88`, display: 'flex' }}
+                >
+                  <ChevronDown size={14} strokeWidth={1.5} />
+                </motion.span>
+              </button>
+              <AnimatePresence>
+                {emptySessionsOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.25, ease: EASE }}
+                    style={{ overflow: 'hidden' }}
+                  >
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', paddingTop: '8px' }}>
+                      {emptyStillUsSessions.map(m => (
+                        <div key={m.id} style={{
+                          display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                          opacity: 0.5, fontSize: '13px', padding: '4px 0',
+                        }}>
+                          <span style={{ color: DRIFTWOOD }}>{m.cardName}</span>
+                          <span style={{ color: `${DRIFTWOOD}99` }}>
+                            {new Date(m.date).toLocaleDateString('sv-SE', { day: 'numeric', month: 'short' })}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          )}
 
           {/* ── Paused Sessions ── */}
           {filteredPaused.length > 0 && (
