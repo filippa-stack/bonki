@@ -383,6 +383,9 @@ export default function CardView() {
   // For kids products, sessions are created EAGERLY so resume banners work.
   const abandonCheckedRef = useRef(false);
   useEffect(() => {
+    abandonCheckedRef.current = false;
+  }, [cardId]);
+  useEffect(() => {
     if (devState || isFromArchive || showCompletion) return;
     if (normalizedSession.loading) return;
     if (abandonCheckedRef.current) return;
@@ -407,6 +410,9 @@ export default function CardView() {
   // ─── Eager session creation for kids products ───
   // Kids products create sessions immediately so resume banners appear on home/library.
   const eagerSessionRef = useRef(false);
+  useEffect(() => {
+    eagerSessionRef.current = false;
+  }, [cardId]);
   useEffect(() => {
     const needsEagerSession = isKidsProduct || product?.id === 'still_us';
     if (!needsEagerSession || devState || isFromArchive || showCompletion) return;
@@ -542,7 +548,7 @@ export default function CardView() {
   // ─── Kids session note state ───
   const kidsNoteStepIndex = currentStepIndex * 100 + localPromptIndex;
   const kidsNoteSession = useSessionReflections(
-    isKidsProduct ? (normalizedSession.sessionId ?? null) : null,
+    isKidsProduct && isActiveSession ? (normalizedSession.sessionId ?? null) : null,
     kidsNoteStepIndex
   );
   const [kidsNoteExpanded, setKidsNoteExpanded] = useState(false);
