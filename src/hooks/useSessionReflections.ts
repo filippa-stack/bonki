@@ -66,9 +66,31 @@ export function useSessionReflections(
 
   // ─── 1. Reset state when session or step changes ───
   useEffect(() => {
+    // Flush any pending save before resetting for new step/session
     if (pendingSave.current) {
       clearTimeout(pendingSave.current);
       pendingSave.current = null;
+      const text = localTextRef.current;
+      const sid = sessionIdRef.current;
+      const uid = userIdRef.current;
+      const si = stepIndexRef.current;
+      if (text?.trim() && sid && uid) {
+        supabase
+          .from('step_reflections')
+          .upsert(
+            {
+              session_id: sid,
+              step_index: si,
+              user_id: uid,
+              text,
+              state: 'draft' as any,
+            },
+            { onConflict: 'session_id,step_index,user_id' }
+          )
+          .then(({ error }) => {
+            if (error) console.error('Reset flush failed:', error);
+          });
+      }
     }
     setMyReflection(null);
     setLocalText('');
@@ -156,18 +178,20 @@ export function useSessionReflections(
     setMyReflection(prev => prev ? { ...prev, text } : null);
 
     if (pendingSave.current) clearTimeout(pendingSave.current);
-    if (devState) return;
 
     pendingSave.current = setTimeout(async () => {
-      if (!user || !sessionIdRef.current) return;
+      const sid = sessionIdRef.current;
+      const uid = userIdRef.current;
+      const si = stepIndexRef.current;
+      if (!uid || !sid) return;
 
       const { error } = await supabase
         .from('step_reflections')
         .upsert(
           {
-            session_id: sessionIdRef.current,
-            step_index: stepIndex,
-            user_id: user.id,
+            session_id: sid,
+            step_index: si,
+            user_id: uid,
             text,
             state: 'draft' as any,
           },
@@ -176,7 +200,7 @@ export function useSessionReflections(
 
       if (error) console.error('Failed to save reflection:', error);
     }, AUTOSAVE_DELAY);
-  }, [user, stepIndex, devState]);
+  }, []);
 
   // ─── 5. Mark ready: draft → ready (terminal action) ───
   const markReady = useCallback(async (explicitText?: string) => {
