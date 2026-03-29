@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useDefaultTheme } from '@/hooks/useDefaultTheme';
 import { useNavigate } from 'react-router-dom';
 import { COLORS } from '@/lib/stillUsTokens';
 import { dissolveCouple } from '@/lib/stillUsRpc';

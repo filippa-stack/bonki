@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
+import { useDefaultTheme } from '@/hooks/useDefaultTheme';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { ChevronRight, ChevronDown, Check, Bookmark, Play } from 'lucide-react';

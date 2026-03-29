@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useDefaultTheme } from '@/hooks/useDefaultTheme';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BEAT_1, BEAT_2 } from '@/lib/motion';

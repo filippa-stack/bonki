@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { useDefaultTheme } from '@/hooks/useDefaultTheme';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
