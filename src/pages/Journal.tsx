@@ -44,8 +44,6 @@ function effectiveIsPar(productId: string, cardId: string | null): boolean {
   return productId === STILL_US_ID;
 }
 
-const STILL_US_STEP_NAMES = ['Öppna', 'Vänd', 'Tänk om', 'Gör'];
-const FOURTEEN_DAYS_MS = 14 * 24 * 60 * 60 * 1000;
 
 type FilterChip = 'barn' | 'par';
 
@@ -375,7 +373,7 @@ export default function Journal() {
   const [sessions, setSessions] = useState<CompletedSession[] | null>(null);
   const [takeaways, setTakeaways] = useState<any[] | null>(null);
   const [reflections, setReflections] = useState<any[] | null>(null);
-  const [pausedSessions, setPausedSessions] = useState<PausedSession[]>([]);
+  
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
   const [activeFilters, setActiveFilters] = useState<Set<FilterChip>>(new Set(['barn', 'par']));
   const [parExpanded, setParExpanded] = useState(true);
@@ -386,7 +384,6 @@ export default function Journal() {
       setSessions([]);
       setTakeaways([]);
       setReflections([]);
-      setPausedSessions([]);
       setBookmarks([]);
       return;
     }
@@ -417,47 +414,6 @@ export default function Journal() {
       .order('updated_at', { ascending: false })
       .then(({ data }) => { if (!cancelled) setReflections(data ?? []); });
 
-    // Paused/active sessions (not completed)
-    supabase
-      .from('couple_sessions')
-      .select('id, card_id, product_id, category_id, started_at, last_activity_at')
-      .eq('couple_space_id', space.id)
-      .eq('status', 'active')
-      .order('last_activity_at', { ascending: false })
-      .then(async ({ data }) => {
-        if (cancelled || !data) { setPausedSessions([]); return; }
-        const now = Date.now();
-        const valid = data.filter(s => {
-          // Kids sessions expire after 14 days
-          if (!effectiveIsPar(s.product_id, s.card_id)) {
-            const elapsed = now - new Date(s.last_activity_at).getTime();
-            if (elapsed > FOURTEEN_DAYS_MS) return false;
-          }
-          return true;
-        });
-        // Get current step index for each session
-        const sessionsWithStep: PausedSession[] = [];
-        for (const s of valid) {
-          // Find max completed step
-          const { data: completions } = await supabase
-            .from('couple_session_completions')
-            .select('step_index')
-            .eq('session_id', s.id)
-            .order('step_index', { ascending: false })
-            .limit(1);
-          const maxStep = completions?.[0]?.step_index ?? -1;
-          sessionsWithStep.push({
-            id: s.id,
-            card_id: s.card_id,
-            product_id: s.product_id,
-            category_id: s.category_id,
-            started_at: s.started_at,
-            last_activity_at: s.last_activity_at,
-            currentStepIndex: maxStep + 1,
-          });
-        }
-        if (!cancelled) setPausedSessions(sessionsWithStep);
-      });
 
     // Bookmarked questions
     supabase
@@ -598,7 +554,7 @@ export default function Journal() {
     return [...demoTimelineItems, ...items].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
   }, [loading, takeaways, reflections, sessions, sessionMap, demoTimelineItems]);
 
-  const isEmpty = !loading && allTimelineItems.length === 0 && pausedSessions.length === 0 && bookmarks.length === 0;
+  const isEmpty = !loading && allTimelineItems.length === 0 && bookmarks.length === 0;
 
   // Separate Still Us empty-session markers for collapsible section
   const [emptySessionsOpen, setEmptySessionsOpen] = useState(false);
@@ -684,13 +640,6 @@ export default function Journal() {
 
   const showParPrivacy = activeFilters.has('barn') && activeFilters.has('par') && stillUsSessions.length > 0;
 
-  // Filtered paused sessions
-  const filteredPaused = useMemo(() => {
-    return pausedSessions.filter(s => {
-      const isPar = effectiveIsPar(s.product_id, s.card_id);
-      return isPar ? activeFilters.has('par') : activeFilters.has('barn');
-    });
-  }, [pausedSessions, activeFilters]);
 
   // Filtered bookmarks
   const filteredBookmarks = useMemo(() => {
@@ -972,80 +921,6 @@ export default function Journal() {
             </div>
           )}
 
-          {/* ── Paused Sessions ── */}
-          {filteredPaused.length > 0 && (
-            <div>
-              <div style={{
-                margin: '40px 16px 14px',
-                display: 'flex', alignItems: 'center', gap: '10px',
-              }}>
-                <span style={{
-                  fontSize: '11px', fontWeight: 600,
-                  letterSpacing: '2px', color: `${DRIFTWOOD}aa`, lineHeight: 1, textTransform: 'uppercase',
-                }}>
-                  Samtal ni inte avslutat
-                </span>
-                <div style={{
-                  flex: 1, height: '1px',
-                  background: `linear-gradient(90deg, ${DRIFTWOOD}33, transparent)`,
-                }} />
-              </div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', padding: '0 16px' }}>
-                {filteredPaused.map((s, idx) => {
-                  const cardName = s.card_id ? getCardTitle(s.card_id) : 'Okänt samtal';
-                  const catName = getCategoryName(s.category_id, s.card_id ?? '');
-                  const stepName = effectiveIsPar(s.product_id, s.card_id)
-                    ? (STILL_US_STEP_NAMES[s.currentStepIndex] ?? `Steg ${s.currentStepIndex + 1}`)
-                    : `Fråga ${s.currentStepIndex + 1}`;
-                  const accent = getProductAccent(s.product_id, s.card_id ?? undefined);
-
-                  return (
-                    <motion.button
-                      key={s.id}
-                      initial={{ opacity: 0, y: 6 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: idx * 0.05, duration: 0.35, ease: EASE }}
-                      onClick={() => s.card_id && navigate(`/card/${s.card_id}`)}
-                      style={{
-                        width: '100%', backgroundColor: '#2E3142', borderRadius: '16px',
-                        padding: '0 16px 14px', cursor: 'pointer',
-                        border: 'none', overflow: 'hidden', position: 'relative',
-                        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                        textAlign: 'left', WebkitTapHighlightColor: 'transparent',
-                      }}
-                    >
-                      {/* Top color bar */}
-                      <div style={{
-                        position: 'absolute', top: 0, left: 0, right: 0,
-                        height: '2px', background: `${accent.mid}66`,
-                      }} />
-                      <div style={{ minWidth: 0, paddingTop: '14px' }}>
-                        <span style={{
-                          fontSize: '16px', fontWeight: 600, color: LANTERN_GLOW,
-                          display: 'block', lineHeight: 1.3,
-                        }}>
-                          {cardName}
-                        </span>
-                        <span style={{
-                          fontSize: '13px', color: `${DRIFTWOOD}cc`, display: 'block', marginTop: '4px',
-                        }}>
-                          Pausad vid {stepName} · {catName}
-                        </span>
-                      </div>
-                      <div style={{
-                        display: 'flex', alignItems: 'center', gap: '6px',
-                        flexShrink: 0, marginLeft: '12px',
-                        color: accent.mid, fontSize: '13px', fontWeight: 600, paddingTop: '14px',
-                      }}>
-                        <Play size={12} strokeWidth={2.5} fill={accent.mid} />
-                        Fortsätt
-                      </div>
-                    </motion.button>
-                  );
-                })}
-              </div>
-            </div>
-          )}
 
           {/* ── Bookmarked Questions ── */}
           {filteredBookmarks.length > 0 && (
