@@ -217,6 +217,13 @@ export default function CardView() {
   const [activeSessionId, setActiveSessionId] = useState<string | null>(
     devState ? 'dev-session' : null
   );
+
+  // Clear stale session ID when navigating to a different card.
+  // Safe: useSessionReflections ref null-guard retains last valid ID for flush.
+  useEffect(() => {
+    setActiveSessionId(devState ? 'dev-session' : null);
+  }, [cardId]);
+
   useEffect(() => {
     if (isActiveSession && normalizedSession.sessionId) {
       setActiveSessionId(normalizedSession.sessionId);
