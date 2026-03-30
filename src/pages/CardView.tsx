@@ -982,6 +982,27 @@ export default function CardView() {
   }, [category, card, cards, product, completedCardIds]);
 
   // ─────────────────────────────────────────────────────────────
+  //  LOADING GATE — hold a stable surface while async data loads
+  // ─────────────────────────────────────────────────────────────
+  const isInitializing = normalizedSession.loading || accessLoading;
+  if (isInitializing && !devState && !showCompletion) {
+    const loadingBg = product?.backgroundColor ?? 'var(--surface-base, hsl(46, 64%, 89%))';
+    return (
+      <div
+        style={{
+          position: 'fixed',
+          inset: 0,
+          backgroundColor: loadingBg,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 10,
+        }}
+      />
+    );
+  }
+
+  // ─────────────────────────────────────────────────────────────
   //  Early exit (card not found)
   // ─────────────────────────────────────────────────────────────
   if (!card) {
