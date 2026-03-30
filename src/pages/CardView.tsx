@@ -1935,7 +1935,7 @@ export default function CardView() {
           backgroundColor: EMBER_NIGHT_T,
           position: 'relative',
           overflow: 'hidden',
-          height: '100dvh',
+          height: '100vh',
         }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
