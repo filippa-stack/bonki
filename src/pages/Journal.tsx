@@ -408,7 +408,7 @@ export default function Journal() {
       .from('couple_sessions')
       .select('id, card_id, product_id, ended_at, category_id, status')
       .eq('couple_space_id', space.id)
-      .in('status', ['completed', 'active'])
+      .in('status', ['completed', 'active', 'abandoned'])
       .order('ended_at', { ascending: false })
       .then(({ data }) => { if (!cancelled) setSessions(data ?? []); });
 
