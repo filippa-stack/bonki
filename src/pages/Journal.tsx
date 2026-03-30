@@ -169,7 +169,7 @@ function monthLabel(dateStr: string): string {
   return `${SWEDISH_MONTHS[d.getMonth()].toUpperCase()} ${d.getFullYear()}`;
 }
 
-function getProductAccent(productId: string, cardId?: string): { mid: string; deep: string } {
+function getProductAccent(productId: string, cardId?: string): { light: string; mid: string; deep: string } {
   // Resolve effective product from card if needed
   let effectiveProduct = productId;
   if (cardId) {
@@ -184,8 +184,8 @@ function getProductAccent(productId: string, cardId?: string): { mid: string; de
   const paletteKey = effectiveProduct.replace(/-/g, '_');
   const colors = productTileColors[paletteKey];
   return colors
-    ? { mid: colors.tileMid, deep: colors.tileDeep }
-    : { mid: DEEP_SAFFRON, deep: DEEP_SAFFRON };
+    ? { light: colors.tileLight, mid: colors.tileMid, deep: colors.tileDeep }
+    : { light: DEEP_SAFFRON, mid: DEEP_SAFFRON, deep: DEEP_SAFFRON };
 }
 
 function splitReflectionBlocks(text: string): string[] {
@@ -308,9 +308,11 @@ function NoteEntryCard({ entry, navigate, index }: { entry: NoteEntry; navigate:
           justifyContent: 'space-between',
           alignItems: 'baseline',
         }}>
-          <span style={{ fontSize: '12px', fontWeight: 500, color: `${accent.mid}cc` }}>
-            {getProductName(entry.productId, entry.cardId)}
-          </span>
+          {getProductName(entry.productId, entry.cardId) && (
+            <span style={{ fontSize: '13px', fontWeight: 600, color: accent.light }}>
+              {getProductName(entry.productId, entry.cardId)}
+            </span>
+          )}
           <span style={{ fontSize: '11px', color: `${DRIFTWOOD}77` }}>
             {formatRelativeDate(entry.date)}
           </span>
@@ -355,7 +357,16 @@ function CompletedMarkerRow({ marker, index }: { marker: CompletedMarker; index:
         <Check size={10} strokeWidth={2.5} color={DEEP_SAFFRON} />
       </div>
       <span style={{ fontSize: '14px', color: `${DRIFTWOOD}cc` }}>
-        <span style={{ fontSize: '12px', color: `${DRIFTWOOD}88`, marginRight: '6px' }}>{getProductName(marker.productId, marker.cardId)}</span>
+        {(() => {
+          const name = getProductName(marker.productId, marker.cardId);
+          const markerAccent = getProductAccent(marker.productId, marker.cardId);
+          return name ? (
+            <>
+              <span style={{ fontSize: '13px', fontWeight: 500, color: markerAccent.light, marginRight: '6px' }}>{name}</span>
+              <span style={{ color: `${DRIFTWOOD}88` }}>·</span>{' '}
+            </>
+          ) : null;
+        })()}
         {marker.cardName}
       </span>
       <span style={{ fontSize: '12px', color: `${DRIFTWOOD}66`, marginLeft: 'auto' }}>
