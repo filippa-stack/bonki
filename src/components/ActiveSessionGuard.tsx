@@ -23,7 +23,7 @@ export default function ActiveSessionGuard({ children }: { children: React.React
 
   // While loading normalized state, show branded breathing loader
   if (loading) return (
-    <div className="min-h-screen flex flex-col items-center justify-center" style={{ backgroundColor: 'magenta' }}>
+    <div className="min-h-screen flex flex-col items-center justify-center loading-skeleton" style={{ backgroundColor: 'var(--surface-base)' }}>
       <div
         className="rounded-full"
         style={{
