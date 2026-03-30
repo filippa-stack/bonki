@@ -1,51 +1,31 @@
 
 
-## Show product name clearly on each Journal reflection
+## Problem
 
-Currently each note card's metadata line (bottom of the card) shows:
-```
-cardName · categoryName · date
-```
+The product name is not readable in the journal. Two likely causes:
 
-The user wants the **product** to be the most visible identifier. The new metadata layout:
+1. **Color/contrast**: The product name uses `accent.mid` at `cc` (80%) opacity on the dark background — too faint to read, especially for products with dark accent colors.
+2. **Possibly empty**: If sessions were created before products were wired up, `entry.productId` and `entry.cardId` might not resolve to a product name, returning an empty string.
 
-```
-Produkt                          datum
-Kort/Samtal
-```
+## Fix
 
-### Changes in `src/pages/Journal.tsx`
+Make the product name the most prominent metadata element:
 
-**1. Add a `getProductName` helper** (next to existing `getCardTitle`/`getCategoryName`):
-```typescript
-function getProductName(productId: string, cardId?: string): string {
-  if (cardId) {
-    const prod = allProducts.find(p => p.cards.some(c => c.id === cardId));
-    if (prod) return prod.name;
-  }
-  const prod = allProducts.find(p => p.id === productId);
-  return prod?.name ?? '';
-}
-```
+### In `NoteEntryCard` (lines 304-321)
+- Increase product name font size from `12px` → `13px`
+- Use `accent.light` (the brighter tile color) instead of `accent.mid` for better contrast on dark backgrounds
+- Add `fontWeight: 600` and remove the `cc` opacity suffix — use the full color
+- Keep card name on line 2 at current muted style
 
-**2. Update the metadata section in `NoteEntryCard`** (lines 296-311):
+### In `CompletedMarkerRow` (line 358)
+- Make the product name a separate visual element before the card name
+- Use the product's light accent color at full opacity instead of `${DRIFTWOOD}88`
+- Increase font weight to 500
 
-Replace the current single-line `cardName · categoryName · date` with a two-line layout:
-- **Line 1**: Product name (left, slightly brighter) + date (right-aligned)
-- **Line 2**: Card/conversation name (smaller, muted)
+### Fallback for missing product name
+- If `getProductName` returns empty string, show nothing (no blank space) — the card name alone is still useful
 
-```
-┌─────────────────────────────────┐
-│ Jag med andra          idag    │
-│ Utanför                         │
-└─────────────────────────────────┘
-```
-
-The product name uses the product's accent color at reduced opacity for subtle brand identity. The card name stays in the current muted style.
-
-**3. Update `CompletedMarkerRow`** — add product name before card name so empty-session rows also show which product they belong to.
-
-### No other files changed
-- Data layer, hooks, types — untouched
-- Filter chips, pulse card, bookmarks section — untouched
+### No other changes
+- Data layer, filter chips, hooks — untouched
+- `getProductName` helper logic stays the same
 
