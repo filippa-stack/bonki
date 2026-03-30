@@ -825,6 +825,11 @@ h1, h2, h3,
   .row-lift {
     will-change: auto;
   }
+  .page-transition {
+    animation: none !important;
+    opacity: 1 !important;
+    transition: none !important;
+  }
 }
 
 /* ── Accessibility: reduced motion ── */
