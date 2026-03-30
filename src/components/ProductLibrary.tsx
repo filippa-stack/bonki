@@ -416,7 +416,7 @@ export default function ProductLibrary() {
   useDefaultTheme();
   const navigate = useNavigate();
   const tracked = useRef(false);
-  const hasMountedRef = useRef(false);
+  
   const { purchased } = useAllProductAccess();
   const { user } = useAuth();
   // Still Fair interest tracking (kept for future use)
@@ -432,7 +432,7 @@ export default function ProductLibrary() {
     }
   }, []);
 
-  useEffect(() => { hasMountedRef.current = true; }, []);
+  
 
   // Fetch active sessions across all products for resume indicators
   const { space } = useCoupleSpaceContext();
@@ -676,7 +676,7 @@ export default function ProductLibrary() {
             </p>
             <motion.div
               variants={tileVariants}
-              initial={hasMountedRef.current ? false : "hidden"}
+              initial="hidden"
               animate="visible"
               whileHover={{ scale: 1.015, y: -2 }}
               whileTap={{ scale: 0.97, y: 2 }}
@@ -822,7 +822,7 @@ export default function ProductLibrary() {
           <div style={{ height: '0px' }} />
           <motion.div
             variants={containerVariants}
-            initial={hasMountedRef.current ? false : "hidden"}
+            initial="hidden"
             animate="visible"
             style={{
               display: 'flex',
