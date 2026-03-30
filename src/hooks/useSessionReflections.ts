@@ -193,6 +193,7 @@ export function useSessionReflections(
     if (pendingSave.current) clearTimeout(pendingSave.current);
 
     pendingSave.current = setTimeout(async () => {
+      console.log('[autosave-debug]', { sid: sessionIdRef.current, uid: userIdRef.current, si: stepIndexRef.current, textLen: text?.length });
       const sid = sessionIdRef.current;
       const uid = userIdRef.current;
       const si = stepIndexRef.current;
