@@ -815,6 +815,18 @@ h1, h2, h3,
 .hide-scrollbar::-webkit-scrollbar { display: none; }
 .hide-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
 
+/* ── iOS flicker fix: disable GPU-heavy fixed layers on mobile ── */
+@media (hover: none) and (pointer: coarse) {
+  .verdigris-grain::before,
+  .verdigris-lightleak::after {
+    display: none;
+  }
+  .tile-door,
+  .row-lift {
+    will-change: auto;
+  }
+}
+
 /* ── Accessibility: reduced motion ── */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
