@@ -135,6 +135,15 @@ function getCategoryName(categoryId: string | null, cardId: string): string {
   return '';
 }
 
+function getProductName(productId: string, cardId?: string): string {
+  if (cardId) {
+    const prod = allProducts.find(p => p.cards.some(c => c.id === cardId));
+    if (prod) return prod.name;
+  }
+  const prod = allProducts.find(p => p.id === productId);
+  return prod?.name ?? '';
+}
+
 function formatRelativeDate(dateStr: string): string {
   const date = new Date(dateStr);
   const now = new Date();
