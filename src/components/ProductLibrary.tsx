@@ -676,7 +676,7 @@ export default function ProductLibrary() {
             </p>
             <motion.div
               variants={tileVariants}
-              initial={hasMountedRef.current ? false : "hidden"}
+              initial="hidden"
               animate="visible"
               whileHover={{ scale: 1.015, y: -2 }}
               whileTap={{ scale: 0.97, y: 2 }}
