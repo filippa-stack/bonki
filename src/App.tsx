@@ -64,7 +64,7 @@ function ProtectedRoutes() {
 
   if (loading) {
     return (
-      <div className="min-h-screen page-bg animate-fade-in" style={{ backgroundColor: 'magenta' }}>
+      <div className="min-h-screen page-bg animate-fade-in loading-skeleton">
         <div className="h-14 border-b border-border bg-card" />
         <div className="px-6 pt-8 space-y-4">
           <div className="h-8 w-48 rounded-lg bg-muted/30 animate-pulse" />
@@ -154,7 +154,7 @@ function AppRoutes() {
 
   if (loading) {
     return (
-      <div className="min-h-screen page-bg animate-fade-in" style={{ backgroundColor: 'magenta' }}>
+      <div className="min-h-screen page-bg animate-fade-in loading-skeleton">
         <div className="flex items-center justify-center pt-32">
           <div className="space-y-4 text-center">
             <div className="h-10 w-10 rounded-full bg-muted/30 animate-pulse mx-auto" />

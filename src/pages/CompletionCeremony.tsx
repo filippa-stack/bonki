@@ -301,9 +301,9 @@ export default function CompletionCeremony() {
 
   if (loading) {
     return (
-      <div style={{
+      <div className="loading-skeleton" style={{
         minHeight: '100vh',
-        backgroundColor: 'lime',
+        backgroundColor: COLORS.emberNight,
       }} />
     );
   }
