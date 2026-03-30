@@ -135,6 +135,15 @@ function getCategoryName(categoryId: string | null, cardId: string): string {
   return '';
 }
 
+function getProductName(productId: string, cardId?: string): string {
+  if (cardId) {
+    const prod = allProducts.find(p => p.cards.some(c => c.id === cardId));
+    if (prod) return prod.name;
+  }
+  const prod = allProducts.find(p => p.id === productId);
+  return prod?.name ?? '';
+}
+
 function formatRelativeDate(dateStr: string): string {
   const date = new Date(dateStr);
   const now = new Date();
@@ -293,21 +302,22 @@ function NoteEntryCard({ entry, navigate, index }: { entry: NoteEntry; navigate:
       )}
 
       {/* Metadata */}
-      <div style={{
-        marginTop: '10px',
-        display: 'flex',
-        flexWrap: 'wrap',
-        alignItems: 'center',
-        gap: '4px 6px',
-        fontSize: '12px',
-        color: `${DRIFTWOOD}99`,
-        lineHeight: 1.3,
-      }}>
-        <span>{entry.cardName}</span>
-        <span style={{ opacity: 0.4 }}>·</span>
-        <span>{entry.categoryName}</span>
-        <span style={{ opacity: 0.4 }}>·</span>
-        <span>{formatRelativeDate(entry.date)}</span>
+      <div style={{ marginTop: '10px', lineHeight: 1.3 }}>
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'baseline',
+        }}>
+          <span style={{ fontSize: '12px', fontWeight: 500, color: `${accent.mid}cc` }}>
+            {getProductName(entry.productId, entry.cardId)}
+          </span>
+          <span style={{ fontSize: '11px', color: `${DRIFTWOOD}77` }}>
+            {formatRelativeDate(entry.date)}
+          </span>
+        </div>
+        <p style={{ margin: '2px 0 0', fontSize: '12px', color: `${DRIFTWOOD}88` }}>
+          {entry.cardName}
+        </p>
       </div>
     </motion.div>
   );
@@ -345,6 +355,7 @@ function CompletedMarkerRow({ marker, index }: { marker: CompletedMarker; index:
         <Check size={10} strokeWidth={2.5} color={DEEP_SAFFRON} />
       </div>
       <span style={{ fontSize: '14px', color: `${DRIFTWOOD}cc` }}>
+        <span style={{ fontSize: '12px', color: `${DRIFTWOOD}88`, marginRight: '6px' }}>{getProductName(marker.productId, marker.cardId)}</span>
         {marker.cardName}
       </span>
       <span style={{ fontSize: '12px', color: `${DRIFTWOOD}66`, marginLeft: 'auto' }}>
