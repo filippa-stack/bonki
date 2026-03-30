@@ -28,7 +28,7 @@ export default function JourneyPreview() {
   return (
     <div
       style={{
-        minHeight: '100dvh',
+        minHeight: '100vh',
         backgroundColor: COLORS.emberNight,
         paddingBottom: '120px',
       }}

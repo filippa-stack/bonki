@@ -214,7 +214,7 @@ export default function Journey() {
 
   return (
     <div style={{
-      minHeight: '100dvh',
+      minHeight: '100vh',
       backgroundColor: COLORS.emberNight,
       paddingBottom: 'calc(72px + env(safe-area-inset-bottom, 0px))',
     }}>

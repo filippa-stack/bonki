@@ -424,7 +424,7 @@ export default function SessionOneLive() {
 
   if (cardIndex === -1 || !slug) {
     return (
-      <div style={{ minHeight: '100dvh', backgroundColor: COLORS.emberNight, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div style={{ minHeight: '100vh', backgroundColor: COLORS.emberNight, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <p style={{ color: COLORS.lanternGlow, fontFamily: 'var(--font-sans)' }}>Kort hittades inte</p>
       </div>
     );
@@ -566,7 +566,7 @@ export default function SessionOneLive() {
     return (
       <div
         style={{
-          minHeight: '100dvh',
+          minHeight: '100vh',
           backgroundColor: COLORS.emberNight,
           display: 'flex',
           flexDirection: 'column',
@@ -608,7 +608,7 @@ export default function SessionOneLive() {
     return (
       <div
         style={{
-          minHeight: '100dvh',
+          minHeight: '100vh',
           backgroundColor: COLORS.emberNight,
           display: 'flex',
           flexDirection: 'column',

@@ -47,7 +47,7 @@ export default function TillbakaComplete() {
 
   return (
     <div style={{
-      minHeight: '100dvh',
+      minHeight: '100vh',
       backgroundColor: COLORS.emberNight,
       display: 'flex',
       flexDirection: 'column',

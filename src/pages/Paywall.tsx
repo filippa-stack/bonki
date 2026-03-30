@@ -102,7 +102,7 @@ export default function Paywall() {
 
   return (
     <div style={{
-      minHeight: '100dvh',
+      minHeight: '100vh',
       backgroundColor: COLORS.emberNight,
       color: COLORS.lanternGlow,
       display: 'flex',

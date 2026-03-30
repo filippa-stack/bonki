@@ -722,7 +722,7 @@ export default function CompletionCeremony() {
         {/* ── Screen 5: Transition to Phase 3 ── */}
         <div style={{
           width: '100vw',
-          height: '100dvh',
+          height: '100vh',
           flexShrink: 0,
           background: COLORS.emberNight,
           display: 'flex',

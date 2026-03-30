@@ -103,7 +103,7 @@ export default function CardComplete({
   if (phase === 'committing') {
     return (
       <div style={{
-        minHeight: '100dvh',
+        minHeight: '100vh',
         backgroundColor: COLORS.emberNight,
         display: 'flex',
         flexDirection: 'column',
@@ -163,7 +163,7 @@ export default function CardComplete({
   if (phase === 'partner_writing') {
     return (
       <div style={{
-        minHeight: '100dvh',
+        minHeight: '100vh',
         backgroundColor: COLORS.emberNight,
         display: 'flex',
         flexDirection: 'column',
@@ -241,7 +241,7 @@ export default function CardComplete({
   if (phase === 'handoff') {
     return (
       <div style={{
-        minHeight: '100dvh',
+        minHeight: '100vh',
         backgroundColor: COLORS.emberNight,
         display: 'flex',
         flexDirection: 'column',
@@ -327,7 +327,7 @@ export default function CardComplete({
   // ── Takeaway phase (default) ──
   return (
     <div style={{
-      minHeight: '100dvh',
+      minHeight: '100vh',
       backgroundColor: COLORS.emberNight,
       display: 'flex',
       flexDirection: 'column',
