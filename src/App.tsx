@@ -94,8 +94,7 @@ function ProtectedRoutes() {
       <InstallGuideBanner />
       <ActiveSessionGuard>
         <div style={{ minHeight: '100vh', background: 'var(--surface-base, hsl(46 64% 89%))' }}>
-          <AnimatePresence mode="sync">
-            <Routes location={location} key={location.pathname}>
+            <Routes>
               <Route path="/" element={<PageTransition><Index /></PageTransition>} />
               
               <Route path="/categories" element={<Navigate to="/" replace />} />
@@ -134,7 +133,6 @@ function ProtectedRoutes() {
               <Route path="/settings/dissolve" element={<PageTransition><DissolutionSettings /></PageTransition>} />
               <Route path="*" element={<NotFound />} />
             </Routes>
-          </AnimatePresence>
         </div>
         <BottomNav />
       </ActiveSessionGuard>
