@@ -59,9 +59,15 @@ export function useSessionReflections(
 
   // Keep refs in sync so callbacks always see the latest values
   useEffect(() => {
-    sessionIdRef.current = normalizedSessionId;
+    if (normalizedSessionId) {
+      sessionIdRef.current = normalizedSessionId;
+    }
   }, [normalizedSessionId]);
-  useEffect(() => { stepIndexRef.current = stepIndex; }, [stepIndex]);
+  useEffect(() => {
+    if (stepIndex !== undefined && stepIndex >= 0) {
+      stepIndexRef.current = stepIndex;
+    }
+  }, [stepIndex]);
   useEffect(() => { userIdRef.current = user?.id ?? null; }, [user]);
 
   // ─── 1. Reset state when session or step changes ───

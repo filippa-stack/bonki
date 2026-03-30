@@ -2506,7 +2506,7 @@ export default function CardView() {
           ctaSlot={
             <SessionStepReflection
               key={`${currentStepIndex}-${localPromptIndex}`}
-              sessionId={normalizedSession.sessionId}
+              sessionId={isActiveSession ? normalizedSession.sessionId : null}
               stepIndex={currentStepIndex}
               promptIndex={localPromptIndex}
               isLastStep={isLastStage && isLastPromptInStage}
@@ -3335,7 +3335,7 @@ export default function CardView() {
                   >
                     <SessionStepReflection
                       key={`${currentStepIndex}-${localPromptIndex}`}
-                      sessionId={normalizedSession.sessionId}
+                      sessionId={isActiveSession ? normalizedSession.sessionId : null}
                       stepIndex={currentStepIndex}
                       promptIndex={localPromptIndex}
                       isLastStep={isLastStage && isLastPromptInStage}
