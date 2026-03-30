@@ -120,7 +120,7 @@ export default function Categories() {
                     </p>
                   )}
                 </div>
-            </motion.div>
+            </div>
           );
         })}
       </div>
