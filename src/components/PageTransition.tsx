@@ -26,7 +26,7 @@ const PageTransition = forwardRef<HTMLDivElement, PageTransitionProps>(
           ease: isCardRoute ? [0.22, 1, 0.36, 1] : 'easeInOut',
         }}
         style={{ width: '100%', minHeight: '100vh' }}
-        className={className}
+        className={`page-transition ${className || ''}`}
       >
         {children}
       </motion.div>
