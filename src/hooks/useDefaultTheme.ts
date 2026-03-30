@@ -1,13 +1,25 @@
-import { useEffect } from 'react';
+import { useEffect, useLayoutEffect } from 'react';
 
 /**
  * Resets theme CSS variables to :root defaults from index.css.
  * Call this on light-themed pages to prevent dark-theme bleed
  * when navigating from a product page that sets inline vars.
  *
+ * useLayoutEffect removes the Verdigris theme class BEFORE the browser
+ * paints the first frame — eliminates the 60-token snap that caused
+ * visible flashing on page transitions.
+ *
  * Must match :root defaults in index.css — update both if changed.
+ * Must remove the same classes that VerdigrisAtmosphere.tsx adds.
  */
 export function useDefaultTheme() {
+  // Synchronous: remove dark-theme class before first paint
+  useLayoutEffect(() => {
+    document.documentElement.classList.remove('theme-verdigris');
+    document.body.classList.remove('verdigris-grain', 'verdigris-lightleak');
+  }, []);
+
+  // Standard: reset inline CSS vars to light-theme defaults
   useEffect(() => {
     const root = document.documentElement;
     root.style.setProperty('--text-primary', 'hsl(20, 16%, 15%)');
