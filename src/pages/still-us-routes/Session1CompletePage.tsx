@@ -68,7 +68,7 @@ export default function Session1CompletePage() {
   if (!coupleData || !backendCardId || !slug) {
     return (
       <div style={{
-        minHeight: '100dvh',
+        minHeight: '100vh',
         backgroundColor: '#2E2233',
         display: 'flex',
         alignItems: 'center',

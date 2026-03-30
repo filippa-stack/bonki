@@ -388,7 +388,7 @@ export default function TillbakaSessionLive() {
   // ── Render ────────────────────────────────────────────────
 
   if (!lockAcquired || !coupleState) {
-    return <div style={{ minHeight: '100dvh', backgroundColor: COLORS.emberNight }} />;
+    return <div style={{ minHeight: '100vh', backgroundColor: COLORS.emberNight }} />;
   }
 
   // ── STEP: THRESHOLD ───────────────────────────────────────
@@ -729,7 +729,7 @@ export default function TillbakaSessionLive() {
   }
 
   // Fallback — should not reach
-  return <div style={{ minHeight: '100dvh', backgroundColor: COLORS.emberNight }} />;
+  return <div style={{ minHeight: '100vh', backgroundColor: COLORS.emberNight }} />;
 }
 
 // ═══════════════════════════════════════════════════════════

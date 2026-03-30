@@ -55,7 +55,7 @@ export default function CardPreview() {
         className="flex flex-col"
         style={{
           backgroundColor: 'var(--surface-base)',
-          height: '100dvh',
+          height: '100vh',
           overflow: 'hidden',
         }}
       >

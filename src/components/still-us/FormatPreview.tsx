@@ -87,7 +87,7 @@ export default function FormatPreview({ hasPartner = false, onComplete }: Format
       onTouchMove={onTouchMove}
       onTouchEnd={onTouchEnd}
       style={{
-        height: '100dvh',
+        height: '100vh',
         backgroundColor: COLORS.emberNight,
         display: 'flex',
         flexDirection: 'column',

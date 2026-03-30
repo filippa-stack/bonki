@@ -123,7 +123,7 @@ export default function Share({
   return (
     <div
       style={{
-        height: '100dvh',
+        height: '100vh',
         backgroundColor: COLORS.emberNight,
         display: 'flex',
         flexDirection: 'column',

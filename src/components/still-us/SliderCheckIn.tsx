@@ -195,7 +195,7 @@ export default function SliderCheckIn({
     return (
       <div
         style={{
-          height: '100dvh',
+          height: '100vh',
           backgroundColor: COLORS.emberNight,
           display: 'flex',
           alignItems: 'center',
@@ -216,7 +216,7 @@ export default function SliderCheckIn({
   return (
     <div
       style={{
-        minHeight: '100dvh',
+        minHeight: '100vh',
         backgroundColor: COLORS.emberNight,
         display: 'flex',
         flexDirection: 'column',

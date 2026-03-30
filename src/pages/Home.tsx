@@ -165,7 +165,7 @@ export default function Home() {
   }
 
   return (
-    <div style={{ minHeight: '100dvh', position: 'relative', overflow: 'hidden', backgroundColor: COLORS.emberNight }}>
+    <div style={{ minHeight: '100vh', position: 'relative', overflow: 'hidden', backgroundColor: COLORS.emberNight }}>
 
       {/* ── Inactivity overlay (7+ days) ── */}
       <AnimatePresence>
@@ -341,7 +341,7 @@ export default function Home() {
       <div style={{
         position: 'relative',
         zIndex: 1,
-        minHeight: '100dvh',
+        minHeight: '100vh',
         display: 'flex',
         flexDirection: 'column',
         paddingTop: 'clamp(28px, 8vh, 80px)',

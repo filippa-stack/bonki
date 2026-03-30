@@ -163,7 +163,7 @@ export default function ProductIntro({
     <div
       style={{
         backgroundColor: bgColor,
-        height: '100dvh',
+        height: '100vh',
         display: 'flex',
         flexDirection: 'column',
         overflow: expanded ? 'auto' : 'hidden',

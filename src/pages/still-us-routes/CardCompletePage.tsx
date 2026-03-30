@@ -80,7 +80,7 @@ export default function CardCompletePage() {
   if (!props || !backendCardId || !slug) {
     return (
       <div style={{
-        minHeight: '100dvh',
+        minHeight: '100vh',
         backgroundColor: COLORS.emberNight,
       }} />
     );
