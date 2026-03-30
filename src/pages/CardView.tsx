@@ -2382,11 +2382,13 @@ export default function CardView() {
       }
       await handleCompleteStep();
     }
-    navigate(exitBackTo);
+    setShowLeaveConfirm(false);
+    setTimeout(() => navigate(exitBackTo), 250);
   };
 
   const handleSessionExit = () => {
     if (isExiting) return;
+    setShowLeaveConfirm(false);
     setIsExiting(true);
     setTimeout(() => navigate(exitBackTo), 300);
   };
