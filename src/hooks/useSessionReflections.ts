@@ -48,6 +48,7 @@ export function useSessionReflections(
   const devState = useDevState();
   const sessionId = normalizedSessionId;
   const sessionIdRef = useRef<string | null>(normalizedSessionId);
+  const prevSessionIdRef = useRef<string | null>(normalizedSessionId);
 
   const [loading, setLoading] = useState(true);
   const [myReflection, setMyReflection] = useState<StepReflection | null>(null);
@@ -55,6 +56,7 @@ export function useSessionReflections(
   const localTextRef = useRef('');
   const pendingSave = useRef<ReturnType<typeof setTimeout> | null>(null);
   const stepIndexRef = useRef(stepIndex);
+  const prevStepIndexRef = useRef(stepIndex);
   const userIdRef = useRef<string | null>(user?.id ?? null);
 
   // Keep refs in sync so callbacks always see the latest values
