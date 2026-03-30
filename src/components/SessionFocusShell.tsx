@@ -91,7 +91,7 @@ export default function SessionFocusShell({
         display: 'flex',
         flexDirection: 'column',
         overflow: 'hidden',
-        height: '100dvh',
+        height: '100vh',
       }}
     >
       {/* Status message overlay */}
