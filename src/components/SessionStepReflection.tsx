@@ -118,7 +118,7 @@ export default function SessionStepReflection({
   };
 
   const handleAdvance = async () => {
-    console.log('[reflection-debug] handleAdvance called', { sessionId, stepIndex, promptIndex, localText, localTextLength: localText.length });
+    
     setSubmitting(true);
     try {
       await markReady(localText);
