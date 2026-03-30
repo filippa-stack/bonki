@@ -95,25 +95,25 @@ function ProtectedRoutes() {
       <ActiveSessionGuard>
         <div style={{ minHeight: '100vh', background: 'var(--surface-base, hsl(46 64% 89%))' }}>
             <Routes>
-              <Route path="/" element={<PageTransition><Index /></PageTransition>} />
+              <Route path="/" element={<Index />} />
               
               <Route path="/categories" element={<Navigate to="/" replace />} />
-              <Route path="/still-us/explore" element={<PageTransition><StillUsExplore /></PageTransition>} />
-              <Route path="/still-us/intro" element={<PageTransition><SuIntroPortal /></PageTransition>} />
-              <Route path="/category/:categoryId" element={<PageTransition><Category /></PageTransition>} />
-              <Route path="/card/:cardId" element={<PageTransition><CardView /></PageTransition>} />
-              <Route path="/preview/:cardId" element={<PageTransition><CardPreview /></PageTransition>} />
-              <Route path="/product/:slug" element={<PageTransition><ProductHome /></PageTransition>} />
-              <Route path="/product/:productSlug/portal/:categoryId" element={<PageTransition><KidsCardPortal /></PageTransition>} />
+              <Route path="/still-us/explore" element={<StillUsExplore />} />
+              <Route path="/still-us/intro" element={<SuIntroPortal />} />
+              <Route path="/category/:categoryId" element={<Category />} />
+              <Route path="/card/:cardId" element={<CardView />} />
+              <Route path="/preview/:cardId" element={<CardPreview />} />
+              <Route path="/product/:slug" element={<ProductHome />} />
+              <Route path="/product/:productSlug/portal/:categoryId" element={<KidsCardPortal />} />
               <Route path="/saved" element={<Navigate to="/journal" replace />} />
-              <Route path="/shared" element={<PageTransition><SharedSummary /></PageTransition>} />
-              <Route path="/journal" element={<PageTransition><Journal /></PageTransition>} />
-              <Route path="/diary/:productId" element={<PageTransition><Diary /></PageTransition>} />
+              <Route path="/shared" element={<SharedSummary />} />
+              <Route path="/journal" element={<Journal />} />
+              <Route path="/diary/:productId" element={<Diary />} />
 
               {/* Still Us: only card-complete and tillbaka routes kept */}
-              <Route path="/session/:cardId/complete" element={<PageTransition><CardCompletePage /></PageTransition>} />
-              <Route path="/session/:cardId/tillbaka" element={<PageTransition><TillbakaPage /></PageTransition>} />
-              <Route path="/session/:cardId/tillbaka-complete" element={<PageTransition><TillbakaComplete /></PageTransition>} />
+              <Route path="/session/:cardId/complete" element={<CardCompletePage />} />
+              <Route path="/session/:cardId/tillbaka" element={<TillbakaPage />} />
+              <Route path="/session/:cardId/tillbaka-complete" element={<TillbakaComplete />} />
 
               {/* Legacy Still Us routes → redirect to product home */}
               <Route path="/check-in/*" element={<Navigate to="/product/still-us" replace />} />
@@ -124,13 +124,13 @@ function ProtectedRoutes() {
               <Route path="/session/:cardId/complete-session1" element={<Navigate to="/product/still-us" replace />} />
               <Route path="/session/:cardId/session2-start" element={<Navigate to="/product/still-us" replace />} />
               <Route path="/session/:cardId/live-session2" element={<Navigate to="/product/still-us" replace />} />
-              <Route path="/journey" element={<PageTransition><Journey /></PageTransition>} />
-              <Route path="/solo-reflect/:cardId" element={<PageTransition><SoloReflect /></PageTransition>} />
-              <Route path="/journey-preview" element={<PageTransition><JourneyPreview /></PageTransition>} />
-              <Route path="/unlock" element={<PageTransition><Paywall /></PageTransition>} />
-              <Route path="/paywall-full" element={<PageTransition><PaywallFullScreen /></PageTransition>} />
-              <Route path="/ceremony" element={<PageTransition><CompletionCeremony /></PageTransition>} />
-              <Route path="/settings/dissolve" element={<PageTransition><DissolutionSettings /></PageTransition>} />
+              <Route path="/journey" element={<Journey />} />
+              <Route path="/solo-reflect/:cardId" element={<SoloReflect />} />
+              <Route path="/journey-preview" element={<JourneyPreview />} />
+              <Route path="/unlock" element={<Paywall />} />
+              <Route path="/paywall-full" element={<PaywallFullScreen />} />
+              <Route path="/ceremony" element={<CompletionCeremony />} />
+              <Route path="/settings/dissolve" element={<DissolutionSettings />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
         </div>
