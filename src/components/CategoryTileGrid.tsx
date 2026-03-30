@@ -30,11 +30,11 @@ export interface CreatureTileStyle {
 
 const containerVariants = {
   hidden: {},
-  visible: { transition: { staggerChildren: 0.08, delayChildren: 0.3 } },
+  visible: {},
 };
 const tileVariants = {
-  hidden: { opacity: 0, y: 20, scale: 0.95 },
-  visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.55, ease: EASE } },
+  hidden: { opacity: 1, y: 0, scale: 1 },
+  visible: { opacity: 1, y: 0, scale: 1 },
 };
 
 export interface TileConfig {
@@ -139,6 +139,9 @@ function CategoryTile({
             src={tileImage || creatureImage}
             alt=""
             aria-hidden="true"
+            width={400}
+            height={400}
+            loading="eager"
             style={{
               width: '100%',
               height: '100%',
