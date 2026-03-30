@@ -1,31 +1,54 @@
 
 
-## Problem
+## Fix reflection save architecture — session routing + flush-on-unmount
 
-The product name is not readable in the journal. Two likely causes:
+Two bugs, four line-level changes across two files.
 
-1. **Color/contrast**: The product name uses `accent.mid` at `cc` (80%) opacity on the dark background — too faint to read, especially for products with dark accent colors.
-2. **Possibly empty**: If sessions were created before products were wired up, `entry.productId` and `entry.cardId` might not resolve to a product name, returning an empty string.
+### Bug 1 — Reflections save to wrong session
 
-## Fix
+**Root cause**: Both `<SessionStepReflection>` render sites pass `normalizedSession.sessionId` without checking if the session belongs to the current card.
 
-Make the product name the most prominent metadata element:
+**Fix in `src/pages/CardView.tsx`**:
 
-### In `NoteEntryCard` (lines 304-321)
-- Increase product name font size from `12px` → `13px`
-- Use `accent.light` (the brighter tile color) instead of `accent.mid` for better contrast on dark backgrounds
-- Add `fontWeight: 600` and remove the `cc` opacity suffix — use the full color
-- Keep card name on line 2 at current muted style
+- **Line 2509** (Still Us path): Change `sessionId={normalizedSession.sessionId}` → `sessionId={isActiveSession ? normalizedSession.sessionId : null}`
+- **Line 3338** (Standard/kids path): Same change
 
-### In `CompletedMarkerRow` (line 358)
-- Make the product name a separate visual element before the card name
-- Use the product's light accent color at full opacity instead of `${DRIFTWOOD}88`
-- Increase font weight to 500
+`isActiveSession` (line 146) already validates `normalizedSession.cardId === cardId`.
 
-### Fallback for missing product name
-- If `getProductName` returns empty string, show nothing (no blank space) — the card name alone is still useful
+### Bug 2 — Kids reflections lost on pause (flush-on-unmount fails)
 
-### No other changes
-- Data layer, filter chips, hooks — untouched
-- `getProductName` helper logic stays the same
+**Root cause**: When `isActiveSession` flips false, the hook receives `null`, the ref-sync effect nulls out `sessionIdRef`, and the unmount-flush skips because `sid` is null.
+
+**Fix in `src/hooks/useSessionReflections.ts`**:
+
+- **Line 61-63** (sessionIdRef sync): Only update if non-null:
+  ```typescript
+  useEffect(() => {
+    if (normalizedSessionId) {
+      sessionIdRef.current = normalizedSessionId;
+    }
+  }, [normalizedSessionId]);
+  ```
+
+- **Line 64** (stepIndexRef sync): Only update if valid:
+  ```typescript
+  useEffect(() => {
+    if (stepIndex !== undefined && stepIndex >= 0) {
+      stepIndexRef.current = stepIndex;
+    }
+  }, [stepIndex]);
+  ```
+
+### Protected patterns — all untouched
+- `suppressUntilRef.current = Date.now() + 2000` in useNormalizedSessionState.ts
+- `prevServerStepRef.current = serverStepIndex` in CardView.tsx
+- Both `clearTimeout(pendingSave.current)` instances in useSessionReflections.ts
+- `hasSyncedRef.current = true` in SessionStepReflection.tsx
+- Reset-effect, unmount-flush, session creation logic, `isActiveSession` definition — all unchanged
+
+### Files changed
+| File | Change |
+|------|--------|
+| `src/pages/CardView.tsx` | Two `sessionId=` props get `isActiveSession` guard |
+| `src/hooks/useSessionReflections.ts` | Two ref-sync effects get null-guard |
 
