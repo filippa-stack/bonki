@@ -1,27 +1,18 @@
 
 
-## Switch SessionStepReflection sessionId to use `activeSessionId`
+## Plan: Update PageTransition.tsx with touch-device-aware animation
 
-Two identical prop replacements in `src/pages/CardView.tsx`. No other changes.
+### Summary
+Replace the entire content of `src/components/PageTransition.tsx` with the user-provided code that adds a module-level `isTouchDevice` constant and conditionally disables Framer Motion opacity animations on touch devices.
 
-### Changes
+### Single file change
+**`src/components/PageTransition.tsx`** — full file replacement with the provided code. Key differences from current version:
+- Add `isTouchDevice` constant using `(hover: none) and (pointer: coarse)` media query
+- `initial`: `false` on touch, `{ opacity: 0 }` on desktop
+- `exit`: `{ opacity: 1 }` on touch, `{ opacity: 0 }` on desktop
+- `transition`: `{ duration: 0 }` on touch, original card-route easing on desktop
+- Keep `minHeight: '100vh'` (not `100dvh`)
+- Keep `page-transition` className
 
-**Line 2509** (Still Us Focus Mode path):
-```
-sessionId={isActiveSession ? normalizedSession.sessionId : null}
-→
-sessionId={activeSessionId ?? null}
-```
-
-**Line 3338** (Standard/kids path):
-```
-sessionId={isActiveSession ? normalizedSession.sessionId : null}
-→
-sessionId={activeSessionId ?? null}
-```
-
-### What stays untouched
-- `activeSessionId` state + useEffect, `isActiveSession`, `kidsNoteSession` hook
-- All four protected patterns (`suppressUntilRef`, `prevServerStepRef`, `clearTimeout(pendingSave.current)` ×2, `hasSyncedRef`)
-- No other files modified
+No other files modified.
 
