@@ -432,7 +432,7 @@ export default function ProductLibrary() {
     }
   }, []);
 
-  useEffect(() => { hasMountedRef.current = true; }, []);
+  
 
   // Fetch active sessions across all products for resume indicators
   const { space } = useCoupleSpaceContext();
