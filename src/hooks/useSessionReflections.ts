@@ -59,29 +59,22 @@ export function useSessionReflections(
   const prevStepIndexRef = useRef(stepIndex);
   const userIdRef = useRef<string | null>(user?.id ?? null);
 
-  // Keep refs in sync so callbacks always see the latest values
-  useEffect(() => {
-    if (normalizedSessionId) {
-      sessionIdRef.current = normalizedSessionId;
-    }
-  }, [normalizedSessionId]);
-  useEffect(() => {
-    if (stepIndex !== undefined && stepIndex >= 0) {
-      stepIndexRef.current = stepIndex;
-    }
-  }, [stepIndex]);
+  // Keep userId ref in sync (user changes independently of step/session)
   useEffect(() => { userIdRef.current = user?.id ?? null; }, [user]);
 
   // ─── 1. Reset state when session or step changes ───
+  // IMPORTANT: This effect also updates sessionIdRef and stepIndexRef AFTER flushing.
+  // Do NOT add separate useEffect blocks to sync these refs — that reintroduces
+  // the timing bug where refs update before the flush reads them.
   useEffect(() => {
-    // Flush any pending save before resetting for new step/session
+    // Flush any pending save to the PREVIOUS step/session before resetting
     if (pendingSave.current) {
       clearTimeout(pendingSave.current);
       pendingSave.current = null;
       const text = localTextRef.current;
-      const sid = sessionIdRef.current;
+      const sid = prevSessionIdRef.current;
       const uid = userIdRef.current;
-      const si = stepIndexRef.current;
+      const si = prevStepIndexRef.current;
       if (text?.trim() && sid && uid) {
         supabase
           .from('step_reflections')
@@ -100,6 +93,18 @@ export function useSessionReflections(
           });
       }
     }
+
+    // Now update refs to the NEW values (after flush used the old ones)
+    prevSessionIdRef.current = normalizedSessionId;
+    prevStepIndexRef.current = stepIndex;
+    if (normalizedSessionId) {
+      sessionIdRef.current = normalizedSessionId;
+    }
+    if (stepIndex !== undefined && stepIndex >= 0) {
+      stepIndexRef.current = stepIndex;
+    }
+
+    // Reset local state for the new step/session
     setMyReflection(null);
     setLocalText('');
     localTextRef.current = '';
