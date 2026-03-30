@@ -139,6 +139,9 @@ function CategoryTile({
             src={tileImage || creatureImage}
             alt=""
             aria-hidden="true"
+            width={400}
+            height={400}
+            loading="eager"
             style={{
               width: '100%',
               height: '100%',
