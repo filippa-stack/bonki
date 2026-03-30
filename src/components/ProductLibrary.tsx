@@ -416,6 +416,7 @@ export default function ProductLibrary() {
   useDefaultTheme();
   const navigate = useNavigate();
   const tracked = useRef(false);
+  const hasMountedRef = useRef(false);
   const { purchased } = useAllProductAccess();
   const { user } = useAuth();
   // Still Fair interest tracking (kept for future use)
