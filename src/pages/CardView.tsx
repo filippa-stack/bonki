@@ -1007,7 +1007,7 @@ export default function CardView() {
   // ─────────────────────────────────────────────────────────────
   if (!card) {
     return (
-      <div className="min-h-screen page-bg animate-fade-in">
+      <div className="min-h-screen page-bg animate-fade-in" style={{ backgroundColor: 'lime' }}>
         <div className="h-14 border-b border-border bg-card" />
         <div className="px-6 pt-12 space-y-4 max-w-md mx-auto text-center">
           <div className="h-6 w-40 rounded bg-muted/30 animate-pulse mx-auto" />

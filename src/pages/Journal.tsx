@@ -736,7 +736,7 @@ export default function Journal() {
 
       {/* Content */}
       {loading ? (
-        <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'lime' }}>
           <div style={{ width: '32px', height: '32px', borderRadius: '50%', backgroundColor: `${DRIFTWOOD}33` }} className="animate-pulse" />
         </div>
       ) : isEmpty ? (
