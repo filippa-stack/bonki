@@ -822,7 +822,7 @@ export default function ProductLibrary() {
           <div style={{ height: '0px' }} />
           <motion.div
             variants={containerVariants}
-            initial={hasMountedRef.current ? false : "hidden"}
+            initial="hidden"
             animate="visible"
             style={{
               display: 'flex',
