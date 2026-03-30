@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+
 import { useTranslation } from 'react-i18next';
 import CompletionMarker from '@/components/CompletionMarker';
 import { useApp } from '@/contexts/AppContext';
@@ -76,11 +76,8 @@ export default function Categories() {
           const prevIsGuided = index > 0 && sortedCategories[index - 1]?.id === guidedCategoryId;
 
           return (
-            <motion.div
+            <div
               key={category.id}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: Math.min(0.08 + index * 0.05, 0.3), duration: 0.2, ease: [0.4, 0.0, 0.2, 1] }}
               className={index === 0 ? 'mt-12' : 'mt-6'}
             >
               {isGuided && (
@@ -123,7 +120,7 @@ export default function Categories() {
                     </p>
                   )}
                 </div>
-            </motion.div>
+            </div>
           );
         })}
       </div>
