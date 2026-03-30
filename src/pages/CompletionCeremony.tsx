@@ -303,7 +303,7 @@ export default function CompletionCeremony() {
     return (
       <div style={{
         minHeight: '100vh',
-        backgroundColor: COLORS.emberNight,
+        backgroundColor: 'lime',
       }} />
     );
   }

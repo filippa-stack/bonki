@@ -434,7 +434,7 @@ export default function SharedSummary() {
         )}
 
         {effectiveLoading ? (
-          <div className="py-12 space-y-6 animate-fade-in">
+          <div className="py-12 space-y-6 animate-fade-in" style={{ backgroundColor: 'lime' }}>
             {[1, 2, 3].map(i => (
               <div key={i} className="h-4 w-3/4 mx-auto rounded bg-muted/20 animate-pulse" />
             ))}
