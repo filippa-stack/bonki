@@ -3476,6 +3476,7 @@ function KidsCompletionNote({ sessionId, spaceId, cardId, productId }: {
   const isDemo = isDemoMode();
   const debounceRef = useRef<ReturnType<typeof setTimeout>>();
   const saveTimerRef = useRef<ReturnType<typeof setTimeout>>();
+  const textRef = useRef('');
 
   const persistToDb = useCallback(async (value: string) => {
     if (!sessionId || !user?.id || !spaceId) return;
@@ -3504,8 +3505,29 @@ function KidsCompletionNote({ sessionId, spaceId, cardId, productId }: {
     } catch {}
   }, [productId, cardId]);
 
+  // Keep ref pointing to latest persistToDb (captures current rowId)
+  const persistToDbRef = useRef(persistToDb);
+  useEffect(() => { persistToDbRef.current = persistToDb; }, [persistToDb]);
+  const persistToLocalRef = useRef(persistToLocal);
+  useEffect(() => { persistToLocalRef.current = persistToLocal; }, [persistToLocal]);
+
+  // Flush pending save on unmount — prevents data loss on quick navigation
+  useEffect(() => {
+    return () => {
+      if (debounceRef.current) {
+        clearTimeout(debounceRef.current);
+        const value = textRef.current;
+        if (value.trim()) {
+          if (isDemoMode()) persistToLocalRef.current(value);
+          else persistToDbRef.current(value);
+        }
+      }
+    };
+  }, []);
+
   const handleChange = (value: string) => {
     setText(value);
+    textRef.current = value;
     setSaveIndicator('idle');
     if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
     if (debounceRef.current) clearTimeout(debounceRef.current);
@@ -3632,6 +3654,7 @@ function SimpleTakeaway({ sessionId, spaceId, cardId, productId, stillUsMode }: 
   const isDemo = isDemoMode();
   const debounceRef = useRef<ReturnType<typeof setTimeout>>();
   const saveTimerRef = useRef<ReturnType<typeof setTimeout>>();
+  const textRef = useRef('');
 
   const DRIFTWOOD_T = '#FDF6E3';
   const BARK_T = '#2C2420';
@@ -3665,8 +3688,29 @@ function SimpleTakeaway({ sessionId, spaceId, cardId, productId, stillUsMode }: 
     } catch {}
   }, [productId, cardId]);
 
+  // Keep ref pointing to latest persistToDb (captures current rowId)
+  const persistToDbRef = useRef(persistToDb);
+  useEffect(() => { persistToDbRef.current = persistToDb; }, [persistToDb]);
+  const persistToLocalRef = useRef(persistToLocal);
+  useEffect(() => { persistToLocalRef.current = persistToLocal; }, [persistToLocal]);
+
+  // Flush pending save on unmount — prevents data loss on quick navigation
+  useEffect(() => {
+    return () => {
+      if (debounceRef.current) {
+        clearTimeout(debounceRef.current);
+        const value = textRef.current;
+        if (value.trim()) {
+          if (isDemoMode()) persistToLocalRef.current(value);
+          else persistToDbRef.current(value);
+        }
+      }
+    };
+  }, []);
+
   const handleChange = (value: string) => {
     setText(value);
+    textRef.current = value;
     setSaveIndicator('idle');
     if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
     if (debounceRef.current) clearTimeout(debounceRef.current);
