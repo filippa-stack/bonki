@@ -2,7 +2,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
-import { AnimatePresence } from "framer-motion";
+
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { AppProvider, useApp } from "@/contexts/AppContext";
 import { DevStateProvider } from "@/contexts/DevStateContext";
@@ -94,8 +94,7 @@ function ProtectedRoutes() {
       <InstallGuideBanner />
       <ActiveSessionGuard>
         <div style={{ minHeight: '100vh', background: 'var(--surface-base, hsl(46 64% 89%))' }}>
-          <AnimatePresence mode="sync">
-            <Routes location={location} key={location.pathname}>
+            <Routes>
               <Route path="/" element={<PageTransition><Index /></PageTransition>} />
               
               <Route path="/categories" element={<Navigate to="/" replace />} />
@@ -134,7 +133,6 @@ function ProtectedRoutes() {
               <Route path="/settings/dissolve" element={<PageTransition><DissolutionSettings /></PageTransition>} />
               <Route path="*" element={<NotFound />} />
             </Routes>
-          </AnimatePresence>
         </div>
         <BottomNav />
       </ActiveSessionGuard>
