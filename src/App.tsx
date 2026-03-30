@@ -16,7 +16,7 @@ import { SiteSettingsProvider } from "@/contexts/SiteSettingsContext";
 import { CoupleSpaceProvider } from "@/contexts/CoupleSpaceContext";
 import { NormalizedSessionProvider } from "@/contexts/NormalizedSessionContext";
 import { OptimisticCompletionsProvider } from "@/contexts/OptimisticCompletionsContext";
-import PageTransition from "@/components/PageTransition";
+
 import MobileOnlyGate from "@/components/MobileOnlyGate";
 import TestModeBanner from "@/components/TestModeBanner";
 import TestModePanel from "@/components/TestModePanel";
