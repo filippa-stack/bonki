@@ -389,6 +389,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
           <span
             style={{
               display: 'inline-flex',
+              alignSelf: 'flex-start',
               alignItems: 'center',
               gap: '4px',
               marginTop: '8px',
