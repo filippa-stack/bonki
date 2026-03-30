@@ -1,37 +1,51 @@
 
 
-## Changes to `src/pages/CardView.tsx`
+## Show product name clearly on each Journal reflection
 
-Three targeted additions — no existing logic modified.
-
-### 1. Reset `abandonCheckedRef` on `cardId` change
-After line 384 (`const abandonCheckedRef = useRef(false);`), add:
-```typescript
-useEffect(() => {
-  abandonCheckedRef.current = false;
-}, [cardId]);
+Currently each note card's metadata line (bottom of the card) shows:
+```
+cardName · categoryName · date
 ```
 
-### 2. Reset `eagerSessionRef` on `cardId` change
-After line 409 (`const eagerSessionRef = useRef(false);`), add:
-```typescript
-useEffect(() => {
-  eagerSessionRef.current = false;
-}, [cardId]);
+The user wants the **product** to be the most visible identifier. The new metadata layout:
+
+```
+Produkt                          datum
+Kort/Samtal
 ```
 
-### 3. Guard `useSessionReflections` with `isActiveSession`
-Line 544-546 — change the first argument:
+### Changes in `src/pages/Journal.tsx`
+
+**1. Add a `getProductName` helper** (next to existing `getCardTitle`/`getCategoryName`):
 ```typescript
-const kidsNoteSession = useSessionReflections(
-  isKidsProduct && isActiveSession ? (normalizedSession.sessionId ?? null) : null,
-  kidsNoteStepIndex
-);
+function getProductName(productId: string, cardId?: string): string {
+  if (cardId) {
+    const prod = allProducts.find(p => p.cards.some(c => c.id === cardId));
+    if (prod) return prod.name;
+  }
+  const prod = allProducts.find(p => p.id === productId);
+  return prod?.name ?? '';
+}
 ```
 
-### Protected patterns — all untouched
-- `suppressUntilRef.current = Date.now() + 2000` in useNormalizedSessionState.ts
-- `prevServerStepRef.current = serverStepIndex` in CardView.tsx
-- `clearTimeout(pendingSave.current)` in useSessionReflections.ts
-- `hasSyncedRef.current = true` in SessionStepReflection.tsx
+**2. Update the metadata section in `NoteEntryCard`** (lines 296-311):
+
+Replace the current single-line `cardName · categoryName · date` with a two-line layout:
+- **Line 1**: Product name (left, slightly brighter) + date (right-aligned)
+- **Line 2**: Card/conversation name (smaller, muted)
+
+```
+┌─────────────────────────────────┐
+│ Jag med andra          idag    │
+│ Utanför                         │
+└─────────────────────────────────┘
+```
+
+The product name uses the product's accent color at reduced opacity for subtle brand identity. The card name stays in the current muted style.
+
+**3. Update `CompletedMarkerRow`** — add product name before card name so empty-session rows also show which product they belong to.
+
+### No other files changed
+- Data layer, hooks, types — untouched
+- Filter chips, pulse card, bookmarks section — untouched
 
