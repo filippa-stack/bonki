@@ -838,4 +838,7 @@ h1, h2, h3,
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
+  .page-transition {
+    opacity: 1 !important;
+  }
 }
