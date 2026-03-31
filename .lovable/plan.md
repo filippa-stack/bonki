@@ -1,50 +1,37 @@
 
 
-## Audit Result: Category.tsx and CardView.tsx Background Hook Placement
+## Fix Flicker on Onboarding, ProductIntro, and Paywall Pages
 
-### Category.tsx — Correct, one minor edge case
+### Problem
+These pages use `motion.div` entrance animations (`initial: { opacity: 0 }`, fade-ups, scale-ins) that cause a visible flicker on iPhone — the same issue previously fixed on Journal/Era samtal by disabling mount animations.
 
-The hook is called once at the top level (line 179-180) with a conditional value:
-```ts
-const pageBg = isStillUsCategory ? '#2E2233' : '#FAF7F2';
-usePageBackground(pageBg);
-```
+Additionally, `ProductIntro` and `PaywallFullScreen` are missing `usePageBackground`, so `#root`'s dark background bleeds through safe areas.
 
-This covers both real render paths:
-- **Still Us branch** → root div uses `EMBER_NIGHT` (`#2E2233`) — matches hook
-- **Fallback branch** → root div uses `'#FAF7F2'` — matches hook  
-- **Kids branch** → `<Navigate>` redirect, no content rendered — no background needed
+### Two fixes per page (matching the Journal pattern)
 
-**Minor edge case:** The "category not found" early return (line 184) uses `isStillUsCategory ? 'var(--surface-base)' : MIDNIGHT_INK` — neither value matches what the hook sets. This is a rare error state; low severity but technically mismatched.
+**Fix 1 — Kill mount animations**: Replace all `initial={{ opacity: 0, ... }}` with `initial={false}` (or remove the motion wrapper entirely where it only exists for entrance animation). This matches the animation-mount-policy.
 
-**Fix needed:** Change the not-found return's `backgroundColor` to use `pageBg` instead of its own expression, so it stays consistent. One-line change.
+**Fix 2 — Add `usePageBackground`**: Call the hook with the page's root background color so the device canvas is fully owned.
 
-### CardView.tsx — Correct in practice, no fix needed
+### Changes
 
-The hook (line 206):
-```ts
-usePageBackground(product?.backgroundColor ?? 'var(--surface-base)');
-```
+| File | Fix 1: Animations to disable | Fix 2: `usePageBackground` color |
+|---|---|---|
+| `src/components/Onboarding.tsx` | `fadeUp` helper: change `initial` to `{ opacity: 1, y: 0 }`. Illustration `motion.div` (line 46): `initial={false}`. | Already has `usePageBackground('#1A1A2E')` — no change |
+| `src/components/ProductIntro.tsx` | Creature illustration (line 177): `initial={false}`. Back button (line 224): `initial={false}`. Title h1 (line 266): `initial={false}`. Tagline p (line 287): `initial={false}`. Body div (line 305): `initial={false}`. Free card preview (line 347): `initial={false}`. CTA div (line 430): `initial={false}`. All 7 motion elements. | Add `usePageBackground(bgColor)` after line 122 where `bgColor` is computed |
+| `src/pages/PaywallFullScreen.tsx` | Root `motion.div` (line 138): `initial={false}`. Back button (line 152): `initial={false}`. 2 motion elements. | Add `usePageBackground(MIDNIGHT_INK)` at component top |
+| `src/pages/Paywall.tsx` | Inner `motion.div` (line 117): `initial={false}`. 1 motion element. | Already has `usePageBackground(COLORS.emberNight)` — no change |
 
-The main render root div (line 3066-3068):
-```ts
-style={{ backgroundColor: 'var(--surface-base)' }}
-```
+### Implementation detail
 
-These look mismatched — the hook passes `product?.backgroundColor` directly while the root div uses `var(--surface-base)`. But `useProductTheme` (called at line 197) sets the `--surface-base` CSS variable to `product?.backgroundColor` when provided. So `var(--surface-base)` resolves to the same value. **No color seam.**
+- `initial={false}` tells Framer Motion to skip the entrance animation and render the `animate` state immediately — no opacity:0 frame, no flicker.
+- The `fadeUp` helper in Onboarding is used by 4 elements via spread (`{...fadeUp(0.35)}`). Change it to return `initial: { opacity: 1, y: 0 }` so it renders at final state immediately. The `animate` and `transition` values become no-ops but are harmless to keep.
+- `ProductIntro` computes `bgColor` at line 122 (`backgroundColor ?? product?.backgroundColor ?? MIDNIGHT_INK`). The hook call goes right after that line.
+- `PaywallFullScreen` uses `MIDNIGHT_INK` for its root background. The "not found" early return (line 59-64) also uses `MIDNIGHT_INK` — consistent, no mismatch issue.
 
-The loading state (line 990) uses `product?.backgroundColor ?? 'var(--surface-base, hsl(46, 64%, 89%))'` — the extra CSS fallback inside `var()` is harmless and resolves identically.
-
-### Proposed change — 1 line in Category.tsx
-
-In the "not found" early return (line 186), change:
-```ts
-backgroundColor: isStillUsCategory ? 'var(--surface-base)' : MIDNIGHT_INK
-```
-to:
-```ts
-backgroundColor: pageBg
-```
-
-This ensures the not-found state uses the same background the hook set, preventing any bleed in that edge case. No other files need changes.
+### Not modified
+- No layout, spacing, typography, or scroll changes
+- No navigation or z-index changes  
+- User-triggered animations (e.g. `expanded` toggle in ProductIntro) are preserved
+- The `AnimatePresence` exit animations in these components (if any) are untouched
 
