@@ -1746,7 +1746,7 @@ export default function CardView() {
         <div style={{ flex: '1 1 auto', display: 'flex', alignItems: 'center', justifyContent: 'center', paddingTop: 'calc(env(safe-area-inset-top, 0px) + 56px)', paddingLeft: '24px', paddingRight: '24px' }}>
           {cardImageUrl ? (
             <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
+              initial={{ opacity: 1, scale: 1 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1.0, ease: [0.22, 1, 0.36, 1] }}
               style={{
