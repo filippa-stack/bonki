@@ -94,34 +94,33 @@ export default function PortalBrowseSheet({
         }}
       />
 
-          {/* Sheet */}
-          <motion.div
-            initial={{ y: '100%' }}
-            animate={{ y: 0 }}
-            exit={{ y: '100%' }}
-            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            drag="y"
-            dragConstraints={{ top: 0 }}
-            dragElastic={0.1}
-            onDragEnd={(_e, info) => {
-              if (info.offset.y > 100) onClose();
-            }}
-            style={{
-              position: 'fixed',
-              bottom: 0,
-              left: 0,
-              right: 0,
-              maxHeight: '60vh',
-              background: DEEP_DUSK,
-              borderTopLeftRadius: 20,
-              borderTopRightRadius: 20,
-              willChange: 'transform',
-              zIndex: 101,
-              display: 'flex',
-              flexDirection: 'column',
-              overflow: 'hidden',
-            }}
-          >
+      {/* Sheet */}
+      <motion.div
+        animate={{ y: open ? 0 : '100%' }}
+        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+        drag={open ? 'y' : false}
+        dragConstraints={{ top: 0 }}
+        dragElastic={0.1}
+        onDragEnd={(_e, info) => {
+          if (info.offset.y > 100) onClose();
+        }}
+        style={{
+          position: 'fixed',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          maxHeight: '60vh',
+          background: DEEP_DUSK,
+          borderTopLeftRadius: 20,
+          borderTopRightRadius: 20,
+          willChange: 'transform',
+          pointerEvents: open ? 'auto' : 'none',
+          zIndex: 101,
+          display: 'flex',
+          flexDirection: 'column',
+          overflow: 'hidden',
+        }}
+      >
             {/* Drag handle */}
             <div style={{ display: 'flex', justifyContent: 'center', padding: '12px 0 8px' }}>
               <div
