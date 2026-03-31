@@ -814,7 +814,7 @@ export default function ProductLibrary() {
           <div style={{ height: '0px' }} />
           <motion.div
             variants={containerVariants}
-            initial="hidden"
+            initial={false}
             animate="visible"
             style={{
               display: 'flex',

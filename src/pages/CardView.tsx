@@ -3434,7 +3434,7 @@ export default function CardView() {
                 <motion.div
                   className="pb-8"
                   style={{ padding: '0 8px' }}
-                  initial={{ opacity: 0 }}
+                  initial={{ opacity: 1 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: BEAT_1, duration: BEAT_3, ease: EASE }}
                 >
