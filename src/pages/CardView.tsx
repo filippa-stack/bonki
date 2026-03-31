@@ -2592,10 +2592,9 @@ export default function CardView() {
               flex: '0 0 auto',
               display: 'flex',
               flexDirection: 'column',
-              alignItems: 'center',
               backgroundColor: '#FAF7F2',
               borderRadius: '28px',
-              padding: '16px 20px 12px',
+              padding: '28px 24px 20px',
               boxShadow: '0 8px 32px rgba(0,0,0,0.15)',
               overflow: 'hidden',
             }}>
