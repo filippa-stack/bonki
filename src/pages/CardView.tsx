@@ -1541,7 +1541,7 @@ export default function CardView() {
 
           {/* 3–5. CTAs */}
           <motion.div
-            initial={{ opacity: 0 }}
+            initial={{ opacity: 1 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.55, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             className="max-w-md mx-auto flex flex-col items-center"
