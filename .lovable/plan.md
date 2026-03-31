@@ -1,20 +1,59 @@
 
 
-## Investigation: Why `hasCompletedOnboarding` is false + White Patch
+## Fix: Still Us Pause Dialog Flicker
 
-### What I found
+### Root cause
+Two dialogs render simultaneously from the same `showLeaveConfirm` state:
+1. SessionFocusShell's `motion.div` dialog (lines 202–283) — framer-motion opacity/scale animation
+2. A Radix AlertDialog in CardView.tsx (lines 2993–3027) — portaled to body
 
-**`hasCompletedOnboarding` mechanism**: It's purely localStorage-based. `AppContext` reads `localStorage.getItem('vi-som-foraldrar-state')` on mount (line 178). If that key is missing or doesn't contain `hasCompletedOnboarding: true`, it defaults to `false` (line 202). There's no database-backed fallback.
+Both open and close together, creating visible double-flash on iOS Safari.
 
-**Why it's false in preview**: The Lovable preview sandbox starts with clean localStorage. The onboarding flag was never set because no one ran through the Onboarding flow in this session. This is a **testing artifact**, not a production bug. Real users who completed onboarding have the flag persisted.
+### Fix — 2 files
 
-### Plan — 1 change only
+**1. `src/components/SessionFocusShell.tsx`** — Replace the motion.div dialog (lines 202–283) with a Radix AlertDialog:
 
-**File: `src/App.tsx` (line 96)**
-Change the wrapper `div` background from `var(--surface-base, hsl(46 64% 89%))` to `transparent`. Pages already set their own backgrounds; the cream fallback on body/`#root` covers pages that don't.
+```tsx
+import {
+  AlertDialog, AlertDialogContent, AlertDialogHeader,
+  AlertDialogTitle, AlertDialogFooter, AlertDialogAction, AlertDialogCancel,
+} from '@/components/ui/alert-dialog';
+```
 
-**No change to BottomNav.tsx.** The `hasCompletedOnboarding` guard is working correctly. In production, users who completed onboarding have the localStorage flag. In Lovable preview, use `?devState=pairedIdle` or similar to bypass the onboarding gate — the `devBypassGates` logic in `Index.tsx` already handles this, but BottomNav doesn't check `devState`. If you want the nav visible in dev preview too, we can add a devState check there, but that's a dev-tooling choice, not a bug fix.
+Replace lines 202–283 with:
+```tsx
+<AlertDialog open={showExitDialog} onOpenChange={(open) => { if (!open) onExitDialogClose?.(); }}>
+  <AlertDialogContent style={{ backgroundColor: EMBER_GLOW, borderRadius: '16px', border: 'none' }}>
+    <AlertDialogHeader>
+      <AlertDialogTitle style={{ fontFamily: 'var(--font-serif)', fontSize: '20px', color: BARK, textAlign: 'center' }}>
+        Pausa samtalet?
+      </AlertDialogTitle>
+    </AlertDialogHeader>
+    <AlertDialogFooter style={{ flexDirection: 'column', gap: '12px', marginTop: '8px' }}>
+      <AlertDialogAction onClick={onExitConfirm} style={{
+        backgroundColor: DEEP_SAFFRON, color: MIDNIGHT_INK, borderRadius: '12px', height: '48px',
+      }}>
+        Ja, pausa
+      </AlertDialogAction>
+      <AlertDialogCancel onClick={onExitDialogClose} style={{
+        background: 'none', border: 'none', color: DRIFTWOOD, fontSize: '14px',
+      }}>
+        Fortsätt
+      </AlertDialogCancel>
+    </AlertDialogFooter>
+  </AlertDialogContent>
+</AlertDialog>
+```
 
-### Files changed: 1
-- `src/App.tsx` — wrapper background → `transparent`
+Dismissal coverage:
+- "Fortsätt" → `AlertDialogCancel` calls `onExitDialogClose` via both `onClick` and `onOpenChange(false)`
+- Escape key / outside tap → `onOpenChange(false)` → `onExitDialogClose`
+- "Ja, pausa" → `AlertDialogAction` `onClick` → `onExitConfirm` → calls `handleSmartExit()`
+
+**2. `src/pages/CardView.tsx`** — Delete the duplicate AlertDialog block (lines 2993–3027). SessionFocusShell now owns the dialog exclusively.
+
+### Protected patterns — untouched
+No changes to `suppressUntilRef`, `prevServerStepRef`, `pendingSave`, or `hasSyncedRef`.
+
+### Files changed: 2
 
