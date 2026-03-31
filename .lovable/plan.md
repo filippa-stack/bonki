@@ -1,20 +1,19 @@
 
 
-## Fix: Browse Sheet Flicker + Missing X Button (2 of 3)
+## Fix: "Era samtal" (SavedConversations) Entrance Flicker
 
-Issue 2 (back nav change) is rejected — keeping `setShowLeaveConfirm(true)` on the first question to prevent silent data loss.
+### Root cause
+Same pattern as the completion page flicker fixed earlier — mount-based `initial={{ opacity: 0 }}` and stagger delays cause a visible flash-to-content on navigation.
 
-### Changes — 2 files
+### Changes — 1 file
 
-**1. `src/pages/KidsCardPortal.tsx`** — GPU compositing hint on browse sheet backdrop
-- Add `transform: 'translateZ(0)'` to the PortalBrowseSheet backdrop style to force GPU layer promotion and prevent iOS Safari full-page repaint flicker when the sheet opens.
+**`src/pages/SavedConversations.tsx`**
 
-**2. `src/pages/CardView.tsx`** — Add X close button to Still Us focus mode topSlot
-- After the existing back arrow button (~line 2497), add an absolute-positioned X button on the right side of the nav bar.
-- `onClick={() => setShowLeaveConfirm(true)}` — triggers the existing pause dialog.
-- 44px touch target, `X` icon from lucide-react (size 18, strokeWidth 1.5), colored `LANTERN_GLOW` at 0.5 opacity.
-- `aria-label="Stäng samtalet"`.
+1. **Line 3**: Remove the `BEAT_1` import (no longer needed)
+2. **Line 24-26**: Empty state — change `initial={{ opacity: 0 }}` to `initial={false}` and remove `animate={{ opacity: 1 }}`
+3. **Lines 55-59**: Conversation cards — change `initial={{ opacity: 0, y: 8 }}` to `initial={false}`, remove `animate={{ opacity: 1, y: 0 }}`, remove `transition={{ delay: index * BEAT_1 }}`
 
-### What stays unchanged
-- Back button on first question still calls `setShowLeaveConfirm(true)` — pause dialog appears, no silent data loss.
+Content renders immediately with no entrance animation, consistent with the app-wide animation-mount-policy.
+
+### No other files modified
 
