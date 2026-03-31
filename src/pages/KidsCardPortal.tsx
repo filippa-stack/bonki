@@ -353,7 +353,7 @@ export default function KidsCardPortal() {
               key={card.id}
               custom={direction}
               variants={slideVariants}
-              initial="enter"
+              initial={false}
               animate="center"
               exit="exit"
               transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
