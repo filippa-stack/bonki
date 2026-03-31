@@ -62,6 +62,13 @@ export default function PortalBrowseSheet({
   tileLight,
   onSelectCard,
 }: PortalBrowseSheetProps) {
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = 'hidden';
+      return () => { document.body.style.overflow = ''; };
+    }
+  }, [open]);
+
   const handleSelect = useCallback(
     (index: number) => {
       onSelectCard(index);
