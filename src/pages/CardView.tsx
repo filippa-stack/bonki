@@ -1088,7 +1088,7 @@ export default function CardView() {
           alignItems: 'center',
           overflow: 'auto',
         }}
-        initial={{ opacity: 0 }}
+        initial={{ opacity: 1 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
       >
