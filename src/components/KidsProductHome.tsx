@@ -366,7 +366,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
       {/* ── Hero illustration — large, atmospheric, bleeds off top ── */}
       {product.heroImage && (
         <motion.div
-          initial={{ opacity: 0 }}
+          initial={{ opacity: 1 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6 }}
           style={{
