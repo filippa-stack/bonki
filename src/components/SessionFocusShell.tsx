@@ -213,6 +213,7 @@ export default function SessionFocusShell({
           justifyContent: 'center',
           backgroundColor: 'rgba(0, 0, 0, 0.5)',
           pointerEvents: showExitDialog ? 'auto' : 'none',
+          willChange: 'opacity',
         }}
         onClick={onExitDialogClose}
       >
