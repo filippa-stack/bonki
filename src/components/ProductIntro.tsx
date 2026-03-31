@@ -347,9 +347,9 @@ export default function ProductIntro({
         {/* 6. First card preview */}
         {resolvedFreeCardTitle && !isStillUs && (
           <motion.div
-            initial={{ opacity: 0, y: 12 }}
+            initial={false}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6, duration: 0.7, ease: EASE }}
+            transition={{ duration: 0 }}
             style={{
               display: 'flex',
               alignItems: 'center',
