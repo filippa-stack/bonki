@@ -6,10 +6,10 @@ import bonkiLogo from '@/assets/bonki-logo-transparent.png';
 
 const EASE: [number, number, number, number] = [0.4, 0.0, 0.2, 1];
 
-const fadeUp = (delay: number) => ({
-  initial: { opacity: 0, y: 14 },
+const fadeUp = (_delay: number) => ({
+  initial: { opacity: 1, y: 0 },
   animate: { opacity: 1, y: 0 },
-  transition: { delay, duration: 0.7, ease: EASE },
+  transition: { duration: 0 },
 });
 
 export default function Onboarding() {
