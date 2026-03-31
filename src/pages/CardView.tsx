@@ -1879,7 +1879,7 @@ export default function CardView() {
 
           {/* CTA */}
           <motion.div
-            initial={{ opacity: 0, y: 10 }}
+            initial={{ opacity: 1, y: 0 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.25, duration: 0.5, ease: [...EASE] }}
             style={{ width: '100%', maxWidth: '360px' }}
