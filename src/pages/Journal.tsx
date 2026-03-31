@@ -754,7 +754,7 @@ export default function Journal() {
               width: '32px', height: '1px', margin: '24px auto 0',
               background: `linear-gradient(90deg, transparent, ${DRIFTWOOD}66, transparent)`,
             }} />
-          </motion.div>
+          </div>
         </div>
       ) : (
         <div style={{ flex: 1, overflowY: 'auto', paddingBottom: 'calc(72px + env(safe-area-inset-bottom, 0px))' }}>
