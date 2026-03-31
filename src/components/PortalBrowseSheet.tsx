@@ -3,7 +3,7 @@
  * Used by KidsCardPortal for the "Utforska alla samtal" feature.
  */
 
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Check } from 'lucide-react';
 import { useCardImage } from '@/hooks/useCardImage';
@@ -62,6 +62,13 @@ export default function PortalBrowseSheet({
   tileLight,
   onSelectCard,
 }: PortalBrowseSheetProps) {
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = 'hidden';
+      return () => { document.body.style.overflow = ''; };
+    }
+  }, [open]);
+
   const handleSelect = useCallback(
     (index: number) => {
       onSelectCard(index);
@@ -85,6 +92,7 @@ export default function PortalBrowseSheet({
               position: 'fixed',
               inset: 0,
               background: 'rgba(0,0,0,0.5)',
+              willChange: 'opacity',
               zIndex: 100,
             }}
           />
@@ -110,6 +118,7 @@ export default function PortalBrowseSheet({
               background: DEEP_DUSK,
               borderTopLeftRadius: 20,
               borderTopRightRadius: 20,
+              willChange: 'transform',
               zIndex: 101,
               display: 'flex',
               flexDirection: 'column',
