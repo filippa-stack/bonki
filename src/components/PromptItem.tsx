@@ -150,7 +150,7 @@ export default function PromptItem({ prompt, index, sectionType, preamble, ancho
           /* ── Still Us GÖR: Ember Glow action card ── */
           <motion.div
             key={`exercise-su-${index}-${prompt.text.slice(0, 20)}`}
-            initial={{ opacity: 0, y: 14 }}
+            initial={{ opacity: 1, y: 0 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.65, ease: enterEase }}
             style={{
