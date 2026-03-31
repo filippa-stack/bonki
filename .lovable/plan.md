@@ -1,32 +1,20 @@
 
 
-## Fix 3 Content Misses in jag-i-mig.ts
+## Add illustration to Syskonkort "Funktionsvariation" card
 
-Three surgical text replacements. No structural or ID changes.
+### Steps
 
-### Changes
+1. **Copy image**: `user-uploads://sjuk.png` → `public/card-images/sk-funktionsvariation.png`
+   - This matches the existing convention where all card illustrations live as `{cardId}.png` in `/card-images/`
 
-**1. Line 334** — `jim-avundsjuk` subtitle
-```
-'Att vilja ha det någon annan har — och vad det handlar om'
-→ 'Att vilja ha det någon annan har'
-```
+2. **Update allowlist** in `src/hooks/useCardImage.ts`:
+   - The card ID `sk-funktionsvariation` is already listed in `CARD_IDS_WITH_IMAGES` (line ~47 in the Syskonkort section), so no change needed there — but I need to verify this.
 
-**2. Line 347** — `jim-avundsjuk` prompt 5
-```
-'Har du känt dig avundsjuk ibland, även om vuxna sagt att allt är rättvist? Hur kändes det?'
-→ 'Har du känt dig avundsjuk någon gång, även om en vuxen sa att det var rättvist? Vad hände då?'
-```
+### Technical detail
+- The `useCardImage` hook returns `/card-images/${cardId}.png` if the ID is in the allowlist set
+- The image file just needs to exist at that path
+- No data file changes needed — card ID is unchanged
 
-**3. Line 326** — `jim-stress` prompt 7 (last)
-```
-'Känner du någon som ibland pratar om att den är stressad? Vad tror du gör den stressad?'
-→ 'Är det skillnad på att vara stressad och att ha bråttom? Kan du ge ett exempel på när du kan känna dig stressad utan att ha bråttom?'
-```
-
-### Verification
-- `jim-avundsjuk` prompt count stays at 7
-- `jim-stress` prompt count stays at 7
-- No other files touched
-- No protected patterns affected
+### Risk: zero
+- No ID changes, no structural changes, no logic changes
 
