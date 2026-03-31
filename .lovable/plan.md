@@ -1,31 +1,21 @@
 
 
-## Fix: Two Flicker Sources — PortalBrowseSheet + SessionFocusShell Exit Dialog
+## Fix: Still Us Session Pause Dialog Flicker
 
-### Issue 1: PortalBrowseSheet flickers on open/close
+### Root cause
+The exit dialog in `SessionFocusShell.tsx` is correctly always-mounted with `initial={false}`, but both the backdrop and dialog card `motion.div` elements lack `willChange` CSS hints. When the opacity animates from 0→1, iOS Safari promotes these elements to GPU layers on-the-fly, causing a compositing tree rebuild that flashes the content behind the dialog.
 
-**Root cause**: The always-mounted `motion.div` elements lack `initial={false}`. On first mount (with `open=false`), framer-motion animates from its default state (opacity 1, y 0) to the closed state (opacity 0, y 100%) — causing a visible flash of the backdrop and sheet.
+Additionally, in `CardView.tsx` line 2449, the `SessionFocusShell` has `key={`focus-${currentStepIndex}`}` which **remounts the entire shell** (including the always-mounted dialog) on every step change — undoing the always-mounted pattern for any subsequent step.
 
-**Fix** — `src/components/PortalBrowseSheet.tsx`:
-- Add `initial={false}` to the backdrop `motion.div` (line 83)
-- Add `initial={false}` to the sheet `motion.div` (line 98)
+### Fix — 2 files
 
-This tells framer-motion to skip the mount animation and just render in the current `animate` state immediately.
+**1. `src/components/SessionFocusShell.tsx`**
+- Backdrop `motion.div` (line 207 style): add `willChange: 'opacity'`
+- Dialog card `motion.div` (line 224 style): add `willChange: 'opacity, transform'`
 
-### Issue 2: Pause confirmation dialog flickers "skriv vad ni vill minnas"
-
-**Root cause**: `SessionFocusShell.tsx` uses `AnimatePresence` with conditional rendering for the exit dialog (lines 203-286). When the dialog mounts, iOS Safari rebuilds the compositing tree, triggering a repaint flash on the session content behind it — same pattern as PortalBrowseSheet before.
-
-**Fix** — `src/components/SessionFocusShell.tsx`:
-- Replace the `AnimatePresence` + conditional mount with always-mounted elements
-- Backdrop: `animate={{ opacity: showExitDialog ? 1 : 0 }}`, `pointerEvents: showExitDialog ? 'auto' : 'none'`
-- Dialog card: `animate={{ opacity: showExitDialog ? 1 : 0, scale: showExitDialog ? 1 : 0.95 }}`, `pointerEvents: showExitDialog ? 'auto' : 'none'`
-- Remove `initial`/`exit` props (no longer needed)
+**2. `src/pages/CardView.tsx`**
+- Line 2449: Remove the `key={`focus-${currentStepIndex}`}` prop from SessionFocusShell. This key causes full remount on step change, destroying the always-mounted dialog and re-creating it — triggering iOS repaint. The step transition is already handled by the `AnimatePresence` inside the shell's children.
 
 ### Protected patterns — untouched
-No changes to any of the four protected ref patterns.
-
-### Files changed: 2
-1. `src/components/PortalBrowseSheet.tsx` — add `initial={false}` to both motion.divs
-2. `src/components/SessionFocusShell.tsx` — replace AnimatePresence conditional with always-mounted pattern
+No changes to any of the four protected ref patterns (`suppressUntilRef`, `prevServerStepRef`, `pendingSave`, `hasSyncedRef`).
 
