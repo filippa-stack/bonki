@@ -177,9 +177,9 @@ export default function ProductIntro({
       {/* ── 1. Illustration zone — atmospheric creature backdrop ── */}
       {creatureImage && (
         <motion.div
-          initial={{ opacity: 0, scale: 1.05 }}
+          initial={false}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1.2, ease: EASE }}
+          transition={{ duration: 0 }}
           style={{
             position: 'absolute',
             top: 0,
