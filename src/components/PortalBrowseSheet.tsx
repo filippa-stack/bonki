@@ -92,6 +92,7 @@ export default function PortalBrowseSheet({
               position: 'fixed',
               inset: 0,
               background: 'rgba(0,0,0,0.5)',
+              willChange: 'opacity',
               zIndex: 100,
             }}
           />
