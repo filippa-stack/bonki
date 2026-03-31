@@ -1937,7 +1937,7 @@ export default function CardView() {
           overflow: 'hidden',
           height: '100vh',
         }}
-        initial={{ opacity: 0 }}
+        initial={{ opacity: 1 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: EMOTION, ease: [...EASE] }}
@@ -1949,7 +1949,7 @@ export default function CardView() {
                ? `/product/${product.slug}/portal/${category.id}`
                : category ? `/category/${category.id}` : '/'
            )}
-          initial={{ opacity: 0 }}
+          initial={{ opacity: 1 }}
           animate={{ opacity: 1 }}
           transition={{ delay: BEAT_2, duration: EMOTION }}
           aria-label="Tillbaka"
@@ -1984,7 +1984,7 @@ export default function CardView() {
         }}>
           {/* 1. Category */}
           <motion.span
-            initial={{ opacity: 0 }}
+            initial={{ opacity: 1 }}
             animate={{ opacity: 1 }}
             transition={{ delay: BEAT_1, duration: EMOTION, ease: [...EASE] }}
             style={{
@@ -2002,7 +2002,7 @@ export default function CardView() {
           {/* 2. Card name */}
           <motion.h1
             className="font-serif"
-            initial={{ opacity: 0, y: 10 }}
+            initial={{ opacity: 1, y: 0 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: BEAT_1, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             style={{
@@ -2020,7 +2020,7 @@ export default function CardView() {
           {/* 3. Hook */}
           {hookText && (
             <motion.p
-              initial={{ opacity: 0, y: 6 }}
+              initial={{ opacity: 1, y: 0 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: BEAT_1 + 0.1, duration: EMOTION, ease: [...EASE] }}
               style={{
@@ -2044,7 +2044,7 @@ export default function CardView() {
 
           {/* 4. Info line */}
           <motion.p
-            initial={{ opacity: 0 }}
+            initial={{ opacity: 1 }}
             animate={{ opacity: 1 }}
             transition={{ delay: BEAT_2, duration: 0.5 }}
             style={{
@@ -2061,7 +2061,7 @@ export default function CardView() {
           {/* 5. Privacy */}
           <motion.p
             className="font-serif"
-            initial={{ opacity: 0 }}
+            initial={{ opacity: 1 }}
             animate={{ opacity: 1 }}
             transition={{ delay: BEAT_2 + 0.1, duration: EMOTION, ease: [...EASE] }}
             style={{
@@ -2089,7 +2089,7 @@ export default function CardView() {
           {/* Orphan/stale session banner */}
           {staleSession && (
             <motion.div
-              initial={{ opacity: 0, y: 8 }}
+              initial={{ opacity: 1, y: 0 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: EMOTION, ease: [...EASE] }}
               style={{
@@ -2150,7 +2150,7 @@ export default function CardView() {
 
           {/* 6. CTA — Bonki Orange */}
           <motion.div
-            initial={{ opacity: 0, y: 10 }}
+            initial={{ opacity: 1, y: 0 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.25, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             style={{ marginBottom: '4px', width: '100%', display: 'flex', justifyContent: 'center' }}
@@ -2567,7 +2567,7 @@ export default function CardView() {
           <AnimatePresence mode="wait">
             <motion.div
               key={`focus-q-${currentSection.id}-${localPromptIndex}`}
-              initial={{ opacity: 0 }}
+              initial={false}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0, transition: { duration: 0.15 } }}
               transition={{ duration: 0.15 }}
@@ -2809,7 +2809,7 @@ export default function CardView() {
                 <AnimatePresence mode="wait">
                   <motion.p
                     key={`kids-q-${localPromptIndex}`}
-                    initial={{ opacity: 0 }}
+                    initial={false}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.15, ease: [0.22, 1, 0.36, 1] }}
@@ -3135,7 +3135,7 @@ export default function CardView() {
           {currentSection && (
             <motion.div
               key={`${currentSection.id}-${localPromptIndex}`}
-              initial={{ opacity: 0, y: 8 }}
+              initial={false}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -6, transition: { duration: 0.15, ease: [0.4, 0, 1, 1] } }}
               transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1], delay: 0.1 }}
@@ -3344,7 +3344,7 @@ export default function CardView() {
 
                 return (
                   <motion.div
-                    initial={{ opacity: 0 }}
+                    initial={{ opacity: 1 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: BEAT_2, duration: BEAT_3, ease: EASE }}
                     style={isKidsProduct ? {
@@ -3434,7 +3434,7 @@ export default function CardView() {
                 <motion.div
                   className="pb-8"
                   style={{ padding: '0 8px' }}
-                  initial={{ opacity: 0 }}
+                  initial={{ opacity: 1 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: BEAT_1, duration: BEAT_3, ease: EASE }}
                 >

@@ -89,7 +89,7 @@ export default function NextActionBanner({
 
   return (
     <motion.button
-      initial={{ opacity: 0, y: 10 }}
+      initial={{ opacity: 1, y: 0 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.3, duration: 0.5, ease: EASE }}
       onClick={onClick}
