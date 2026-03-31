@@ -1,58 +1,20 @@
 
 
-## Fix: PortalBrowseSheet Persistent Flicker
+## Fix: "Skriv vad ni vill minnas" Flicker on Session Pages
 
 ### Root cause
-The `AnimatePresence` conditional (`{open && ...}`) mounts/unmounts the backdrop and sheet DOM nodes on every open/close. On iOS Safari, this DOM insertion triggers a full compositing tree rebuild, causing a visible flash — even with `will-change` hints.
+`SessionStepReflection.tsx` has mount animations (`initial={{ opacity: 0, y: 4 }}`) on both the wrapper `motion.div` (line 158) and the trigger button (line 167). The viewport/layout changes from Prompt 1+2 cause iOS Safari to re-layout the session shell, which re-triggers these fade-in animations — producing a visible flicker on the note field area.
+
+This violates the existing animation-mount-policy: entrance animations should be disabled to prevent iOS flicker.
 
 ### Fix — 1 file
 
-**`src/components/PortalBrowseSheet.tsx`**
+**`src/components/SessionStepReflection.tsx`**
 
-Replace conditional mount (`{open && ...}`) with always-mounted elements that toggle visibility via `pointerEvents` and `opacity`/`translateY`. This avoids DOM insertion entirely.
-
-1. Remove `AnimatePresence` wrapper and the `{open && ...}` conditional.
-2. Keep both backdrop and sheet always in the DOM.
-3. Backdrop: animate opacity 0↔1, set `pointerEvents: open ? 'auto' : 'none'`.
-4. Sheet: animate y from `100%` ↔ `0`, set `pointerEvents: open ? 'auto' : 'none'`.
-5. Use `animate` prop driven by `open` boolean instead of `initial`/`exit`.
-6. Keep existing scroll lock `useEffect`, `willChange` hints, drag gesture, and all card rendering logic unchanged.
-
-### Technical detail
-
-```tsx
-// No AnimatePresence, no conditional render
-<>
-  <motion.div
-    animate={{ opacity: open ? 1 : 0 }}
-    transition={{ duration: 0.25 }}
-    onClick={onClose}
-    style={{
-      position: 'fixed', inset: 0,
-      background: 'rgba(0,0,0,0.5)',
-      willChange: 'opacity',
-      pointerEvents: open ? 'auto' : 'none',
-      zIndex: 100,
-    }}
-  />
-  <motion.div
-    animate={{ y: open ? 0 : '100%' }}
-    transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-    style={{
-      position: 'fixed', bottom: 0, left: 0, right: 0,
-      maxHeight: '60vh',
-      background: DEEP_DUSK,
-      // ...existing styles...
-      willChange: 'transform',
-      pointerEvents: open ? 'auto' : 'none',
-      zIndex: 101,
-    }}
-  >
-    {/* ...existing drag, handle, card list — unchanged */}
-  </motion.div>
-</>
-```
+1. **Line 158**: Change `initial={{ opacity: 0, y: 4 }}` → `initial={{ opacity: 1 }}`
+2. **Line 167**: Change `initial={{ opacity: 0, y: 4 }}` → `initial={{ opacity: 1 }}`
+3. **Line 207** (expanded textarea wrapper): Change `initial={{ opacity: 0, height: 0 }}` → keep as-is. This is a user-triggered expand, not a mount animation — it should animate.
 
 ### Protected patterns — untouched
-No changes to any protected ref patterns.
+No changes to any of the four protected ref patterns.
 
