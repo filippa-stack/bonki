@@ -87,6 +87,7 @@ export default function KidsCardPortal() {
   );
 
   usePageBackground(product?.backgroundColor ?? MIDNIGHT_INK);
+  const progress = useKidsProductProgress(product);
   const completedSet = useMemo(
     () => new Set(progress.recentlyCompletedCardIds),
     [progress.recentlyCompletedCardIds],
