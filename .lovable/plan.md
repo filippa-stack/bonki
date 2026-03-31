@@ -1,29 +1,35 @@
 
 
-## Flicker Fix Round 4 — Midnight Ink Background + Back Button
+## Fix: PortalBrowseSheet Flicker on Open/Close
 
-Three files, three small changes.
+### Root cause
+When the browse sheet opens, iOS Safari triggers a repaint of the page behind the fixed overlay. The backdrop fade-in (`opacity: 0 → 1`) combined with the page content creates a visible flash. On close, the reverse happens — the backdrop fading out reveals a brief content repaint.
 
-### Changes
+### Fix — 1 file
 
-**1. `index.html`**
-Add `style="background-color:#1A1A2E"` to the `<body>` tag. This eliminates the white flash before React hydrates by showing Midnight Ink instead.
+**`src/components/PortalBrowseSheet.tsx`**
 
-**2. `src/index.css`**
-Add to the base layer:
-```css
-#root {
-  background-color: #1A1A2E;
-  min-height: 100vh;
-}
+1. **Prevent body scroll while sheet is open** — Add a `useEffect` that sets `document.body.style.overflow = 'hidden'` when `open` is true and restores it on close. This prevents iOS Safari from recalculating scroll position during the overlay transition.
+
+2. **Use `will-change: opacity` on the backdrop** — Promotes the backdrop to its own compositor layer, preventing full-page repaint during the fade animation.
+
+3. **Use `will-change: transform` on the sheet** — Same compositor promotion for the slide animation.
+
+### Technical detail
+
+```tsx
+// Add inside PortalBrowseSheet component body:
+useEffect(() => {
+  if (open) {
+    document.body.style.overflow = 'hidden';
+    return () => { document.body.style.overflow = ''; };
+  }
+}, [open]);
 ```
 
-**3. `src/components/ProductHomeBackButton.tsx`**
-Line 14: `initial={{ opacity: 0 }}` → `initial={{ opacity: 1 }}`
-
-### Why Midnight Ink
-The library page (most common landing) uses a dark background. Using `#1A1A2E` as the pre-hydration default means no visible flash. Light-themed pages set their own background on mount, overriding this instantly.
+On the backdrop `motion.div` (line 78), add `willChange: 'opacity'` to its style.
+On the sheet `motion.div` (line 93), add `willChange: 'transform'` to its style.
 
 ### Protected patterns — untouched
-All four protected ref patterns and AnimatePresence blocks remain unchanged.
+No changes to any protected ref patterns.
 
