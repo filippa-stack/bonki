@@ -318,7 +318,7 @@ function NoteEntryCard({ entry, navigate, index }: { entry: NoteEntry; navigate:
           {entry.cardName}
         </p>
       </div>
-    </motion.div>
+    </div>
   );
 }
 
