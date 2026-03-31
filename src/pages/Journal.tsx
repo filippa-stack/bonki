@@ -797,15 +797,12 @@ export default function Journal() {
                   I {pulseData.uniqueProductCount} olika samtalsprodukter
                 </p>
               )}
-            </motion.div>
+            </div>
           )}
 
           {/* Par Privacy Row */}
           {showParPrivacy && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.3, duration: 0.4, ease: EASE }}
+            <div
               style={{ margin: '12px 16px 0' }}
             >
               <button
