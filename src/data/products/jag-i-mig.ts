@@ -344,7 +344,7 @@ const cards: Card[] = [
           'Varför tror du att människor känner avundsjuka?',
           'Vad kan du bli avundsjuk på?',
           'Varför kan det kännas viktigt att ha det som andra har?',
-          'Har du känt dig avundsjuk ibland, även om vuxna sagt att allt är rättvist? Hur kändes det?',
+          'Har du känt dig avundsjuk någon gång, även om en vuxen sa att det var rättvist? Vad hände då?',
           'Vad tror du vuxna kan vara avundsjuka på?',
           'Hur kan du tänka för att känna dig mindre avundsjuk?',
         ],
