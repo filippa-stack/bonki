@@ -554,7 +554,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
         {/* Title zone */}
         <motion.div
           variants={containerVariants}
-          initial="hidden"
+          initial={false}
           animate="visible"
           style={{ textAlign: 'center', width: '100%' }}
         >
