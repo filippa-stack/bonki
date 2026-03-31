@@ -2,6 +2,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { House, BookOpen } from 'lucide-react';
 import { MIDNIGHT_INK, BONKI_ORANGE, DRIFTWOOD } from '@/lib/palette';
+import { isDemoMode } from '@/lib/demoMode';
 import { useApp } from '@/contexts/AppContext';
 
 /** Two small circles leaning toward each other — Still Us icon */
