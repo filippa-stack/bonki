@@ -1088,7 +1088,7 @@ export default function CardView() {
           alignItems: 'center',
           overflow: 'auto',
         }}
-        initial={{ opacity: 0 }}
+        initial={{ opacity: 1 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
       >
@@ -1131,7 +1131,7 @@ export default function CardView() {
         }}>
           {/* 1. Completion mark — creature circle + saffron ring */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.85 }}
+            initial={{ opacity: 1, scale: 1 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.25, ease: [0, 0, 0.2, 1] }}
             style={{
@@ -1189,7 +1189,7 @@ export default function CardView() {
 
           {/* 2. Affirmation */}
           <motion.p
-            initial={{ opacity: 0 }}
+            initial={{ opacity: 1 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.1, duration: 0.3 }}
             className="font-serif"
@@ -1207,7 +1207,7 @@ export default function CardView() {
 
           {/* 3. Note nudge */}
           <motion.div
-            initial={{ opacity: 0 }}
+            initial={{ opacity: 1 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2, duration: 0.3 }}
             style={{ width: '100%', marginBottom: '40px' }}
@@ -1223,7 +1223,7 @@ export default function CardView() {
           {/* Gör exercise — collapsible block */}
           {gorExerciseSU && (
             <motion.div
-              initial={{ opacity: 0 }}
+              initial={{ opacity: 1 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.25, duration: 0.3 }}
               style={{ width: '100%', marginBottom: '24px' }}
@@ -1284,7 +1284,7 @@ export default function CardView() {
 
           {/* 4. Primary CTA */}
           <motion.div
-            initial={{ opacity: 0 }}
+            initial={{ opacity: 1 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3, duration: 0.3 }}
             style={{ width: '100%' }}
@@ -1371,7 +1371,7 @@ export default function CardView() {
       <motion.div
         className="min-h-screen"
         style={{ backgroundColor: EMBER_NIGHT }}
-        initial={{ opacity: 0 }}
+        initial={{ opacity: 1 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
       >
@@ -1379,7 +1379,7 @@ export default function CardView() {
         <div className="px-6 pb-16 relative" style={{ paddingTop: '48px' }}>
           {/* Back arrow */}
           <motion.div
-            initial={{ opacity: 0 }}
+            initial={{ opacity: 1 }}
             animate={{ opacity: 1 }}
             transition={{ delay: BEAT_3, duration: EMOTION }}
             style={{ position: 'absolute', top: '12px', left: '0px', zIndex: 2 }}
@@ -1414,7 +1414,7 @@ export default function CardView() {
 
           {/* 1. Fixed headline */}
           <motion.div
-            initial={{ opacity: 0, y: 14 }}
+            initial={{ opacity: 1, y: 0 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
             className="text-center max-w-md mx-auto"
@@ -1454,7 +1454,7 @@ export default function CardView() {
 
           {/* 2. Note nudge — "Något ni vill minnas?" → Ember Glow input */}
           <motion.div
-            initial={{ opacity: 0, y: 10 }}
+            initial={{ opacity: 1, y: 0 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.35, duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
             className="max-w-md mx-auto"
@@ -1479,7 +1479,7 @@ export default function CardView() {
           {/* Gör exercise — collapsible block (Still Us) */}
           {gorExerciseSU && (
             <motion.div
-              initial={{ opacity: 0 }}
+              initial={{ opacity: 1 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.45, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
               className="max-w-md mx-auto"
@@ -1541,7 +1541,7 @@ export default function CardView() {
 
           {/* 3–5. CTAs */}
           <motion.div
-            initial={{ opacity: 0 }}
+            initial={{ opacity: 1 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.55, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             className="max-w-md mx-auto flex flex-col items-center"
@@ -1711,7 +1711,7 @@ export default function CardView() {
           overflow: 'hidden',
           zIndex: 50,
         }}
-        initial={{ opacity: 0 }}
+        initial={{ opacity: 1 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: EMOTION, ease: [...EASE] }}
@@ -1719,7 +1719,7 @@ export default function CardView() {
         {/* Back arrow */}
         <motion.button
           onClick={() => navigate(category ? `/product/${product.slug}/portal/${category.id}` : `/product/${product.slug}`)}
-          initial={{ opacity: 0 }}
+          initial={{ opacity: 1 }}
           animate={{ opacity: 1 }}
           transition={{ delay: BEAT_1, duration: EMOTION }}
           aria-label="Tillbaka"
@@ -1746,7 +1746,7 @@ export default function CardView() {
         <div style={{ flex: '1 1 auto', display: 'flex', alignItems: 'center', justifyContent: 'center', paddingTop: 'calc(env(safe-area-inset-top, 0px) + 56px)', paddingLeft: '24px', paddingRight: '24px' }}>
           {cardImageUrl ? (
             <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
+              initial={{ opacity: 1, scale: 1 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1.0, ease: [0.22, 1, 0.36, 1] }}
               style={{
@@ -1778,7 +1778,7 @@ export default function CardView() {
         <div style={{ flex: '0 0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '0 24px', paddingBottom: 'calc(32px + env(safe-area-inset-bottom, 0px))' }}>
           {/* Card label */}
           <motion.p
-            initial={{ opacity: 0, y: 6 }}
+            initial={{ opacity: 1, y: 0 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: BEAT_1, duration: 0.6, ease: [...EASE] }}
             style={{
@@ -1798,7 +1798,7 @@ export default function CardView() {
           {/* Question hook */}
           {questionHook && (
             <motion.p
-              initial={{ opacity: 0, y: 6 }}
+              initial={{ opacity: 1, y: 0 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: BEAT_1 + 0.1, duration: 0.6, ease: [...EASE] }}
               style={{
@@ -1817,7 +1817,7 @@ export default function CardView() {
 
           {/* Practical info */}
           <motion.p
-            initial={{ opacity: 0 }}
+            initial={{ opacity: 1 }}
             animate={{ opacity: 1 }}
             transition={{ delay: BEAT_2, duration: 0.5 }}
             style={{
@@ -1836,7 +1836,7 @@ export default function CardView() {
           {/* Stale session banner */}
           {staleSession && (
             <motion.div
-              initial={{ opacity: 0, y: 8 }}
+              initial={{ opacity: 1, y: 0 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: EMOTION, ease: [...EASE] }}
               style={{
@@ -1879,7 +1879,7 @@ export default function CardView() {
 
           {/* CTA */}
           <motion.div
-            initial={{ opacity: 0, y: 10 }}
+            initial={{ opacity: 1, y: 0 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.25, duration: 0.5, ease: [...EASE] }}
             style={{ width: '100%', maxWidth: '360px' }}
@@ -3172,7 +3172,7 @@ export default function CardView() {
                   if (totalPrompts <= 1) return null;
                   return (
                     <motion.div
-                      initial={{ opacity: 0, y: 4 }}
+                      initial={{ opacity: 1, y: 0 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: BEAT_1, duration: EMOTION, ease: [...EASE] }}
                       style={{
@@ -3218,7 +3218,7 @@ export default function CardView() {
                   if (totalPrompts <= 1) return null;
                   return (
                     <motion.p
-                      initial={{ opacity: 0 }}
+                      initial={{ opacity: 1 }}
                       animate={{ opacity: 1 }}
                       transition={{ delay: BEAT_1, duration: EMOTION, ease: [...EASE] }}
                       style={{

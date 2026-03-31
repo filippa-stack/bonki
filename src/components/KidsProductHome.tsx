@@ -343,6 +343,11 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
 
 
 
+  // Loading gate — prevent flash while progress resolves
+  if (progress.loading) {
+    return <div style={{ minHeight: '100vh', backgroundColor: bg }} />;
+  }
+
   return (
     <div className="min-h-screen relative overflow-hidden" style={{ backgroundColor: bg }}>
       <ProductHomeBackButton color={LANTERN_GLOW} />
@@ -549,7 +554,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
         {/* Title zone */}
         <motion.div
           variants={containerVariants}
-          initial="hidden"
+          initial={false}
           animate="visible"
           style={{ textAlign: 'center', width: '100%' }}
         >
@@ -609,7 +614,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
         {/* ═══ Category tiles ═══ */}
         <motion.div
           variants={containerVariants}
-          initial="hidden"
+          initial={false}
           animate="visible"
           style={{
             display: 'grid',

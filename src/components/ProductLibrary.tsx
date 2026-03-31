@@ -408,7 +408,7 @@ export default function ProductLibrary() {
   const navigate = useNavigate();
   const tracked = useRef(false);
   
-  const { purchased } = useAllProductAccess();
+  const { purchased, loading: accessLoading } = useAllProductAccess();
   const { user } = useAuth();
   // Still Fair interest tracking (kept for future use)
   const [notifySignedUp, setNotifySignedUp] = useState(false);
@@ -483,6 +483,11 @@ export default function ProductLibrary() {
   const isDark = true; // Both tabs now use Midnight Ink
 
   const libraryBg = '#0B1026';
+
+  // Loading gate — prevent flash of incomplete content
+  if (accessLoading) {
+    return <div style={{ minHeight: '100vh', backgroundColor: '#0B1026' }} />;
+  }
 
   return (
     <div
