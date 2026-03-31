@@ -542,7 +542,6 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
         style={{
           position: 'relative',
           zIndex: 1,
-          minHeight: '100vh',
           display: 'flex',
           flexDirection: 'column',
           paddingTop: 'clamp(32px, 10vh, 90px)',
