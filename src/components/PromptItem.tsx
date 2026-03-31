@@ -346,9 +346,8 @@ export default function PromptItem({ prompt, index, sectionType, preamble, ancho
 
                 {backgroundImageUrl && (
                   <motion.div
-                    initial={{ opacity: 0, scale: 0.92 }}
+                    initial={{ opacity: 1, scale: 1 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.8, delay: 0.3, ease: enterEase }}
                     style={{
                       width: '100%',
                       display: 'flex',
