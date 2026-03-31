@@ -2990,41 +2990,7 @@ export default function CardView() {
           </div>
         </div>
 
-        {/* ── Exit confirmation dialog ── */}
-        <AlertDialog open={showLeaveConfirm} onOpenChange={setShowLeaveConfirm}>
-          <AlertDialogContent style={{
-            backgroundColor: PARCHMENT,
-            borderRadius: '16px',
-            border: 'none',
-          }}>
-            <AlertDialogHeader>
-              <AlertDialogTitle style={{
-                fontFamily: 'var(--font-serif)',
-                fontSize: '18px',
-                color: BARK,
-              }}>
-                Pausa samtalet?
-              </AlertDialogTitle>
-            </AlertDialogHeader>
-            <AlertDialogFooter style={{ marginTop: '16px' }}>
-              <AlertDialogCancel style={{
-                color: BARK,
-                borderColor: DRIFTWOOD + '40',
-              }}>
-                Nej, fortsätt
-              </AlertDialogCancel>
-              <AlertDialogAction
-                onClick={() => handleSmartExit()}
-                style={{
-                  backgroundColor: BARK,
-                  color: PARCHMENT,
-                }}
-              >
-                Ja, pausa
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
+        {/* Exit confirmation dialog removed — SessionFocusShell owns it */}
 
         {/* Floating illustration peek — kids products */}
         {cardImageUrl && card && (
