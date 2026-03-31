@@ -93,7 +93,7 @@ function ProtectedRoutes() {
       
       <InstallGuideBanner />
       <ActiveSessionGuard>
-        <div style={{ minHeight: '100vh', background: 'var(--surface-base, hsl(46 64% 89%))' }}>
+        <div style={{ minHeight: '100vh', background: 'var(--surface-base, hsl(46 64% 89%))', paddingBottom: 'calc(56px + env(safe-area-inset-bottom, 0px))', paddingTop: 'env(safe-area-inset-top, 0px)' }}>
             <Routes>
               <Route path="/" element={<Index />} />
               
