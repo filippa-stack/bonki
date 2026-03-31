@@ -175,10 +175,7 @@ const tileVariants = {
 
 function AudienceLabel({ label, subtitle, delay = 0 }: { label: string; subtitle?: string; delay?: number }) {
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ delay, duration: 0.6 }}
+    <div
       style={{
         textAlign: 'center',
         marginBottom: '16px',
@@ -212,7 +209,7 @@ function AudienceLabel({ label, subtitle, delay = 0 }: { label: string; subtitle
           {subtitle}
         </p>
       )}
-    </motion.div>
+    </div>
   );
 }
 
