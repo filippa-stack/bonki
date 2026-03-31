@@ -74,6 +74,7 @@ export default function KidsCardPortal() {
   );
 
   // Apply product theme so CSS variables are set for downstream components
+  // forceKey ensures CSS vars are reapplied when navigating back from a session
   useProductTheme(
     product?.accentColor ?? 'hsl(158, 35%, 18%)',
     product?.secondaryAccent ?? 'hsl(38, 88%, 46%)',
@@ -81,6 +82,7 @@ export default function KidsCardPortal() {
     product?.ctaButtonColor,
     product?.pronounMode,
     product,
+    location.key,
   );
 
   const progress = useKidsProductProgress(product);
