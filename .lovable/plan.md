@@ -1,21 +1,20 @@
 
 
-## Fix: Still Us Session Pause Dialog Flicker
+## Investigation: Why `hasCompletedOnboarding` is false + White Patch
 
-### Root cause
-The exit dialog in `SessionFocusShell.tsx` is correctly always-mounted with `initial={false}`, but both the backdrop and dialog card `motion.div` elements lack `willChange` CSS hints. When the opacity animates from 0→1, iOS Safari promotes these elements to GPU layers on-the-fly, causing a compositing tree rebuild that flashes the content behind the dialog.
+### What I found
 
-Additionally, in `CardView.tsx` line 2449, the `SessionFocusShell` has `key={`focus-${currentStepIndex}`}` which **remounts the entire shell** (including the always-mounted dialog) on every step change — undoing the always-mounted pattern for any subsequent step.
+**`hasCompletedOnboarding` mechanism**: It's purely localStorage-based. `AppContext` reads `localStorage.getItem('vi-som-foraldrar-state')` on mount (line 178). If that key is missing or doesn't contain `hasCompletedOnboarding: true`, it defaults to `false` (line 202). There's no database-backed fallback.
 
-### Fix — 2 files
+**Why it's false in preview**: The Lovable preview sandbox starts with clean localStorage. The onboarding flag was never set because no one ran through the Onboarding flow in this session. This is a **testing artifact**, not a production bug. Real users who completed onboarding have the flag persisted.
 
-**1. `src/components/SessionFocusShell.tsx`**
-- Backdrop `motion.div` (line 207 style): add `willChange: 'opacity'`
-- Dialog card `motion.div` (line 224 style): add `willChange: 'opacity, transform'`
+### Plan — 1 change only
 
-**2. `src/pages/CardView.tsx`**
-- Line 2449: Remove the `key={`focus-${currentStepIndex}`}` prop from SessionFocusShell. This key causes full remount on step change, destroying the always-mounted dialog and re-creating it — triggering iOS repaint. The step transition is already handled by the `AnimatePresence` inside the shell's children.
+**File: `src/App.tsx` (line 96)**
+Change the wrapper `div` background from `var(--surface-base, hsl(46 64% 89%))` to `transparent`. Pages already set their own backgrounds; the cream fallback on body/`#root` covers pages that don't.
 
-### Protected patterns — untouched
-No changes to any of the four protected ref patterns (`suppressUntilRef`, `prevServerStepRef`, `pendingSave`, `hasSyncedRef`).
+**No change to BottomNav.tsx.** The `hasCompletedOnboarding` guard is working correctly. In production, users who completed onboarding have the localStorage flag. In Lovable preview, use `?devState=pairedIdle` or similar to bypass the onboarding gate — the `devBypassGates` logic in `Index.tsx` already handles this, but BottomNav doesn't check `devState`. If you want the nav visible in dev preview too, we can add a devState check there, but that's a dev-tooling choice, not a bug fix.
+
+### Files changed: 1
+- `src/App.tsx` — wrapper background → `transparent`
 
