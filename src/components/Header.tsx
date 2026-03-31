@@ -119,7 +119,7 @@ export default function Header({
                   style={{
                     fontSize: '13px',
                     letterSpacing: '0.02em',
-                    textTransform: 'none',
+                    textTransform: 'capitalize',
                     color: 'var(--color-text-primary)',
                     opacity: 0.90,
                     fontWeight: 400,
