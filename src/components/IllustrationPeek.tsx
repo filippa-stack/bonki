@@ -131,6 +131,7 @@ export default function IllustrationPeek({ imageUrl, cardTitle, productBgColor }
                 fontFamily: 'var(--font-serif)',
                 fontSize: '18px',
                 fontWeight: 600,
+                textTransform: 'capitalize',
                 color: 'hsla(0, 0%, 100%, 0.85)',
                 marginTop: '20px',
                 textAlign: 'center',
