@@ -1,34 +1,57 @@
 
 
-## Fix: PortalBrowseSheet Flicker on Open/Close
+## Fix: PortalBrowseSheet Persistent Flicker
 
 ### Root cause
-When the browse sheet opens, iOS Safari triggers a repaint of the page behind the fixed overlay. The backdrop fade-in (`opacity: 0 → 1`) combined with the page content creates a visible flash. On close, the reverse happens — the backdrop fading out reveals a brief content repaint.
+The `AnimatePresence` conditional (`{open && ...}`) mounts/unmounts the backdrop and sheet DOM nodes on every open/close. On iOS Safari, this DOM insertion triggers a full compositing tree rebuild, causing a visible flash — even with `will-change` hints.
 
 ### Fix — 1 file
 
 **`src/components/PortalBrowseSheet.tsx`**
 
-1. **Prevent body scroll while sheet is open** — Add a `useEffect` that sets `document.body.style.overflow = 'hidden'` when `open` is true and restores it on close. This prevents iOS Safari from recalculating scroll position during the overlay transition.
+Replace conditional mount (`{open && ...}`) with always-mounted elements that toggle visibility via `pointerEvents` and `opacity`/`translateY`. This avoids DOM insertion entirely.
 
-2. **Use `will-change: opacity` on the backdrop** — Promotes the backdrop to its own compositor layer, preventing full-page repaint during the fade animation.
-
-3. **Use `will-change: transform` on the sheet** — Same compositor promotion for the slide animation.
+1. Remove `AnimatePresence` wrapper and the `{open && ...}` conditional.
+2. Keep both backdrop and sheet always in the DOM.
+3. Backdrop: animate opacity 0↔1, set `pointerEvents: open ? 'auto' : 'none'`.
+4. Sheet: animate y from `100%` ↔ `0`, set `pointerEvents: open ? 'auto' : 'none'`.
+5. Use `animate` prop driven by `open` boolean instead of `initial`/`exit`.
+6. Keep existing scroll lock `useEffect`, `willChange` hints, drag gesture, and all card rendering logic unchanged.
 
 ### Technical detail
 
 ```tsx
-// Add inside PortalBrowseSheet component body:
-useEffect(() => {
-  if (open) {
-    document.body.style.overflow = 'hidden';
-    return () => { document.body.style.overflow = ''; };
-  }
-}, [open]);
+// No AnimatePresence, no conditional render
+<>
+  <motion.div
+    animate={{ opacity: open ? 1 : 0 }}
+    transition={{ duration: 0.25 }}
+    onClick={onClose}
+    style={{
+      position: 'fixed', inset: 0,
+      background: 'rgba(0,0,0,0.5)',
+      willChange: 'opacity',
+      pointerEvents: open ? 'auto' : 'none',
+      zIndex: 100,
+    }}
+  />
+  <motion.div
+    animate={{ y: open ? 0 : '100%' }}
+    transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+    style={{
+      position: 'fixed', bottom: 0, left: 0, right: 0,
+      maxHeight: '60vh',
+      background: DEEP_DUSK,
+      // ...existing styles...
+      willChange: 'transform',
+      pointerEvents: open ? 'auto' : 'none',
+      zIndex: 101,
+    }}
+  >
+    {/* ...existing drag, handle, card list — unchanged */}
+  </motion.div>
+</>
 ```
-
-On the backdrop `motion.div` (line 78), add `willChange: 'opacity'` to its style.
-On the sheet `motion.div` (line 93), add `willChange: 'transform'` to its style.
 
 ### Protected patterns — untouched
 No changes to any protected ref patterns.
