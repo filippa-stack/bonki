@@ -1,8 +1,10 @@
 import { ReactNode, useEffect, useRef, useState } from 'react';
-import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { EASE } from '@/lib/motion';
 import { EMBER_GLOW, DEEP_SAFFRON, DRIFTWOOD, BARK, MIDNIGHT_INK } from '@/lib/palette';
+import {
+  AlertDialog, AlertDialogContent, AlertDialogHeader,
+  AlertDialogTitle, AlertDialogFooter, AlertDialogAction, AlertDialogCancel,
+} from '@/components/ui/alert-dialog';
 import { sessionHeartbeat } from '@/lib/stillUsRpc';
 
 interface SessionFocusShellProps {
