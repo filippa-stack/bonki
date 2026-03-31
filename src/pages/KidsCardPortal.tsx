@@ -60,6 +60,7 @@ const SWIPE_THRESHOLD = 50;
 export default function KidsCardPortal() {
   const { productSlug, categoryId } = useParams<{ productSlug: string; categoryId: string }>();
   const navigate = useNavigate();
+  const location = useLocation();
   const [searchParams] = useSearchParams();
   const devState = useDevState();
   const bypassPaywall = devState === 'browse' || isDemoMode();
