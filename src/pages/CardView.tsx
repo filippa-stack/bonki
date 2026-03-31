@@ -1719,7 +1719,7 @@ export default function CardView() {
         {/* Back arrow */}
         <motion.button
           onClick={() => navigate(category ? `/product/${product.slug}/portal/${category.id}` : `/product/${product.slug}`)}
-          initial={{ opacity: 0 }}
+          initial={{ opacity: 1 }}
           animate={{ opacity: 1 }}
           transition={{ delay: BEAT_1, duration: EMOTION }}
           aria-label="Tillbaka"
