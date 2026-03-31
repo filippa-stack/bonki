@@ -616,9 +616,8 @@ export default function ProductLibrary() {
 
         {/* Ghost glow accent divider */}
         <motion.div
-          initial={{ scaleX: 0, opacity: 0 }}
+          initial={{ scaleX: 1, opacity: 1 }}
           animate={{ scaleX: 1, opacity: 1 }}
-          transition={{ delay: 0.4, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           style={{
             width: '32px',
             height: '1.5px',
