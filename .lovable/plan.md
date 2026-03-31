@@ -1,29 +1,42 @@
 
 
-## Why the pills are different sizes
+## Flicker Fix Round 3 — Three files
 
-The "Samtal 1 gratis" pill on kids tiles (Jag i Mig, etc.) stretches to fill its parent width, while the Still Us pill shrinks to fit its text content. This is a CSS layout bug.
+### 1. `src/components/NextActionBanner.tsx`
+**Line 92**: `initial={{ opacity: 0, y: 10 }}` → `initial={{ opacity: 1, y: 0 }}`
 
-**Root cause**: In the `LibraryTile` component (kids tiles), the pill `<span>` is a direct child of a flex-column container (`width: 55%`). In a flex column, children stretch on the cross axis (width) by default. So the `inline-flex` span expands to fill the full 55% width instead of shrinking to content.
+### 2. `src/pages/CardView.tsx` — 14 elements across 3 blocks
 
-In the Still Us tile, the pill is wrapped in an extra `<div style={{ display: 'flex' }}>` container, which prevents the stretch behavior.
+**Start/threshold screen (lines 1940–2153)** — 9 elements:
+- Line 1940: `initial={{ opacity: 0 }}` → `initial={{ opacity: 1 }}`
+- Line 1952: `initial={{ opacity: 0 }}` → `initial={{ opacity: 1 }}`
+- Line 1987: `initial={{ opacity: 0 }}` → `initial={{ opacity: 1 }}`
+- Line 2005: `initial={{ opacity: 0, y: 10 }}` → `initial={{ opacity: 1, y: 0 }}`
+- Line 2023: `initial={{ opacity: 0, y: 6 }}` → `initial={{ opacity: 1, y: 0 }}`
+- Line 2047: `initial={{ opacity: 0 }}` → `initial={{ opacity: 1 }}`
+- Line 2064: `initial={{ opacity: 0 }}` → `initial={{ opacity: 1 }}`
+- Line 2092: `initial={{ opacity: 0, y: 8 }}` → `initial={{ opacity: 1, y: 0 }}`
+- Line 2153: `initial={{ opacity: 0, y: 10 }}` → `initial={{ opacity: 1, y: 0 }}`
 
-### Fix
+**Prompt crossfade wrappers** — 3 elements (use `initial={false}` to skip first-mount animation but preserve prompt-to-prompt crossfade):
+- Line 2570: `initial={{ opacity: 0 }}` → `initial={false}`
+- Line 2812: `initial={{ opacity: 0 }}` → `initial={false}`
+- Line 3138: `initial={{ opacity: 0, y: 8 }}` → `initial={false}`
 
-**File: `src/components/ProductLibrary.tsx`** (~line 389)
+**Reflection wrappers** — 2 elements:
+- Line 3347: `initial={{ opacity: 0 }}` → `initial={{ opacity: 1 }}`
+- Line 3437: `initial={{ opacity: 0 }}` → `initial={{ opacity: 1 }}`
 
-Add `alignSelf: 'flex-start'` to the kids tile pill `<span>` style. This overrides the default `stretch` alignment in the flex column, making the pill shrink to its content width — matching the Still Us pill behavior.
+### 3. `src/components/ProductLibrary.tsx` — 2 variant triggers
 
-```tsx
-<span
-  style={{
-    display: 'inline-flex',
-    alignSelf: 'flex-start',   // ← ADD THIS
-    alignItems: 'center',
-    // ... rest unchanged
-  }}
->
-```
+- Line 671: `initial="hidden"` → `initial={false}` (tile grid)
+- Line 817: `initial="hidden"` → `initial={false}` (era samtal section)
 
-Single line addition. No other files affected.
+### Protected patterns — untouched
+- `prevServerStepRef.current`, `suppressUntilRef`, `clearTimeout(pendingSave.current)`, `hasSyncedRef`
+- No `AnimatePresence mode="wait"` blocks removed — only `initial` props changed on children
+- All `whileHover`, `whileTap`, `exit` props preserved
+
+### Technical detail
+`initial={false}` on prompt crossfade elements: first render shows content immediately. When `key` changes (prompt navigation), `AnimatePresence` still runs the exit → enter cycle using `initial`/`animate`/`exit` variants. This is the same pattern already working in `KidsCardPortal.tsx`.
 
