@@ -3261,7 +3261,7 @@ export default function CardView() {
 
               {/* Prompt content */}
               <motion.div
-                initial={isLive && !suppressEntryAnim ? { opacity: 0 } : false}
+                initial={false}
                 animate={{ opacity: 1 }}
                 transition={{ delay: isLive && !suppressEntryAnim ? BEAT_1 : 0, duration: BEAT_3, ease: EASE }}
               >

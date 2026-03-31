@@ -119,7 +119,7 @@ export default function PromptItem({ prompt, index, sectionType, preamble, ancho
         {stackedPreamble && (
           <motion.div
             key={`preamble-${index}`}
-            initial={{ opacity: 0, y: 10 }}
+            initial={{ opacity: 1, y: 0 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.0, ease: enterEase }}
             className="w-full text-center"
@@ -150,7 +150,7 @@ export default function PromptItem({ prompt, index, sectionType, preamble, ancho
           /* ── Still Us GÖR: Ember Glow action card ── */
           <motion.div
             key={`exercise-su-${index}-${prompt.text.slice(0, 20)}`}
-            initial={{ opacity: 0, y: 14 }}
+            initial={{ opacity: 1, y: 0 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.65, ease: enterEase }}
             style={{
@@ -161,9 +161,8 @@ export default function PromptItem({ prompt, index, sectionType, preamble, ancho
             }}
           >
             <motion.p
-              initial={{ opacity: 0 }}
+              initial={{ opacity: 1 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.4, delay: 0.15, ease: enterEase }}
               style={{
                 fontFamily: 'var(--font-sans)',
                 fontSize: '11px',
@@ -179,9 +178,8 @@ export default function PromptItem({ prompt, index, sectionType, preamble, ancho
               {prompt.text.split('\n').filter(p => p.trim() !== '').map((para, i) => (
                 <motion.p
                   key={i}
-                  initial={{ opacity: 0, y: 6 }}
+                  initial={{ opacity: 1, y: 0 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.2 + i * 0.06, ease: enterEase }}
                   className="font-serif"
                   style={{
                     fontSize: i === 0 ? '20px' : '15px',
@@ -201,7 +199,7 @@ export default function PromptItem({ prompt, index, sectionType, preamble, ancho
           /* ── Default Teamwork: left-aligned assignment block ── */
           <motion.div
             key={`exercise-${index}-${prompt.text.slice(0, 20)}`}
-            initial={{ opacity: 0, y: 14 }}
+            initial={{ opacity: 1, y: 0 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.65, ease: enterEase }}
             className={stackedPreamble ? 'mt-10' : ''}
@@ -220,9 +218,8 @@ export default function PromptItem({ prompt, index, sectionType, preamble, ancho
             }}
           >
             <motion.p
-              initial={{ opacity: 0 }}
+              initial={{ opacity: 1 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.4, delay: 0.15, ease: enterEase }}
               style={{
                 fontFamily: 'var(--font-sans)',
                 fontSize: '10px',
@@ -238,9 +235,8 @@ export default function PromptItem({ prompt, index, sectionType, preamble, ancho
               {prompt.text.split('\n').filter(p => p.trim() !== '').map((para, i) => (
                 <motion.p
                   key={i}
-                  initial={{ opacity: 0, y: 6 }}
+                  initial={{ opacity: 1, y: 0 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.2 + i * 0.06, ease: enterEase }}
                   className="font-serif"
                   style={{
                     fontSize: 'clamp(19px, 4.5vw, 25px)',
@@ -262,7 +258,7 @@ export default function PromptItem({ prompt, index, sectionType, preamble, ancho
             return (
               <motion.div
                 key={`question-${index}-${prompt.text.slice(0, 20)}`}
-                initial={{ opacity: 0, y: 14, scale: 0.97 }}
+                initial={{ opacity: 1, y: 0, scale: 1 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 transition={{
                   duration: 0.7,
@@ -288,9 +284,8 @@ export default function PromptItem({ prompt, index, sectionType, preamble, ancho
 
                 {inlineScenarioPreamble && (
                   <motion.div
-                    initial={{ opacity: 0, y: 10 }}
+                    initial={{ opacity: 1, y: 0 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.7, delay: 0.0, ease: enterEase }}
                     style={{ position: 'relative', zIndex: 1, width: '100%' }}
                   >
                     {preambleParagraphs.map((para, i) => (
@@ -351,9 +346,8 @@ export default function PromptItem({ prompt, index, sectionType, preamble, ancho
 
                 {backgroundImageUrl && (
                   <motion.div
-                    initial={{ opacity: 0, scale: 0.92 }}
+                    initial={{ opacity: 1, scale: 1 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.8, delay: 0.3, ease: enterEase }}
                     style={{
                       width: '100%',
                       display: 'flex',
@@ -385,9 +379,8 @@ export default function PromptItem({ prompt, index, sectionType, preamble, ancho
         {/* Anchor text hidden for kids products (which have illustrations) */}
         {anchor && !hasIllustration && (
           <motion.p
-            initial={{ opacity: 0, y: 6 }}
+            initial={{ opacity: 1, y: 0 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.5, ease: enterEase }}
             className="font-serif"
             style={{
               fontSize: '14px',
