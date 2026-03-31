@@ -203,7 +203,7 @@ export default function CardView() {
     product,
   );
 
-  // Apply Verdigris theme for Still Us cards
+  usePageBackground(product?.backgroundColor ?? 'var(--surface-base)');
   useVerdigrisTheme(isStillUsCard);
 
   // Category color for Still Us start screen text

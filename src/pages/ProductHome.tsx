@@ -17,6 +17,7 @@ export default function ProductHome() {
   const navigate = useNavigate();
   const location = useLocation();
   useThemeSwitcher();
+  usePageBackground('var(--surface-base)');
 
   const product = allProducts.find((p) => p.slug === slug);
 
