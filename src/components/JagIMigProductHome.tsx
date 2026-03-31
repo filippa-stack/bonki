@@ -18,6 +18,7 @@ const ORDERED_TILES = [
   { id: 'jim-mina-kanslor', bg: '#27A69C', sub: 'Att känna igen dem' },
   { id: 'jim-starka-kanslor', bg: '#1D8A82', sub: 'När det blir mycket' },
   { id: 'jim-stora-kanslor', bg: '#115D57', sub: 'Känslor med många lager' },
+  { id: 'jim-att-vara-jag', bg: '#1A7A73', sub: 'Vem du är' },
 ];
 
 // Card images are vivid illustrations — higher opacity than creature textures
