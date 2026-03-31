@@ -284,9 +284,8 @@ export default function PromptItem({ prompt, index, sectionType, preamble, ancho
 
                 {inlineScenarioPreamble && (
                   <motion.div
-                    initial={{ opacity: 0, y: 10 }}
+                    initial={{ opacity: 1, y: 0 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.7, delay: 0.0, ease: enterEase }}
                     style={{ position: 'relative', zIndex: 1, width: '100%' }}
                   >
                     {preambleParagraphs.map((para, i) => (
