@@ -214,9 +214,7 @@ export default function PortalBrowseSheet({
                 );
               })}
             </div>
-          </motion.div>
-        </>
-      )}
-    </AnimatePresence>
+      </motion.div>
+    </>
   );
 }
