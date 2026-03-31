@@ -3172,7 +3172,7 @@ export default function CardView() {
                   if (totalPrompts <= 1) return null;
                   return (
                     <motion.div
-                      initial={{ opacity: 0, y: 4 }}
+                      initial={{ opacity: 1, y: 0 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: BEAT_1, duration: EMOTION, ease: [...EASE] }}
                       style={{
