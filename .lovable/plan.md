@@ -1,27 +1,49 @@
 
 
-## Fix: Journal.tsx ("Era samtal") entrance flicker
+## Full-Canvas Background Ownership — Surface-Layer Fix
 
-### Root cause
-Journal.tsx has mount-based `initial={{ opacity: 0 }}` animations on multiple elements — the same pattern already fixed across other pages. The `/saved` route redirects to `/journal`, so the page the user sees is `Journal.tsx`, not `SavedConversations.tsx`.
+### Problem
+`#root` and `body` use hardcoded `#0B1026`. Each page sets its own background on a `min-h-screen` div, but the app shell wrapper's `paddingBottom` (for bottom nav) creates a gap where `#root`'s dark background bleeds through. Same issue at top safe-area on light pages (Login, Diary, Categories).
 
-### Changes — 1 file: `src/pages/Journal.tsx`
+### Approach
+A new `usePageBackground` hook sets a `--page-bg` CSS variable on `:root`. Both `#root` and the app shell wrapper read this variable, so the active page's background fills the entire device canvas.
 
-**Header (lines 678-703):** Change `initial={{ opacity: 0, y: -10 }}` → `initial={false}`, remove `animate` and `transition` props. Title + subtitle render instantly.
+### Changes
 
-**Filter chips (lines 707-734):** Change `initial={{ opacity: 0 }}` → `initial={false}`, remove `animate` and `transition`.
+**A. New file: `src/hooks/usePageBackground.ts`** — 6-line hook that sets `--page-bg` on `document.documentElement`. No cleanup (avoids dark flash during transitions).
 
-**Empty state (lines 744-772):** Change `initial={{ opacity: 0, y: 12 }}` → `initial={false}`, remove `animate` and `transition`. "Det finns inget här ännu" renders instantly.
+**B. `src/index.css`** — Change `#root { background-color: #0B1026 }` → `background-color: var(--page-bg, #0B1026)`.
 
-**Pulse card (lines 778-818):** Change `initial={{ opacity: 0, y: 12 }}` → `initial={false}`, remove `animate` and `transition`.
+**C. `src/App.tsx` line 96** — Change `background: 'transparent'` → `background: 'var(--page-bg, #0B1026)'` on the wrapper div. Nothing else on that div changes.
 
-**Par privacy row (lines 823-849):** Change `initial={{ opacity: 0 }}` → `initial={false}`, remove `animate` and `transition`.
+**D. Add `usePageBackground(color)` to 16 files:**
 
-**NoteEntryCard (lines 207-210):** Change `initial={{ opacity: 0, y: 8 }}` → `initial={false}`, remove `animate` and `transition`.
+| File | Color |
+|---|---|
+| `src/pages/Journal.tsx` | `MIDNIGHT_INK` |
+| `src/pages/CardView.tsx` | `product?.backgroundColor ?? 'var(--surface-base, hsl(46, 64%, 89%))'` (the `loadingBg` value) |
+| `src/pages/Login.tsx` | `'var(--surface-base)'` |
+| `src/pages/ProductHome.tsx` | `'var(--surface-base)'` |
+| `src/pages/KidsCardPortal.tsx` | `product?.backgroundColor ?? MIDNIGHT_INK` |
+| `src/pages/Category.tsx` | Multiple returns — `MIDNIGHT_INK` for kids view, `'#FAF7F2'` for fallback, `EMBER_NIGHT` for Still Us view |
+| `src/pages/Diary.tsx` | `'#F8F4EE'` |
+| `src/pages/Home.tsx` | `COLORS.emberNight` |
+| `src/pages/Paywall.tsx` | `COLORS.emberNight` |
+| `src/pages/StillUsExplore.tsx` | `EMBER_NIGHT` |
+| `src/pages/SoloReflect.tsx` | `COLORS.emberNight` |
+| `src/pages/DissolutionSettings.tsx` | `COLORS.emberNight` |
+| `src/pages/TillbakaComplete.tsx` | `COLORS.emberNight` |
+| `src/components/ProductLibrary.tsx` | `libraryBg` (resolves to `'#0B1026'`) |
+| `src/components/Onboarding.tsx` | `'#1A1A2E'` |
+| `src/pages/still-us-routes/SuIntroPortal.tsx` | `BG` |
 
-**CompletedMarkerRow (lines 331-334):** Change `initial={{ opacity: 0 }}` → `initial={false}`, remove `animate` and `transition`.
+**Category.tsx note:** This page has 3 different return paths with different backgrounds. The hook call needs to be placed in each sub-component or conditionally with the resolved bg color.
 
-**Keep unchanged:** The collapsible `AnimatePresence` blocks (empty sessions accordion at line 910, chevron rotations) — these are user-triggered interactions, not mount animations.
-
-### No other files modified
+### Not modified
+- Navigation, spacing, typography, z-index, scroll, sticky behavior
+- `body` background in `index.html` (stays `#0B1026`)
+- Bottom nav component
+- Protected patterns (suppressUntilRef, prevServerStepRef, clearTimeout, hasSyncedRef)
+- `AnimatePresence` mode, `useLayoutEffect` in `useDefaultTheme`
+- No `100dvh` introduced
 
