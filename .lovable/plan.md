@@ -1,42 +1,32 @@
 
 
-## Fix: Background Bleed + BottomNav Content Overlap
+## Fix: BottomNav Overlap on Still Us Pages
 
-### Analysis: Which pages set their own background?
+### Problem
 
-Every page that renders inside the app sets its own background explicitly:
-- **Library** (`ProductLibrary.tsx`): `#0B1026`
-- **Login**: `var(--surface-base)` (Petrol Teal)
-- **Onboarding**: `#1A1A2E` (inline)
-- **Journal**: `MIDNIGHT_INK`
-- **Diary**: `#F8F4EE`
-- **Home (Still Us)**: `COLORS.emberNight`
-- **Paywall**: `COLORS.emberNight`
-- **CompletionCeremony**: `COLORS.emberNight`
-- **StillUsExplore**: `EMBER_NIGHT`
-- **KidsCardPortal**: `product.backgroundColor`
-- **ProductHome**: each product component sets its own BG
-- **Categories / SavedConversations**: `var(--color-bg-base)`
-- **NotFound**: `bg-muted` (Tailwind class)
-- **AnalyticsDashboard**: `page-bg` (CSS class)
-- **CardView**: loading state uses `page-bg`, active state uses session shell
+Still Us uses two page components — `KidsProductHome.tsx` (shared product home) and `StillUsExplore.tsx` (the "Alla ämnen" browse page). Both have insufficient bottom spacing, causing content to hide behind the 56px BottomNav.
 
-**Conclusion**: No page relies on the `#root` fallback as its visible background. Every page sets its own. Changing `#root` to `#0B1026` is safe — it only shows during the pre-hydration flash, and matching it to the library (the most common landing page) is correct.
+### Analysis
 
-### Changes — 3 files
+1. **KidsProductHome.tsx** (line 628): The category grid uses `marginBottom: '10vh'` — on a short viewport (e.g. iPhone SE, 667px), that's only ~67px. With the BottomNav (56px) + safe area, content can still be clipped. Should use the standard bottom spacing rule: `calc(72px + env(safe-area-inset-bottom, 0px))`.
 
-**1. `src/index.css` (line 6)** — Fix `#root` background
-- Change `#1A1A2E` → `#0B1026` to match the library's actual background color
-- Also update `index.html` body inline style if present (checked: no inline body background exists, only `theme-color` meta — no change needed)
+2. **StillUsExplore.tsx** (line 107): Uses `padding: '24px 16px 120px'` — hardcoded 120px. This is generous but doesn't account for safe-area-inset-bottom on notched iPhones. Should also use the standard formula.
 
-**2. `src/pages/KidsCardPortal.tsx` (line 349)** — Fix BottomNav overlap
-- Change `maxHeight: 'calc(100vh - 280px)'` → `maxHeight: 'calc(100vh - 340px)'`
-- This adds 60px more space for the BottomNav (56px) + breathing room
-- **Keep `height: '100vh'`** on line 259 — do NOT change to `100dvh` (codebase convention: `100dvh` causes layout reflow on iOS Safari)
+### Changes — 2 files
 
-**3. No change to `App.tsx`** — The existing `paddingBottom: 'calc(56px + env(safe-area-inset-bottom, 0px))'` on line 96 stays. It provides the global safe-area clearance for all pages. Removing it would break other pages.
+**1. `src/components/KidsProductHome.tsx` (line 628)**
+- Change `marginBottom: '10vh'` → `marginBottom: 'calc(72px + env(safe-area-inset-bottom, 0px))'`
+- This applies to all products using this component (kids products + Still Us)
+
+**2. `src/pages/StillUsExplore.tsx` (line 107)**
+- Change `padding: '24px 16px 120px'` → `padding: '24px 16px calc(72px + env(safe-area-inset-bottom, 0px))'`
+- Aligns with the codebase's standard BottomNav spacing rule
+
+### Why this works
+
+Both changes follow the documented spacing rule from the codebase convention: 56px nav + 16px breathing room + safe-area inset. This ensures the last tile/card and any sign-off text are fully visible above the BottomNav on all iPhone models.
 
 ### Files changed: 2
-- `src/index.css`
-- `src/pages/KidsCardPortal.tsx`
+- `src/components/KidsProductHome.tsx`
+- `src/pages/StillUsExplore.tsx`
 
