@@ -3,7 +3,7 @@
  * Used by KidsCardPortal for the "Utforska alla samtal" feature.
  */
 
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Check } from 'lucide-react';
 import { useCardImage } from '@/hooks/useCardImage';
