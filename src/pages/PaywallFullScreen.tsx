@@ -14,6 +14,7 @@ import {
   SAFFRON_FLAME,
   BONKI_ORANGE,
 } from '@/lib/palette';
+import { usePageBackground } from '@/hooks/usePageBackground';
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
