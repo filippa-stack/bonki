@@ -346,7 +346,7 @@ export default function KidsCardPortal() {
         }}
       >
         {/* ═══ Portal tile — constrained to leave room for copy ═══ */}
-        <div style={{ flex: 1, position: 'relative', minHeight: 0, maxHeight: 'calc(100vh - 280px)' }}>
+        <div style={{ flex: 1, position: 'relative', minHeight: 0, maxHeight: 'calc(100vh - 340px)' }}>
 
           <AnimatePresence mode="wait" custom={direction}>
             <motion.div
