@@ -176,7 +176,7 @@ export default function Category() {
 
   useVerdigrisTheme(isStillUsCategory);
 
-  const pageBg = isStillUsCategory ? EMBER_NIGHT : '#FAF7F2';
+  const pageBg = isStillUsCategory ? '#2E2233' : '#FAF7F2';
   usePageBackground(pageBg);
 
   const circadianColor = categoryId ? CIRCADIAN_COLORS[categoryId] : undefined;
