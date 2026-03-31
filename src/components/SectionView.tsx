@@ -82,14 +82,15 @@ const SectionView = forwardRef<SectionViewHandle, SectionViewProps>(
 
     return (
       <div className="relative" style={{
-        paddingTop: isExerciseStep ? '12px'
+        paddingTop: stillUsMode ? '0px'
+          : isExerciseStep ? '12px'
           : (section.type === 'scenario') ? '24px'
           : (isLive && showBackArrow) ? '48px'
           : backgroundImageUrl ? '16px'
           : '16px',
-        paddingBottom: isExerciseStep ? '8px' : '16px',
+        paddingBottom: stillUsMode ? '0px' : isExerciseStep ? '8px' : '16px',
         paddingLeft: '0',
-        paddingRight: (isLive && coupleSpaceId && sessionId && cardId) ? '24px' : '0',
+        paddingRight: stillUsMode ? '0' : (isLive && coupleSpaceId && sessionId && cardId) ? '24px' : '0',
       }}>
         {/* Back arrow — top left, live sessions only, hidden at first question */}
         {isLive && showBackArrow && onBack && (
