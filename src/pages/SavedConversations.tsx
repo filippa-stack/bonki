@@ -48,11 +48,8 @@ export default function SavedConversations() {
         ) : (
           <div className="space-y-8">
             {sortedConversations.map((conversation, index) => (
-              <motion.div
+              <div
                 key={conversation.id}
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * BEAT_1 }}
               >
                 <ConversationCard
                   conversation={conversation}
