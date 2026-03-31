@@ -366,7 +366,7 @@ function CompletedMarkerRow({ marker, index }: { marker: CompletedMarker; index:
       <span style={{ fontSize: '12px', color: `${DRIFTWOOD}66`, marginLeft: 'auto' }}>
         {formatRelativeDate(marker.date)}
       </span>
-    </motion.div>
+    </div>
   );
 }
 
