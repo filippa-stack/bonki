@@ -2061,7 +2061,7 @@ export default function CardView() {
           {/* 5. Privacy */}
           <motion.p
             className="font-serif"
-            initial={{ opacity: 0 }}
+            initial={{ opacity: 1 }}
             animate={{ opacity: 1 }}
             transition={{ delay: BEAT_2 + 0.1, duration: EMOTION, ease: [...EASE] }}
             style={{
