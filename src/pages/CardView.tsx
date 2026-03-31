@@ -1778,7 +1778,7 @@ export default function CardView() {
         <div style={{ flex: '0 0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '0 24px', paddingBottom: 'calc(32px + env(safe-area-inset-bottom, 0px))' }}>
           {/* Card label */}
           <motion.p
-            initial={{ opacity: 0, y: 6 }}
+            initial={{ opacity: 1, y: 0 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: BEAT_1, duration: 0.6, ease: [...EASE] }}
             style={{
