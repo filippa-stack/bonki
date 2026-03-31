@@ -373,6 +373,7 @@ function CompletedMarkerRow({ marker, index }: { marker: CompletedMarker; index:
 
 export default function Journal() {
   useDefaultTheme();
+  usePageBackground(MIDNIGHT_INK);
   const navigate = useNavigate();
   const { space } = useCoupleSpaceContext();
   const devState = useDevState();

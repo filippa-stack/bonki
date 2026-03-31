@@ -11,6 +11,7 @@ import { isDemoMode } from '@/lib/demoMode';
 
 export default function Paywall() {
   useDefaultTheme();
+  usePageBackground(COLORS.emberNight);
   const navigate = useNavigate();
   const { user } = useAuth();
   const [slug, setSlug] = useState<string | null>(null);

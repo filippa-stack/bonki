@@ -30,6 +30,7 @@ const REDUCED = typeof window !== 'undefined' && window.matchMedia('(prefers-red
 /* ── Main Home component ── */
 export default function Home() {
   const navigate = useNavigate();
+  usePageBackground(COLORS.emberNight);
   const { user } = useAuth();
   const { space } = useCoupleSpaceContext();
   const homeState = useStillUsHome();

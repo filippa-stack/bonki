@@ -9,6 +9,7 @@ import { supabase } from '@/integrations/supabase/client';
 
 export default function DissolutionSettings() {
   useDefaultTheme();
+  usePageBackground(COLORS.emberNight);
   const navigate = useNavigate();
   const { user } = useAuth();
   const [step, setStep] = useState<'warning' | 'confirm'>('warning');

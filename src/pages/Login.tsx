@@ -18,6 +18,7 @@ import type { Json } from '@/integrations/supabase/types';
 
 export default function Login() {
   useDefaultTheme();
+  usePageBackground('var(--surface-base)');
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
