@@ -212,7 +212,7 @@ export default function ProductHome() {
 
       {/* Sign-off */}
       <motion.div
-        initial={{ opacity: 0 }}
+        initial={{ opacity: 1 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.8, duration: 0.6 }}
         className="text-center"

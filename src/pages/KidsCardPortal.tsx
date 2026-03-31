@@ -497,7 +497,7 @@ export default function KidsCardPortal() {
           <motion.div
             key={`text-${card.id}`}
             custom={direction}
-            initial={{ opacity: 0, y: 6 }}
+            initial={false}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -6 }}
             transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}

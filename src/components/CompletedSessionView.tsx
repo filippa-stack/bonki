@@ -372,7 +372,7 @@ export default function CompletedSessionView({
 
           {/* CTA */}
           <motion.div
-            initial={{ opacity: 0 }}
+            initial={{ opacity: 1 }}
             animate={{ opacity: 1 }}
             transition={{ delay: BEAT_3 + 0.06, duration: EMOTION, ease: [...EASE] }}
             style={{ marginTop: '8px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}
