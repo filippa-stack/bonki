@@ -3344,7 +3344,7 @@ export default function CardView() {
 
                 return (
                   <motion.div
-                    initial={{ opacity: 0 }}
+                    initial={{ opacity: 1 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: BEAT_2, duration: BEAT_3, ease: EASE }}
                     style={isKidsProduct ? {
