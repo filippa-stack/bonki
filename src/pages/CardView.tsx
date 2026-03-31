@@ -2020,7 +2020,7 @@ export default function CardView() {
           {/* 3. Hook */}
           {hookText && (
             <motion.p
-              initial={{ opacity: 0, y: 6 }}
+              initial={{ opacity: 1, y: 0 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: BEAT_1 + 0.1, duration: EMOTION, ease: [...EASE] }}
               style={{
