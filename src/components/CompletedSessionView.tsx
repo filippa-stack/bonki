@@ -294,7 +294,7 @@ export default function CompletedSessionView({
           {/* Locked reflections */}
           {stepGroups.length > 0 && (
             <motion.div
-              initial={{ opacity: 0, y: 12 }}
+              initial={{ opacity: 1, y: 0 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: BEAT_2, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
               className="space-y-8"
