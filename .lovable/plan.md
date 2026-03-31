@@ -1,37 +1,69 @@
 
 
-## Fix Flicker on Onboarding, ProductIntro, and Paywall Pages
+## Content Update Template for Jag i Mig
 
-### Problem
-These pages use `motion.div` entrance animations (`initial: { opacity: 0 }`, fade-ups, scale-ins) that cause a visible flicker on iPhone — the same issue previously fixed on Journal/Era samtal by disabling mount animations.
+I'll create a single reference file at `.lovable/jag-i-mig-update-template.md` that contains:
 
-Additionally, `ProductIntro` and `PaywallFullScreen` are missing `usePageBackground`, so `#root`'s dark background bleeds through safe areas.
+1. **Every locked ID** that must never change (card IDs, category IDs, product ID, slug, freeCardId)
+2. **Every safe-to-edit field** with inline markers
+3. **The exact data shape** so you can paste updated content directly
+4. **Validation rules** (cardCount must match actual cards, new card IDs must start with `jim-`)
 
-### Two fixes per page (matching the Journal pattern)
+### File: `.lovable/jag-i-mig-update-template.md`
 
-**Fix 1 — Kill mount animations**: Replace all `initial={{ opacity: 0, ... }}` with `initial={false}` (or remove the motion wrapper entirely where it only exists for entrance animation). This matches the animation-mount-policy.
+Contents will include:
 
-**Fix 2 — Add `usePageBackground`**: Call the hook with the page's root background color so the device canvas is fully owned.
+**Locked identifiers** — these exist in the database and recommendation engine:
+- Product: `id: 'jag_i_mig'`, `slug: 'jag-i-mig'`
+- `freeCardId: 'jim-glad'`
+- Category IDs: `jim-mina-kanslor`, `jim-starka-kanslor`, `jim-stora-kanslor`
+- All 21 card IDs: `jim-trygg`, `jim-glad`, `jim-ledsen`, `jim-arg`, `jim-radd`, `jim-nyfiken`, `jim-forvanad`, `jim-acklad`, `jim-skam`, `jim-avsky`, `jim-avundsjuk`, `jim-svartsjuk`, `jim-besviken`, `jim-utanfor`, `jim-karlek`, `jim-stolt`, `jim-vild`, `jim-jag`, `jim-bestamd`, `jim-stress`, `jim-ensam`
 
-### Changes
+**Safe to edit** (marked with ✏️):
+- Card `title`, `subtitle`, `questionHook`
+- All prompt strings inside `prompts: [...]`
+- Category `title`, `subtitle`, `description`
+- Product `tagline`, `description`, `headerTitle`, `paywallDescription`
+- Color values (`accentColor`, `backgroundColor`, etc.)
 
-| File | Fix 1: Animations to disable | Fix 2: `usePageBackground` color |
-|---|---|---|
-| `src/components/Onboarding.tsx` | `fadeUp` helper: change `initial` to `{ opacity: 1, y: 0 }`. Illustration `motion.div` (line 46): `initial={false}`. | Already has `usePageBackground('#1A1A2E')` — no change |
-| `src/components/ProductIntro.tsx` | Creature illustration (line 177): `initial={false}`. Back button (line 224): `initial={false}`. Title h1 (line 266): `initial={false}`. Tagline p (line 287): `initial={false}`. Body div (line 305): `initial={false}`. Free card preview (line 347): `initial={false}`. CTA div (line 430): `initial={false}`. All 7 motion elements. | Add `usePageBackground(bgColor)` after line 122 where `bgColor` is computed |
-| `src/pages/PaywallFullScreen.tsx` | Root `motion.div` (line 138): `initial={false}`. Back button (line 152): `initial={false}`. 2 motion elements. | Add `usePageBackground(MIDNIGHT_INK)` at component top |
-| `src/pages/Paywall.tsx` | Inner `motion.div` (line 117): `initial={false}`. 1 motion element. | Already has `usePageBackground(COLORS.emberNight)` — no change |
+**Safe to add:**
+- New cards — use `jim-` prefix, assign to existing category, update that category's `cardCount`
+- New categories — use `jim-` prefix, add cards that reference it
+- New prompts to existing cards
 
-### Implementation detail
+**Template block per card** (fill in and hand back):
+```
+CARD: jim-trygg          ← LOCKED, do not change
+  title: ✏️ 'Trygg'
+  subtitle: ✏️ 'Vad som gör att en känner sig säker och omhändertagen'
+  questionHook: ✏️ (optional, currently undefined)
+  categoryId: jim-mina-kanslor  ← must match a category ID
+  prompts:
+    1. ✏️ 'Hur känns det att vara trygg?'
+    2. ✏️ 'Varför är det viktigt att känna sig trygg?'
+    3. ✏️ 'Hur får du någon annan att känna sig trygg?'
+    4. ✏️ 'Berätta om när du känner dig trygg...'
+    + (add more lines to add prompts)
+```
 
-- `initial={false}` tells Framer Motion to skip the entrance animation and render the `animate` state immediately — no opacity:0 frame, no flicker.
-- The `fadeUp` helper in Onboarding is used by 4 elements via spread (`{...fadeUp(0.35)}`). Change it to return `initial: { opacity: 1, y: 0 }` so it renders at final state immediately. The `animate` and `transition` values become no-ops but are harmless to keep.
-- `ProductIntro` computes `bgColor` at line 122 (`backgroundColor ?? product?.backgroundColor ?? MIDNIGHT_INK`). The hook call goes right after that line.
-- `PaywallFullScreen` uses `MIDNIGHT_INK` for its root background. The "not found" early return (line 59-64) also uses `MIDNIGHT_INK` — consistent, no mismatch issue.
+This pattern repeats for all 21 cards plus a blank template for new cards.
 
-### Not modified
-- No layout, spacing, typography, or scroll changes
-- No navigation or z-index changes  
-- User-triggered animations (e.g. `expanded` toggle in ProductIntro) are preserved
-- The `AnimatePresence` exit animations in these components (if any) are untouched
+**Category block:**
+```
+CATEGORY: jim-mina-kanslor   ← LOCKED
+  title: ✏️ 'Mina känslor'
+  subtitle: ✏️ 'De känslor som finns i dig – och hur de känns.'
+  description: ✏️ 'Grundläggande känslor och hur de känns'
+  cardCount: 7               ← MUST equal actual card count
+```
+
+**Validation checklist** (at bottom of file):
+- [ ] Every card's `categoryId` matches an existing category `id`
+- [ ] Every category's `cardCount` equals the number of cards assigned to it
+- [ ] No existing card ID was renamed or removed
+- [ ] No existing category ID was renamed or removed
+- [ ] New card IDs use `jim-` prefix and are unique across all products
+- [ ] `freeCardId` still points to a valid card ID
+
+This is a single new file — no code changes. You fill it in, hand it back, and I apply it to `src/data/products/jag-i-mig.ts` mechanically.
 
