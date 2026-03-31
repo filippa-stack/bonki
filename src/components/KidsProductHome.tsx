@@ -625,7 +625,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
                 }
               : { gridTemplateColumns: '1fr', gap: '12px' }),
             width: '100%',
-            marginBottom: '10vh',
+            marginBottom: 'calc(72px + env(safe-area-inset-bottom, 0px))',
           }}
         >
           {product.categories.map((cat, index) => {
