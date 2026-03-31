@@ -669,10 +669,7 @@ export default function Journal() {
   return (
     <div style={{ minHeight: '100vh', backgroundColor: MIDNIGHT_INK, display: 'flex', flexDirection: 'column' }}>
       {/* Header */}
-      <motion.div
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, ease: EASE }}
+      <div
         style={{
           paddingTop: 'calc(env(safe-area-inset-top, 0px) + 56px)',
           textAlign: 'center',
