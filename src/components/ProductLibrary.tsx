@@ -484,6 +484,11 @@ export default function ProductLibrary() {
 
   const libraryBg = '#0B1026';
 
+  // Loading gate — prevent flash of incomplete content
+  if (accessLoading) {
+    return <div style={{ minHeight: '100vh', backgroundColor: '#0B1026' }} />;
+  }
+
   return (
     <div
       className="min-h-screen flex flex-col relative"
