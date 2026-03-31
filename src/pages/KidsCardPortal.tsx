@@ -11,7 +11,7 @@
 import { useState, useMemo, useCallback, useRef, useEffect } from 'react';
 import FreeCardBadge from '@/components/FreeCardBadge';
 import PaywallBottomSheet from '@/components/PaywallBottomSheet';
-import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
+import { useParams, useNavigate, useSearchParams, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence, type PanInfo } from 'framer-motion';
 import { useDevState } from '@/contexts/DevStateContext';
 import { isDemoMode } from '@/lib/demoMode';
@@ -60,6 +60,7 @@ const SWIPE_THRESHOLD = 50;
 export default function KidsCardPortal() {
   const { productSlug, categoryId } = useParams<{ productSlug: string; categoryId: string }>();
   const navigate = useNavigate();
+  const location = useLocation();
   const [searchParams] = useSearchParams();
   const devState = useDevState();
   const bypassPaywall = devState === 'browse' || isDemoMode();
@@ -73,6 +74,7 @@ export default function KidsCardPortal() {
   );
 
   // Apply product theme so CSS variables are set for downstream components
+  // forceKey ensures CSS vars are reapplied when navigating back from a session
   useProductTheme(
     product?.accentColor ?? 'hsl(158, 35%, 18%)',
     product?.secondaryAccent ?? 'hsl(38, 88%, 46%)',
@@ -80,6 +82,7 @@ export default function KidsCardPortal() {
     product?.ctaButtonColor,
     product?.pronounMode,
     product,
+    location.key,
   );
 
   const progress = useKidsProductProgress(product);

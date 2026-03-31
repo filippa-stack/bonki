@@ -2674,6 +2674,7 @@ export default function CardView() {
     };
 
     const handleKidsBack = () => {
+      console.log('[DIAG] handleKidsBack fired', Date.now(), { localPromptIndex, currentStepIndex });
       if (localPromptIndex > 0) {
         setLocalPromptIndex(localPromptIndex - 1);
       } else if (currentStepIndex > 0) {
@@ -2685,6 +2686,7 @@ export default function CardView() {
         setLocalStepIndex(prevStageIndex);
         setLocalPromptIndex(prevPromptCount - 1);
       } else {
+        console.log('[DIAG] setting showLeaveConfirm=true', Date.now());
         setShowLeaveConfirm(true);
       }
     };
@@ -2718,7 +2720,8 @@ export default function CardView() {
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
               <button
-                onClick={handleKidsBack}
+                onClick={() => { console.log('[DIAG] back button onClick', Date.now()); handleKidsBack(); }}
+                onPointerDown={() => console.log('[DIAG] back button pointerDown', Date.now())}
                 aria-label="Tillbaka"
                 style={{
                   minHeight: '44px',
@@ -2743,7 +2746,8 @@ export default function CardView() {
               </span>
             </div>
             <button
-              onClick={() => setShowLeaveConfirm(true)}
+              onClick={() => { console.log('[DIAG] X button onClick', Date.now()); setShowLeaveConfirm(true); }}
+              onPointerDown={() => console.log('[DIAG] X button pointerDown', Date.now())}
               aria-label="Stäng"
               style={{
                 minHeight: '44px',
