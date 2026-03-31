@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+#root {
+  background-color: #1A1A2E;
+  min-height: 100vh;
+}
+
 /* ── Global minimum font size (15px) for readability ── */
 p, span, a, li, td, th, label,
 button, input, textarea, select,
