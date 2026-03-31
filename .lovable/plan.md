@@ -1,54 +1,28 @@
 
 
-## Step 1: Inline Still Us Live Session Layout (replace SessionFocusShell)
+## Tighten White Question Card Around Content
 
-Only the live session block (~line 2449–2615). Archive is a separate step later.
+### Problem
+The white card has generous padding (`28px 24px 20px`) plus `justifyContent: 'center'` on both the card itself and the parent content area. Combined with `SectionView`'s own internal padding (`16px` top/bottom), this creates excessive empty space inside the white frame.
 
-### What changes
+### Changes
 
-**`src/pages/CardView.tsx`** — Replace `<SessionFocusShell>` with inline layout matching the kids pattern:
+**`src/pages/CardView.tsx`** — Still Us live session block, two edits:
 
-The current Still Us block passes `topSlot`, `ctaSlot`, and `children` into `SessionFocusShell`. We flatten this into the same structure as the kids block (line 2698):
+1. **White card padding** (line 2599): Reduce from `28px 24px 20px` to `16px 20px 12px`
+2. **White card justifyContent** (line 2596): Remove `justifyContent: 'center'` — content should just flow naturally from the top
+3. **Content area justifyContent** (line 2561): Change from `'center'` to `'flex-end'` — pushes the card toward the CTA instead of floating in the middle
 
-```text
-<div fixed inset-0>              ← same as kids line 2700
-  {topSlot content}              ← existing nav bar JSX, moved out of prop
-  {progress bar}                 ← already exists
-  <div flex-1 relative>          ← content area with overflow: visible (not hidden)
-    <img illustration />         ← absolute, inset: -32%, same as kids line 2795
-    <div white-card>             ← FAF7F2, borderRadius 28px
-      <AnimatePresence>          ← existing SectionView crossfade
-        <SectionView ... />
-      </AnimatePresence>
-    </div>
-  </div>
-  <div cta-zone>                 ← existing SessionStepReflection, moved out of prop
-    {ctaSlot content}
-  </div>
-  <AlertDialog ... />            ← exit dialog, copied from SessionFocusShell
-</div>
-```
+**`src/components/SectionView.tsx`** — When in `stillUsMode`:
 
-**Heartbeat**: Add a `useEffect` in the Still Us live block that calls `sessionHeartbeat` every 60s — same logic as `SessionFocusShell` lines 63–87. The effect depends on `couple_id`, `card_id`, `device_id` which are already available in `CardView.tsx`. The cleanup (`clearInterval`) is straightforward.
+4. **SectionView padding** (line 84-90): For Still Us live sessions (`isLive && !backgroundImageUrl && !isExerciseStep`), the `paddingTop: '16px'` is fine but we should check if `paddingBottom: '16px'` (line 90) can be reduced. Since `stillUsMode` prop exists, reduce SectionView's padding to `8px` top and `8px` bottom when `stillUsMode` is true.
 
-**Status overlay**: The `statusMessage` state + overlay from SessionFocusShell (taken_over / migration_in_progress) gets added as local state in the Still Us block.
+### Net effect
+- Card padding: 28+16 = 44px top → 16+8 = 24px top (roughly halved)
+- Card padding: 20+16 = 36px bottom → 12+8 = 20px bottom
+- Card no longer vertically centers its content — text starts at top
+- Card sits near the CTA instead of floating in the middle of the screen
 
-### What stays unchanged
-- All Still Us nav logic (back/X buttons, progress bar, handleFocusBack/Advance)
-- `SectionView` props and crossfade animation
-- `SessionStepReflection` CTA
-- Kids layout (untouched)
-- Archive block (untouched — still uses SessionFocusShell for now)
-- `SessionFocusShell.tsx` file (kept, still used by archive)
-
-### Key layout differences from SessionFocusShell → kids pattern
-| Property | SessionFocusShell | Kids (target) |
-|---|---|---|
-| Content area overflow | `overflowY: 'auto', overflowX: 'hidden'` | `overflow: 'visible'` |
-| White card overflow | `overflow: 'auto'` | `overflow: 'hidden'` |
-| Content area padding | `12px 16px` | `12px 16px` (same) |
-| White card padding | `24px 24px 24px` | `28px 24px 20px` |
-
-### Risk: low
-Single block change. Heartbeat is a simple interval+cleanup. All inner content (SectionView, nav, CTA) is copy-pasted from the existing props — no logic changes.
+### Risk: minimal
+Pure CSS adjustments. No structural or logic changes.
 
