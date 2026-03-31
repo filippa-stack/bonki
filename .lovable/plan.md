@@ -1,25 +1,38 @@
 
 
-## Match Still Us Card Padding to Kids Card
+## Fix: Remove Stacked Padding in Still Us Question Card
 
-### Problem
-The Still Us white card has different padding than the Kids card, plus extra internal spacing from `SectionView` and an `alignItems: 'center'` that adds vertical centering space.
+### Root cause
+The Still Us card renders through three nested components, each adding its own padding:
 
-| | Kids card | Still Us card |
-|---|---|---|
-| Card padding | `28px 24px 20px` | `16px 20px 12px` |
-| `alignItems` | not set | `center` (adds vertical space) |
-| SectionView padding | `16px` top/bottom | `8px` top/bottom |
-| **Total top** | 28+16 = 44px | 16+8 = 24px |
+| Layer | Padding |
+|---|---|
+| White card (CardView) | `28px` top, `24px` sides, `20px` bottom |
+| SectionView wrapper | `16px` top, `16px` bottom |
+| PromptItem `div.px-6.py-4` | `16px` top/bottom, `24px` sides |
+| **Total top padding** | **60px** |
 
-The Kids card looks right despite higher padding numbers because it doesn't have `alignItems: 'center'` on the card container — that property stretches the card vertically to center content. The Still Us card also routes through `SectionView` + `PromptItem` which add their own wrapper divs and spacing, unlike the Kids card which renders a simple `<motion.p>`.
+The Kids card renders a `<motion.p>` directly — only the white card's `28px` top padding applies.
 
-### Changes
+### Fix
 
-**`src/pages/CardView.tsx`** — Still Us live session white card (line ~2587):
+**`src/pages/CardView.tsx`** — Reduce the white card padding since SectionView+PromptItem add their own:
 
-1. **Remove `alignItems: 'center'`** (line 2595) — this is the main culprit creating extra vertical space
-2. **Match padding to Kids**: Change from `16px 20px 12px` to `28px 24px 20px` (matching line 2916)
+Change `padding: '28px 24px 20px'` → `padding: '12px 0 4px'` on the Still Us white card (~line 2597).
 
-Two lines changed, no structural or logic modifications. Flickering fixes (`initial={false}`, always-mounted patterns) are untouched.
+This accounts for the inner layers:
+- Top: 12 + 16 (SectionView) + 16 (PromptItem) = 44px ≈ Kids' 28px + 16px
+- Sides: 0 + 0 (SectionView) + 24px (PromptItem) = 24px = Kids' 24px
+- Bottom: 4 + 16 + 16 = 36px → close to Kids' 20px + note area
+
+**`src/components/SectionView.tsx`** — Reduce SectionView padding for `stillUsMode`:
+
+Lines 85-90: When `stillUsMode` is true and not exercise/scenario/backArrow, use `paddingTop: '0px'` and `paddingBottom: '0px'`. Also set `paddingRight: '0'` (remove the 24px right padding that only makes sense for bookmark icons).
+
+This gives us:
+- Top: 12 (card) + 0 (SectionView) + 16 (PromptItem py-4) = 28px — matches Kids
+- Sides: 0 (card) + 0 (SectionView) + 24 (PromptItem px-6) = 24px — matches Kids
+- Bottom: 4 (card) + 0 (SectionView) + 16 (PromptItem) = 20px — matches Kids
+
+Two files, pure padding values. No structural changes, no flickering logic touched.
 
