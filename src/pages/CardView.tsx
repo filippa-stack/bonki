@@ -2720,7 +2720,8 @@ export default function CardView() {
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
               <button
-                onClick={handleKidsBack}
+                onClick={() => { console.log('[DIAG] back button onClick', Date.now()); handleKidsBack(); }}
+                onPointerDown={() => console.log('[DIAG] back button pointerDown', Date.now())}
                 aria-label="Tillbaka"
                 style={{
                   minHeight: '44px',
