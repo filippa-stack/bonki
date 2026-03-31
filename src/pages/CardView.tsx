@@ -2446,7 +2446,6 @@ export default function CardView() {
       <>
         {_devDebug}
         <SessionFocusShell
-          key={`focus-${currentStepIndex}`}
           productBgColor={product?.backgroundColor}
           illustrationSrc={cardImageUrl}
           onExit={() => setShowLeaveConfirm(true)}
