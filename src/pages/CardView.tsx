@@ -2746,7 +2746,8 @@ export default function CardView() {
               </span>
             </div>
             <button
-              onClick={() => setShowLeaveConfirm(true)}
+              onClick={() => { console.log('[DIAG] X button onClick', Date.now()); setShowLeaveConfirm(true); }}
+              onPointerDown={() => console.log('[DIAG] X button pointerDown', Date.now())}
               aria-label="Stäng"
               style={{
                 minHeight: '44px',
