@@ -22,7 +22,7 @@ export default function IllustrationPeek({ imageUrl, cardTitle, productBgColor }
       {/* ── Floating bubble — top-right, below header ── */}
       <motion.button
         onClick={() => setOpen(true)}
-        initial={{ opacity: 0, scale: 0.8 }}
+        initial={{ opacity: 1, scale: 1 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 0.6, duration: 0.4, ease: EASE }}
         aria-label={`Visa illustration: ${cardTitle}`}

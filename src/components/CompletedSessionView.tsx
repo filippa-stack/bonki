@@ -253,7 +253,7 @@ export default function CompletedSessionView({
 
           {/* Completion header */}
           <motion.div
-            initial={{ opacity: 0, y: 8 }}
+            initial={{ opacity: 1, y: 0 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             className="text-center"
@@ -261,7 +261,7 @@ export default function CompletedSessionView({
           >
             {/* Ceremonial saffron line */}
             <motion.div
-              initial={{ scaleX: 0 }}
+              initial={{ scaleX: 1 }}
               animate={{ scaleX: 1 }}
               transition={{ delay: 0.2, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
               style={{
@@ -294,7 +294,7 @@ export default function CompletedSessionView({
           {/* Locked reflections */}
           {stepGroups.length > 0 && (
             <motion.div
-              initial={{ opacity: 0, y: 12 }}
+              initial={{ opacity: 1, y: 0 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: BEAT_2, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
               className="space-y-8"
@@ -303,7 +303,7 @@ export default function CompletedSessionView({
                 <motion.div
                   key={idx}
                   className="space-y-4"
-                  initial={{ opacity: 0, y: 6 }}
+                  initial={{ opacity: 1, y: 0 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: BEAT_2 + idx * 0.06, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                 >
@@ -354,7 +354,7 @@ export default function CompletedSessionView({
           {/* Takeaway block */}
           {session.takeawayText && (
             <motion.div
-              initial={{ opacity: 0, y: 12 }}
+              initial={{ opacity: 1, y: 0 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: BEAT_3, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
               style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}
@@ -372,7 +372,7 @@ export default function CompletedSessionView({
 
           {/* CTA */}
           <motion.div
-            initial={{ opacity: 0 }}
+            initial={{ opacity: 1 }}
             animate={{ opacity: 1 }}
             transition={{ delay: BEAT_3 + 0.06, duration: EMOTION, ease: [...EASE] }}
             style={{ marginTop: '8px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}
