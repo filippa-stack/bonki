@@ -1379,7 +1379,7 @@ export default function CardView() {
         <div className="px-6 pb-16 relative" style={{ paddingTop: '48px' }}>
           {/* Back arrow */}
           <motion.div
-            initial={{ opacity: 0 }}
+            initial={{ opacity: 1 }}
             animate={{ opacity: 1 }}
             transition={{ delay: BEAT_3, duration: EMOTION }}
             style={{ position: 'absolute', top: '12px', left: '0px', zIndex: 2 }}
