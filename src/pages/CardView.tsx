@@ -2150,7 +2150,7 @@ export default function CardView() {
 
           {/* 6. CTA — Bonki Orange */}
           <motion.div
-            initial={{ opacity: 0, y: 10 }}
+            initial={{ opacity: 1, y: 0 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.25, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             style={{ marginBottom: '4px', width: '100%', display: 'flex', justifyContent: 'center' }}
