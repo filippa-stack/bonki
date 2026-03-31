@@ -1984,7 +1984,7 @@ export default function CardView() {
         }}>
           {/* 1. Category */}
           <motion.span
-            initial={{ opacity: 0 }}
+            initial={{ opacity: 1 }}
             animate={{ opacity: 1 }}
             transition={{ delay: BEAT_1, duration: EMOTION, ease: [...EASE] }}
             style={{
