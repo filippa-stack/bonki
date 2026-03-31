@@ -343,6 +343,11 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
 
 
 
+  // Loading gate — prevent flash while progress resolves
+  if (progress.loading) {
+    return <div style={{ minHeight: '100vh', backgroundColor: bg }} />;
+  }
+
   return (
     <div className="min-h-screen relative overflow-hidden" style={{ backgroundColor: bg }}>
       <ProductHomeBackButton color={LANTERN_GLOW} />
