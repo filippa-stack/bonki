@@ -118,6 +118,7 @@ export default function PortalBrowseSheet({
               background: DEEP_DUSK,
               borderTopLeftRadius: 20,
               borderTopRightRadius: 20,
+              willChange: 'transform',
               zIndex: 101,
               display: 'flex',
               flexDirection: 'column',
