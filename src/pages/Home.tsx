@@ -14,6 +14,7 @@ import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { useStillUsHome, type ActionCardKind } from '@/hooks/useStillUsHome';
 import { TOTAL_PROGRAM_CARDS } from '@/data/stillUsSequence';
 import { COLORS, getLayerForCard } from '@/lib/stillUsTokens';
+import { usePageBackground } from '@/hooks/usePageBackground';
 import { resetSliderCheckin, skipCard, restartProgram, buildSliderAnchors } from '@/lib/stillUsRpc';
 import { supabase } from '@/integrations/supabase/client';
 import { cardIdFromIndex } from '@/lib/stillUsTokens';
@@ -29,6 +30,7 @@ const REDUCED = typeof window !== 'undefined' && window.matchMedia('(prefers-red
 /* ── Main Home component ── */
 export default function Home() {
   const navigate = useNavigate();
+  usePageBackground(COLORS.emberNight);
   const { user } = useAuth();
   const { space } = useCoupleSpaceContext();
   const homeState = useStillUsHome();

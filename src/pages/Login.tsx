@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { usePageBackground } from '@/hooks/usePageBackground';
 import { useDefaultTheme } from '@/hooks/useDefaultTheme';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -17,6 +18,7 @@ import type { Json } from '@/integrations/supabase/types';
 
 export default function Login() {
   useDefaultTheme();
+  usePageBackground('var(--surface-base)');
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);

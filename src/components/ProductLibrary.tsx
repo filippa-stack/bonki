@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { usePageBackground } from '@/hooks/usePageBackground';
 import { useDefaultTheme } from '@/hooks/useDefaultTheme';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
@@ -405,6 +406,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
 });
 export default function ProductLibrary() {
   useDefaultTheme();
+  usePageBackground('#0B1026');
   const navigate = useNavigate();
   const tracked = useRef(false);
   

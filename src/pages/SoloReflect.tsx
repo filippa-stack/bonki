@@ -2,11 +2,13 @@ import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import { COLORS, cardIndexFromSlug } from '@/lib/stillUsTokens';
+import { usePageBackground } from '@/hooks/usePageBackground';
 import { CARD_SEQUENCE } from '@/data/stillUsSequence';
 import soloReflectionPrompts from '@/data/soloReflectionPrompts';
 
 const SoloReflect = () => {
   const { cardId } = useParams<{ cardId: string }>();
+  usePageBackground(COLORS.emberNight);
   const navigate = useNavigate();
   const [text, setText] = useState('');
 

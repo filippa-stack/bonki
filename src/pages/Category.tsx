@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
+import { usePageBackground } from '@/hooks/usePageBackground';
 import { useParams, useNavigate, Navigate } from 'react-router-dom';
 import { categories as stillUsCategories } from '@/data/content';
 import { motion } from 'framer-motion';
@@ -174,6 +175,9 @@ export default function Category() {
   );
 
   useVerdigrisTheme(isStillUsCategory);
+
+  const pageBg = isStillUsCategory ? '#2E2233' : '#FAF7F2';
+  usePageBackground(pageBg);
 
   const circadianColor = categoryId ? CIRCADIAN_COLORS[categoryId] : undefined;
 

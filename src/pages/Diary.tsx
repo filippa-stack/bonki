@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
+import { usePageBackground } from '@/hooks/usePageBackground';
 import { useDefaultTheme } from '@/hooks/useDefaultTheme';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -271,6 +272,7 @@ const ENTRIES_PER_PAGE = 15;
 
 export default function Diary() {
   useDefaultTheme();
+  usePageBackground('#F8F4EE');
   const { productId } = useParams<{ productId: string }>();
   const navigate = useNavigate();
   const { user } = useAuth();

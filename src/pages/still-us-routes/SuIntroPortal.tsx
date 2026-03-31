@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ChevronLeft } from 'lucide-react';
 import { COLORS } from '@/lib/stillUsTokens';
+import { usePageBackground } from '@/hooks/usePageBackground';
 import { useCardImage } from '@/hooks/useCardImage';
 
 const LANTERN = COLORS.lanternGlow;
@@ -15,6 +16,7 @@ const BG = COLORS.emberNight;
 
 export default function SuIntroPortal() {
   const navigate = useNavigate();
+  usePageBackground(BG);
   const imageSrc = useCardImage('su-mock-0');
 
   const handleStart = () => {

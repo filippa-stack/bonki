@@ -2,12 +2,14 @@ import { useState, useEffect } from 'react';
 import { useDefaultTheme } from '@/hooks/useDefaultTheme';
 import { useNavigate } from 'react-router-dom';
 import { COLORS } from '@/lib/stillUsTokens';
+import { usePageBackground } from '@/hooks/usePageBackground';
 import { dissolveCouple } from '@/lib/stillUsRpc';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 
 export default function DissolutionSettings() {
   useDefaultTheme();
+  usePageBackground(COLORS.emberNight);
   const navigate = useNavigate();
   const { user } = useAuth();
   const [step, setStep] = useState<'warning' | 'confirm'>('warning');

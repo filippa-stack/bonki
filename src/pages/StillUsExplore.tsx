@@ -19,6 +19,7 @@ import {
   DEEP_SAFFRON,
   MIDNIGHT_INK,
 } from '@/lib/palette';
+import { usePageBackground } from '@/hooks/usePageBackground';
 
 /** Four conceptual layers mapping category indices to labels */
 const LAYERS = [
@@ -30,6 +31,7 @@ const LAYERS = [
 
 export default function StillUsExplore() {
   const navigate = useNavigate();
+  usePageBackground(EMBER_NIGHT);
   const { getCardById, cards, categories } = useApp();
   const { user } = useAuth();
   const { space } = useCoupleSpaceContext();
