@@ -272,15 +272,21 @@ export function useKidsProductProgress(product: ProductManifest | undefined): Ki
     };
   }, [product, recentlyCompletedCardIds, activeSession?.cardId]);
 
-  const result = {
+  const activeCardIds = useMemo(
+    () => activeSession ? [activeSession.cardId] : [],
+    [activeSession?.cardId]
+  );
+
+  const result = useMemo(() => ({
     recentlyCompletedCardIds,
-    activeCardIds: activeSession ? [activeSession.cardId] : [],
+    activeCardIds,
     activeSession: activeSession ? { ...activeSession, currentStepIndex } : null,
     nextSuggestedCardId,
     nextSuggestedCategoryId,
     categoryProgress,
     loading,
-  };
+  }), [recentlyCompletedCardIds, activeCardIds, activeSession, currentStepIndex,
+       nextSuggestedCardId, nextSuggestedCategoryId, categoryProgress, loading]);
 
   // DEBUG: Log Still Us progress state
   useEffect(() => {
