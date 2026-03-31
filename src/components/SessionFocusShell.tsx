@@ -233,6 +233,7 @@ export default function SessionFocusShell({
             alignItems: 'center',
             gap: '20px',
             pointerEvents: showExitDialog ? 'auto' : 'none',
+            willChange: 'opacity, transform',
           }}
         >
           <p style={{
