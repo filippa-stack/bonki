@@ -155,7 +155,7 @@ export default function SessionStepReflection({
         display: 'flex',
         flexDirection: 'column',
       }}
-      initial={{ opacity: 0, y: 4 }}
+      initial={{ opacity: 1 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.28, ease: [...EASE] }}
     >
