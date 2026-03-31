@@ -2674,6 +2674,7 @@ export default function CardView() {
     };
 
     const handleKidsBack = () => {
+      console.log('[DIAG] handleKidsBack fired', Date.now(), { localPromptIndex, currentStepIndex });
       if (localPromptIndex > 0) {
         setLocalPromptIndex(localPromptIndex - 1);
       } else if (currentStepIndex > 0) {
@@ -2685,6 +2686,7 @@ export default function CardView() {
         setLocalStepIndex(prevStageIndex);
         setLocalPromptIndex(prevPromptCount - 1);
       } else {
+        console.log('[DIAG] setting showLeaveConfirm=true', Date.now());
         setShowLeaveConfirm(true);
       }
     };
