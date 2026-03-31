@@ -1,67 +1,32 @@
 
 
-## Create Jag med Andra Update Template
+## Apply Jag med Andra Category Restructure
 
-Single new file: `.lovable/jag-med-andra-update-template.md`
+Single file change: `src/data/products/jag-med-andra.ts`
 
-Contains the 4 existing category IDs (locked), their current titles/subtitles (editable), the current sequence, the tile `sub` text from the product home, and card assignments per category with counts — so you can safely rename, reorder, and reassign without breaking any IDs.
+### Categories update (lines 5-10)
 
-### Content of the file
+New titles, subtitles, descriptions, and cardCounts:
 
-```markdown
-# Jag med Andra — Category Update Template
+| # | ID | title | subtitle | cardCount |
+|---|---|---|---|---|
+| 1 | jma-vem-ar-jag | Att höra till | Att hitta sin plats — bland andra och i sig själv. | 5 |
+| 2 | jma-jag-och-andra | Att vara nära | Det som händer mellan människor — i det nära och det ärliga. | 5 |
+| 3 | jma-varlden-omkring-mig | När det blir svårt | Konflikter, gränser och känslan av att ha gjort fel. | 5 |
+| 4 | jma-vad-tror-jag-pa | Att vara sig själv | Press, mod och de stora frågorna om vem en är. | 6 |
 
-Fill in your changes below and hand this file back. I will apply it mechanically.
+### Cards array reorder + categoryId updates (lines 12-233)
 
----
+Reorder the 21 card objects into new sequence and update `categoryId` on 10 moved cards. No title/subtitle/prompt changes.
 
-## 🔒 LOCKED (never change)
+**K1 — jma-vem-ar-jag:** jma-annorlunda, jma-utseende, jma-lika-varde (was K3), jma-utanfor, jma-acceptans (was K4)
+**K2 — jma-jag-och-andra:** jma-kontakt, jma-vanskap, jma-respekt, jma-sanning (was K4), jma-integritet (was K4)
+**K3 — jma-varlden-omkring-mig:** jma-tavla, jma-konflikt (was K2), jma-kritik (was K2), jma-stopp (was K2), jma-skuld (was K1)
+**K4 — jma-vad-tror-jag-pa:** jma-duktig (was K3), jma-avund (was K2), jma-skam (was K1), jma-misslyckas (was K3), jma-modig, jma-kluringen
 
-| Field | Value |
-|---|---|
-| Product ID | `jag_med_andra` |
-| Slug | `jag-med-andra` |
-| freeCardId | `jma-vanskap` |
-| Category IDs | `jma-vem-ar-jag`, `jma-jag-och-andra`, `jma-varlden-omkring-mig`, `jma-vad-tror-jag-pa` |
-| Card IDs | all 21 existing `jma-*` IDs (see below) |
-
----
-
-## ✏️ EDITABLE — Categories
-
-Reorder rows to set the new sequence. Edit `title`, `subtitle`, `description`, and `tile sub` freely.
-Move cards between categories by updating the "Cards" column — but keep the locked card IDs.
-
-| # | Category ID (🔒) | title ✏️ | subtitle ✏️ | description ✏️ | tile sub ✏️ (product home) | tile bg ✏️ | Cards (by ID) | cardCount |
-|---|---|---|---|---|---|---|---|---|
-| 1 | `jma-vem-ar-jag` | Vem är jag | Att vara sig själv – även när det känns annorlunda. | Olikhet, utanförskap, skam, skuld och utseende | Det som formar dig inifrån | #B07A3A | jma-annorlunda, jma-utanfor, jma-skam, jma-skuld, jma-utseende | 5 |
-| 2 | `jma-jag-och-andra` | Jag & andra | Hur vi möter varandra – i det nära och det svåra. | Kontakt, vänskap, avundsjuka, kritik, konflikt, respekt och gränser | Hur vi möter varandra | #8A6036 | jma-kontakt, jma-vanskap, jma-avund, jma-kritik, jma-konflikt, jma-respekt, jma-stopp | 7 |
-| 3 | `jma-varlden-omkring-mig` | Min omvärld | Press, prestation och att mäta sig mot andra. | Prestation, tävling, misslyckande och jämlikhet | Press och prestation | #7A5230 | jma-duktig, jma-tavla, jma-misslyckas, jma-lika-varde | 4 |
-| 4 | `jma-vad-tror-jag-pa` | Vad tror jag på | Värderingar, mod och de stora frågorna. | Acceptans, integritet, sanning, mod och tankeexperiment | Värderingar och mod | #6A4828 | jma-acceptans, jma-integritet, jma-sanning, jma-modig, jma-kluringen | 5 |
-
----
-
-## 📋 All 21 Card IDs (reference)
-
-**K1 — jma-vem-ar-jag (5):** jma-annorlunda, jma-utanfor, jma-skam, jma-skuld, jma-utseende
-**K2 — jma-jag-och-andra (7):** jma-kontakt, jma-vanskap, jma-avund, jma-kritik, jma-konflikt, jma-respekt, jma-stopp
-**K3 — jma-varlden-omkring-mig (4):** jma-duktig, jma-tavla, jma-misslyckas, jma-lika-varde
-**K4 — jma-vad-tror-jag-pa (5):** jma-acceptans, jma-integritet, jma-sanning, jma-modig, jma-kluringen
-
----
-
-## ✅ Pre-submit checklist
-
-- [ ] Every category ID is one of the 4 locked IDs above
-- [ ] Every card ID is one of the 21 locked IDs above
-- [ ] cardCount per row matches the number of cards listed
-- [ ] Total cards = 21
-- [ ] freeCardId (`jma-vanskap`) is still assigned to a category
-- [ ] No card appears in more than one category
-- [ ] Sequence (row order) is intentional — row 1 appears first on the product home
-```
-
-### Files touched
-- **Created:** `.lovable/jag-med-andra-update-template.md`
-- No code changes
+### Verification
+- 5+5+5+6 = 21 cards total
+- All 21 card IDs preserved, no content changes
+- freeCardId `jma-vanskap` remains in K2
+- No other files modified
 
