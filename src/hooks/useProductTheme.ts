@@ -6,6 +6,7 @@ import type { ProductManifest } from '@/types/product';
  * design system (buttons, accents, text, background) adapts to each product.
  *
  * Accepts either individual args (legacy) or a full ProductManifest for tile colors.
+ * Pass `forceKey` (e.g. location.key) to guarantee re-application on navigation.
  */
 export function useProductTheme(
   primary: string,
@@ -14,6 +15,7 @@ export function useProductTheme(
   ctaButtonColor?: string,
   pronounMode?: 'du' | 'ni',
   manifest?: ProductManifest,
+  forceKey?: string,
 ) {
   useEffect(() => {
     const root = document.documentElement;
@@ -63,5 +65,5 @@ export function useProductTheme(
 
     // No cleanup — vars persist until overwritten by next page's theme hook
     // or useDefaultTheme(). Removing them caused flash during AnimatePresence gap.
-  }, [primary, accent, bgColor, ctaButtonColor, pronounMode, manifest]);
+  }, [primary, accent, bgColor, ctaButtonColor, pronounMode, manifest, forceKey]);
 }
