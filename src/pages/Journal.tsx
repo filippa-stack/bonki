@@ -825,7 +825,7 @@ export default function Journal() {
                   <ChevronDown size={18} strokeWidth={1.5} />
                 </motion.span>
               </button>
-            </motion.div>
+            </div>
           )}
 
           {/* Timeline */}
