@@ -287,9 +287,9 @@ export default function ProductIntro({
         {/* Subtitle / tagline */}
         {product?.tagline && (
           <motion.p
-            initial={{ opacity: 0, y: 8 }}
+            initial={false}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.35, duration: 0.6, ease: EASE }}
+            transition={{ duration: 0 }}
             style={{
               fontFamily: 'var(--font-sans)',
               fontSize: '15px',
