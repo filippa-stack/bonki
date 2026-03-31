@@ -323,7 +323,7 @@ const cards: Card[] = [
           'Vad brukar hjälpa dig när du känner dig stressad? Och hur kan du hjälpa en kompis som verkar stressad?',
           'Hur kan det bli problem av att känna för mycket stress?',
           'Vad kan barn känna sig stressade över? Är det annorlunda för vuxna, tror du?',
-          'Känner du någon som ibland pratar om att den är stressad? Vad tror du gör den stressad?',
+          'Är det skillnad på att vara stressad och att ha bråttom? Kan du ge ett exempel på när du kan känna dig stressad utan att ha bråttom?',
         ],
       },
     ],
