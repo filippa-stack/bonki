@@ -1,24 +1,32 @@
 
 
-## Capitalize Card Titles in Session Headers & Illustration Pill
+## Fix Empty Space Gap on All 7 Product Home Pages
 
-Two CSS-only changes — no structural, animation, or mount-logic modifications.
+### Root cause
+Every product home has a content wrapper with `minHeight: '100vh'` inside an outer `min-h-screen` container. The inner `100vh` + flex layout pushes content apart, creating a visible gap between tiles and bottom nav on devices where content doesn't fill the viewport.
 
-### Changes
+### Fix
+Remove `minHeight: '100vh'` from the inner content div in all 7 files. The outer `min-h-screen` already guarantees full-viewport background coverage. Also remove unbounded `flex: 1` spacers that push tiles to the bottom edge.
 
-**1. `src/components/Header.tsx` — immersive title (line ~123)**
-Add `textTransform: 'capitalize'` to the existing style object on the `<h1>` inside the immersive variant. This only affects in-session headers.
+### Files and changes
 
-**2. `src/components/IllustrationPeek.tsx` — expanded overlay title (line ~131)**
-Add `textTransform: 'capitalize'` to the style object on the `<motion.p>` that renders `cardTitle`.
+| # | File | Change |
+|---|---|---|
+| 1 | `JagIMigProductHome.tsx` (line 77) | Remove `minHeight: '100vh'` from content div style |
+| 2 | `JagMedAndraProductHome.tsx` (line 75) | Remove `minHeight: '100vh'` from content div style |
+| 3 | `JagIVarldenProductHome.tsx` (line 69) | Remove `minHeight: '100vh'` from content div style |
+| 4 | `JagIVarldenProductHome.tsx` (line 101) | Remove `<div style={{ flex: 1 }} />` spacer |
+| 5 | `VardagProductHome.tsx` (line 77) | Remove `minHeight: '100vh'` from content div style |
+| 6 | `SyskonProductHome.tsx` (line 74) | Remove `minHeight: '100vh'` from content div style |
+| 7 | `SexualitetProductHome.tsx` (line 76) | Remove `minHeight: '100vh'` from content div style |
+| 8 | `KidsProductHome.tsx` (line 545) | Remove `minHeight: '100vh'` from content div style |
 
-### Why this is flicker-safe
-- Both changes are pure CSS property additions to existing inline style objects
-- No changes to `initial`, `animate`, `AnimatePresence`, or mount logic
-- No changes to component structure, conditional rendering, or state
-- IllustrationPeek's `initial={{ opacity: 1, scale: 1 }}` pattern remains untouched
+### What stays unchanged
+- Outer `min-h-screen` on the background div (ensures full-viewport color)
+- All `paddingBottom` values with `env(safe-area-inset-bottom)` (iPhone fix)
+- Bounded spacers with `maxHeight` (Vardag, Syskon, Sexualitet) — these are fine
+- No animation, mount logic, or structural changes
 
-### Files touched
-- `src/components/Header.tsx` — 1 line addition
-- `src/components/IllustrationPeek.tsx` — 1 line addition
+### Risk: minimal
+Pure CSS removal. Background coverage is handled by parent. Content flows naturally upward.
 
