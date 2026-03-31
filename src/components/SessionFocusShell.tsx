@@ -199,91 +199,86 @@ export default function SessionFocusShell({
         {ctaSlot}
       </div>
 
-      {/* Exit dialog — Ember Glow modal */}
-      <AnimatePresence>
-        {showExitDialog && (
-          <motion.div
-            key="exit-overlay"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2, ease: [...EASE] }}
+      {/* Exit dialog — Ember Glow modal (always mounted) */}
+      <motion.div
+        initial={false}
+        animate={{ opacity: showExitDialog ? 1 : 0 }}
+        transition={{ duration: 0.2, ease: [...EASE] }}
+        style={{
+          position: 'fixed',
+          inset: 0,
+          zIndex: 100,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          pointerEvents: showExitDialog ? 'auto' : 'none',
+        }}
+        onClick={onExitDialogClose}
+      >
+        <motion.div
+          initial={false}
+          animate={{ opacity: showExitDialog ? 1 : 0, scale: showExitDialog ? 1 : 0.95 }}
+          transition={{ duration: 0.2, ease: [...EASE] }}
+          onClick={(e) => e.stopPropagation()}
+          style={{
+            backgroundColor: EMBER_GLOW,
+            borderRadius: '16px',
+            padding: '32px 28px 24px',
+            width: 'calc(100% - 48px)',
+            maxWidth: '340px',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: '20px',
+            pointerEvents: showExitDialog ? 'auto' : 'none',
+          }}
+        >
+          <p style={{
+            fontFamily: 'var(--font-serif)',
+            fontSize: '20px',
+            fontWeight: 600,
+            color: BARK,
+            textAlign: 'center',
+          }}>
+            Pausa samtalet?
+          </p>
+
+          <button
+            onClick={onExitConfirm}
             style={{
-              position: 'fixed',
-              inset: 0,
-              zIndex: 100,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              backgroundColor: 'rgba(0, 0, 0, 0.5)',
+              width: '100%',
+              height: '48px',
+              borderRadius: '12px',
+              backgroundColor: DEEP_SAFFRON,
+              border: 'none',
+              cursor: 'pointer',
+              fontFamily: 'var(--font-sans)',
+              fontSize: '15px',
+              fontWeight: 600,
+              color: MIDNIGHT_INK,
             }}
-            onClick={onExitDialogClose}
           >
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              transition={{ duration: 0.2, ease: [...EASE] }}
-              onClick={(e) => e.stopPropagation()}
-              style={{
-                backgroundColor: EMBER_GLOW,
-                borderRadius: '16px',
-                padding: '32px 28px 24px',
-                width: 'calc(100% - 48px)',
-                maxWidth: '340px',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                gap: '20px',
-              }}
-            >
-              <p style={{
-                fontFamily: 'var(--font-serif)',
-                fontSize: '20px',
-                fontWeight: 600,
-                color: BARK,
-                textAlign: 'center',
-              }}>
-                Pausa samtalet?
-              </p>
+            Ja, pausa
+          </button>
 
-              <button
-                onClick={onExitConfirm}
-                style={{
-                  width: '100%',
-                  height: '48px',
-                  borderRadius: '12px',
-                  backgroundColor: DEEP_SAFFRON,
-                  border: 'none',
-                  cursor: 'pointer',
-                  fontFamily: 'var(--font-sans)',
-                  fontSize: '15px',
-                  fontWeight: 600,
-                  color: MIDNIGHT_INK,
-                }}
-              >
-                Ja, pausa
-              </button>
-
-              <button
-                onClick={onExitDialogClose}
-                style={{
-                  background: 'none',
-                  border: 'none',
-                  cursor: 'pointer',
-                  fontFamily: 'var(--font-sans)',
-                  fontSize: '14px',
-                  fontWeight: 400,
-                  color: DRIFTWOOD,
-                  padding: '4px 8px',
-                }}
-              >
-                Fortsätt
-              </button>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          <button
+            onClick={onExitDialogClose}
+            style={{
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              fontFamily: 'var(--font-sans)',
+              fontSize: '14px',
+              fontWeight: 400,
+              color: DRIFTWOOD,
+              padding: '4px 8px',
+            }}
+          >
+            Fortsätt
+          </button>
+        </motion.div>
+      </motion.div>
     </div>
   );
 }

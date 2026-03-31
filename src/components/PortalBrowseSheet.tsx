@@ -97,6 +97,7 @@ export default function PortalBrowseSheet({
 
       {/* Sheet */}
       <motion.div
+        initial={false}
         animate={{ y: open ? 0 : '100%' }}
         transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
         drag={open ? 'y' : false}
