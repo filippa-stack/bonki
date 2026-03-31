@@ -204,10 +204,7 @@ function NoteEntryCard({ entry, navigate, index }: { entry: NoteEntry; navigate:
   const isTakeaway = entry.id.startsWith('takeaway-');
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 8 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: Math.min(index * 0.04, 0.3), duration: 0.4, ease: EASE }}
+    <div
       style={{
         backgroundColor: isTakeaway ? `${accent.deep}14` : '#2E3142',
         borderRadius: '16px',
@@ -321,17 +318,14 @@ function NoteEntryCard({ entry, navigate, index }: { entry: NoteEntry; navigate:
           {entry.cardName}
         </p>
       </div>
-    </motion.div>
+    </div>
   );
 }
 
 // ─── Completed-no-note marker ───
 function CompletedMarkerRow({ marker, index }: { marker: CompletedMarker; index: number }) {
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ delay: Math.min(index * 0.04, 0.3), duration: 0.35, ease: EASE }}
+    <div
       style={{
         display: 'flex',
         alignItems: 'center',
@@ -372,7 +366,7 @@ function CompletedMarkerRow({ marker, index }: { marker: CompletedMarker; index:
       <span style={{ fontSize: '12px', color: `${DRIFTWOOD}66`, marginLeft: 'auto' }}>
         {formatRelativeDate(marker.date)}
       </span>
-    </motion.div>
+    </div>
   );
 }
 
@@ -675,10 +669,7 @@ export default function Journal() {
   return (
     <div style={{ minHeight: '100vh', backgroundColor: MIDNIGHT_INK, display: 'flex', flexDirection: 'column' }}>
       {/* Header */}
-      <motion.div
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, ease: EASE }}
+      <div
         style={{
           paddingTop: 'calc(env(safe-area-inset-top, 0px) + 56px)',
           textAlign: 'center',
@@ -700,14 +691,11 @@ export default function Journal() {
         }}>
           Vad ni burit med er.
         </p>
-      </motion.div>
+      </div>
 
       {/* Filter chips */}
       {!isEmpty && !loading && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.15, duration: 0.4, ease: EASE }}
+        <div
           style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginTop: '16px' }}
         >
           {(['barn', 'par'] as const).map(chip => {
@@ -731,7 +719,7 @@ export default function Journal() {
               </button>
             );
           })}
-        </motion.div>
+        </div>
       )}
 
       {/* Content */}
@@ -741,10 +729,7 @@ export default function Journal() {
         </div>
       ) : isEmpty ? (
         <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2, duration: 0.5, ease: EASE }}
+          <div
             style={{ textAlign: 'center', padding: '0 40px' }}
           >
             {/* Subtle decorative line */}
@@ -769,16 +754,13 @@ export default function Journal() {
               width: '32px', height: '1px', margin: '24px auto 0',
               background: `linear-gradient(90deg, transparent, ${DRIFTWOOD}66, transparent)`,
             }} />
-          </motion.div>
+          </div>
         </div>
       ) : (
         <div style={{ flex: 1, overflowY: 'auto', paddingBottom: 'calc(72px + env(safe-area-inset-bottom, 0px))' }}>
           {/* Pulse Card */}
           {pulseData && (
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2, duration: 0.5, ease: EASE }}
+            <div
               style={{
                 margin: '20px 16px 0',
                 background: `linear-gradient(135deg, ${DEEP_DUSK}, ${DEEP_DUSK}ee)`,
@@ -815,15 +797,12 @@ export default function Journal() {
                   I {pulseData.uniqueProductCount} olika samtalsprodukter
                 </p>
               )}
-            </motion.div>
+            </div>
           )}
 
           {/* Par Privacy Row */}
           {showParPrivacy && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.3, duration: 0.4, ease: EASE }}
+            <div
               style={{ margin: '12px 16px 0' }}
             >
               <button
@@ -846,7 +825,7 @@ export default function Journal() {
                   <ChevronDown size={18} strokeWidth={1.5} />
                 </motion.span>
               </button>
-            </motion.div>
+            </div>
           )}
 
           {/* Timeline */}
