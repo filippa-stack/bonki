@@ -581,7 +581,7 @@ export default function ProductLibrary() {
           animate={{ opacity: 1 }}
           style={{
             textAlign: 'center',
-            padding: '56px 32px 0',
+            padding: 'calc(env(safe-area-inset-top, 0px) + 56px) 32px 0',
           }}
         >
           <motion.h1
