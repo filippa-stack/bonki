@@ -2558,7 +2558,7 @@ export default function CardView() {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            justifyContent: 'center',
+            justifyContent: 'flex-end',
             position: 'relative',
             overflow: 'visible',
             padding: '12px 16px',
