@@ -98,7 +98,7 @@ export default function ProductHome() {
     <div className="min-h-screen flex flex-col" style={{ backgroundColor: 'var(--surface-base)' }}>
       {/* Header bar */}
       <motion.div
-        initial={{ opacity: 0 }}
+        initial={{ opacity: 1 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
         className="px-5 pt-14 pb-4"
