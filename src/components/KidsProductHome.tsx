@@ -349,7 +349,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
   }
 
   return (
-    <div className="min-h-screen relative overflow-hidden" style={{ backgroundColor: bg }}>
+    <div className="min-h-screen relative overflow-x-hidden" style={{ backgroundColor: bg }}>
       <ProductHomeBackButton color={LANTERN_GLOW} />
 
       {/* ── Atmospheric radial glow behind hero ── */}
