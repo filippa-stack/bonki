@@ -719,7 +719,7 @@ export default function Journal() {
               </button>
             );
           })}
-        </motion.div>
+        </div>
       )}
 
       {/* Content */}
