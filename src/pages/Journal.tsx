@@ -325,10 +325,7 @@ function NoteEntryCard({ entry, navigate, index }: { entry: NoteEntry; navigate:
 // ─── Completed-no-note marker ───
 function CompletedMarkerRow({ marker, index }: { marker: CompletedMarker; index: number }) {
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ delay: Math.min(index * 0.04, 0.3), duration: 0.35, ease: EASE }}
+    <div
       style={{
         display: 'flex',
         alignItems: 'center',
