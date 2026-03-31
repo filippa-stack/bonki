@@ -2496,6 +2496,28 @@ export default function CardView() {
                   />
                 </button>
 
+                {/* X close button — right side */}
+                <button
+                  onClick={() => setShowLeaveConfirm(true)}
+                  aria-label="Stäng samtalet"
+                  style={{
+                    position: 'absolute',
+                    right: '8px',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    minHeight: '44px',
+                    minWidth: '44px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <X size={18} strokeWidth={1.5} style={{ color: LANTERN_GLOW_LOCAL, opacity: 0.5 }} />
+                </button>
+
                 {/* Card name */}
                 <span style={{
                   fontFamily: 'var(--font-sans)',

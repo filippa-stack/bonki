@@ -90,6 +90,7 @@ export default function PortalBrowseSheet({
           inset: 0,
           background: 'rgba(0,0,0,0.5)',
           willChange: 'opacity',
+          transform: 'translateZ(0)',
           pointerEvents: open ? 'auto' : 'none',
           zIndex: 100,
         }}
