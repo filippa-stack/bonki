@@ -266,9 +266,9 @@ export default function ProductIntro({
 
         {/* 2. Welcome header */}
         <motion.h1
-          initial={{ opacity: 0, y: 14 }}
+          initial={false}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 0.7, ease: EASE }}
+          transition={{ duration: 0 }}
           style={{
             fontFamily: 'var(--font-serif)',
             fontSize: '28px',
