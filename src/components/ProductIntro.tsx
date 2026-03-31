@@ -305,9 +305,9 @@ export default function ProductIntro({
 
         {/* 3. Full body text — all paragraphs visible */}
         <motion.div
-          initial={{ opacity: 0, y: 8 }}
+          initial={false}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.45, duration: 0.6, ease: EASE }}
+          transition={{ duration: 0 }}
           style={{ textAlign: 'center', marginTop: '8px' }}
         >
           {fullBodyText.split('\n\n').map((para, i) => (
