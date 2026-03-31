@@ -261,7 +261,7 @@ export default function CompletedSessionView({
           >
             {/* Ceremonial saffron line */}
             <motion.div
-              initial={{ scaleX: 0 }}
+              initial={{ scaleX: 1 }}
               animate={{ scaleX: 1 }}
               transition={{ delay: 0.2, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
               style={{
