@@ -408,7 +408,7 @@ export default function ProductLibrary() {
   const navigate = useNavigate();
   const tracked = useRef(false);
   
-  const { purchased } = useAllProductAccess();
+  const { purchased, loading: accessLoading } = useAllProductAccess();
   const { user } = useAuth();
   // Still Fair interest tracking (kept for future use)
   const [notifySignedUp, setNotifySignedUp] = useState(false);
