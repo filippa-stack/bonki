@@ -572,9 +572,8 @@ export default function ProductLibrary() {
       <div style={{ position: 'relative', zIndex: 1 }}>
         {/* Hero zone — compact cinematic */}
         <motion.div
-          initial={{ opacity: 0 }}
+          initial={{ opacity: 1 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           style={{
             textAlign: 'center',
             padding: '56px 32px 0',
