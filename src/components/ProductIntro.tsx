@@ -7,6 +7,7 @@ import { allProducts } from '@/data/products';
 import { useCardImage } from '@/hooks/useCardImage';
 import { supabase } from '@/integrations/supabase/client';
 import { LANTERN_GLOW, DRIFTWOOD, MIDNIGHT_INK, BONKI_ORANGE, DEEP_SAFFRON, productTileColors } from '@/lib/palette';
+import { usePageBackground } from '@/hooks/usePageBackground';
 
 // ── Illustration imports (same as product homes) ──
 import jimImage from '@/assets/illustration-jag-i-mig.png';
