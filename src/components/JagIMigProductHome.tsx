@@ -26,6 +26,7 @@ const CREATURE_TILE_STYLES: CreatureTileStyle[] = [
   { scale: 1.1, objectPosition: '50% 20%', opacity: 1 },
   { scale: 1.1, objectPosition: '50% 20%', opacity: 1 },
   { scale: 1.1, objectPosition: '50% 20%', opacity: 1 },
+  { scale: 1.1, objectPosition: '50% 20%', opacity: 1 },
 ];
 
 const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.11, delayChildren: 0.4 } } };
