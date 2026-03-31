@@ -7,6 +7,7 @@ import { allProducts } from '@/data/products';
 import { useCardImage } from '@/hooks/useCardImage';
 import { supabase } from '@/integrations/supabase/client';
 import { LANTERN_GLOW, DRIFTWOOD, MIDNIGHT_INK, BONKI_ORANGE, DEEP_SAFFRON, productTileColors } from '@/lib/palette';
+import { usePageBackground } from '@/hooks/usePageBackground';
 
 // ── Illustration imports (same as product homes) ──
 import jimImage from '@/assets/illustration-jag-i-mig.png';
@@ -120,6 +121,7 @@ export default function ProductIntro({
   if (noIntro) return null;
 
   const bgColor = backgroundColor ?? product?.backgroundColor ?? MIDNIGHT_INK;
+  usePageBackground(bgColor);
   const creatureImage = PRODUCT_ILLUSTRATION[productId];
   const shortIntro = SHORT_INTROS[productId] ?? '';
   const isSexualitet = productId === 'sexualitetskort';
@@ -175,9 +177,9 @@ export default function ProductIntro({
       {/* ── 1. Illustration zone — atmospheric creature backdrop ── */}
       {creatureImage && (
         <motion.div
-          initial={{ opacity: 0, scale: 1.05 }}
+          initial={false}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1.2, ease: EASE }}
+          transition={{ duration: 0 }}
           style={{
             position: 'absolute',
             top: 0,
@@ -222,9 +224,9 @@ export default function ProductIntro({
 
       {/* ── Back button ── */}
       <motion.button
-        initial={{ opacity: 0 }}
+        initial={false}
         animate={{ opacity: 1 }}
-        transition={{ delay: 0.3, duration: 0.5 }}
+        transition={{ duration: 0 }}
         onClick={() => {
           localStorage.removeItem('bonki-last-active-product');
           navigate('/', { replace: true });
@@ -264,9 +266,9 @@ export default function ProductIntro({
 
         {/* 2. Welcome header */}
         <motion.h1
-          initial={{ opacity: 0, y: 14 }}
+          initial={false}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 0.7, ease: EASE }}
+          transition={{ duration: 0 }}
           style={{
             fontFamily: 'var(--font-serif)',
             fontSize: '28px',
@@ -285,9 +287,9 @@ export default function ProductIntro({
         {/* Subtitle / tagline */}
         {product?.tagline && (
           <motion.p
-            initial={{ opacity: 0, y: 8 }}
+            initial={false}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.35, duration: 0.6, ease: EASE }}
+            transition={{ duration: 0 }}
             style={{
               fontFamily: 'var(--font-sans)',
               fontSize: '15px',
@@ -303,9 +305,9 @@ export default function ProductIntro({
 
         {/* 3. Full body text — all paragraphs visible */}
         <motion.div
-          initial={{ opacity: 0, y: 8 }}
+          initial={false}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.45, duration: 0.6, ease: EASE }}
+          transition={{ duration: 0 }}
           style={{ textAlign: 'center', marginTop: '8px' }}
         >
           {fullBodyText.split('\n\n').map((para, i) => (
@@ -345,9 +347,9 @@ export default function ProductIntro({
         {/* 6. First card preview */}
         {resolvedFreeCardTitle && !isStillUs && (
           <motion.div
-            initial={{ opacity: 0, y: 12 }}
+            initial={false}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6, duration: 0.7, ease: EASE }}
+            transition={{ duration: 0 }}
             style={{
               display: 'flex',
               alignItems: 'center',
@@ -428,9 +430,9 @@ export default function ProductIntro({
 
         {/* 7. CTA Button */}
         <motion.div
-          initial={{ opacity: 0, y: 10 }}
+          initial={false}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.75, duration: 0.6, ease: EASE }}
+          transition={{ duration: 0 }}
           style={{
             marginTop: '24px',
             paddingBottom: 'calc(24px + env(safe-area-inset-bottom, 0px))',

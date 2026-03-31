@@ -14,6 +14,7 @@ import {
   SAFFRON_FLAME,
   BONKI_ORANGE,
 } from '@/lib/palette';
+import { usePageBackground } from '@/hooks/usePageBackground';
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
@@ -30,6 +31,7 @@ const VALUE_LINES: Record<string, string> = {
 
 export default function PaywallFullScreen() {
   useDefaultTheme();
+  usePageBackground(MIDNIGHT_INK);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { user } = useAuth();
@@ -136,9 +138,9 @@ export default function PaywallFullScreen() {
 
   return (
     <motion.div
-      initial={{ opacity: 0 }}
+      initial={false}
       animate={{ opacity: 1 }}
-      transition={{ duration: 0.3 }}
+      transition={{ duration: 0 }}
       style={{
         position: 'fixed',
         inset: 0,
@@ -150,9 +152,9 @@ export default function PaywallFullScreen() {
     >
       {/* Back button */}
       <motion.button
-        initial={{ opacity: 0 }}
+        initial={false}
         animate={{ opacity: 1 }}
-        transition={{ delay: 0.15, duration: 0.4 }}
+        transition={{ duration: 0 }}
         onClick={() => navigate(-1)}
         style={{
           position: 'absolute',

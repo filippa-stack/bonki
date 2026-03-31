@@ -6,10 +6,10 @@ import bonkiLogo from '@/assets/bonki-logo-transparent.png';
 
 const EASE: [number, number, number, number] = [0.4, 0.0, 0.2, 1];
 
-const fadeUp = (delay: number) => ({
-  initial: { opacity: 0, y: 14 },
+const fadeUp = (_delay: number) => ({
+  initial: { opacity: 1, y: 0 },
   animate: { opacity: 1, y: 0 },
-  transition: { delay, duration: 0.7, ease: EASE },
+  transition: { duration: 0 },
 });
 
 export default function Onboarding() {
@@ -44,9 +44,9 @@ export default function Onboarding() {
 
       {/* ── Illustration — warm, visible, creatures emerging from the dark ── */}
       <motion.div
-        initial={{ opacity: 0, scale: 0.96 }}
+        initial={false}
         animate={{ opacity: 1, scale: 1 }}
-        transition={{ delay: 0.15, duration: 1.0, ease: EASE }}
+        transition={{ duration: 0 }}
         style={{
           position: 'relative',
           zIndex: 1,
