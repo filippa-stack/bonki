@@ -218,9 +218,8 @@ export default function PromptItem({ prompt, index, sectionType, preamble, ancho
             }}
           >
             <motion.p
-              initial={{ opacity: 0 }}
+              initial={{ opacity: 1 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.4, delay: 0.15, ease: enterEase }}
               style={{
                 fontFamily: 'var(--font-sans)',
                 fontSize: '10px',
