@@ -323,7 +323,7 @@ const cards: Card[] = [
           'Vad brukar hjälpa dig när du känner dig stressad? Och hur kan du hjälpa en kompis som verkar stressad?',
           'Hur kan det bli problem av att känna för mycket stress?',
           'Vad kan barn känna sig stressade över? Är det annorlunda för vuxna, tror du?',
-          'Känner du någon som ibland pratar om att den är stressad? Vad tror du gör den stressad?',
+          'Är det skillnad på att vara stressad och att ha bråttom? Kan du ge ett exempel på när du kan känna dig stressad utan att ha bråttom?',
         ],
       },
     ],
@@ -331,7 +331,7 @@ const cards: Card[] = [
   {
     id: 'jim-avundsjuk',
     title: 'Avundsjuk',
-    subtitle: 'Att vilja ha det någon annan har — och vad det handlar om',
+    subtitle: 'Att vilja ha det någon annan har',
     categoryId: 'jim-stora-kanslor',
     sections: [
       {
@@ -344,7 +344,7 @@ const cards: Card[] = [
           'Varför tror du att människor känner avundsjuka?',
           'Vad kan du bli avundsjuk på?',
           'Varför kan det kännas viktigt att ha det som andra har?',
-          'Har du känt dig avundsjuk ibland, även om vuxna sagt att allt är rättvist? Hur kändes det?',
+          'Har du känt dig avundsjuk någon gång, även om en vuxen sa att det var rättvist? Vad hände då?',
           'Vad tror du vuxna kan vara avundsjuka på?',
           'Hur kan du tänka för att känna dig mindre avundsjuk?',
         ],
