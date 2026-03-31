@@ -19,9 +19,7 @@ export default function SavedConversations() {
 
       <div className="px-6 pt-8 pb-12">
         {sortedConversations.length === 0 ? (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+          <div
             className="text-center py-24 px-4"
           >
             {/* Decorative saffron dot */}
