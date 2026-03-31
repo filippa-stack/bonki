@@ -1,6 +1,4 @@
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { BEAT_1 } from '@/lib/motion';
 import { useTranslation } from 'react-i18next';
 import { useApp } from '@/contexts/AppContext';
 import Header from '@/components/Header';
@@ -21,9 +19,7 @@ export default function SavedConversations() {
 
       <div className="px-6 pt-8 pb-12">
         {sortedConversations.length === 0 ? (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+          <div
             className="text-center py-24 px-4"
           >
             {/* Decorative saffron dot */}
@@ -48,21 +44,18 @@ export default function SavedConversations() {
             >
               Till startsidan
             </button>
-          </motion.div>
+          </div>
         ) : (
           <div className="space-y-8">
             {sortedConversations.map((conversation, index) => (
-              <motion.div
+              <div
                 key={conversation.id}
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * BEAT_1 }}
               >
                 <ConversationCard
                   conversation={conversation}
                   onClick={() => navigate(`/card/${conversation.cardId}`)}
                 />
-              </motion.div>
+              </div>
             ))}
           </div>
         )}
