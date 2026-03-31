@@ -183,7 +183,7 @@ export default function Category() {
 
   if (!category) {
     return (
-      <div className="min-h-screen" style={{ backgroundColor: isStillUsCategory ? 'var(--surface-base)' : MIDNIGHT_INK }}>
+      <div className="min-h-screen" style={{ backgroundColor: pageBg }}>
         <div className="h-14 border-b border-border" style={{ backgroundColor: 'var(--surface-raised)' }} />
         <div className="px-5 pt-12 space-y-4 max-w-md mx-auto text-center">
           <div className="h-6 w-40 rounded bg-muted/30 animate-pulse mx-auto" />
