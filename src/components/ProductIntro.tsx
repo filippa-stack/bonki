@@ -224,9 +224,9 @@ export default function ProductIntro({
 
       {/* ── Back button ── */}
       <motion.button
-        initial={{ opacity: 0 }}
+        initial={false}
         animate={{ opacity: 1 }}
-        transition={{ delay: 0.3, duration: 0.5 }}
+        transition={{ duration: 0 }}
         onClick={() => {
           localStorage.removeItem('bonki-last-active-product');
           navigate('/', { replace: true });
