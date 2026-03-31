@@ -74,8 +74,10 @@ export default function BottomNav() {
   const { pathname, search } = useLocation();
   const { hasCompletedOnboarding } = useApp();
 
-  // Hide during onboarding
-  if (!hasCompletedOnboarding) return null;
+  // Hide during onboarding (mirror Index.tsx bypass logic)
+  const demoActive = isDemoMode();
+  const devBypass = new URLSearchParams(search).get('devState');
+  if (!hasCompletedOnboarding && !demoActive && !devBypass) return null;
 
   // Hide during active sessions (card sessions, Still Us sessions)
   // Show on /card/ when viewing archive or completed session
