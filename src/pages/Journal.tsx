@@ -729,10 +729,7 @@ export default function Journal() {
         </div>
       ) : isEmpty ? (
         <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2, duration: 0.5, ease: EASE }}
+          <div
             style={{ textAlign: 'center', padding: '0 40px' }}
           >
             {/* Subtle decorative line */}
