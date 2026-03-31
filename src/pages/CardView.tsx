@@ -1798,7 +1798,7 @@ export default function CardView() {
           {/* Question hook */}
           {questionHook && (
             <motion.p
-              initial={{ opacity: 0, y: 6 }}
+              initial={{ opacity: 1, y: 0 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: BEAT_1 + 0.1, duration: 0.6, ease: [...EASE] }}
               style={{
