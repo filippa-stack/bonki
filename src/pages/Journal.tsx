@@ -691,14 +691,11 @@ export default function Journal() {
         }}>
           Vad ni burit med er.
         </p>
-      </motion.div>
+      </div>
 
       {/* Filter chips */}
       {!isEmpty && !loading && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.15, duration: 0.4, ease: EASE }}
+        <div
           style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginTop: '16px' }}
         >
           {(['barn', 'par'] as const).map(chip => {
