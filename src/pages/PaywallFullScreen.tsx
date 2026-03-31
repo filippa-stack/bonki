@@ -138,9 +138,9 @@ export default function PaywallFullScreen() {
 
   return (
     <motion.div
-      initial={{ opacity: 0 }}
+      initial={false}
       animate={{ opacity: 1 }}
-      transition={{ duration: 0.3 }}
+      transition={{ duration: 0 }}
       style={{
         position: 'fixed',
         inset: 0,
