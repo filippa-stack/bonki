@@ -2446,116 +2446,203 @@ export default function CardView() {
     return (
       <>
         {_devDebug}
-        <SessionFocusShell
-          productBgColor={product?.backgroundColor}
-          illustrationSrc={cardImageUrl}
-          onExit={() => setShowLeaveConfirm(true)}
-          onPause={() => navigate('/')}
-          showExitDialog={showLeaveConfirm}
-          onExitDialogClose={() => setShowLeaveConfirm(false)}
-          onExitConfirm={() => handleSmartExit()}
-          topSlot={
+        <div style={{
+          position: 'fixed',
+          inset: 0,
+          backgroundColor: product?.backgroundColor ?? MIDNIGHT_INK_LOCAL,
+          display: 'flex',
+          flexDirection: 'column',
+          zIndex: 10,
+        }}>
+          {/* ── Header bar ── */}
+          <div style={{
+            flex: '0 0 auto',
+            width: '100%',
+            backgroundColor: product?.backgroundColor ?? MIDNIGHT_INK_LOCAL,
+            paddingTop: 'env(safe-area-inset-top, 0px)',
+          }}>
+            {/* Nav bar — 52px */}
+            <div style={{
+              height: '52px',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center',
+              position: 'relative',
+              paddingLeft: '48px',
+              paddingRight: '48px',
+            }}>
+              {/* Back arrow */}
+              <button
+                onClick={() => { if (localPromptIndex > 0 || currentStepIndex > 0) { handleFocusBack(); } else { setShowLeaveConfirm(true); } }}
+                aria-label="Tillbaka"
+                style={{
+                  position: 'absolute',
+                  left: '8px',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  minHeight: '44px',
+                  minWidth: '44px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                }}
+              >
+                <ArrowLeft
+                  size={18}
+                  strokeWidth={1.8}
+                  style={{ color: LANTERN_GLOW_LOCAL, opacity: 0.5 }}
+                />
+              </button>
+
+              {/* X close button — right side */}
+              <button
+                onClick={() => setShowLeaveConfirm(true)}
+                aria-label="Stäng samtalet"
+                style={{
+                  position: 'absolute',
+                  right: '8px',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  minHeight: '44px',
+                  minWidth: '44px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                }}
+              >
+                <X size={18} strokeWidth={1.5} style={{ color: LANTERN_GLOW_LOCAL, opacity: 0.5 }} />
+              </button>
+
+              {/* Card name */}
+              <span style={{
+                fontFamily: 'var(--font-sans)',
+                fontSize: '13px',
+                color: LANTERN_GLOW_LOCAL,
+                opacity: 0.85,
+                textAlign: 'center',
+                lineHeight: 1.2,
+                marginBottom: '4px',
+              }}>
+                {card?.title}
+              </span>
+            </div>
+
+            {/* Progress bar — full width, 2px */}
             <div style={{
               width: '100%',
-              backgroundColor: product?.backgroundColor ?? MIDNIGHT_INK_LOCAL,
-              paddingTop: 'env(safe-area-inset-top, 0px)',
+              height: '2px',
+              backgroundColor: 'rgba(255,255,255,0.08)',
             }}>
-              {/* Nav bar — 52px */}
-              <div style={{
-                height: '52px',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-                position: 'relative',
-                paddingLeft: '48px',
-                paddingRight: '48px',
-              }}>
-                {/* Back arrow */}
-                <button
-                  onClick={() => { if (localPromptIndex > 0 || currentStepIndex > 0) { handleFocusBack(); } else { setShowLeaveConfirm(true); } }}
-                  aria-label="Tillbaka"
-                  style={{
-                    position: 'absolute',
-                    left: '8px',
-                    top: '50%',
-                    transform: 'translateY(-50%)',
-                    minHeight: '44px',
-                    minWidth: '44px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    background: 'none',
-                    border: 'none',
-                    cursor: 'pointer',
-                  }}
-                >
-                  <ArrowLeft
-                    size={18}
-                    strokeWidth={1.8}
-                    style={{ color: LANTERN_GLOW_LOCAL, opacity: 0.5 }}
-                  />
-                </button>
-
-                {/* X close button — right side */}
-                <button
-                  onClick={() => setShowLeaveConfirm(true)}
-                  aria-label="Stäng samtalet"
-                  style={{
-                    position: 'absolute',
-                    right: '8px',
-                    top: '50%',
-                    transform: 'translateY(-50%)',
-                    minHeight: '44px',
-                    minWidth: '44px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    background: 'none',
-                    border: 'none',
-                    cursor: 'pointer',
-                  }}
-                >
-                  <X size={18} strokeWidth={1.5} style={{ color: LANTERN_GLOW_LOCAL, opacity: 0.5 }} />
-                </button>
-
-                {/* Card name */}
-                <span style={{
-                  fontFamily: 'var(--font-sans)',
-                  fontSize: '13px',
-                  color: LANTERN_GLOW_LOCAL,
-                  opacity: 0.85,
-                  textAlign: 'center',
-                  lineHeight: 1.2,
-                  marginBottom: '4px',
-                }}>
-                  {card?.title}
-                </span>
-
-              </div>
-
-              {/* Progress bar — full width, 2px */}
-              <div style={{
-                width: '100%',
-                height: '2px',
-                backgroundColor: 'rgba(255,255,255,0.08)',
-              }}>
-                <motion.div
-                  initial={false}
-                  animate={{ width: `${progressFraction * 100}%` }}
-                  transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
-                  style={{
-                    height: '100%',
-                    backgroundColor: DEEP_SAFFRON_LOCAL,
-                  }}
-                />
-              </div>
+              <motion.div
+                initial={false}
+                animate={{ width: `${progressFraction * 100}%` }}
+                transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
+                style={{
+                  height: '100%',
+                  backgroundColor: DEEP_SAFFRON_LOCAL,
+                }}
+              />
             </div>
-          }
-          ctaSlot={
+          </div>
+
+          {/* ── Content area — illustration bg + white question card ── */}
+          <div style={{
+            flex: '1 1 auto',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            position: 'relative',
+            overflow: 'visible',
+            padding: '12px 16px',
+          }}>
+            {/* Illustration background — behind the white card */}
+            {cardImageUrl && (
+              <img
+                src={cardImageUrl}
+                alt=""
+                draggable={false}
+                style={{
+                  position: 'absolute',
+                  inset: '-32%',
+                  width: '164%',
+                  height: '164%',
+                  objectFit: 'contain',
+                  objectPosition: '50% 45%',
+                  opacity: 0.7,
+                  pointerEvents: 'none',
+                  zIndex: 0,
+                }}
+              />
+            )}
+
+            {/* White question card — sizes to content */}
+            <div style={{
+              position: 'relative',
+              zIndex: 1,
+              width: '100%',
+              maxWidth: '520px',
+              flex: '0 0 auto',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              backgroundColor: '#FAF7F2',
+              borderRadius: '28px',
+              padding: '28px 24px 20px',
+              boxShadow: '0 8px 32px rgba(0,0,0,0.15)',
+              overflow: 'hidden',
+            }}>
+              {/* Centered question — crossfade */}
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={`focus-q-${currentSection.id}-${localPromptIndex}`}
+                  initial={false}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0, transition: { duration: 0.15 } }}
+                  transition={{ duration: 0.15 }}
+                  className="w-full text-center"
+                >
+                  <SectionView
+                    ref={sectionViewRef}
+                    section={currentSection}
+                    card={card}
+                    promptIndex={resolvedPromptIndex}
+                    coupleSpaceId={space?.id ?? null}
+                    sessionId={normalizedSession.sessionId ?? null}
+                    cardId={cardId ?? null}
+                    stageIndex={currentStepIndex}
+                    isLive={true}
+                    isReflectionStep={isReflectionStep}
+                    isExerciseStep={isExerciseStep}
+                    showBackArrow={false}
+                    stillUsMode={true}
+                  />
+                </motion.div>
+              </AnimatePresence>
+            </div>
+          </div>
+
+          {/* ── CTA zone ── */}
+          <div style={{
+            flex: '0 0 auto',
+            width: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            padding: '8px 24px',
+            paddingBottom: 'calc(16px + env(safe-area-inset-bottom, 0px))',
+          }}>
             <SessionStepReflection
               key={`${currentStepIndex}-${localPromptIndex}`}
-                    sessionId={activeSessionId ?? null}
+              sessionId={activeSessionId ?? null}
               stepIndex={currentStepIndex}
               promptIndex={localPromptIndex}
               isLastStep={isLastStage && isLastPromptInStage}
@@ -2583,36 +2670,42 @@ export default function CardView() {
                 }
               }}
             />
-          }
-        >
-          {/* Centered question — crossfade */}
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={`focus-q-${currentSection.id}-${localPromptIndex}`}
-              initial={false}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0, transition: { duration: 0.15 } }}
-              transition={{ duration: 0.15 }}
-              className="w-full text-center"
-            >
-              <SectionView
-                ref={sectionViewRef}
-                section={currentSection}
-                card={card}
-                promptIndex={resolvedPromptIndex}
-                coupleSpaceId={space?.id ?? null}
-                sessionId={normalizedSession.sessionId ?? null}
-                cardId={cardId ?? null}
-                stageIndex={currentStepIndex}
-                isLive={true}
-                isReflectionStep={isReflectionStep}
-                isExerciseStep={isExerciseStep}
-                showBackArrow={false}
-                stillUsMode={true}
-              />
-            </motion.div>
-          </AnimatePresence>
-        </SessionFocusShell>
+          </div>
+        </div>
+
+        {/* Exit confirmation dialog — Still Us */}
+        <AlertDialog open={showLeaveConfirm} onOpenChange={(open) => { if (!open) setShowLeaveConfirm(false); }}>
+          <AlertDialogContent style={{ backgroundColor: '#F5E8CC', borderRadius: '16px', border: 'none' }}>
+            <AlertDialogHeader>
+              <AlertDialogTitle style={{
+                fontFamily: 'var(--font-serif)',
+                fontSize: '20px',
+                color: '#2C2420',
+                textAlign: 'center',
+              }}>
+                Pausa samtalet?
+              </AlertDialogTitle>
+            </AlertDialogHeader>
+            <AlertDialogFooter style={{ flexDirection: 'column', gap: '12px', marginTop: '8px' }}>
+              <AlertDialogAction onClick={() => handleSmartExit()} style={{
+                backgroundColor: DEEP_SAFFRON_LOCAL,
+                color: MIDNIGHT_INK_LOCAL,
+                borderRadius: '12px',
+                height: '48px',
+              }}>
+                Ja, pausa
+              </AlertDialogAction>
+              <AlertDialogCancel onClick={() => setShowLeaveConfirm(false)} style={{
+                background: 'none',
+                border: 'none',
+                color: '#8B7E6A',
+                fontSize: '14px',
+              }}>
+                Fortsätt
+              </AlertDialogCancel>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
 
         {/* GÖR TILLSAMMANS one-time overlay */}
         <AnimatePresence>
