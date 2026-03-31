@@ -78,24 +78,21 @@ export default function PortalBrowseSheet({
   );
 
   return (
-    <AnimatePresence>
-      {open && (
-        <>
-          {/* Backdrop */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
-            onClick={onClose}
-            style={{
-              position: 'fixed',
-              inset: 0,
-              background: 'rgba(0,0,0,0.5)',
-              willChange: 'opacity',
-              zIndex: 100,
-            }}
-          />
+    <>
+      {/* Backdrop */}
+      <motion.div
+        animate={{ opacity: open ? 1 : 0 }}
+        transition={{ duration: 0.25 }}
+        onClick={onClose}
+        style={{
+          position: 'fixed',
+          inset: 0,
+          background: 'rgba(0,0,0,0.5)',
+          willChange: 'opacity',
+          pointerEvents: open ? 'auto' : 'none',
+          zIndex: 100,
+        }}
+      />
 
           {/* Sheet */}
           <motion.div
