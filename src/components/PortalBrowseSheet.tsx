@@ -81,6 +81,7 @@ export default function PortalBrowseSheet({
     <>
       {/* Backdrop */}
       <motion.div
+        initial={false}
         animate={{ opacity: open ? 1 : 0 }}
         transition={{ duration: 0.25 }}
         onClick={onClose}
