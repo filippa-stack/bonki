@@ -152,9 +152,9 @@ export default function PaywallFullScreen() {
     >
       {/* Back button */}
       <motion.button
-        initial={{ opacity: 0 }}
+        initial={false}
         animate={{ opacity: 1 }}
-        transition={{ delay: 0.15, duration: 0.4 }}
+        transition={{ duration: 0 }}
         onClick={() => navigate(-1)}
         style={{
           position: 'absolute',

@@ -430,9 +430,9 @@ export default function ProductIntro({
 
         {/* 7. CTA Button */}
         <motion.div
-          initial={{ opacity: 0, y: 10 }}
+          initial={false}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.75, duration: 0.6, ease: EASE }}
+          transition={{ duration: 0 }}
           style={{
             marginTop: '24px',
             paddingBottom: 'calc(24px + env(safe-area-inset-bottom, 0px))',
