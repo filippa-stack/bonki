@@ -4,7 +4,7 @@
  */
 
 import { useCallback, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Check } from 'lucide-react';
 import { useCardImage } from '@/hooks/useCardImage';
 import {
@@ -78,53 +78,49 @@ export default function PortalBrowseSheet({
   );
 
   return (
-    <AnimatePresence>
-      {open && (
-        <>
-          {/* Backdrop */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
-            onClick={onClose}
-            style={{
-              position: 'fixed',
-              inset: 0,
-              background: 'rgba(0,0,0,0.5)',
-              willChange: 'opacity',
-              zIndex: 100,
-            }}
-          />
+    <>
+      {/* Backdrop */}
+      <motion.div
+        animate={{ opacity: open ? 1 : 0 }}
+        transition={{ duration: 0.25 }}
+        onClick={onClose}
+        style={{
+          position: 'fixed',
+          inset: 0,
+          background: 'rgba(0,0,0,0.5)',
+          willChange: 'opacity',
+          pointerEvents: open ? 'auto' : 'none',
+          zIndex: 100,
+        }}
+      />
 
-          {/* Sheet */}
-          <motion.div
-            initial={{ y: '100%' }}
-            animate={{ y: 0 }}
-            exit={{ y: '100%' }}
-            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            drag="y"
-            dragConstraints={{ top: 0 }}
-            dragElastic={0.1}
-            onDragEnd={(_e, info) => {
-              if (info.offset.y > 100) onClose();
-            }}
-            style={{
-              position: 'fixed',
-              bottom: 0,
-              left: 0,
-              right: 0,
-              maxHeight: '60vh',
-              background: DEEP_DUSK,
-              borderTopLeftRadius: 20,
-              borderTopRightRadius: 20,
-              willChange: 'transform',
-              zIndex: 101,
-              display: 'flex',
-              flexDirection: 'column',
-              overflow: 'hidden',
-            }}
-          >
+      {/* Sheet */}
+      <motion.div
+        animate={{ y: open ? 0 : '100%' }}
+        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+        drag={open ? 'y' : false}
+        dragConstraints={{ top: 0 }}
+        dragElastic={0.1}
+        onDragEnd={(_e, info) => {
+          if (info.offset.y > 100) onClose();
+        }}
+        style={{
+          position: 'fixed',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          maxHeight: '60vh',
+          background: DEEP_DUSK,
+          borderTopLeftRadius: 20,
+          borderTopRightRadius: 20,
+          willChange: 'transform',
+          pointerEvents: open ? 'auto' : 'none',
+          zIndex: 101,
+          display: 'flex',
+          flexDirection: 'column',
+          overflow: 'hidden',
+        }}
+      >
             {/* Drag handle */}
             <div style={{ display: 'flex', justifyContent: 'center', padding: '12px 0 8px' }}>
               <div
@@ -218,9 +214,7 @@ export default function PortalBrowseSheet({
                 );
               })}
             </div>
-          </motion.div>
-        </>
-      )}
-    </AnimatePresence>
+      </motion.div>
+    </>
   );
 }
