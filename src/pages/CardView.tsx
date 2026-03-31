@@ -1207,7 +1207,7 @@ export default function CardView() {
 
           {/* 3. Note nudge */}
           <motion.div
-            initial={{ opacity: 0 }}
+            initial={{ opacity: 1 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2, duration: 0.3 }}
             style={{ width: '100%', marginBottom: '40px' }}
