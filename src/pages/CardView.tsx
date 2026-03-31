@@ -3135,7 +3135,7 @@ export default function CardView() {
           {currentSection && (
             <motion.div
               key={`${currentSection.id}-${localPromptIndex}`}
-              initial={{ opacity: 0, y: 8 }}
+              initial={false}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -6, transition: { duration: 0.15, ease: [0.4, 0, 1, 1] } }}
               transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1], delay: 0.1 }}
