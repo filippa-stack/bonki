@@ -1479,7 +1479,7 @@ export default function CardView() {
           {/* Gör exercise — collapsible block (Still Us) */}
           {gorExerciseSU && (
             <motion.div
-              initial={{ opacity: 0 }}
+              initial={{ opacity: 1 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.45, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
               className="max-w-md mx-auto"
