@@ -258,7 +258,7 @@ export default function PromptItem({ prompt, index, sectionType, preamble, ancho
             return (
               <motion.div
                 key={`question-${index}-${prompt.text.slice(0, 20)}`}
-                initial={{ opacity: 0, y: 14, scale: 0.97 }}
+                initial={{ opacity: 1, y: 0, scale: 1 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 transition={{
                   duration: 0.7,
