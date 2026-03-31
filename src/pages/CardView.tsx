@@ -2567,7 +2567,7 @@ export default function CardView() {
           <AnimatePresence mode="wait">
             <motion.div
               key={`focus-q-${currentSection.id}-${localPromptIndex}`}
-              initial={{ opacity: 0 }}
+              initial={false}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0, transition: { duration: 0.15 } }}
               transition={{ duration: 0.15 }}
