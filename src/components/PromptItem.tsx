@@ -119,7 +119,7 @@ export default function PromptItem({ prompt, index, sectionType, preamble, ancho
         {stackedPreamble && (
           <motion.div
             key={`preamble-${index}`}
-            initial={{ opacity: 0, y: 10 }}
+            initial={{ opacity: 1, y: 0 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.0, ease: enterEase }}
             className="w-full text-center"
