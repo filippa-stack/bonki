@@ -1371,7 +1371,7 @@ export default function CardView() {
       <motion.div
         className="min-h-screen"
         style={{ backgroundColor: EMBER_NIGHT }}
-        initial={{ opacity: 0 }}
+        initial={{ opacity: 1 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
       >
