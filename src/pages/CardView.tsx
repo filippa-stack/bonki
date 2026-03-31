@@ -1189,7 +1189,7 @@ export default function CardView() {
 
           {/* 2. Affirmation */}
           <motion.p
-            initial={{ opacity: 0 }}
+            initial={{ opacity: 1 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.1, duration: 0.3 }}
             className="font-serif"
