@@ -41,7 +41,7 @@ const CARD_IDS_WITH_IMAGES = new Set([
   'sk-att-fa-ett-syskon', 'sk-syskonminnen', 'sk-syskonkunskap', 'sk-vanskap',
   'sk-vanskap-relation', 'sk-unik', 'sk-aldst-mitten-yngst', 'sk-bonussyskon',
   'sk-konflikt', 'sk-dela', 'sk-rattvisa', 'sk-uppmarksamhet', 'sk-sjukdom',
-  'sk-forlora-ett-syskon', 'sk-framtid',
+  'sk-forlora-ett-syskon', 'sk-framtid', 'sk-funktionsvariation',
 
   // ── Still Us Mock ──
   'su-mock-0', 'su-mock-1', 'su-mock-2', 'su-mock-3', 'su-mock-4',
