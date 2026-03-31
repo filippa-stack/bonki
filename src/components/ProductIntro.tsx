@@ -121,6 +121,7 @@ export default function ProductIntro({
   if (noIntro) return null;
 
   const bgColor = backgroundColor ?? product?.backgroundColor ?? MIDNIGHT_INK;
+  usePageBackground(bgColor);
   const creatureImage = PRODUCT_ILLUSTRATION[productId];
   const shortIntro = SHORT_INTROS[productId] ?? '';
   const isSexualitet = productId === 'sexualitetskort';
