@@ -235,9 +235,8 @@ export default function PromptItem({ prompt, index, sectionType, preamble, ancho
               {prompt.text.split('\n').filter(p => p.trim() !== '').map((para, i) => (
                 <motion.p
                   key={i}
-                  initial={{ opacity: 0, y: 6 }}
+                  initial={{ opacity: 1, y: 0 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.2 + i * 0.06, ease: enterEase }}
                   className="font-serif"
                   style={{
                     fontSize: 'clamp(19px, 4.5vw, 25px)',
