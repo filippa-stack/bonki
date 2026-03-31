@@ -14,11 +14,13 @@ import { KIDS_PRODUCT_IDS } from '@/hooks/useKidsProductProgress';
 export default function ProductHome() {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
+  const location = useLocation();
   useThemeSwitcher();
 
   const product = allProducts.find((p) => p.slug === slug);
 
   // Always call hooks — use fallback values if product not found
+  // forceKey ensures CSS vars are reapplied when navigating back from a session
   useProductTheme(
     product?.accentColor ?? 'hsl(158, 35%, 18%)',
     product?.secondaryAccent ?? 'hsl(38, 88%, 46%)',
@@ -26,6 +28,7 @@ export default function ProductHome() {
     product?.ctaButtonColor,
     product?.pronounMode,
     product,
+    location.key,
   );
 
   const needsIntroProduct = useProductIntroNeeded(product?.id ?? '');
