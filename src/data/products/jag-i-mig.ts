@@ -6,32 +6,39 @@ const categories: Category[] = [
   {
     id: 'jim-mina-kanslor',
     title: 'Mina känslor',
-    subtitle: 'De känslor som finns i dig – och hur de känns.',
+    subtitle: 'De känslor som finns i dig — och hur de känns.',
     description: 'Grundläggande känslor och hur de känns',
-    cardCount: 7,
+    cardCount: 5,
   },
   {
     id: 'jim-starka-kanslor',
     title: 'Starka känslor',
-    subtitle: 'Svåra känslor som är jobbiga – men viktiga att förstå.',
+    subtitle: 'Svåra känslor som är jobbiga — men viktiga att förstå.',
     description: 'Svårare känslor att förstå och hantera',
-    cardCount: 7,
+    cardCount: 5,
   },
   {
     id: 'jim-stora-kanslor',
     title: 'Stora känslor',
     subtitle: 'Vem du är när allt hänger ihop.',
     description: 'Att förstå sig själv som en hel person',
-    cardCount: 7,
+    cardCount: 5,
+  },
+  {
+    id: 'jim-att-vara-jag',
+    title: 'Att vara jag',
+    subtitle: 'Vem du är, vad du står för — och hur det är att vara du.',
+    description: 'Identitet, mod och att hitta sin plats',
+    cardCount: 6,
   },
 ];
 
 const cards: Card[] = [
-  // ── K1: Mina känslor — Trygg, Glad, Ledsen, Arg, Rädd, Nyfiken, Förvånad ──
+  // ── K1: Mina känslor — Trygg, Glad, Ledsen, Arg, Rädd ──
   {
     id: 'jim-trygg',
     title: 'Trygg',
-    subtitle: 'Vad som gör att en känner sig säker och omhändertagen',
+    subtitle: 'Det som gör att jag känner mig säker och omhändertagen',
     categoryId: 'jim-mina-kanslor',
     sections: [
       {
@@ -40,7 +47,7 @@ const cards: Card[] = [
         title: 'Frågor',
         content: '',
         prompts: [
-          'Hur känns det att vara trygg?',
+          'Hur känns det i kroppen att vara trygg?',
           'Varför är det viktigt att känna sig trygg?',
           'Hur får du någon annan att känna sig trygg?',
           'Berätta om när du känner dig trygg. Vad eller vem hjälper dig att känna dig trygg?',
@@ -51,7 +58,7 @@ const cards: Card[] = [
   {
     id: 'jim-glad',
     title: 'Glad',
-    subtitle: 'Vad som ger energi och glädje – och hur en delar det',
+    subtitle: 'Vad som ger energi och glädje — och hur vi delar det',
     categoryId: 'jim-mina-kanslor',
     sections: [
       {
@@ -63,7 +70,7 @@ const cards: Card[] = [
           'Hur känns det i kroppen att vara glad?',
           'Vad vill du göra när du är glad?',
           'När kan du bli glad för någon annans skull?',
-          'Har du någon gång låtsats vara glad fast du egentligen inte var det? Varför tror du att en gör så?',
+          'Har du någon gång låtsats vara glad fast du egentligen inte var det? Varför tror du att vi gör så?',
           'Kan du bli glad av andras skratt?',
           'Hur kan du göra någon annan glad?',
           'När blev du senast riktigt glad för något?',
@@ -74,7 +81,7 @@ const cards: Card[] = [
   {
     id: 'jim-ledsen',
     title: 'Ledsen',
-    subtitle: 'Att ha det tungt – och hur en kan bära det tillsammans',
+    subtitle: 'Att ha det tungt — och hur vi kan bära det tillsammans',
     categoryId: 'jim-mina-kanslor',
     sections: [
       {
@@ -85,12 +92,12 @@ const cards: Card[] = [
         prompts: [
           'Hur känns det i kroppen att vara ledsen?',
           'Vad vill du göra när du är ledsen?',
-          'Kan du vara glad och ledsen på samma gång?',
+          'Berätta vad som gör dig ledsen.',
           'Kan du bli ledsen för någon annans skull? Hur känns det?',
           'Hur kan du trösta någon som är ledsen?',
           'Vad vill du att andra ska göra eller säga när du är ledsen?',
           'Vad tror du kan göra en vuxen ledsen?',
-          'Berätta vad som gör dig ledsen.',
+          'Kan du vara glad och ledsen på samma gång?',
         ],
       },
     ],
@@ -98,7 +105,7 @@ const cards: Card[] = [
   {
     id: 'jim-arg',
     title: 'Arg',
-    subtitle: 'Ilska är en signal – vad väcker den och vart tar den vägen?',
+    subtitle: 'Ilska är en signal — vad väcker den och vart tar den vägen?',
     categoryId: 'jim-mina-kanslor',
     sections: [
       {
@@ -111,9 +118,10 @@ const cards: Card[] = [
           'Vad gör dig arg?',
           'Vad vill du göra när du är riktigt arg?',
           'Vad vill du att andra ska göra eller säga när du är arg?',
-          'Tror du att barn och vuxna kan bli lika arga? Vad är lika och vad är annorlunda?',
+          'Tror du att barn och vuxna kan bli lika arga? Vad kan vara likt och vad är annorlunda?',
           'Hur känns det när någon annan är arg på dig?',
           'Om du fick vara så arg du bara kan, vad skulle du göra då? Hur ser du ut?',
+          'Vad får vi inte göra, även om ilskan vill göra det?',
         ],
       },
     ],
@@ -133,63 +141,18 @@ const cards: Card[] = [
           'Hur känns det i kroppen att vara rädd?',
           'Vad kan du göra när något eller någon skrämmer dig?',
           'Vad vill du att andra ska göra när du är rädd?',
-          'Kan en vara rädd för något en inte kan se? Hur kan det vara så?',
+          'Kan man vara rädd för något man inte kan se? Hur kan det vara så?',
           'Vet du något som skrämmer någon annan men som du inte är rädd för?',
           'Vad är du rädd för?',
         ],
       },
     ],
   },
-  {
-    id: 'jim-nyfiken',
-    title: 'Nyfiken',
-    subtitle: 'Lusten att lära sig mer – och vad som händer när nyfikenheten tar över',
-    categoryId: 'jim-mina-kanslor',
-    sections: [
-      {
-        id: 'jim-nyfiken-opening',
-        type: 'opening',
-        title: 'Frågor',
-        content: '',
-        prompts: [
-          'Hur känns det i kroppen att vara nyfiken?',
-          'Vad vill du göra när du är nyfiken?',
-          'Vad kan vara bra med att vara nyfiken?',
-          'När kan du hamna i trubbel av att vara nyfiken?',
-          'Varför tror du att människor vill veta så mycket?',
-          'Vad önskar du att du visste mer om?',
-          'Om du visste var din födelsedagspresent var gömd, skulle du gå och titta på den? Varför? Varför inte?',
-        ],
-      },
-    ],
-  },
-  {
-    id: 'jim-forvanad',
-    title: 'Förvånad',
-    subtitle: 'Känslan när något oväntat händer – bra eller dåligt',
-    categoryId: 'jim-mina-kanslor',
-    sections: [
-      {
-        id: 'jim-forvanad-opening',
-        type: 'opening',
-        title: 'Frågor',
-        content: '',
-        prompts: [
-          'Hur ser du ut när du är förvånad?',
-          'Varför kan det vara kul att bli förvånad?',
-          'Vad gör du när du blir förvånad?',
-          'Vad kan du göra för att överraska någon?',
-          'Vad kan vara skillnaden mellan en bra och en dålig överraskning?',
-          'Berätta om en gång då du blev förvånad.',
-        ],
-      },
-    ],
-  },
-  // ── K2: Starka känslor — Äcklad, Skam, Avsky, Avundsjuk, Svartsjuk, Besviken, Utanför ──
+  // ── K2: Starka känslor — Äcklad, Skam, Förvånad, Avsky, Nyfiken ──
   {
     id: 'jim-acklad',
     title: 'Äcklad',
-    subtitle: 'Känslan av avsmak – varför den finns och vad den skyddar oss från',
+    subtitle: 'Känslan av avsmak — varför den finns och vad den skyddar oss från',
     categoryId: 'jim-starka-kanslor',
     sections: [
       {
@@ -211,7 +174,7 @@ const cards: Card[] = [
   {
     id: 'jim-skam',
     title: 'Skam',
-    subtitle: 'Känslan av att ha gjort fel – eller tro att en själv är fel',
+    subtitle: 'Känslan av att ha gjort fel — eller tro att en själv är fel',
     categoryId: 'jim-starka-kanslor',
     sections: [
       {
@@ -222,10 +185,32 @@ const cards: Card[] = [
         prompts: [
           'Hur känns det i kroppen när du skäms?',
           'Varför tror du att människor skäms?',
-          'Vad kan du skämmas över? Vad vill du göra då?',
-          'Vad kan du göra för att skämmas mindre?',
+          'Berätta om en gång då du skämdes. Vad gjorde du då?',
+          'Vad kan du göra när du skäms?',
           'Är det lätt eller svårt att berätta för någon att du skäms? Varför tror du det är så?',
-          'Om du vill, berätta om en gång du känt dig skamsen.',
+          'Tror du att någon kan skämmas fastän den inte gjort något fel? Hur kan det bli så?',
+        ],
+      },
+    ],
+  },
+  {
+    id: 'jim-forvanad',
+    title: 'Förvånad',
+    subtitle: 'Känslan när något oväntat händer',
+    categoryId: 'jim-starka-kanslor',
+    sections: [
+      {
+        id: 'jim-forvanad-opening',
+        type: 'opening',
+        title: 'Frågor',
+        content: '',
+        prompts: [
+          'Hur ser du ut när du är förvånad?',
+          'Varför kan det vara kul att bli förvånad?',
+          'Vad gör du när du blir förvånad?',
+          'Vad kan du göra för att överraska någon?',
+          'Vad kan vara skillnaden att bli förvånad över något som blev bra och över något som blev dåligt?',
+          'Berätta om en gång då du blev förvånad.',
         ],
       },
     ],
@@ -233,7 +218,7 @@ const cards: Card[] = [
   {
     id: 'jim-avsky',
     title: 'Avsky',
-    subtitle: 'En stark känsla av motvilja – mot saker, situationer eller beteenden',
+    subtitle: 'En stark känsla av motvilja — mot saker, situationer eller beteenden',
     categoryId: 'jim-starka-kanslor',
     sections: [
       {
@@ -242,12 +227,103 @@ const cards: Card[] = [
         title: 'Frågor',
         content: '',
         prompts: [
-          'Hur känns avsky?',
+          'Hur känns avsky i kroppen?',
           'Hur ser du ut när du känner avsky?',
           'Varför tror du att människor känner avsky?',
-          'Varför tror du att avsky ibland kan vara ett jobbigt eller obehagligt sätt att känna?',
-          'Hur kan du göra för att känna mindre avsky?',
+          'Varför tror du att avsky ibland kan vara jobbigt eller obehagligt att känna?',
+          'Vad kan du göra när du känner avsky?',
           'Har du känt avsky mot något? Vad var det och vad gjorde du?',
+        ],
+      },
+    ],
+  },
+  {
+    id: 'jim-nyfiken',
+    title: 'Nyfiken',
+    subtitle: 'Lusten att lära sig mer — och vad som händer när nyfikenheten tar över',
+    categoryId: 'jim-starka-kanslor',
+    sections: [
+      {
+        id: 'jim-nyfiken-opening',
+        type: 'opening',
+        title: 'Frågor',
+        content: '',
+        prompts: [
+          'Hur känns det i kroppen att vara nyfiken?',
+          'Vad vill du göra när du är nyfiken?',
+          'Vad kan vara bra med att vara nyfiken?',
+          'När kan det bli ett problem med att vara nyfiken?',
+          'Varför tror du att människor vill veta så mycket?',
+          'Vad önskar du att du visste mer om?',
+          'Om du visste var din födelsedagspresent var gömd, skulle du gå och titta på den? Varför? Varför inte?',
+        ],
+      },
+    ],
+  },
+  // ── K3: Stora känslor — Kärlek, Fri, Stress, Avundsjuk, Svartsjuk ──
+  {
+    id: 'jim-karlek',
+    title: 'Kärlek',
+    subtitle: 'Olika sätt att visa att vi älskar och bryr oss om varandra',
+    categoryId: 'jim-stora-kanslor',
+    sections: [
+      {
+        id: 'jim-karlek-opening',
+        type: 'opening',
+        title: 'Frågor',
+        content: '',
+        prompts: [
+          'Hur känns det i kroppen att vara älskad?',
+          'Hur kan du visa kärlek och att du tycker om någon utan ord?',
+          'Hur kan kärlek se ut mellan olika människor?',
+          'Kan du känna olika sorters kärlek? Vad kan det vara?',
+          'Är det samma sak att älska ett husdjur som att älska en person?',
+          'Berätta om någon eller något du älskar.',
+        ],
+      },
+    ],
+  },
+  {
+    id: 'jim-vild',
+    title: 'Fri',
+    subtitle: 'Den lössläppta, livfulla energin som vill ta plats',
+    categoryId: 'jim-stora-kanslor',
+    sections: [
+      {
+        id: 'jim-vild-opening',
+        type: 'opening',
+        title: 'Frågor',
+        content: '',
+        prompts: [
+          'Hur känns det i kroppen att vara fri?',
+          'När känner du dig fri?',
+          'Kan du känna dig fri på olika sätt?',
+          'Tror du att vuxna kan känna sig fria på samma sätt som barn?',
+          'Hur känns det för dig när någon annan är riktigt fri?',
+          'Om du fick vara riktigt fri en dag, vad skulle du göra då?',
+        ],
+      },
+    ],
+  },
+  {
+    id: 'jim-stress',
+    title: 'Stress',
+    subtitle: 'Känslan av för mycket på en gång — i kroppen och i vardagen',
+    categoryId: 'jim-stora-kanslor',
+    sections: [
+      {
+        id: 'jim-stress-opening',
+        type: 'opening',
+        title: 'Frågor',
+        content: '',
+        prompts: [
+          'Hur känns stress i kroppen?',
+          'När kände du dig senast stressad?',
+          'Varför tror du att människor blir stressade?',
+          'Vad brukar hjälpa dig när du känner dig stressad? Och hur kan du hjälpa en kompis som verkar stressad?',
+          'Hur kan det bli problem av att känna för mycket stress?',
+          'Vad kan barn känna sig stressade över? Är det annorlunda för vuxna, tror du?',
+          'Känner du någon som ibland pratar om att den är stressad? Vad tror du gör den stressad?',
         ],
       },
     ],
@@ -255,8 +331,8 @@ const cards: Card[] = [
   {
     id: 'jim-avundsjuk',
     title: 'Avundsjuk',
-    subtitle: 'Att vilja ha det någon annan har – och vad det egentligen handlar om',
-    categoryId: 'jim-starka-kanslor',
+    subtitle: 'Att vilja ha det någon annan har — och vad det handlar om',
+    categoryId: 'jim-stora-kanslor',
     sections: [
       {
         id: 'jim-avundsjuk-opening',
@@ -264,11 +340,11 @@ const cards: Card[] = [
         title: 'Frågor',
         content: '',
         prompts: [
-          'Hur känns avundsjuka?',
+          'Hur känns avundsjuka i kroppen?',
           'Varför tror du att människor känner avundsjuka?',
           'Vad kan du bli avundsjuk på?',
           'Varför kan det kännas viktigt att ha det som andra har?',
-          'Har du känt dig avundsjuk ibland, även om vuxna sagt att allt är rättvist? Hur kändes det då?',
+          'Har du känt dig avundsjuk ibland, även om vuxna sagt att allt är rättvist? Hur kändes det?',
           'Vad tror du vuxna kan vara avundsjuka på?',
           'Hur kan du tänka för att känna dig mindre avundsjuk?',
         ],
@@ -279,7 +355,7 @@ const cards: Card[] = [
     id: 'jim-svartsjuk',
     title: 'Svartsjuk',
     subtitle: 'Rädslan att förlora någons kärlek eller uppmärksamhet till någon annan',
-    categoryId: 'jim-starka-kanslor',
+    categoryId: 'jim-stora-kanslor',
     sections: [
       {
         id: 'jim-svartsjuk-opening',
@@ -287,133 +363,22 @@ const cards: Card[] = [
         title: 'Frågor',
         content: '',
         prompts: [
-          'Hur skiljer sig svartsjuka från avundsjuka?',
-          'Hur känns det att vara svartsjuk?',
+          'Hur känns det i kroppen att vara svartsjuk?',
           'Varför tror du att människor känner svartsjuka?',
           'Har du varit svartsjuk någon gång? Vad gjorde du då?',
-          'När kan det bli problem av att känna svartsjuka?',
-          'Hur kan en dela på en persons uppmärksamhet och kärlek med andra? Vad hjälper dig att känna dig trygg ändå?',
+          'När kan det bli problem med att känna svartsjuka?',
+          'Hur kan man dela en persons uppmärksamhet och kärlek med andra? Vad hjälper dig att känna dig trygg ändå?',
+          'Hur skiljer sig svartsjuka från avundsjuka?',
         ],
       },
     ],
   },
-  {
-    id: 'jim-besviken',
-    title: 'Besviken',
-    subtitle: 'När något inte blev som en hoppades – och hur det skiljer sig från ilska',
-    categoryId: 'jim-starka-kanslor',
-    sections: [
-      {
-        id: 'jim-besviken-opening',
-        type: 'opening',
-        title: 'Frågor',
-        content: '',
-        prompts: [
-          'Vad betyder det att vara besviken? Är det annorlunda från att vara arg?',
-          'Hur ser du ut när du är besviken? Hur ser dina vuxna ut?',
-          'Har en vuxen eller kompis någon gång berättat att de var besvikna på dig? Hur kändes det?',
-          'Vad kan du göra när någon är besviken på dig?',
-          'Har du någon gång blivit besviken på någon eller något? Vad hände?',
-        ],
-      },
-    ],
-  },
-  {
-    id: 'jim-utanfor',
-    title: 'Utanför',
-    subtitle: 'Att inte få vara med – och vad vi kan göra åt det',
-    categoryId: 'jim-starka-kanslor',
-    sections: [
-      {
-        id: 'jim-utanfor-opening',
-        type: 'opening',
-        title: 'Frågor',
-        content: '',
-        prompts: [
-          'Hur känns det att inte få vara med?',
-          'Varför tror du att det är viktigt att känna att en får vara med?',
-          'Vad kan du göra för att ingen annan ska känna sig utanför?',
-          'Måste en leka med någon som behandlar en dåligt? Varför eller varför inte?',
-          'Hur kan du förklara varför någon inte fick vara med i leken?',
-          'Hur kan du leka med någon även om ni tycker olika saker är kul?',
-          'När har du känt dig utanför och vad gjorde du då?',
-        ],
-      },
-    ],
-  },
-  // ── K3: Stora känslor — Kärlek, Stolt, Vild, Jag, Bestämd, Stress, Ensam ──
-  {
-    id: 'jim-karlek',
-    title: 'Kärlek',
-    subtitle: 'Alla de olika sätten vi kan älska och bry oss om varandra',
-    categoryId: 'jim-stora-kanslor',
-    sections: [
-      {
-        id: 'jim-karlek-opening',
-        type: 'opening',
-        title: 'Frågor',
-        content: '',
-        prompts: [
-          'Hur känns det att vara älskad?',
-          'Hur kan du visa kärlek och att du tycker om någon utan ord?',
-          'Hur kan kärlek se ut mellan olika människor?',
-          'Kan du känna olika sorters kärlek?',
-          'Är det samma sak att älska ett husdjur som att älska en person?',
-          'Berätta om någon eller något du älskar.',
-        ],
-      },
-    ],
-  },
-  {
-    id: 'jim-stolt',
-    title: 'Stolt',
-    subtitle: 'Känslan av att ha gjort något som känns riktigt bra',
-    categoryId: 'jim-stora-kanslor',
-    sections: [
-      {
-        id: 'jim-stolt-opening',
-        type: 'opening',
-        title: 'Frågor',
-        content: '',
-        prompts: [
-          'Hur ser du ut när du är stolt?',
-          'Vad kan människor vara stolta över?',
-          'Vad vill du göra när du är stolt?',
-          'När kan du vara stolt över någon annan?',
-          'Vad tror du vuxna känner sig stolta över?',
-          'Berätta om en gång då du känt dig stolt.',
-        ],
-      },
-    ],
-  },
-  {
-    id: 'jim-vild',
-    title: 'Vild',
-    subtitle: 'Den lössläppta, livfulla energin som vill ta plats',
-    categoryId: 'jim-stora-kanslor',
-    sections: [
-      {
-        id: 'jim-vild-opening',
-        type: 'opening',
-        title: 'Frågor',
-        content: '',
-        prompts: [
-          'Hur känns det i kroppen att vara vild?',
-          'När känner du dig vild?',
-          'Kan du känna dig vild på olika sätt?',
-          'Tror du att vuxna kan känna sig vilda på samma sätt som barn?',
-          'Varför tror du att vuxna ibland ber barn att vara mindre vilda?',
-          'Hur känns det för dig när någon annan är riktigt vild?',
-          'Om du fick vara riktigt vild en dag, vad skulle du göra då?',
-        ],
-      },
-    ],
-  },
+  // ── K4: Att vara jag — Jag, Bestämd, Stolt, Ensam, Utanför, Besviken ──
   {
     id: 'jim-jag',
     title: 'Jag',
-    subtitle: 'En stund att stanna upp och reflektera över hur en mår just nu',
-    categoryId: 'jim-stora-kanslor',
+    subtitle: 'En stund att stanna upp och reflektera över hur jag mår just nu',
+    categoryId: 'jim-att-vara-jag',
     sections: [
       {
         id: 'jim-jag-opening',
@@ -424,8 +389,8 @@ const cards: Card[] = [
           'Hur mår du just nu, på riktigt?',
           'Vad är det bästa med dig?',
           'Vilken känsla gillar du mest?',
+          'Om du fick dela en känsla med någon du litar på, vilken känsla skulle det vara — och vem skulle du dela den med?',
           'Om en vän skulle beskriva dig, vad tror du den personen skulle säga?',
-          'Om du fick dela en känsla med någon du litar på, vilken känsla skulle det vara – och vem skulle du dela den med?',
         ],
       },
     ],
@@ -433,8 +398,8 @@ const cards: Card[] = [
   {
     id: 'jim-bestamd',
     title: 'Bestämd',
-    subtitle: 'Att veta vad en vill och våga stå för det',
-    categoryId: 'jim-stora-kanslor',
+    subtitle: 'Att veta vad jag vill och våga stå för det',
+    categoryId: 'jim-att-vara-jag',
     sections: [
       {
         id: 'jim-bestamd-opening',
@@ -443,34 +408,33 @@ const cards: Card[] = [
         content: '',
         prompts: [
           'Hur ser du ut när du är bestämd?',
-          'Hur vet du att du är bestämd? Hur känns det?',
+          'Hur vet du att du är bestämd? Hur känns det i kroppen?',
           'Varför är det viktigt att kunna vara bestämd?',
-          'Finns det tillfällen när det kan vara bra att lyssna mer på andra och vara mer flexibel? Berätta.',
-          'Vet du någon som ofta är bestämd?',
+          'Finns det tillfällen när det kan vara bra att inte vara så bestämd, och att lyssna mer på andra?',
+          'Vet du någon som ofta är bestämd? Kan det kännas på olika sätt för dig när någon är bestämd mot dig? Berätta.',
           'Berätta om en gång när du var bestämd.',
         ],
       },
     ],
   },
   {
-    id: 'jim-stress',
-    title: 'Stress',
-    subtitle: 'Känslan av för mycket på en gång – i kroppen och i vardagen',
-    categoryId: 'jim-stora-kanslor',
+    id: 'jim-stolt',
+    title: 'Stolt',
+    subtitle: 'Känslan av att ha gjort något som känns riktigt bra',
+    categoryId: 'jim-att-vara-jag',
     sections: [
       {
-        id: 'jim-stress-opening',
+        id: 'jim-stolt-opening',
         type: 'opening',
         title: 'Frågor',
         content: '',
         prompts: [
-          'Varför tror du att människor blir stressade?',
-          'Har du någon gång känt dig stressad?',
-          'Hur känns stress i kroppen?',
-          'Vad brukar hjälpa dig när du känner dig stressad? Och hur kan en hjälpa en kompis som verkar stressad?',
-          'Hur kan det bli problem av att känna för mycket stress?',
-          'Vad kan barn känna sig stressade över? Är det annorlunda för vuxna, tror du?',
-          'Känner du någon som ibland pratar om att de är stressade? Vad tror du gör dem stressade?',
+          'Hur ser du ut när du är stolt?',
+          'Vad vill du göra när du är stolt?',
+          'Vad kan människor vara stolta över?',
+          'När kan du vara stolt över någon annan?',
+          'Vad tror du vuxna känner sig stolta över?',
+          'Berätta om en gång då du känt dig stolt.',
         ],
       },
     ],
@@ -479,7 +443,7 @@ const cards: Card[] = [
     id: 'jim-ensam',
     title: 'Ensam',
     subtitle: 'Skillnaden mellan att vara för sig själv och att känna sig övergiven',
-    categoryId: 'jim-stora-kanslor',
+    categoryId: 'jim-att-vara-jag',
     sections: [
       {
         id: 'jim-ensam-opening',
@@ -487,12 +451,56 @@ const cards: Card[] = [
         title: 'Frågor',
         content: '',
         prompts: [
-          'Hur känns det att vara ensam?',
-          'Varför tror du att du ibland kan känna dig ensam?',
+          'Hur känns det i kroppen att vara ensam?',
+          'När har du känt dig ensam och vad gjorde du då?',
           'Vad kan du göra när du inte vill vara ensam?',
           'Varför är det ibland skönt att vara ensam?',
-          'Vad tror du är skillnaden mellan att vilja vara ensam och att känna sig ensam? Hur vet du skillnaden?',
-          'När har du känt dig ensam och vad gjorde du då?',
+          'Vad tror du är skillnaden mellan att vilja vara för sig själv och att känna sig ensam? Hur vet du skillnaden?',
+          'Vad kan du göra om du ser någon som verkar ensam?',
+        ],
+      },
+    ],
+  },
+  {
+    id: 'jim-utanfor',
+    title: 'Utanför',
+    subtitle: 'Att inte få vara med — och vad vi kan göra åt det',
+    categoryId: 'jim-att-vara-jag',
+    sections: [
+      {
+        id: 'jim-utanfor-opening',
+        type: 'opening',
+        title: 'Frågor',
+        content: '',
+        prompts: [
+          'Hur känns det i kroppen att inte få vara med?',
+          'Varför tror du att det är viktigt att känna att en får vara med?',
+          'Vad kan du göra för att ingen annan ska känna sig utanför?',
+          'Måste en leka med någon som behandlar en dåligt? Varför eller varför inte?',
+          'Hur kan du förklara varför någon inte fick vara med i leken?',
+          'Hur kan du leka med någon även om ni tycker olika saker är kul?',
+          'När har du känt dig utanför och vad gjorde du då?',
+        ],
+      },
+    ],
+  },
+  {
+    id: 'jim-besviken',
+    title: 'Besviken',
+    subtitle: 'När något inte blev som du hoppades',
+    categoryId: 'jim-att-vara-jag',
+    sections: [
+      {
+        id: 'jim-besviken-opening',
+        type: 'opening',
+        title: 'Frågor',
+        content: '',
+        prompts: [
+          'Vad betyder det att vara besviken? Är det annorlunda från att vara arg?',
+          'Hur ser du ut när du är besviken? Hur ser dina vuxna ut?',
+          'Har en vuxen eller kompis någon gång sagt att den var besviken på dig? Hur kändes det?',
+          'Vad kan du göra när någon är besviken på dig?',
+          'Har du någon gång blivit besviken på någon eller något? Vad hände?',
         ],
       },
     ],

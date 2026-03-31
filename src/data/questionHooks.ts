@@ -19,7 +19,7 @@ export const QUESTION_HOOKS: Record<string, string> = {
   'jim-svartsjuk': 'Hur känns det när någon du tycker om leker med andra?',
   'jim-utanfor': 'Hur känns det att stå utanför?',
   'jim-besviken': 'Vad gör du när något inte blir som du tänkt?',
-  'jim-vild': 'Vad händer när känslorna blir så stora att kroppen inte kan vara stilla?',
+  'jim-vild': 'Hur känns det att vara fri?',
   'jim-stolt': 'Vad har du gjort som du är stolt över?',
   'jim-bestamd': 'Vad gör du när du verkligen har bestämt dig?',
   'jim-karlek': 'Hur känns kärlek i kroppen?',
