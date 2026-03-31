@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
+import { usePageBackground } from '@/hooks/usePageBackground';
 import { useParams, useNavigate, Navigate } from 'react-router-dom';
 import { categories as stillUsCategories } from '@/data/content';
 import { motion } from 'framer-motion';

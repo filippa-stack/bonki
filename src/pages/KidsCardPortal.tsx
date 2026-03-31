@@ -9,6 +9,7 @@
  */
 
 import { useState, useMemo, useCallback, useRef, useEffect } from 'react';
+import { usePageBackground } from '@/hooks/usePageBackground';
 import FreeCardBadge from '@/components/FreeCardBadge';
 import PaywallBottomSheet from '@/components/PaywallBottomSheet';
 import { useParams, useNavigate, useSearchParams, useLocation } from 'react-router-dom';

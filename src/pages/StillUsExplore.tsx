@@ -19,6 +19,7 @@ import {
   DEEP_SAFFRON,
   MIDNIGHT_INK,
 } from '@/lib/palette';
+import { usePageBackground } from '@/hooks/usePageBackground';
 
 /** Four conceptual layers mapping category indices to labels */
 const LAYERS = [

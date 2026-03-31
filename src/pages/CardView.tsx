@@ -34,6 +34,7 @@ import { upsertDemoDiaryEntry } from '@/lib/demoDiary';
 import { saveDemoSession, updateDemoSessionStep, completeDemoSession, isDemoCardCompleted, DEMO_SESSION_EVENT } from '@/lib/demoSession';
 import { useCardVisit } from '@/hooks/useCardVisit';
 import { useProductTheme } from '@/hooks/useProductTheme';
+import { usePageBackground } from '@/hooks/usePageBackground';
 
 import Header from '@/components/Header';
 import SectionView, { type SectionViewHandle } from '@/components/SectionView';

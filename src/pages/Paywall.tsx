@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { supabase } from '@/integrations/supabase/client';
 import { COLORS, slugFromCardIndex } from '@/lib/stillUsTokens';
+import { usePageBackground } from '@/hooks/usePageBackground';
 import { useAuth } from '@/contexts/AuthContext';
 import { isTestMode } from '@/lib/testMode';
 import { isDemoMode } from '@/lib/demoMode';

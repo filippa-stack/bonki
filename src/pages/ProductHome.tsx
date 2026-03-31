@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { usePageBackground } from '@/hooks/usePageBackground';
 import { useParams, useNavigate, Navigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
