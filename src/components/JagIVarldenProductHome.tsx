@@ -98,7 +98,7 @@ export default function JagIVarldenProductHome({ product }: { product: ProductMa
           </motion.div>
         </motion.div>
 
-        <div style={{ flex: 1 }} />
+        <div style={{ height: '32px' }} />
 
         <CategoryTileGrid
           product={product}
