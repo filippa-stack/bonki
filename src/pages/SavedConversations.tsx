@@ -44,7 +44,7 @@ export default function SavedConversations() {
             >
               Till startsidan
             </button>
-          </motion.div>
+          </div>
         ) : (
           <div className="space-y-8">
             {sortedConversations.map((conversation, index) => (
