@@ -165,19 +165,12 @@ const ANIM_SPEED = IS_RETURN_VISIT ? 0.5 : 1;
 
 const containerVariants = {
   hidden: {},
-  visible: {
-    transition: { staggerChildren: 0.08 * ANIM_SPEED, delayChildren: 0.25 * ANIM_SPEED },
-  },
+  visible: {},
 };
 
 const tileVariants = {
-  hidden: { opacity: 0, y: 40 * ANIM_SPEED, scale: 0.88 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: { duration: 0.7 * ANIM_SPEED, ease: [0.22, 1, 0.36, 1] as const },
-  },
+  hidden: { opacity: 1, y: 0, scale: 1 },
+  visible: { opacity: 1, y: 0, scale: 1 },
 };
 
 function AudienceLabel({ label, subtitle, delay = 0 }: { label: string; subtitle?: string; delay?: number }) {
