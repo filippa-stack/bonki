@@ -204,10 +204,7 @@ function NoteEntryCard({ entry, navigate, index }: { entry: NoteEntry; navigate:
   const isTakeaway = entry.id.startsWith('takeaway-');
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 8 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: Math.min(index * 0.04, 0.3), duration: 0.4, ease: EASE }}
+    <div
       style={{
         backgroundColor: isTakeaway ? `${accent.deep}14` : '#2E3142',
         borderRadius: '16px',
