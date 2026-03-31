@@ -272,6 +272,7 @@ const ENTRIES_PER_PAGE = 15;
 
 export default function Diary() {
   useDefaultTheme();
+  usePageBackground('#F8F4EE');
   const { productId } = useParams<{ productId: string }>();
   const navigate = useNavigate();
   const { user } = useAuth();

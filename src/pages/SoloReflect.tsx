@@ -8,6 +8,7 @@ import soloReflectionPrompts from '@/data/soloReflectionPrompts';
 
 const SoloReflect = () => {
   const { cardId } = useParams<{ cardId: string }>();
+  usePageBackground(COLORS.emberNight);
   const navigate = useNavigate();
   const [text, setText] = useState('');
 

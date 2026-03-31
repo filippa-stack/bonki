@@ -12,6 +12,7 @@ import { completeSession } from '@/lib/stillUsRpc';
 
 export default function TillbakaComplete() {
   const { cardId: slug } = useParams<{ cardId: string }>();
+  usePageBackground(COLORS.emberNight);
   const navigate = useNavigate();
   // slug format: "tillbaka-0", "tillbaka-1", etc.
   const tillbakaIndex = parseInt(slug?.replace('tillbaka-', '') ?? '0', 10) || 0;

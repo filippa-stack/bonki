@@ -16,6 +16,7 @@ const BG = COLORS.emberNight;
 
 export default function SuIntroPortal() {
   const navigate = useNavigate();
+  usePageBackground(BG);
   const imageSrc = useCardImage('su-mock-0');
 
   const handleStart = () => {

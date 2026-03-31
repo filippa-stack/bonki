@@ -406,6 +406,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
 });
 export default function ProductLibrary() {
   useDefaultTheme();
+  usePageBackground('#0B1026');
   const navigate = useNavigate();
   const tracked = useRef(false);
   
