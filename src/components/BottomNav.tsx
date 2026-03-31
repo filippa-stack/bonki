@@ -99,7 +99,9 @@ export default function BottomNav() {
       className="fixed bottom-0 left-0 right-0 z-40"
       style={{
         paddingBottom: 'env(safe-area-inset-bottom, 0px)',
-        background: 'linear-gradient(to top, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.3) 60%, transparent 100%)',
+        background: 'rgba(0, 0, 0, 0.85)',
+        backdropFilter: 'blur(12px)',
+        WebkitBackdropFilter: 'blur(12px)',
         border: 'none',
         boxShadow: 'none',
       }}
