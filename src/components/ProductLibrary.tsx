@@ -165,27 +165,17 @@ const ANIM_SPEED = IS_RETURN_VISIT ? 0.5 : 1;
 
 const containerVariants = {
   hidden: {},
-  visible: {
-    transition: { staggerChildren: 0.08 * ANIM_SPEED, delayChildren: 0.25 * ANIM_SPEED },
-  },
+  visible: {},
 };
 
 const tileVariants = {
-  hidden: { opacity: 0, y: 40 * ANIM_SPEED, scale: 0.88 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: { duration: 0.7 * ANIM_SPEED, ease: [0.22, 1, 0.36, 1] as const },
-  },
+  hidden: { opacity: 1, y: 0, scale: 1 },
+  visible: { opacity: 1, y: 0, scale: 1 },
 };
 
 function AudienceLabel({ label, subtitle, delay = 0 }: { label: string; subtitle?: string; delay?: number }) {
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ delay, duration: 0.6 }}
+    <div
       style={{
         textAlign: 'center',
         marginBottom: '16px',
@@ -219,7 +209,7 @@ function AudienceLabel({ label, subtitle, delay = 0 }: { label: string; subtitle
           {subtitle}
         </p>
       )}
-    </motion.div>
+    </div>
   );
 }
 
@@ -582,18 +572,16 @@ export default function ProductLibrary() {
       <div style={{ position: 'relative', zIndex: 1 }}>
         {/* Hero zone — compact cinematic */}
         <motion.div
-          initial={{ opacity: 0 }}
+          initial={{ opacity: 1 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           style={{
             textAlign: 'center',
             padding: '56px 32px 0',
           }}
         >
           <motion.h1
-            initial={{ opacity: 0, y: 12 }}
+            initial={{ opacity: 1, y: 0 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.15, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             style={{
               fontFamily: "'Bebas Neue', sans-serif",
               fontSize: '52px',
@@ -609,9 +597,8 @@ export default function ProductLibrary() {
             BONKI
           </motion.h1>
           <motion.p
-            initial={{ opacity: 0, y: 6 }}
+            initial={{ opacity: 1, y: 0 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
             style={{
               fontFamily: "var(--font-body)",
               fontStyle: 'normal',
@@ -629,9 +616,8 @@ export default function ProductLibrary() {
 
         {/* Ghost glow accent divider */}
         <motion.div
-          initial={{ scaleX: 0, opacity: 0 }}
+          initial={{ scaleX: 1, opacity: 1 }}
           animate={{ scaleX: 1, opacity: 1 }}
-          transition={{ delay: 0.4, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           style={{
             width: '32px',
             height: '1.5px',
@@ -855,9 +841,8 @@ export default function ProductLibrary() {
 
         {/* Era samtal — compact return-loop hook */}
         <motion.div
-          initial={{ opacity: 0, y: 12 }}
+          initial={{ opacity: 1, y: 0 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.7 * ANIM_SPEED, duration: 0.7 * ANIM_SPEED, ease: [0.22, 1, 0.36, 1] }}
           whileTap={{ scale: 0.97 }}
           onClick={() => navigate('/journal')}
           className="cursor-pointer"
