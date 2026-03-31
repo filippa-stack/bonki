@@ -147,7 +147,7 @@ export default function StillUsExplore() {
       </div>
 
       {/* Expandable sections */}
-      <div style={{ padding: '24px 16px 120px' }}>
+      <div style={{ padding: '24px 16px calc(72px + env(safe-area-inset-bottom, 0px))' }}>
         {LAYERS.map((layer, layerIdx) => {
           const isExpanded = expandedSections.has(layerIdx);
           const layerCategories = layer.categoryIndices
