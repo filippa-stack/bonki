@@ -580,9 +580,8 @@ export default function ProductLibrary() {
           }}
         >
           <motion.h1
-            initial={{ opacity: 0, y: 12 }}
+            initial={{ opacity: 1, y: 0 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.15, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             style={{
               fontFamily: "'Bebas Neue', sans-serif",
               fontSize: '52px',
