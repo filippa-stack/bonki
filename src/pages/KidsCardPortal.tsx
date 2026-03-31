@@ -11,7 +11,7 @@
 import { useState, useMemo, useCallback, useRef, useEffect } from 'react';
 import FreeCardBadge from '@/components/FreeCardBadge';
 import PaywallBottomSheet from '@/components/PaywallBottomSheet';
-import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
+import { useParams, useNavigate, useSearchParams, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence, type PanInfo } from 'framer-motion';
 import { useDevState } from '@/contexts/DevStateContext';
 import { isDemoMode } from '@/lib/demoMode';
