@@ -1131,7 +1131,7 @@ export default function CardView() {
         }}>
           {/* 1. Completion mark — creature circle + saffron ring */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.85 }}
+            initial={{ opacity: 1, scale: 1 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.25, ease: [0, 0, 0.2, 1] }}
             style={{
