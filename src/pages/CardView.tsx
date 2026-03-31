@@ -3027,7 +3027,7 @@ export default function CardView() {
             </AlertDialogHeader>
             <AlertDialogFooter style={{ flexDirection: 'column', gap: '12px', marginTop: '8px' }}>
               <AlertDialogAction onClick={() => handleSmartExit()} style={{
-                backgroundColor: SAFFRON_FLAME,
+                backgroundColor: SAFFRON,
                 color: MIDNIGHT_INK,
                 borderRadius: '12px',
                 height: '48px',
