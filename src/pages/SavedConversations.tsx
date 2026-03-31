@@ -55,7 +55,7 @@ export default function SavedConversations() {
                   conversation={conversation}
                   onClick={() => navigate(`/card/${conversation.cardId}`)}
                 />
-              </motion.div>
+              </div>
             ))}
           </div>
         )}
