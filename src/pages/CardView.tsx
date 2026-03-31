@@ -1949,7 +1949,7 @@ export default function CardView() {
                ? `/product/${product.slug}/portal/${category.id}`
                : category ? `/category/${category.id}` : '/'
            )}
-          initial={{ opacity: 0 }}
+          initial={{ opacity: 1 }}
           animate={{ opacity: 1 }}
           transition={{ delay: BEAT_2, duration: EMOTION }}
           aria-label="Tillbaka"
