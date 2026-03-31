@@ -1711,7 +1711,7 @@ export default function CardView() {
           overflow: 'hidden',
           zIndex: 50,
         }}
-        initial={{ opacity: 0 }}
+        initial={{ opacity: 1 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: EMOTION, ease: [...EASE] }}
