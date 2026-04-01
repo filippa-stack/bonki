@@ -600,7 +600,9 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
             {!useSquareGrid && <div style={{ height: 'clamp(48px, 12vh, 100px)' }} />}
 
             {/* ═══ Next Action Banner (persistent) ═══ */}
-            <NextActionBanner product={product} progress={progress} />
+            <div style={{ minHeight: '52px' }}>
+              <NextActionBanner product={product} progress={progress} />
+            </div>
           </motion.div>
         </motion.div>
 
