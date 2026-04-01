@@ -2,6 +2,8 @@ import { motion } from 'framer-motion';
 import { usePageBackground } from '@/hooks/usePageBackground';
 import { useApp } from '@/contexts/AppContext';
 import { trackOnboardingEvent } from '@/lib/trackOnboarding';
+import { LANTERN_GLOW } from '@/lib/palette';
+import BonkiButton from '@/components/BonkiButton';
 import bonkiLogo from '@/assets/bonki-logo-transparent.png';
 
 const EASE: [number, number, number, number] = [0.4, 0.0, 0.2, 1];
@@ -87,7 +89,9 @@ export default function Onboarding() {
         style={{
           position: 'relative',
           zIndex: 1,
-          flex: 1,
+          flex: '0 1 auto',
+          marginTop: 'auto',
+          marginBottom: '32px',
           display: 'flex',
           flexDirection: 'column',
           padding: '0 32px',
@@ -98,11 +102,12 @@ export default function Onboarding() {
           {...fadeUp(0.35)}
           style={{
             fontFamily: 'var(--font-sans)',
-            fontSize: '11px',
+            fontSize: '15px',
             fontWeight: 500,
             letterSpacing: '0.16em',
             textTransform: 'uppercase',
-            color: 'hsla(34, 20%, 60%, 0.85)',
+            color: LANTERN_GLOW,
+            opacity: 0.5,
             marginBottom: '14px',
           }}
         >
@@ -114,7 +119,7 @@ export default function Onboarding() {
           {...fadeUp(0.5)}
           style={{
             fontFamily: 'var(--font-display)',
-            fontSize: '1.65rem',
+            fontSize: 'clamp(28px, 7.5vw, 38px)',
             fontWeight: 400,
             color: '#FDF6E3',
             lineHeight: 1.28,
@@ -130,8 +135,8 @@ export default function Onboarding() {
           {...fadeUp(0.65)}
           style={{
             width: '32px',
-            height: '1.5px',
-            backgroundColor: 'hsla(40, 78%, 61%, 0.35)',
+            height: '2px',
+            backgroundColor: 'hsla(40, 78%, 61%, 0.5)',
             marginTop: '20px',
             marginBottom: '16px',
           }}
@@ -145,7 +150,7 @@ export default function Onboarding() {
             fontSize: '16px',
             color: '#FDF6E3',
             lineHeight: 1.55,
-            opacity: 0.8,
+            opacity: 0.85,
             margin: 0,
           }}
         >
@@ -166,45 +171,15 @@ export default function Onboarding() {
           gap: '12px',
         }}
       >
-        <button
+        <BonkiButton
           onClick={() => {
             trackOnboardingEvent('onboarding_complete', { audience: 'all' });
             initializeCoupleSpace();
             completeOnboarding();
           }}
-          style={{
-            width: '100%',
-            height: '56px',
-            background: 'linear-gradient(135deg, hsla(40, 78%, 61%, 0.15) 0%, hsla(40, 70%, 50%, 0.08) 100%)',
-            backdropFilter: 'blur(20px)',
-            WebkitBackdropFilter: 'blur(20px)',
-            border: '1px solid hsla(40, 78%, 61%, 0.22)',
-            borderRadius: '14px',
-            cursor: 'pointer',
-            textAlign: 'center',
-            transition: 'all 200ms ease',
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.background = 'linear-gradient(135deg, hsla(40, 78%, 61%, 0.22) 0%, hsla(40, 70%, 50%, 0.12) 100%)';
-            e.currentTarget.style.borderColor = 'hsla(40, 78%, 61%, 0.30)';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.background = 'linear-gradient(135deg, hsla(40, 78%, 61%, 0.15) 0%, hsla(40, 70%, 50%, 0.08) 100%)';
-            e.currentTarget.style.borderColor = 'hsla(40, 78%, 61%, 0.22)';
-          }}
         >
-          <span
-            style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: '1.15rem',
-              fontWeight: 500,
-              color: '#FDF6E3',
-              letterSpacing: '-0.01em',
-            }}
-          >
-            Börja
-          </span>
-        </button>
+          Börja
+        </BonkiButton>
       </motion.div>
     </div>
   );
