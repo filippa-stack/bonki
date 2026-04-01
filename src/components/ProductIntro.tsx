@@ -344,10 +344,10 @@ export default function ProductIntro({
                 fontFamily: 'var(--font-serif)',
                 fontStyle: 'italic',
                 fontSize: '15px',
-                color: productAccent,
+                color: LANTERN_GLOW,
                 textAlign: 'center',
                 marginTop: '18px',
-                opacity: 0.9,
+                opacity: 0.7,
               }}
             >
               {signoffText}
