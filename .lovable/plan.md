@@ -1,45 +1,46 @@
 
 
-## Improve Journal/Archive Text Visibility
+## Journal Page — Gap to 10/10
 
-### Problem
-Dates, card names, month headers, and metadata text use `DRIFTWOOD` with heavy opacity suffixes (`77`, `88`, `66`, `aa`), making them nearly invisible on the dark `#2E3142` / `MIDNIGHT_INK` backgrounds.
+### Current Issues (from screenshots)
 
-### Changes (1 file: `src/pages/Journal.tsx`)
+1. **Metadata placement inconsistency**: `NoteEntryCard` puts product name + card name at the *bottom*, while `SessionGroupCard` puts it at the *top*. Mixed in the same timeline, this creates visual chaos.
 
-**Boost opacity on all metadata text across 4 component contexts:**
+2. **Single-word reflections get full cards**: Entries like "du", "hej", "är" each occupy a full 16px-padded card with accent bar, metadata row, and 16px border-radius. Enormous visual weight for zero content.
 
-**1. `NoteEntryCard` (lines 200–323)**
-- Date: `${DRIFTWOOD}77` → `${DRIFTWOOD}cc` (line 314)
-- Card name: `${DRIFTWOOD}88` → `${DRIFTWOOD}bb` (line 318)
-- Question text: `${DRIFTWOOD}cc` → `${LANTERN_GLOW}88` (line 294)
+3. **Takeaway label opacity mismatch**: Solo `NoteEntryCard` takeaway label uses `${accent.mid}b3` (70%) while `SessionGroupCard` uses `${accent.mid}dd` (87%). Should be consistent.
 
-**2. `SessionGroupCard` (lines 390–517)**
-- Date: `${DRIFTWOOD}77` → `${DRIFTWOOD}cc` (line 425)
-- Card name: `${DRIFTWOOD}88` → `${DRIFTWOOD}bb` (line 429)
-- Expand toggle: `${DRIFTWOOD}99` → `${DRIFTWOOD}cc` (line 470)
-- Dividers: `${DRIFTWOOD}22` / `11` → `${DRIFTWOOD}33` / `22` (line 442)
-- Takeaway label: `${accent.mid}b3` → `${accent.mid}dd` (line 497)
+4. **Question text appears after the answer**: In `NoteEntryCard`, the `— questionText` italic line sits below the reflection. Editorially backwards — the prompt should contextualize *before* the answer.
 
-**3. `CompletedMarkerRow` (lines 327–371)**
-- Date: `${DRIFTWOOD}66` → `${DRIFTWOOD}aa` (line 367)
-- Separator dot: `${DRIFTWOOD}88` → `${DRIFTWOOD}bb` (line 361)
+5. **No card name in SessionGroupCard header for context**: The card name (`Arg`, `Att nå fram`) is in 12px muted text, easy to miss. Should be slightly more prominent as it's the conversation topic.
 
-**4. Month headers (lines 1039–1053)**
-- Month label: `${DRIFTWOOD}aa` → `${LANTERN_GLOW}88` (line 1045) — switch to Lantern Glow for better contrast
-- Divider line: `${DRIFTWOOD}33` → `${DRIFTWOOD}55` (line 1051)
+6. **"Dölj parsamtal" toggle** uses raw `DRIFTWOOD` which is dim and feels like a debug element, not editorial UI.
 
-**5. Pulse card (lines 966–1004)**
-- "Senast" line: `${DRIFTWOOD}cc` → `${LANTERN_GLOW}88` (line 983)
-- Product count: `${DRIFTWOOD}88` → `${DRIFTWOOD}bb` (line 1000)
+### Plan (1 file: `src/pages/Journal.tsx`)
 
-**6. Subtitle**
-- Subtitle: `${DRIFTWOOD}cc` → `${LANTERN_GLOW}77` (line 894)
+**Change 1: Move metadata to top in `NoteEntryCard` (lines 200-323)**
+- Move the product name + date + card name block from below the reflection text to above it (after the accent bar), matching `SessionGroupCard` layout.
+- This creates consistent top-down hierarchy: accent bar → metadata → content.
+
+**Change 2: Question text above reflection (lines 288-300)**
+- Move the `— questionText` italic line to appear *before* the reflection text, not after.
+- Provides editorial context: "Here's what was asked → here's what you wrote."
+
+**Change 3: Consistent takeaway label opacity (line 234)**
+- Change `${accent.mid}b3` → `${accent.mid}dd` to match `SessionGroupCard`.
+
+**Change 4: Card name size bump in `SessionGroupCard` (line 429)**
+- Increase from `12px` → `13px` and from `${DRIFTWOOD}bb` → `${LANTERN_GLOW}55` for better topic visibility.
+
+**Change 5: "Dölj parsamtal" button styling (line 1021)**
+- Change text color from `DRIFTWOOD` to `${LANTERN_GLOW}77` for better visibility.
+- Change chevron color similarly.
 
 ### What stays untouched
 - All data fetching, grouping, filtering logic
-- Layout, spacing, border-radius, animations
-- Font families, font sizes, font weights
-- Color bar accent logic
-- Primary text (reflection content) — already uses `LANTERN_GLOW`
+- SessionGroupCard overall structure
+- Layout, gap, border-radius values
+- Font families and weights
+- Pulse card design
+- Empty state, bookmarks, month headers
 
