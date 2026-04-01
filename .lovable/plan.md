@@ -1,48 +1,34 @@
 
 
-## Fix LibraryResumeCard: Correct categoryId and Mock IDs
+## Separate 14-day expiry from sequencing logic
 
-### Two bugs in the earlier (not-yet-implemented) LibraryResumeCard plan
+### File: `src/hooks/useKidsProductProgress.ts`
 
-**Bug 1: Demo/local preview uses wrong categoryId**
-The plan proposed `product.categories?.[0]?.id` as fallback. `DemoActiveSession` already has a `categoryId` field — use `demoSession.categoryId` directly instead.
-
-**Bug 2: Dev mock category IDs are fake**
-The plan used `'jma-cat-1'` and `'su-cat-1'` which don't exist. Real IDs:
-- Jag med Andra: `'jma-vem-ar-jag'` (first category)
-- Still Us: `'su-mock-vardagen'` (first category)
-
-### Changes (1 file: `src/components/LibraryResumeCard.tsx`)
-
-**1. Extend `ResumeData` interface** (~line 43) — add `categoryId` and `productSlug`.
-
-**2. Dev mocks** (~lines 68–70) — use real IDs and add new fields:
+**1. Add `allTimeCompletedCardIds` to interface** (~line 56):
 ```tsx
-// barn mock
-{ productId: 'jag_med_andra', productSlug: 'jag-med-andra', categoryId: 'jma-vem-ar-jag', productName: 'Jag med Andra', cardTitle: 'Att vara duktig', cardId: 'jma-duktig', stepLabel: 'Pausad vid FRÅGA 2 AV 5', accentColor: SAFFRON_FLAME }
-
-// par mock
-{ productId: 'still_us', productSlug: 'still-us', categoryId: 'su-mock-vardagen', productName: 'Still Us', cardTitle: 'Att lyssna på riktigt', cardId: 'su-kommunikation-1', stepLabel: 'Pausad vid VÄND · Fråga 1 av 3', accentColor: DEEP_SAFFRON }
+allTimeCompletedCardIds: string[];
 ```
 
-**3. `fetchFromDb` path** (~line 160) — populate from DB query and product manifest:
+**2. Add `allTimeCompletedCardIds` memo** (after `recentlyCompletedCardIds` memo, ~line 235):
 ```tsx
-productSlug: product.slug,
-categoryId: session.category_id,
+const allTimeCompletedCardIds = useMemo(() => {
+  const seen = new Set<string>();
+  for (const s of completedSessions) {
+    seen.add(s.card_id);
+  }
+  return [...seen];
+}, [completedSessions]);
 ```
 
-**4. Demo/local preview path** (~line 185) — use `demoSession.categoryId` directly:
+**3. Change sequencing/categoryProgress memo** (~line 243):
 ```tsx
-productSlug: product.slug,
-categoryId: demoSession.categoryId,
+// Before
+const completedSet = new Set(recentlyCompletedCardIds);
+// After
+const completedSet = new Set(allTimeCompletedCardIds);
 ```
 
-**5. Fix navigation** (~line 260):
-```tsx
-onClick={() => navigate(`/product/${display.productSlug}/portal/${display.categoryId}?card=${display.cardId}`)}
-```
+**4. Add to return value** — add `allTimeCompletedCardIds` to the result memo and its dependency array.
 
-### What stays untouched
-- All other files
-- All protected patterns
+### No changes to any other file.
 
