@@ -3131,7 +3131,7 @@ export default function CardView() {
                             letterSpacing: '0.02em',
                           }}
                         >
-                          ✓ Sparat i era samtal
+                          ✓ Sparat
                         </motion.p>
                       )}
                     </AnimatePresence>
