@@ -290,13 +290,14 @@ export function useKidsProductProgress(product: ProductManifest | undefined): Ki
 
   const result = useMemo(() => ({
     recentlyCompletedCardIds,
+    allTimeCompletedCardIds,
     activeCardIds,
     activeSession: activeSession ? { ...activeSession, currentStepIndex } : null,
     nextSuggestedCardId,
     nextSuggestedCategoryId,
     categoryProgress,
     loading,
-  }), [recentlyCompletedCardIds, activeCardIds, activeSession, currentStepIndex,
+  }), [recentlyCompletedCardIds, allTimeCompletedCardIds, activeCardIds, activeSession, currentStepIndex,
        nextSuggestedCardId, nextSuggestedCategoryId, categoryProgress, loading]);
 
   // DEBUG: Log Still Us progress state
