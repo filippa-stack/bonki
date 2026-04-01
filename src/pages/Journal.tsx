@@ -1055,10 +1055,12 @@ export default function Journal() {
               {/* Items */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', padding: '0 16px' }}>
                 {group.items.map((item, idx) =>
-                  item.type === 'note' ? (
-                    <NoteEntryCard key={item.id} entry={item} navigate={navigate} index={idx} />
+                  item.type === 'group' ? (
+                    <SessionGroupCard key={`grp-${item.sessionId}`} group={item} navigate={navigate} />
+                  ) : item.type === 'note' ? (
+                    <NoteEntryCard key={item.id} entry={item as NoteEntry} navigate={navigate} index={idx} />
                   ) : (
-                    <CompletedMarkerRow key={item.id} marker={item} index={idx} />
+                    <CompletedMarkerRow key={item.id} marker={item as CompletedMarker} index={idx} />
                   )
                 )}
               </div>
