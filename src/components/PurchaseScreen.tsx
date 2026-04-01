@@ -30,7 +30,7 @@ export default function PurchaseScreen({ onPurchaseComplete }: PurchaseScreenPro
       .eq('id', 'still_us')
       .single()
       .then(({ data }) => {
-        setPriceSek(data?.price_sek ?? 395);
+        setPriceSek(data?.price_sek ?? 249);
       });
   }, []);
 

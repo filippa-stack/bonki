@@ -397,6 +397,19 @@ export default function ProductIntro({
             {ctaLabel}
           </button>
 
+          <p style={{
+            fontFamily: 'var(--font-sans)',
+            fontStyle: 'italic',
+            fontSize: '14px',
+            color: LANTERN_GLOW,
+            opacity: 0.6,
+            textAlign: 'center',
+            marginTop: '12px',
+            lineHeight: 1.5,
+          }}>
+            Ert första samtal är gratis — ingen betalning krävs.
+          </p>
+
           {/* Skip link — goes to product home without starting free card */}
           <button
             onClick={() => {

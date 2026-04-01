@@ -198,7 +198,7 @@ export default function Paywall() {
           color: COLORS.lanternGlow,
           marginBottom: '4px',
         }}>
-          395 kr
+          249 kr
         </div>
         <p style={{
           fontSize: '14px',

@@ -1382,7 +1382,7 @@ export default function CardView() {
               {hasNextCard ? (
                 <>Nästa samtal <ArrowRight size={16} style={{ opacity: 0.7 }} /></>
               ) : (
-                'Tillbaka till översikt'
+                `Tillbaka till ${product?.name ?? 'översikt'}`
               )}
             </button>
 
@@ -1405,7 +1405,7 @@ export default function CardView() {
                   textAlign: 'center',
                 }}
               >
-                Tillbaka till översikt
+                {`Tillbaka till ${product?.name ?? 'översikt'}`}
               </button>
             )}
           </motion.div>
@@ -2708,7 +2708,7 @@ export default function CardView() {
               stillUsMode={true}
               ctaLabel={getStillUsCtaLabel()}
               pauseLabel="Pausa för idag"
-              compactNoteTrigger={isAfterStep2}
+              compactNoteTrigger={false}
               onPause={() => navigate('/')}
               onLocked={handleFocusAdvance}
               onBack={handleFocusBack}
