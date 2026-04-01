@@ -171,8 +171,6 @@ function AppRoutes() {
   );
 }
 
-// Detect ?testmode=true on boot
-detectTestModeParam();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
