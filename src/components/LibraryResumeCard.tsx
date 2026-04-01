@@ -191,6 +191,8 @@ export default function LibraryResumeCard({ activeTab, global, forceMock }: Libr
               : 'Frågor';
             setResume({
               productId: product.id,
+              productSlug: product.slug,
+              categoryId: demoSession.categoryId,
               productName: product.name,
               cardTitle: card.title,
               cardId: demoSession.cardId,
