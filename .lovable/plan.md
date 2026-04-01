@@ -1,27 +1,35 @@
 
 
-## Hotfix: Validate step index before syncing reflection
+## Combined fix: Reflections visible in-session + batch-promote on completion
 
-### Problem
-After removing the suppress window, Q1's reflection bleeds into Q2's note field because the sync effect fires before `useSessionReflections` has reset `myReflection` to `null` for the new step.
+### Changes across 2 files
 
-### Change (1 file: `src/pages/CardView.tsx`, lines 636–643)
+**File 1: `src/pages/CardView.tsx`**
 
-Replace current sync effect with step-index validation:
+**1a. Simplify prompt-change reset (lines 629–634)**
+Remove `setKidsNoteLocalText('')` from the reset effect. The sync effect (1b) is now the single source of truth for text content.
 
-```tsx
-// Sync saved note text from DB — only when reflection data matches current prompt
-useEffect(() => {
-  if (kidsNoteSession.loading) return;
-  if (kidsNoteSession.myReflection?.text && kidsNoteSession.myReflection.stepIndex === kidsNoteStepIndex) {
-    setKidsNoteLocalText(kidsNoteSession.myReflection.text);
-    setKidsNoteExpanded(true);
-  }
-}, [kidsNoteSession.loading, kidsNoteSession.myReflection, kidsNoteStepIndex]);
-```
+**1b. Update sync effect with step validation + else branch (lines 636–643)**
+Replace with version that:
+- Validates `myReflection.stepIndex === kidsNoteStepIndex` (already present)
+- Adds `else { setKidsNoteLocalText('') }` to clear text when no reflection exists
+- Adds `localPromptIndex` to deps to force re-evaluation on back-navigation
 
-The `prevKidsNoteStepRef` from the user's snippet is unnecessary — the `stepIndex === kidsNoteStepIndex` guard is sufficient and the ref isn't read anywhere meaningful. Keeping it out avoids adding a new ref (per the "no new refs" constraint).
+**2. Batch-promote drafts before session completion (before line 754)**
+Insert `await supabase.from('step_reflections').update({ state: 'ready' }).eq('session_id', sessionId).eq('state', 'draft')` right before `attemptRpc` is defined — after all session ID resolution is complete.
+
+**3a. Update in-session save copy (lines 3054 and 3124)**
+- Line 3054: "Det ni skriver sparas i era samtal" → "Det ni skriver sparas under samtalet"
+- Line 3124: "✓ Sparat i era samtal" → "✓ Sparat"
+
+**File 2: `src/components/SessionStepReflection.tsx`**
+
+**3b. Update save indicator (line 284)**
+- "✓ Sparat i era samtal" → "✓ Sparat"
 
 ### What stays untouched
-All protected patterns, reset effect, resume logic, everything else.
+- KidsCompletionNote (line 3780, 3821) — completion screen, keeps "era samtal"
+- SimpleTakeaway (line 3989) — completion screen, keeps "era samtal"
+- All protected patterns, hooks, handlers, archive/completion rendering
+- No new state variables, refs, or hooks added
 
