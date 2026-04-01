@@ -136,6 +136,37 @@ function getCategoryName(categoryId: string | null, cardId: string): string {
   return '';
 }
 
+/**
+ * Decode a step_reflections.step_index back to the original question text.
+ * step_index is encoded as (stepIndex * 100 + promptIndex).
+ * Returns null if the question can't be resolved.
+ */
+function getQuestionText(cardId: string, encodedStepIndex: number): string | null {
+  let card: { sections: { type: string; prompts?: (string | { text: string })[] }[] } | null = null;
+
+  for (const prod of allProducts) {
+    const found = prod.cards.find(c => c.id === cardId);
+    if (found) { card = found; break; }
+  }
+  // Also check legacy Still Us cards
+  if (!card) {
+    const suCard = stillUsCards.find(c => c.id === cardId);
+    if (suCard) card = suCard;
+  }
+  if (!card) return null;
+
+  const stepIndex = Math.floor(encodedStepIndex / 100);
+  const promptIndex = encodedStepIndex % 100;
+
+  const section = card.sections[stepIndex];
+  if (!section?.prompts) return null;
+
+  const prompt = section.prompts[promptIndex];
+  if (!prompt) return null;
+
+  return typeof prompt === 'string' ? prompt : (prompt as { text: string }).text ?? null;
+}
+
 function getProductName(productId: string, cardId?: string): string {
   if (cardId) {
     const prod = allProducts.find(p => p.cards.some(c => c.id === cardId));
