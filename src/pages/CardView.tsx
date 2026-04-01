@@ -3061,7 +3061,7 @@ export default function CardView() {
                       textAlign: 'center',
                       marginBottom: '8px',
                     }}>
-                      Det ni skriver sparas i era samtal
+                      Det ni skriver sparas under samtalet
                     </p>
                     <div style={{ position: 'relative' }}>
                       <textarea
