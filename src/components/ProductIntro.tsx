@@ -319,7 +319,7 @@ export default function ProductIntro({
           initial={false}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0 }}
-          style={{ textAlign: 'center', marginTop: '16px' }}
+          style={{ textAlign: 'center', marginTop: '20px' }}
         >
           {fullBodyText.split('\n\n').map((para, i) => (
             <p
