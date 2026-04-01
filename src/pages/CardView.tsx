@@ -752,6 +752,15 @@ export default function CardView() {
     const isSessionInactive = (err: any) =>
       err?.message?.includes('session_not_active') || err?.code === 'P0001' && err?.message?.includes('session_not_active');
 
+    // Promote all draft reflections to ready before completing — makes them visible in archive
+    if (sessionId) {
+      await supabase
+        .from('step_reflections')
+        .update({ state: 'ready' as any })
+        .eq('session_id', sessionId)
+        .eq('state', 'draft');
+    }
+
     const attemptRpc = async (attempt: number): Promise<'ok' | 'session_inactive' | 'error'> => {
       const { data, error } = await supabase.rpc('complete_couple_session_step', rpcParams);
       if (error) {
