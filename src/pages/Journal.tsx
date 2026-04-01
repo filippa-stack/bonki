@@ -422,7 +422,7 @@ function SessionGroupCard({ group, navigate }: { group: SessionGroup; navigate: 
               {productName}
             </span>
           )}
-          <span style={{ fontSize: '11px', color: `${DRIFTWOOD}cc` }}>
+          <span style={{ fontSize: '11px', color: `${LANTERN_GLOW}77` }}>
             {formatRelativeDate(group.date)}
           </span>
         </div>
