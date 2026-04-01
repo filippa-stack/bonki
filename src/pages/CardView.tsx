@@ -484,6 +484,8 @@ export default function CardView() {
 
   // ─── Sub-prompt index within current stage ───
   const [localPromptIndex, setLocalPromptIndex] = useState(0);
+  // Resume loading gate for kids products — prevents Q1 flash while querying reflections
+  const [resumeLoading, setResumeLoading] = useState(false);
 
   // Reset local override when server step advances OR session changes
   const serverStepIndex = normalizedSession.currentStepIndex;
