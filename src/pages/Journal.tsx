@@ -364,7 +364,7 @@ function CompletedMarkerRow({ marker, index }: { marker: CompletedMarker; index:
         })()}
         {marker.cardName}
       </span>
-      <span style={{ fontSize: '12px', color: `${DRIFTWOOD}aa`, marginLeft: 'auto' }}>
+      <span style={{ fontSize: '12px', color: `${LANTERN_GLOW}66`, marginLeft: 'auto' }}>
         {formatRelativeDate(marker.date)}
       </span>
     </div>
