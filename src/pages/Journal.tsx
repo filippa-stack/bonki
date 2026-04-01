@@ -93,6 +93,7 @@ interface DemoDiaryEntry {
   cardId: string;
   text: string;
   date: string;
+  entryKey?: string;
   type?: string;
 }
 
@@ -648,7 +649,12 @@ export default function Journal() {
             type: 'note',
             id: `demo-${product.id}-${entry.cardId}-${entry.date}-${index}`,
             text: entry.text.trim(),
-            questionText: null,
+            questionText: (() => {
+              const match = entry.entryKey?.match(/^step-(\d+)-prompt-(\d+)$/);
+              if (!match) return null;
+              const encoded = Number(match[1]) * 100 + Number(match[2]);
+              return getQuestionText(entry.cardId, encoded);
+            })(),
             cardId: entry.cardId,
             cardName: getCardTitle(entry.cardId),
             categoryName: getCategoryName(null, entry.cardId),
