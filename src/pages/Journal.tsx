@@ -223,6 +223,27 @@ function NoteEntryCard({ entry, navigate, index }: { entry: NoteEntry; navigate:
         marginBottom: '16px',
       }} />
 
+      {/* Metadata — top, matching SessionGroupCard */}
+      <div style={{ lineHeight: 1.3, marginBottom: '10px' }}>
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'baseline',
+        }}>
+          {getProductName(entry.productId, entry.cardId) && (
+            <span style={{ fontSize: '13px', fontWeight: 600, color: accent.light }}>
+              {getProductName(entry.productId, entry.cardId)}
+            </span>
+          )}
+          <span style={{ fontSize: '11px', color: `${DRIFTWOOD}cc` }}>
+            {formatRelativeDate(entry.date)}
+          </span>
+        </div>
+        <p style={{ margin: '2px 0 0', fontSize: '12px', color: `${DRIFTWOOD}bb` }}>
+          {entry.cardName}
+        </p>
+      </div>
+
       {/* Takeaway label */}
       {isTakeaway && (
         <p style={{
@@ -231,9 +252,24 @@ function NoteEntryCard({ entry, navigate, index }: { entry: NoteEntry; navigate:
           fontWeight: 600,
           textTransform: 'uppercase',
           letterSpacing: '0.08em',
-          color: `${accent.mid}b3`,
+          color: `${accent.mid}dd`,
         }}>
           Ni bar med er
+        </p>
+      )}
+
+      {/* Question anchor — before the answer for editorial context */}
+      {entry.questionText && (
+        <p
+          style={{
+            margin: '0 0 8px',
+            fontSize: '13px',
+            fontStyle: 'italic',
+            color: `${LANTERN_GLOW}88`,
+            lineHeight: 1.4,
+          }}
+        >
+          — {entry.questionText}
         </p>
       )}
 
@@ -282,42 +318,6 @@ function NoteEntryCard({ entry, navigate, index }: { entry: NoteEntry; navigate:
             {expanded ? 'Visa mindre' : 'Läs mer'}
           </button>
         )}
-      </div>
-
-      {/* Question anchor — only when there's a real question */}
-      {entry.questionText && (
-        <p
-          style={{
-            margin: '10px 0 0',
-            fontSize: '13px',
-            fontStyle: 'italic',
-            color: `${LANTERN_GLOW}88`,
-            lineHeight: 1.4,
-          }}
-        >
-          — {entry.questionText}
-        </p>
-      )}
-
-      {/* Metadata */}
-      <div style={{ marginTop: '10px', lineHeight: 1.3 }}>
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'baseline',
-        }}>
-          {getProductName(entry.productId, entry.cardId) && (
-            <span style={{ fontSize: '13px', fontWeight: 600, color: accent.light }}>
-              {getProductName(entry.productId, entry.cardId)}
-            </span>
-          )}
-          <span style={{ fontSize: '11px', color: `${DRIFTWOOD}cc` }}>
-            {formatRelativeDate(entry.date)}
-          </span>
-        </div>
-        <p style={{ margin: '2px 0 0', fontSize: '12px', color: `${DRIFTWOOD}bb` }}>
-          {entry.cardName}
-        </p>
       </div>
     </div>
   );
