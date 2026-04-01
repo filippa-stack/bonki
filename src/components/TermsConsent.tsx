@@ -121,7 +121,7 @@ export default function TermsConsent({ checked, onCheckedChange }: TermsConsentP
             </section>
 
             <section>
-              <h3 className="font-serif font-semibold text-foreground text-base mb-1">9. Ansvarsfriskrivning</h3>
+              <h3 className="font-serif font-semibold text-foreground text-base mb-1">8. Ansvarsfriskrivning</h3>
               <p>Still Us är ett kommunikationsverktyg, inte en kristjänst. Om du upplever våld i nära relationer, psykisk kris eller relationsmissbruk — kontakta professionella tjänster.</p>
               <p className="mt-2">BONKI ansvarar inte för utfall av samtal, avbrott i tjänsten eller förlust av data utanför BONKI:s rimliga kontroll.</p>
             </section>
