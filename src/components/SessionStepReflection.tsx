@@ -94,6 +94,18 @@ export default function SessionStepReflection({
     }
   }, [loading, myReflection?.text, reflectionStepIndex]);
 
+  // Re-push local text into hook when sessionId transitions from null to valid
+  const prevSessionIdRef = useRef<string | null>(sessionId ?? null);
+  useEffect(() => {
+    const wasNull = !prevSessionIdRef.current;
+    const nowValid = !!sessionId;
+    prevSessionIdRef.current = sessionId ?? null;
+
+    if (wasNull && nowValid && localText.trim()) {
+      setText(localText);
+    }
+  }, [sessionId]);
+
   const displayText = localText;
 
   const handleChange = (value: string) => {

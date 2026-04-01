@@ -617,7 +617,7 @@ export default function CardView() {
   // ─── Kids session note state ───
   const kidsNoteStepIndex = currentStepIndex * 100 + localPromptIndex;
   const kidsNoteSession = useSessionReflections(
-    isKidsProduct && isActiveSession ? (normalizedSession.sessionId ?? null) : null,
+    isKidsProduct ? (activeSessionId ?? null) : null,
     kidsNoteStepIndex
   );
   const [kidsNoteExpanded, setKidsNoteExpanded] = useState(false);
