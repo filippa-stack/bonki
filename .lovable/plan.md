@@ -1,28 +1,44 @@
 
 
-## Fix Date Visibility in Journal
+## CardView Loading Gate Flash Fix
 
-### Problem
-Dates still use `${DRIFTWOOD}cc` (`#6B5E52` at 80%) — a brown tone that barely registers against the dark `#2E3142` card backgrounds. Per the project's design system, all supporting text should use Lantern Glow (`#FDF6E3`).
+### Changes (1 file: `src/pages/CardView.tsx`)
 
-### Changes (1 file: `src/pages/Journal.tsx`)
+**Change 1: Always suppress entry animations (line 123)**
 
-Switch every date instance from `${DRIFTWOOD}cc` to `${LANTERN_GLOW}77` (Lantern Glow at ~47% opacity — visible but clearly secondary to the product name):
+The loading gate already provides the visual bridge — entry animations after it resolves are redundant and cause the flash.
 
-| Location | Line | Current | New |
-|---|---|---|---|
-| `NoteEntryCard` date | 238 | `${DRIFTWOOD}cc` | `${LANTERN_GLOW}77` |
-| `SessionGroupCard` date | 425 | `${DRIFTWOOD}cc` | `${LANTERN_GLOW}77` |
-| `CompletedMarkerRow` date | 367 | `${DRIFTWOOD}aa` | `${LANTERN_GLOW}66` |
-| `CompletedMarkerRow` card text | 354 | `${DRIFTWOOD}cc` | `${LANTERN_GLOW}77` |
-| `CompletedMarkerRow` separator | 361 | `${DRIFTWOOD}bb` | `${LANTERN_GLOW}55` |
-| Card name (`NoteEntryCard`) | 242 | `${DRIFTWOOD}bb` | `${LANTERN_GLOW}55` |
+```tsx
+// Before
+const [suppressEntryAnim] = useState(() => isResumed);
 
-This aligns with the existing memory: "Lantern Glow for all supporting text on dark backgrounds."
+// After
+const [suppressEntryAnim] = useState(true);
+```
+
+**Change 2: GPU pre-promote the loading gate div (lines 1057–1067)**
+
+Add `willChange`, `WebkitBackfaceVisibility`, and `backfaceVisibility` to the loading gate div to prevent compositor repaints on transition:
+
+```tsx
+style={{
+  position: 'fixed',
+  inset: 0,
+  backgroundColor: loadingBg,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  zIndex: 10,
+  willChange: 'opacity',
+  WebkitBackfaceVisibility: 'hidden',
+  backfaceVisibility: 'hidden',
+}}
+```
 
 ### What stays untouched
-- All logic, data fetching, grouping
-- Font sizes, weights, layout
-- Product name colors (already use `accent.light`)
-- SessionGroupCard card name (already `${LANTERN_GLOW}55`)
+- All hook calls, theme hooks, AnimatePresence config
+- Loading gate condition logic
+- Session creation/resume logic
+- All protected patterns (suppressUntilRef, prevServerStepRef, etc.)
+- No other files modified
 
