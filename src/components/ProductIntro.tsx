@@ -306,8 +306,8 @@ export default function ProductIntro({
               fontSize: '15px',
               color: productAccent,
               textAlign: 'center',
-              marginTop: '4px',
-              margin: '4px 0 0',
+              marginTop: '8px',
+              margin: '8px 0 0',
             }}
           >
             {product.tagline}
