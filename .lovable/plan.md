@@ -1,27 +1,16 @@
 
 
-## Bulk-Grant Still Us Access to All Active Couple Members
+## Fix: Title Cut-Off + Bottom Gap on All 7 Product Home Screens
 
-### Why it's safe
-- `useProductAccess` and `useAllProductAccess` do a simple SELECT on `user_product_access`. Adding rows only flips `hasAccess` from `false` to `true`.
-- No UI component changes. No schema changes. Pure data insert.
-- The `ON CONFLICT DO NOTHING` clause makes it idempotent — safe to re-run.
+All seven products route through `KidsProductHome.tsx`, so these three changes fix every product home screen.
 
-### Change
+### Changes — `src/components/KidsProductHome.tsx`
 
-**Single SQL insert** (via the data insert tool, not a migration):
+| # | What | Why |
+|---|------|-----|
+| 1 | Increase content `paddingTop` from `clamp(32px, 10vh, 90px)` → `clamp(56px, 12vh, 100px)` | Title currently renders behind status bar / back button |
+| 2 | Remove `flex: 1` spacer + the 8px spacer below it; replace with a fixed `16px` div | Unbounded flex pushes tiles too far down on tall screens |
+| 3 | Remove `marginBottom: calc(72px + safe-area)` from the grid container | Content wrapper already has that same `paddingBottom` — double clearance creates the bottom gap |
 
-```sql
-INSERT INTO user_product_access (user_id, product_id, granted_at, granted_via)
-SELECT cm.user_id, 'still_us', COALESCE(cs.paid_at, cm.created_at), 'beta_backfill'
-FROM couple_members cm
-JOIN couple_spaces cs ON cs.id = cm.couple_space_id
-WHERE cm.left_at IS NULL
-  AND cm.status = 'active'
-ON CONFLICT (user_id, product_id) DO NOTHING;
-```
-
-This grants `still_us` access to every active couple member, using `paid_at` as the grant timestamp (falling back to membership creation date). The `granted_via = 'beta_backfill'` tag makes it auditable.
-
-No code changes. No schema changes. One insert query on the Live database.
+No other files affected. Pure layout fix, no behavioral changes.
 
