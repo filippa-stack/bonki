@@ -427,8 +427,9 @@ export default function ProductIntro({
               style={{
                 fontFamily: 'var(--font-sans)',
                 fontStyle: 'italic',
-                fontSize: '13px',
-                color: productAccent,
+                fontSize: '14px',
+                color: LANTERN_GLOW,
+                opacity: 0.6,
                 textAlign: 'center',
                 marginTop: '12px',
                 lineHeight: 1.5,
