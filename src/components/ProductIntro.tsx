@@ -308,19 +308,19 @@ export default function ProductIntro({
           initial={false}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0 }}
-          style={{ textAlign: 'center', marginTop: '8px' }}
+          style={{ textAlign: 'center', marginTop: '16px' }}
         >
           {fullBodyText.split('\n\n').map((para, i) => (
             <p
               key={i}
               style={{
                 fontFamily: 'var(--font-sans)',
-                fontSize: '15px',
+                fontSize: '16px',
                 color: LANTERN_GLOW,
                 textAlign: 'center',
-                lineHeight: 1.55,
-                marginTop: i === 0 ? 0 : '10px',
-                margin: i === 0 ? '0' : '10px 0 0',
+                lineHeight: 1.6,
+                marginTop: i === 0 ? 0 : '14px',
+                margin: i === 0 ? '0' : '14px 0 0',
               }}
             >
               {para}
@@ -331,11 +331,11 @@ export default function ProductIntro({
               style={{
                 fontFamily: 'var(--font-serif)',
                 fontStyle: 'italic',
-                fontSize: '14px',
+                fontSize: '15px',
                 color: productAccent,
                 textAlign: 'center',
                 marginTop: '18px',
-                opacity: 0.85,
+                opacity: 0.9,
               }}
             >
               {signoffText}
@@ -343,90 +343,6 @@ export default function ProductIntro({
           )}
         </motion.div>
 
-
-        {/* 6. First card preview */}
-        {resolvedFreeCardTitle && !isStillUs && (
-          <motion.div
-            initial={false}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0 }}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '14px',
-              marginTop: '24px',
-              padding: '0 4px',
-              justifyContent: 'center',
-            }}
-          >
-            {/* Card mini illustration */}
-            <div
-              style={{
-                width: '44px',
-                height: '52px',
-                borderRadius: '8px',
-                background: `linear-gradient(145deg, ${productAccent}30, ${productAccent}15)`,
-                border: `1px solid ${productAccent}25`,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexShrink: 0,
-                overflow: 'hidden',
-              }}
-            >
-              {freeCardImageUrl ? (
-                <img
-                  src={freeCardImageUrl}
-                  alt=""
-                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                  draggable={false}
-                />
-              ) : (
-                <span style={{ fontSize: '16px', opacity: 0.7 }}>✦</span>
-              )}
-            </div>
-
-            <div>
-              <p
-                style={{
-                  fontFamily: 'var(--font-sans)',
-                  fontSize: '10px',
-                  fontWeight: 500,
-                  letterSpacing: '1.5px',
-                  textTransform: 'uppercase',
-                  color: `${LANTERN_GLOW}99`,
-                  marginBottom: '3px',
-                }}
-              >
-                {freeCardLabel}
-              </p>
-              <p
-                style={{
-                  fontFamily: 'var(--font-serif)',
-                  fontSize: '20px',
-                  fontWeight: 600,
-                  color: LANTERN_GLOW,
-                  letterSpacing: '-0.01em',
-                  lineHeight: 1.2,
-                }}
-              >
-                {isStillUs ? 'Ert första samtal' : resolvedFreeCardTitle}
-              </p>
-              {!isStillUs && freeCardCategoryName && (
-                <p
-                  style={{
-                    fontFamily: 'var(--font-sans)',
-                    fontSize: '12px',
-                    color: `${LANTERN_GLOW}80`,
-                    marginTop: '2px',
-                  }}
-                >
-                  Från {freeCardCategoryName}
-                </p>
-              )}
-            </div>
-          </motion.div>
-        )}
 
         {/* 7. CTA Button */}
         <motion.div
