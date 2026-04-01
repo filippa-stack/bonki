@@ -273,7 +273,7 @@ export default function ProductIntro({
         }}
       >
         {/* Spacer to push content below illustration zone */}
-        <div style={{ flex: '0 0 24%' }} />
+        <div style={{ flex: '1 1 auto', minHeight: '15%' }} />
 
         {/* 2. Welcome header */}
         <motion.h1
