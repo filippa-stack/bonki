@@ -41,6 +41,8 @@ const PRODUCT_TILE_COLORS: Record<string, string> = {
 
 interface ResumeData {
   productId: string;
+  productSlug: string;
+  categoryId: string;
   productName: string;
   cardTitle: string;
   cardId: string;
@@ -66,8 +68,8 @@ export default function LibraryResumeCard({ activeTab, global, forceMock }: Libr
   const showMock = forceMock || devState === 'library' || devState === 'pairedActive';
   const devMock: ResumeData | null = showMock
     ? (global || activeTab === 'barn')
-      ? { productId: 'jag_med_andra', productName: 'Jag med Andra', cardTitle: 'Att vara duktig', cardId: 'jma-duktig', stepLabel: 'Pausad vid FRÅGA 2 AV 5', accentColor: SAFFRON_FLAME }
-      : { productId: 'still_us', productName: 'Still Us', cardTitle: 'Att lyssna på riktigt', cardId: 'su-kommunikation-1', stepLabel: 'Pausad vid VÄND · Fråga 1 av 3', accentColor: DEEP_SAFFRON }
+      ? { productId: 'jag_med_andra', productSlug: 'jag-med-andra', categoryId: 'jma-vem-ar-jag', productName: 'Jag med Andra', cardTitle: 'Att vara duktig', cardId: 'jma-duktig', stepLabel: 'Pausad vid FRÅGA 2 AV 5', accentColor: SAFFRON_FLAME }
+      : { productId: 'still_us', productSlug: 'still-us', categoryId: 'su-mock-vardagen', productName: 'Still Us', cardTitle: 'Att lyssna på riktigt', cardId: 'su-kommunikation-1', stepLabel: 'Pausad vid VÄND · Fråga 1 av 3', accentColor: DEEP_SAFFRON }
     : null;
 
   const fetchRef = useRef(0);
@@ -159,6 +161,8 @@ export default function LibraryResumeCard({ activeTab, global, forceMock }: Libr
     if (fetchId === fetchRef.current) {
       setResume({
         productId: session.product_id,
+        productSlug: product.slug,
+        categoryId: session.category_id ?? product.categories?.[0]?.id ?? '',
         productName: product.name,
         cardTitle: card.title,
         cardId: session.card_id,
@@ -187,6 +191,8 @@ export default function LibraryResumeCard({ activeTab, global, forceMock }: Libr
               : 'Frågor';
             setResume({
               productId: product.id,
+              productSlug: product.slug,
+              categoryId: demoSession.categoryId,
               productName: product.name,
               cardTitle: card.title,
               cardId: demoSession.cardId,
@@ -257,7 +263,7 @@ export default function LibraryResumeCard({ activeTab, global, forceMock }: Libr
 
   return (
     <button
-      onClick={() => navigate(`/card/${display.cardId}`, { state: { resumed: true } })}
+      onClick={() => navigate(`/product/${display.productSlug}/portal/${display.categoryId}?card=${display.cardId}`)}
       style={{
         width: '100%',
         padding: '16px',
