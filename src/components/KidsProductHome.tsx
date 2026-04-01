@@ -544,7 +544,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
           zIndex: 1,
           display: 'flex',
           flexDirection: 'column',
-          paddingTop: 'clamp(32px, 10vh, 90px)',
+          paddingTop: 'clamp(56px, 12vh, 100px)',
           paddingRight: '16px',
           paddingBottom: 'calc(72px + env(safe-area-inset-bottom, 0px))',
           paddingLeft: '16px',
@@ -605,8 +605,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
         </motion.div>
 
         {/* Small spacer before grid */}
-        {useSquareGrid && <div style={{ flex: 1 }} />}
-        {useSquareGrid && <div style={{ height: '8px' }} />}
+        {useSquareGrid && <div style={{ height: '16px' }} />}
 
         {/* Removed "Välj ett ämne" header — tiles speak for themselves */}
 
@@ -624,7 +623,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
                 }
               : { gridTemplateColumns: '1fr', gap: '12px' }),
             width: '100%',
-            marginBottom: 'calc(72px + env(safe-area-inset-bottom, 0px))',
+            marginBottom: 0,
           }}
         >
           {product.categories.map((cat, index) => {
