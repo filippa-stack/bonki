@@ -371,7 +371,7 @@ export default function SharedSummary() {
   const [noNotesOpen, setNoNotesOpen] = useState(false);
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: 'var(--surface-base)' }}>
+    <div className="min-h-screen" style={{ backgroundColor: 'var(--surface-base)', paddingBottom: 'calc(56px + env(safe-area-inset-bottom, 0px))' }}>
       <Header showBack backTo="/" />
 
       <div className="px-5 pb-8 mx-auto" style={{ maxWidth: 540, paddingTop: '24px' }}>

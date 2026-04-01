@@ -108,7 +108,7 @@ export default function StillUsExplore() {
   const isLocked = !hasAccess && devState !== 'browse';
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ backgroundColor: EMBER_NIGHT }}>
+    <div className="min-h-screen flex flex-col" style={{ backgroundColor: EMBER_NIGHT, paddingBottom: 'calc(56px + env(safe-area-inset-bottom, 0px))' }}>
       {/* Header */}
       <div style={{ padding: '12px 16px 0', display: 'flex', alignItems: 'center', gap: '12px' }}>
         <button
