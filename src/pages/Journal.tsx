@@ -291,7 +291,7 @@ function NoteEntryCard({ entry, navigate, index }: { entry: NoteEntry; navigate:
             margin: '10px 0 0',
             fontSize: '13px',
             fontStyle: 'italic',
-            color: `${DRIFTWOOD}cc`,
+            color: `${LANTERN_GLOW}88`,
             lineHeight: 1.4,
           }}
         >
@@ -311,11 +311,11 @@ function NoteEntryCard({ entry, navigate, index }: { entry: NoteEntry; navigate:
               {getProductName(entry.productId, entry.cardId)}
             </span>
           )}
-          <span style={{ fontSize: '11px', color: `${DRIFTWOOD}77` }}>
+          <span style={{ fontSize: '11px', color: `${DRIFTWOOD}cc` }}>
             {formatRelativeDate(entry.date)}
           </span>
         </div>
-        <p style={{ margin: '2px 0 0', fontSize: '12px', color: `${DRIFTWOOD}88` }}>
+        <p style={{ margin: '2px 0 0', fontSize: '12px', color: `${DRIFTWOOD}bb` }}>
           {entry.cardName}
         </p>
       </div>
@@ -358,13 +358,13 @@ function CompletedMarkerRow({ marker, index }: { marker: CompletedMarker; index:
           return name ? (
             <>
               <span style={{ fontSize: '13px', fontWeight: 500, color: markerAccent.light, marginRight: '6px' }}>{name}</span>
-              <span style={{ color: `${DRIFTWOOD}88` }}>·</span>{' '}
+              <span style={{ color: `${DRIFTWOOD}bb` }}>·</span>{' '}
             </>
           ) : null;
         })()}
         {marker.cardName}
       </span>
-      <span style={{ fontSize: '12px', color: `${DRIFTWOOD}66`, marginLeft: 'auto' }}>
+      <span style={{ fontSize: '12px', color: `${DRIFTWOOD}aa`, marginLeft: 'auto' }}>
         {formatRelativeDate(marker.date)}
       </span>
     </div>
@@ -422,11 +422,11 @@ function SessionGroupCard({ group, navigate }: { group: SessionGroup; navigate: 
               {productName}
             </span>
           )}
-          <span style={{ fontSize: '11px', color: `${DRIFTWOOD}77` }}>
+          <span style={{ fontSize: '11px', color: `${DRIFTWOOD}cc` }}>
             {formatRelativeDate(group.date)}
           </span>
         </div>
-        <p style={{ margin: '2px 0 0', fontSize: '12px', color: `${DRIFTWOOD}88` }}>
+        <p style={{ margin: '2px 0 0', fontSize: '12px', color: `${DRIFTWOOD}bb` }}>
           {group.cardName}
         </p>
       </div>
@@ -439,7 +439,7 @@ function SessionGroupCard({ group, navigate }: { group: SessionGroup; navigate: 
               <div style={{
                 height: '1px',
                 margin: '10px 0',
-                background: `linear-gradient(90deg, ${DRIFTWOOD}22, ${DRIFTWOOD}11, transparent)`,
+                background: `linear-gradient(90deg, ${DRIFTWOOD}33, ${DRIFTWOOD}22, transparent)`,
               }} />
             )}
             <p style={{
@@ -467,7 +467,7 @@ function SessionGroupCard({ group, navigate }: { group: SessionGroup; navigate: 
             style={{
               background: 'none',
               border: 'none',
-              color: `${DRIFTWOOD}99`,
+              color: `${DRIFTWOOD}cc`,
               fontSize: '12px',
               fontWeight: 500,
               cursor: 'pointer',
@@ -494,7 +494,7 @@ function SessionGroupCard({ group, navigate }: { group: SessionGroup; navigate: 
             fontWeight: 600,
             textTransform: 'uppercase',
             letterSpacing: '0.08em',
-            color: `${accent.mid}b3`,
+            color: `${accent.mid}dd`,
           }}>
             Ni bar med er
           </p>
@@ -891,7 +891,7 @@ export default function Journal() {
         </h1>
         <p style={{
           fontFamily: 'var(--font-serif)', fontSize: '14px', fontStyle: 'italic',
-          color: `${DRIFTWOOD}cc`, marginTop: '6px', lineHeight: 1.4,
+          color: `${LANTERN_GLOW}77`, marginTop: '6px', lineHeight: 1.4,
         }}>
           Vad ni burit med er.
         </p>
@@ -980,7 +980,7 @@ export default function Journal() {
                 <span style={{ fontWeight: 700, color: DEEP_SAFFRON, fontSize: '18px' }}>{pulseData.total}</span>
                 {' '}samtal sedan {pulseData.monthLabel}.
               </p>
-              <p style={{ margin: '8px 0 0', fontSize: '13px', color: `${DRIFTWOOD}cc`, lineHeight: 1.5 }}>
+              <p style={{ margin: '8px 0 0', fontSize: '13px', color: `${LANTERN_GLOW}88`, lineHeight: 1.5 }}>
                 Senast:{' '}
                 <span
                   onClick={() => pulseData.latestCardId && navigate(`/card/${pulseData.latestCardId}`)}
@@ -997,7 +997,7 @@ export default function Journal() {
                 {' · '}{pulseData.latestRelDate}
               </p>
               {pulseData.uniqueProductCount > 1 && (
-                <p style={{ margin: '4px 0 0', fontSize: '12px', color: `${DRIFTWOOD}88`, lineHeight: 1.4 }}>
+                <p style={{ margin: '4px 0 0', fontSize: '12px', color: `${DRIFTWOOD}bb`, lineHeight: 1.4 }}>
                   I {pulseData.uniqueProductCount} olika samtalsprodukter
                 </p>
               )}
@@ -1042,13 +1042,13 @@ export default function Journal() {
               }}>
                 <span style={{
                   fontSize: '11px', fontWeight: 600,
-                  letterSpacing: '2px', color: `${DRIFTWOOD}aa`, lineHeight: 1,
+                  letterSpacing: '2px', color: `${LANTERN_GLOW}88`, lineHeight: 1,
                 }}>
                   {group.label}
                 </span>
                 <div style={{
                   flex: 1, height: '1px',
-                  background: `linear-gradient(90deg, ${DRIFTWOOD}33, transparent)`,
+                  background: `linear-gradient(90deg, ${DRIFTWOOD}55, transparent)`,
                 }} />
               </div>
 
