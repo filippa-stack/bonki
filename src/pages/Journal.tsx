@@ -235,11 +235,11 @@ function NoteEntryCard({ entry, navigate, index }: { entry: NoteEntry; navigate:
               {getProductName(entry.productId, entry.cardId)}
             </span>
           )}
-          <span style={{ fontSize: '11px', color: `${DRIFTWOOD}cc` }}>
+          <span style={{ fontSize: '11px', color: `${LANTERN_GLOW}77` }}>
             {formatRelativeDate(entry.date)}
           </span>
         </div>
-        <p style={{ margin: '2px 0 0', fontSize: '12px', color: `${DRIFTWOOD}bb` }}>
+        <p style={{ margin: '2px 0 0', fontSize: '12px', color: `${LANTERN_GLOW}55` }}>
           {entry.cardName}
         </p>
       </div>
@@ -351,20 +351,20 @@ function CompletedMarkerRow({ marker, index }: { marker: CompletedMarker; index:
       >
         <Check size={10} strokeWidth={2.5} color={DEEP_SAFFRON} />
       </div>
-      <span style={{ fontSize: '14px', color: `${DRIFTWOOD}cc` }}>
+      <span style={{ fontSize: '14px', color: `${LANTERN_GLOW}77` }}>
         {(() => {
           const name = getProductName(marker.productId, marker.cardId);
           const markerAccent = getProductAccent(marker.productId, marker.cardId);
           return name ? (
             <>
               <span style={{ fontSize: '13px', fontWeight: 500, color: markerAccent.light, marginRight: '6px' }}>{name}</span>
-              <span style={{ color: `${DRIFTWOOD}bb` }}>·</span>{' '}
+              <span style={{ color: `${LANTERN_GLOW}55` }}>·</span>{' '}
             </>
           ) : null;
         })()}
         {marker.cardName}
       </span>
-      <span style={{ fontSize: '12px', color: `${DRIFTWOOD}aa`, marginLeft: 'auto' }}>
+      <span style={{ fontSize: '12px', color: `${LANTERN_GLOW}66`, marginLeft: 'auto' }}>
         {formatRelativeDate(marker.date)}
       </span>
     </div>
@@ -422,7 +422,7 @@ function SessionGroupCard({ group, navigate }: { group: SessionGroup; navigate: 
               {productName}
             </span>
           )}
-          <span style={{ fontSize: '11px', color: `${DRIFTWOOD}cc` }}>
+          <span style={{ fontSize: '11px', color: `${LANTERN_GLOW}77` }}>
             {formatRelativeDate(group.date)}
           </span>
         </div>
