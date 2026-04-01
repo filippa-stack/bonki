@@ -119,7 +119,7 @@ export default function Onboarding() {
           {...fadeUp(0.5)}
           style={{
             fontFamily: 'var(--font-display)',
-            fontSize: '1.65rem',
+            fontSize: 'clamp(28px, 7.5vw, 38px)',
             fontWeight: 400,
             color: '#FDF6E3',
             lineHeight: 1.28,
