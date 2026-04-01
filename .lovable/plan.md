@@ -1,53 +1,38 @@
 
 
-## Fix Journal: Scope reflections query + resolve question text
+## Area 6 Fixes: Console cleanup + BottomNav portal match
 
-### File: `src/pages/Journal.tsx`
+Two pre-launch fixes, both surgical and zero-risk.
 
-**Change 1: Restructure data fetching** (lines 546–584)
+### Change 1: Remove diagnostic console logs
 
-Replace the parallel fire-and-forget pattern with an async function that fetches sessions first, then uses the session IDs to scope the reflections query. Takeaways and bookmarks fire in parallel with reflections.
+**File: `src/pages/CardView.tsx`**
+- Remove all `console.log('[DIAG] ...')` calls (~lines 2826, 2838, 2872–2873, 2898–2899)
+- Keep the actual logic intact; just strip the log statements
+- The `onClick` handlers that wrap `console.log` + function call become direct function calls
+
+**File: `src/hooks/useKidsProductProgress.ts`**
+- Remove the entire `useEffect` debug block (lines 304–316) — it only fires for Still Us and logs internal state to the console on every render cycle
+
+### Change 2: Fix BottomNav Still Us tab matching for portal routes
+
+**File: `src/components/BottomNav.tsx`** (line 54–61)
+
+Replace the exact match `p === '/product/still-us'` with `p.startsWith('/product/still-us')`. This covers `/product/still-us`, `/product/still-us/portal/...`, and any future sub-routes.
 
 ```tsx
-(async () => {
-  const { data: sessionData } = await supabase
-    .from('couple_sessions')
-    .select(...)
-    .eq('couple_space_id', space.id)
-    ...;
-
-  if (cancelled) return;
-  const sessionList = sessionData ?? [];
-  setSessions(sessionList);
-  const sessionIds = sessionList.map(s => s.id);
-
-  const [takeawayRes, reflectionRes, bookmarkRes] = await Promise.all([
-    /* takeaways — unchanged */,
-    sessionIds.length > 0
-      ? supabase.from('step_reflections')...in('session_id', sessionIds)...
-      : Promise.resolve({ data: [] }),
-    /* bookmarks — unchanged */,
-  ]);
-
-  if (cancelled) return;
-  setTakeaways(takeawayRes.data ?? []);
-  setReflections(reflectionRes.data ?? []);
-  setBookmarks(bookmarkRes.data ?? []);
-})();
+match: (p, _s) =>
+  p.startsWith('/product/still-us') ||
+  p.startsWith('/still-us') ||
+  p.startsWith('/check-in') ||
+  p.startsWith('/session/') ||
+  p === '/share' ||
+  p === '/journey' ||
+  p === '/ceremony',
 ```
 
-**Change 2: Add `getQuestionText` helper** (after `getCategoryName`, ~line 137)
-
-Decodes `step_index` (encoded as `stepIndex * 100 + promptIndex`) back to the original prompt text by looking up the card in product manifests and legacy Still Us cards.
-
-**Change 3: Use `getQuestionText` in reflection builder** (line 684)
-
-Replace `questionText: null` with `questionText: getQuestionText(session.card_id, r.step_index)`.
-
 ### What stays untouched
-- NoteEntryCard rendering (already handles `questionText`)
-- SessionGroupCard
-- Demo/local preview logic
-- All other files
-- All protected patterns
+- BUG-UI1 (latent prompt count mismatch) — deferred, not currently triggered
+- INCON-1 (progress bar 50% vs actual) — deferred, displays are on different screens
+- All protected patterns, AnimatePresence, routing keys, 100dvh
 
