@@ -1,24 +1,17 @@
 
 
-## Fix: Status Bar Background Mismatch on Product Home Pages
+## Fix: Theme Hook Timing (useEffect → useLayoutEffect)
 
-### Root Cause
+### Problem
+Theme hooks run in `useEffect` (after paint), causing a one-frame flash of stale CSS variables on navigation — visible as a color "wave" on iOS Safari.
 
-`ProductHome.tsx` line 20 calls `usePageBackground('var(--surface-base)')` — this sets `--page-bg` to the literal string `var(--surface-base)`, which resolves to the light-theme default. The child component (`KidsProductHome`) renders its own background div with the product's dark color, but never updates `--page-bg`. The `#root` element background (visible behind the iOS status bar) stays light/default.
+### Changes (3 files, minimal diff)
 
-### Fix — single file: `src/pages/ProductHome.tsx`
+**1. `src/hooks/usePageBackground.ts`** — Replace `useEffect` with `useLayoutEffect`
 
-**Line 20**: Change `usePageBackground` to use the product's actual background color instead of `var(--surface-base)`.
+**2. `src/hooks/useProductTheme.ts`** — Change import and hook call from `useEffect` to `useLayoutEffect`. Nothing else changes.
 
-```typescript
-// Before
-usePageBackground('var(--surface-base)');
+**3. `src/hooks/useDefaultTheme.ts`** — Consolidate the two separate effects (one `useLayoutEffect` + one `useEffect`) into a single `useLayoutEffect` that does both class removal and CSS var reset before paint.
 
-// After
-usePageBackground(product?.backgroundColor ?? 'var(--surface-base)');
-```
-
-This ensures that when a product has a dark background (e.g. `#721B3A` for Jag med Andra), the `--page-bg` CSS variable matches, and the `#root` background bleeds correctly into the status bar area.
-
-One line change. No structural or behavioral changes.
+No logic changes, no dependency array changes, no cleanup additions. The only functional difference is paint-blocking timing.
 
