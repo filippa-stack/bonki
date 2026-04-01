@@ -112,12 +112,7 @@ export default function TermsConsent({ checked, onCheckedChange }: TermsConsentP
             </section>
 
             <section>
-              <h3 className="font-serif font-semibold text-foreground text-base mb-1">7. Betatestning</h3>
-              <p>Betaanvändare har godkänt separata betavillkor. Betaåtkomst utgör inte ett kommersiellt köp. Funktioner och innehåll kan ändras under betaperioden.</p>
-            </section>
-
-            <section>
-              <h3 className="font-serif font-semibold text-foreground text-base mb-1">8. Förbjuden användning</h3>
+              <h3 className="font-serif font-semibold text-foreground text-base mb-1">7. Förbjuden användning</h3>
               <ul className="list-disc list-inside space-y-1">
                 <li>Dela inte dina inloggningsuppgifter.</li>
                 <li>Använd inte tjänsten för att trakassera, manipulera eller skada din partner.</li>
@@ -126,23 +121,23 @@ export default function TermsConsent({ checked, onCheckedChange }: TermsConsentP
             </section>
 
             <section>
-              <h3 className="font-serif font-semibold text-foreground text-base mb-1">9. Ansvarsfriskrivning</h3>
+              <h3 className="font-serif font-semibold text-foreground text-base mb-1">8. Ansvarsfriskrivning</h3>
               <p>Still Us är ett kommunikationsverktyg, inte en kristjänst. Om du upplever våld i nära relationer, psykisk kris eller relationsmissbruk — kontakta professionella tjänster.</p>
               <p className="mt-2">BONKI ansvarar inte för utfall av samtal, avbrott i tjänsten eller förlust av data utanför BONKI:s rimliga kontroll.</p>
             </section>
 
             <section>
-              <h3 className="font-serif font-semibold text-foreground text-base mb-1">10. Tillämplig lag</h3>
+              <h3 className="font-serif font-semibold text-foreground text-base mb-1">9. Tillämplig lag</h3>
               <p>Dessa villkor regleras av svensk lag. Tvister ska lösas i svenska domstolar.</p>
             </section>
 
             <section>
-              <h3 className="font-serif font-semibold text-foreground text-base mb-1">11. Ändringar</h3>
+              <h3 className="font-serif font-semibold text-foreground text-base mb-1">10. Ändringar</h3>
               <p>BONKI kan uppdatera dessa villkor. Användare meddelas om väsentliga ändringar. Fortsatt användning innebär godkännande.</p>
             </section>
 
             <section>
-              <h3 className="font-serif font-semibold text-foreground text-base mb-1">12. Kontakt</h3>
+              <h3 className="font-serif font-semibold text-foreground text-base mb-1">11. Kontakt</h3>
               <p>Frågor om villkor eller begäran om dataradering: kontakta BONKI AB.</p>
             </section>
 

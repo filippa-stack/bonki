@@ -12,7 +12,7 @@ import { motion } from 'framer-motion';
 import { COLORS } from '@/lib/stillUsTokens';
 import { pollCoupleState, completeSliderCheckin } from '@/lib/stillUsRpc';
 import EmberGlowTextarea from '@/components/still-us/EmberGlowTextarea';
-import { isTestMode } from '@/lib/testMode';
+
 
 const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
@@ -101,24 +101,6 @@ export default function Share({
     navigate('/journey-preview');
   };
 
-  const [simulating, setSimulating] = useState(false);
-  const handleSimulatePartner = async () => {
-    if (!coupleId || !cardId) return;
-    setSimulating(true);
-    const dummySliders = [
-      { slider_id: 's1', position: 15 + Math.floor(Math.random() * 70) },
-      { slider_id: 's2', position: 15 + Math.floor(Math.random() * 70) },
-      { slider_id: 's3', position: 15 + Math.floor(Math.random() * 70) },
-    ];
-    await completeSliderCheckin({
-      couple_id: coupleId,
-      card_id: cardId,
-      slider_responses: dummySliders,
-      link_token: shareLink?.split('token=')[1] || undefined,
-    });
-    setSimulating(false);
-    // Polling will pick up the state change and navigate
-  };
 
   return (
     <div
@@ -227,30 +209,6 @@ export default function Share({
           {copied ? 'Kopierad!' : hasPartner ? 'Skicka länk' : 'Dela med din partner'}
         </button>
 
-        {/* Test mode: simulate partner check-in — REMOVE BEFORE LAUNCH */}
-        {isTestMode() && (
-          <button
-            onClick={handleSimulatePartner}
-            disabled={simulating}
-            style={{
-              display: 'block',
-              width: '100%',
-              padding: '12px',
-              marginTop: '8px',
-              borderRadius: '12px',
-              border: '2px dashed #E8913A',
-              backgroundColor: 'transparent',
-              color: '#E8913A',
-              fontSize: '14px',
-              fontFamily: 'monospace',
-              fontWeight: 600,
-              cursor: simulating ? 'default' : 'pointer',
-              opacity: simulating ? 0.5 : 1,
-            }}
-          >
-            {simulating ? 'Simulerar…' : 'Test: Simulera partners check-in'}
-          </button>
-        )}
 
         {/* ── Skip (first-time only) ── */}
         {!hasPartner && (

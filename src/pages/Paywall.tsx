@@ -6,7 +6,6 @@ import { supabase } from '@/integrations/supabase/client';
 import { COLORS, slugFromCardIndex } from '@/lib/stillUsTokens';
 import { usePageBackground } from '@/hooks/usePageBackground';
 import { useAuth } from '@/contexts/AuthContext';
-import { isTestMode } from '@/lib/testMode';
 import { isDemoMode } from '@/lib/demoMode';
 
 export default function Paywall() {
@@ -17,7 +16,7 @@ export default function Paywall() {
   const [slug, setSlug] = useState<string | null>(null);
   const [processing, setProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const bypassed = isDemoMode() || isTestMode();
+  const bypassed = isDemoMode();
 
   // Demo/test mode: bypass paywall entirely
   useEffect(() => {
@@ -239,41 +238,6 @@ export default function Paywall() {
           </p>
         )}
 
-        {/* Test mode bypass — REMOVE BEFORE LAUNCH */}
-        {isTestMode() && (
-          <motion.button
-            whileTap={{ scale: 0.98 }}
-            onClick={async () => {
-              if (!user?.id) return;
-              setProcessing(true);
-              await supabase
-                .from('couple_state')
-                .update({ purchase_status: 'purchased', purchased_by: user.id } as any)
-                .or(`initiator_id.eq.${user.id},partner_id.eq.${user.id}`);
-              if (slug) {
-                navigate(`/session/${slug}/session2-start`, { replace: true });
-              } else {
-                navigate('/product/still-us', { replace: true });
-              }
-            }}
-            disabled={processing}
-            style={{
-              width: '100%',
-              padding: '12px',
-              borderRadius: '12px',
-              border: '2px dashed #E8913A',
-              backgroundColor: 'transparent',
-              color: '#E8913A',
-              fontSize: '14px',
-              fontFamily: 'monospace',
-              fontWeight: 600,
-              cursor: 'pointer',
-              marginTop: '12px',
-            }}
-          >
-            Test: Hoppa över betalning
-          </motion.button>
-        )}
 
         <div
           onClick={() => navigate('/product/still-us')}
