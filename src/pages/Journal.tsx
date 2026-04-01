@@ -311,7 +311,7 @@ function NoteEntryCard({ entry, navigate, index }: { entry: NoteEntry; navigate:
               {getProductName(entry.productId, entry.cardId)}
             </span>
           )}
-          <span style={{ fontSize: '11px', color: `${DRIFTWOOD}77` }}>
+          <span style={{ fontSize: '11px', color: `${DRIFTWOOD}cc` }}>
             {formatRelativeDate(entry.date)}
           </span>
         </div>
