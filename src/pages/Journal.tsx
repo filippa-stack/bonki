@@ -371,6 +371,152 @@ function CompletedMarkerRow({ marker, index }: { marker: CompletedMarker; index:
   );
 }
 
+// ─── Session Group types ───
+interface SessionGroup {
+  type: 'group';
+  sessionId: string;
+  notes: NoteEntry[];
+  takeaway: NoteEntry | null;
+  productId: string;
+  cardId: string;
+  cardName: string;
+  categoryName: string;
+  date: string;
+}
+
+type RenderItem = NoteEntry | CompletedMarker | SessionGroup;
+
+// ─── Session Group Card (premium envelope) ───
+function SessionGroupCard({ group, navigate }: { group: SessionGroup; navigate: (p: string) => void }) {
+  const [expanded, setExpanded] = useState(false);
+  const accent = getProductAccent(group.productId, group.cardId);
+  const productName = getProductName(group.productId, group.cardId);
+  const COLLAPSE_THRESHOLD = 3;
+  const showToggle = group.notes.length > COLLAPSE_THRESHOLD;
+  const displayedNotes = expanded ? group.notes : group.notes.slice(0, COLLAPSE_THRESHOLD);
+
+  return (
+    <div
+      style={{
+        backgroundColor: '#2E3142',
+        borderRadius: '16px',
+        overflow: 'hidden',
+        position: 'relative',
+      }}
+    >
+      {/* Top accent bar */}
+      <div style={{
+        height: '2px',
+        background: `${accent.mid}66`,
+      }} />
+
+      {/* Header */}
+      <div style={{ padding: '16px 16px 0' }}>
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'baseline',
+        }}>
+          {productName && (
+            <span style={{ fontSize: '13px', fontWeight: 600, color: accent.light }}>
+              {productName}
+            </span>
+          )}
+          <span style={{ fontSize: '11px', color: `${DRIFTWOOD}77` }}>
+            {formatRelativeDate(group.date)}
+          </span>
+        </div>
+        <p style={{ margin: '2px 0 0', fontSize: '12px', color: `${DRIFTWOOD}88` }}>
+          {group.cardName}
+        </p>
+      </div>
+
+      {/* Reflections */}
+      <div style={{ padding: '14px 16px 0' }}>
+        {displayedNotes.map((note, idx) => (
+          <div key={note.id}>
+            {idx > 0 && (
+              <div style={{
+                height: '1px',
+                margin: '10px 0',
+                background: `linear-gradient(90deg, ${DRIFTWOOD}22, ${DRIFTWOOD}11, transparent)`,
+              }} />
+            )}
+            <p style={{
+              margin: 0,
+              fontFamily: 'var(--font-serif)',
+              fontSize: '15px',
+              fontStyle: 'italic',
+              color: LANTERN_GLOW,
+              lineHeight: 1.65,
+              whiteSpace: 'pre-wrap',
+            }}>
+              {note.text.length > 160 && !expanded
+                ? note.text.slice(0, 160) + '…'
+                : note.text}
+            </p>
+          </div>
+        ))}
+      </div>
+
+      {/* Expand toggle */}
+      {showToggle && (
+        <div style={{ padding: '8px 16px 0' }}>
+          <button
+            onClick={() => setExpanded(!expanded)}
+            style={{
+              background: 'none',
+              border: 'none',
+              color: `${DRIFTWOOD}99`,
+              fontSize: '12px',
+              fontWeight: 500,
+              cursor: 'pointer',
+              padding: 0,
+              letterSpacing: '0.02em',
+            }}
+          >
+            {expanded ? 'Visa färre' : `Visa alla (${group.notes.length})`}
+          </button>
+        </div>
+      )}
+
+      {/* Takeaway */}
+      {group.takeaway && group.takeaway.text.trim() && (
+        <div style={{
+          margin: '14px 12px 0',
+          padding: '12px 14px',
+          backgroundColor: `${accent.deep}14`,
+          borderRadius: '12px',
+        }}>
+          <p style={{
+            margin: '0 0 8px',
+            fontSize: '10px',
+            fontWeight: 600,
+            textTransform: 'uppercase',
+            letterSpacing: '0.08em',
+            color: `${accent.mid}b3`,
+          }}>
+            Ni bar med er
+          </p>
+          <p style={{
+            margin: 0,
+            fontFamily: 'var(--font-serif)',
+            fontSize: '15px',
+            color: LANTERN_GLOW,
+            lineHeight: 1.6,
+            whiteSpace: 'pre-wrap',
+          }}>
+            {group.takeaway.text}
+          </p>
+        </div>
+      )}
+
+      {/* Bottom padding */}
+      <div style={{ height: '14px' }} />
+    </div>
+  );
+}
+
 export default function Journal() {
   useDefaultTheme();
   usePageBackground(MIDNIGHT_INK);
