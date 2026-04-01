@@ -291,7 +291,7 @@ function NoteEntryCard({ entry, navigate, index }: { entry: NoteEntry; navigate:
             margin: '10px 0 0',
             fontSize: '13px',
             fontStyle: 'italic',
-            color: `${DRIFTWOOD}cc`,
+            color: `${LANTERN_GLOW}88`,
             lineHeight: 1.4,
           }}
         >
