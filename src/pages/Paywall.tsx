@@ -111,7 +111,7 @@ export default function Paywall() {
       flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'center',
-      padding: '48px 24px 40px',
+      padding: '48px 24px calc(56px + env(safe-area-inset-bottom, 0px))',
       fontFamily: "'DM Sans', sans-serif",
     }}>
       <motion.div
