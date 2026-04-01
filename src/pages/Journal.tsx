@@ -351,7 +351,7 @@ function CompletedMarkerRow({ marker, index }: { marker: CompletedMarker; index:
       >
         <Check size={10} strokeWidth={2.5} color={DEEP_SAFFRON} />
       </div>
-      <span style={{ fontSize: '14px', color: `${DRIFTWOOD}cc` }}>
+      <span style={{ fontSize: '14px', color: `${LANTERN_GLOW}77` }}>
         {(() => {
           const name = getProductName(marker.productId, marker.cardId);
           const markerAccent = getProductAccent(marker.productId, marker.cardId);
