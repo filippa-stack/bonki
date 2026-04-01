@@ -102,11 +102,12 @@ export default function Onboarding() {
           {...fadeUp(0.35)}
           style={{
             fontFamily: 'var(--font-sans)',
-            fontSize: '11px',
+            fontSize: '15px',
             fontWeight: 500,
             letterSpacing: '0.16em',
             textTransform: 'uppercase',
-            color: 'hsla(34, 20%, 60%, 0.85)',
+            color: LANTERN_GLOW,
+            opacity: 0.5,
             marginBottom: '14px',
           }}
         >
