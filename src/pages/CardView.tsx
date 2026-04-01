@@ -1063,6 +1063,9 @@ export default function CardView() {
           alignItems: 'center',
           justifyContent: 'center',
           zIndex: 10,
+          willChange: 'opacity',
+          WebkitBackfaceVisibility: 'hidden',
+          backfaceVisibility: 'hidden',
         }}
       />
     );
