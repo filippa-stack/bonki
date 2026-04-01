@@ -315,12 +315,12 @@ export default function ProductIntro({
               key={i}
               style={{
                 fontFamily: 'var(--font-sans)',
-                fontSize: '15px',
+                fontSize: '16px',
                 color: LANTERN_GLOW,
                 textAlign: 'center',
-                lineHeight: 1.55,
-                marginTop: i === 0 ? 0 : '10px',
-                margin: i === 0 ? '0' : '10px 0 0',
+                lineHeight: 1.6,
+                marginTop: i === 0 ? 0 : '14px',
+                margin: i === 0 ? '0' : '14px 0 0',
               }}
             >
               {para}
