@@ -137,7 +137,7 @@ export default function TermsConsent({ checked, onCheckedChange }: TermsConsentP
             </section>
 
             <section>
-              <h3 className="font-serif font-semibold text-foreground text-base mb-1">12. Kontakt</h3>
+              <h3 className="font-serif font-semibold text-foreground text-base mb-1">11. Kontakt</h3>
               <p>Frågor om villkor eller begäran om dataradering: kontakta BONKI AB.</p>
             </section>
 
