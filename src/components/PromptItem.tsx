@@ -331,7 +331,7 @@ export default function PromptItem({ prompt, index, sectionType, preamble, ancho
                           textAlign: 'center',
                           ...gravity,
                           lineHeight: inlineScenarioPreamble ? 1.38 : isLongText ? 1.5 : gravity.lineHeight,
-                          fontWeight: hasDoubleBreaks && isLastPara ? 500 : (inlineScenarioPreamble ? 600 : isLongText ? 400 : gravity.fontWeight),
+                          fontWeight: hasDoubleBreaks && isLastPara ? 500 : gravity.fontWeight,
                           position: 'relative',
                           zIndex: 1,
                           width: inlineScenarioPreamble ? '100%' : undefined,
