@@ -1,44 +1,23 @@
 
 
-## CardView Loading Gate Flash Fix
+## NextActionBanner Layout Shift Fix
 
-### Changes (1 file: `src/pages/CardView.tsx`)
+### Change (1 file: `src/components/KidsProductHome.tsx`)
 
-**Change 1: Always suppress entry animations (line 123)**
-
-The loading gate already provides the visual bridge — entry animations after it resolves are redundant and cause the flash.
+**Line 603**: Wrap `NextActionBanner` in a container with reserved height to prevent tile grid jump.
 
 ```tsx
 // Before
-const [suppressEntryAnim] = useState(() => isResumed);
+<NextActionBanner product={product} progress={progress} />
 
 // After
-const [suppressEntryAnim] = useState(true);
-```
-
-**Change 2: GPU pre-promote the loading gate div (lines 1057–1067)**
-
-Add `willChange`, `WebkitBackfaceVisibility`, and `backfaceVisibility` to the loading gate div to prevent compositor repaints on transition:
-
-```tsx
-style={{
-  position: 'fixed',
-  inset: 0,
-  backgroundColor: loadingBg,
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  zIndex: 10,
-  willChange: 'opacity',
-  WebkitBackfaceVisibility: 'hidden',
-  backfaceVisibility: 'hidden',
-}}
+<div style={{ minHeight: '52px' }}>
+  <NextActionBanner product={product} progress={progress} />
+</div>
 ```
 
 ### What stays untouched
-- All hook calls, theme hooks, AnimatePresence config
-- Loading gate condition logic
-- Session creation/resume logic
-- All protected patterns (suppressUntilRef, prevServerStepRef, etc.)
-- No other files modified
+- NextActionBanner internals, animations, theme hooks
+- Tile rendering, grid layout
+- All other files and protected patterns
 
