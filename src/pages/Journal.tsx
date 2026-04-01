@@ -576,40 +576,51 @@ export default function Journal() {
     }
     let cancelled = false;
 
-    // Sessions
-    supabase
-      .from('couple_sessions')
-      .select('id, card_id, product_id, ended_at, category_id, status')
-      .eq('couple_space_id', space.id)
-      .in('status', ['completed', 'active', 'abandoned'])
-      .order('ended_at', { ascending: false })
-      .then(({ data }) => { if (!cancelled) setSessions(data ?? []); });
+    (async () => {
+      // 1. Sessions first — we need IDs to scope reflections
+      const { data: sessionData } = await supabase
+        .from('couple_sessions')
+        .select('id, card_id, product_id, ended_at, category_id, status')
+        .eq('couple_space_id', space.id)
+        .in('status', ['completed', 'active', 'abandoned'])
+        .order('ended_at', { ascending: false });
 
-    // Takeaways (session-level notes)
-    supabase
-      .from('couple_takeaways')
-      .select('id, session_id, content, created_at, speaker_label')
-      .eq('couple_space_id', space.id)
-      .order('created_at', { ascending: false })
-      .then(({ data }) => { if (!cancelled) setTakeaways(data ?? []); });
+      if (cancelled) return;
+      const sessionList = sessionData ?? [];
+      setSessions(sessionList);
 
-    // Step reflections (per-step notes)
-    supabase
-      .from('step_reflections')
-      .select('id, session_id, step_index, text, updated_at, speaker_label, product_id')
-      .neq('text', '')
-      .order('updated_at', { ascending: false })
-      .then(({ data }) => { if (!cancelled) setReflections(data ?? []); });
+      const sessionIds = sessionList.map(s => s.id);
 
+      // 2. Takeaways, reflections, bookmarks — in parallel, reflections scoped by session IDs
+      const [takeawayRes, reflectionRes, bookmarkRes] = await Promise.all([
+        supabase
+          .from('couple_takeaways')
+          .select('id, session_id, content, created_at, speaker_label')
+          .eq('couple_space_id', space.id)
+          .order('created_at', { ascending: false }),
 
-    // Bookmarked questions
-    supabase
-      .from('question_bookmarks')
-      .select('id, card_id, product_id, question_text')
-      .eq('couple_space_id', space.id)
-      .eq('is_active', true)
-      .order('bookmarked_at', { ascending: false })
-      .then(({ data }) => { if (!cancelled) setBookmarks(data ?? []); });
+        sessionIds.length > 0
+          ? supabase
+              .from('step_reflections')
+              .select('id, session_id, step_index, text, updated_at, speaker_label, product_id')
+              .in('session_id', sessionIds)
+              .neq('text', '')
+              .order('updated_at', { ascending: false })
+          : Promise.resolve({ data: [] as any[] }),
+
+        supabase
+          .from('question_bookmarks')
+          .select('id, card_id, product_id, question_text')
+          .eq('couple_space_id', space.id)
+          .eq('is_active', true)
+          .order('bookmarked_at', { ascending: false }),
+      ]);
+
+      if (cancelled) return;
+      setTakeaways(takeawayRes.data ?? []);
+      setReflections(reflectionRes.data ?? []);
+      setBookmarks(bookmarkRes.data ?? []);
+    })();
 
     return () => { cancelled = true; };
   }, [space?.id]);
