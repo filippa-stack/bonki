@@ -626,21 +626,22 @@ export default function CardView() {
   const kidsNoteInteractedRef = useRef(false);
   const kidsNoteTextareaRef = useRef<HTMLTextAreaElement>(null);
   const kidsNoteSaveTimerRef = useRef<ReturnType<typeof setTimeout>>();
-  // Reset note UI when prompt changes — allow immediate DB sync
+  // Reset note UI state when prompt changes — text will be set by sync effect
   useEffect(() => {
     setKidsNoteExpanded(false);
-    setKidsNoteLocalText('');
     kidsNoteInteractedRef.current = false;
   }, [localPromptIndex]);
 
-  // Sync saved note text from DB — only when reflection data matches current prompt
+  // Sync saved note text from DB — single source of truth for note field content
   useEffect(() => {
     if (kidsNoteSession.loading) return;
     if (kidsNoteSession.myReflection?.text && kidsNoteSession.myReflection.stepIndex === kidsNoteStepIndex) {
       setKidsNoteLocalText(kidsNoteSession.myReflection.text);
       setKidsNoteExpanded(true);
+    } else {
+      setKidsNoteLocalText('');
     }
-  }, [kidsNoteSession.loading, kidsNoteSession.myReflection, kidsNoteStepIndex]);
+  }, [kidsNoteSession.loading, kidsNoteSession.myReflection, kidsNoteStepIndex, localPromptIndex]);
 
   const existingConversation = cardId ? getConversationForCard(cardId) : undefined;
 
@@ -750,6 +751,15 @@ export default function CardView() {
 
     const isSessionInactive = (err: any) =>
       err?.message?.includes('session_not_active') || err?.code === 'P0001' && err?.message?.includes('session_not_active');
+
+    // Promote all draft reflections to ready before completing — makes them visible in archive
+    if (sessionId) {
+      await supabase
+        .from('step_reflections')
+        .update({ state: 'ready' as any })
+        .eq('session_id', sessionId)
+        .eq('state', 'draft');
+    }
 
     const attemptRpc = async (attempt: number): Promise<'ok' | 'session_inactive' | 'error'> => {
       const { data, error } = await supabase.rpc('complete_couple_session_step', rpcParams);
@@ -3051,7 +3061,7 @@ export default function CardView() {
                       textAlign: 'center',
                       marginBottom: '8px',
                     }}>
-                      Det ni skriver sparas i era samtal
+                      Det ni skriver sparas under samtalet
                     </p>
                     <div style={{ position: 'relative' }}>
                       <textarea
@@ -3121,7 +3131,7 @@ export default function CardView() {
                             letterSpacing: '0.02em',
                           }}
                         >
-                          ✓ Sparat i era samtal
+                          ✓ Sparat
                         </motion.p>
                       )}
                     </AnimatePresence>
