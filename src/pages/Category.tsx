@@ -126,7 +126,7 @@ export default function Category() {
       .select('price_sek')
       .eq('id', product.id)
       .single()
-      .then(({ data }) => setPriceSek(data?.price_sek ?? 249));
+      .then(({ data }) => setPriceSek(data?.price_sek ?? 195));
   }, [product?.id]);
 
   const isKidsProduct = !!product && KIDS_PRODUCT_IDS.includes(product.id);
