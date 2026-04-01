@@ -1,34 +1,53 @@
 
 
-## Separate 14-day expiry from sequencing logic
+## Fix Journal: Scope reflections query + resolve question text
 
-### File: `src/hooks/useKidsProductProgress.ts`
+### File: `src/pages/Journal.tsx`
 
-**1. Add `allTimeCompletedCardIds` to interface** (~line 56):
+**Change 1: Restructure data fetching** (lines 546–584)
+
+Replace the parallel fire-and-forget pattern with an async function that fetches sessions first, then uses the session IDs to scope the reflections query. Takeaways and bookmarks fire in parallel with reflections.
+
 ```tsx
-allTimeCompletedCardIds: string[];
+(async () => {
+  const { data: sessionData } = await supabase
+    .from('couple_sessions')
+    .select(...)
+    .eq('couple_space_id', space.id)
+    ...;
+
+  if (cancelled) return;
+  const sessionList = sessionData ?? [];
+  setSessions(sessionList);
+  const sessionIds = sessionList.map(s => s.id);
+
+  const [takeawayRes, reflectionRes, bookmarkRes] = await Promise.all([
+    /* takeaways — unchanged */,
+    sessionIds.length > 0
+      ? supabase.from('step_reflections')...in('session_id', sessionIds)...
+      : Promise.resolve({ data: [] }),
+    /* bookmarks — unchanged */,
+  ]);
+
+  if (cancelled) return;
+  setTakeaways(takeawayRes.data ?? []);
+  setReflections(reflectionRes.data ?? []);
+  setBookmarks(bookmarkRes.data ?? []);
+})();
 ```
 
-**2. Add `allTimeCompletedCardIds` memo** (after `recentlyCompletedCardIds` memo, ~line 235):
-```tsx
-const allTimeCompletedCardIds = useMemo(() => {
-  const seen = new Set<string>();
-  for (const s of completedSessions) {
-    seen.add(s.card_id);
-  }
-  return [...seen];
-}, [completedSessions]);
-```
+**Change 2: Add `getQuestionText` helper** (after `getCategoryName`, ~line 137)
 
-**3. Change sequencing/categoryProgress memo** (~line 243):
-```tsx
-// Before
-const completedSet = new Set(recentlyCompletedCardIds);
-// After
-const completedSet = new Set(allTimeCompletedCardIds);
-```
+Decodes `step_index` (encoded as `stepIndex * 100 + promptIndex`) back to the original prompt text by looking up the card in product manifests and legacy Still Us cards.
 
-**4. Add to return value** — add `allTimeCompletedCardIds` to the result memo and its dependency array.
+**Change 3: Use `getQuestionText` in reflection builder** (line 684)
 
-### No changes to any other file.
+Replace `questionText: null` with `questionText: getQuestionText(session.card_id, r.step_index)`.
+
+### What stays untouched
+- NoteEntryCard rendering (already handles `questionText`)
+- SessionGroupCard
+- Demo/local preview logic
+- All other files
+- All protected patterns
 
