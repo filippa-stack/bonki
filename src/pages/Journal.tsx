@@ -723,7 +723,7 @@ export default function Journal() {
         type: 'note',
         id: `reflection-${r.id}`,
         text: r.text,
-        questionText: null, // We don't have the exact question text easily here
+        questionText: getQuestionText(session.card_id, r.step_index),
         cardId: session.card_id,
         cardName: getCardTitle(session.card_id),
         categoryName: getCategoryName(session.category_id, session.card_id),
