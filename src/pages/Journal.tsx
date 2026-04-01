@@ -744,12 +744,68 @@ export default function Journal() {
     return { visibleItems: visible, emptyStillUsSessions: emptySU };
   }, [allTimelineItems, activeFilters, parExpanded]);
 
-  // Group by month
-  const monthGroups = useMemo(() => {
-    const groups: { key: string; label: string; items: TimelineItem[] }[] = [];
-    const map = new Map<string, TimelineItem[]>();
+  // ── Group notes by sessionId into envelopes ──
+  const groupedItems = useMemo<RenderItem[]>(() => {
+    const result: RenderItem[] = [];
+    // Collect notes per session
+    const sessionBuckets = new Map<string, NoteEntry[]>();
+    const nonNotes: (CompletedMarker)[] = [];
 
     visibleItems.forEach(item => {
+      if (item.type === 'note') {
+        const bucket = sessionBuckets.get(item.sessionId) || [];
+        bucket.push(item);
+        sessionBuckets.set(item.sessionId, bucket);
+      } else {
+        nonNotes.push(item);
+      }
+    });
+
+    // Build groups or pass-through solo notes
+    sessionBuckets.forEach((notes, sessionId) => {
+      // Separate takeaway from regular notes
+      const takeawayNote = notes.find(n => n.id.startsWith('takeaway-')) ?? null;
+      const regularNotes = notes.filter(n => !n.id.startsWith('takeaway-'));
+
+      if (regularNotes.length === 0 && takeawayNote) {
+        // Solo takeaway — render as regular card
+        result.push(takeawayNote);
+      } else if (regularNotes.length === 1 && !takeawayNote) {
+        // Solo note — render as regular card
+        result.push(regularNotes[0]);
+      } else if (regularNotes.length >= 1) {
+        // 2+ notes or 1 note + takeaway — group them
+        const first = regularNotes[0];
+        const latestDate = notes.reduce((max, n) =>
+          new Date(n.date) > new Date(max) ? n.date : max, notes[0].date);
+        result.push({
+          type: 'group',
+          sessionId,
+          notes: regularNotes,
+          takeaway: takeawayNote,
+          productId: first.productId,
+          cardId: first.cardId,
+          cardName: first.cardName,
+          categoryName: first.categoryName,
+          date: latestDate,
+        });
+      }
+    });
+
+    // Add completed markers
+    nonNotes.forEach(m => result.push(m));
+
+    // Sort by date desc
+    result.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    return result;
+  }, [visibleItems]);
+
+  // Group by month
+  const monthGroups = useMemo(() => {
+    const groups: { key: string; label: string; items: RenderItem[] }[] = [];
+    const map = new Map<string, RenderItem[]>();
+
+    groupedItems.forEach(item => {
       const key = monthKey(item.date);
       if (!map.has(key)) map.set(key, []);
       map.get(key)!.push(item);
@@ -763,7 +819,7 @@ export default function Journal() {
     });
 
     return groups;
-  }, [visibleItems]);
+  }, [groupedItems]);
 
   // Pulse card data
   const filteredSessions = useMemo(() => {
