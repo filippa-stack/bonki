@@ -54,7 +54,7 @@ export default function PaywallFullScreen() {
       .eq('id', productId)
       .single()
       .then(({ data }) => {
-        setPriceSek(data?.price_sek ?? 195);
+        setPriceSek(data?.price_sek ?? 249);
       });
   }, [productId]);
 

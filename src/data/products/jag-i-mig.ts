@@ -525,7 +525,7 @@ export const jagIMigProduct: ProductManifest = {
   pronounMode: 'du',
   heroImage,
   freeCardId: 'jim-glad',
-  ageLabel: undefined,
+  ageLabel: '3+',
   paywallDescription: 'Lås upp alla samtal om känslor, mod och att förstå sig själv.',
   categories,
   cards,
