@@ -36,6 +36,8 @@ export function isTypeAProduct(_productId: string): boolean {
 export interface KidsProductProgress {
   /** Card IDs with recent (< 14 days) completion */
   recentlyCompletedCardIds: string[];
+  /** All-time completed card IDs — used for sequencing (never sends user backwards) */
+  allTimeCompletedCardIds: string[];
   /** Card IDs with active session */
   activeCardIds: string[];
   /** Active session details (for resume banner) */
@@ -234,13 +236,22 @@ export function useKidsProductProgress(product: ProductManifest | undefined): Ki
     return result;
   }, [completedSessions]);
 
+  // All-time completions — used for sequencing (never sends user backwards)
+  const allTimeCompletedCardIds = useMemo(() => {
+    const seen = new Set<string>();
+    for (const s of completedSessions) {
+      seen.add(s.card_id);
+    }
+    return [...seen];
+  }, [completedSessions]);
+
   // Determine next suggested card and category
   const { nextSuggestedCardId, nextSuggestedCategoryId, categoryProgress } = useMemo(() => {
     if (!product) {
       return { nextSuggestedCardId: null, nextSuggestedCategoryId: null, categoryProgress: {} };
     }
 
-    const completedSet = new Set(recentlyCompletedCardIds);
+    const completedSet = new Set(allTimeCompletedCardIds);
     const activeCardId = activeSession?.cardId;
     const progress: Record<string, { completed: number; total: number; allDone: boolean }> = {};
     let nextCardId: string | null = null;
@@ -270,7 +281,7 @@ export function useKidsProductProgress(product: ProductManifest | undefined): Ki
       nextSuggestedCategoryId: nextCatId,
       categoryProgress: progress,
     };
-  }, [product, recentlyCompletedCardIds, activeSession?.cardId]);
+  }, [product, allTimeCompletedCardIds, activeSession?.cardId]);
 
   const activeCardIds = useMemo(
     () => activeSession ? [activeSession.cardId] : [],
@@ -279,13 +290,14 @@ export function useKidsProductProgress(product: ProductManifest | undefined): Ki
 
   const result = useMemo(() => ({
     recentlyCompletedCardIds,
+    allTimeCompletedCardIds,
     activeCardIds,
     activeSession: activeSession ? { ...activeSession, currentStepIndex } : null,
     nextSuggestedCardId,
     nextSuggestedCategoryId,
     categoryProgress,
     loading,
-  }), [recentlyCompletedCardIds, activeCardIds, activeSession, currentStepIndex,
+  }), [recentlyCompletedCardIds, allTimeCompletedCardIds, activeCardIds, activeSession, currentStepIndex,
        nextSuggestedCardId, nextSuggestedCategoryId, categoryProgress, loading]);
 
   // DEBUG: Log Still Us progress state
