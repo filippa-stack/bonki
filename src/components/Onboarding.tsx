@@ -135,8 +135,8 @@ export default function Onboarding() {
           {...fadeUp(0.65)}
           style={{
             width: '32px',
-            height: '1.5px',
-            backgroundColor: 'hsla(40, 78%, 61%, 0.35)',
+            height: '2px',
+            backgroundColor: 'hsla(40, 78%, 61%, 0.5)',
             marginTop: '20px',
             marginBottom: '16px',
           }}
