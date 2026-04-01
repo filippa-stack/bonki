@@ -132,7 +132,7 @@ export default function TermsConsent({ checked, onCheckedChange }: TermsConsentP
             </section>
 
             <section>
-              <h3 className="font-serif font-semibold text-foreground text-base mb-1">11. Ändringar</h3>
+              <h3 className="font-serif font-semibold text-foreground text-base mb-1">10. Ändringar</h3>
               <p>BONKI kan uppdatera dessa villkor. Användare meddelas om väsentliga ändringar. Fortsatt användning innebär godkännande.</p>
             </section>
 
