@@ -16,7 +16,7 @@ export default function Paywall() {
   const [slug, setSlug] = useState<string | null>(null);
   const [processing, setProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const bypassed = isDemoMode() || isTestMode();
+  const bypassed = isDemoMode();
 
   // Demo/test mode: bypass paywall entirely
   useEffect(() => {
