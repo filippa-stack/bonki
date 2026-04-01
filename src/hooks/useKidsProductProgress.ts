@@ -300,20 +300,5 @@ export function useKidsProductProgress(product: ProductManifest | undefined): Ki
   }), [recentlyCompletedCardIds, allTimeCompletedCardIds, activeCardIds, activeSession, currentStepIndex,
        nextSuggestedCardId, nextSuggestedCategoryId, categoryProgress, loading]);
 
-  // DEBUG: Log Still Us progress state
-  useEffect(() => {
-    if (productId !== 'still_us' && product?.slug !== 'still-us') return;
-    console.group('[DEBUG] useKidsProductProgress — Still Us');
-    console.log('loading:', result.loading);
-    console.log('activeSession:', result.activeSession);
-    console.log('activeCardIds:', result.activeCardIds);
-    console.log('recentlyCompletedCardIds:', result.recentlyCompletedCardIds);
-    console.log('nextSuggested:', result.nextSuggestedCardId, '→ cat:', result.nextSuggestedCategoryId);
-    console.log('categoryProgress:', result.categoryProgress);
-    console.log('raw completedSessions from DB:', completedSessions);
-    console.log('space?.id:', space?.id, '| productId:', productId, '| isLocalPreview:', isLocalPreview);
-    console.groupEnd();
-  }, [result.loading, result.activeSession, result.recentlyCompletedCardIds.length, productId, product?.slug]);
-
   return result;
 }

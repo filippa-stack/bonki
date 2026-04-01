@@ -52,7 +52,7 @@ const items: NavItem[] = [
     customIcon: StillUsIcon,
     path: '/product/still-us',
     match: (p, _s) =>
-      p === '/product/still-us' ||
+      p.startsWith('/product/still-us') ||
       p.startsWith('/still-us') ||
       p.startsWith('/check-in') ||
       p.startsWith('/session/') ||
