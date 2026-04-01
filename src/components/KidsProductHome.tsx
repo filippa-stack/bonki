@@ -605,8 +605,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
         </motion.div>
 
         {/* Small spacer before grid */}
-        {useSquareGrid && <div style={{ flex: 1 }} />}
-        {useSquareGrid && <div style={{ height: '8px' }} />}
+        {useSquareGrid && <div style={{ height: '16px' }} />}
 
         {/* Removed "Välj ett ämne" header — tiles speak for themselves */}
 
