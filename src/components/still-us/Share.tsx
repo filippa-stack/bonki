@@ -101,24 +101,6 @@ export default function Share({
     navigate('/journey-preview');
   };
 
-  const [simulating, setSimulating] = useState(false);
-  const handleSimulatePartner = async () => {
-    if (!coupleId || !cardId) return;
-    setSimulating(true);
-    const dummySliders = [
-      { slider_id: 's1', position: 15 + Math.floor(Math.random() * 70) },
-      { slider_id: 's2', position: 15 + Math.floor(Math.random() * 70) },
-      { slider_id: 's3', position: 15 + Math.floor(Math.random() * 70) },
-    ];
-    await completeSliderCheckin({
-      couple_id: coupleId,
-      card_id: cardId,
-      slider_responses: dummySliders,
-      link_token: shareLink?.split('token=')[1] || undefined,
-    });
-    setSimulating(false);
-    // Polling will pick up the state change and navigate
-  };
 
   return (
     <div
