@@ -626,10 +626,9 @@ export default function CardView() {
   const kidsNoteInteractedRef = useRef(false);
   const kidsNoteTextareaRef = useRef<HTMLTextAreaElement>(null);
   const kidsNoteSaveTimerRef = useRef<ReturnType<typeof setTimeout>>();
-  // Reset note UI when prompt changes — allow immediate DB sync
+  // Reset note UI state when prompt changes — text will be set by sync effect
   useEffect(() => {
     setKidsNoteExpanded(false);
-    setKidsNoteLocalText('');
     kidsNoteInteractedRef.current = false;
   }, [localPromptIndex]);
 
