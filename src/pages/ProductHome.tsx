@@ -17,9 +17,9 @@ export default function ProductHome() {
   const navigate = useNavigate();
   const location = useLocation();
   useThemeSwitcher();
-  usePageBackground(product?.backgroundColor ?? 'var(--surface-base)');
 
   const product = allProducts.find((p) => p.slug === slug);
+  usePageBackground(product?.backgroundColor ?? 'var(--surface-base)');
 
   // Always call hooks — use fallback values if product not found
   // forceKey ensures CSS vars are reapplied when navigating back from a session
