@@ -18,9 +18,6 @@ import { NormalizedSessionProvider } from "@/contexts/NormalizedSessionContext";
 import { OptimisticCompletionsProvider } from "@/contexts/OptimisticCompletionsContext";
 
 import MobileOnlyGate from "@/components/MobileOnlyGate";
-import TestModeBanner from "@/components/TestModeBanner";
-import TestModePanel from "@/components/TestModePanel";
-import { detectTestModeParam } from "@/lib/testMode";
 
 import Index from "./pages/Index";
 
