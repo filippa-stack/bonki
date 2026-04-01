@@ -136,6 +136,37 @@ function getCategoryName(categoryId: string | null, cardId: string): string {
   return '';
 }
 
+/**
+ * Decode a step_reflections.step_index back to the original question text.
+ * step_index is encoded as (stepIndex * 100 + promptIndex).
+ * Returns null if the question can't be resolved.
+ */
+function getQuestionText(cardId: string, encodedStepIndex: number): string | null {
+  let card: { sections: { type: string; prompts?: (string | { text: string })[] }[] } | null = null;
+
+  for (const prod of allProducts) {
+    const found = prod.cards.find(c => c.id === cardId);
+    if (found) { card = found; break; }
+  }
+  // Also check legacy Still Us cards
+  if (!card) {
+    const suCard = stillUsCards.find(c => c.id === cardId);
+    if (suCard) card = suCard;
+  }
+  if (!card) return null;
+
+  const stepIndex = Math.floor(encodedStepIndex / 100);
+  const promptIndex = encodedStepIndex % 100;
+
+  const section = card.sections[stepIndex];
+  if (!section?.prompts) return null;
+
+  const prompt = section.prompts[promptIndex];
+  if (!prompt) return null;
+
+  return typeof prompt === 'string' ? prompt : (prompt as { text: string }).text ?? null;
+}
+
 function getProductName(productId: string, cardId?: string): string {
   if (cardId) {
     const prod = allProducts.find(p => p.cards.some(c => c.id === cardId));
@@ -545,40 +576,51 @@ export default function Journal() {
     }
     let cancelled = false;
 
-    // Sessions
-    supabase
-      .from('couple_sessions')
-      .select('id, card_id, product_id, ended_at, category_id, status')
-      .eq('couple_space_id', space.id)
-      .in('status', ['completed', 'active', 'abandoned'])
-      .order('ended_at', { ascending: false })
-      .then(({ data }) => { if (!cancelled) setSessions(data ?? []); });
+    (async () => {
+      // 1. Sessions first — we need IDs to scope reflections
+      const { data: sessionData } = await supabase
+        .from('couple_sessions')
+        .select('id, card_id, product_id, ended_at, category_id, status')
+        .eq('couple_space_id', space.id)
+        .in('status', ['completed', 'active', 'abandoned'])
+        .order('ended_at', { ascending: false });
 
-    // Takeaways (session-level notes)
-    supabase
-      .from('couple_takeaways')
-      .select('id, session_id, content, created_at, speaker_label')
-      .eq('couple_space_id', space.id)
-      .order('created_at', { ascending: false })
-      .then(({ data }) => { if (!cancelled) setTakeaways(data ?? []); });
+      if (cancelled) return;
+      const sessionList = sessionData ?? [];
+      setSessions(sessionList);
 
-    // Step reflections (per-step notes)
-    supabase
-      .from('step_reflections')
-      .select('id, session_id, step_index, text, updated_at, speaker_label, product_id')
-      .neq('text', '')
-      .order('updated_at', { ascending: false })
-      .then(({ data }) => { if (!cancelled) setReflections(data ?? []); });
+      const sessionIds = sessionList.map(s => s.id);
 
+      // 2. Takeaways, reflections, bookmarks — in parallel, reflections scoped by session IDs
+      const [takeawayRes, reflectionRes, bookmarkRes] = await Promise.all([
+        supabase
+          .from('couple_takeaways')
+          .select('id, session_id, content, created_at, speaker_label')
+          .eq('couple_space_id', space.id)
+          .order('created_at', { ascending: false }),
 
-    // Bookmarked questions
-    supabase
-      .from('question_bookmarks')
-      .select('id, card_id, product_id, question_text')
-      .eq('couple_space_id', space.id)
-      .eq('is_active', true)
-      .order('bookmarked_at', { ascending: false })
-      .then(({ data }) => { if (!cancelled) setBookmarks(data ?? []); });
+        sessionIds.length > 0
+          ? supabase
+              .from('step_reflections')
+              .select('id, session_id, step_index, text, updated_at, speaker_label, product_id')
+              .in('session_id', sessionIds)
+              .neq('text', '')
+              .order('updated_at', { ascending: false })
+          : Promise.resolve({ data: [] as any[] }),
+
+        supabase
+          .from('question_bookmarks')
+          .select('id, card_id, product_id, question_text')
+          .eq('couple_space_id', space.id)
+          .eq('is_active', true)
+          .order('bookmarked_at', { ascending: false }),
+      ]);
+
+      if (cancelled) return;
+      setTakeaways(takeawayRes.data ?? []);
+      setReflections(reflectionRes.data ?? []);
+      setBookmarks(bookmarkRes.data ?? []);
+    })();
 
     return () => { cancelled = true; };
   }, [space?.id]);
@@ -681,7 +723,7 @@ export default function Journal() {
         type: 'note',
         id: `reflection-${r.id}`,
         text: r.text,
-        questionText: null, // We don't have the exact question text easily here
+        questionText: getQuestionText(session.card_id, r.step_index),
         cardId: session.card_id,
         cardName: getCardTitle(session.card_id),
         categoryName: getCategoryName(session.category_id, session.card_id),
