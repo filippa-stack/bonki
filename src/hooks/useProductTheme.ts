@@ -17,7 +17,7 @@ export function useProductTheme(
   manifest?: ProductManifest,
   forceKey?: string,
 ) {
-  useEffect(() => {
+  useLayoutEffect(() => {
     const root = document.documentElement;
     const parseHSL = (hsl: string) => hsl.replace(/hsl\(([^)]+)\)/, '$1').trim();
     const p = parseHSL(primary);
