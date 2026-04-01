@@ -454,6 +454,64 @@ export default function CardView() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isKidsProduct, product?.id, devState, isFromArchive, showCompletion, normalizedSession.loading, normalizedSession.sessionId, space?.id, cardId]);
 
+  // ─── Kids product resume: restore localPromptIndex from step_reflections ───
+  const resumeCheckedRef = useRef<string | null>(null);
+  useEffect(() => {
+    // Reset when card or session changes
+    resumeCheckedRef.current = null;
+  }, [cardId, normalizedSession.sessionId]);
+  useEffect(() => {
+    if (!isKidsProduct || devState || isFromArchive || showCompletion) return;
+    if (normalizedSession.loading) return;
+    if (!isActiveSession || !normalizedSession.sessionId) return;
+    if (!user) return;
+
+    const resumeKey = `${cardId}:${normalizedSession.sessionId}`;
+    if (resumeCheckedRef.current === resumeKey) return;
+    resumeCheckedRef.current = resumeKey;
+
+    // Determine total prompts for this card
+    const totalPrompts = flatPromptMap ? totalFlatPrompts : getEffectivePromptCount(card?.sections[0]);
+    if (totalPrompts <= 1) return; // No resume needed for single-prompt cards
+
+    setResumeLoading(true);
+    let cancelled = false;
+
+    (async () => {
+      const { data: rows, error } = await supabase
+        .from('step_reflections')
+        .select('step_index')
+        .eq('session_id', normalizedSession.sessionId!)
+        .eq('user_id', user.id)
+        .gte('step_index', 0)
+        .lt('step_index', 100)
+        .neq('text', '')
+        .order('step_index', { ascending: false })
+        .limit(1);
+
+      if (cancelled) return;
+
+      if (!error && rows && rows.length > 0) {
+        const maxStepIndex = rows[0].step_index;
+        const lastAnswered = maxStepIndex % 100;
+        const nextPrompt = lastAnswered + 1;
+
+        if (nextPrompt < totalPrompts) {
+          setLocalPromptIndex(nextPrompt);
+        } else {
+          // All prompts answered — set to last prompt so completion CTA triggers
+          setLocalPromptIndex(totalPrompts - 1);
+        }
+      }
+      // If no rows, stay at 0 (first visit)
+
+      setResumeLoading(false);
+    })();
+
+    return () => { cancelled = true; };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isKidsProduct, devState, isFromArchive, showCompletion, normalizedSession.loading, isActiveSession, normalizedSession.sessionId, user, cardId]);
+
   // ─── Single resolver ───
   const cardViewMode: CardViewMode = (() => {
     if (showCompletion) return 'completion';
