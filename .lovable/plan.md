@@ -1,12 +1,18 @@
 
 
-## Update Still Us Time Estimate
+## Fix NextConversationCard Paywall Bypass
 
-### Change (1 file: `src/pages/KidsCardPortal.tsx`)
+### Change (1 file: `src/components/NextConversationCard.tsx`)
 
-In the `estimateMinutes` function, change the `still-us` case from `'ca 10–20 min'` to `'ca 15–30 min'`. All other product estimates remain as previously approved.
+**Line ~81**: Change the `onClick` navigation from direct card route to portal route.
 
 ```tsx
-case 'still-us':         return 'ca 15–30 min';
+// Before
+onClick={() => navigate(`/card/${card.id}`)}
+
+// After
+onClick={() => navigate(`/product/${product.slug}/portal/${nextSuggestedCategoryId}?card=${nextSuggestedCardId}`)}
 ```
+
+No new imports, props, or other file changes needed.
 
