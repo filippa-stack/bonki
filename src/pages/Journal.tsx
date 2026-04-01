@@ -467,7 +467,7 @@ function SessionGroupCard({ group, navigate }: { group: SessionGroup; navigate: 
             style={{
               background: 'none',
               border: 'none',
-              color: `${DRIFTWOOD}99`,
+              color: `${DRIFTWOOD}cc`,
               fontSize: '12px',
               fontWeight: 500,
               cursor: 'pointer',
