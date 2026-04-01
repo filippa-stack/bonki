@@ -891,7 +891,7 @@ export default function Journal() {
         </h1>
         <p style={{
           fontFamily: 'var(--font-serif)', fontSize: '14px', fontStyle: 'italic',
-          color: `${DRIFTWOOD}cc`, marginTop: '6px', lineHeight: 1.4,
+          color: `${LANTERN_GLOW}77`, marginTop: '6px', lineHeight: 1.4,
         }}>
           Vad ni burit med er.
         </p>
