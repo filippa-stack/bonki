@@ -39,8 +39,16 @@ function hexToRgb(hex: string): string {
 }
 
 function estimateMinutes(_promptCount: number, productSlug?: string): string {
-  if (productSlug === 'still-us') return 'ca 10–20 min';
-  return 'ca 5–10 min';
+  switch (productSlug) {
+    case 'jag-i-mig':       return 'ca 2–4 min';
+    case 'vardagskort':      return 'ca 3–5 min';
+    case 'syskonkort':       return 'ca 4–7 min';
+    case 'jag-med-andra':    return 'ca 5–8 min';
+    case 'jag-i-varlden':    return 'ca 8–15 min';
+    case 'sexualitetskort':  return 'ca 10–20 min';
+    case 'still-us':         return 'ca 15–30 min';
+    default:                 return 'ca 5–10 min';
+  }
 }
 
 function getPromptCount(card: { sections?: { prompts?: unknown[] }[] }): number {
