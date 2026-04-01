@@ -494,7 +494,7 @@ function SessionGroupCard({ group, navigate }: { group: SessionGroup; navigate: 
             fontWeight: 600,
             textTransform: 'uppercase',
             letterSpacing: '0.08em',
-            color: `${accent.mid}b3`,
+            color: `${accent.mid}dd`,
           }}>
             Ni bar med er
           </p>
