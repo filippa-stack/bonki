@@ -330,6 +330,7 @@ export default function ProductIntro({
                 color: LANTERN_GLOW,
                 textAlign: 'center',
                 lineHeight: 1.6,
+                opacity: 0.88,
                 marginTop: i === 0 ? 0 : '14px',
                 margin: i === 0 ? '0' : '14px 0 0',
               }}
