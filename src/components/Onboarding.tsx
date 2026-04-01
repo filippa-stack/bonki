@@ -79,7 +79,7 @@ export default function Onboarding() {
             bottom: 0,
             left: 0,
             right: 0,
-            height: '80px',
+            height: '48px',
             background: 'linear-gradient(to top, #1A1A2E 0%, transparent 100%)',
             pointerEvents: 'none',
           }}
