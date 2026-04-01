@@ -626,27 +626,21 @@ export default function CardView() {
   const kidsNoteInteractedRef = useRef(false);
   const kidsNoteTextareaRef = useRef<HTMLTextAreaElement>(null);
   const kidsNoteSaveTimerRef = useRef<ReturnType<typeof setTimeout>>();
-  const kidsNoteSuppressSyncRef = useRef(false);
-
-  // Reset note UI when prompt changes
+  // Reset note UI when prompt changes — allow immediate DB sync
   useEffect(() => {
-    kidsNoteSuppressSyncRef.current = true;
     setKidsNoteExpanded(false);
     setKidsNoteLocalText('');
     kidsNoteInteractedRef.current = false;
-    const timer = setTimeout(() => { kidsNoteSuppressSyncRef.current = false; }, 1500);
-    return () => clearTimeout(timer);
   }, [localPromptIndex]);
 
-  // Sync saved note text from DB — only after loading completes for the NEW step
+  // Sync saved note text from DB — restore immediately when data arrives for new step
   useEffect(() => {
-    if (kidsNoteSuppressSyncRef.current) return;
     if (kidsNoteSession.loading) return;
     if (kidsNoteSession.myReflection?.text) {
       setKidsNoteLocalText(kidsNoteSession.myReflection.text);
       setKidsNoteExpanded(true);
     }
-  }, [kidsNoteSession.loading, kidsNoteStepIndex]);
+  }, [kidsNoteSession.loading, kidsNoteSession.myReflection?.text, kidsNoteStepIndex]);
 
   const existingConversation = cardId ? getConversationForCard(cardId) : undefined;
 
