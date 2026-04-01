@@ -371,6 +371,152 @@ function CompletedMarkerRow({ marker, index }: { marker: CompletedMarker; index:
   );
 }
 
+// ─── Session Group types ───
+interface SessionGroup {
+  type: 'group';
+  sessionId: string;
+  notes: NoteEntry[];
+  takeaway: NoteEntry | null;
+  productId: string;
+  cardId: string;
+  cardName: string;
+  categoryName: string;
+  date: string;
+}
+
+type RenderItem = NoteEntry | CompletedMarker | SessionGroup;
+
+// ─── Session Group Card (premium envelope) ───
+function SessionGroupCard({ group, navigate }: { group: SessionGroup; navigate: (p: string) => void }) {
+  const [expanded, setExpanded] = useState(false);
+  const accent = getProductAccent(group.productId, group.cardId);
+  const productName = getProductName(group.productId, group.cardId);
+  const COLLAPSE_THRESHOLD = 3;
+  const showToggle = group.notes.length > COLLAPSE_THRESHOLD;
+  const displayedNotes = expanded ? group.notes : group.notes.slice(0, COLLAPSE_THRESHOLD);
+
+  return (
+    <div
+      style={{
+        backgroundColor: '#2E3142',
+        borderRadius: '16px',
+        overflow: 'hidden',
+        position: 'relative',
+      }}
+    >
+      {/* Top accent bar */}
+      <div style={{
+        height: '2px',
+        background: `${accent.mid}66`,
+      }} />
+
+      {/* Header */}
+      <div style={{ padding: '16px 16px 0' }}>
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'baseline',
+        }}>
+          {productName && (
+            <span style={{ fontSize: '13px', fontWeight: 600, color: accent.light }}>
+              {productName}
+            </span>
+          )}
+          <span style={{ fontSize: '11px', color: `${DRIFTWOOD}77` }}>
+            {formatRelativeDate(group.date)}
+          </span>
+        </div>
+        <p style={{ margin: '2px 0 0', fontSize: '12px', color: `${DRIFTWOOD}88` }}>
+          {group.cardName}
+        </p>
+      </div>
+
+      {/* Reflections */}
+      <div style={{ padding: '14px 16px 0' }}>
+        {displayedNotes.map((note, idx) => (
+          <div key={note.id}>
+            {idx > 0 && (
+              <div style={{
+                height: '1px',
+                margin: '10px 0',
+                background: `linear-gradient(90deg, ${DRIFTWOOD}22, ${DRIFTWOOD}11, transparent)`,
+              }} />
+            )}
+            <p style={{
+              margin: 0,
+              fontFamily: 'var(--font-serif)',
+              fontSize: '15px',
+              fontStyle: 'italic',
+              color: LANTERN_GLOW,
+              lineHeight: 1.65,
+              whiteSpace: 'pre-wrap',
+            }}>
+              {note.text.length > 160 && !expanded
+                ? note.text.slice(0, 160) + '…'
+                : note.text}
+            </p>
+          </div>
+        ))}
+      </div>
+
+      {/* Expand toggle */}
+      {showToggle && (
+        <div style={{ padding: '8px 16px 0' }}>
+          <button
+            onClick={() => setExpanded(!expanded)}
+            style={{
+              background: 'none',
+              border: 'none',
+              color: `${DRIFTWOOD}99`,
+              fontSize: '12px',
+              fontWeight: 500,
+              cursor: 'pointer',
+              padding: 0,
+              letterSpacing: '0.02em',
+            }}
+          >
+            {expanded ? 'Visa färre' : `Visa alla (${group.notes.length})`}
+          </button>
+        </div>
+      )}
+
+      {/* Takeaway */}
+      {group.takeaway && group.takeaway.text.trim() && (
+        <div style={{
+          margin: '14px 12px 0',
+          padding: '12px 14px',
+          backgroundColor: `${accent.deep}14`,
+          borderRadius: '12px',
+        }}>
+          <p style={{
+            margin: '0 0 8px',
+            fontSize: '10px',
+            fontWeight: 600,
+            textTransform: 'uppercase',
+            letterSpacing: '0.08em',
+            color: `${accent.mid}b3`,
+          }}>
+            Ni bar med er
+          </p>
+          <p style={{
+            margin: 0,
+            fontFamily: 'var(--font-serif)',
+            fontSize: '15px',
+            color: LANTERN_GLOW,
+            lineHeight: 1.6,
+            whiteSpace: 'pre-wrap',
+          }}>
+            {group.takeaway.text}
+          </p>
+        </div>
+      )}
+
+      {/* Bottom padding */}
+      <div style={{ height: '14px' }} />
+    </div>
+  );
+}
+
 export default function Journal() {
   useDefaultTheme();
   usePageBackground(MIDNIGHT_INK);
@@ -598,12 +744,68 @@ export default function Journal() {
     return { visibleItems: visible, emptyStillUsSessions: emptySU };
   }, [allTimelineItems, activeFilters, parExpanded]);
 
-  // Group by month
-  const monthGroups = useMemo(() => {
-    const groups: { key: string; label: string; items: TimelineItem[] }[] = [];
-    const map = new Map<string, TimelineItem[]>();
+  // ── Group notes by sessionId into envelopes ──
+  const groupedItems = useMemo<RenderItem[]>(() => {
+    const result: RenderItem[] = [];
+    // Collect notes per session
+    const sessionBuckets = new Map<string, NoteEntry[]>();
+    const nonNotes: (CompletedMarker)[] = [];
 
     visibleItems.forEach(item => {
+      if (item.type === 'note') {
+        const bucket = sessionBuckets.get(item.sessionId) || [];
+        bucket.push(item);
+        sessionBuckets.set(item.sessionId, bucket);
+      } else {
+        nonNotes.push(item);
+      }
+    });
+
+    // Build groups or pass-through solo notes
+    sessionBuckets.forEach((notes, sessionId) => {
+      // Separate takeaway from regular notes
+      const takeawayNote = notes.find(n => n.id.startsWith('takeaway-')) ?? null;
+      const regularNotes = notes.filter(n => !n.id.startsWith('takeaway-'));
+
+      if (regularNotes.length === 0 && takeawayNote) {
+        // Solo takeaway — render as regular card
+        result.push(takeawayNote);
+      } else if (regularNotes.length === 1 && !takeawayNote) {
+        // Solo note — render as regular card
+        result.push(regularNotes[0]);
+      } else if (regularNotes.length >= 1) {
+        // 2+ notes or 1 note + takeaway — group them
+        const first = regularNotes[0];
+        const latestDate = notes.reduce((max, n) =>
+          new Date(n.date) > new Date(max) ? n.date : max, notes[0].date);
+        result.push({
+          type: 'group',
+          sessionId,
+          notes: regularNotes,
+          takeaway: takeawayNote,
+          productId: first.productId,
+          cardId: first.cardId,
+          cardName: first.cardName,
+          categoryName: first.categoryName,
+          date: latestDate,
+        });
+      }
+    });
+
+    // Add completed markers
+    nonNotes.forEach(m => result.push(m));
+
+    // Sort by date desc
+    result.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    return result;
+  }, [visibleItems]);
+
+  // Group by month
+  const monthGroups = useMemo(() => {
+    const groups: { key: string; label: string; items: RenderItem[] }[] = [];
+    const map = new Map<string, RenderItem[]>();
+
+    groupedItems.forEach(item => {
       const key = monthKey(item.date);
       if (!map.has(key)) map.set(key, []);
       map.get(key)!.push(item);
@@ -617,7 +819,7 @@ export default function Journal() {
     });
 
     return groups;
-  }, [visibleItems]);
+  }, [groupedItems]);
 
   // Pulse card data
   const filteredSessions = useMemo(() => {
@@ -853,10 +1055,12 @@ export default function Journal() {
               {/* Items */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', padding: '0 16px' }}>
                 {group.items.map((item, idx) =>
-                  item.type === 'note' ? (
-                    <NoteEntryCard key={item.id} entry={item} navigate={navigate} index={idx} />
+                  item.type === 'group' ? (
+                    <SessionGroupCard key={`grp-${item.sessionId}`} group={item} navigate={navigate} />
+                  ) : item.type === 'note' ? (
+                    <NoteEntryCard key={item.id} entry={item as NoteEntry} navigate={navigate} index={idx} />
                   ) : (
-                    <CompletedMarkerRow key={item.id} marker={item} index={idx} />
+                    <CompletedMarkerRow key={item.id} marker={item as CompletedMarker} index={idx} />
                   )
                 )}
               </div>
