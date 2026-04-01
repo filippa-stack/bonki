@@ -1042,7 +1042,7 @@ export default function Journal() {
               }}>
                 <span style={{
                   fontSize: '11px', fontWeight: 600,
-                  letterSpacing: '2px', color: `${DRIFTWOOD}aa`, lineHeight: 1,
+                  letterSpacing: '2px', color: `${LANTERN_GLOW}88`, lineHeight: 1,
                 }}>
                   {group.label}
                 </span>
