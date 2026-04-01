@@ -52,7 +52,9 @@ export default function Onboarding() {
         style={{
           position: 'relative',
           zIndex: 1,
+          flex: '1 1 auto',
           display: 'flex',
+          alignItems: 'center',
           justifyContent: 'center',
           paddingTop: 'max(48px, env(safe-area-inset-top, 48px))',
           paddingBottom: '8px',
