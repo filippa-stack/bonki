@@ -50,7 +50,7 @@ export default function NextConversationCard({ product, progress }: NextConversa
       whileHover={{ scale: 1.03, y: -2 }}
       whileTap={{ scale: 0.94, y: 3 }}
       transition={{ duration: 0.5, ease: EASE }}
-      onClick={() => navigate(`/card/${card.id}`)}
+      onClick={() => navigate(`/product/${product.slug}/portal/${nextSuggestedCategoryId}?card=${nextSuggestedCardId}`)}
       style={{
         width: '100%',
         backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.08) 100%)',
