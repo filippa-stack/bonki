@@ -1,39 +1,37 @@
 
 
-## Onboarding → 10/10 Premium Polish
+## Onboarding → True 10/10
+
+### What's holding it back
+
+1. **Dead space gap** — `marginTop: 'auto'` on the content block pushes everything to the absolute bottom, leaving ~40% of the screen as empty void between illustration and text
+2. **Illustration too small** — 200px on a 390px viewport (51%) feels timid for a hero moment; premium apps use 60-70% width
+3. **Bottom fade eats the creature** — 80px gradient clips into the illustration bottom edge
+4. **Ambient glow misaligned** — sits at `top: 5%` but illustration starts at ~48px; glow should center on the creature
 
 ### Changes (1 file: `src/components/Onboarding.tsx`)
 
-**1. Upgrade CTA to BonkiButton**
-- Import and use `BonkiButton` instead of the custom ghost button
-- Label: "Börja" — the signature saffron gradient + 3D depth makes it unmistakably tappable
-- Remove inline `onMouseEnter`/`onMouseLeave` handlers (BonkiButton handles its own press states)
-- This eliminates the `backdropFilter: 'blur(20px)'` flicker risk as a side effect
+**1. Illustration size: 200px → 240px**
+- Gives the creature the monumental presence expected of a hero element
+- Still well within viewport bounds with padding
 
-**2. Increase headline size**
-- Change `fontSize: '1.65rem'` → `fontSize: 'clamp(28px, 7.5vw, 38px)'`
-- This matches the premium weight of product homes without competing at the same scale
+**2. Layout: replace `marginTop: 'auto'` with balanced flex**
+- Give the illustration zone `flex: '1 1 auto'` so it absorbs available space and centers the creature vertically
+- Content block: remove `marginTop: 'auto'`, keep `flex: '0 1 auto'`
+- This distributes space *around* the illustration rather than dumping it all between illustration and text
 
-**3. Fix vertical rhythm — remove dead space**
-- Content wrapper: change `flex: 1` → `flex: '0 1 auto'`, add `marginTop: 'auto'` so text block gravitates toward the bottom half, closing the gap between illustration and text
-- Add `marginBottom: '32px'` on content wrapper to maintain breathing room above CTA
+**3. Reduce bottom fade: 80px → 48px**
+- Stops the gradient from eating into the creature's body
+- Still provides a smooth transition into Midnight Ink
 
-**4. Credential text: meet minimum readability**
-- Change `fontSize: '11px'` → `'15px'` (app standard minimum)
-- Change `color` to `LANTERN_GLOW` (#FDF6E3) at `opacity: 0.5` — visible on OLED, hierarchically below body text
+**4. Reposition ambient glow**
+- Move from `top: '5%'` to `top: '8%'` to better center behind the larger illustration
 
-**5. Strengthen divider**
-- Change opacity from `0.35` → `0.5`
-- Change height from `1.5px` → `2px`
-
-**6. Body text hierarchy**
-- Change `opacity: 0.8` → `0.85` — slightly more readable while still below heading
-
-### What stays untouched (safety)
+### What stays untouched
 - `initial={false}` and `duration: 0` on all motion elements
 - `position: fixed` container and `overflow: hidden`
-- `usePageBackground('#1A1A2E')` hook
-- `trackOnboardingEvent` call and `completeOnboarding`/`initializeCoupleSpace` logic
-- Logo image sizing, filter, and fade gradient
-- No new animations or `AnimatePresence` added
+- `usePageBackground('#1A1A2E')`
+- All text content, colors, opacities, font sizes
+- BonkiButton and click handlers
+- `trackOnboardingEvent` logic
 
