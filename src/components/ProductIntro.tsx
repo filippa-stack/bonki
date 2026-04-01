@@ -213,7 +213,7 @@ export default function ProductIntro({
               width: '100%',
               height: '100%',
               objectFit: 'cover',
-              objectPosition: 'center 30%',
+              objectPosition: PRODUCT_ILLUSTRATION_POSITION[productId] ?? 'center 30%',
               opacity: 0.5,
               filter: 'brightness(1.15) saturate(0.95)',
             }}
