@@ -120,7 +120,7 @@ export default function CardView() {
 
   // Detect resume navigation — suppress entry animations on first paint
   const isResumed = (location.state as { resumed?: boolean } | null)?.resumed === true;
-  const [suppressEntryAnim] = useState(() => isResumed);
+  const [suppressEntryAnim] = useState(true);
   // Clear navigation state after first read so back-navigation animates normally
   useEffect(() => {
     if (isResumed) {
@@ -1063,6 +1063,9 @@ export default function CardView() {
           alignItems: 'center',
           justifyContent: 'center',
           zIndex: 10,
+          willChange: 'opacity',
+          WebkitBackfaceVisibility: 'hidden',
+          backfaceVisibility: 'hidden',
         }}
       />
     );
