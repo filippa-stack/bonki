@@ -48,7 +48,7 @@ import SessionFocusShell from '@/components/SessionFocusShell';
 import { ArrowRight, ArrowLeft, Feather, X, Pencil, ChevronDown, ChevronLeft } from 'lucide-react';
 
 import CompletedSessionView from '@/components/CompletedSessionView';
-import FeedbackSheet from '@/components/FeedbackSheet';
+
 import LockedReflectionDisplay from '@/components/LockedReflectionDisplay';
 
 import GorTillsammansOverlay, { hasSeenGorTillsammans } from '@/components/GorTillsammansOverlay';

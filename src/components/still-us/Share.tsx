@@ -209,30 +209,6 @@ export default function Share({
           {copied ? 'Kopierad!' : hasPartner ? 'Skicka länk' : 'Dela med din partner'}
         </button>
 
-        {/* Test mode: simulate partner check-in — REMOVE BEFORE LAUNCH */}
-        {isTestMode() && (
-          <button
-            onClick={handleSimulatePartner}
-            disabled={simulating}
-            style={{
-              display: 'block',
-              width: '100%',
-              padding: '12px',
-              marginTop: '8px',
-              borderRadius: '12px',
-              border: '2px dashed #E8913A',
-              backgroundColor: 'transparent',
-              color: '#E8913A',
-              fontSize: '14px',
-              fontFamily: 'monospace',
-              fontWeight: 600,
-              cursor: simulating ? 'default' : 'pointer',
-              opacity: simulating ? 0.5 : 1,
-            }}
-          >
-            {simulating ? 'Simulerar…' : 'Test: Simulera partners check-in'}
-          </button>
-        )}
 
         {/* ── Skip (first-time only) ── */}
         {!hasPartner && (

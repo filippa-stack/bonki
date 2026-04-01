@@ -181,10 +181,8 @@ const App = () => (
           <BrowserRouter>
             <DevStateProvider>
               <MobileOnlyGate>
-                <TestModeBanner />
                 <DevModeBadge />
                 <AppRoutes />
-                <TestModePanel />
               </MobileOnlyGate>
             </DevStateProvider>
           </BrowserRouter>

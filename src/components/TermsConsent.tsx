@@ -112,12 +112,7 @@ export default function TermsConsent({ checked, onCheckedChange }: TermsConsentP
             </section>
 
             <section>
-              <h3 className="font-serif font-semibold text-foreground text-base mb-1">7. Betatestning</h3>
-              <p>Betaanvändare har godkänt separata betavillkor. Betaåtkomst utgör inte ett kommersiellt köp. Funktioner och innehåll kan ändras under betaperioden.</p>
-            </section>
-
-            <section>
-              <h3 className="font-serif font-semibold text-foreground text-base mb-1">8. Förbjuden användning</h3>
+              <h3 className="font-serif font-semibold text-foreground text-base mb-1">7. Förbjuden användning</h3>
               <ul className="list-disc list-inside space-y-1">
                 <li>Dela inte dina inloggningsuppgifter.</li>
                 <li>Använd inte tjänsten för att trakassera, manipulera eller skada din partner.</li>

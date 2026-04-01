@@ -422,14 +422,6 @@ export default function CompletedSessionView({
         </div>
       </div>
 
-      {session && space && (
-        <FeedbackSheet
-          sessionId={session.id}
-          coupleSpaceId={space.id}
-          show={showFeedback}
-          onDismiss={handleFeedbackDismiss}
-        />
-      )}
     </div>
   );
 }
