@@ -93,6 +93,7 @@ interface DemoDiaryEntry {
   cardId: string;
   text: string;
   date: string;
+  entryKey?: string;
   type?: string;
 }
 
