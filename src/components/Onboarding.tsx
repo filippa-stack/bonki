@@ -2,6 +2,8 @@ import { motion } from 'framer-motion';
 import { usePageBackground } from '@/hooks/usePageBackground';
 import { useApp } from '@/contexts/AppContext';
 import { trackOnboardingEvent } from '@/lib/trackOnboarding';
+import { LANTERN_GLOW } from '@/lib/palette';
+import BonkiButton from '@/components/BonkiButton';
 import bonkiLogo from '@/assets/bonki-logo-transparent.png';
 
 const EASE: [number, number, number, number] = [0.4, 0.0, 0.2, 1];
