@@ -2424,30 +2424,19 @@ export default function CardView() {
     product ? `/product/${product.slug}` : '/'
   );
 
-  // Smart exit: auto-complete the step if user exits on the last prompt of the last step
+  // Pause exit: save any pending note but never complete the session
   const handleSmartExit = async () => {
-    const displayIndex = localStepIndex ?? serverStepIndex;
-    const isLastStep = displayIndex >= effectiveSteps.length - 1;
-    const section = card?.sections?.find((s: any) => s.type === effectiveSteps[displayIndex]);
-    const prompts = section?.prompts ?? [];
-    const totalPrompts = prompts.length || 1;
-    const isLastPrompt = localPromptIndex >= totalPrompts - 1;
-
-    if (isLastStep && isLastPrompt && cardViewMode === 'live') {
-      // Save any pending kids note before completing
-      if (isKidsProduct && kidsNoteLocalText.trim()) {
-        await kidsNoteSession.markReady(kidsNoteLocalText);
-        if (isLocalPreviewMode && product) {
-          upsertDemoDiaryEntry({
-            productId: product.id,
-            cardId: card.id,
-            text: kidsNoteLocalText,
-            entryKey: `step-${currentStepIndex}-prompt-${localPromptIndex}`,
-            mode: 'append',
-          });
-        }
+    if (isKidsProduct && kidsNoteLocalText.trim()) {
+      await kidsNoteSession.markReady(kidsNoteLocalText);
+      if (isLocalPreviewMode && product) {
+        upsertDemoDiaryEntry({
+          productId: product.id,
+          cardId: card.id,
+          text: kidsNoteLocalText,
+          entryKey: `step-${currentStepIndex}-prompt-${localPromptIndex}`,
+          mode: 'append',
+        });
       }
-      await handleCompleteStep();
     }
     setShowLeaveConfirm(false);
     setTimeout(() => navigate(exitBackTo), 250);
