@@ -1,19 +1,27 @@
 
 
-## Unify DEPTH_GRAVITY Font Weights to 500
+## Bulk-Grant Still Us Access to All Active Couple Members
+
+### Why it's safe
+- `useProductAccess` and `useAllProductAccess` do a simple SELECT on `user_product_access`. Adding rows only flips `hasAccess` from `false` to `true`.
+- No UI component changes. No schema changes. Pure data insert.
+- The `ON CONFLICT DO NOTHING` clause makes it idempotent — safe to re-run.
 
 ### Change
 
-**`src/components/PromptItem.tsx`** — Update all four entries in the `DEPTH_GRAVITY` object (lines 41–45) to use `fontWeight: 500`:
+**Single SQL insert** (via the data insert tool, not a migration):
 
+```sql
+INSERT INTO user_product_access (user_id, product_id, granted_at, granted_via)
+SELECT cm.user_id, 'still_us', COALESCE(cs.paid_at, cm.created_at), 'beta_backfill'
+FROM couple_members cm
+JOIN couple_spaces cs ON cs.id = cm.couple_space_id
+WHERE cm.left_at IS NULL
+  AND cm.status = 'active'
+ON CONFLICT (user_id, product_id) DO NOTHING;
 ```
-opening:    { fontWeight: 500, ... }
-reflective: { fontWeight: 500, ... }
-scenario:   { fontWeight: 500, ... }
-exercise:   { fontWeight: 500, ... }
-```
 
-Also remove the `isLongText ? 400 : ...` override on line ~334 so long text doesn't get a lighter weight. Replace with just `hasDoubleBreaks && isLastPara ? 500 : gravity.fontWeight` (which is always 500 now).
+This grants `still_us` access to every active couple member, using `paid_at` as the grant timestamp (falling back to membership creation date). The `granted_via = 'beta_backfill'` tag makes it auditable.
 
-Single file, weight values only. No structural or layout changes.
+No code changes. No schema changes. One insert query on the Live database.
 
