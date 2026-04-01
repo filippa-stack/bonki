@@ -358,7 +358,7 @@ function CompletedMarkerRow({ marker, index }: { marker: CompletedMarker; index:
           return name ? (
             <>
               <span style={{ fontSize: '13px', fontWeight: 500, color: markerAccent.light, marginRight: '6px' }}>{name}</span>
-              <span style={{ color: `${DRIFTWOOD}bb` }}>·</span>{' '}
+              <span style={{ color: `${LANTERN_GLOW}55` }}>·</span>{' '}
             </>
           ) : null;
         })()}
