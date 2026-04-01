@@ -33,7 +33,7 @@ export default function Onboarding() {
       <div
         style={{
           position: 'absolute',
-          top: '5%',
+          top: '8%',
           left: '50%',
           transform: 'translateX(-50%)',
           width: '340px',
@@ -52,7 +52,9 @@ export default function Onboarding() {
         style={{
           position: 'relative',
           zIndex: 1,
+          flex: '1 1 auto',
           display: 'flex',
+          alignItems: 'center',
           justifyContent: 'center',
           paddingTop: 'max(48px, env(safe-area-inset-top, 48px))',
           paddingBottom: '8px',
@@ -63,7 +65,7 @@ export default function Onboarding() {
           alt=""
           aria-hidden
           style={{
-            width: '200px',
+            width: '240px',
             height: 'auto',
             objectFit: 'contain',
             opacity: 0.88,
@@ -77,7 +79,7 @@ export default function Onboarding() {
             bottom: 0,
             left: 0,
             right: 0,
-            height: '80px',
+            height: '48px',
             background: 'linear-gradient(to top, #1A1A2E 0%, transparent 100%)',
             pointerEvents: 'none',
           }}
@@ -90,7 +92,6 @@ export default function Onboarding() {
           position: 'relative',
           zIndex: 1,
           flex: '0 1 auto',
-          marginTop: 'auto',
           marginBottom: '32px',
           display: 'flex',
           flexDirection: 'column',
