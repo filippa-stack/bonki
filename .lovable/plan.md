@@ -1,17 +1,33 @@
 
 
-## Fix: Theme Hook Timing (useEffect → useLayoutEffect)
+## Overlay Compositing — GPU Pre-promotion for iOS Safari
 
 ### Problem
-Theme hooks run in `useEffect` (after paint), causing a one-frame flash of stale CSS variables on navigation — visible as a color "wave" on iOS Safari.
+iOS Safari flashes a single frame when `position: fixed` overlay elements mount with opacity animations, due to GPU layer creation timing.
 
-### Changes (3 files, minimal diff)
+### Fix
+Add `willChange: 'opacity'`, `backfaceVisibility: 'hidden'`, `WebkitBackfaceVisibility: 'hidden'` to overlay containers in 5 files. Style props coexist alongside existing `className`/`cn()` — no Tailwind classes moved.
 
-**1. `src/hooks/usePageBackground.ts`** — Replace `useEffect` with `useLayoutEffect`
+### Changes
 
-**2. `src/hooks/useProductTheme.ts`** — Change import and hook call from `useEffect` to `useLayoutEffect`. Nothing else changes.
+**1. `src/components/IllustrationPeek.tsx`**
+Merge three properties into the fullscreen overlay `motion.div` style object (~line 68, the one with `position: 'fixed', inset: 0`).
 
-**3. `src/hooks/useDefaultTheme.ts`** — Consolidate the two separate effects (one `useLayoutEffect` + one `useEffect`) into a single `useLayoutEffect` that does both class removal and CSS var reset before paint.
+**2. `src/components/PortalBrowseSheet.tsx`**
+On the sheet `motion.div` (~line 115): change `willChange: 'transform'` to `willChange: 'transform, opacity'`, add `backfaceVisibility: 'hidden'` and `WebkitBackfaceVisibility: 'hidden'`. No `translateZ(0)`.
 
-No logic changes, no dependency array changes, no cleanup additions. The only functional difference is paint-blocking timing.
+**3. `src/components/ui/alert-dialog.tsx`**
+Add `style={{ willChange: 'opacity', backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' }}` to both `AlertDialogOverlay` and `AlertDialogContent` elements, placed before `{...props}`.
+
+**4. `src/components/ui/dialog.tsx`**
+Same `style` prop added to `DialogOverlay` and `DialogContent`, before `{...props}`.
+
+**5. `src/components/ui/sheet.tsx`**
+Same `style` prop added to `SheetOverlay` and `SheetContent`, before `{...props}`.
+
+### Constraints
+- `className` and `cn()` untouched
+- No animation durations/easing/AnimatePresence changes
+- No `transform: translateZ(0)` on transform-animated elements
+- No other files modified
 
