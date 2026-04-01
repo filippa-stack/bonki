@@ -236,13 +236,22 @@ export function useKidsProductProgress(product: ProductManifest | undefined): Ki
     return result;
   }, [completedSessions]);
 
+  // All-time completions — used for sequencing (never sends user backwards)
+  const allTimeCompletedCardIds = useMemo(() => {
+    const seen = new Set<string>();
+    for (const s of completedSessions) {
+      seen.add(s.card_id);
+    }
+    return [...seen];
+  }, [completedSessions]);
+
   // Determine next suggested card and category
   const { nextSuggestedCardId, nextSuggestedCategoryId, categoryProgress } = useMemo(() => {
     if (!product) {
       return { nextSuggestedCardId: null, nextSuggestedCategoryId: null, categoryProgress: {} };
     }
 
-    const completedSet = new Set(recentlyCompletedCardIds);
+    const completedSet = new Set(allTimeCompletedCardIds);
     const activeCardId = activeSession?.cardId;
     const progress: Record<string, { completed: number; total: number; allDone: boolean }> = {};
     let nextCardId: string | null = null;
