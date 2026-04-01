@@ -20,6 +20,17 @@ import illustrationStillUs from '@/assets/illustration-still-us-home.png';
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
+/** Per-product illustration focal point */
+const PRODUCT_ILLUSTRATION_POSITION: Record<string, string> = {
+  jag_i_mig: 'center 25%',
+  jag_med_andra: 'center 35%',
+  jag_i_varlden: 'center 30%',
+  vardagskort: 'center 20%',
+  syskonkort: 'center 15%',
+  sexualitetskort: 'center 20%',
+  still_us: 'center 30%',
+};
+
 /** Per-product creature illustration */
 const PRODUCT_ILLUSTRATION: Record<string, string> = {
   jag_i_mig: jimImage,
