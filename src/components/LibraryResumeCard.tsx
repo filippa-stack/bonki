@@ -161,6 +161,8 @@ export default function LibraryResumeCard({ activeTab, global, forceMock }: Libr
     if (fetchId === fetchRef.current) {
       setResume({
         productId: session.product_id,
+        productSlug: product.slug,
+        categoryId: session.category_id ?? product.categories?.[0]?.id ?? '',
         productName: product.name,
         cardTitle: card.title,
         cardId: session.card_id,
