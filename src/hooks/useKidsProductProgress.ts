@@ -36,6 +36,8 @@ export function isTypeAProduct(_productId: string): boolean {
 export interface KidsProductProgress {
   /** Card IDs with recent (< 14 days) completion */
   recentlyCompletedCardIds: string[];
+  /** All-time completed card IDs — used for sequencing (never sends user backwards) */
+  allTimeCompletedCardIds: string[];
   /** Card IDs with active session */
   activeCardIds: string[];
   /** Active session details (for resume banner) */
