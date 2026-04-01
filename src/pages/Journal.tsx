@@ -1018,13 +1018,13 @@ export default function Journal() {
                   WebkitTapHighlightColor: 'transparent',
                 }}
               >
-                <span style={{ fontSize: '14px', color: DRIFTWOOD, textAlign: 'left' }}>
+                <span style={{ fontSize: '14px', color: `${LANTERN_GLOW}77`, textAlign: 'left' }}>
                   {parExpanded ? 'Dölj parsamtal' : `Ni har ${stillUsSessions.length} parsamtal sparade`}
                 </span>
                 <motion.span
                   animate={{ rotate: parExpanded ? 180 : 0 }}
                   transition={{ duration: 0.2 }}
-                  style={{ color: DRIFTWOOD, display: 'flex' }}
+                  style={{ color: `${LANTERN_GLOW}77`, display: 'flex' }}
                 >
                   <ChevronDown size={18} strokeWidth={1.5} />
                 </motion.span>
