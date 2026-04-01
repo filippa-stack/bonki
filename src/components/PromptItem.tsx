@@ -39,10 +39,10 @@ interface PromptItemProps {
  * No layout changes, only weight/tone/rhythm.
  */
 const DEPTH_GRAVITY: Record<string, React.CSSProperties> = {
-  opening:    { fontWeight: 700, color: 'var(--kids-question-color, var(--text-primary))', lineHeight: 1.35 },
-  reflective: { fontWeight: 600, color: 'var(--kids-question-color, var(--text-primary))', lineHeight: 1.38, letterSpacing: '-0.005em' },
+  opening:    { fontWeight: 500, color: 'var(--kids-question-color, var(--text-primary))', lineHeight: 1.35 },
+  reflective: { fontWeight: 500, color: 'var(--kids-question-color, var(--text-primary))', lineHeight: 1.38, letterSpacing: '-0.005em' },
   scenario:   { fontWeight: 500, color: 'var(--kids-question-color, var(--text-primary))', lineHeight: 1.40 },
-  exercise:   { fontWeight: 700, color: 'var(--kids-question-color, var(--text-primary))', lineHeight: 1.30 },
+  exercise:   { fontWeight: 500, color: 'var(--kids-question-color, var(--text-primary))', lineHeight: 1.30 },
 };
 
 /**
@@ -331,7 +331,7 @@ export default function PromptItem({ prompt, index, sectionType, preamble, ancho
                           textAlign: 'center',
                           ...gravity,
                           lineHeight: inlineScenarioPreamble ? 1.38 : isLongText ? 1.5 : gravity.lineHeight,
-                          fontWeight: hasDoubleBreaks && isLastPara ? 500 : (inlineScenarioPreamble ? 600 : isLongText ? 400 : gravity.fontWeight),
+                          fontWeight: hasDoubleBreaks && isLastPara ? 500 : gravity.fontWeight,
                           position: 'relative',
                           zIndex: 1,
                           width: inlineScenarioPreamble ? '100%' : undefined,
