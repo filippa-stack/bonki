@@ -246,8 +246,9 @@ export default function PaywallFullScreen() {
         <p
           style={{
             fontFamily: 'var(--font-sans)',
-            fontSize: '13px',
-            color: DRIFTWOOD,
+            fontSize: '14px',
+            color: LANTERN_GLOW,
+            opacity: 0.5,
             textAlign: 'center',
             margin: 0,
             marginTop: '8px',
