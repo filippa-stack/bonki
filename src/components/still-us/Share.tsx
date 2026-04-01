@@ -12,7 +12,7 @@ import { motion } from 'framer-motion';
 import { COLORS } from '@/lib/stillUsTokens';
 import { pollCoupleState, completeSliderCheckin } from '@/lib/stillUsRpc';
 import EmberGlowTextarea from '@/components/still-us/EmberGlowTextarea';
-import { isTestMode } from '@/lib/testMode';
+
 
 const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
