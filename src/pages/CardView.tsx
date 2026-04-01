@@ -633,14 +633,14 @@ export default function CardView() {
     kidsNoteInteractedRef.current = false;
   }, [localPromptIndex]);
 
-  // Sync saved note text from DB — restore immediately when data arrives for new step
+  // Sync saved note text from DB — only when reflection data matches current prompt
   useEffect(() => {
     if (kidsNoteSession.loading) return;
-    if (kidsNoteSession.myReflection?.text) {
+    if (kidsNoteSession.myReflection?.text && kidsNoteSession.myReflection.stepIndex === kidsNoteStepIndex) {
       setKidsNoteLocalText(kidsNoteSession.myReflection.text);
       setKidsNoteExpanded(true);
     }
-  }, [kidsNoteSession.loading, kidsNoteSession.myReflection?.text, kidsNoteStepIndex]);
+  }, [kidsNoteSession.loading, kidsNoteSession.myReflection, kidsNoteStepIndex]);
 
   const existingConversation = cardId ? getConversationForCard(cardId) : undefined;
 
