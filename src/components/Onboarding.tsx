@@ -150,7 +150,7 @@ export default function Onboarding() {
             fontSize: '16px',
             color: '#FDF6E3',
             lineHeight: 1.55,
-            opacity: 0.8,
+            opacity: 0.85,
             margin: 0,
           }}
         >
