@@ -137,6 +137,7 @@ export default function CardView() {
     cards,
   } = useApp();
   const { space } = useCoupleSpaceContext();
+  const { user } = useAuth();
   const devState = useDevState();
 
   // ─── Normalized session state — the ONLY session authority ───
