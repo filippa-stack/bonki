@@ -1,38 +1,49 @@
 
 
-## Onboarding CTA → Bonki Orange
+## Fix: Kids product resume at last unanswered prompt
 
-### The issue
-The saffron BonkiButton merges with the warm ambient glow behind the illustration, reducing visual contrast. The onboarding "Börja" button is the single most important tap target in the entire app — it needs to command attention.
+### Problem
+Kids products always resume at Q1 because `localPromptIndex` is client-only state initialized to `0`. The DB tracks `current_step_index` (always 0 for single-step kids products), but the sub-prompt position is lost.
 
-### Change (1 file: `src/components/Onboarding.tsx`)
+### Approach
+Add a resume-restoration effect in `CardView.tsx` that queries `step_reflections` on mount, decodes the highest `step_index % 100` to find the last answered prompt, and sets `localPromptIndex` to `lastAnswered + 1`.
 
-**Override BonkiButton color via `style` prop**
-- Pass a custom `style` to BonkiButton that replaces the saffron gradient with a Bonki Orange gradient
-- Use `BONKI_ORANGE` (#E85D2C) as the light stop and a darker variant (#C44D22) as the bottom stop
-- Update the `boxShadow` glow to use orange-tinted shadows instead of saffron-tinted
-- This is a one-off override — BonkiButton's default saffron stays intact for all other uses
+### Changes (1 file: `src/pages/CardView.tsx`)
 
-```tsx
-<BonkiButton
-  style={{
-    background: 'linear-gradient(180deg, #E85D2C 0%, #C44D22 100%)',
-    boxShadow: [
-      '0 10px 28px rgba(232, 93, 44, 0.35)',
-      '0 4px 10px rgba(232, 93, 44, 0.20)',
-      '0 1px 3px rgba(0, 0, 0, 0.12)',
-      'inset 0 1.5px 0 rgba(255, 255, 255, 0.35)',
-      'inset 0 -2px 6px rgba(0, 0, 0, 0.12)',
-    ].join(', '),
-  }}
-  onClick={...}
->
-  Börja
-</BonkiButton>
-```
+**1. New state: `resumeLoading`**
+- Add `const [resumeLoading, setResumeLoading] = useState(false)` near `localPromptIndex`
+- This gates the kids live view with the existing loading gate pattern, preventing Q1 flash
+
+**2. Resume restoration effect** (after eager session creation, ~line 455)
+- Guard: `isKidsProduct && cardViewMode === 'live' && isActiveSession && normalizedSession.sessionId`
+- Ref guard: `resumeCheckedRef` — resets on **both** `cardId` and `normalizedSession.sessionId` changes (addresses the "same card, new session" concern)
+- Set `resumeLoading = true` before the query
+- Query `step_reflections` where `session_id = activeSessionId`, `user_id = user.id`, `step_index >= 0 AND < 100`, `text != ''`
+- Find `maxStepIndex` from results
+- If no results → stay at 0 (first visit)
+- If `maxStepIndex % 100 + 1 >= totalPrompts` → all prompts answered → don't set index (let completion logic handle it naturally, or set to last prompt so the completion CTA triggers)
+- Otherwise → `setLocalPromptIndex(maxStepIndex % 100 + 1)`
+- Set `resumeLoading = false` after
+- **Race guard**: check a `cancelled` flag before setting state, so if the user navigates away before the query resolves, stale state isn't applied
+
+**3. Extend loading gate** (~line 988)
+- Add `resumeLoading` to `isInitializing`: `normalizedSession.loading || accessLoading || resumeLoading`
+- This ensures the solid-background loading gate stays up until the resume position is known — no Q1 flash
+
+### Edge cases addressed
+
+| Concern | Solution |
+|---|---|
+| Same card, new session | `resumeCheckedRef` resets on `sessionId` change |
+| All prompts answered | Clamp to `totalPrompts - 1` (last prompt), letting the existing "isLastPrompt" completion CTA trigger naturally |
+| Race: user taps before query resolves | `resumeLoading` keeps the loading gate up — user can't interact until position is resolved |
+| No reflections exist | Stays at prompt 0, identical to current behavior |
+| devState / demo mode | Skip resume query entirely (matches existing guards) |
 
 ### What stays untouched
-- BonkiButton component itself (saffron default preserved)
-- All animation patterns, layout, text content
-- `trackOnboardingEvent` and onboarding logic
+- Still Us resume logic (multi-step, uses `serverStepIndex`)
+- `step_reflections` encoding scheme
+- Session creation, completion, abandon logic
+- Archive mode navigation
+- Loading gate visual appearance
 
