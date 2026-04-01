@@ -127,7 +127,7 @@ export default function TermsConsent({ checked, onCheckedChange }: TermsConsentP
             </section>
 
             <section>
-              <h3 className="font-serif font-semibold text-foreground text-base mb-1">10. Tillämplig lag</h3>
+              <h3 className="font-serif font-semibold text-foreground text-base mb-1">9. Tillämplig lag</h3>
               <p>Dessa villkor regleras av svensk lag. Tvister ska lösas i svenska domstolar.</p>
             </section>
 
