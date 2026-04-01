@@ -331,11 +331,11 @@ export default function ProductIntro({
               style={{
                 fontFamily: 'var(--font-serif)',
                 fontStyle: 'italic',
-                fontSize: '14px',
+                fontSize: '15px',
                 color: productAccent,
                 textAlign: 'center',
                 marginTop: '18px',
-                opacity: 0.85,
+                opacity: 0.9,
               }}
             >
               {signoffText}
