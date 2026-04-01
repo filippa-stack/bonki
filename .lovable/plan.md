@@ -1,24 +1,21 @@
 
 
-## Unify Product Intro Layout + Improve Readability
+## IllustrationPeek: Remove backdrop-filter flicker
 
-### Changes (1 file: `src/components/ProductIntro.tsx`)
+### Problem
+`backdropFilter: 'blur(16px)'` and `WebkitBackdropFilter: 'blur(16px)'` on the fullscreen overlay trigger an expensive GPU composition at mount time (opacity: 0 → 1), causing a visible frame drop on iOS Safari.
 
-**1. Remove card preview block** (lines ~347–429)
-Delete the entire `resolvedFreeCardTitle && !isStillUs` conditional block. CTA button already shows card name.
+### Change (1 file)
 
-**2. Improve body text readability**
-- Body: `fontSize: '15px'` → `'16px'`, `lineHeight: 1.55` → `1.6`
-- Paragraph spacing: `marginTop: '10px'` → `'14px'`
-- Body wrapper: `marginTop: '8px'` → `'16px'`
+**`src/components/IllustrationPeek.tsx`** — Remove two lines from the overlay style object (~lines 78, 82):
+- Delete `backdropFilter: 'blur(16px)',`
+- Delete `WebkitBackdropFilter: 'blur(16px)',`
 
-**3. Fix signoff text**
-- `fontSize: '14px'` → `'15px'`
-- `opacity: 0.85` → `0.9`
+The overlay already uses a solid `productBgColor` background, so the blur adds no visual value.
 
-### Safety
-- No animation changes — all `initial={false}` and `duration: 0` untouched
-- No `AnimatePresence` changes
-- Outer `position: fixed` container unchanged
-- No theme hook or dependency array changes
+### What stays untouched
+- `AnimatePresence`, `initial`/`animate`/`exit` props
+- `willChange: 'opacity'`, `backfaceVisibility`/`WebkitBackfaceVisibility`
+- All other styles, layout, and animation timing
+- All protected patterns (`suppressUntilRef`, `prevServerStepRef`, `clearTimeout`, `hasSyncedRef`)
 
