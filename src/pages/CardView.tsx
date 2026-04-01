@@ -2834,7 +2834,6 @@ export default function CardView() {
         setLocalStepIndex(prevStageIndex);
         setLocalPromptIndex(prevPromptCount - 1);
       } else {
-        console.log('[DIAG] setting showLeaveConfirm=true', Date.now());
         setShowLeaveConfirm(true);
       }
     };
