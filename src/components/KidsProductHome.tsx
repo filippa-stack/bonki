@@ -544,7 +544,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
           zIndex: 1,
           display: 'flex',
           flexDirection: 'column',
-          paddingTop: 'clamp(56px, 12vh, 100px)',
+          paddingTop: 'calc(env(safe-area-inset-top, 0px) + 56px)',
           paddingRight: '16px',
           paddingBottom: 'calc(72px + env(safe-area-inset-bottom, 0px))',
           paddingLeft: '16px',
