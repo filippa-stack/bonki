@@ -315,7 +315,7 @@ function NoteEntryCard({ entry, navigate, index }: { entry: NoteEntry; navigate:
             {formatRelativeDate(entry.date)}
           </span>
         </div>
-        <p style={{ margin: '2px 0 0', fontSize: '12px', color: `${DRIFTWOOD}88` }}>
+        <p style={{ margin: '2px 0 0', fontSize: '12px', color: `${DRIFTWOOD}bb` }}>
           {entry.cardName}
         </p>
       </div>
