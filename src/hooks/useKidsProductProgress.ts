@@ -281,7 +281,7 @@ export function useKidsProductProgress(product: ProductManifest | undefined): Ki
       nextSuggestedCategoryId: nextCatId,
       categoryProgress: progress,
     };
-  }, [product, recentlyCompletedCardIds, activeSession?.cardId]);
+  }, [product, allTimeCompletedCardIds, activeSession?.cardId]);
 
   const activeCardIds = useMemo(
     () => activeSession ? [activeSession.cardId] : [],
