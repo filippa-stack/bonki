@@ -20,6 +20,17 @@ import illustrationStillUs from '@/assets/illustration-still-us-home.png';
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
+/** Per-product illustration focal point */
+const PRODUCT_ILLUSTRATION_POSITION: Record<string, string> = {
+  jag_i_mig: 'center 25%',
+  jag_med_andra: 'center 35%',
+  jag_i_varlden: 'center 30%',
+  vardagskort: 'center 20%',
+  syskonkort: 'center 15%',
+  sexualitetskort: 'center 20%',
+  still_us: 'center 30%',
+};
+
 /** Per-product creature illustration */
 const PRODUCT_ILLUSTRATION: Record<string, string> = {
   jag_i_mig: jimImage,
@@ -202,7 +213,7 @@ export default function ProductIntro({
               width: '100%',
               height: '100%',
               objectFit: 'cover',
-              objectPosition: 'center 30%',
+              objectPosition: PRODUCT_ILLUSTRATION_POSITION[productId] ?? 'center 30%',
               opacity: 0.5,
               filter: 'brightness(1.15) saturate(0.95)',
             }}
@@ -262,7 +273,7 @@ export default function ProductIntro({
         }}
       >
         {/* Spacer to push content below illustration zone */}
-        <div style={{ flex: '0 0 24%' }} />
+        <div style={{ flex: '1 1 auto', minHeight: '15%' }} />
 
         {/* 2. Welcome header */}
         <motion.h1
@@ -295,8 +306,8 @@ export default function ProductIntro({
               fontSize: '15px',
               color: productAccent,
               textAlign: 'center',
-              marginTop: '4px',
-              margin: '4px 0 0',
+              marginTop: '8px',
+              margin: '8px 0 0',
             }}
           >
             {product.tagline}
@@ -308,7 +319,7 @@ export default function ProductIntro({
           initial={false}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0 }}
-          style={{ textAlign: 'center', marginTop: '16px' }}
+          style={{ textAlign: 'center', marginTop: '20px' }}
         >
           {fullBodyText.split('\n\n').map((para, i) => (
             <p
@@ -319,6 +330,7 @@ export default function ProductIntro({
                 color: LANTERN_GLOW,
                 textAlign: 'center',
                 lineHeight: 1.6,
+                opacity: 0.88,
                 marginTop: i === 0 ? 0 : '14px',
                 margin: i === 0 ? '0' : '14px 0 0',
               }}
@@ -332,10 +344,10 @@ export default function ProductIntro({
                 fontFamily: 'var(--font-serif)',
                 fontStyle: 'italic',
                 fontSize: '15px',
-                color: productAccent,
+                color: LANTERN_GLOW,
                 textAlign: 'center',
                 marginTop: '18px',
-                opacity: 0.9,
+                opacity: 0.7,
               }}
             >
               {signoffText}
@@ -399,7 +411,8 @@ export default function ProductIntro({
               cursor: 'pointer',
               fontFamily: 'var(--font-sans)',
               fontSize: '14px',
-              color: DRIFTWOOD,
+              color: LANTERN_GLOW,
+              opacity: 0.45,
               textAlign: 'center',
               marginTop: '16px',
               padding: '4px 0',
@@ -414,8 +427,9 @@ export default function ProductIntro({
               style={{
                 fontFamily: 'var(--font-sans)',
                 fontStyle: 'italic',
-                fontSize: '13px',
-                color: productAccent,
+                fontSize: '14px',
+                color: LANTERN_GLOW,
+                opacity: 0.6,
                 textAlign: 'center',
                 marginTop: '12px',
                 lineHeight: 1.5,
