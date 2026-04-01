@@ -202,9 +202,9 @@ export default function PaywallFullScreen() {
         {/* VALUE PROPOSITION BLOCK */}
         <div style={{ marginTop: '32px', paddingLeft: '8px', paddingRight: '8px' }}>
           {[
-            { text: valueLine, color: LANTERN_GLOW },
-            { text: 'Utvecklad tillsammans med psykolog · 29 års klinisk erfarenhet', color: DRIFTWOOD },
-            ...(product.id !== 'still_us' ? [{ text: 'Spara ditt barns svar. Se dem växa — samtal för samtal.', color: DRIFTWOOD }] : []),
+            { text: valueLine, color: LANTERN_GLOW, opacity: 1 },
+            { text: 'Utvecklad tillsammans med psykolog · 29 års klinisk erfarenhet', color: LANTERN_GLOW, opacity: 0.55 },
+            ...(product.id !== 'still_us' ? [{ text: 'Spara ditt barns svar. Se dem växa — samtal för samtal.', color: LANTERN_GLOW, opacity: 0.55 }] : []),
           ].map((row, i) => (
             <div
               key={i}
@@ -216,7 +216,7 @@ export default function PaywallFullScreen() {
               }}
             >
               <span style={{ color: SAFFRON_FLAME, fontSize: '8px', lineHeight: 1, flexShrink: 0, position: 'relative', top: '-1px' }}>●</span>
-              <span style={{ fontFamily: 'var(--font-sans)', fontSize: '14px', fontWeight: 400, color: row.color, lineHeight: 1.5 }}>{row.text}</span>
+              <span style={{ fontFamily: 'var(--font-sans)', fontSize: '15px', fontWeight: 400, color: row.color, opacity: row.opacity, lineHeight: 1.5 }}>{row.text}</span>
             </div>
           ))}
         </div>
@@ -246,8 +246,9 @@ export default function PaywallFullScreen() {
         <p
           style={{
             fontFamily: 'var(--font-sans)',
-            fontSize: '13px',
-            color: DRIFTWOOD,
+            fontSize: '14px',
+            color: LANTERN_GLOW,
+            opacity: 0.5,
             textAlign: 'center',
             margin: 0,
             marginTop: '8px',
@@ -298,7 +299,8 @@ export default function PaywallFullScreen() {
             cursor: 'pointer',
             fontFamily: 'var(--font-sans)',
             fontSize: '14px',
-            color: DRIFTWOOD,
+            color: LANTERN_GLOW,
+            opacity: 0.45,
             textAlign: 'center',
             marginTop: '16px',
             padding: '4px 0',
