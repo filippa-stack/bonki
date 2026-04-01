@@ -1,33 +1,24 @@
 
 
-## Overlay Compositing — GPU Pre-promotion for iOS Safari
+## Unify Product Intro Layout + Improve Readability
 
-### Problem
-iOS Safari flashes a single frame when `position: fixed` overlay elements mount with opacity animations, due to GPU layer creation timing.
+### Changes (1 file: `src/components/ProductIntro.tsx`)
 
-### Fix
-Add `willChange: 'opacity'`, `backfaceVisibility: 'hidden'`, `WebkitBackfaceVisibility: 'hidden'` to overlay containers in 5 files. Style props coexist alongside existing `className`/`cn()` — no Tailwind classes moved.
+**1. Remove card preview block** (lines ~347–429)
+Delete the entire `resolvedFreeCardTitle && !isStillUs` conditional block. CTA button already shows card name.
 
-### Changes
+**2. Improve body text readability**
+- Body: `fontSize: '15px'` → `'16px'`, `lineHeight: 1.55` → `1.6`
+- Paragraph spacing: `marginTop: '10px'` → `'14px'`
+- Body wrapper: `marginTop: '8px'` → `'16px'`
 
-**1. `src/components/IllustrationPeek.tsx`**
-Merge three properties into the fullscreen overlay `motion.div` style object (~line 68, the one with `position: 'fixed', inset: 0`).
+**3. Fix signoff text**
+- `fontSize: '14px'` → `'15px'`
+- `opacity: 0.85` → `0.9`
 
-**2. `src/components/PortalBrowseSheet.tsx`**
-On the sheet `motion.div` (~line 115): change `willChange: 'transform'` to `willChange: 'transform, opacity'`, add `backfaceVisibility: 'hidden'` and `WebkitBackfaceVisibility: 'hidden'`. No `translateZ(0)`.
-
-**3. `src/components/ui/alert-dialog.tsx`**
-Add `style={{ willChange: 'opacity', backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' }}` to both `AlertDialogOverlay` and `AlertDialogContent` elements, placed before `{...props}`.
-
-**4. `src/components/ui/dialog.tsx`**
-Same `style` prop added to `DialogOverlay` and `DialogContent`, before `{...props}`.
-
-**5. `src/components/ui/sheet.tsx`**
-Same `style` prop added to `SheetOverlay` and `SheetContent`, before `{...props}`.
-
-### Constraints
-- `className` and `cn()` untouched
-- No animation durations/easing/AnimatePresence changes
-- No `transform: translateZ(0)` on transform-animated elements
-- No other files modified
+### Safety
+- No animation changes — all `initial={false}` and `duration: 0` untouched
+- No `AnimatePresence` changes
+- Outer `position: fixed` container unchanged
+- No theme hook or dependency array changes
 
