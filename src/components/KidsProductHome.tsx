@@ -623,7 +623,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
                 }
               : { gridTemplateColumns: '1fr', gap: '12px' }),
             width: '100%',
-            marginBottom: 'calc(72px + env(safe-area-inset-bottom, 0px))',
+            marginBottom: 0,
           }}
         >
           {product.categories.map((cat, index) => {
