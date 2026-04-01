@@ -41,6 +41,8 @@ const PRODUCT_TILE_COLORS: Record<string, string> = {
 
 interface ResumeData {
   productId: string;
+  productSlug: string;
+  categoryId: string;
   productName: string;
   cardTitle: string;
   cardId: string;
