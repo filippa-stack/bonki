@@ -439,7 +439,7 @@ function SessionGroupCard({ group, navigate }: { group: SessionGroup; navigate: 
               <div style={{
                 height: '1px',
                 margin: '10px 0',
-                background: `linear-gradient(90deg, ${DRIFTWOOD}22, ${DRIFTWOOD}11, transparent)`,
+                background: `linear-gradient(90deg, ${DRIFTWOOD}33, ${DRIFTWOOD}22, transparent)`,
               }} />
             )}
             <p style={{
