@@ -1,17 +1,57 @@
 
 
-## Fix: Title Cut-Off + Bottom Gap (Take 3)
+## Fix: Move BottomNav Padding From Global Wrapper to Pages That Need It
 
-The previous attempts failed because:
-1. **Title cut off**: `calc(env(safe-area-inset-top, 0px) + 56px)` evaluates to only ~56px in non-iOS contexts, which is less than the previous `clamp(56px, 12vh, 100px)`. The title gets pushed behind the hero image.
-2. **Bottom gap**: `calc(56px + env(safe-area-inset-bottom))` is still too much — the memory spec says 72px but that created gaps. The real fix is minimal padding since BottomNav is fixed/absolute.
+### Root Cause
+`App.tsx` line 96 applies `paddingBottom: calc(56px + env(safe-area-inset-bottom))` to ALL routes. Fullscreen pages (portals, ceremonies, paywalls) get unwanted bottom padding pushing content out of viewport.
 
-### Changes — `src/components/KidsProductHome.tsx`
+### Audit Results
 
-| # | Line | Current | New | Why |
-|---|------|---------|-----|-----|
-| 1 | 547 | `paddingTop: 'calc(env(safe-area-inset-top, 0px) + 56px)'` | `paddingTop: 'max(calc(env(safe-area-inset-top, 0px) + 56px), clamp(56px, 12vh, 100px))'` | Takes the larger of safe-area-aware value OR viewport-relative value — title never clips on any device |
-| 2 | 549 | `paddingBottom: 'calc(56px + env(safe-area-inset-bottom, 0px))'` | `paddingBottom: '16px'` | BottomNav is fixed-position and handles its own safe-area. Content just needs a small breathing gap, not a full nav-height reservation |
+| Page | Already has bottom padding? | Action |
+|------|---------------------------|--------|
+| **App.tsx** (global wrapper) | Yes — the problem | **Remove paddingBottom** |
+| ProductLibrary.tsx (Index) | Yes — spacer div line 913 | None |
+| KidsProductHome.tsx | `16px` only | **Change to `calc(56px + safe-area)`** |
+| StillUsExplore.tsx | None | **Add `calc(56px + safe-area)`** |
+| Journal.tsx | Yes — line 762 | None |
+| Journey.tsx | Yes — line 219 | None |
+| Category.tsx | Yes — lines 391, 682 | None |
+| Diary.tsx | Yes — line 505 | None |
+| KidsCardPortal.tsx | Yes — line 580 | None |
+| SharedSummary.tsx | No | **Add `calc(56px + safe-area)`** |
+| SuIntroPortal.tsx | Yes — spacer div line 211 | None |
+| Paywall.tsx | No (centered layout) | **Add `paddingBottom: calc(56px + safe-area)`** |
+| ProductHome.tsx (Still Us) | Yes — line 224 | None |
+| JagIVarldenProductHome | Yes — line 69 | None |
+| VardagProductHome | Yes — line 77 | None |
 
-Two line changes. No structural changes.
+### Changes (5 files)
+
+**1. `src/App.tsx` line 96** — Remove paddingBottom from global wrapper
+```
+style={{ minHeight: '100vh', background: 'var(--page-bg, #0B1026)' }}
+```
+
+**2. `src/components/KidsProductHome.tsx` line 549** — Change paddingBottom
+```
+paddingBottom: 'calc(56px + env(safe-area-inset-bottom, 0px))',
+```
+
+**3. `src/pages/StillUsExplore.tsx` line 111** — Add paddingBottom to outer container
+```
+<div className="min-h-screen flex flex-col" style={{ backgroundColor: EMBER_NIGHT, paddingBottom: 'calc(56px + env(safe-area-inset-bottom, 0px))' }}>
+```
+
+**4. `src/pages/SharedSummary.tsx`** — Add paddingBottom to outer scrollable container
+
+**5. `src/pages/Paywall.tsx` line 114** — Change padding to include bottom clearance
+```
+padding: '48px 24px calc(56px + env(safe-area-inset-bottom, 0px))',
+```
+
+### Pages that benefit (no longer get unwanted padding)
+CardView, KidsCardPortal, CompletionCeremony, PaywallFullScreen, SoloReflect, DissolutionSettings, JourneyPreview, TillbakaComplete, CardPreview, Login — all fullscreen pages that manage their own viewport.
+
+### Risk
+Low. Moving an existing CSS value from one global location to specific pages. No logic changes.
 
