@@ -2823,7 +2823,6 @@ export default function CardView() {
     };
 
     const handleKidsBack = () => {
-      console.log('[DIAG] handleKidsBack fired', Date.now(), { localPromptIndex, currentStepIndex });
       if (localPromptIndex > 0) {
         setLocalPromptIndex(localPromptIndex - 1);
       } else if (currentStepIndex > 0) {
