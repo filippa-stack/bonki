@@ -1806,15 +1806,7 @@ export default function CardView() {
   const isExerciseStep = currentStageType === 'exercise';
   const isStillUsFocusMode = isLive && (product?.id === 'still_us' || isStillUsCard);
 
-  // ─── Coaching hint increment (after isLive is defined) ───
-  useEffect(() => {
-    if (isLive && showCoachingHint && !coachingCounted.current) {
-      coachingCounted.current = true;
-      incrementCoachingCount();
-    }
-  }, [isLive, showCoachingHint]);
-
-  const shouldShowStartScreen = showStartScreen && isLive;
+  // ─── Session start screen — ritual before first question ───
 
   // ── Kids product intro screen — product-colored, illustration-forward ──
   if (shouldShowStartScreen && isKidsProduct && product) {
