@@ -39,7 +39,8 @@ export default function Onboarding() {
         style={{
           position: 'relative',
           flex: '1 1 auto',
-          minHeight: '140px',
+          minHeight: '100px',
+          marginBottom: 0,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -62,6 +63,9 @@ export default function Onboarding() {
           src={bonkiLogo}
           alt=""
           aria-hidden
+          draggable={false}
+          width={120}
+          height={120}
           style={{
             position: 'relative',
             width: '120px',
@@ -69,6 +73,7 @@ export default function Onboarding() {
             objectFit: 'contain',
             opacity: 0.88,
             filter: 'brightness(1.15) saturate(1.3)',
+            imageRendering: 'auto',
           }}
         />
       </motion.div>
@@ -85,7 +90,7 @@ export default function Onboarding() {
           justifyContent: 'flex-end',
           paddingBottom: '24px',
           padding: '0 32px',
-          paddingTop: 0,
+          paddingTop: '8px',
         }}
       >
         {/* Credential */}
@@ -157,7 +162,7 @@ export default function Onboarding() {
         }}>
           Var vill ni börja?
         </p>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
           {[
             { label: 'Barn 3–6', value: 'young' },
             { label: 'Barn 7–11', value: 'middle' },
@@ -167,7 +172,7 @@ export default function Onboarding() {
             const selected = selectedAudience === value;
             return (
               <button key={value} onClick={() => setSelectedAudience(value)} style={{
-                height: '72px', borderRadius: '16px', padding: '12px 14px',
+                height: '80px', borderRadius: '22px', padding: '12px 14px',
                 cursor: 'pointer', transition: 'all 0.15s ease',
                 display: 'flex', alignItems: 'flex-end',
                 position: 'relative', overflow: 'hidden',
@@ -177,6 +182,9 @@ export default function Onboarding() {
                 background: selected
                   ? 'rgba(218, 157, 29, 0.10)'
                   : 'rgba(255, 255, 255, 0.04)',
+                boxShadow: selected
+                  ? '0 4px 12px rgba(0,0,0,0.15), 0 1px 3px rgba(0,0,0,0.08), inset 0 1px 0 rgba(218,157,29,0.15)'
+                  : '0 4px 12px rgba(0,0,0,0.15), 0 1px 3px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.06)',
               }}>
                 <span style={{
                   fontFamily: 'var(--font-display)', fontSize: '16px', fontWeight: 600,
