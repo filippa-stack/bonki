@@ -1,19 +1,14 @@
+## Fix: Illustration Bottom Fade Cutting Through Logo
 
+### Problem
+The 120px gradient overlay sits inside the illustration container and obscures the bottom of the logo, creating an ugly "erased then reappearing" effect below "UTVECKLAT AV PSYKOLOG". Not premium.
 
-## Onboarding Polish — 3 Visual Fixes
+### Solution (single file: `src/components/Onboarding.tsx`)
 
-All changes in `src/components/Onboarding.tsx`. No logic, routing, or state changes.
+**Move the gradient fade outside the illustration container** and position it as a bridge between the illustration and the text content. This way the logo stays fully visible and the fade only darkens the gap *below* the illustration.
 
-### Fix 1: Question text + spacing (lines 167–173)
-- Change `padding: '20px 0 0'` → `padding: '28px 0 0'` on the pills wrapper div (adds ~8px breathing room)
-- Change label text from `"Vem vill ni prata med?"` → `"Var vill ni börja?"`
+1. **Remove** the inner gradient `<div>` from inside the `<motion.div>` illustration container (lines 81–91)
+2. **Add** the same gradient div as a **sibling** between the illustration `<motion.div>` and the content `<div>`, positioned with `marginTop: '-120px'` and `position: 'relative'`, `zIndex: 2` so it overlaps the bottom edge of the illustration zone without being clipped by it
+3. Keep the same gradient values (`height: 120px`, same background) — just repositioned
 
-### Fix 2: Reassurance microcopy (after line 199, inside the pills wrapper)
-- After the pills `</div>`, add a fixed-height container (`minHeight: '20px'`, `marginTop: '10px'`)
-- Inside: render `<p>` with text `"Ni kan utforska alla produkter efteråt."` only when `selectedAudience !== null`
-- Style: `fontFamily: 'var(--font-sans)'`, `fontSize: '12px'`, `color: '#FDF6E3'`, `opacity: 0.35`, `margin: 0`
-
-### Fix 3: Stronger illustration bottom fade (lines 81–91)
-- Change `height: '48px'` → `height: '120px'`
-- Change `background` to `'linear-gradient(to top, #1A1A2E 0%, rgba(26, 26, 46, 0.85) 40%, transparent 100%)'`
-
+This ensures the logo renders fully, while the text area still has a smooth fade-in from the dark background.
