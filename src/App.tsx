@@ -137,16 +137,7 @@ function AppRoutes() {
   useCaptureController();
 
   if (loading) {
-    return (
-      <div className="min-h-screen page-bg animate-fade-in loading-skeleton">
-        <div className="flex items-center justify-center pt-32">
-          <div className="space-y-4 text-center">
-            <div className="h-10 w-10 rounded-full bg-muted/30 animate-pulse mx-auto" />
-            <div className="h-3 w-24 rounded bg-muted/20 animate-pulse mx-auto" />
-          </div>
-        </div>
-      </div>
-    );
+    return <BonkiLoadingScreen />;
   }
 
   return (
