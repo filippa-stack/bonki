@@ -163,7 +163,7 @@ export default function Onboarding() {
         }}>
           Var vill ni börja?
         </p>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
           {[
             { label: 'Barn 3–6', value: 'young' },
             { label: 'Barn 7–11', value: 'middle' },
