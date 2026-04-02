@@ -1447,38 +1447,7 @@ export default function CardView() {
       >
         <Header title="" variant="immersive" />
         <div className="px-6 pb-16 relative" style={{ paddingTop: '48px' }}>
-          {/* Back arrow */}
-          <motion.div
-            initial={{ opacity: 1 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: BEAT_3, duration: EMOTION }}
-            style={{ position: 'absolute', top: '12px', left: '0px', zIndex: 2 }}
-          >
-            <button
-              onClick={() => {
-                _setShowCompletion(false);
-                const lastStageIndex = effectiveSteps.length - 1;
-                const lastSection = card.sections.find(s => s.type === effectiveSteps[lastStageIndex]);
-                const lastPromptCount = getEffectivePromptCount(lastSection);
-                setLocalStepIndex(lastStageIndex);
-                setLocalPromptIndex(lastPromptCount - 1);
-              }}
-              aria-label="Tillbaka till sista steget"
-              style={{
-                minHeight: '44px',
-                minWidth: '44px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                padding: '12px',
-              }}
-            >
-              <ArrowLeft size={20} style={{ color: DRIFTWOOD, opacity: 0.50 }} />
-            </button>
-          </motion.div>
+          {/* Back arrow removed — Föregående is in the CTA area below */}
 
           <div style={{ height: '24px' }} />
 
