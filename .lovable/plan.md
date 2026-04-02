@@ -1,18 +1,16 @@
 
 
-## Fix: "sparas under samtalet" → "sparas i samtalet"
+## Fix: Still Us time estimate → "ca 10–20 min"
 
-**File: `src/pages/CardView.tsx`** — line 3052
-
-The only instance of "under samtalet" in session prompts:
+**File: `src/pages/KidsCardPortal.tsx`** — line 49
 
 ```
 // Before
-Det ni skriver sparas under samtalet
+case 'still-us':         return 'ca 15–30 min';
 
 // After
-Det ni skriver sparas i samtalet
+case 'still-us':         return 'ca 10–20 min';
 ```
 
-Single line change. No other files contain this phrase.
+`SuIntroPortal.tsx` already says "ca 10–20 min" — no change needed there. Single line fix.
 
