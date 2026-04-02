@@ -629,7 +629,7 @@ export default function ProductLibrary() {
           style={{
             width: '32px',
             height: '1.5px',
-            backgroundColor: 'hsla(100, 50%, 75%, 0.30)',
+            backgroundColor: 'hsla(100, 50%, 75%, 0.45)',
             margin: '24px auto 32px',
           }}
         />
