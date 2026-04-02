@@ -7,8 +7,6 @@ import { LANTERN_GLOW } from '@/lib/palette';
 import BonkiButton from '@/components/BonkiButton';
 import bonkiLogo from '@/assets/bonki-logo-transparent.png';
 
-const EASE: [number, number, number, number] = [0.4, 0.0, 0.2, 1];
-
 const fadeUp = (_delay: number) => ({
   initial: { opacity: 1, y: 0 },
   animate: { opacity: 1, y: 0 },
@@ -30,13 +28,45 @@ export default function Onboarding() {
         overflowX: 'hidden',
         display: 'flex',
         flexDirection: 'column',
+        justifyContent: 'flex-end',
       }}
     >
-      {/* ── Saffron ambient glow — the campfire in the dark forest ── */}
+      {/* ── Illustration — absolute background ghost ── */}
+      <motion.div
+        initial={false}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0 }}
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          height: '45%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          pointerEvents: 'none',
+          zIndex: 0,
+        }}
+      >
+        <img
+          src={bonkiLogo}
+          alt=""
+          aria-hidden
+          style={{
+            width: '160px',
+            height: 'auto',
+            objectFit: 'contain',
+            opacity: 0.35,
+          }}
+        />
+      </motion.div>
+
+      {/* ── Saffron ambient glow — around headline area ── */}
       <div
         style={{
           position: 'absolute',
-          top: '8%',
+          top: '40%',
           left: '50%',
           transform: 'translateX(-50%)',
           width: '340px',
@@ -47,63 +77,20 @@ export default function Onboarding() {
         }}
       />
 
-      {/* ── Illustration — warm, visible, creatures emerging from the dark ── */}
-      <motion.div
-        initial={false}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0 }}
-        style={{
-          position: 'relative',
-          zIndex: 1,
-          flex: '1 1 0',
-          maxHeight: '38vh',
-          minHeight: '140px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          paddingTop: 'max(48px, env(safe-area-inset-top, 48px))',
-          paddingBottom: '8px',
-        }}
-      >
-        <img
-          src={bonkiLogo}
-          alt=""
-          aria-hidden
-          style={{
-            width: '240px',
-            height: 'auto',
-            objectFit: 'contain',
-            opacity: 0.88,
-            filter: 'brightness(1.15) saturate(1.1)',
-          }}
-        />
-      </motion.div>
-
-      {/* Bottom fade — bridge between illustration and text */}
-      <div
-        style={{
-          height: '120px',
-          marginTop: '-120px',
-          position: 'relative',
-          zIndex: 2,
-          background: 'linear-gradient(to top, #1A1A2E 0%, rgba(26, 26, 46, 0.85) 40%, transparent 100%)',
-          pointerEvents: 'none',
-        }}
-      />
-
-      {/* ── Content ── */}
+      {/* ── Content — vertically centered text ── */}
       <div
         style={{
           position: 'relative',
           zIndex: 1,
-          flex: '0 1 auto',
-          marginBottom: '24px',
+          flex: '1 1 auto',
           display: 'flex',
           flexDirection: 'column',
+          justifyContent: 'center',
           padding: '0 32px',
+          paddingTop: 'max(48px, env(safe-area-inset-top, 48px))',
         }}
       >
-        {/* Credential — subtle, earned trust */}
+        {/* Credential */}
         <motion.p
           {...fadeUp(0.35)}
           style={{
@@ -120,7 +107,7 @@ export default function Onboarding() {
           Utvecklat av psykolog
         </motion.p>
 
-        {/* Headline — the emotional hook */}
+        {/* Headline */}
         <motion.h1
           {...fadeUp(0.5)}
           style={{
@@ -136,7 +123,7 @@ export default function Onboarding() {
           Verktyg för samtalen{'\u00A0'}som inte blir av.
         </motion.h1>
 
-        {/* Divider — saffron warmth */}
+        {/* Divider */}
         <motion.div
           {...fadeUp(0.65)}
           style={{
@@ -162,60 +149,61 @@ export default function Onboarding() {
         >
           Bonki hjälper er prata — med varandra, med era barn, och om det som är svårt att hitta ord för. Ett samtal i taget.
         </motion.p>
+      </div>
 
-        {/* ── Audience routing pills ── */}
-        <div style={{ padding: '28px 0 0' }}>
-          <p style={{
-            fontFamily: 'var(--font-sans)', fontSize: '15px', fontWeight: 500,
-            color: '#FDF6E3', opacity: 0.5, margin: '0 0 12px',
-          }}>
-            Var vill ni börja?
-          </p>
-          <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-            {[
-              { label: 'Barn 3–6', value: 'young' },
-              { label: 'Barn 7–11', value: 'middle' },
-              { label: 'Barn 12+', value: 'teen' },
-              { label: 'Oss som par', value: 'couple' },
-            ].map(({ label, value }) => {
-              const selected = selectedAudience === value;
-              return (
-                <button key={value} onClick={() => setSelectedAudience(value)} style={{
-                  padding: '10px 20px', borderRadius: '20px', cursor: 'pointer',
-                  transition: 'all 0.15s ease',
-                  fontFamily: 'var(--font-sans)', fontSize: '15px',
-                  border: selected
-                    ? '1px solid hsla(40, 78%, 61%, 0.4)'
-                    : '1px solid hsla(0, 0%, 100%, 0.15)',
-                  background: selected
-                    ? 'hsla(40, 78%, 61%, 0.12)'
-                    : 'hsla(0, 0%, 100%, 0.06)',
-                  color: selected ? '#DA9D1D' : 'rgba(253, 246, 227, 0.85)',
-                }}>
-                  {label}
-                </button>
-              );
-            })}
-          </div>
-          <div style={{ minHeight: '20px', marginTop: '10px' }}>
-            {selectedAudience !== null && (
-              <p style={{
-                fontFamily: 'var(--font-sans)', fontSize: '12px',
-                color: '#FDF6E3', opacity: 0.35, margin: 0,
+      {/* ── Audience routing pills ── */}
+      <div style={{ position: 'relative', zIndex: 1, flex: '0 0 auto', padding: '28px 32px 0' }}>
+        <p style={{
+          fontFamily: 'var(--font-sans)', fontSize: '15px', fontWeight: 500,
+          color: '#FDF6E3', opacity: 0.5, margin: '0 0 12px',
+        }}>
+          Var vill ni börja?
+        </p>
+        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+          {[
+            { label: 'Barn 3–6', value: 'young' },
+            { label: 'Barn 7–11', value: 'middle' },
+            { label: 'Barn 12+', value: 'teen' },
+            { label: 'Oss som par', value: 'couple' },
+          ].map(({ label, value }) => {
+            const selected = selectedAudience === value;
+            return (
+              <button key={value} onClick={() => setSelectedAudience(value)} style={{
+                padding: '10px 20px', borderRadius: '20px', cursor: 'pointer',
+                transition: 'all 0.15s ease',
+                fontFamily: 'var(--font-sans)', fontSize: '15px',
+                border: selected
+                  ? '1px solid hsla(40, 78%, 61%, 0.4)'
+                  : '1px solid hsla(0, 0%, 100%, 0.15)',
+                background: selected
+                  ? 'hsla(40, 78%, 61%, 0.12)'
+                  : 'hsla(0, 0%, 100%, 0.06)',
+                color: selected ? '#DA9D1D' : 'rgba(253, 246, 227, 0.85)',
               }}>
-                Ni kan utforska alla produkter efteråt.
-              </p>
-            )}
-          </div>
+                {label}
+              </button>
+            );
+          })}
+        </div>
+        <div style={{ minHeight: '20px', marginTop: '10px' }}>
+          {selectedAudience !== null && (
+            <p style={{
+              fontFamily: 'var(--font-sans)', fontSize: '12px',
+              color: '#FDF6E3', opacity: 0.35, margin: 0,
+            }}>
+              Ni kan utforska alla produkter efteråt.
+            </p>
+          )}
         </div>
       </div>
 
-      {/* ── Single CTA ── */}
+      {/* ── CTA ── */}
       <motion.div
         {...fadeUp(0.9)}
         style={{
           position: 'relative',
           zIndex: 1,
+          flex: '0 0 auto',
           padding: '0 24px',
           paddingBottom: 'calc(32px + env(safe-area-inset-bottom, 0px))',
           display: 'flex',
