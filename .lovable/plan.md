@@ -1,62 +1,50 @@
 
 
-## Fix bottom CTA clutter in session views
+## Fix: Async timing in ProductHome — with synchronous init
 
-The three problems: "Föregående" has no visual weight, "Fortsätt" is off-center, and "Pausa för idag" is a redundant third action (the X button already triggers pause).
+Two changes, no shims.
 
-### How premium apps solve this
+### File 1: `src/components/ProductIntro.tsx`
 
-Apps like Headspace, Calm, and Duolingo keep the primary CTA **full-width and centered** — always the dominant visual anchor. Navigation back is handled by a small **chevron icon** (not a text label), and exit/pause lives exclusively in the top-right close button. No bottom area ever has more than one row of actions.
+Change `useProductIntroNeeded` return type from `boolean` to `{ needed: boolean; checked: boolean }`:
 
-### Solution
+```ts
+// Before:
+if (!checked) return false;
+return needed;
 
-**1. Replace "Föregående" text with a chevron-left icon button**
-- Small `ChevronLeft` icon (20px) in a 44×52px touch target
-- Same opacity treatment (0.7), positioned left of the CTA
-- Visually reads as "back" without competing with the CTA text
-
-**2. Keep "Fortsätt" as the dominant element**
-- The CTA takes `flex: 1` in the row — the small icon button beside it barely affects centering
-- Visual weight ratio becomes ~90/10 instead of the current ~40/60
-
-**3. Remove "Pausa för idag" from the bottom entirely**
-- The X button in the header already opens "Pausa samtalet?" — this is the correct exit point
-- One less action = cleaner, calmer bottom zone
-
-### Files to edit
-
-**`src/components/SessionStepReflection.tsx`**
-- Replace the "Föregående" text button with a `ChevronLeft` icon button (same `onBack` handler)
-- Remove the "Pausa för idag" button block (lines ~394-414)
-- Remove `pauseLabel` and `onPause` from the props interface
-
-**`src/pages/CardView.tsx`** (multiple CTA areas)
-- Same pattern: replace all "Föregående" text buttons with `ChevronLeft` icon buttons
-- Remove any standalone "Pausa för idag" buttons in the kids product CTA areas
-- Stop passing `pauseLabel` / `onPause` to `SessionStepReflection`
-
-**`src/components/still-us/SessionOneLive.tsx`**
-- Replace "Föregående" text with chevron icon
-- Remove "Pausa för idag" (X button handles it)
-
-**`src/components/still-us/SessionTwoLive.tsx`**
-- Same changes
-
-**`src/components/TillbakaSessionLive.tsx`**
-- Same changes (remove "Pausa för idag", chevron for back)
-
-### Visual result
-
-```text
-Before:                          After:
-┌────────────────────────┐      ┌────────────────────────┐
-│ Föregående   [Fortsätt]│      │ ‹  [    Fortsätt     ] │
-│     Pausa för idag     │      └────────────────────────┘
-└────────────────────────┘
+// After:
+return { needed, checked };
 ```
 
-### Unchanged
-- X button behavior and "Pausa samtalet?" dialog (already correct)
-- Completion screen CTA layout
-- All handleSmartExit / pause logic
+### File 2: `src/pages/ProductHome.tsx`
+
+Replace the intro gating logic with a synchronous-first approach:
+
+```ts
+const { needed: needsIntro, checked: introChecked } = useProductIntroNeeded(product?.id ?? '');
+
+// Synchronous init: if user has completed any session before, assume no intro needed.
+// This prevents a single-frame flash of the intro for returning users.
+const [showIntro, setShowIntro] = useState(() => {
+  const hasFinishedBefore = localStorage.getItem('bonki-first-session-done');
+  return !hasFinishedBefore; // new users: true, returning users: false
+});
+
+useEffect(() => {
+  if (!introChecked) return;
+  if (needsIntro && !showIntro) setShowIntro(true);   // DB says needed, override sync guess
+  if (!needsIntro && showIntro) setShowIntro(false);   // DB says not needed, collapse
+}, [introChecked, needsIntro]);
+```
+
+The `bonki-first-session-done` key already gets set elsewhere when a session completes (or we add it to the completion flow if missing). This gives us:
+
+- **New user**: no localStorage key → `showIntro` starts `true` → DB confirms → stays true → intro shows
+- **Returning user**: localStorage key exists → `showIntro` starts `false` → DB confirms → stays false → no flash
+- **Edge case (cleared localStorage, DB has sessions)**: starts `true`, DB says not needed → single effect flip to `false` (acceptable — same dark background, imperceptible)
+
+### Files edited
+- `src/components/ProductIntro.tsx`
+- `src/pages/ProductHome.tsx`
 
