@@ -36,12 +36,18 @@ export default function ProductHome() {
   const { needed: needsIntro, checked: introChecked } = useProductIntroNeeded(product?.id ?? '');
 
   // Synchronous init: returning users skip intro immediately, new users see it while DB loads
-  const [showIntro, setShowIntro] = useState(true);
+  const [showIntro, setShowIntro] = useState(() => {
+    if (!product?.id) return true;
+    return !localStorage.getItem(`bonki-intro-seen-${product.id}`);
+  });
 
   useEffect(() => {
     if (!introChecked) return;
     if (needsIntro && !showIntro) setShowIntro(true);
-    if (!needsIntro && showIntro) setShowIntro(false);
+    if (!needsIntro && showIntro) {
+      setShowIntro(false);
+      if (product?.id) localStorage.setItem(`bonki-intro-seen-${product.id}`, '1');
+    }
   }, [introChecked, needsIntro]);
 
   // Remember last active product for skip-to-product launch
@@ -58,8 +64,12 @@ export default function ProductHome() {
         accentColor={product.accentColor}
         backgroundColor={product.backgroundColor}
         freeCardId={product.freeCardId}
-        onComplete={() => setShowIntro(false)}
+        onComplete={() => {
+          if (product.id) localStorage.setItem(`bonki-intro-seen-${product.id}`, '1');
+          setShowIntro(false);
+        }}
         onStartFreeCard={() => {
+          if (product.id) localStorage.setItem(`bonki-intro-seen-${product.id}`, '1');
           setShowIntro(false);
           if (product.freeCardId) {
             localStorage.setItem('bonki-last-active-product', product.slug);
