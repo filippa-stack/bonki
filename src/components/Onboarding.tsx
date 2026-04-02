@@ -188,7 +188,7 @@ export default function Onboarding() {
                   : '0 4px 12px rgba(0,0,0,0.15), 0 1px 3px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.06)',
               }}>
                 <span style={{
-                  fontFamily: 'var(--font-display)', fontSize: '17px', fontWeight: 700, width: '100%', textAlign: 'center' as const,
+                  fontFamily: 'var(--font-display)', fontSize: '15px', fontWeight: 700, width: '100%', textAlign: 'center' as const,
                   letterSpacing: '-0.01em',
                   color: selected ? '#DA9D1D' : 'rgba(253, 246, 227, 0.85)',
                 }}>{label}</span>
