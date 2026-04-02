@@ -307,27 +307,27 @@ export default function SessionStepReflection({
         <div style={{
           display: 'flex',
           flexDirection: 'row',
-          justifyContent: 'space-between',
           alignItems: 'center',
           width: '100%',
-          gap: '12px',
+          gap: '8px',
         }}>
           <button
             onClick={onBack}
+            aria-label="Föregående"
             style={{
               background: 'none',
               border: 'none',
               cursor: 'pointer',
-              fontFamily: 'var(--font-sans)',
-              fontSize: '14px',
-              color: stillUsMode ? 'hsl(38 20% 82%)' : 'var(--text-secondary)',
-              opacity: 0.7,
               minHeight: '44px',
-              padding: '0 4px',
-              whiteSpace: 'nowrap',
+              minWidth: '44px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: 0,
+              flexShrink: 0,
             }}
           >
-            Föregående
+            <ChevronLeft size={20} strokeWidth={1.8} style={{ color: stillUsMode ? 'hsl(38 20% 82%)' : 'var(--text-secondary)', opacity: 0.7 }} />
           </button>
           <motion.button
             onClick={handleAdvance}
