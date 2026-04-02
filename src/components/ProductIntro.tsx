@@ -470,7 +470,5 @@ export function useProductIntroNeeded(productId: string): boolean {
     return () => { cancelled = true; };
   }, [productId]);
 
-  // Don't show until we've checked server
-  if (!checked) return false;
-  return needed;
+  return { needed, checked };
 }

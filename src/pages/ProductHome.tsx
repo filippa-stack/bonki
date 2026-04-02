@@ -33,14 +33,19 @@ export default function ProductHome() {
     location.key,
   );
 
-  const needsIntroProduct = useProductIntroNeeded(product?.id ?? '');
-  const needsIntro = needsIntroProduct;
-  const [showIntro, setShowIntro] = useState(needsIntro);
+  const { needed: needsIntro, checked: introChecked } = useProductIntroNeeded(product?.id ?? '');
 
-  // Sync showIntro with async needsIntro
+  // Synchronous init: returning users skip intro immediately, new users see it while DB loads
+  const [showIntro, setShowIntro] = useState(() => {
+    const hasFinishedBefore = localStorage.getItem('bonki-first-session-done');
+    return !hasFinishedBefore;
+  });
+
   useEffect(() => {
-    if (needsIntro) setShowIntro(true);
-  }, [needsIntro]);
+    if (!introChecked) return;
+    if (needsIntro && !showIntro) setShowIntro(true);
+    if (!needsIntro && showIntro) setShowIntro(false);
+  }, [introChecked, needsIntro]);
 
   // Remember last active product for skip-to-product launch
   useEffect(() => {
