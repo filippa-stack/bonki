@@ -51,8 +51,8 @@ export default function Onboarding() {
         <div
           style={{
             position: 'absolute',
-            width: '280px',
-            height: '280px',
+            width: '200px',
+            height: '200px',
             borderRadius: '50%',
             background: 'radial-gradient(circle, hsla(170, 35%, 50%, 0.15) 0%, transparent 70%)',
             pointerEvents: 'none',
