@@ -175,7 +175,7 @@ export default function Onboarding() {
               <button key={value} onClick={() => setSelectedAudience(value)} style={{
                 height: '80px', borderRadius: '22px', padding: '12px 14px',
                 cursor: 'pointer', transition: 'all 0.15s ease',
-                display: 'flex', alignItems: 'flex-end',
+                display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center' as const,
                 position: 'relative', overflow: 'hidden',
                 border: selected
                   ? '1px solid rgba(218, 157, 29, 0.35)'
