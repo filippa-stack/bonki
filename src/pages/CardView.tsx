@@ -3495,6 +3495,28 @@ export default function CardView() {
                 );
               })()}
 
+              {/* Coaching hint — first-time whisper */}
+              {isLive && showCoachingHint && localPromptIndex === 0 && (
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.6, duration: 0.8 }}
+                  style={{
+                    fontFamily: 'var(--font-serif)',
+                    fontSize: '13px',
+                    fontStyle: 'italic',
+                    color: 'var(--accent-text)',
+                    opacity: 0.55,
+                    textAlign: 'center',
+                    lineHeight: 1.5,
+                    marginBottom: '20px',
+                    padding: '0 24px',
+                  }}
+                >
+                  Läs frågan högt och prata fritt — varje fråga för samtalet vidare.
+                </motion.p>
+              )}
+
               {/* Prompt content */}
               <motion.div
                 initial={false}
