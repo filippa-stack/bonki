@@ -893,7 +893,7 @@ export default function ProductLibrary() {
             <p style={{
               fontFamily: "var(--font-body)",
               fontSize: '10px',
-              color: 'hsla(100, 40%, 80%, 0.45)',
+              color: 'hsla(100, 40%, 80%, 0.55)',
               marginTop: '2px',
             }}>
               Varje samtal sparas
