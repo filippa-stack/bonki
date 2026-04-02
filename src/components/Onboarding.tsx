@@ -97,7 +97,7 @@ export default function Onboarding() {
           position: 'relative',
           zIndex: 1,
           flex: '0 1 auto',
-          marginBottom: '32px',
+          marginBottom: '24px',
           display: 'flex',
           flexDirection: 'column',
           padding: '0 32px',
