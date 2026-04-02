@@ -2747,9 +2747,7 @@ export default function CardView() {
               hideNoteField={false}
               stillUsMode={true}
               ctaLabel={getStillUsCtaLabel()}
-              pauseLabel="Pausa för idag"
               compactNoteTrigger={false}
-              onPause={() => navigate('/')}
               onLocked={handleFocusAdvance}
               onBack={handleFocusBack}
               showBackButton={!(currentStepIndex === 0 && localPromptIndex === 0)}
