@@ -183,6 +183,18 @@ function CategoryTile({
       >
         <span
           style={{
+            fontSize: '11px',
+            fontWeight: 500,
+            color: 'rgba(255,255,255,0.7)',
+            display: 'block',
+            marginBottom: '2px',
+            textShadow: '0 1px 3px rgba(0,0,0,0.9)',
+          }}
+        >
+          {totalCards} samtal om
+        </span>
+        <span
+          style={{
             fontFamily: 'var(--font-display)',
             fontVariationSettings: "'opsz' 24",
             fontSize: '24px',
