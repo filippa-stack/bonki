@@ -3552,6 +3552,7 @@ export default function CardView() {
                           setLocalPromptIndex(localPromptIndex + 1);
                         }
                       }}
+                      showBackButton={!(currentStepIndex === 0 && localPromptIndex === 0)}
                       onBack={() => {
                         if (localPromptIndex > 0) {
                           setLocalPromptIndex(localPromptIndex - 1);
