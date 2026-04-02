@@ -220,9 +220,12 @@ export default function Onboarding() {
               'inset 0 1.5px 0 rgba(255, 255, 255, 0.35)',
               'inset 0 -2px 6px rgba(0, 0, 0, 0.12)',
             ].join(', '),
+            opacity: selectedAudience ? 1 : 0.4,
+            pointerEvents: selectedAudience ? 'auto' : 'none',
           }}
           onClick={() => {
-            trackOnboardingEvent('onboarding_complete', { audience: 'all' });
+            localStorage.setItem('bonki-onboarding-audience', selectedAudience!);
+            trackOnboardingEvent('onboarding_complete', { audience: selectedAudience });
             initializeCoupleSpace();
             completeOnboarding();
           }}
