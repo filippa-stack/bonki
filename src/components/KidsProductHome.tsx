@@ -89,15 +89,7 @@ const HERO_OBJECT_POSITION: Record<string, string> = {
   still_us: '50% 40%',
 };
 
-const PRODUCT_DESCRIPTIONS: Record<string, string> = {
-  jag_i_mig: 'känslor och att förstå sig själv',
-  jag_med_andra: 'relationer och att vara tillsammans',
-  jag_i_varlden: 'värderingar och världen omkring oss',
-  vardagskort: 'vardagen och livet utanför hemmet',
-  syskonkort: 'att vara syskon tillsammans',
-  sexualitetskort: 'kroppen, gränser och relationer',
-  still_us: 'er relation och att växa tillsammans',
-};
+
 
 const HERO_TOP_OFFSET: Record<string, string> = {
   jag_i_varlden: '-20vh',
@@ -284,12 +276,12 @@ function CategoryTile({
         )}
         <span
           style={{
-            fontSize: '11px',
+            fontSize: '12px',
             fontWeight: 500,
-            color: 'rgba(255,255,255,0.7)',
+            color: 'rgba(255,255,255,0.85)',
             display: 'block',
             marginBottom: '2px',
-            textShadow: '0 1px 3px rgba(0,0,0,0.9)',
+            textShadow: '0 1px 3px rgba(0,0,0,0.9), 0 2px 6px rgba(0,0,0,0.5)',
           }}
         >
           {total} samtal om
@@ -613,23 +605,8 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
                   ].join(', '),
                 }}
               >
-              {product.tagline}
+              {product.cards.length} samtal om {product.tagline.toLowerCase().replace(/\.$/, '')}.
               </p>
-
-            {PRODUCT_DESCRIPTIONS[product.id] && (
-              <p
-                style={{
-                  fontFamily: 'var(--font-display)',
-                  fontSize: '13px',
-                  color: LANTERN_GLOW,
-                  opacity: 0.6,
-                  marginTop: '4px',
-                  textShadow: '0 1px 3px rgba(0,0,0,0.9)',
-                }}
-              >
-                {product.cards.length} samtal om {PRODUCT_DESCRIPTIONS[product.id]}
-              </p>
-            )}
 
             {/* Spacer — pushes content below hero face zone */}
             {!useSquareGrid && <div style={{ height: 'clamp(48px, 12vh, 100px)' }} />}
