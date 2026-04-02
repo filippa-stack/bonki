@@ -81,6 +81,7 @@ export default function Index() {
   useThemeSwitcher();
 
   const migrationRan = useRef(false);
+  const audienceRef = useRef(localStorage.getItem('bonki-onboarding-audience'));
 
   // One-time migration: paid_at → user_product_access
   useEffect(() => {
@@ -121,16 +122,12 @@ export default function Index() {
   // ── Demo mode: skip onboarding gate ──
   const demoActive = isDemoMode();
 
-  // ── Normal production flow ──
-  if (!hasCompletedOnboarding && !demoActive && !devBypassGates) {
-    return <Onboarding />;
-  }
-
-  // One-time audience routing after first onboarding
-  const audience = localStorage.getItem('bonki-onboarding-audience');
+  // One-time audience routing after first onboarding (BEFORE onboarding gate)
+  const audience = audienceRef.current;
   if (audience && !localStorage.getItem('bonki-first-session-done')) {
     localStorage.removeItem('bonki-onboarding-audience');
     localStorage.setItem('bonki-first-session-done', '1');
+    audienceRef.current = null;
     const routes: Record<string, string> = {
       young: '/product/jag-i-mig',
       middle: '/product/jag-med-andra',
@@ -139,6 +136,11 @@ export default function Index() {
     };
     const target = routes[audience] || '/';
     return <Navigate to={target} replace />;
+  }
+
+  // ── Normal production flow ──
+  if (!hasCompletedOnboarding && !demoActive && !devBypassGates) {
+    return <Onboarding />;
   }
 
   // Post-purchase redirect: return user to the card they were trying to open
