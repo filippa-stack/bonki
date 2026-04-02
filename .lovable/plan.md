@@ -1,33 +1,24 @@
 
 
-## Move count into progress, remove "X samtal om" label
+## Update Product Home Subtitles
 
-The "X samtal om" label clutters the tile. Instead, move the count into the progress indicator text — "0/4 samtal" — and remove the label entirely. Also revert the 5 grammar-adjusted category titles since they were only changed to flow after "samtal om".
+Update each product's `tagline` field so the dynamic formula (`{cards.length} samtal om {tagline}`) produces the correct subtitle. No component changes needed.
 
-### File 1: `src/components/KidsProductHome.tsx`
+### Changes
 
-**Remove** the "samtal om" `<span>` (lines 277–288).
+| File | Current tagline | New tagline |
+|---|---|---|
+| `src/data/products/jag-i-mig.ts` | `När känslor får ord.` | `Känslor som får ord.` |
+| `src/data/products/jag-med-andra.ts` | `Det trygga och det svåra.` | **No change** (already correct — produces "21 samtal om det trygga och det svåra.") |
+| `src/data/products/jag-i-varlden.ts` | `Världen vidgas.` | `En värld som vidgas.` |
+| `src/data/products/syskonkort.ts` | `Band för livet.` | `Att vara syskon.` |
+| `src/data/products/still-us-mock.ts` | `Vi finns kvar` | `Att förbli ett vi.` |
+| `src/data/products/vardagskort.ts` | `Det vanliga, på djupet.` | **No change** |
+| `src/data/products/sexualitetskort.ts` | `Kropp, gränser och identitet.` | **No change** |
 
-**Update progress text** (line 333): `{completed}/{total}` → `{completed}/{total} samtal`
-
-**Revert titles** in data files (see File 3 below).
-
-### File 2: `src/components/CategoryTileGrid.tsx`
-
-**Remove** the "samtal om" `<span>` (lines 184–195).
-
-**Update progress text** (line 255): `{completed}/{totalCards}` → `{completed}/{totalCards} samtal`
-
-### File 3: Revert category titles
-
-| File | Current | Restored |
-|------|---------|----------|
-| `syskonkort.ts` | `Att bli syskon` | `Vi blev syskon` |
-| `syskonkort.ts` | `Att vara olika` | `Vi är olika` |
-| `jag-i-varlden.ts` | `Vad jag tror på` | `Vad tror jag på` |
-| `vardagskort.ts` | `Livet utanför hemmet` | `Utanför hemmet` |
-| `still-us-mock.ts` | `Oss tillsammans` | `Tillsammans` |
-
-### Unchanged
-- Product-level merged subtitle, tile layout/images/animations, progress bar visual, all protected patterns
+### Files edited
+- `src/data/products/jag-i-mig.ts`
+- `src/data/products/jag-i-varlden.ts`
+- `src/data/products/syskonkort.ts`
+- `src/data/products/still-us-mock.ts`
 
