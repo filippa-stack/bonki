@@ -276,12 +276,12 @@ function CategoryTile({
         )}
         <span
           style={{
-            fontSize: '11px',
+            fontSize: '12px',
             fontWeight: 500,
-            color: 'rgba(255,255,255,0.7)',
+            color: 'rgba(255,255,255,0.85)',
             display: 'block',
             marginBottom: '2px',
-            textShadow: '0 1px 3px rgba(0,0,0,0.9)',
+            textShadow: '0 1px 3px rgba(0,0,0,0.9), 0 2px 6px rgba(0,0,0,0.5)',
           }}
         >
           {total} samtal om
