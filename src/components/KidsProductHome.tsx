@@ -89,6 +89,16 @@ const HERO_OBJECT_POSITION: Record<string, string> = {
   still_us: '50% 40%',
 };
 
+const PRODUCT_DESCRIPTIONS: Record<string, string> = {
+  jag_i_mig: 'känslor och att förstå sig själv',
+  jag_med_andra: 'relationer och att vara tillsammans',
+  jag_i_varlden: 'värderingar och världen omkring oss',
+  vardagskort: 'vardagen och livet utanför hemmet',
+  syskonkort: 'att vara syskon tillsammans',
+  sexualitetskort: 'kroppen, gränser och relationer',
+  still_us: 'er relation och att växa tillsammans',
+};
+
 const HERO_TOP_OFFSET: Record<string, string> = {
   jag_i_varlden: '-20vh',
   jag_i_mig: '-14vh',
