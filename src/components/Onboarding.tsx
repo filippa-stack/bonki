@@ -172,7 +172,7 @@ export default function Onboarding() {
             const selected = selectedAudience === value;
             return (
               <button key={value} onClick={() => setSelectedAudience(value)} style={{
-                height: '72px', borderRadius: '16px', padding: '12px 14px',
+                height: '80px', borderRadius: '22px', padding: '12px 14px',
                 cursor: 'pointer', transition: 'all 0.15s ease',
                 display: 'flex', alignItems: 'flex-end',
                 position: 'relative', overflow: 'hidden',
@@ -182,6 +182,9 @@ export default function Onboarding() {
                 background: selected
                   ? 'rgba(218, 157, 29, 0.10)'
                   : 'rgba(255, 255, 255, 0.04)',
+                boxShadow: selected
+                  ? '0 4px 12px rgba(0,0,0,0.15), 0 1px 3px rgba(0,0,0,0.08), inset 0 1px 0 rgba(218,157,29,0.15)'
+                  : '0 4px 12px rgba(0,0,0,0.15), 0 1px 3px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.06)',
               }}>
                 <span style={{
                   fontFamily: 'var(--font-display)', fontSize: '16px', fontWeight: 600,
