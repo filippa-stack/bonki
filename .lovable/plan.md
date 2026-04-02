@@ -1,39 +1,26 @@
 
 
-## Assessment
-
-Your suggestion correctly identifies the core problem: the illustration consumes too much vertical space, pushing the CTA below the fold on shorter screens. The approach of making the illustration a background element is the right structural fix.
-
-**One refinement**: reducing the logo to 0.25 opacity effectively erases the brand — it becomes noise rather than atmosphere. I'd suggest **0.35 opacity** as the sweet spot: ghostly enough to not compete with text, visible enough to register as intentional branding.
-
----
-
-## Plan: Onboarding Layout Restructure
+## Onboarding: Close the Dead Space + Restore Illustration Glow
 
 **File**: `src/components/Onboarding.tsx`
 
-### Step 1 — Illustration becomes absolute background
-- Change the `<motion.div>` illustration wrapper from `flex: '1 1 0'` layout participant to `position: 'absolute'`, `top: 0`, `left/right: 0`, `height: '45%'`, `zIndex: 0`
-- Reduce image from 240px → 160px, opacity 0.88 → **0.35**, remove brightness/saturate filters
-- Remove the bottom-fade sibling `<div>` entirely (lines 82–92) — no longer needed
+### Problem
+The content section (`flex: 1 1 auto`, `justifyContent: 'center'`) creates a large empty gap between the body text and the pills. The illustration at 0.35 opacity with no filters feels flat compared to the original glowing version.
 
-### Step 2 — Content fills screen, anchored to bottom
-- Outer container keeps `display: flex; flexDirection: column` but adds `justifyContent: 'flex-end'`
-- Content div gets `flex: '1 1 auto'`, `justifyContent: 'center'` to vertically center text in the space above pills/CTA
-- Add `paddingTop: 'max(48px, env(safe-area-inset-top, 48px))'` to the content div (moved from illustration)
+### Fix 1 — Eliminate dead space by changing content distribution
+- Change the content div (line 85) from `justifyContent: 'center'` to `justifyContent: 'flex-end'` so text content sits just above the pills instead of floating in the vertical center
+- Add `paddingBottom: '24px'` to the content div to create a consistent, intentional gap between body text and pills (instead of the flex-center gap)
+- Reduce pills wrapper top padding from `28px` to `16px` (line 155)
 
-### Step 3 — Pills and CTA always visible
-- Pills wrapper and CTA wrapper both get `flex: '0 0 auto'` — they never shrink
-- CTA `paddingBottom` stays `calc(32px + env(safe-area-inset-bottom, 0px))`
-
-### Step 4 — Reposition ambient glow
-- Move saffron glow from `top: '8%'` to `top: '40%'` so it radiates around the headline area instead of the now-ghosted illustration
+### Fix 2 — Restore illustration glow
+- Add back the brightness and saturate filters on the `<img>`: `filter: 'brightness(1.15) saturate(1.3)'`
+- Move the saffron ambient glow from `top: '40%'` back to `top: '8%'` (line 69) so it wraps around the illustration, creating the warm lantern effect
+- Optionally increase glow intensity slightly: change `hsla(40, 78%, 61%, 0.14)` to `hsla(40, 78%, 61%, 0.18)` for the inner stop
 
 ### Unchanged
-All text, colors, fonts, pill logic, CTA behavior, localStorage writes, `completeOnboarding()`, `initializeCoupleSpace()`
+All text, colors, fonts, pill labels/values/logic, CTA behavior, localStorage writes, `completeOnboarding()`, `initializeCoupleSpace()`, illustration size (160px) and opacity (0.35), absolute positioning of illustration
 
-### Verification targets
-- iPhone SE (375×667): all content visible without scrolling
-- iPhone 14 (390×844): generous breathing room, centered text
-- Logo visible as soft ghost, "UTVECKLAT AV PSYKOLOG" fully legible
+### Result
+- Content flows naturally: illustration ghost at top, text in upper-middle, pills and CTA anchored at bottom, no dead zone
+- Illustration has a warm atmospheric glow like the original, while remaining a background element
 
