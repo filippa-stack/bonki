@@ -154,7 +154,7 @@ export default function Onboarding() {
       </div>
 
       {/* ── Audience routing pills ── */}
-      <div style={{ position: 'relative', zIndex: 1, flex: '0 0 auto', padding: '28px 32px 0' }}>
+      <div style={{ position: 'relative', zIndex: 1, flex: '0 0 auto', padding: '16px 32px 0' }}>
         <p style={{
           fontFamily: 'var(--font-sans)', fontSize: '15px', fontWeight: 500,
           color: '#FDF6E3', opacity: 0.5, margin: '0 0 12px',
