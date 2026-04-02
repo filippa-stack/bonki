@@ -612,7 +612,7 @@ export default function ProductLibrary() {
               fontStyle: 'normal',
               fontSize: '14px',
               fontWeight: 400,
-              color: 'hsla(100, 40%, 80%, 0.45)',
+              color: 'hsla(100, 40%, 80%, 0.60)',
               lineHeight: 1.6,
               transition: 'color 400ms ease',
               textShadow: '0 1px 16px hsla(230, 25%, 10%, 0.8)',
@@ -629,7 +629,7 @@ export default function ProductLibrary() {
           style={{
             width: '32px',
             height: '1.5px',
-            backgroundColor: 'hsla(100, 50%, 75%, 0.30)',
+            backgroundColor: 'hsla(100, 50%, 75%, 0.45)',
             margin: '24px auto 32px',
           }}
         />
@@ -664,7 +664,8 @@ export default function ProductLibrary() {
               fontWeight: 700,
               letterSpacing: '2px',
               textTransform: 'uppercase',
-              color: '#D4F5C0',
+              color: '#FDF6E3',
+              opacity: 0.55,
               marginBottom: '20px',
             }}>
               Föräldrar
@@ -802,7 +803,8 @@ export default function ProductLibrary() {
               fontWeight: 700,
               letterSpacing: '2px',
               textTransform: 'uppercase',
-              color: '#D4F5C0',
+              color: '#FDF6E3',
+              opacity: 0.55,
               marginBottom: '20px',
             }}>
               Barn & Familj
@@ -891,7 +893,7 @@ export default function ProductLibrary() {
             <p style={{
               fontFamily: "var(--font-body)",
               fontSize: '10px',
-              color: 'hsla(100, 40%, 80%, 0.45)',
+              color: 'hsla(100, 40%, 80%, 0.55)',
               marginTop: '2px',
             }}>
               Varje samtal sparas
@@ -903,7 +905,7 @@ export default function ProductLibrary() {
             fontWeight: 600,
             letterSpacing: '0.06em',
             color: '#D4F5C0',
-            opacity: 0.4,
+            opacity: 0.55,
           }}>
             →
           </span>
