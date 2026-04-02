@@ -292,43 +292,7 @@ export default function SessionTwoLive({
     );
   };
 
-  // ── Exit links ────────────────────────────────────────────
-  const renderExitLinks = () => (
-    <div style={{
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      gap: '8px',
-      marginTop: '24px',
-    }}>
-      <button
-        onClick={handlePause}
-        style={{
-          background: 'none',
-          border: 'none',
-          cursor: 'pointer',
-          color: COLORS.driftwood,
-          fontSize: '13px',
-          fontFamily: 'var(--font-sans)',
-        }}
-      >
-        Pausa för idag
-      </button>
-      <button
-        onClick={() => setShowEmotionalExit(true)}
-        style={{
-          background: 'none',
-          border: 'none',
-          cursor: 'pointer',
-          color: COLORS.driftwood,
-          fontSize: '13px',
-          fontFamily: 'var(--font-sans)',
-        }}
-      >
-        Vi behöver stanna här
-      </button>
-    </div>
-  );
+  // Exit links removed — X button in header handles pause
 
   // ── Vänd Q2 step ──────────────────────────────────────────
   const renderVandQ2 = () => (
