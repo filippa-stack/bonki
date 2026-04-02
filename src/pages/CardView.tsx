@@ -66,6 +66,15 @@ import { useOptimisticCompletions } from '@/contexts/OptimisticCompletionsContex
 import { BEAT_1, BEAT_2, BEAT_3, EASE, PRESS, PAGE, EMOTION } from '@/lib/motion';
 import { getRecommendedCategoryOrder } from '@/lib/recommendedOrder';
 
+// ─── Coaching hint (first-time only) ───
+const COACHING_KEY = 'bonki-coaching-hint-count';
+function getCoachingCount(): number {
+  return parseInt(localStorage.getItem(COACHING_KEY) || '0', 10);
+}
+function incrementCoachingCount(): void {
+  localStorage.setItem(COACHING_KEY, String(getCoachingCount() + 1));
+}
+
 // Completion messages are now in src/lib/pronouns.ts
 
 // ─────────────────────────────────────────────────────────────
@@ -543,6 +552,16 @@ export default function CardView() {
 
   // ─── Sub-prompt index within current stage ───
   const [localPromptIndex, setLocalPromptIndex] = useState(0);
+
+  // ─── Coaching hint — shown first 3 sessions, then gone ───
+  const [showCoachingHint] = useState(() => getCoachingCount() < 3);
+  const coachingCounted = useRef(false);
+  useEffect(() => {
+    if (cardViewMode === 'live' && showCoachingHint && !coachingCounted.current) {
+      coachingCounted.current = true;
+      incrementCoachingCount();
+    }
+  }, [cardViewMode, showCoachingHint]);
   // Resume loading gate for kids products — prevents Q1 flash while querying reflections
   const [resumeLoading, setResumeLoading] = useState(false);
 
@@ -3475,6 +3494,28 @@ export default function CardView() {
                   </div>
                 );
               })()}
+
+              {/* Coaching hint — first-time whisper */}
+              {isLive && showCoachingHint && localPromptIndex === 0 && (
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.6, duration: 0.8 }}
+                  style={{
+                    fontFamily: 'var(--font-serif)',
+                    fontSize: '13px',
+                    fontStyle: 'italic',
+                    color: 'var(--accent-text)',
+                    opacity: 0.55,
+                    textAlign: 'center',
+                    lineHeight: 1.5,
+                    marginBottom: '20px',
+                    padding: '0 24px',
+                  }}
+                >
+                  Läs frågan högt och prata fritt — varje fråga för samtalet vidare.
+                </motion.p>
+              )}
 
               {/* Prompt content */}
               <motion.div
