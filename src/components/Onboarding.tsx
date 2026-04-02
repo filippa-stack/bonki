@@ -197,6 +197,16 @@ export default function Onboarding() {
               );
             })}
           </div>
+          <div style={{ minHeight: '20px', marginTop: '10px' }}>
+            {selectedAudience !== null && (
+              <p style={{
+                fontFamily: 'var(--font-sans)', fontSize: '12px',
+                color: '#FDF6E3', opacity: 0.35, margin: 0,
+              }}>
+                Ni kan utforska alla produkter efteråt.
+              </p>
+            )}
+          </div>
         </div>
       </div>
 
