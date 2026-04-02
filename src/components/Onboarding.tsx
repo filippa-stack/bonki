@@ -183,7 +183,7 @@ export default function Onboarding() {
                 <button key={value} onClick={() => setSelectedAudience(value)} style={{
                   padding: '10px 20px', borderRadius: '20px', cursor: 'pointer',
                   transition: 'all 0.15s ease',
-                  fontFamily: 'var(--font-sans)', fontSize: '14px',
+                  fontFamily: 'var(--font-sans)', fontSize: '15px',
                   border: selected
                     ? '1px solid hsla(40, 78%, 61%, 0.4)'
                     : '1px solid hsla(0, 0%, 100%, 0.15)',
