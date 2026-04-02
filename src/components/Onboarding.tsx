@@ -63,20 +63,6 @@ export default function Onboarding() {
         />
       </motion.div>
 
-      {/* ── Saffron ambient glow — around headline area ── */}
-      <div
-        style={{
-          position: 'absolute',
-          top: '8%',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          width: '340px',
-          height: '380px',
-          background: 'radial-gradient(ellipse 70% 60% at 50% 45%, hsla(40, 78%, 61%, 0.18) 0%, hsla(40, 70%, 50%, 0.06) 40%, transparent 75%)',
-          pointerEvents: 'none',
-          zIndex: 0,
-        }}
-      />
 
       {/* ── Content — vertically centered text ── */}
       <div
