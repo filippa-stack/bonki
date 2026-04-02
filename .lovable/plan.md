@@ -1,28 +1,18 @@
 
 
-## Branded Loading Screen
+## Offline Queue Persistence
 
-### 1. New file: `src/components/BonkiLoadingScreen.tsx`
+**File: `src/lib/offlineQueue.ts`**
 
-A simple component using only inline styles:
-- Fixed fullscreen, `#0B1026` background
-- Saffron radial glow behind content
-- Bonki logo at 100px wide with gentle pulse (opacity 0.4–0.8, 2s ease-in-out infinite)
-- 24px × 1.5px saffron divider bar (`hsla(40, 78%, 61%, 0.3)`) also pulsing
-- No text, no Tailwind, no framer-motion
-- Injects `@keyframes bonkiBreath` via an inline `<style>` tag
+Four additions to the existing file, no signature or logic changes:
 
-### 2. `src/App.tsx` — two replacements
+1. **Restore on load** (after `let queue` declaration): Read `bonki-offline-queue` from localStorage, parse, filter out entries older than 24h (`createdAt < Date.now() - 86400000`).
 
-**ProtectedRoutes** (lines 63–77): Replace skeleton block with `<BonkiLoadingScreen />`
+2. **Persist on enqueue**: After `queue.push(entry)`, call `localStorage.setItem("bonki-offline-queue", JSON.stringify(queue))`.
 
-**AppRoutes** (lines 151–161): Replace skeleton block with `<BonkiLoadingScreen />`
+3. **Persist after sync**: After `queue = failed`, either update localStorage or remove key if empty.
 
-Add import at top.
+4. **Visibility listener**: Add `document.addEventListener("visibilitychange", ...)` alongside the existing `online` listener — calls `attemptSync()` when page becomes visible.
 
-### 3. `src/components/ProductLibrary.tsx` — line 491
-
-Replace `<div style={{ minHeight: '100vh', backgroundColor: '#0B1026' }} />` with `<BonkiLoadingScreen />`
-
-No routing, auth, or state logic changes.
+No other files touched. All exports and sync logic unchanged.
 
