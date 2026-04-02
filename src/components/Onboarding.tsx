@@ -17,6 +17,7 @@ const fadeUp = (_delay: number) => ({
 
 export default function Onboarding() {
   const { completeOnboarding, initializeCoupleSpace } = useApp();
+  const [selectedAudience, setSelectedAudience] = useState<string | null>(null);
   usePageBackground('#1A1A2E');
 
   return (
