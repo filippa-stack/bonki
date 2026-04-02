@@ -1,26 +1,26 @@
 
 
-## Onboarding: Smaller Logo + Premium 1-Line Pills, No Scroll
+## Fix: Give CTA Room + Tighten Content Spacing
 
 **File**: `src/components/Onboarding.tsx`
 
+### Issues
+- CTA "Börja" button is clipped/hidden behind bottom nav — not enough bottom clearance
+- Content section has excessive top padding (`max(48px, env(safe-area-inset-top))`) that steals space from the illustration
+- No breathing room between pills and CTA button
+
 ### Changes
 
-**1. No scroll — fixed viewport layout**
-- Change `overflowY: 'auto'` → `overflow: 'hidden'` on the outer container
+**1. Content section — reduce top padding**
+- Change `paddingTop: 'max(48px, env(safe-area-inset-top, 48px))'` → `paddingTop: 0` — the illustration zone above already provides spacing
 
-**2. Smaller logo, fully visible**
-- Reduce logo width from `200px` → `120px`
-- Reduce radial glow from `280px` → `200px` to match
-- The illustration zone keeps `flex: 1 1 auto` so it absorbs remaining space — but with a smaller logo it breathes instead of cramming
+**2. CTA — add top padding, increase bottom clearance**
+- Add `paddingTop: '16px'` to CTA wrapper for breathing room above button
+- Change `paddingBottom` from `calc(24px + env(safe-area-inset-bottom))` → `calc(32px + env(safe-area-inset-bottom))` to clear the bottom nav area
 
-**3. Premium 1-line pills without chevron**
-- Keep single-line layout: **Title** · *Subtitle*
-- Remove the chevron `›` entirely (lines 191–195)
-- Change `justifyContent: 'space-between'` → remove it (no longer needed without chevron)
-- Add `boxShadow: '0 0 12px hsla(40, 78%, 61%, 0.15)'` on selected state for warm glow
-- Bump title font to `17px`, padding to `14px 18px`
+**3. Illustration zone — reduce minHeight slightly**
+- Change `minHeight: '180px'` → `minHeight: '140px'` — allows more space for content below on shorter screens while still keeping the logo prominent
 
 ### Unchanged
-All logic, selection state, localStorage, tracking, CTA, credential/headline/body text, teal radial glow behind logo, `initial={false}` stability pattern.
+All pill styling, selection logic, typography, tracking, logo size (120px), teal glow.
 
