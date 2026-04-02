@@ -40,10 +40,8 @@ export default function SessionStepReflection({
   hideNoteField = false,
   noteFieldLabel,
   ctaLabel,
-  pauseLabel,
   stillUsMode = false,
   compactNoteTrigger = false,
-  onPause,
   onNoteCapture,
   showBackButton = false,
 }: SessionStepReflectionProps) {
