@@ -174,23 +174,24 @@ function AppRoutes() {
 
 
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <SiteSettingsProvider>
-      <AuthProvider>
-        <TooltipProvider>
-          <Sonner position="bottom-center" offset={{ bottom: 64 }} toastOptions={{ classNames: { toast: 'mx-6' } }} />
-          <BrowserRouter>
-            <DevStateProvider>
-              <MobileOnlyGate>
-                <DevModeBadge />
-                <AppRoutes />
-              </MobileOnlyGate>
-            </DevStateProvider>
-          </BrowserRouter>
-        </TooltipProvider>
-      </AuthProvider>
-    </SiteSettingsProvider>
-  </QueryClientProvider>
+  <BonkiErrorBoundary>
+    <QueryClientProvider client={queryClient}>
+      <SiteSettingsProvider>
+        <AuthProvider>
+          <TooltipProvider>
+            <Sonner position="bottom-center" offset={{ bottom: 64 }} toastOptions={{ classNames: { toast: 'mx-6' } }} />
+            <BrowserRouter>
+              <DevStateProvider>
+                <MobileOnlyGate>
+                  <DevModeBadge />
+                  <AppRoutes />
+                </MobileOnlyGate>
+              </DevStateProvider>
+            </BrowserRouter>
+          </TooltipProvider>
+        </AuthProvider>
+      </SiteSettingsProvider>
+    </QueryClientProvider>
   </BonkiErrorBoundary>
 );
 
