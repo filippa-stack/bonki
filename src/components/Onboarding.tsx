@@ -205,7 +205,7 @@ export default function Onboarding() {
           zIndex: 1,
           flex: '0 0 auto',
           padding: '16px 24px 0',
-          paddingBottom: 'calc(32px + env(safe-area-inset-bottom, 0px))',
+          paddingBottom: 'calc(32px + env(safe-area-inset-bottom, 16px))',
           display: 'flex',
           flexDirection: 'column',
           gap: '12px',
