@@ -3456,7 +3456,7 @@ export default function CardView() {
                   isReflectionStep={isReflectionStep}
                   isExerciseStep={isExerciseStep}
                   backgroundImageUrl={pronounMode === 'du' ? cardImageUrl : null}
-                  showBackArrow={isLive && (!(currentStepIndex === 0 && localPromptIndex === 0) || (!!product && product.id !== 'still_us'))}
+                  showBackArrow={false}
                   onBack={isLive ? (() => {
                     if (localPromptIndex > 0) {
                       setLocalPromptIndex(localPromptIndex - 1);
