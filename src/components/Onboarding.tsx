@@ -166,7 +166,7 @@ export default function Onboarding() {
         {/* ── Audience routing pills ── */}
         <div style={{ padding: '20px 0 0' }}>
           <p style={{
-            fontFamily: 'var(--font-sans)', fontSize: '13px', fontWeight: 500,
+            fontFamily: 'var(--font-sans)', fontSize: '15px', fontWeight: 500,
             color: '#FDF6E3', opacity: 0.5, margin: '0 0 12px',
           }}>
             Vem vill ni prata med?
