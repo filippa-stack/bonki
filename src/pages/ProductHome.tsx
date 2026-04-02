@@ -36,10 +36,7 @@ export default function ProductHome() {
   const { needed: needsIntro, checked: introChecked } = useProductIntroNeeded(product?.id ?? '');
 
   // Synchronous init: returning users skip intro immediately, new users see it while DB loads
-  const [showIntro, setShowIntro] = useState(() => {
-    const hasFinishedBefore = localStorage.getItem('bonki-first-session-done');
-    return !hasFinishedBefore;
-  });
+  const [showIntro, setShowIntro] = useState(true);
 
   useEffect(() => {
     if (!introChecked) return;
