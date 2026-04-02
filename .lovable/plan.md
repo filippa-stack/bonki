@@ -1,22 +1,26 @@
-## Onboarding: 2×2 Grid Pills, Product-Home Style
+
+
+## Fix: Give CTA Room + Tighten Content Spacing
 
 **File**: `src/components/Onboarding.tsx`
 
+### Issues
+- CTA "Börja" button is clipped/hidden behind bottom nav — not enough bottom clearance
+- Content section has excessive top padding (`max(48px, env(safe-area-inset-top))`) that steals space from the illustration
+- No breathing room between pills and CTA button
+
 ### Changes
 
-**1. Replace vertical pill list with a 2×2 CSS grid**
-- Change the pills container from `flexDirection: 'column'` to `display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px'`
-- Remove subtitles — each pill shows only the label (e.g. "Barn 3–6", "Oss som par")
+**1. Content section — reduce top padding**
+- Change `paddingTop: 'max(48px, env(safe-area-inset-top, 48px))'` → `paddingTop: 0` — the illustration zone above already provides spacing
 
-**2. Match product-home tile styling (smaller)**
-- Use the same visual language as category tiles on ProductHome: rounded corners (`borderRadius: 10px`), layered box-shadow, semi-transparent background
-- Unselected: `background: hsla(0,0%,100%,0.04)`, `border: 1px solid hsla(0,0%,100%,0.10)`
-- Selected: `background: hsla(40,78%,61%,0.10)`, `border: 1px solid hsla(40,78%,61%,0.35)`, saffron glow shadow
-- Compact padding: `12px 14px` — smaller than before since no subtitle
-- Text: `fontFamily: 'var(--font-display)'`, `fontSize: '15px'`, `fontWeight: 500`, centered
+**2. CTA — add top padding, increase bottom clearance**
+- Add `paddingTop: '16px'` to CTA wrapper for breathing room above button
+- Change `paddingBottom` from `calc(24px + env(safe-area-inset-bottom))` → `calc(32px + env(safe-area-inset-bottom))` to clear the bottom nav area
 
-**3. Remove "Var vill ni börja?" label and reassurance text**
-- The grid is self-explanatory; removing these saves ~40px vertical space
+**3. Illustration zone — reduce minHeight slightly**
+- Change `minHeight: '180px'` → `minHeight: '140px'` — allows more space for content below on shorter screens while still keeping the logo prominent
 
 ### Unchanged
-Logo, illustration zone, credential, headline, divider, body text, CTA, all logic/tracking/localStorage.
+All pill styling, selection logic, typography, tracking, logo size (120px), teal glow.
+
