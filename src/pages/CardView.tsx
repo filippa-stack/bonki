@@ -1161,32 +1161,7 @@ export default function CardView() {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
       >
-        {/* Back arrow — top left */}
-        <button
-          onClick={() => {
-            _setShowCompletion(false);
-            const lastStageIndex = effectiveSteps.length - 1;
-            const lastSection = card.sections.find(s => s.type === effectiveSteps[lastStageIndex]);
-            const lastPromptCount = getEffectivePromptCount(lastSection);
-            setLocalStepIndex(lastStageIndex);
-            setLocalPromptIndex(lastPromptCount - 1);
-          }}
-          aria-label="Tillbaka till sista steget"
-          style={{
-            position: 'absolute',
-            top: 'calc(env(safe-area-inset-top, 0px) + 12px)',
-            left: '12px',
-            zIndex: 20,
-            background: 'none',
-            border: 'none',
-            cursor: 'pointer',
-            padding: '8px',
-            color: LANTERN_GLOW,
-            opacity: 0.6,
-          }}
-        >
-          <ChevronLeft size={22} strokeWidth={1.5} />
-        </button>
+        {/* Back arrow removed — Föregående is in the CTA area below */}
         {/* Content block — vertically centered */}
         <div style={{
           flex: '1 1 auto',
@@ -1351,19 +1326,44 @@ export default function CardView() {
             </motion.div>
           )}
 
-          {/* 4. Primary CTA */}
+          {/* 4. Primary CTA with Föregående */}
           <motion.div
             initial={{ opacity: 1 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3, duration: 0.3 }}
             style={{ width: '100%' }}
           >
-            <button
-              onClick={() => navigateWithFeedback(
-                hasNextCard ? postCompletionNav.destination : categoryDest
-              )}
+            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%', gap: '12px' }}>
+              <button
+                onClick={() => {
+                  _setShowCompletion(false);
+                  const lastStageIndex = effectiveSteps.length - 1;
+                  const lastSection = card.sections.find(s => s.type === effectiveSteps[lastStageIndex]);
+                  const lastPromptCount = getEffectivePromptCount(lastSection);
+                  setLocalStepIndex(lastStageIndex);
+                  setLocalPromptIndex(lastPromptCount - 1);
+                }}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '14px',
+                  color: LANTERN_GLOW,
+                  opacity: 0.7,
+                  minHeight: '44px',
+                  padding: '0 4px',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                Föregående
+              </button>
+              <button
+                onClick={() => navigateWithFeedback(
+                  hasNextCard ? postCompletionNav.destination : categoryDest
+                )}
               style={{
-                width: '100%',
+                flex: 1,
                 height: '56px',
                 borderRadius: '14px',
                 backgroundColor: SAFFRON,
@@ -1385,6 +1385,7 @@ export default function CardView() {
                 `Tillbaka till ${product?.name ?? 'översikt'}`
               )}
             </button>
+            </div>
 
             {/* 5. Secondary link — only when primary = "Nästa samtal" */}
             {hasNextCard && (
@@ -1446,38 +1447,7 @@ export default function CardView() {
       >
         <Header title="" variant="immersive" />
         <div className="px-6 pb-16 relative" style={{ paddingTop: '48px' }}>
-          {/* Back arrow */}
-          <motion.div
-            initial={{ opacity: 1 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: BEAT_3, duration: EMOTION }}
-            style={{ position: 'absolute', top: '12px', left: '0px', zIndex: 2 }}
-          >
-            <button
-              onClick={() => {
-                _setShowCompletion(false);
-                const lastStageIndex = effectiveSteps.length - 1;
-                const lastSection = card.sections.find(s => s.type === effectiveSteps[lastStageIndex]);
-                const lastPromptCount = getEffectivePromptCount(lastSection);
-                setLocalStepIndex(lastStageIndex);
-                setLocalPromptIndex(lastPromptCount - 1);
-              }}
-              aria-label="Tillbaka till sista steget"
-              style={{
-                minHeight: '44px',
-                minWidth: '44px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                padding: '12px',
-              }}
-            >
-              <ArrowLeft size={20} style={{ color: DRIFTWOOD, opacity: 0.50 }} />
-            </button>
-          </motion.div>
+          {/* Back arrow removed — Föregående is in the CTA area below */}
 
           <div style={{ height: '24px' }} />
 
@@ -1619,28 +1589,53 @@ export default function CardView() {
             {cardId === 'su-mock-0' ? (
               /* su-mock-0: unique CTA → next card */
               <>
-                <button
-                  onClick={() => navigateWithFeedback(postCompletionNav.destination)}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '6px',
-                    width: '100%',
-                    maxWidth: '520px',
-                    height: '52px',
-                    borderRadius: '14px',
-                    backgroundColor: DEEP_SAFFRON,
-                    color: MIDNIGHT_INK,
-                    fontFamily: 'var(--font-sans)',
-                    fontSize: '17px',
-                    fontWeight: 600,
-                    border: 'none',
-                    cursor: 'pointer',
-                  }}
-                >
-                  Nästa samtal <ArrowRight size={16} style={{ opacity: 0.7 }} />
-                </button>
+                <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%', maxWidth: '520px', gap: '12px' }}>
+                  <button
+                    onClick={() => {
+                      _setShowCompletion(false);
+                      const lastStageIndex = effectiveSteps.length - 1;
+                      const lastSection = card.sections.find(s => s.type === effectiveSteps[lastStageIndex]);
+                      const lastPromptCount = getEffectivePromptCount(lastSection);
+                      setLocalStepIndex(lastStageIndex);
+                      setLocalPromptIndex(lastPromptCount - 1);
+                    }}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      cursor: 'pointer',
+                      fontFamily: 'var(--font-sans)',
+                      fontSize: '14px',
+                      color: DRIFTWOOD,
+                      opacity: 0.7,
+                      minHeight: '44px',
+                      padding: '0 4px',
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
+                    Föregående
+                  </button>
+                  <button
+                    onClick={() => navigateWithFeedback(postCompletionNav.destination)}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '6px',
+                      flex: 1,
+                      height: '52px',
+                      borderRadius: '14px',
+                      backgroundColor: DEEP_SAFFRON,
+                      color: MIDNIGHT_INK,
+                      fontFamily: 'var(--font-sans)',
+                      fontSize: '17px',
+                      fontWeight: 600,
+                      border: 'none',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    Nästa samtal <ArrowRight size={16} style={{ opacity: 0.7 }} />
+                  </button>
+                </div>
                 <button
                   onClick={() => navigateWithFeedback('/product/still-us')}
                   className="font-sans"
@@ -1660,39 +1655,38 @@ export default function CardView() {
               </>
             ) : postCompletionNav.type === 'all_complete' ? (
               /* All done — go home */
-              <button
-                onClick={() => navigateWithFeedback(homeDest)}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  width: '100%',
-                  maxWidth: '520px',
-                  height: '52px',
-                  borderRadius: '14px',
-                  backgroundColor: DEEP_SAFFRON,
-                  color: MIDNIGHT_INK,
-                  fontFamily: 'var(--font-sans)',
-                  fontSize: '17px',
-                  fontWeight: 600,
-                  border: 'none',
-                  cursor: 'pointer',
-                }}
-              >
-                Tillbaka till Ert utrymme
-              </button>
-            ) : (
-              <>
-                {/* Primary CTA */}
+              <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%', maxWidth: '520px', gap: '12px' }}>
                 <button
-                  onClick={() => navigateWithFeedback(postCompletionNav.destination)}
+                  onClick={() => {
+                    _setShowCompletion(false);
+                    const lastStageIndex = effectiveSteps.length - 1;
+                    const lastSection = card.sections.find(s => s.type === effectiveSteps[lastStageIndex]);
+                    const lastPromptCount = getEffectivePromptCount(lastSection);
+                    setLocalStepIndex(lastStageIndex);
+                    setLocalPromptIndex(lastPromptCount - 1);
+                  }}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: '14px',
+                    color: DRIFTWOOD,
+                    opacity: 0.7,
+                    minHeight: '44px',
+                    padding: '0 4px',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  Föregående
+                </button>
+                <button
+                  onClick={() => navigateWithFeedback(homeDest)}
                   style={{
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    gap: '6px',
-                    width: '100%',
-                    maxWidth: '520px',
+                    flex: 1,
                     height: '52px',
                     borderRadius: '14px',
                     backgroundColor: DEEP_SAFFRON,
@@ -1704,8 +1698,59 @@ export default function CardView() {
                     cursor: 'pointer',
                   }}
                 >
-                  {postCompletionNav.label || 'Nästa samtal'} <ArrowRight size={16} style={{ opacity: 0.7 }} />
+                  Tillbaka till Ert utrymme
                 </button>
+              </div>
+            ) : (
+              <>
+                {/* Primary CTA with Föregående */}
+                <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%', maxWidth: '520px', gap: '12px' }}>
+                  <button
+                    onClick={() => {
+                      _setShowCompletion(false);
+                      const lastStageIndex = effectiveSteps.length - 1;
+                      const lastSection = card.sections.find(s => s.type === effectiveSteps[lastStageIndex]);
+                      const lastPromptCount = getEffectivePromptCount(lastSection);
+                      setLocalStepIndex(lastStageIndex);
+                      setLocalPromptIndex(lastPromptCount - 1);
+                    }}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      cursor: 'pointer',
+                      fontFamily: 'var(--font-sans)',
+                      fontSize: '14px',
+                      color: DRIFTWOOD,
+                      opacity: 0.7,
+                      minHeight: '44px',
+                      padding: '0 4px',
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
+                    Föregående
+                  </button>
+                  <button
+                    onClick={() => navigateWithFeedback(postCompletionNav.destination)}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '6px',
+                      flex: 1,
+                      height: '52px',
+                      borderRadius: '14px',
+                      backgroundColor: DEEP_SAFFRON,
+                      color: MIDNIGHT_INK,
+                      fontFamily: 'var(--font-sans)',
+                      fontSize: '17px',
+                      fontWeight: 600,
+                      border: 'none',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    {postCompletionNav.label || 'Nästa samtal'} <ArrowRight size={16} style={{ opacity: 0.7 }} />
+                  </button>
+                </div>
 
                 {/* Secondary: Tillbaka — only if primary doesn't already go to product home */}
                 {product && postCompletionNav.destination !== `/product/${product.slug}` && (
@@ -2529,31 +2574,7 @@ export default function CardView() {
               paddingLeft: '48px',
               paddingRight: '48px',
             }}>
-              {/* Back arrow */}
-              <button
-                onClick={() => { if (localPromptIndex > 0 || currentStepIndex > 0) { handleFocusBack(); } else { setShowLeaveConfirm(true); } }}
-                aria-label="Tillbaka"
-                style={{
-                  position: 'absolute',
-                  left: '8px',
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  minHeight: '44px',
-                  minWidth: '44px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  background: 'none',
-                  border: 'none',
-                  cursor: 'pointer',
-                }}
-              >
-                <ArrowLeft
-                  size={18}
-                  strokeWidth={1.8}
-                  style={{ color: LANTERN_GLOW_LOCAL, opacity: 0.5 }}
-                />
-              </button>
+              {/* Back arrow removed — Föregående is in the CTA area below */}
 
               {/* X close button — right side */}
               <button
@@ -2712,6 +2733,7 @@ export default function CardView() {
               onPause={() => navigate('/')}
               onLocked={handleFocusAdvance}
               onBack={handleFocusBack}
+              showBackButton={!(currentStepIndex === 0 && localPromptIndex === 0)}
               onNoteCapture={(text) => {
                 if (isLocalPreviewMode && card) {
                   const pid = product?.id ?? 'still_us';
@@ -2865,23 +2887,7 @@ export default function CardView() {
             position: 'relative',
             zIndex: 2,
           }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-              <button
-                onClick={() => handleKidsBack()}
-                aria-label="Tillbaka"
-                style={{
-                  minHeight: '44px',
-                  minWidth: '44px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  background: 'none',
-                  border: 'none',
-                  cursor: 'pointer',
-                }}
-              >
-                <ChevronLeft size={20} style={{ color: LANTERN_GLOW }} />
-              </button>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '4px', paddingLeft: '12px' }}>
               <span style={{
                 fontFamily: 'var(--font-sans)',
                 fontSize: '15px',
@@ -3137,27 +3143,70 @@ export default function CardView() {
             position: 'relative',
             zIndex: 2,
           }}>
-            <motion.button
-              onClick={handleKidsAdvance}
-              whileTap={{ scale: 0.97 }}
-              style={{
-                width: '100%',
-                height: '56px',
-                borderRadius: '14px',
-                backgroundColor: SAFFRON,
-                border: 'none',
-                cursor: 'pointer',
-                fontFamily: 'var(--font-sans)',
-                fontSize: '17px',
-                fontWeight: 600,
-                color: MIDNIGHT_INK,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              {isLastPrompt ? 'Avsluta' : 'Fortsätt'}
-            </motion.button>
+            {!(currentStepIndex === 0 && localPromptIndex === 0) ? (
+              <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%', gap: '12px' }}>
+                <button
+                  onClick={() => handleKidsBack()}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: '14px',
+                    color: LANTERN_GLOW,
+                    opacity: 0.7,
+                    minHeight: '44px',
+                    padding: '0 4px',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  Föregående
+                </button>
+                <motion.button
+                  onClick={handleKidsAdvance}
+                  whileTap={{ scale: 0.97 }}
+                  style={{
+                    flex: 1,
+                    height: '56px',
+                    borderRadius: '14px',
+                    backgroundColor: SAFFRON,
+                    border: 'none',
+                    cursor: 'pointer',
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: '17px',
+                    fontWeight: 600,
+                    color: MIDNIGHT_INK,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  {isLastPrompt ? 'Avsluta' : 'Fortsätt'}
+                </motion.button>
+              </div>
+            ) : (
+              <motion.button
+                onClick={handleKidsAdvance}
+                whileTap={{ scale: 0.97 }}
+                style={{
+                  width: '100%',
+                  height: '56px',
+                  borderRadius: '14px',
+                  backgroundColor: SAFFRON,
+                  border: 'none',
+                  cursor: 'pointer',
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '17px',
+                  fontWeight: 600,
+                  color: MIDNIGHT_INK,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                {isLastPrompt ? 'Avsluta' : 'Fortsätt'}
+              </motion.button>
+            )}
           </div>
         </div>
 
@@ -3450,7 +3499,7 @@ export default function CardView() {
                   isReflectionStep={isReflectionStep}
                   isExerciseStep={isExerciseStep}
                   backgroundImageUrl={pronounMode === 'du' ? cardImageUrl : null}
-                  showBackArrow={isLive && (!(currentStepIndex === 0 && localPromptIndex === 0) || (!!product && product.id !== 'still_us'))}
+                  showBackArrow={false}
                   onBack={isLive ? (() => {
                     if (localPromptIndex > 0) {
                       setLocalPromptIndex(localPromptIndex - 1);
@@ -3546,6 +3595,7 @@ export default function CardView() {
                           setLocalPromptIndex(localPromptIndex + 1);
                         }
                       }}
+                      showBackButton={!(currentStepIndex === 0 && localPromptIndex === 0)}
                       onBack={() => {
                         if (localPromptIndex > 0) {
                           setLocalPromptIndex(localPromptIndex - 1);
