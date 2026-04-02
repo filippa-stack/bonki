@@ -85,41 +85,12 @@ const SectionView = forwardRef<SectionViewHandle, SectionViewProps>(
         paddingTop: stillUsMode ? '0px'
           : isExerciseStep ? '12px'
           : (section.type === 'scenario') ? '24px'
-          : (isLive && showBackArrow) ? '48px'
           : backgroundImageUrl ? '16px'
           : '16px',
         paddingBottom: stillUsMode ? '0px' : isExerciseStep ? '8px' : '16px',
         paddingLeft: '0',
         paddingRight: stillUsMode ? '0' : (isLive && coupleSpaceId && sessionId && cardId) ? '24px' : '0',
       }}>
-        {/* Back arrow — top left, live sessions only, hidden at first question */}
-        {isLive && showBackArrow && onBack && (
-          <div style={{ position: 'absolute', top: '12px', left: '0px', zIndex: 2 }}>
-            <button
-              onClick={onBack}
-              aria-label="Föregående fråga"
-              style={{
-                minHeight: '44px',
-                minWidth: '44px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                padding: '12px',
-              }}
-            >
-              <ArrowLeft
-                size={20}
-                style={{
-                  color: 'var(--color-text-tertiary)',
-                  opacity: 0.50,
-                }}
-              />
-            </button>
-          </div>
-        )}
 
 
         <PromptItem
