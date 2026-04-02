@@ -60,7 +60,7 @@ export default function ProductHome() {
     }
   }, [product?.slug]);
 
-  if (showIntro && product) {
+  if (showIntro === true && product) {
     return (
       <ProductIntro
         productId={product.id}
