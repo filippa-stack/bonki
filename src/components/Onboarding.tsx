@@ -173,7 +173,7 @@ export default function Onboarding() {
             const selected = selectedAudience === value;
             return (
               <button key={value} onClick={() => setSelectedAudience(value)} style={{
-                height: '80px', borderRadius: '22px', padding: '12px 14px',
+                height: '64px', borderRadius: '16px', padding: '12px 14px',
                 cursor: 'pointer', transition: 'all 0.15s ease',
                 display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center' as const,
                 position: 'relative', overflow: 'hidden',
