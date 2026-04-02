@@ -1326,17 +1326,42 @@ export default function CardView() {
             </motion.div>
           )}
 
-          {/* 4. Primary CTA */}
+          {/* 4. Primary CTA with Föregående */}
           <motion.div
             initial={{ opacity: 1 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3, duration: 0.3 }}
             style={{ width: '100%' }}
           >
-            <button
-              onClick={() => navigateWithFeedback(
-                hasNextCard ? postCompletionNav.destination : categoryDest
-              )}
+            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%', gap: '12px' }}>
+              <button
+                onClick={() => {
+                  _setShowCompletion(false);
+                  const lastStageIndex = effectiveSteps.length - 1;
+                  const lastSection = card.sections.find(s => s.type === effectiveSteps[lastStageIndex]);
+                  const lastPromptCount = getEffectivePromptCount(lastSection);
+                  setLocalStepIndex(lastStageIndex);
+                  setLocalPromptIndex(lastPromptCount - 1);
+                }}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '14px',
+                  color: LANTERN_GLOW,
+                  opacity: 0.7,
+                  minHeight: '44px',
+                  padding: '0 4px',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                Föregående
+              </button>
+              <button
+                onClick={() => navigateWithFeedback(
+                  hasNextCard ? postCompletionNav.destination : categoryDest
+                )}
               style={{
                 width: '100%',
                 height: '56px',
