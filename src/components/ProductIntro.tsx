@@ -141,10 +141,6 @@ export default function ProductIntro({
 
   // Full body text from productIntros data
   const fullBodyText = introData.slides.map((s) => s.body).join('\n\n');
-  // Include signoff in expanded text (except for sexualitet which shows it separately)
-  const signoffText = !isSexualitet
-    ? introData.slides.map((s) => s.signoff).filter(Boolean).join('\n\n')
-    : '';
 
   const handleCta = async () => {
     // Persist seen flag server-side (fire-and-forget)
@@ -338,21 +334,6 @@ export default function ProductIntro({
               {para}
             </p>
           ))}
-          {signoffText && (
-            <p
-              style={{
-                fontFamily: 'var(--font-serif)',
-                fontStyle: 'italic',
-                fontSize: '15px',
-                color: LANTERN_GLOW,
-                textAlign: 'center',
-                marginTop: '18px',
-                opacity: 0.7,
-              }}
-            >
-              {signoffText}
-            </p>
-          )}
         </motion.div>
 
 
