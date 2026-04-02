@@ -1,12 +1,12 @@
 
 
-## Restore Full Ghost-Glow Intensity on Background Logo
+## Remove Saffron Ambient Glow
 
 **File**: `src/components/Onboarding.tsx`
 
 ### Change
-On the `<img>` element (~line 55): increase opacity from `0.35` → `0.88`, keep `filter: 'brightness(1.15) saturate(1.3)'`. The logo stays absolute-positioned behind the text as a background element, but now glows at full brand intensity — the illuminator, not a whisper.
+Delete the saffron ambient glow `<div>` (the `radial-gradient` element positioned at `top: '8%'`). The bold logo at 0.88 opacity is the illuminator now — it doesn't need an extra halo.
 
 ### Unchanged
-Position (`absolute`, `zIndex: 0`), size (`160px`), layout structure, saffron ambient glow, all text/pills/CTA logic.
+Everything else: logo, text, pills, CTA, layout structure.
 
