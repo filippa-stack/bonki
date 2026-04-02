@@ -28,7 +28,7 @@ export default function Onboarding() {
         overflowX: 'hidden',
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'flex-end',
+        justifyContent: 'center',
       }}
     >
       {/* ── Illustration — hero light source ── */}
