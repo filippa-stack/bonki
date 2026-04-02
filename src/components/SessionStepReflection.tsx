@@ -47,6 +47,7 @@ export default function SessionStepReflection({
   compactNoteTrigger = false,
   onPause,
   onNoteCapture,
+  showBackButton = false,
 }: SessionStepReflectionProps) {
   const navigate = useNavigate();
   const reflectionStepIndex = stepIndex * 100 + promptIndex;
