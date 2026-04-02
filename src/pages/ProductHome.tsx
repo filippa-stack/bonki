@@ -69,6 +69,7 @@ export default function ProductHome() {
           setShowIntro(false);
         }}
         onStartFreeCard={() => {
+          if (product.id) localStorage.setItem(`bonki-intro-seen-${product.id}`, '1');
           setShowIntro(false);
           if (product.freeCardId) {
             localStorage.setItem('bonki-last-active-product', product.slug);
