@@ -44,7 +44,10 @@ export default function ProductHome() {
   useEffect(() => {
     if (!introChecked) return;
     if (needsIntro && !showIntro) setShowIntro(true);
-    if (!needsIntro && showIntro) setShowIntro(false);
+    if (!needsIntro && showIntro) {
+      setShowIntro(false);
+      if (product?.id) localStorage.setItem(`bonki-intro-seen-${product.id}`, '1');
+    }
   }, [introChecked, needsIntro]);
 
   // Remember last active product for skip-to-product launch
