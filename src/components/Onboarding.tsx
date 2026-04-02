@@ -38,9 +38,10 @@ export default function Onboarding() {
         transition={{ duration: 0 }}
         style={{
           position: 'relative',
-          flex: '1 1 auto',
+          flex: '0 0 auto',
           minHeight: '100px',
           marginBottom: 0,
+          paddingBottom: '12px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -174,7 +175,7 @@ export default function Onboarding() {
               <button key={value} onClick={() => setSelectedAudience(value)} style={{
                 height: '80px', borderRadius: '22px', padding: '12px 14px',
                 cursor: 'pointer', transition: 'all 0.15s ease',
-                display: 'flex', alignItems: 'flex-end',
+                display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center' as const,
                 position: 'relative', overflow: 'hidden',
                 border: selected
                   ? '1px solid rgba(218, 157, 29, 0.35)'
@@ -187,7 +188,7 @@ export default function Onboarding() {
                   : '0 4px 12px rgba(0,0,0,0.15), 0 1px 3px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.06)',
               }}>
                 <span style={{
-                  fontFamily: 'var(--font-display)', fontSize: '16px', fontWeight: 600,
+                  fontFamily: 'var(--font-display)', fontSize: '17px', fontWeight: 700, width: '100%', textAlign: 'center' as const,
                   letterSpacing: '-0.01em',
                   color: selected ? '#DA9D1D' : 'rgba(253, 246, 227, 0.85)',
                 }}>{label}</span>
