@@ -57,7 +57,7 @@ export default function Onboarding() {
             width: '160px',
             height: 'auto',
             objectFit: 'contain',
-            opacity: 0.35,
+            opacity: 0.88,
             filter: 'brightness(1.15) saturate(1.3)',
           }}
         />
