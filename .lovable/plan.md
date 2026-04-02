@@ -1,34 +1,28 @@
 
 
-## Add Error Boundary
+## Branded Loading Screen
 
-Two changes: one new file, one wrapper addition.
+### 1. New file: `src/components/BonkiLoadingScreen.tsx`
 
-### 1. New file: `src/components/BonkiErrorBoundary.tsx`
+A simple component using only inline styles:
+- Fixed fullscreen, `#0B1026` background
+- Saffron radial glow behind content
+- Bonki logo at 100px wide with gentle pulse (opacity 0.4–0.8, 2s ease-in-out infinite)
+- 24px × 1.5px saffron divider bar (`hsla(40, 78%, 61%, 0.3)`) also pulsing
+- No text, no Tailwind, no framer-motion
+- Injects `@keyframes bonkiBreath` via an inline `<style>` tag
 
-React class component with `componentDidCatch` that logs `[BonkiErrorBoundary]` prefix. State tracks `hasError`. Fallback UI:
+### 2. `src/App.tsx` — two replacements
 
-- Full-screen `#0B1026` background with saffron radial glow
-- Bonki logo (120px, opacity 0.6)
-- "Något gick fel" heading (display font, 24px)
-- "Vi beklagar — försök igen." subtext (body font, 15px, 0.6 opacity)
-- `BonkiButton` variant="primary" → `window.location.reload()`
-- Text link "Tillbaka till start" → `window.location.href = "/"`
-- Safe area padding top/bottom
+**ProtectedRoutes** (lines 63–77): Replace skeleton block with `<BonkiLoadingScreen />`
 
-### 2. `src/App.tsx`
+**AppRoutes** (lines 151–161): Replace skeleton block with `<BonkiLoadingScreen />`
 
-Wrap the entire `App` return with `<BonkiErrorBoundary>` as outermost element, outside `QueryClientProvider` and everything else.
+Add import at top.
 
-```tsx
-const App = () => (
-  <BonkiErrorBoundary>
-    <QueryClientProvider client={queryClient}>
-      ... existing tree unchanged ...
-    </QueryClientProvider>
-  </BonkiErrorBoundary>
-);
-```
+### 3. `src/components/ProductLibrary.tsx` — line 491
 
-No other files touched.
+Replace `<div style={{ minHeight: '100vh', backgroundColor: '#0B1026' }} />` with `<BonkiLoadingScreen />`
+
+No routing, auth, or state logic changes.
 
