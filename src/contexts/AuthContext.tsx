@@ -75,12 +75,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
     );
 
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      initialSessionResolved = true;
-      setSession(session);
-      setUser(session?.user ?? null);
-      setLoading(false);
-    });
+    supabase.auth.getSession()
+      .then(({ data: { session } }) => {
+        initialSessionResolved = true;
+        setSession(session);
+        setUser(session?.user ?? null);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("[AuthContext] getSession failed:", err);
+        initialSessionResolved = true;
+        setSession(null);
+        setUser(null);
+        setLoading(false);
+      });
 
     return () => subscription.unsubscribe();
   }, []);
