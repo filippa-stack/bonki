@@ -191,6 +191,7 @@ const App = () => (
       </AuthProvider>
     </SiteSettingsProvider>
   </QueryClientProvider>
+  </BonkiErrorBoundary>
 );
 
 export default App;
