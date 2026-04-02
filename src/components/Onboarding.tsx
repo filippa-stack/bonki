@@ -26,7 +26,8 @@ export default function Onboarding() {
         position: 'fixed',
         inset: 0,
         backgroundColor: '#1A1A2E',
-        overflow: 'hidden',
+        overflowY: 'auto',
+        overflowX: 'hidden',
         display: 'flex',
         flexDirection: 'column',
       }}
@@ -54,7 +55,9 @@ export default function Onboarding() {
         style={{
           position: 'relative',
           zIndex: 1,
-          flex: '1 1 auto',
+          flex: '1 1 0',
+          maxHeight: '38vh',
+          minHeight: '140px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -94,7 +97,7 @@ export default function Onboarding() {
           position: 'relative',
           zIndex: 1,
           flex: '0 1 auto',
-          marginBottom: '32px',
+          marginBottom: '24px',
           display: 'flex',
           flexDirection: 'column',
           padding: '0 32px',
@@ -163,7 +166,7 @@ export default function Onboarding() {
         {/* ── Audience routing pills ── */}
         <div style={{ padding: '20px 0 0' }}>
           <p style={{
-            fontFamily: 'var(--font-sans)', fontSize: '13px', fontWeight: 500,
+            fontFamily: 'var(--font-sans)', fontSize: '15px', fontWeight: 500,
             color: '#FDF6E3', opacity: 0.5, margin: '0 0 12px',
           }}>
             Vem vill ni prata med?
@@ -180,7 +183,7 @@ export default function Onboarding() {
                 <button key={value} onClick={() => setSelectedAudience(value)} style={{
                   padding: '10px 20px', borderRadius: '20px', cursor: 'pointer',
                   transition: 'all 0.15s ease',
-                  fontFamily: 'var(--font-sans)', fontSize: '14px',
+                  fontFamily: 'var(--font-sans)', fontSize: '15px',
                   border: selected
                     ? '1px solid hsla(40, 78%, 61%, 0.4)'
                     : '1px solid hsla(0, 0%, 100%, 0.15)',
