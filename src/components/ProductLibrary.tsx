@@ -664,7 +664,8 @@ export default function ProductLibrary() {
               fontWeight: 700,
               letterSpacing: '2px',
               textTransform: 'uppercase',
-              color: '#D4F5C0',
+              color: '#FDF6E3',
+              opacity: 0.55,
               marginBottom: '20px',
             }}>
               Föräldrar
