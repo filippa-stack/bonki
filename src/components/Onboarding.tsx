@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { usePageBackground } from '@/hooks/usePageBackground';
 import { useApp } from '@/contexts/AppContext';
