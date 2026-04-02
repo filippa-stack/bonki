@@ -905,7 +905,7 @@ export default function ProductLibrary() {
             fontWeight: 600,
             letterSpacing: '0.06em',
             color: '#D4F5C0',
-            opacity: 0.4,
+            opacity: 0.55,
           }}>
             →
           </span>
