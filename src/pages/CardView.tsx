@@ -1363,7 +1363,7 @@ export default function CardView() {
                   hasNextCard ? postCompletionNav.destination : categoryDest
                 )}
               style={{
-                width: '100%',
+                flex: 1,
                 height: '56px',
                 borderRadius: '14px',
                 backgroundColor: SAFFRON,
