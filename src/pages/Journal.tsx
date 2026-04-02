@@ -474,6 +474,17 @@ function SessionGroupCard({ group, navigate }: { group: SessionGroup; navigate: 
                 background: `linear-gradient(90deg, ${DRIFTWOOD}33, ${DRIFTWOOD}22, transparent)`,
               }} />
             )}
+            {note.questionText && (
+              <p style={{
+                margin: '0 0 4px',
+                fontSize: '13px',
+                fontStyle: 'italic',
+                color: `${LANTERN_GLOW}88`,
+                lineHeight: 1.4,
+              }}>
+                — {note.questionText}
+              </p>
+            )}
             <p style={{
               margin: 0,
               fontFamily: 'var(--font-serif)',
