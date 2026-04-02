@@ -306,34 +306,90 @@ export default function SessionStepReflection({
       {/* Spacer when note not expanded in still us mode */}
       {stillUsMode && effectiveHideNoteField && <div style={{ height: '80px' }} />}
 
-      {/* Full-width CTA button */}
-      <motion.button
-        onClick={handleAdvance}
-        disabled={submitting}
-        whileTap={{ scale: 0.98 }}
-        transition={{ duration: 0.12 }}
-        style={{
+      {/* CTA area — horizontal flex row when back button is shown */}
+      {showBackButton && onBack ? (
+        <div style={{
           display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
           alignItems: 'center',
-          justifyContent: 'center',
           width: '100%',
-          height: '52px',
-          borderRadius: '14px',
-          backgroundColor: ctaBg,
-          color: ctaTextColor,
-          fontFamily: 'var(--font-sans)',
-          fontSize: stillUsMode ? '17px' : '15px',
-          fontWeight: 600,
-          letterSpacing: '0.01em',
-          border: 'none',
-          cursor: submitting ? 'default' : 'pointer',
-          boxShadow: 'none',
-          opacity: submitting ? 0.5 : (hadPriorTextRef.current ? 0.90 : 1),
-          transition: 'opacity 200ms ease, background-color 260ms ease-out',
-        }}
-      >
-        {submitting ? 'Sparar…' : resolvedCtaLabel}
-      </motion.button>
+          gap: '12px',
+        }}>
+          <button
+            onClick={onBack}
+            style={{
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              fontFamily: 'var(--font-sans)',
+              fontSize: '14px',
+              color: stillUsMode ? 'hsl(38 20% 82%)' : 'var(--text-secondary)',
+              opacity: 0.7,
+              minHeight: '44px',
+              padding: '0 4px',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            Föregående
+          </button>
+          <motion.button
+            onClick={handleAdvance}
+            disabled={submitting}
+            whileTap={{ scale: 0.98 }}
+            transition={{ duration: 0.12 }}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flex: 1,
+              height: '52px',
+              borderRadius: '14px',
+              backgroundColor: ctaBg,
+              color: ctaTextColor,
+              fontFamily: 'var(--font-sans)',
+              fontSize: stillUsMode ? '17px' : '15px',
+              fontWeight: 600,
+              letterSpacing: '0.01em',
+              border: 'none',
+              cursor: submitting ? 'default' : 'pointer',
+              boxShadow: 'none',
+              opacity: submitting ? 0.5 : (hadPriorTextRef.current ? 0.90 : 1),
+              transition: 'opacity 200ms ease, background-color 260ms ease-out',
+            }}
+          >
+            {submitting ? 'Sparar…' : resolvedCtaLabel}
+          </motion.button>
+        </div>
+      ) : (
+        <motion.button
+          onClick={handleAdvance}
+          disabled={submitting}
+          whileTap={{ scale: 0.98 }}
+          transition={{ duration: 0.12 }}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '100%',
+            height: '52px',
+            borderRadius: '14px',
+            backgroundColor: ctaBg,
+            color: ctaTextColor,
+            fontFamily: 'var(--font-sans)',
+            fontSize: stillUsMode ? '17px' : '15px',
+            fontWeight: 600,
+            letterSpacing: '0.01em',
+            border: 'none',
+            cursor: submitting ? 'default' : 'pointer',
+            boxShadow: 'none',
+            opacity: submitting ? 0.5 : (hadPriorTextRef.current ? 0.90 : 1),
+            transition: 'opacity 200ms ease, background-color 260ms ease-out',
+          }}
+        >
+          {submitting ? 'Sparar…' : resolvedCtaLabel}
+        </motion.button>
+      )}
 
       {/* Pause button */}
       {(stillUsMode || isExerciseStep) && (
