@@ -147,28 +147,44 @@ export default function Onboarding() {
         }}>
           Var vill ni börja?
         </p>
-        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', width: '100%' }}>
           {[
-            { label: 'Barn 3–6', value: 'young' },
-            { label: 'Barn 7–11', value: 'middle' },
-            { label: 'Barn 12+', value: 'teen' },
-            { label: 'Oss som par', value: 'couple' },
-          ].map(({ label, value }) => {
+            { label: 'Barn 3–6', subtitle: 'Känslor och inre värld', value: 'young' },
+            { label: 'Barn 7–11', subtitle: 'Relationer och tillit', value: 'middle' },
+            { label: 'Barn 12+', subtitle: 'Identitet och omvärld', value: 'teen' },
+            { label: 'Oss som par', subtitle: 'Samtalen ni saknar', value: 'couple' },
+          ].map(({ label, subtitle, value }) => {
             const selected = selectedAudience === value;
             return (
               <button key={value} onClick={() => setSelectedAudience(value)} style={{
-                padding: '10px 20px', borderRadius: '20px', cursor: 'pointer',
+                padding: '16px 20px', borderRadius: '16px', cursor: 'pointer',
                 transition: 'all 0.15s ease',
-                fontFamily: 'var(--font-sans)', fontSize: '15px',
+                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                width: '100%', textAlign: 'left',
                 border: selected
-                  ? '1px solid hsla(40, 78%, 61%, 0.4)'
-                  : '1px solid hsla(0, 0%, 100%, 0.15)',
+                  ? '1px solid hsla(40, 78%, 61%, 0.35)'
+                  : '1px solid hsla(0, 0%, 100%, 0.10)',
                 background: selected
-                  ? 'hsla(40, 78%, 61%, 0.12)'
-                  : 'hsla(0, 0%, 100%, 0.06)',
-                color: selected ? '#DA9D1D' : 'rgba(253, 246, 227, 0.85)',
+                  ? 'hsla(40, 78%, 61%, 0.10)'
+                  : 'hsla(0, 0%, 100%, 0.04)',
               }}>
-                {label}
+                <div>
+                  <div style={{
+                    fontFamily: 'var(--font-display)', fontSize: '17px', fontWeight: 500,
+                    color: selected ? '#DA9D1D' : 'rgba(253, 246, 227, 0.85)',
+                    lineHeight: 1.3,
+                  }}>{label}</div>
+                  <div style={{
+                    fontFamily: 'var(--font-sans)', fontSize: '13px',
+                    color: selected ? 'rgba(218, 157, 29, 0.6)' : 'rgba(253, 246, 227, 0.5)',
+                    marginTop: '2px',
+                  }}>{subtitle}</div>
+                </div>
+                <span style={{
+                  fontSize: '20px', fontWeight: 300,
+                  color: selected ? '#DA9D1D' : 'rgba(253, 246, 227, 0.3)',
+                  marginLeft: '12px',
+                }}>›</span>
               </button>
             );
           })}
