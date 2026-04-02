@@ -338,7 +338,7 @@ function CategoryTile({
                 textShadow: `0 1px 4px rgba(0,0,0,0.7)`,
               }}
             >
-              {completed}/{total} samtal
+              {completed}/{total}
             </span>
           </div>
         )}
