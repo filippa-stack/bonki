@@ -2733,6 +2733,7 @@ export default function CardView() {
               onPause={() => navigate('/')}
               onLocked={handleFocusAdvance}
               onBack={handleFocusBack}
+              showBackButton={!(currentStepIndex === 0 && localPromptIndex === 0)}
               onNoteCapture={(text) => {
                 if (isLocalPreviewMode && card) {
                   const pid = product?.id ?? 'still_us';
