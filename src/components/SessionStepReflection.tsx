@@ -387,28 +387,6 @@ export default function SessionStepReflection({
         </motion.button>
       )}
 
-      {/* Pause button */}
-      {(stillUsMode || isExerciseStep) && (
-        <button
-          onClick={() => (onPause ?? (() => navigate('/')))()}
-          style={{
-            display: 'block',
-            width: '100%',
-            minHeight: '44px',
-            marginTop: '12px',
-            background: 'none',
-            border: 'none',
-            cursor: 'pointer',
-            fontFamily: 'var(--font-sans)',
-            fontSize: stillUsMode ? '14px' : '13px',
-            color: stillUsMode ? 'hsl(38 20% 82%)' : 'var(--text-secondary)',
-            opacity: stillUsMode ? 0.9 : 0.72,
-            textAlign: 'center',
-          }}
-        >
-          {pauseLabel ?? 'Pausa för idag'}
-        </button>
-      )}
     </motion.div>
   );
 }

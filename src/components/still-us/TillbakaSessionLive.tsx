@@ -50,12 +50,9 @@ export default function TillbakaSessionLive({
         padding: '16px 24px',
         paddingTop: 'calc(16px + env(safe-area-inset-top, 0px))',
         display: 'flex',
-        justifyContent: 'space-between',
+        justifyContent: 'flex-end',
         alignItems: 'center',
       }}>
-        <button onClick={onPause} style={{ background: 'none', border: 'none', color: COLORS.driftwood, fontFamily: 'var(--font-sans)', fontSize: '14px', cursor: 'pointer' }}>
-          Pausa
-        </button>
         <span style={{ fontFamily: 'var(--font-sans)', fontSize: '12px', color: COLORS.driftwood }}>
           {title}
         </span>

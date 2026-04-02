@@ -533,7 +533,6 @@ export default function SessionTwoLive({
           </p>
         )}
 
-        {renderExitLinks()}
       </div>
     </motion.div>
   );

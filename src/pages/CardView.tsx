@@ -1726,7 +1726,7 @@ export default function CardView() {
             ) : (
               <>
                 {/* Primary CTA with Föregående */}
-                <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%', maxWidth: '520px', gap: '12px' }}>
+                <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', width: '100%', maxWidth: '520px', gap: '8px' }}>
                   <button
                     onClick={() => {
                       _setShowCompletion(false);
@@ -1736,20 +1736,21 @@ export default function CardView() {
                       setLocalStepIndex(lastStageIndex);
                       setLocalPromptIndex(lastPromptCount - 1);
                     }}
+                    aria-label="Föregående"
                     style={{
                       background: 'none',
                       border: 'none',
                       cursor: 'pointer',
-                      fontFamily: 'var(--font-sans)',
-                      fontSize: '14px',
-                      color: DRIFTWOOD,
-                      opacity: 0.7,
                       minHeight: '44px',
-                      padding: '0 4px',
-                      whiteSpace: 'nowrap',
+                      minWidth: '44px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      padding: 0,
+                      flexShrink: 0,
                     }}
                   >
-                    Föregående
+                    <ChevronLeft size={20} strokeWidth={1.8} style={{ color: DRIFTWOOD, opacity: 0.7 }} />
                   </button>
                   <button
                     onClick={() => navigateWithFeedback(postCompletionNav.destination)}
