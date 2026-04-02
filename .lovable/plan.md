@@ -1,25 +1,17 @@
 
 
-## Onboarding: Tile Text + Spacing Fix
+## Fix: Remove dead space between logo and "Utvecklat av psykolog"
 
-**File**: `src/components/Onboarding.tsx` — visual-only
+**File**: `src/components/Onboarding.tsx`
 
-### Fix 1: Kill expanding dead space
-**Line 41**: Change `flex: '1 1 auto'` → `flex: '0 0 auto'`
-**Line 43**: Change `marginBottom: 0` → `marginBottom: 0, paddingBottom: '12px'`
+### The problem
+The content section (line 88) has `flex: '1 1 auto'` which makes it absorb all remaining vertical space, pushing the credential text far below the illustration. Combined with `justifyContent: 'flex-end'`, the text stacks at the bottom of this expanded section — but the gap above it is huge.
 
-This stops the illustration wrapper from absorbing all leftover vertical space. The 12px paddingBottom creates a controlled gap to the credential text.
+### The fix
+**Line 88**: Change `flex: '1 1 auto'` → `flex: '0 0 auto'`
 
-### Fix 2: Center and strengthen tile text
-**Lines 174–194** — each tile button:
-- Change `alignItems: 'flex-end'` → `alignItems: 'center'`
-- Add `justifyContent: 'center'` and `textAlign: 'center'` to the button style
-
-**Lines 189–193** — the label `<span>`:
-- `fontSize: '16px'` → `fontSize: '17px'`
-- `fontWeight: 600` → `fontWeight: 700`
-- Add `width: '100%'` and `textAlign: 'center'`
+This makes the content section only take the space it needs. The parent container's `justifyContent: 'flex-end'` will naturally pack illustration + content + tiles + CTA toward the bottom of the screen with no dead space between them.
 
 ### Unchanged
-All tile dimensions (22px radius, 80px height, 12px gap), colors, shadows, selection logic, CTA, text content, tracking, routing.
+Everything else — illustration, tiles, CTA, all logic/state/tracking.
 
