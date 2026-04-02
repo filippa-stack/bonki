@@ -240,7 +240,7 @@ export default function Paywall() {
 
 
         <div
-          onClick={() => navigate('/product/still-us')}
+          onClick={() => navigate('/', { replace: true })}
           style={{
             color: COLORS.driftwood,
             fontSize: '14px',
@@ -248,7 +248,7 @@ export default function Paywall() {
             marginTop: '16px',
           }}
         >
-          Inte nu
+          Utforska andra produkter
         </div>
       </motion.div>
     </div>

@@ -290,7 +290,7 @@ export default function PaywallFullScreen() {
 
         {/* 9. Dismiss */}
         <button
-          onClick={() => navigate(`/product/${product.slug}`, { replace: true })}
+          onClick={() => navigate('/', { replace: true })}
           style={{
             display: 'block',
             width: '100%',
@@ -306,7 +306,7 @@ export default function PaywallFullScreen() {
             padding: '4px 0',
           }}
         >
-          Inte just nu
+          Utforska andra produkter
         </button>
       </div>
     </motion.div>
