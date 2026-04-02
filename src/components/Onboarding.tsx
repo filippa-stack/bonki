@@ -67,7 +67,7 @@ export default function Onboarding() {
       <div
         style={{
           position: 'absolute',
-          top: '40%',
+          top: '8%',
           left: '50%',
           transform: 'translateX(-50%)',
           width: '340px',
