@@ -1,35 +1,14 @@
 import { useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { House, BookOpen } from 'lucide-react';
-import { MIDNIGHT_INK, BONKI_ORANGE, DRIFTWOOD } from '@/lib/palette';
+import { House, LayoutGrid, BookOpen } from 'lucide-react';
+import { BONKI_ORANGE } from '@/lib/palette';
 import { isDemoMode } from '@/lib/demoMode';
 import { useApp } from '@/contexts/AppContext';
-
-/** Two small circles leaning toward each other — Still Us icon */
-function StillUsIcon({ style }: { style?: React.CSSProperties }) {
-  return (
-    <svg
-      width="22"
-      height="22"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      style={style}
-    >
-      <circle cx="9" cy="12" r="4.5" />
-      <circle cx="15" cy="12" r="4.5" />
-    </svg>
-  );
-}
 
 type NavItem = {
   id: string;
   label: string;
-  icon?: typeof House;
-  customIcon?: React.FC<{ style?: React.CSSProperties }>;
+  icon: typeof House;
   path: string;
   match: (pathname: string, search: string) => boolean;
 };
@@ -38,27 +17,25 @@ const items: NavItem[] = [
   {
     id: 'library',
     label: 'Biblioteket',
-    icon: House,
+    icon: LayoutGrid,
     path: '/',
     match: (p, s) => {
-      // Only root library page (not product home screens)
       if (p === '/' && !s.includes('product=still-us')) return true;
       return false;
     },
   },
   {
-    id: 'still-us',
-    label: 'Still Us',
-    customIcon: StillUsIcon,
-    path: '/product/still-us',
-    match: (p, _s) =>
-      p.startsWith('/product/still-us') ||
-      p.startsWith('/still-us') ||
-      p.startsWith('/check-in') ||
-      p.startsWith('/session/') ||
-      p === '/share' ||
-      p === '/journey' ||
-      p === '/ceremony',
+    id: 'hem',
+    label: 'Hem',
+    icon: House,
+    path: '/',
+    match: (p, _s) => {
+      if (p.startsWith('/product/')) return true;
+      if (p.startsWith('/still-us/')) return true;
+      if (p.startsWith('/preview/')) return true;
+      if (p.startsWith('/category/')) return true;
+      return false;
+    },
   },
   {
     id: 'journal',
@@ -122,6 +99,20 @@ export default function BottomNav() {
                 onClick={() => {
                   if (item.id === 'library') {
                     localStorage.removeItem('bonki-last-active-product');
+                    navigate('/');
+                    return;
+                  }
+                  if (item.id === 'hem') {
+                    let productSlug: string | null = null;
+                    const productMatch = pathname.match(/^\/product\/([^/]+)/);
+                    if (productMatch) productSlug = productMatch[1];
+                    else if (pathname.startsWith('/still-us/')) productSlug = 'still-us';
+                    else if (pathname.startsWith('/category/')) productSlug = localStorage.getItem('bonki-last-active-product');
+                    else if (pathname.startsWith('/preview/')) productSlug = localStorage.getItem('bonki-last-active-product');
+                    if (!productSlug) productSlug = localStorage.getItem('bonki-last-active-product');
+                    if (!productSlug) { navigate('/'); return; }
+                    navigate(`/product/${productSlug}`);
+                    return;
                   }
                   navigate(item.path);
                 }}
@@ -137,22 +128,13 @@ export default function BottomNav() {
                   gap: '2px',
                 }}
               >
-                {item.customIcon ? (
-                  <item.customIcon
-                    style={{
-                      width: '22px',
-                      height: '22px',
-                    }}
-                  />
-                ) : Icon ? (
-                  <Icon
-                    style={{
-                      width: '22px',
-                      height: '22px',
-                      strokeWidth: 1.5,
-                    }}
-                  />
-                ) : null}
+                <Icon
+                  style={{
+                    width: '22px',
+                    height: '22px',
+                    strokeWidth: 1.5,
+                  }}
+                />
                 <span
                   style={{
                     fontSize: '10px',
