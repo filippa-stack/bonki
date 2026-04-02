@@ -99,6 +99,20 @@ export default function BottomNav() {
                 onClick={() => {
                   if (item.id === 'library') {
                     localStorage.removeItem('bonki-last-active-product');
+                    navigate('/');
+                    return;
+                  }
+                  if (item.id === 'hem') {
+                    let productSlug: string | null = null;
+                    const productMatch = pathname.match(/^\/product\/([^/]+)/);
+                    if (productMatch) productSlug = productMatch[1];
+                    else if (pathname.startsWith('/still-us/')) productSlug = 'still-us';
+                    else if (pathname.startsWith('/category/')) productSlug = localStorage.getItem('bonki-last-active-product');
+                    else if (pathname.startsWith('/preview/')) productSlug = localStorage.getItem('bonki-last-active-product');
+                    if (!productSlug) productSlug = localStorage.getItem('bonki-last-active-product');
+                    if (!productSlug) { navigate('/'); return; }
+                    navigate(`/product/${productSlug}`);
+                    return;
                   }
                   navigate(item.path);
                 }}
@@ -114,22 +128,13 @@ export default function BottomNav() {
                   gap: '2px',
                 }}
               >
-                {item.customIcon ? (
-                  <item.customIcon
-                    style={{
-                      width: '22px',
-                      height: '22px',
-                    }}
-                  />
-                ) : Icon ? (
-                  <Icon
-                    style={{
-                      width: '22px',
-                      height: '22px',
-                      strokeWidth: 1.5,
-                    }}
-                  />
-                ) : null}
+                <Icon
+                  style={{
+                    width: '22px',
+                    height: '22px',
+                    strokeWidth: 1.5,
+                  }}
+                />
                 <span
                   style={{
                     fontSize: '10px',
