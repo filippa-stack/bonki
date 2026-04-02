@@ -1,46 +1,35 @@
 
 
-## Visual Audit: Product Intro Welcome Pages (All 7)
+## Add "Föregående" Button & Remove Header Back Arrows
 
-### Audit Setup
-Component: `src/components/ProductIntro.tsx`  
-All 7 products use the same layout. Background = product `backgroundColor`, accent = `tileLight`.
+### File 1: `src/components/SessionStepReflection.tsx`
 
-### Issues Found
+**New prop**: `showBackButton?: boolean` (default `false`)
 
-**1. "Inte just nu" skip link too faint (line 409, opacity 0.45)**  
-At 0.45 opacity, `#FDF6E3` becomes nearly invisible against the medium-toned backgrounds of Vardag (`#48A873`), Sexualitet (`#AF685E`), and Syskon (`#8E459D`). Even on darker products it's unnecessarily hard to find.  
-**Fix**: Raise opacity from `0.45` → `0.55`.
+**Layout change**: Wrap the CTA `motion.button` (line 307) and a new "Föregående" button in a **horizontal flex row** (`display: flex`, `flexDirection: row`, `justifyContent: space-between`, `alignItems: center`, `width: 100%`, `gap: 12px`).
 
-**2. Tagline (product accent on product background) — low contrast on 4 products**  
-The tagline uses `productAccent` (= `tileLight`) directly on the product `backgroundColor` (= `tileDeep`). For products where these are close in luminance, readability suffers:
+- **Left**: "Föregående" text button — `background: none`, `border: none`, `fontFamily: var(--font-sans)`, `fontSize: 14px`, `color` = stillUsMode `hsl(38 20% 82%)` / normal `var(--text-secondary)`, `opacity: 0.7`, `minHeight: 44px`, `cursor: pointer`. Calls `onBack()`.
+- **Right**: Existing CTA button — **all styling unchanged**, but change `width` from `100%` to `flex: 1` so it fills remaining space.
+- When `!showBackButton || !onBack`: render only the CTA at `width: 100%` exactly as today (no wrapper div).
 
-| Product | Tagline color | Background | Problem |
-|---------|--------------|------------|---------|
-| Vardag | `#8BDDB0` | `#48A873` | Green-on-green, low contrast |
-| Sexualitet | `#DD958B` | `#AF685E` | Coral-on-coral, low contrast |
-| Syskon | `#CF8BDD` | `#8E459D` | Purple-on-purple, borderline |
-| Still Us | `#94BCE1` | `#4B759B` | Blue-on-blue, borderline |
+The `onBack` prop already exists and is **never used in any JSX or effect** — safe to wire up.
 
-**Fix**: Add `opacity: 0.95` to the tagline `<p>` (currently no explicit opacity) — this won't help contrast. Instead, override the tagline color to use `LANTERN_GLOW` at `0.6` opacity for universal readability, matching the signoff line styling. This gives warm white text that reads clearly on every background.
+### File 2: `src/pages/CardView.tsx`
 
-**3. No issues found with:**
-- Title (`LANTERN_GLOW` on all backgrounds) — high contrast ✓
-- Body text (`LANTERN_GLOW` at 0.88) — readable ✓
-- CTA button (accent bg + `MIDNIGHT_INK` text) — strong ✓
-- "Ert första samtal" reassurance (`LANTERN_GLOW` at 0.6) — acceptable ✓
-- Back arrow (`LANTERN_GLOW` at 0.7) — visible ✓
-- Sexualitet safety line (`LANTERN_GLOW` at 0.6) — readable ✓
+**All three paths — live session headers**: Remove the back arrow button (`ChevronLeft` / `ArrowLeft`). Keep the × close button and card title untouched.
 
-### Changes
+**All three paths — live session CTA**: Pass `showBackButton={!(currentStepIndex === 0 && localPromptIndex === 0)}` to `SessionStepReflection`. The `onBack` prop is already wired to the correct handler (`handleKidsBack` / `handleFocusBack` / equivalent).
 
-**File: `src/components/ProductIntro.tsx`**
+**Kids CTA area** (not using `SessionStepReflection`): Add the same horizontal flex row layout with "Föregående" left, "Fortsätt" right. Calls `handleKidsBack()`. Hidden at first prompt.
 
-| Line | Element | Current | New |
-|------|---------|---------|-----|
-| 302–303 | Tagline color | `color: productAccent` | `color: LANTERN_GLOW, opacity: 0.6` |
-| 409 | "Inte just nu" opacity | `0.45` | `0.55` |
+**All completion screens**: Remove back arrow from header. Add "Föregående" in horizontal flex row left of primary CTA. Calls handler that does `_setShowCompletion(false)` + sets step/prompt to the last step's last prompt.
+
+### File 3: `src/components/SectionView.tsx`
+
+Remove the back arrow JSX block and `showBackArrow`-dependent padding. `ArrowLeft` import removed if unused.
 
 ### Unchanged
-All animations, layout, CTA button, body text, reassurance line, safety line, hooks, callbacks, illustration positioning.
+- × close/pause button (different DOM element, untouched)
+- Protected patterns: `suppressUntilRef`, `prevServerStepRef`, `clearTimeout(pendingSave)`, `hasSyncedRef`
+- AnimatePresence, routing, pause dialog
 
