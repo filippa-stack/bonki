@@ -62,20 +62,7 @@ function ProtectedRoutes() {
   const location = useLocation();
 
   if (loading) {
-    return (
-      <div className="min-h-screen page-bg animate-fade-in loading-skeleton">
-        <div className="h-14 border-b border-border bg-card" />
-        <div className="px-6 pt-8 space-y-4">
-          <div className="h-8 w-48 rounded-lg bg-muted/30 animate-pulse" />
-          <div className="h-4 w-64 rounded bg-muted/20 animate-pulse" />
-          <div className="mt-6 space-y-3">
-            <div className="h-20 rounded-xl bg-muted/20 animate-pulse" />
-            <div className="h-20 rounded-xl bg-muted/20 animate-pulse" />
-            <div className="h-20 rounded-xl bg-muted/20 animate-pulse" />
-          </div>
-        </div>
-      </div>
-    );
+    return <BonkiLoadingScreen />;
   }
 
   if (!user && !isDemoMode()) {
