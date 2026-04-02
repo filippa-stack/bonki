@@ -38,9 +38,10 @@ export default function Onboarding() {
         transition={{ duration: 0 }}
         style={{
           position: 'relative',
-          flex: '1 1 auto',
+          flex: '0 0 auto',
           minHeight: '100px',
           marginBottom: 0,
+          paddingBottom: '12px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
