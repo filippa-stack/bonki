@@ -44,7 +44,6 @@ export default function SessionStepReflection({
   onNoteCapture,
   showBackButton = false,
 }: SessionStepReflectionProps) {
-  const navigate = useNavigate();
   const reflectionStepIndex = stepIndex * 100 + promptIndex;
 
   // If noteFieldLabel is provided, force the note field visible
