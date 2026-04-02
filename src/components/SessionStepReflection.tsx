@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Pencil } from 'lucide-react';
+import { Pencil, ChevronLeft } from 'lucide-react';
 import { useSessionReflections } from '@/hooks/useSessionReflections';
 import { BEAT_2, EMOTION, EASE } from '@/lib/motion';
 import { EMBER_GLOW, DRIFTWOOD, DEEP_SAFFRON, MIDNIGHT_INK } from '@/lib/palette';
