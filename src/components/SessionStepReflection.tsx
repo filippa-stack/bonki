@@ -25,6 +25,8 @@ interface SessionStepReflectionProps {
   onPause?: () => void;
   /** Called with note text when user advances (for local persistence) */
   onNoteCapture?: (text: string) => void;
+  /** Show "Föregående" text button left of CTA in a horizontal flex row */
+  showBackButton?: boolean;
 }
 
 export default function SessionStepReflection({
