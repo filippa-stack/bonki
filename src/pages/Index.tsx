@@ -81,6 +81,7 @@ export default function Index() {
   useThemeSwitcher();
 
   const migrationRan = useRef(false);
+  const audienceRef = useRef(localStorage.getItem('bonki-onboarding-audience'));
 
   // One-time migration: paid_at → user_product_access
   useEffect(() => {
