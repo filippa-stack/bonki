@@ -46,7 +46,7 @@ function estimateMinutes(_promptCount: number, productSlug?: string): string {
     case 'jag-med-andra':    return 'ca 5–8 min';
     case 'jag-i-varlden':    return 'ca 8–15 min';
     case 'sexualitetskort':  return 'ca 10–20 min';
-    case 'still-us':         return 'ca 15–30 min';
+    case 'still-us':         return 'ca 10–20 min';
     default:                 return 'ca 5–10 min';
   }
 }
