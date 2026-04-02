@@ -85,6 +85,7 @@ export default function Index() {
   useThemeSwitcher();
 
   const migrationRan = useRef(false);
+  const [dbOnboardingChecked, setDbOnboardingChecked] = useState(false);
 
   // One-time migration: paid_at → user_product_access
   useEffect(() => {
@@ -94,14 +95,26 @@ export default function Index() {
     migrateProductAccess(user.id, space.paid_at);
   }, [user?.id, space?.paid_at]);
 
-  // Audience routing cleanup: remove key after React commits
+  // DB-backed onboarding bypass for returning users with cleared localStorage
   useEffect(() => {
-    const audience = localStorage.getItem('bonki-onboarding-audience');
-    if (audience) {
-      localStorage.removeItem('bonki-onboarding-audience');
-      localStorage.setItem('bonki-first-session-done', '1');
+    if (hasCompletedOnboarding || !user?.id) {
+      setDbOnboardingChecked(true);
+      return;
     }
-  }, []);
+
+    (async () => {
+      const { data } = await supabase
+        .from('couple_sessions')
+        .select('id')
+        .eq('status', 'completed')
+        .limit(1);
+
+      if ((data?.length ?? 0) > 0) {
+        completeOnboarding();
+      }
+      setDbOnboardingChecked(true);
+    })();
+  }, [user?.id, hasCompletedOnboarding]);
 
   usePartnerNotifications();
 
