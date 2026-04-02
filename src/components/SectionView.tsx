@@ -26,7 +26,7 @@ interface SectionViewProps {
   isReflectionStep?: boolean;
   /** Whether this is an exercise step — uses tighter padding */
   isExerciseStep?: boolean;
-  /** Callback for the back arrow within the question surface */
+  /** Callback for the back arrow within the question surface (unused, kept for interface compat) */
   onBack?: () => void;
   /** Whether the back arrow should be shown (hidden at stage 0, prompt 0) */
   showBackArrow?: boolean;
