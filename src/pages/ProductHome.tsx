@@ -64,7 +64,10 @@ export default function ProductHome() {
         accentColor={product.accentColor}
         backgroundColor={product.backgroundColor}
         freeCardId={product.freeCardId}
-        onComplete={() => setShowIntro(false)}
+        onComplete={() => {
+          if (product.id) localStorage.setItem(`bonki-intro-seen-${product.id}`, '1');
+          setShowIntro(false);
+        }}
         onStartFreeCard={() => {
           setShowIntro(false);
           if (product.freeCardId) {
