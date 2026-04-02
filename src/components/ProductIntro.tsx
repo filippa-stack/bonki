@@ -407,7 +407,7 @@ export default function ProductIntro({
               fontFamily: 'var(--font-sans)',
               fontSize: '14px',
               color: LANTERN_GLOW,
-              opacity: 0.45,
+              opacity: 0.55,
               textAlign: 'center',
               marginTop: '16px',
               padding: '4px 0',
