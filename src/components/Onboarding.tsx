@@ -58,6 +58,7 @@ export default function Onboarding() {
             height: 'auto',
             objectFit: 'contain',
             opacity: 0.35,
+            filter: 'brightness(1.15) saturate(1.3)',
           }}
         />
       </motion.div>
