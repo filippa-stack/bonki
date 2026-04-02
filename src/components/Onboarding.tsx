@@ -84,8 +84,8 @@ export default function Onboarding() {
             bottom: 0,
             left: 0,
             right: 0,
-            height: '48px',
-            background: 'linear-gradient(to top, #1A1A2E 0%, transparent 100%)',
+            height: '120px',
+            background: 'linear-gradient(to top, #1A1A2E 0%, rgba(26, 26, 46, 0.85) 40%, transparent 100%)',
             pointerEvents: 'none',
           }}
         />
@@ -164,12 +164,12 @@ export default function Onboarding() {
         </motion.p>
 
         {/* ── Audience routing pills ── */}
-        <div style={{ padding: '20px 0 0' }}>
+        <div style={{ padding: '28px 0 0' }}>
           <p style={{
             fontFamily: 'var(--font-sans)', fontSize: '15px', fontWeight: 500,
             color: '#FDF6E3', opacity: 0.5, margin: '0 0 12px',
           }}>
-            Vem vill ni prata med?
+            Var vill ni börja?
           </p>
           <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
             {[
@@ -196,6 +196,16 @@ export default function Onboarding() {
                 </button>
               );
             })}
+          </div>
+          <div style={{ minHeight: '20px', marginTop: '10px' }}>
+            {selectedAudience !== null && (
+              <p style={{
+                fontFamily: 'var(--font-sans)', fontSize: '12px',
+                color: '#FDF6E3', opacity: 0.35, margin: 0,
+              }}>
+                Ni kan utforska alla produkter efteråt.
+              </p>
+            )}
           </div>
         </div>
       </div>
