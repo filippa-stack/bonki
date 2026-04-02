@@ -1,17 +1,17 @@
 
 
-## Fix: Remove dead space between logo and "Utvecklat av psykolog"
+## Fix: Move all content upward so CTA is visible
 
 **File**: `src/components/Onboarding.tsx`
 
-### The problem
-The content section (line 88) has `flex: '1 1 auto'` which makes it absorb all remaining vertical space, pushing the credential text far below the illustration. Combined with `justifyContent: 'flex-end'`, the text stacks at the bottom of this expanded section — but the gap above it is huge.
+### Problem
+The outer container (line 31) has `justifyContent: 'flex-end'`, which pushes all content to the very bottom of the screen. Since all children are now `flex: '0 0 auto'`, there's dead space above the logo and the CTA gets clipped at the bottom edge.
 
-### The fix
-**Line 88**: Change `flex: '1 1 auto'` → `flex: '0 0 auto'`
+### Fix
+**Line 31**: Change `justifyContent: 'flex-end'` → `justifyContent: 'center'`
 
-This makes the content section only take the space it needs. The parent container's `justifyContent: 'flex-end'` will naturally pack illustration + content + tiles + CTA toward the bottom of the screen with no dead space between them.
+This vertically centers the entire stack (logo + text + tiles + CTA) within the viewport, eliminating dead space above and ensuring the CTA is fully visible.
 
 ### Unchanged
-Everything else — illustration, tiles, CTA, all logic/state/tracking.
+Everything else — all children flex values, tiles, text, logic, tracking.
 
