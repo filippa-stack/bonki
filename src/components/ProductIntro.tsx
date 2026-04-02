@@ -334,21 +334,6 @@ export default function ProductIntro({
               {para}
             </p>
           ))}
-          {signoffText && (
-            <p
-              style={{
-                fontFamily: 'var(--font-serif)',
-                fontStyle: 'italic',
-                fontSize: '15px',
-                color: LANTERN_GLOW,
-                textAlign: 'center',
-                marginTop: '18px',
-                opacity: 0.7,
-              }}
-            >
-              {signoffText}
-            </p>
-          )}
         </motion.div>
 
 

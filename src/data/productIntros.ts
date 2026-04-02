@@ -28,7 +28,7 @@ export const productIntros: Record<string, ProductIntroData> = {
     slides: [
       {
         heading: 'Välkommen till Still Us',
-        body: 'Ni pratar varje dag. Om hämtningen, middagen, helgen. Men när pratade ni senast med varandra — på riktigt?\n\nStill Us är för par som fortfarande fungerar, men som märkt att något tystnat. Samtalen tar er förbi det praktiska och in i det som finns under.\n\nInget kan göras ensam. Varje samtal kräver er båda. Det här är inte terapi — det är de samtal ni redan vill ha, men inte hittar vägen in till.',
+        body: 'Ni pratar varje dag. Om hämtningen, middagen, helgen. Men när pratade ni senast med varandra — på riktigt?\n\nStill Us är för par som fortfarande fungerar, men som märkt att något tystnat. Samtalen tar er förbi det praktiska och in i det som finns under. Det här är inte terapi — det är de samtal ni redan vill ha, men inte hittar vägen in till.',
       },
     ],
     ctaLabel: 'Börja utforska',
@@ -40,8 +40,7 @@ export const productIntros: Record<string, ProductIntroData> = {
     slides: [
       {
         heading: 'Välkommen till\nJag i Mig',
-        body: 'Det här är ett samtal om vem ditt barn är — just nu, idag. Inte den som svarar "bra" på hur var din dag. Utan den riktiga. Den som har en favoritkänsla, en hemlig rädsla, en dröm som ingen frågat om än.\n\nFrågorna är enkla. Ditt enda jobb är att lyssna.',
-        signoff: 'Välj ett samtal, hitta en lugn stund, och låt det ta er dit det vill.',
+        body: 'Det här är ett samtal om vem ditt barn är — just nu, idag. Inte den som svarar "bra" på hur var din dag. Utan den riktiga. Den som har en favoritkänsla, en hemlig rädsla, en dröm som ingen frågat om än.\n\nDet enda som behövs är att ni är tillsammans. Resten tar samtalet hand om.',
       },
     ],
     ctaLabel: 'Sätt igång',
@@ -53,8 +52,7 @@ export const productIntros: Record<string, ProductIntroData> = {
     slides: [
       {
         heading: 'Välkommen till\nJag med Andra',
-        body: 'Ditt barn har börjat titta utåt. Kompisarna har blivit viktigare, blickarna fler, och frågor som förut var enkla — vem får vara med, vad är rättvist, vem bestämmer — har plötsligt blivit på riktigt.\n\nDet här är samtal för den ålder där man börjar förstå att andra också har en insida. Att mod inte alltid syns. Att skam kan göra att man blir tyst. Frågorna har inga rätta svar — de är till för att öppna det som sällan får plats i vardagen.',
-        signoff: 'Hoppa över det som inte passar. Stanna kvar där det blir intressant.',
+        body: 'Ditt barn har börjat titta utåt. Kompisarna har blivit viktigare, blickarna fler, och frågor som förut var enkla — vem får vara med, vad är rättvist, vem bestämmer — har plötsligt blivit på riktigt.\n\nDet här är samtal för den ålder där man börjar förstå att andra också har en insida. Att mod inte alltid syns. Att skam kan göra att man blir tyst. Samtalen öppnar det som sällan får plats i vardagen.',
       },
     ],
     ctaLabel: 'Sätt igång',
@@ -66,8 +64,7 @@ export const productIntros: Record<string, ProductIntroData> = {
     slides: [
       {
         heading: 'Välkommen till\nJag i Världen',
-        body: 'Du lever i en tid där alla har åsikter om vem du ska vara. Men vad tänker du?\n\nDet här är frågor om de stora sakerna. Identitet, rättvisa, mod, skam, kärlek, psykisk hälsa, vad det innebär att vara fri. De är inte till för att testa dig. De är till för att du ska få tänka högt.',
-        signoff: 'Hoppa över det som inte känns aktuellt just nu. Stanna vid det som gör att du tänker till.',
+        body: 'Du lever i en tid där alla har åsikter om vem du ska vara. Men vad tänker du?\n\nDet här är frågor om de stora sakerna. Identitet, rättvisa, mod, skam, kärlek, psykisk hälsa, vad det innebär att vara fri. De är till för att du ska få tänka högt.',
       },
     ],
     ctaLabel: 'Sätt igång',
@@ -79,8 +76,7 @@ export const productIntros: Record<string, ProductIntroData> = {
     slides: [
       {
         heading: 'Välkommen till Vardag',
-        body: 'Morgonstressen. Middagen. Läggdagsbråket. Det är lätt att vardagen bara händer — utan att ni stannar upp och pratar om hur den egentligen ser ut för var och en.\n\nDet här är samtal för alla de små sakerna som bygger en familj. Frågorna är inte djupa på det komplicerade sättet — de är djupa på det vardagliga sättet. Som att ta reda på vad ditt barn faktiskt tänkte på vägen hem.',
-        signoff: 'Perfekt för middagsbordet, bilen, eller en söndag som behöver lite mer av varandra.',
+        body: 'Morgonstressen. Middagen. Läggdags. Det är lätt att vardagen bara händer — utan att ni stannar upp och pratar om hur den egentligen ser ut för var och en.\n\nDet här är samtal för alla de små sakerna som bygger en familj. De tar er förbi "bra" och "som vanligt" — in i det som ditt barn faktiskt tänkte på vägen hem.',
       },
     ],
     ctaLabel: 'Sätt igång',
