@@ -148,16 +148,21 @@ export default function Index() {
   const demoActive = isDemoMode();
 
   // One-time audience routing after first onboarding (BEFORE onboarding gate)
-  const audience = localStorage.getItem('bonki-onboarding-audience');
-  if (audience && !localStorage.getItem('bonki-first-session-done')) {
-    const routes: Record<string, string> = {
-      young: '/product/jag-i-mig',
-      middle: '/product/jag-med-andra',
-      teen: '/product/jag-i-varlden',
-      couple: '/product/still-us',
-    };
-    const target = routes[audience] || '/';
-    return <Navigate to={target} replace />;
+  if (!audienceRouteConsumed) {
+    const audience = localStorage.getItem('bonki-onboarding-audience');
+    if (audience && !localStorage.getItem('bonki-first-session-done')) {
+      audienceRouteConsumed = true;
+      localStorage.removeItem('bonki-onboarding-audience');
+      localStorage.setItem('bonki-first-session-done', '1');
+      const routes: Record<string, string> = {
+        young: '/product/jag-i-mig',
+        middle: '/product/jag-med-andra',
+        teen: '/product/jag-i-varlden',
+        couple: '/product/still-us',
+      };
+      const target = routes[audience] || '/';
+      return <Navigate to={target} replace />;
+    }
   }
 
   // ── Normal production flow ──
