@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
+import BonkiButton from '@/components/BonkiButton';
 import { usePageBackground } from '@/hooks/usePageBackground';
 import { useDefaultTheme } from '@/hooks/useDefaultTheme';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -575,61 +576,21 @@ export default function Diary() {
 
           {/* ── Empty state ── */}
           {isEmpty && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                paddingTop: '8vh',
-                gap: '24px',
-              }}
-            >
-              <img
-                src={PRODUCT_ILLUSTRATIONS[product.id] || bonkiLogo}
-                alt={product.name}
-                draggable={false}
-                style={{
-                  width: '45vw',
-                  maxWidth: '220px',
-                  objectFit: 'contain',
-                  opacity: 0.15,
-                  userSelect: 'none',
-                }}
-              />
-              <p
-                style={{
-                  fontFamily: "'Lora', Georgia, serif",
-                  fontStyle: 'italic',
-                  fontSize: '15px',
-                  lineHeight: 1.7,
-                  color: accentColor,
-                  textAlign: 'center',
-                  maxWidth: '280px',
-                }}
-              >
-                Era samtal börjar här. Varje ord ni sparar hamnar i er dagbok — och stannar så länge ni vill.
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', textAlign: 'center', paddingTop: '8vh' }}>
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" style={{ opacity: 0.3 }}>
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" stroke="#D4F5C0" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" stroke="#D4F5C0" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+              <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '20px', color: '#FDF6E3', margin: 0, fontWeight: 400 }}>
+                Inga samtal ännu
+              </h2>
+              <p style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: '#FDF6E3', opacity: 0.5, margin: 0, lineHeight: 1.5, maxWidth: '280px' }}>
+                Inga samtal i den här produkten ännu.
               </p>
-
-              <button
-                onClick={() => navigate(`/product/${product.slug}`)}
-                style={{
-                  marginTop: '16px',
-                  fontSize: '13px',
-                  color: '#8A8078',
-                  opacity: 0.6,
-                  background: 'none',
-                  border: 'none',
-                  cursor: 'pointer',
-                  textDecoration: 'underline',
-                  textUnderlineOffset: '3px',
-                }}
-              >
-                Börja utforska {product.name}
-              </button>
-            </motion.div>
+              <BonkiButton variant="secondary" fullWidth={false} onClick={() => navigate(`/product/${product.slug}`)}>
+                Börja ert första samtal
+              </BonkiButton>
+            </div>
           )}
 
           {/* ── Filter pills ── */}
