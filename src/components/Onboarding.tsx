@@ -178,11 +178,11 @@ export default function Onboarding() {
                 display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center' as const,
                 position: 'relative', overflow: 'hidden',
                 border: selected
-                  ? '1px solid rgba(218, 157, 29, 0.35)'
-                  : '1px solid rgba(255, 255, 255, 0.08)',
+                  ? '1px solid rgba(218, 157, 29, 0.40)'
+                  : '1px solid rgba(255, 255, 255, 0.10)',
                 background: selected
                   ? 'rgba(218, 157, 29, 0.10)'
-                  : 'rgba(255, 255, 255, 0.04)',
+                  : 'rgba(255, 255, 255, 0.06)',
                 boxShadow: selected
                   ? '0 4px 12px rgba(0,0,0,0.15), 0 1px 3px rgba(0,0,0,0.08), inset 0 1px 0 rgba(218,157,29,0.15)'
                   : '0 4px 12px rgba(0,0,0,0.15), 0 1px 3px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.06)',
