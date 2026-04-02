@@ -157,38 +157,32 @@ export default function Onboarding() {
         }}>
           Var vill ni börja?
         </p>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', width: '100%' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
           {[
-            { label: 'Barn 3–6', subtitle: 'Känslor och inre värld', value: 'young' },
-            { label: 'Barn 7–11', subtitle: 'Relationer och tillit', value: 'middle' },
-            { label: 'Barn 12+', subtitle: 'Identitet och omvärld', value: 'teen' },
-            { label: 'Oss som par', subtitle: 'Samtalen ni saknar', value: 'couple' },
-          ].map(({ label, subtitle, value }) => {
+            { label: 'Barn 3–6', value: 'young' },
+            { label: 'Barn 7–11', value: 'middle' },
+            { label: 'Barn 12+', value: 'teen' },
+            { label: 'Oss som par', value: 'couple' },
+          ].map(({ label, value }) => {
             const selected = selectedAudience === value;
             return (
               <button key={value} onClick={() => setSelectedAudience(value)} style={{
-                padding: '14px 18px', borderRadius: '16px', cursor: 'pointer',
-                transition: 'all 0.15s ease',
-                display: 'flex', alignItems: 'baseline', gap: '6px',
-                width: '100%', textAlign: 'left',
+                height: '72px', borderRadius: '16px', padding: '12px 14px',
+                cursor: 'pointer', transition: 'all 0.15s ease',
+                display: 'flex', alignItems: 'flex-end',
+                position: 'relative', overflow: 'hidden',
                 border: selected
-                  ? '1px solid hsla(40, 78%, 61%, 0.35)'
-                  : '1px solid hsla(0, 0%, 100%, 0.10)',
+                  ? '1px solid rgba(218, 157, 29, 0.35)'
+                  : '1px solid rgba(255, 255, 255, 0.08)',
                 background: selected
-                  ? 'hsla(40, 78%, 61%, 0.10)'
-                  : 'hsla(0, 0%, 100%, 0.04)',
-                boxShadow: selected
-                  ? '0 0 12px hsla(40, 78%, 61%, 0.15)'
-                  : 'none',
+                  ? 'rgba(218, 157, 29, 0.10)'
+                  : 'rgba(255, 255, 255, 0.04)',
               }}>
                 <span style={{
-                  fontFamily: 'var(--font-display)', fontSize: '17px', fontWeight: 500,
+                  fontFamily: 'var(--font-display)', fontSize: '16px', fontWeight: 600,
+                  letterSpacing: '-0.01em',
                   color: selected ? '#DA9D1D' : 'rgba(253, 246, 227, 0.85)',
                 }}>{label}</span>
-                <span style={{
-                  fontFamily: 'var(--font-sans)', fontSize: '13px',
-                  color: selected ? 'rgba(218, 157, 29, 0.5)' : 'rgba(253, 246, 227, 0.4)',
-                }}>· {subtitle}</span>
               </button>
             );
           })}
