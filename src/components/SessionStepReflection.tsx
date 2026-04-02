@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Pencil } from 'lucide-react';
+import { Pencil, ChevronLeft } from 'lucide-react';
 import { useSessionReflections } from '@/hooks/useSessionReflections';
 import { BEAT_2, EMOTION, EASE } from '@/lib/motion';
 import { EMBER_GLOW, DRIFTWOOD, DEEP_SAFFRON, MIDNIGHT_INK } from '@/lib/palette';
@@ -19,10 +18,8 @@ interface SessionStepReflectionProps {
   hideNoteField?: boolean;
   noteFieldLabel?: string;
   ctaLabel?: string;
-  pauseLabel?: string;
   stillUsMode?: boolean;
   compactNoteTrigger?: boolean;
-  onPause?: () => void;
   /** Called with note text when user advances (for local persistence) */
   onNoteCapture?: (text: string) => void;
   /** Show "Föregående" text button left of CTA in a horizontal flex row */
@@ -42,14 +39,11 @@ export default function SessionStepReflection({
   hideNoteField = false,
   noteFieldLabel,
   ctaLabel,
-  pauseLabel,
   stillUsMode = false,
   compactNoteTrigger = false,
-  onPause,
   onNoteCapture,
   showBackButton = false,
 }: SessionStepReflectionProps) {
-  const navigate = useNavigate();
   const reflectionStepIndex = stepIndex * 100 + promptIndex;
 
   // If noteFieldLabel is provided, force the note field visible
@@ -311,27 +305,27 @@ export default function SessionStepReflection({
         <div style={{
           display: 'flex',
           flexDirection: 'row',
-          justifyContent: 'space-between',
           alignItems: 'center',
           width: '100%',
-          gap: '12px',
+          gap: '8px',
         }}>
           <button
             onClick={onBack}
+            aria-label="Föregående"
             style={{
               background: 'none',
               border: 'none',
               cursor: 'pointer',
-              fontFamily: 'var(--font-sans)',
-              fontSize: '14px',
-              color: stillUsMode ? 'hsl(38 20% 82%)' : 'var(--text-secondary)',
-              opacity: 0.7,
               minHeight: '44px',
-              padding: '0 4px',
-              whiteSpace: 'nowrap',
+              minWidth: '44px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: 0,
+              flexShrink: 0,
             }}
           >
-            Föregående
+            <ChevronLeft size={20} strokeWidth={1.8} style={{ color: stillUsMode ? 'hsl(38 20% 82%)' : 'var(--text-secondary)', opacity: 0.7 }} />
           </button>
           <motion.button
             onClick={handleAdvance}
@@ -391,28 +385,6 @@ export default function SessionStepReflection({
         </motion.button>
       )}
 
-      {/* Pause button */}
-      {(stillUsMode || isExerciseStep) && (
-        <button
-          onClick={() => (onPause ?? (() => navigate('/')))()}
-          style={{
-            display: 'block',
-            width: '100%',
-            minHeight: '44px',
-            marginTop: '12px',
-            background: 'none',
-            border: 'none',
-            cursor: 'pointer',
-            fontFamily: 'var(--font-sans)',
-            fontSize: stillUsMode ? '14px' : '13px',
-            color: stillUsMode ? 'hsl(38 20% 82%)' : 'var(--text-secondary)',
-            opacity: stillUsMode ? 0.9 : 0.72,
-            textAlign: 'center',
-          }}
-        >
-          {pauseLabel ?? 'Pausa för idag'}
-        </button>
-      )}
     </motion.div>
   );
 }

@@ -714,18 +714,6 @@ export default function SessionOneLive() {
           >
             Nästa
           </button>
-          <button
-            onClick={handlePauseTime}
-            style={{ background: 'none', border: 'none', color: COLORS.driftwood, fontFamily: 'var(--font-sans)', fontSize: '14px', cursor: 'pointer' }}
-          >
-            Pausa för idag
-          </button>
-          <button
-            onClick={() => setStep('emotional_pause')}
-            style={{ background: 'none', border: 'none', color: COLORS.driftwood, fontFamily: 'var(--font-sans)', fontSize: '13px', cursor: 'pointer', opacity: 0.6 }}
-          >
-            Vi behöver stanna här
-          </button>
         </div>
       }
     >
