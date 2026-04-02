@@ -3143,27 +3143,70 @@ export default function CardView() {
             position: 'relative',
             zIndex: 2,
           }}>
-            <motion.button
-              onClick={handleKidsAdvance}
-              whileTap={{ scale: 0.97 }}
-              style={{
-                width: '100%',
-                height: '56px',
-                borderRadius: '14px',
-                backgroundColor: SAFFRON,
-                border: 'none',
-                cursor: 'pointer',
-                fontFamily: 'var(--font-sans)',
-                fontSize: '17px',
-                fontWeight: 600,
-                color: MIDNIGHT_INK,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              {isLastPrompt ? 'Avsluta' : 'Fortsätt'}
-            </motion.button>
+            {!(currentStepIndex === 0 && localPromptIndex === 0) ? (
+              <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%', gap: '12px' }}>
+                <button
+                  onClick={() => handleKidsBack()}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: '14px',
+                    color: LANTERN_GLOW,
+                    opacity: 0.7,
+                    minHeight: '44px',
+                    padding: '0 4px',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  Föregående
+                </button>
+                <motion.button
+                  onClick={handleKidsAdvance}
+                  whileTap={{ scale: 0.97 }}
+                  style={{
+                    flex: 1,
+                    height: '56px',
+                    borderRadius: '14px',
+                    backgroundColor: SAFFRON,
+                    border: 'none',
+                    cursor: 'pointer',
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: '17px',
+                    fontWeight: 600,
+                    color: MIDNIGHT_INK,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  {isLastPrompt ? 'Avsluta' : 'Fortsätt'}
+                </motion.button>
+              </div>
+            ) : (
+              <motion.button
+                onClick={handleKidsAdvance}
+                whileTap={{ scale: 0.97 }}
+                style={{
+                  width: '100%',
+                  height: '56px',
+                  borderRadius: '14px',
+                  backgroundColor: SAFFRON,
+                  border: 'none',
+                  cursor: 'pointer',
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '17px',
+                  fontWeight: 600,
+                  color: MIDNIGHT_INK,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                {isLastPrompt ? 'Avsluta' : 'Fortsätt'}
+              </motion.button>
+            )}
           </div>
         </div>
 
