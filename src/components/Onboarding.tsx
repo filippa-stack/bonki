@@ -39,7 +39,7 @@ export default function Onboarding() {
         style={{
           position: 'relative',
           flex: '1 1 auto',
-          minHeight: '180px',
+          minHeight: '140px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -85,7 +85,7 @@ export default function Onboarding() {
           justifyContent: 'flex-end',
           paddingBottom: '24px',
           padding: '0 32px',
-          paddingTop: 'max(48px, env(safe-area-inset-top, 48px))',
+          paddingTop: 0,
         }}
       >
         {/* Credential */}
@@ -210,8 +210,8 @@ export default function Onboarding() {
           position: 'relative',
           zIndex: 1,
           flex: '0 0 auto',
-          padding: '0 24px',
-          paddingBottom: 'calc(24px + env(safe-area-inset-bottom, 0px))',
+          padding: '16px 24px 0',
+          paddingBottom: 'calc(32px + env(safe-area-inset-bottom, 0px))',
           display: 'flex',
           flexDirection: 'column',
           gap: '12px',
