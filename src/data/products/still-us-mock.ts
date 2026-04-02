@@ -78,7 +78,7 @@ export const stillUsProduct: ProductManifest = {
   heroImage: stillUsHero,
   name: 'Still Us',
   slug: 'still-us',
-  tagline: 'Vi finns kvar',
+  tagline: 'Att förbli ett vi.',
   description: '21 samtal fördelade på fyra lager.',
   headerTitle: 'Still Us',
   accentColor: 'hsl(215, 100%, 34%)',
