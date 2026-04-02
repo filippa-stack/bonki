@@ -81,7 +81,6 @@ export default function Index() {
   useThemeSwitcher();
 
   const migrationRan = useRef(false);
-  const audienceRef = useRef(localStorage.getItem('bonki-onboarding-audience'));
 
   // One-time migration: paid_at → user_product_access
   useEffect(() => {
@@ -90,6 +89,15 @@ export default function Index() {
     migrationRan.current = true;
     migrateProductAccess(user.id, space.paid_at);
   }, [user?.id, space?.paid_at]);
+
+  // Audience routing cleanup: remove key after React commits
+  useEffect(() => {
+    const audience = localStorage.getItem('bonki-onboarding-audience');
+    if (audience) {
+      localStorage.removeItem('bonki-onboarding-audience');
+      localStorage.setItem('bonki-first-session-done', '1');
+    }
+  }, []);
 
   usePartnerNotifications();
 
@@ -123,11 +131,8 @@ export default function Index() {
   const demoActive = isDemoMode();
 
   // One-time audience routing after first onboarding (BEFORE onboarding gate)
-  const audience = audienceRef.current;
+  const audience = localStorage.getItem('bonki-onboarding-audience');
   if (audience && !localStorage.getItem('bonki-first-session-done')) {
-    localStorage.removeItem('bonki-onboarding-audience');
-    localStorage.setItem('bonki-first-session-done', '1');
-    audienceRef.current = null;
     const routes: Record<string, string> = {
       young: '/product/jag-i-mig',
       middle: '/product/jag-med-andra',
