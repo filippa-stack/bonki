@@ -1385,6 +1385,7 @@ export default function CardView() {
                 `Tillbaka till ${product?.name ?? 'översikt'}`
               )}
             </button>
+            </div>
 
             {/* 5. Secondary link — only when primary = "Nästa samtal" */}
             {hasNextCard && (
