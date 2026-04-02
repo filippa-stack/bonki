@@ -58,6 +58,7 @@ export default function Onboarding() {
             height: 'auto',
             objectFit: 'contain',
             opacity: 0.35,
+            filter: 'brightness(1.15) saturate(1.3)',
           }}
         />
       </motion.div>
@@ -66,12 +67,12 @@ export default function Onboarding() {
       <div
         style={{
           position: 'absolute',
-          top: '40%',
+          top: '8%',
           left: '50%',
           transform: 'translateX(-50%)',
           width: '340px',
           height: '380px',
-          background: 'radial-gradient(ellipse 70% 60% at 50% 45%, hsla(40, 78%, 61%, 0.14) 0%, hsla(40, 70%, 50%, 0.06) 40%, transparent 75%)',
+          background: 'radial-gradient(ellipse 70% 60% at 50% 45%, hsla(40, 78%, 61%, 0.18) 0%, hsla(40, 70%, 50%, 0.06) 40%, transparent 75%)',
           pointerEvents: 'none',
           zIndex: 0,
         }}
@@ -85,7 +86,8 @@ export default function Onboarding() {
           flex: '1 1 auto',
           display: 'flex',
           flexDirection: 'column',
-          justifyContent: 'center',
+          justifyContent: 'flex-end',
+          paddingBottom: '24px',
           padding: '0 32px',
           paddingTop: 'max(48px, env(safe-area-inset-top, 48px))',
         }}
@@ -152,7 +154,7 @@ export default function Onboarding() {
       </div>
 
       {/* ── Audience routing pills ── */}
-      <div style={{ position: 'relative', zIndex: 1, flex: '0 0 auto', padding: '28px 32px 0' }}>
+      <div style={{ position: 'relative', zIndex: 1, flex: '0 0 auto', padding: '16px 32px 0' }}>
         <p style={{
           fontFamily: 'var(--font-sans)', fontSize: '15px', fontWeight: 500,
           color: '#FDF6E3', opacity: 0.5, margin: '0 0 12px',
