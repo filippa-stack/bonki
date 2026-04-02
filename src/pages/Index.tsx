@@ -126,6 +126,21 @@ export default function Index() {
     return <Onboarding />;
   }
 
+  // One-time audience routing after first onboarding
+  const audience = localStorage.getItem('bonki-onboarding-audience');
+  if (audience && !localStorage.getItem('bonki-first-session-done')) {
+    localStorage.removeItem('bonki-onboarding-audience');
+    localStorage.setItem('bonki-first-session-done', '1');
+    const routes: Record<string, string> = {
+      young: '/product/jag-i-mig',
+      middle: '/product/jag-med-andra',
+      teen: '/product/jag-i-varlden',
+      couple: '/product/still-us',
+    };
+    const target = routes[audience] || '/';
+    return <Navigate to={target} replace />;
+  }
+
   // Post-purchase redirect: return user to the card they were trying to open
   const searchParams = new URLSearchParams(window.location.search);
   if (searchParams.get('purchase') === 'success') {
