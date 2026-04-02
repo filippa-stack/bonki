@@ -63,6 +63,9 @@ export default function Onboarding() {
           src={bonkiLogo}
           alt=""
           aria-hidden
+          draggable={false}
+          width={120}
+          height={120}
           style={{
             position: 'relative',
             width: '120px',
@@ -70,6 +73,7 @@ export default function Onboarding() {
             objectFit: 'contain',
             opacity: 0.88,
             filter: 'brightness(1.15) saturate(1.3)',
+            imageRendering: 'auto',
           }}
         />
       </motion.div>
