@@ -993,31 +993,20 @@ export default function Journal() {
         </div>
       ) : isEmpty ? (
         <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <div
-            style={{ textAlign: 'center', padding: '0 40px' }}
-          >
-            {/* Subtle decorative line */}
-            <div style={{
-              width: '32px', height: '1px', margin: '0 auto 24px',
-              background: `linear-gradient(90deg, transparent, ${DRIFTWOOD}66, transparent)`,
-            }} />
-            <p style={{
-              fontFamily: "var(--font-display)",
-              fontVariationSettings: "'opsz' 20",
-              fontSize: '19px', color: LANTERN_GLOW, margin: 0, lineHeight: 1.35,
-            }}>
-              Det finns inget här ännu.
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', textAlign: 'center', padding: '0 40px' }}>
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" style={{ opacity: 0.3 }}>
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" stroke="#D4F5C0" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" stroke="#D4F5C0" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '20px', color: '#FDF6E3', margin: 0, fontWeight: 400 }}>
+              Inga samtal ännu
+            </h2>
+            <p style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: '#FDF6E3', opacity: 0.5, margin: 0, lineHeight: 1.5 }}>
+              Era tankar och reflektioner samlas här efter varje samtal.
             </p>
-            <p style={{
-              fontFamily: 'var(--font-serif)', fontSize: '15px', fontStyle: 'italic',
-              color: `${DRIFTWOOD}cc`, marginTop: '12px', lineHeight: 1.5,
-            }}>
-              Varje samtal ni har lämnar ett spår —<br />en anteckning, en tanke, ett minne.
-            </p>
-            <div style={{
-              width: '32px', height: '1px', margin: '24px auto 0',
-              background: `linear-gradient(90deg, transparent, ${DRIFTWOOD}66, transparent)`,
-            }} />
+            <BonkiButton variant="secondary" fullWidth={false} onClick={() => navigate('/')}>
+              Utforska samtalen
+            </BonkiButton>
           </div>
         </div>
       ) : (
