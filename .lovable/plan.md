@@ -1,18 +1,14 @@
 
 
-## Brand NotFound Page
+## Synchronous Mobile Detection
 
-**File: `src/pages/NotFound.tsx`**
+**File: `src/hooks/use-mobile.tsx`**
 
-Replace entire content with a branded 404 page matching the error boundary visual language:
+Two changes:
 
-- Keep `useLocation` + `useEffect` console.error logging
-- Add `useNavigate` import
-- Fixed fullscreen layout (`#0B1026` background, safe-area padding)
-- Saffron radial glow overlay (same as BonkiErrorBoundary)
-- Bonki logo at 80px wide, opacity 0.4 (import from `@/assets/bonki-logo-transparent.png` with `onError` hide fallback)
-- "Sidan finns inte" — `var(--font-display)`, 22px, `#FDF6E3`
-- "Adressen verkar vara felaktig." — `var(--font-body)`, 14px, `#FDF6E3` opacity 0.5
-- `BonkiButton variant="secondary"` → "Tillbaka till start" → `navigate("/")`
-- No other files changed
+1. **Line 6**: Replace `useState<boolean | undefined>(undefined)` with `useState<boolean>(typeof window !== "undefined" ? window.innerWidth < MOBILE_BREAKPOINT : true)`
+
+2. **Line 16**: Replace `return !!isMobile` with `return isMobile`
+
+No other changes. useEffect and event listener untouched.
 
