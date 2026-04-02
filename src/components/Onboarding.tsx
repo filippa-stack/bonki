@@ -39,7 +39,8 @@ export default function Onboarding() {
         style={{
           position: 'relative',
           flex: '1 1 auto',
-          minHeight: '140px',
+          minHeight: '100px',
+          marginBottom: 0,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
