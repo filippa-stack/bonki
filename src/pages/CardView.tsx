@@ -1586,6 +1586,31 @@ export default function CardView() {
             className="max-w-md mx-auto flex flex-col items-center"
             style={{ paddingBottom: 'calc(72px + env(safe-area-inset-bottom, 0px))', marginTop: '48px' }}
           >
+            {/* Föregående — go back to last prompt */}
+            <button
+              onClick={() => {
+                _setShowCompletion(false);
+                const lastStageIndex = effectiveSteps.length - 1;
+                const lastSection = card.sections.find(s => s.type === effectiveSteps[lastStageIndex]);
+                const lastPromptCount = getEffectivePromptCount(lastSection);
+                setLocalStepIndex(lastStageIndex);
+                setLocalPromptIndex(lastPromptCount - 1);
+              }}
+              style={{
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                fontFamily: 'var(--font-sans)',
+                fontSize: '14px',
+                color: DRIFTWOOD,
+                opacity: 0.7,
+                minHeight: '44px',
+                marginBottom: '12px',
+                alignSelf: 'flex-start',
+              }}
+            >
+              Föregående
+            </button>
             {cardId === 'su-mock-0' ? (
               /* su-mock-0: unique CTA → next card */
               <>
