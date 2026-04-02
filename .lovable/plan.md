@@ -1,37 +1,23 @@
 
 
-## Visual Audit: Library Page
+## Visual Audit Result: All Product Home Screens
 
-### Issues Found
+### Screens Audited
+All 7 product home screens were visually inspected at 390x844 (iPhone 14):
+- Jag i Mig, Jag med Andra, Jag i Världen, Vardag, Syskon, Sexualitet, Still Us
 
-**1. Subtitle text barely visible** (line 615)
-The subtitle "Verktyg för samtalen som inte blir av" uses `hsla(100, 40%, 80%, 0.45)` — that's only 45% opacity on an already muted color against a dark background. Needs to be at least `0.60` for comfortable readability.
+### Verdict: No changes needed
 
-**2. Section headers "FÖRÄLDRAR" and "BARN & FAMILJ" use Ghost Glow** (lines 667, 805)
-Color `#D4F5C0` at 13px/700 weight is legible but the green tint doesn't carry enough contrast against midnight blue. Per the project's own color hierarchy memory, Ghost Glow is reserved for the library header ("BONKI") and deprecated for other uses. These section labels should use Lantern Glow `#FDF6E3` at reduced opacity (e.g. `0.55`) for consistency.
+All screens pass the visibility audit. Specifically verified:
 
-**3. Ghost glow divider nearly invisible** (line 632)
-The thin line between header and content uses `hsla(100, 50%, 75%, 0.30)` at 1.5px height. At this opacity it's essentially invisible. Bump to `0.45` so it reads as a deliberate design element rather than a rendering artifact.
+1. **Title + tagline**: White (#FDF6E3) on each product's dark background — fully legible on all 7 products
+2. **Resume/Next banner**: High contrast pill with "NÄSTA SAMTAL" / "BÖRJA HÄR" / "FORTSÄTT ERT SAMTAL" labels — clearly readable
+3. **Category tile labels**: White text with text-shadow over illustration backgrounds — legible on all tiles across all products
+4. **Progress counters** ("1/5 samtal", "0/4 samtal"): Lantern Glow at readable opacity with progress dots visible
+5. **Back button** (chevron, top-left): Present and visible on every page
+6. **Tile illustrations**: Prominent, well-cropped, no blank or broken images
+7. **Bottom area**: No content clipped at the bottom edge; tiles fully visible including the second row
 
-**4. "Era samtal" subtitle too dim** (line 894)
-"Varje samtal sparas" uses `hsla(100, 40%, 80%, 0.45)` — same issue as the main subtitle. Bump to `0.55`.
-
-**5. "Era samtal" arrow too dim** (line 906)
-The `→` arrow uses `opacity: 0.4` on `#D4F5C0`. Bump to `0.55` for visibility.
-
-### Fix Summary
-
-**File**: `src/components/ProductLibrary.tsx`
-
-| Line | Element | Current | Fix |
-|------|---------|---------|-----|
-| 615 | Subtitle color opacity | `0.45` | `0.60` |
-| 632 | Divider opacity | `0.30` | `0.45` |
-| 667 | "FÖRÄLDRAR" color | `#D4F5C0` | `#FDF6E3` with `opacity: 0.55` |
-| 805 | "BARN & FAMILJ" color | `#D4F5C0` | `#FDF6E3` with `opacity: 0.55` |
-| 894 | "Varje samtal sparas" opacity | `0.45` | `0.55` |
-| 906 | Arrow opacity | `0.4` | `0.55` |
-
-### Unchanged
-All tile colors, illustrations, layouts, badges, shadows, border treatments, Still Us tile, resume card, bottom nav, safe-area spacing.
+### No issues found
+All text, illustrations, badges, and interactive elements are fully visible to the human eye. The unified KidsProductHome component maintains consistent quality across all products.
 
