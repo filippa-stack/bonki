@@ -164,12 +164,12 @@ export default function Onboarding() {
         </motion.p>
 
         {/* ── Audience routing pills ── */}
-        <div style={{ padding: '20px 0 0' }}>
+        <div style={{ padding: '28px 0 0' }}>
           <p style={{
             fontFamily: 'var(--font-sans)', fontSize: '15px', fontWeight: 500,
             color: '#FDF6E3', opacity: 0.5, margin: '0 0 12px',
           }}>
-            Vem vill ni prata med?
+            Var vill ni börja?
           </p>
           <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
             {[
