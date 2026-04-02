@@ -2886,23 +2886,7 @@ export default function CardView() {
             position: 'relative',
             zIndex: 2,
           }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-              <button
-                onClick={() => handleKidsBack()}
-                aria-label="Tillbaka"
-                style={{
-                  minHeight: '44px',
-                  minWidth: '44px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  background: 'none',
-                  border: 'none',
-                  cursor: 'pointer',
-                }}
-              >
-                <ChevronLeft size={20} style={{ color: LANTERN_GLOW }} />
-              </button>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '4px', paddingLeft: '12px' }}>
               <span style={{
                 fontFamily: 'var(--font-sans)',
                 fontSize: '15px',
