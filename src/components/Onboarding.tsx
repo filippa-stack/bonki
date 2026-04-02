@@ -26,7 +26,8 @@ export default function Onboarding() {
         position: 'fixed',
         inset: 0,
         backgroundColor: '#1A1A2E',
-        overflow: 'hidden',
+        overflowY: 'auto',
+        overflowX: 'hidden',
         display: 'flex',
         flexDirection: 'column',
       }}
