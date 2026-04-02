@@ -1,14 +1,14 @@
 
 
-## Synchronous Mobile Detection
+## Auth Error Handling
 
-**File: `src/hooks/use-mobile.tsx`**
+**File: `src/contexts/AuthContext.tsx`**
 
-Two changes:
+Add `.catch()` to the `getSession()` promise chain (lines ~79–84):
 
-1. **Line 6**: Replace `useState<boolean | undefined>(undefined)` with `useState<boolean>(typeof window !== "undefined" ? window.innerWidth < MOBILE_BREAKPOINT : true)`
+- Log error with `[AuthContext] getSession failed:`
+- Set `initialSessionResolved = true`, session/user to null, loading to false
+- Ensures the app never hangs on a failed backend connection
 
-2. **Line 16**: Replace `return !!isMobile` with `return isMobile`
-
-No other changes. useEffect and event listener untouched.
+No other changes. The `onAuthStateChange` listener, `savePendingLegalConsent`, and `initialSessionResolved` gate pattern remain untouched.
 
