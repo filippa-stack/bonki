@@ -556,12 +556,6 @@ export default function CardView() {
   // ─── Coaching hint — shown first 3 sessions, then gone ───
   const [showCoachingHint] = useState(() => getCoachingCount() < 3);
   const coachingCounted = useRef(false);
-  useEffect(() => {
-    if (isLive && showCoachingHint && !coachingCounted.current) {
-      coachingCounted.current = true;
-      incrementCoachingCount();
-    }
-  }, [isLive, showCoachingHint]);
   // Resume loading gate for kids products — prevents Q1 flash while querying reflections
   const [resumeLoading, setResumeLoading] = useState(false);
 
