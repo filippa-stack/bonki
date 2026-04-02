@@ -157,7 +157,7 @@ export default function Onboarding() {
         }}>
           Var vill ni börja?
         </p>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', width: '100%' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', width: '100%' }}>
           {[
             { label: 'Barn 3–6', subtitle: 'Känslor och inre värld', value: 'young' },
             { label: 'Barn 7–11', subtitle: 'Relationer och tillit', value: 'middle' },
@@ -167,7 +167,7 @@ export default function Onboarding() {
             const selected = selectedAudience === value;
             return (
               <button key={value} onClick={() => setSelectedAudience(value)} style={{
-                padding: '16px 20px', borderRadius: '16px', cursor: 'pointer',
+                padding: '12px 16px', borderRadius: '16px', cursor: 'pointer',
                 transition: 'all 0.15s ease',
                 display: 'flex', alignItems: 'center', justifyContent: 'space-between',
                 width: '100%', textAlign: 'left',
@@ -178,37 +178,33 @@ export default function Onboarding() {
                   ? 'hsla(40, 78%, 61%, 0.10)'
                   : 'hsla(0, 0%, 100%, 0.04)',
               }}>
-                <div>
-                  <div style={{
-                    fontFamily: 'var(--font-display)', fontSize: '17px', fontWeight: 500,
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px' }}>
+                  <span style={{
+                    fontFamily: 'var(--font-display)', fontSize: '16px', fontWeight: 500,
                     color: selected ? '#DA9D1D' : 'rgba(253, 246, 227, 0.85)',
-                    lineHeight: 1.3,
-                  }}>{label}</div>
-                  <div style={{
+                  }}>{label}</span>
+                  <span style={{
                     fontFamily: 'var(--font-sans)', fontSize: '13px',
-                    color: selected ? 'rgba(218, 157, 29, 0.6)' : 'rgba(253, 246, 227, 0.5)',
-                    marginTop: '2px',
-                  }}>{subtitle}</div>
+                    color: selected ? 'rgba(218, 157, 29, 0.5)' : 'rgba(253, 246, 227, 0.4)',
+                  }}>· {subtitle}</span>
                 </div>
                 <span style={{
                   fontSize: '20px', fontWeight: 300,
                   color: selected ? '#DA9D1D' : 'rgba(253, 246, 227, 0.3)',
-                  marginLeft: '12px',
+                  marginLeft: '12px', flexShrink: 0,
                 }}>›</span>
               </button>
             );
           })}
         </div>
-        <div style={{ minHeight: '20px', marginTop: '10px' }}>
-          {selectedAudience !== null && (
-            <p style={{
-              fontFamily: 'var(--font-sans)', fontSize: '12px',
-              color: '#FDF6E3', opacity: 0.35, margin: 0,
-            }}>
-              Ni kan utforska alla produkter efteråt.
-            </p>
-          )}
-        </div>
+        {selectedAudience !== null && (
+          <p style={{
+            fontFamily: 'var(--font-sans)', fontSize: '12px',
+            color: '#FDF6E3', opacity: 0.35, margin: '8px 0 0',
+          }}>
+            Ni kan utforska alla produkter efteråt.
+          </p>
+        )}
       </div>
 
       {/* ── CTA ── */}
