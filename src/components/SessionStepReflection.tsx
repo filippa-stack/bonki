@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { motion, AnimatePresence } from 'framer-motion';
 import { Pencil, ChevronLeft } from 'lucide-react';
 import { useSessionReflections } from '@/hooks/useSessionReflections';
 import { BEAT_2, EMOTION, EASE } from '@/lib/motion';
