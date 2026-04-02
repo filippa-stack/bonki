@@ -53,8 +53,8 @@ export default function Onboarding() {
         <div
           style={{
             position: 'absolute',
-            width: '200px',
-            height: '200px',
+            width: '240px',
+            height: '240px',
             borderRadius: '50%',
             background: 'radial-gradient(circle, hsla(170, 35%, 50%, 0.15) 0%, transparent 70%)',
             pointerEvents: 'none',
@@ -156,14 +156,14 @@ export default function Onboarding() {
       </div>
 
       {/* ── Audience routing pills ── */}
-      <div style={{ position: 'relative', zIndex: 1, flex: '0 0 auto', padding: '16px 32px 0' }}>
+      <div style={{ position: 'relative', zIndex: 1, flex: '0 0 auto', padding: '12px 32px 0' }}>
         <p style={{
           fontFamily: 'var(--font-sans)', fontSize: '15px', fontWeight: 500,
-          color: '#FDF6E3', opacity: 0.5, margin: '0 0 12px',
+          color: '#FDF6E3', opacity: 0.5, margin: '0 0 10px',
         }}>
           Var vill ni börja?
         </p>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
           {[
             { label: 'Barn 3–6', value: 'young' },
             { label: 'Barn 7–11', value: 'middle' },
@@ -173,22 +173,22 @@ export default function Onboarding() {
             const selected = selectedAudience === value;
             return (
               <button key={value} onClick={() => setSelectedAudience(value)} style={{
-                height: '80px', borderRadius: '22px', padding: '12px 14px',
+                height: '64px', borderRadius: '16px', padding: '12px 14px',
                 cursor: 'pointer', transition: 'all 0.15s ease',
                 display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center' as const,
                 position: 'relative', overflow: 'hidden',
                 border: selected
-                  ? '1px solid rgba(218, 157, 29, 0.35)'
-                  : '1px solid rgba(255, 255, 255, 0.08)',
+                  ? '1px solid rgba(218, 157, 29, 0.40)'
+                  : '1px solid rgba(255, 255, 255, 0.10)',
                 background: selected
                   ? 'rgba(218, 157, 29, 0.10)'
-                  : 'rgba(255, 255, 255, 0.04)',
+                  : 'rgba(255, 255, 255, 0.06)',
                 boxShadow: selected
                   ? '0 4px 12px rgba(0,0,0,0.15), 0 1px 3px rgba(0,0,0,0.08), inset 0 1px 0 rgba(218,157,29,0.15)'
                   : '0 4px 12px rgba(0,0,0,0.15), 0 1px 3px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.06)',
               }}>
                 <span style={{
-                  fontFamily: 'var(--font-display)', fontSize: '17px', fontWeight: 700, width: '100%', textAlign: 'center' as const,
+                  fontFamily: 'var(--font-display)', fontSize: '15px', fontWeight: 700, width: '100%', textAlign: 'center' as const,
                   letterSpacing: '-0.01em',
                   color: selected ? '#DA9D1D' : 'rgba(253, 246, 227, 0.85)',
                 }}>{label}</span>
