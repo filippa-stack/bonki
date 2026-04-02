@@ -90,6 +90,15 @@ export default function Index() {
     migrateProductAccess(user.id, space.paid_at);
   }, [user?.id, space?.paid_at]);
 
+  // Audience routing cleanup: remove key after React commits
+  useEffect(() => {
+    const audience = localStorage.getItem('bonki-onboarding-audience');
+    if (audience) {
+      localStorage.removeItem('bonki-onboarding-audience');
+      localStorage.setItem('bonki-first-session-done', '1');
+    }
+  }, []);
+
   usePartnerNotifications();
 
   // devState=onboarding → show platform onboarding preview
