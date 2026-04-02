@@ -1,3 +1,5 @@
+
+
 ## Fix: Illustration Bottom Fade Cutting Through Logo
 
 ### Problem
@@ -12,3 +14,4 @@ The 120px gradient overlay sits inside the illustration container and obscures t
 3. Keep the same gradient values (`height: 120px`, same background) — just repositioned
 
 This ensures the logo renders fully, while the text area still has a smooth fade-in from the dark background.
+
