@@ -1161,32 +1161,7 @@ export default function CardView() {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
       >
-        {/* Back arrow — top left */}
-        <button
-          onClick={() => {
-            _setShowCompletion(false);
-            const lastStageIndex = effectiveSteps.length - 1;
-            const lastSection = card.sections.find(s => s.type === effectiveSteps[lastStageIndex]);
-            const lastPromptCount = getEffectivePromptCount(lastSection);
-            setLocalStepIndex(lastStageIndex);
-            setLocalPromptIndex(lastPromptCount - 1);
-          }}
-          aria-label="Tillbaka till sista steget"
-          style={{
-            position: 'absolute',
-            top: 'calc(env(safe-area-inset-top, 0px) + 12px)',
-            left: '12px',
-            zIndex: 20,
-            background: 'none',
-            border: 'none',
-            cursor: 'pointer',
-            padding: '8px',
-            color: LANTERN_GLOW,
-            opacity: 0.6,
-          }}
-        >
-          <ChevronLeft size={22} strokeWidth={1.5} />
-        </button>
+        {/* Back arrow removed — Föregående is in the CTA area below */}
         {/* Content block — vertically centered */}
         <div style={{
           flex: '1 1 auto',
