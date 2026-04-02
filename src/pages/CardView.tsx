@@ -2574,31 +2574,7 @@ export default function CardView() {
               paddingLeft: '48px',
               paddingRight: '48px',
             }}>
-              {/* Back arrow */}
-              <button
-                onClick={() => { if (localPromptIndex > 0 || currentStepIndex > 0) { handleFocusBack(); } else { setShowLeaveConfirm(true); } }}
-                aria-label="Tillbaka"
-                style={{
-                  position: 'absolute',
-                  left: '8px',
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  minHeight: '44px',
-                  minWidth: '44px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  background: 'none',
-                  border: 'none',
-                  cursor: 'pointer',
-                }}
-              >
-                <ArrowLeft
-                  size={18}
-                  strokeWidth={1.8}
-                  style={{ color: LANTERN_GLOW_LOCAL, opacity: 0.5 }}
-                />
-              </button>
+              {/* Back arrow removed — Föregående is in the CTA area below */}
 
               {/* X close button — right side */}
               <button
