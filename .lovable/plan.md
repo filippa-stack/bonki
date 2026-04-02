@@ -1,31 +1,25 @@
 
 
-## Onboarding: Final Visual Polish (4 Fixes)
+## Onboarding: Tile Text + Spacing Fix
 
-**File**: `src/components/Onboarding.tsx` — visual-only changes
+**File**: `src/components/Onboarding.tsx` — visual-only
 
-### Fix 1: Tighten illustration-to-credential spacing
-- Content section (line 88): change `paddingTop: 0` → `paddingTop: '8px'` (already 0, but the illustration wrapper has `flex: 1 1 auto` which absorbs space)
-- Illustration wrapper (line 42): reduce `minHeight: '140px'` → `minHeight: '100px'` to pull the logo closer to the text below
-- Add `marginBottom: 0` to the illustration wrapper to eliminate any flex gap
+### Fix 1: Kill expanding dead space
+**Line 41**: Change `flex: '1 1 auto'` → `flex: '0 0 auto'`
+**Line 43**: Change `marginBottom: 0` → `marginBottom: 0, paddingBottom: '12px'`
 
-### Fix 2: Memory-card tile styling
-Lines 170–179 — each tile button:
-- `borderRadius`: `'16px'` → `'22px'`
-- `height`: `'72px'` → `'80px'`
-- Add `boxShadow` per state:
-  - Unselected: `'0 4px 12px rgba(0,0,0,0.15), 0 1px 3px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.06)'`
-  - Selected: `'0 4px 12px rgba(0,0,0,0.15), 0 1px 3px rgba(0,0,0,0.08), inset 0 1px 0 rgba(218,157,29,0.15)'`
+This stops the illustration wrapper from absorbing all leftover vertical space. The 12px paddingBottom creates a controlled gap to the credential text.
 
-### Fix 3: Grid gap
-Line 160: `gap: '10px'` → `gap: '12px'`
+### Fix 2: Center and strengthen tile text
+**Lines 174–194** — each tile button:
+- Change `alignItems: 'flex-end'` → `alignItems: 'center'`
+- Add `justifyContent: 'center'` and `textAlign: 'center'` to the button style
 
-### Fix 4: Logo image sharpness
-Line 61–73 — the `<img>` tag:
-- Add `draggable={false}`
-- Add `width={120}` and `height={120}` attributes
-- Add `imageRendering: 'auto'` to the style object
+**Lines 189–193** — the label `<span>`:
+- `fontSize: '16px'` → `fontSize: '17px'`
+- `fontWeight: 600` → `fontWeight: 700`
+- Add `width: '100%'` and `textAlign: 'center'`
 
 ### Unchanged
-All logic, state, tracking, CTA, text content, routing.
+All tile dimensions (22px radius, 80px height, 12px gap), colors, shadows, selection logic, CTA, text content, tracking, routing.
 
