@@ -400,7 +400,6 @@ export default function SessionTwoLive({
           Nästa
         </motion.button>
 
-        {renderExitLinks()}
       </div>
     </motion.div>
   );
