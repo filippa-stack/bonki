@@ -1,50 +1,33 @@
 
 
-## Fix: Async timing in ProductHome — with synchronous init
+## Fix: Audience routing in Index.tsx — ref capture + block reorder
 
-Two changes, no shims.
+Two surgical changes in one file, no other files touched.
 
-### File 1: `src/components/ProductIntro.tsx`
+### Change 1: Add `audienceRef`
+Add `const audienceRef = useRef(localStorage.getItem('bonki-onboarding-audience'));` at the top of the component body, next to the existing `migrationRan` ref.
 
-Change `useProductIntroNeeded` return type from `boolean` to `{ needed: boolean; checked: boolean }`:
+### Change 2: Move audience routing block before the onboarding gate
+Cut the existing audience routing block (lines ~130–141) and paste it after `const demoActive = isDemoMode();` but **before** the `if (!hasCompletedOnboarding ...)` gate. Update it to read from `audienceRef.current` instead of `localStorage.getItem`, and null the ref after consuming.
 
-```ts
-// Before:
-if (!checked) return false;
-return needed;
+### Resulting order in the component:
 
-// After:
-return { needed, checked };
+```text
+1. hooks (useApp, useCoupleSpaceContext, useAuth, etc.)
+2. migrationRan ref + audienceRef (new)
+3. migration useEffect
+4. usePartnerNotifications
+5. devState checks (onboarding, productIntro, library, diary)
+6. devBypassGates, demoActive
+7. ★ audience routing block (moved here, uses audienceRef.current)
+8. onboarding gate
+9. post-purchase redirect
+10. still-us legacy redirect
+11. skip-to-product
+12. par first visit
+13. return <ProductLibrary />
 ```
 
-### File 2: `src/pages/ProductHome.tsx`
-
-Replace the intro gating logic with a synchronous-first approach:
-
-```ts
-const { needed: needsIntro, checked: introChecked } = useProductIntroNeeded(product?.id ?? '');
-
-// Synchronous init: if user has completed any session before, assume no intro needed.
-// This prevents a single-frame flash of the intro for returning users.
-const [showIntro, setShowIntro] = useState(() => {
-  const hasFinishedBefore = localStorage.getItem('bonki-first-session-done');
-  return !hasFinishedBefore; // new users: true, returning users: false
-});
-
-useEffect(() => {
-  if (!introChecked) return;
-  if (needsIntro && !showIntro) setShowIntro(true);   // DB says needed, override sync guess
-  if (!needsIntro && showIntro) setShowIntro(false);   // DB says not needed, collapse
-}, [introChecked, needsIntro]);
-```
-
-The `bonki-first-session-done` key already gets set elsewhere when a session completes (or we add it to the completion flow if missing). This gives us:
-
-- **New user**: no localStorage key → `showIntro` starts `true` → DB confirms → stays true → intro shows
-- **Returning user**: localStorage key exists → `showIntro` starts `false` → DB confirms → stays false → no flash
-- **Edge case (cleared localStorage, DB has sessions)**: starts `true`, DB says not needed → single effect flip to `false` (acceptable — same dark background, imperceptible)
-
-### Files edited
-- `src/components/ProductIntro.tsx`
-- `src/pages/ProductHome.tsx`
+### File edited
+- `src/pages/Index.tsx`
 
