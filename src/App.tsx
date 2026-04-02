@@ -18,6 +18,7 @@ import { NormalizedSessionProvider } from "@/contexts/NormalizedSessionContext";
 import { OptimisticCompletionsProvider } from "@/contexts/OptimisticCompletionsContext";
 
 import MobileOnlyGate from "@/components/MobileOnlyGate";
+import BonkiErrorBoundary from "@/components/BonkiErrorBoundary";
 
 import Index from "./pages/Index";
 
