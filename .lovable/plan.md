@@ -1,21 +1,19 @@
 
 
-## Onboarding 10/10 Polish
+## Onboarding Polish — 3 Visual Fixes
 
-### Problems
-- CTA ("Börja") clipped at bottom — illustration zone (`flex: 1 1 auto`) consumes too much space
-- `overflow: hidden` prevents scrolling on short screens — CTA becomes unreachable
-- "Vem vill ni prata med?" at 13px and pill text at 14px violate the 15px minimum
-- No breathing room between audience pills and CTA
+All changes in `src/components/Onboarding.tsx`. No logic, routing, or state changes.
 
-### Changes (single file: `src/components/Onboarding.tsx`)
+### Fix 1: Question text + spacing (lines 167–173)
+- Change `padding: '20px 0 0'` → `padding: '28px 0 0'` on the pills wrapper div (adds ~8px breathing room)
+- Change label text from `"Vem vill ni prata med?"` → `"Var vill ni börja?"`
 
-1. **Constrain illustration zone**: Change from `flex: '1 1 auto'` to `flex: '1 1 0'` with `maxHeight: '38vh'` and `minHeight: '140px'` — keeps it prominent but bounded
-2. **Allow overflow**: Change outer container from `overflow: hidden` to `overflowY: auto`, `overflowX: hidden` — ensures CTA is always reachable on short screens
-3. **Fix font sizes**:
-   - "Vem vill ni prata med?" label: 13px → 15px
-   - Pill buttons: 14px → 15px
-4. **Increase content bottom margin**: `marginBottom: '32px'` → `marginBottom: '24px'` to tighten the gap and give more room to the CTA area
+### Fix 2: Reassurance microcopy (after line 199, inside the pills wrapper)
+- After the pills `</div>`, add a fixed-height container (`minHeight: '20px'`, `marginTop: '10px'`)
+- Inside: render `<p>` with text `"Ni kan utforska alla produkter efteråt."` only when `selectedAudience !== null`
+- Style: `fontFamily: 'var(--font-sans)'`, `fontSize: '12px'`, `color: '#FDF6E3'`, `opacity: 0.35`, `margin: 0`
 
-No other files changed. No animation, color, or copy changes.
+### Fix 3: Stronger illustration bottom fade (lines 81–91)
+- Change `height: '48px'` → `height: '120px'`
+- Change `background` to `'linear-gradient(to top, #1A1A2E 0%, rgba(26, 26, 46, 0.85) 40%, transparent 100%)'`
 
