@@ -12,7 +12,7 @@ const categories: Category[] = [
   },
   {
     id: 'sk-vi-ar-olika',
-    title: 'Vi är olika',
+    title: 'Att vara olika',
     subtitle: 'Plats, personlighet och det som gör oss unika.',
     description: 'Unikhet, plats i syskonskaran och bonussyskon',
     cardCount: 4,

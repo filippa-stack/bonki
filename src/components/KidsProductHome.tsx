@@ -613,10 +613,23 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
                   ].join(', '),
                 }}
               >
-                {product.tagline}
+              {product.tagline}
               </p>
 
-
+            {PRODUCT_DESCRIPTIONS[product.id] && (
+              <p
+                style={{
+                  fontFamily: 'var(--font-display)',
+                  fontSize: '13px',
+                  color: LANTERN_GLOW,
+                  opacity: 0.6,
+                  marginTop: '4px',
+                  textShadow: '0 1px 3px rgba(0,0,0,0.9)',
+                }}
+              >
+                {product.cards.length} samtal om {PRODUCT_DESCRIPTIONS[product.id]}
+              </p>
+            )}
 
             {/* Spacer — pushes content below hero face zone */}
             {!useSquareGrid && <div style={{ height: 'clamp(48px, 12vh, 100px)' }} />}
