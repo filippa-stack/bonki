@@ -1813,6 +1813,7 @@ export default function CardView() {
   const isStillUsFocusMode = isLive && (product?.id === 'still_us' || isStillUsCard);
 
   // ─── Session start screen — ritual before first question ───
+  const shouldShowStartScreen = showStartScreen && isLive;
 
   // ── Kids product intro screen — product-colored, illustration-forward ──
   if (shouldShowStartScreen && isKidsProduct && product) {
