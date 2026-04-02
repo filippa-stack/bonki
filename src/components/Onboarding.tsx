@@ -31,17 +31,15 @@ export default function Onboarding() {
         justifyContent: 'flex-end',
       }}
     >
-      {/* ── Illustration — absolute background ghost ── */}
+      {/* ── Illustration — hero light source ── */}
       <motion.div
         initial={false}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0 }}
         style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          height: '45%',
+          position: 'relative',
+          flex: '1 1 auto',
+          minHeight: '180px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -49,12 +47,24 @@ export default function Onboarding() {
           zIndex: 0,
         }}
       >
+        {/* Radial glow behind logo — teal light source */}
+        <div
+          style={{
+            position: 'absolute',
+            width: '280px',
+            height: '280px',
+            borderRadius: '50%',
+            background: 'radial-gradient(circle, hsla(170, 35%, 50%, 0.15) 0%, transparent 70%)',
+            pointerEvents: 'none',
+          }}
+        />
         <img
           src={bonkiLogo}
           alt=""
           aria-hidden
           style={{
-            width: '160px',
+            position: 'relative',
+            width: '200px',
             height: 'auto',
             objectFit: 'contain',
             opacity: 0.88,
