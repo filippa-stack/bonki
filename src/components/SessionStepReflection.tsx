@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Pencil, ChevronLeft } from 'lucide-react';
 import { useSessionReflections } from '@/hooks/useSessionReflections';
