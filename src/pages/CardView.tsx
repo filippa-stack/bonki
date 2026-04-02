@@ -1586,32 +1586,194 @@ export default function CardView() {
             className="max-w-md mx-auto flex flex-col items-center"
             style={{ paddingBottom: 'calc(72px + env(safe-area-inset-bottom, 0px))', marginTop: '48px' }}
           >
-            {/* Föregående — go back to last prompt */}
-            <button
-              onClick={() => {
-                _setShowCompletion(false);
-                const lastStageIndex = effectiveSteps.length - 1;
-                const lastSection = card.sections.find(s => s.type === effectiveSteps[lastStageIndex]);
-                const lastPromptCount = getEffectivePromptCount(lastSection);
-                setLocalStepIndex(lastStageIndex);
-                setLocalPromptIndex(lastPromptCount - 1);
-              }}
-              style={{
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                fontFamily: 'var(--font-sans)',
-                fontSize: '14px',
-                color: DRIFTWOOD,
-                opacity: 0.7,
-                minHeight: '44px',
-                marginBottom: '12px',
-                alignSelf: 'flex-start',
-              }}
-            >
-              Föregående
-            </button>
             {cardId === 'su-mock-0' ? (
+              /* su-mock-0: unique CTA → next card */
+              <>
+                <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%', maxWidth: '520px', gap: '12px' }}>
+                  <button
+                    onClick={() => {
+                      _setShowCompletion(false);
+                      const lastStageIndex = effectiveSteps.length - 1;
+                      const lastSection = card.sections.find(s => s.type === effectiveSteps[lastStageIndex]);
+                      const lastPromptCount = getEffectivePromptCount(lastSection);
+                      setLocalStepIndex(lastStageIndex);
+                      setLocalPromptIndex(lastPromptCount - 1);
+                    }}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      cursor: 'pointer',
+                      fontFamily: 'var(--font-sans)',
+                      fontSize: '14px',
+                      color: DRIFTWOOD,
+                      opacity: 0.7,
+                      minHeight: '44px',
+                      padding: '0 4px',
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
+                    Föregående
+                  </button>
+                  <button
+                    onClick={() => navigateWithFeedback(postCompletionNav.destination)}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '6px',
+                      flex: 1,
+                      height: '52px',
+                      borderRadius: '14px',
+                      backgroundColor: DEEP_SAFFRON,
+                      color: MIDNIGHT_INK,
+                      fontFamily: 'var(--font-sans)',
+                      fontSize: '17px',
+                      fontWeight: 600,
+                      border: 'none',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    Nästa samtal <ArrowRight size={16} style={{ opacity: 0.7 }} />
+                  </button>
+                </div>
+                <button
+                  onClick={() => navigateWithFeedback('/product/still-us')}
+                  className="font-sans"
+                  style={{
+                    fontSize: '14px',
+                    color: DRIFTWOOD,
+                    opacity: 0.55,
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    marginTop: '16px',
+                    textAlign: 'center',
+                  }}
+                >
+                  Tillbaka till Still Us
+                </button>
+              </>
+            ) : postCompletionNav.type === 'all_complete' ? (
+              /* All done — go home */
+              <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%', maxWidth: '520px', gap: '12px' }}>
+                <button
+                  onClick={() => {
+                    _setShowCompletion(false);
+                    const lastStageIndex = effectiveSteps.length - 1;
+                    const lastSection = card.sections.find(s => s.type === effectiveSteps[lastStageIndex]);
+                    const lastPromptCount = getEffectivePromptCount(lastSection);
+                    setLocalStepIndex(lastStageIndex);
+                    setLocalPromptIndex(lastPromptCount - 1);
+                  }}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: '14px',
+                    color: DRIFTWOOD,
+                    opacity: 0.7,
+                    minHeight: '44px',
+                    padding: '0 4px',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  Föregående
+                </button>
+                <button
+                  onClick={() => navigateWithFeedback(homeDest)}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flex: 1,
+                    height: '52px',
+                    borderRadius: '14px',
+                    backgroundColor: DEEP_SAFFRON,
+                    color: MIDNIGHT_INK,
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: '17px',
+                    fontWeight: 600,
+                    border: 'none',
+                    cursor: 'pointer',
+                  }}
+                >
+                  Tillbaka till Ert utrymme
+                </button>
+              </div>
+            ) : (
+              <>
+                {/* Primary CTA with Föregående */}
+                <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%', maxWidth: '520px', gap: '12px' }}>
+                  <button
+                    onClick={() => {
+                      _setShowCompletion(false);
+                      const lastStageIndex = effectiveSteps.length - 1;
+                      const lastSection = card.sections.find(s => s.type === effectiveSteps[lastStageIndex]);
+                      const lastPromptCount = getEffectivePromptCount(lastSection);
+                      setLocalStepIndex(lastStageIndex);
+                      setLocalPromptIndex(lastPromptCount - 1);
+                    }}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      cursor: 'pointer',
+                      fontFamily: 'var(--font-sans)',
+                      fontSize: '14px',
+                      color: DRIFTWOOD,
+                      opacity: 0.7,
+                      minHeight: '44px',
+                      padding: '0 4px',
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
+                    Föregående
+                  </button>
+                  <button
+                    onClick={() => navigateWithFeedback(postCompletionNav.destination)}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '6px',
+                      flex: 1,
+                      height: '52px',
+                      borderRadius: '14px',
+                      backgroundColor: DEEP_SAFFRON,
+                      color: MIDNIGHT_INK,
+                      fontFamily: 'var(--font-sans)',
+                      fontSize: '17px',
+                      fontWeight: 600,
+                      border: 'none',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    {postCompletionNav.label || 'Nästa samtal'} <ArrowRight size={16} style={{ opacity: 0.7 }} />
+                  </button>
+                </div>
+
+                {/* Secondary: Tillbaka — only if primary doesn't already go to product home */}
+                {product && postCompletionNav.destination !== `/product/${product.slug}` && (
+                  <button
+                    onClick={() => navigateWithFeedback(`/product/${product.slug}`)}
+                    className="font-sans"
+                    style={{
+                      fontSize: '14px',
+                      color: DRIFTWOOD,
+                      opacity: 0.55,
+                      background: 'none',
+                      border: 'none',
+                      cursor: 'pointer',
+                      marginTop: '16px',
+                      textAlign: 'center',
+                    }}
+                  >
+                    Tillbaka till {product.name}
+                  </button>
+                )}
+              </>
+            )}
+          </motion.div>
               /* su-mock-0: unique CTA → next card */
               <>
                 <button
