@@ -1,91 +1,33 @@
 
 
-## Onboarding Age Routing
+## Empty States for Journal and Diary
 
-Two files modified: `Onboarding.tsx` and `Index.tsx`.
+### 1. `src/pages/Journal.tsx` — Replace empty state (lines 993–1021)
 
-### 1. `src/components/Onboarding.tsx`
+Replace the current empty block with:
+- Centered flexbox column with 16px gap
+- Book SVG icon at 48×48, color `#D4F5C0`, opacity 0.3
+- Heading "Inga samtal ännu" — `var(--font-display)`, 20px, color `#FDF6E3`
+- Body "Era tankar och reflektioner samlas här efter varje samtal." — `var(--font-body)`, 14px, color `#FDF6E3` opacity 0.5
+- `BonkiButton variant="secondary"` → "Utforska samtalen" → `navigate("/")`
+- No animations
 
-**Add import**: `useState` from React (line 1).
+### 2. `src/pages/Diary.tsx` — Replace empty state (lines 577–633)
 
-**Add state** (line 18, inside component):
-```tsx
-const [selectedAudience, setSelectedAudience] = useState<string | null>(null);
-```
+Replace the current `motion.div` empty block with the same pattern but:
+- Body text: "Inga samtal i den här produkten ännu."
+- CTA: "Börja ert första samtal" → `navigate(\`/product/${product.slug}\`)`
+- Same book SVG, same sizing/colors
+- Remove the `motion.div` wrapper (no animations per spec)
 
-**Insert audience selector** between the body text `</motion.p>` (line 159) and the closing `</div>` of the content section (line 160). New block:
+### Book SVG
 
-```tsx
-{/* ── Audience routing pills ── */}
-<div style={{ padding: '20px 0 0' }}>
-  <p style={{
-    fontFamily: 'var(--font-sans)', fontSize: '13px', fontWeight: 500,
-    color: '#FDF6E3', opacity: 0.5, marginBottom: '12px', margin: '0 0 12px',
-  }}>
-    Vem vill ni prata med?
-  </p>
-  <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-    {[
-      { label: 'Barn 3–6', value: 'young' },
-      { label: 'Barn 7–11', value: 'middle' },
-      { label: 'Barn 12+', value: 'teen' },
-      { label: 'Oss som par', value: 'couple' },
-    ].map(({ label, value }) => {
-      const selected = selectedAudience === value;
-      return (
-        <button key={value} onClick={() => setSelectedAudience(value)} style={{
-          padding: '10px 20px', borderRadius: '20px', cursor: 'pointer',
-          transition: 'all 0.15s ease',
-          fontFamily: 'var(--font-sans)', fontSize: '14px',
-          border: selected
-            ? '1px solid hsla(40, 78%, 61%, 0.4)'
-            : '1px solid hsla(0, 0%, 100%, 0.15)',
-          background: selected
-            ? 'hsla(40, 78%, 61%, 0.12)'
-            : 'hsla(0, 0%, 100%, 0.06)',
-          color: selected ? '#DA9D1D' : 'rgba(253, 246, 227, 0.85)',
-        }}>
-          {label}
-        </button>
-      );
-    })}
-  </div>
-</div>
-```
+Inline SVG based on the ProductLibrary book icon — a simple book path rendered as an `<svg>` element with `width={48} height={48}` and `fill="#D4F5C0"` at `opacity={0.3}`.
 
-**Modify CTA button** (line 175): Add conditional styling and persist audience on click.
+### Imports
 
-- Add to BonkiButton's style: `opacity: selectedAudience ? 1 : 0.4, pointerEvents: selectedAudience ? 'auto' : 'none'`
-- Update onClick:
-```tsx
-onClick={() => {
-  localStorage.setItem('bonki-onboarding-audience', selectedAudience!);
-  trackOnboardingEvent('onboarding_complete', { audience: selectedAudience });
-  initializeCoupleSpace();
-  completeOnboarding();
-}}
-```
+- Journal.tsx: add `import BonkiButton from '@/components/BonkiButton'`
+- Diary.tsx: add `import BonkiButton from '@/components/BonkiButton'`
 
-### 2. `src/pages/Index.tsx`
-
-Insert after line 127 (after the onboarding gate `return <Onboarding />`), before the purchase redirect block:
-
-```tsx
-// One-time audience routing after first onboarding
-const audience = localStorage.getItem('bonki-onboarding-audience');
-if (audience && !localStorage.getItem('bonki-first-session-done')) {
-  localStorage.removeItem('bonki-onboarding-audience');
-  localStorage.setItem('bonki-first-session-done', '1');
-  const routes: Record<string, string> = {
-    young: '/product/jag-i-mig',
-    middle: '/product/jag-med-andra',
-    teen: '/product/jag-i-varlden',
-    couple: '/product/still-us',
-  };
-  const target = routes[audience] || '/';
-  return <Navigate to={target} replace />;
-}
-```
-
-No other files changed. Existing routing, auth, and ProductIntro logic untouched.
+No data fetching, routing, or session display logic changed.
 
