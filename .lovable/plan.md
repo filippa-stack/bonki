@@ -1,30 +1,37 @@
 
 
-## Onboarding 10/10 Polish
+## Visual Audit: Library Page
 
-**File**: `src/components/Onboarding.tsx`
+### Issues Found
 
-### Fix 1: Tile proportions — more refined
-- **Line 176**: `height: '80px'` → `height: '64px'`, `borderRadius: '22px'` → `borderRadius: '16px'`
+**1. Subtitle text barely visible** (line 615)
+The subtitle "Verktyg för samtalen som inte blir av" uses `hsla(100, 40%, 80%, 0.45)` — that's only 45% opacity on an already muted color against a dark background. Needs to be at least `0.60` for comfortable readability.
 
-### Fix 2: Tile surface — better visibility
-- **Line 182** (unselected border): `rgba(255, 255, 255, 0.08)` → `rgba(255, 255, 255, 0.10)`
-- **Line 185** (unselected bg): `rgba(255, 255, 255, 0.04)` → `rgba(255, 255, 255, 0.06)`
-- **Line 181** (selected border): `rgba(218, 157, 29, 0.35)` → `rgba(218, 157, 29, 0.40)`
+**2. Section headers "FÖRÄLDRAR" and "BARN & FAMILJ" use Ghost Glow** (lines 667, 805)
+Color `#D4F5C0` at 13px/700 weight is legible but the green tint doesn't carry enough contrast against midnight blue. Per the project's own color hierarchy memory, Ghost Glow is reserved for the library header ("BONKI") and deprecated for other uses. These section labels should use Lantern Glow `#FDF6E3` at reduced opacity (e.g. `0.55`) for consistency.
 
-### Fix 3: Grid gap — tighter
-- **Line 166**: `gap: '12px'` → `gap: '10px'`
+**3. Ghost glow divider nearly invisible** (line 632)
+The thin line between header and content uses `hsla(100, 50%, 75%, 0.30)` at 1.5px height. At this opacity it's essentially invisible. Bump to `0.45` so it reads as a deliberate design element rather than a rendering artifact.
 
-### Fix 4: Ambient glow — larger
-- **Line 56–57**: glow div `width/height: '200px'` → `'240px'`
+**4. "Era samtal" subtitle too dim** (line 894)
+"Varje samtal sparas" uses `hsla(100, 40%, 80%, 0.45)` — same issue as the main subtitle. Bump to `0.55`.
 
-### Fix 5: Tile label — smaller but bold and branded
-- **Line 191**: Keep `fontFamily: 'var(--font-display)'`, keep `fontWeight: 700`, change `fontSize: '17px'` → `fontSize: '15px'`
+**5. "Era samtal" arrow too dim** (line 906)
+The `→` arrow uses `opacity: 0.4` on `#D4F5C0`. Bump to `0.55` for visibility.
 
-### Fix 6: Spacing tightening
-- **Line 159**: tile section padding `padding: '16px 32px 0'` → `padding: '12px 32px 0'`
-- **Line 162**: "Var vill ni börja?" margin `margin: '0 0 12px'` → `margin: '0 0 10px'`
+### Fix Summary
+
+**File**: `src/components/ProductLibrary.tsx`
+
+| Line | Element | Current | Fix |
+|------|---------|---------|-----|
+| 615 | Subtitle color opacity | `0.45` | `0.60` |
+| 632 | Divider opacity | `0.30` | `0.45` |
+| 667 | "FÖRÄLDRAR" color | `#D4F5C0` | `#FDF6E3` with `opacity: 0.55` |
+| 805 | "BARN & FAMILJ" color | `#D4F5C0` | `#FDF6E3` with `opacity: 0.55` |
+| 894 | "Varje samtal sparas" opacity | `0.45` | `0.55` |
+| 906 | Arrow opacity | `0.4` | `0.55` |
 
 ### Unchanged
-All tile selection logic, colors (selected/unselected), CTA, text content, tracking, routing, state.
+All tile colors, illustrations, layouts, badges, shadows, border treatments, Still Us tile, resume card, bottom nav, safe-area spacing.
 
