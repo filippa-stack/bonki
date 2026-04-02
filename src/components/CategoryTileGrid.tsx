@@ -183,18 +183,6 @@ function CategoryTile({
       >
         <span
           style={{
-            fontSize: '12px',
-            fontWeight: 500,
-            color: 'rgba(255,255,255,0.85)',
-            display: 'block',
-            marginBottom: '2px',
-            textShadow: '0 1px 3px rgba(0,0,0,0.9), 0 2px 6px rgba(0,0,0,0.5)',
-          }}
-        >
-          {totalCards} samtal om
-        </span>
-        <span
-          style={{
             fontFamily: 'var(--font-display)',
             fontVariationSettings: "'opsz' 24",
             fontSize: '24px',
@@ -252,7 +240,7 @@ function CategoryTile({
                 textShadow: '0 1px 2px rgba(0,0,0,0.3)',
               }}
             >
-              {completed}/{totalCards}
+              {completed}/{totalCards} samtal
             </span>
           </div>
         )}

@@ -6,7 +6,7 @@ const categories: Category[] = [
   { id: 'vk-min-dag', title: 'Min dag', subtitle: 'En öppen dörr in till barnets dag.', description: 'Hur var din dag?', cardCount: 1 },
   { id: 'vk-var-rytm', title: 'Vår rytm', subtitle: 'Det som får dagarna att fungera – från morgon till kväll.', description: 'Morgon, rutiner, skola, kväll, sova och helg', cardCount: 6 },
   { id: 'vk-vi-hemma', title: 'Vi hemma', subtitle: 'Hur vi lever, hjälper och har det tillsammans.', description: 'Mat, hushåll, syskon och underhållning', cardCount: 4 },
-  { id: 'vk-utanfor-hemmet', title: 'Livet utanför hemmet', subtitle: 'Aktiviteter, kompisar och att växa upp.', description: 'Aktiviteter, kompisar, tonår och arbete', cardCount: 4 },
+  { id: 'vk-utanfor-hemmet', title: 'Utanför hemmet', subtitle: 'Aktiviteter, kompisar och att växa upp.', description: 'Aktiviteter, kompisar, tonår och arbete', cardCount: 4 },
 ];
 
 const cards: Card[] = [
