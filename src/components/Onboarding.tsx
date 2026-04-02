@@ -85,7 +85,7 @@ export default function Onboarding() {
           justifyContent: 'flex-end',
           paddingBottom: '24px',
           padding: '0 32px',
-          paddingTop: 'max(48px, env(safe-area-inset-top, 48px))',
+          paddingTop: 0,
         }}
       >
         {/* Credential */}
