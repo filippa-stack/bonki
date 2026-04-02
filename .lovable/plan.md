@@ -1,24 +1,47 @@
 
 
-## Fix Price Fallbacks: 249 for Still Us, 195 for Kids
+## Fix: Show question text in SessionGroupCard
 
-Four files need changes. Two are already correct.
+### Problem
+When a session has 2+ reflections (or 1 + takeaway), the Journal groups them into a `SessionGroupCard`. This component renders each note's `.text` but **never renders `.questionText`** — the question is simply ignored. Solo notes use `NoteEntryCard`, which does render the question (line 294: `— {entry.questionText}`).
 
-### Changes
+This is why:
+- "Arg" (8 reflections) → grouped → no questions
+- "Äcklad" (1 reflection) → solo card → question visible
+- "Ledsen" (1 reflection) → solo card → question visible
 
-1. **`src/pages/KidsCardPortal.tsx`** line 149
-   - `249` → `195`
+### Fix
 
-2. **`src/pages/Category.tsx`** line 129
-   - `249` → `195`
+**File: `src/pages/Journal.tsx`** — `SessionGroupCard` component, lines 477-489
 
-3. **`src/pages/PaywallFullScreen.tsx`** line 57
-   - `249` → `(productId === 'still_us' ? 249 : 195)`
+Add the question text line before each note's text, matching the same style used in `NoteEntryCard`:
 
-4. **`src/components/ProductPaywall.tsx`** line 66
-   - `249` → `(product.id === 'still_us' ? 249 : 195)`
+```tsx
+// Current (line 477-489):
+<p style={{ ... serif italic ... }}>
+  {note.text...}
+</p>
 
-### No change needed
-- `src/components/PurchaseScreen.tsx` — Still Us only, already 249
-- `src/pages/Paywall.tsx` — Still Us only, already 249
+// After:
+{note.questionText && (
+  <p style={{
+    margin: '0 0 4px',
+    fontSize: '13px',
+    fontStyle: 'italic',
+    color: `${LANTERN_GLOW}88`,
+    lineHeight: 1.4,
+  }}>
+    — {note.questionText}
+  </p>
+)}
+<p style={{ ... serif italic ... }}>
+  {note.text...}
+</p>
+```
+
+### What stays untouched
+- `NoteEntryCard` rendering (already correct)
+- Grouping logic
+- Data fetching and `getQuestionText` helper
+- All protected patterns
 
