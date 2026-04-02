@@ -612,7 +612,7 @@ export default function ProductLibrary() {
               fontStyle: 'normal',
               fontSize: '14px',
               fontWeight: 400,
-              color: 'hsla(100, 40%, 80%, 0.45)',
+              color: 'hsla(100, 40%, 80%, 0.60)',
               lineHeight: 1.6,
               transition: 'color 400ms ease',
               textShadow: '0 1px 16px hsla(230, 25%, 10%, 0.8)',
