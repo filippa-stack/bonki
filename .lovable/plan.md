@@ -1,14 +1,31 @@
 
 
-## Auth Error Handling
+## Paywall Dismiss → Library Route
 
-**File: `src/contexts/AuthContext.tsx`**
+Change dismiss/decline CTAs across all paywall surfaces to label "Utforska andra produkter" and navigate to `"/"`.
 
-Add `.catch()` to the `getSession()` promise chain (lines ~79–84):
+### Files & Changes
 
-- Log error with `[AuthContext] getSession failed:`
-- Set `initialSessionResolved = true`, session/user to null, loading to false
-- Ensures the app never hangs on a failed backend connection
+**1. `src/pages/PaywallFullScreen.tsx` (line ~309)**
+- Label: "Inte just nu" → "Utforska andra produkter"
+- onClick: already navigates to product slug → change to `navigate('/', { replace: true })`
 
-No other changes. The `onAuthStateChange` listener, `savePendingLegalConsent`, and `initialSessionResolved` gate pattern remain untouched.
+**2. `src/pages/Paywall.tsx` (line ~251)**
+- Label: "Inte nu" → "Utforska andra produkter"
+- onClick: `navigate('/product/still-us')` → `navigate('/', { replace: true })`
+
+**3. `src/components/ProductPaywall.tsx` (two instances, lines ~366 and ~568)**
+- Label: "Inte nu" → "Utforska andra produkter" (both)
+- onClick: both already use `handleDismiss` / `navigate(backTo)` → change to `navigate('/', { replace: true })`
+
+**4. `src/components/PaywallBottomSheet.tsx` (line ~398)**
+- "Tillbaka" button — this is the sheet's close/back action, contextually different from a paywall dismiss. **Leave unchanged** per the prompt's intent (it closes the overlay, not a paywall decline).
+
+**Not changed:** `ProductIntro.tsx` and `FeedbackSheet.tsx` — these are not paywall surfaces (ProductIntro is an intro overlay, FeedbackSheet is feedback). `CardTakeaways.tsx` is a share preview dismiss. Per the prompt, only paywall dismiss CTAs are modified.
+
+### Styling
+Keep existing styling unchanged on all buttons (ghost/muted, same font, size, color).
+
+### Summary
+4 label changes + 4 navigation target changes across 3 files. No purchase flow, pricing, or success routing modified.
 
