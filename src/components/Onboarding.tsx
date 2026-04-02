@@ -64,7 +64,7 @@ export default function Onboarding() {
           aria-hidden
           style={{
             position: 'relative',
-            width: '200px',
+            width: '120px',
             height: 'auto',
             objectFit: 'contain',
             opacity: 0.88,
