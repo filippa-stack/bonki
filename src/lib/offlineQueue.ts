@@ -2,6 +2,9 @@
 // Local-first write queue for Still Us sessions.
 // Writes go to memory first, then sync to Supabase when online.
 
+const STORAGE_KEY = 'bonki-offline-queue';
+const MAX_AGE = 86400000; // 24 hours
+
 type QueuedWrite = {
   id: string;
   table: string;
@@ -15,6 +18,29 @@ let queue: QueuedWrite[] = [];
 let isSyncing = false;
 let syncListener: (() => void) | null = null;
 
+// Restore persisted queue, filtering stale entries
+if (typeof window !== 'undefined') {
+  const stored = localStorage.getItem(STORAGE_KEY);
+  if (stored) {
+    try {
+      const now = Date.now();
+      queue = (JSON.parse(stored) as QueuedWrite[]).filter(
+        (item) => now - item.createdAt < MAX_AGE
+      );
+    } catch {
+      queue = [];
+    }
+  }
+}
+
+function persistQueue(): void {
+  if (queue.length === 0) {
+    localStorage.removeItem(STORAGE_KEY);
+  } else {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(queue));
+  }
+}
+
 export function enqueueWrite(write: Omit<QueuedWrite, 'id' | 'createdAt'>): void {
   const entry: QueuedWrite = {
     ...write,
@@ -22,6 +48,7 @@ export function enqueueWrite(write: Omit<QueuedWrite, 'id' | 'createdAt'>): void
     createdAt: Date.now(),
   };
   queue.push(entry);
+  persistQueue();
   attemptSync();
 }
 
@@ -66,6 +93,7 @@ export async function attemptSync(): Promise<void> {
 
   queue = failed;
   isSyncing = false;
+  persistQueue();
 
   if (syncListener) syncListener();
 }
@@ -86,5 +114,9 @@ export function onSyncStatusChange(callback: () => void): () => void {
 if (typeof window !== 'undefined') {
   window.addEventListener('online', () => {
     attemptSync();
+  });
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') attemptSync();
   });
 }
