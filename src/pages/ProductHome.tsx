@@ -35,16 +35,19 @@ export default function ProductHome() {
 
   const { needed: needsIntro, checked: introChecked } = useProductIntroNeeded(product?.id ?? '');
 
-  // Synchronous init: returning users skip intro immediately, new users see it while DB loads
-  const [showIntro, setShowIntro] = useState(() => {
-    if (!product?.id) return true;
-    return !localStorage.getItem(`bonki-intro-seen-${product.id}`);
+  // Tri-state: null = undecided (waiting for DB), false = skip, true = show
+  const [showIntro, setShowIntro] = useState<boolean | null>(() => {
+    if (!product?.id) return null;
+    const seen = localStorage.getItem(`bonki-intro-seen-${product.id}`);
+    if (seen) return false;
+    return null;
   });
 
   useEffect(() => {
     if (!introChecked) return;
-    if (needsIntro && !showIntro) setShowIntro(true);
-    if (!needsIntro && showIntro) {
+    if (needsIntro) {
+      setShowIntro(true);
+    } else {
       setShowIntro(false);
       if (product?.id) localStorage.setItem(`bonki-intro-seen-${product.id}`, '1');
     }
