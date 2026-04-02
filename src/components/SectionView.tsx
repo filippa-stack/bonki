@@ -2,7 +2,7 @@ import { forwardRef } from 'react';
 import { Section, Card, Prompt, SituationalAnchor } from '@/types';
 import PromptItem from '@/components/PromptItem';
 
-import { ArrowLeft } from 'lucide-react';
+
 
 export interface SectionViewHandle {
   openNoteForCurrent: () => void;
