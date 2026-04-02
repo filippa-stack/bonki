@@ -442,7 +442,7 @@ export default function ProductIntro({
 /** Hook: check if a product intro should be shown.
  *  Shows intro until the user has completed at least one session in this product. */
 export function useProductIntroNeeded(productId: string): { needed: boolean; checked: boolean } {
-  const [needed, setNeeded] = useState(false);
+  const [needed, setNeeded] = useState(true);
   const [checked, setChecked] = useState(false);
 
   useEffect(() => {
