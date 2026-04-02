@@ -24,7 +24,7 @@ export default function Onboarding() {
         position: 'fixed',
         inset: 0,
         backgroundColor: '#1A1A2E',
-        overflowY: 'auto',
+        overflow: 'hidden',
         overflowX: 'hidden',
         display: 'flex',
         flexDirection: 'column',
@@ -51,8 +51,8 @@ export default function Onboarding() {
         <div
           style={{
             position: 'absolute',
-            width: '280px',
-            height: '280px',
+            width: '200px',
+            height: '200px',
             borderRadius: '50%',
             background: 'radial-gradient(circle, hsla(170, 35%, 50%, 0.15) 0%, transparent 70%)',
             pointerEvents: 'none',
@@ -64,7 +64,7 @@ export default function Onboarding() {
           aria-hidden
           style={{
             position: 'relative',
-            width: '200px',
+            width: '120px',
             height: 'auto',
             objectFit: 'contain',
             opacity: 0.88,
@@ -167,9 +167,9 @@ export default function Onboarding() {
             const selected = selectedAudience === value;
             return (
               <button key={value} onClick={() => setSelectedAudience(value)} style={{
-                padding: '12px 16px', borderRadius: '16px', cursor: 'pointer',
+                padding: '14px 18px', borderRadius: '16px', cursor: 'pointer',
                 transition: 'all 0.15s ease',
-                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                display: 'flex', alignItems: 'baseline', gap: '6px',
                 width: '100%', textAlign: 'left',
                 border: selected
                   ? '1px solid hsla(40, 78%, 61%, 0.35)'
@@ -177,22 +177,18 @@ export default function Onboarding() {
                 background: selected
                   ? 'hsla(40, 78%, 61%, 0.10)'
                   : 'hsla(0, 0%, 100%, 0.04)',
+                boxShadow: selected
+                  ? '0 0 12px hsla(40, 78%, 61%, 0.15)'
+                  : 'none',
               }}>
-                <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px' }}>
-                  <span style={{
-                    fontFamily: 'var(--font-display)', fontSize: '16px', fontWeight: 500,
-                    color: selected ? '#DA9D1D' : 'rgba(253, 246, 227, 0.85)',
-                  }}>{label}</span>
-                  <span style={{
-                    fontFamily: 'var(--font-sans)', fontSize: '13px',
-                    color: selected ? 'rgba(218, 157, 29, 0.5)' : 'rgba(253, 246, 227, 0.4)',
-                  }}>· {subtitle}</span>
-                </div>
                 <span style={{
-                  fontSize: '20px', fontWeight: 300,
-                  color: selected ? '#DA9D1D' : 'rgba(253, 246, 227, 0.3)',
-                  marginLeft: '12px', flexShrink: 0,
-                }}>›</span>
+                  fontFamily: 'var(--font-display)', fontSize: '17px', fontWeight: 500,
+                  color: selected ? '#DA9D1D' : 'rgba(253, 246, 227, 0.85)',
+                }}>{label}</span>
+                <span style={{
+                  fontFamily: 'var(--font-sans)', fontSize: '13px',
+                  color: selected ? 'rgba(218, 157, 29, 0.5)' : 'rgba(253, 246, 227, 0.4)',
+                }}>· {subtitle}</span>
               </button>
             );
           })}
