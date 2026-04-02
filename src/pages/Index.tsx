@@ -167,6 +167,7 @@ export default function Index() {
 
   // ── Normal production flow ──
   if (!hasCompletedOnboarding && !demoActive && !devBypassGates) {
+    if (!dbOnboardingChecked) return <BonkiLoadingScreen />;
     return <Onboarding />;
   }
 

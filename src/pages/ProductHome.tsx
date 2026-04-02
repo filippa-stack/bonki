@@ -89,6 +89,16 @@ export default function ProductHome() {
     );
   }
 
+  // Loading gate while DB decides whether intro is needed — matches product bg to avoid flash
+  if (showIntro === null) {
+    return (
+      <div style={{
+        minHeight: '100vh',
+        backgroundColor: product?.backgroundColor ?? 'var(--surface-base)',
+      }} />
+    );
+  }
+
   if (!product) {
     return (
       <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: 'var(--surface-base)' }}>
