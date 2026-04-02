@@ -22,7 +22,7 @@ import stillUsHero from '@/assets/illustration-still-us-home.png';
 
 const LAYER_META: { id: string; title: string; subtitle: string; color: string }[] = [
   { id: 'su-mock-vardagen',     title: 'Vardagen',     subtitle: 'Hur livet mellan er ser ut just nu.',                        color: '#3A6E9B' },
-  { id: 'su-mock-tillsammans',  title: 'Oss tillsammans',  subtitle: 'Hur ni möter det som är svårt — och varandra.',             color: '#1E5A8A' },
+  { id: 'su-mock-tillsammans',  title: 'Tillsammans',  subtitle: 'Hur ni möter det som är svårt — och varandra.',             color: '#1E5A8A' },
   { id: 'su-mock-grunden',      title: 'Grunden',      subtitle: 'Det ni bär med er in i relationen.',                        color: '#0D2E6B' },
   { id: 'su-mock-riktningen',   title: 'Riktningen',   subtitle: 'Vart ni är på väg — och vad ni väljer.',                    color: '#0A1628' },
 ];

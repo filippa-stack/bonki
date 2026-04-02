@@ -240,7 +240,7 @@ function CategoryTile({
                 textShadow: '0 1px 2px rgba(0,0,0,0.3)',
               }}
             >
-              {completed}/{totalCards}
+              {completed}/{totalCards} samtal
             </span>
           </div>
         )}
