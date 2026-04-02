@@ -77,19 +77,19 @@ export default function Onboarding() {
             filter: 'brightness(1.15) saturate(1.1)',
           }}
         />
-        {/* Bottom fade into Midnight Ink */}
-        <div
-          style={{
-            position: 'absolute',
-            bottom: 0,
-            left: 0,
-            right: 0,
-            height: '120px',
-            background: 'linear-gradient(to top, #1A1A2E 0%, rgba(26, 26, 46, 0.85) 40%, transparent 100%)',
-            pointerEvents: 'none',
-          }}
-        />
       </motion.div>
+
+      {/* Bottom fade — bridge between illustration and text */}
+      <div
+        style={{
+          height: '120px',
+          marginTop: '-120px',
+          position: 'relative',
+          zIndex: 2,
+          background: 'linear-gradient(to top, #1A1A2E 0%, rgba(26, 26, 46, 0.85) 40%, transparent 100%)',
+          pointerEvents: 'none',
+        }}
+      />
 
       {/* ── Content ── */}
       <div
