@@ -1,29 +1,33 @@
 
 
-## Fix Product Subtitle + Tile Label Visibility
+## Move count into progress, remove "X samtal om" label
 
-### Issue 1: Product subtitle should be merged, not a separate line
+The "X samtal om" label clutters the tile. Instead, move the count into the progress indicator text — "0/4 samtal" — and remove the label entirely. Also revert the 5 grammar-adjusted category titles since they were only changed to flow after "samtal om".
 
-Currently there's a tagline `<p>` ("När känslor får ord.") AND a separate description `<p>` below it ("21 samtal om känslor och att förstå sig själv"). The user wants a single line that reads:
+### File 1: `src/components/KidsProductHome.tsx`
 
-**"{N} samtal om {tagline}"** — e.g. "21 samtal om när känslor får ord."
+**Remove** the "samtal om" `<span>` (lines 277–288).
 
-**Fix in `src/components/KidsProductHome.tsx`**:
-- Replace the tagline `<p>` text (line 616) from `{product.tagline}` to `{product.cards.length} samtal om {product.tagline.toLowerCase().replace(/\.$/, '')}` (lowercase, strip trailing period, then add period at end)
-- Remove the separate `PRODUCT_DESCRIPTIONS` block (lines 619–632) entirely
-- Remove the `PRODUCT_DESCRIPTIONS` constant (lines ~93–101) since it's no longer needed
+**Update progress text** (line 333): `{completed}/{total}` → `{completed}/{total} samtal`
 
-### Issue 2: "5 samtal om" tile label barely visible
+**Revert titles** in data files (see File 3 below).
 
-The tile label uses `color: 'rgba(255,255,255,0.7)'` at `fontSize: '11px'` — against the dark scrim this should be visible, but 11px at 0.7 opacity is too faint in practice.
+### File 2: `src/components/CategoryTileGrid.tsx`
 
-**Fix in `CategoryTile` within `KidsProductHome.tsx`** (line ~285–295):
-- Increase opacity from `0.7` to `0.85`
-- Increase font size from `11px` to `12px`
-- Add stronger text-shadow: `'0 1px 3px rgba(0,0,0,0.9), 0 2px 6px rgba(0,0,0,0.5)'`
+**Remove** the "samtal om" `<span>` (lines 184–195).
 
-**Same fix in `src/components/CategoryTileGrid.tsx`** for the matching "samtal om" label.
+**Update progress text** (line 255): `{completed}/{totalCards}` → `{completed}/{totalCards} samtal`
+
+### File 3: Revert category titles
+
+| File | Current | Restored |
+|------|---------|----------|
+| `syskonkort.ts` | `Att bli syskon` | `Vi blev syskon` |
+| `syskonkort.ts` | `Att vara olika` | `Vi är olika` |
+| `jag-i-varlden.ts` | `Vad jag tror på` | `Vad tror jag på` |
+| `vardagskort.ts` | `Livet utanför hemmet` | `Utanför hemmet` |
+| `still-us-mock.ts` | `Oss tillsammans` | `Tillsammans` |
 
 ### Unchanged
-- Tile layout, images, tap behavior, animations, routes, progress format, renamed category titles
+- Product-level merged subtitle, tile layout/images/animations, progress bar visual, all protected patterns
 
