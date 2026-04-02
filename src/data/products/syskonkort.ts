@@ -5,14 +5,14 @@ import heroImage from '@/assets/illustration-syskon.png';
 const categories: Category[] = [
   {
     id: 'sk-vi-blev-syskon',
-    title: 'Vi blev syskon',
+    title: 'Att bli syskon',
     subtitle: 'Hur allt började – och vad vi delar.',
     description: 'Att få ett syskon och de tidiga minnena',
     cardCount: 3,
   },
   {
     id: 'sk-vi-ar-olika',
-    title: 'Vi är olika',
+    title: 'Att vara olika',
     subtitle: 'Plats, personlighet och det som gör oss unika.',
     description: 'Unikhet, plats i syskonskaran och bonussyskon',
     cardCount: 4,
