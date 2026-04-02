@@ -551,7 +551,7 @@ export default function ProductPaywall({ product, onAccessGranted, cardId, curre
 
         {/* Dismiss */}
         <button
-          onClick={() => navigate(backTo)}
+          onClick={() => navigate('/', { replace: true })}
           style={{
             background: 'none',
             border: 'none',
@@ -565,7 +565,7 @@ export default function ProductPaywall({ product, onAccessGranted, cardId, curre
             padding: '8px 16px',
           }}
         >
-          Inte nu
+          Utforska andra produkter
         </button>
       </motion.div>
     </div>
