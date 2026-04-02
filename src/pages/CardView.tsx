@@ -66,6 +66,15 @@ import { useOptimisticCompletions } from '@/contexts/OptimisticCompletionsContex
 import { BEAT_1, BEAT_2, BEAT_3, EASE, PRESS, PAGE, EMOTION } from '@/lib/motion';
 import { getRecommendedCategoryOrder } from '@/lib/recommendedOrder';
 
+// ─── Coaching hint (first-time only) ───
+const COACHING_KEY = 'bonki-coaching-hint-count';
+function getCoachingCount(): number {
+  return parseInt(localStorage.getItem(COACHING_KEY) || '0', 10);
+}
+function incrementCoachingCount(): void {
+  localStorage.setItem(COACHING_KEY, String(getCoachingCount() + 1));
+}
+
 // Completion messages are now in src/lib/pronouns.ts
 
 // ─────────────────────────────────────────────────────────────
