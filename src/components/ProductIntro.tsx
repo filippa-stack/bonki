@@ -450,7 +450,7 @@ export function useProductIntroNeeded(productId: string): { needed: boolean; che
 
     (async () => {
       const { data: { user } } = await supabase.auth.getUser();
-      if (!user || cancelled) { setChecked(true); return; }
+      if (!user || cancelled) { setNeeded(true); setChecked(true); return; }
 
       // Check for any completed session in this product
       const { data } = await supabase
