@@ -300,7 +300,8 @@ export default function ProductIntro({
             style={{
               fontFamily: 'var(--font-sans)',
               fontSize: '15px',
-              color: productAccent,
+              color: LANTERN_GLOW,
+              opacity: 0.6,
               textAlign: 'center',
               marginTop: '8px',
               margin: '8px 0 0',
@@ -406,7 +407,7 @@ export default function ProductIntro({
               fontFamily: 'var(--font-sans)',
               fontSize: '14px',
               color: LANTERN_GLOW,
-              opacity: 0.45,
+              opacity: 0.55,
               textAlign: 'center',
               marginTop: '16px',
               padding: '4px 0',
