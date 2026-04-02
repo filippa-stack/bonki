@@ -74,8 +74,11 @@ function DevProductIntroPreview() {
   );
 }
 
+/** Module-level flag — survives StrictMode remount cycles */
+let audienceRouteConsumed = false;
+
 export default function Index() {
-  const { hasCompletedOnboarding } = useApp();
+  const { hasCompletedOnboarding, completeOnboarding } = useApp();
   const { space } = useCoupleSpaceContext();
   const { user } = useAuth();
   const devState = useDevState();
