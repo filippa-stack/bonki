@@ -864,6 +864,20 @@ export default function ProductLibrary() {
                   }}>
                     ✦ Samtal 1 gratis
                   </span>
+                  {(() => {
+                    const suCount = completedCountMap['still_us'] || 0;
+                    if (suCount <= 0) return null;
+                    return (
+                      <span style={{
+                        fontFamily: 'var(--font-body)',
+                        fontSize: '11px',
+                        fontWeight: 500,
+                        color: 'hsla(0, 0%, 100%, 0.5)',
+                      }}>
+                        {suCount} av 22 samtal
+                      </span>
+                    );
+                  })()}
                 </div>
               </div>
             </motion.div>
