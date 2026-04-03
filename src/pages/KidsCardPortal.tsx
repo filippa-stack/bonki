@@ -96,6 +96,11 @@ export default function KidsCardPortal() {
 
   usePageBackground(product?.backgroundColor ?? MIDNIGHT_INK);
   const progress = useKidsProductProgress(product);
+  const hasRenderedContent = useRef(false);
+
+  useEffect(() => {
+    hasRenderedContent.current = false;
+  }, [categoryId]);
   const completedSet = useMemo(
     () => new Set(progress.recentlyCompletedCardIds),
     [progress.recentlyCompletedCardIds],
@@ -256,7 +261,7 @@ export default function KidsCardPortal() {
   };
 
   // Show stable loading screen until progress data is ready (prevents reorder glitch)
-  if (progress.loading) {
+  if (progress.loading && !hasRenderedContent.current) {
     return (
       <div style={{ height: '100vh', background: product?.backgroundColor ?? MIDNIGHT_INK }} />
     );
@@ -269,6 +274,8 @@ export default function KidsCardPortal() {
       </div>
     );
   }
+
+  hasRenderedContent.current = true;
 
   return (
     <div
