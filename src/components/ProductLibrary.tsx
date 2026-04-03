@@ -729,26 +729,71 @@ export default function ProductLibrary() {
           const untriedProduct = defaultKidsOrder.find(p => !completedCountMap[p.id]);
           if (!untriedProduct) return null;
           return (
-            <div className="px-5" style={{ marginBottom: '12px' }}>
+            <div className="px-5" style={{ marginBottom: '8px' }}>
               <button
                 onClick={() => navigate(`/product/${untriedProduct.slug}`)}
                 style={{
-                  background: 'none',
-                  border: 'none',
+                  width: '100%',
+                  padding: '16px 20px',
+                  borderRadius: '16px',
+                  background: 'rgba(15, 15, 15, 0.7)',
+                  backdropFilter: 'blur(22px)',
+                  WebkitBackdropFilter: 'blur(22px)',
+                  border: '1px solid rgba(255, 255, 255, 0.12)',
+                  backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.08) 100%)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '14px',
+                  boxShadow: '0 12px 36px rgba(0, 0, 0, 0.40), 0 4px 12px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.12), inset 0 -2px 6px rgba(0, 0, 0, 0.12)',
                   cursor: 'pointer',
-                  padding: 0,
                   textAlign: 'left',
-                  fontFamily: 'var(--font-body)',
-                  fontSize: '13px',
-                  color: '#FDF6E3',
-                  opacity: 0.45,
-                  lineHeight: 1.5,
                   WebkitTapHighlightColor: 'transparent',
                 }}
               >
-                Nästa steg: prova <span style={{ fontWeight: 600, opacity: 1, color: '#D4F5C0' }}>
-                  {untriedProduct.name}
-                </span> — ert första samtal är gratis.
+                <div style={{
+                  width: '36px',
+                  height: '36px',
+                  borderRadius: '10px',
+                  backgroundColor: 'rgba(212, 160, 58, 0.15)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexShrink: 0,
+                }}>
+                  <span style={{ fontSize: '16px', color: '#D4A03A' }}>✦</span>
+                </div>
+                <div style={{ flex: 1 }}>
+                  <p style={{
+                    fontFamily: 'var(--font-display)',
+                    fontVariationSettings: "'opsz' 16",
+                    fontSize: '15px',
+                    fontWeight: 400,
+                    color: '#FDF6E3',
+                    lineHeight: 1.3,
+                    margin: 0,
+                  }}>
+                    Prova {untriedProduct.name}
+                  </p>
+                  <p style={{
+                    fontFamily: 'var(--font-body)',
+                    fontSize: '11px',
+                    color: 'hsla(100, 40%, 80%, 0.45)',
+                    marginTop: '2px',
+                    margin: '2px 0 0',
+                  }}>
+                    Ert första samtal är gratis
+                  </p>
+                </div>
+                <span style={{
+                  fontFamily: 'var(--font-body)',
+                  fontSize: '10px',
+                  fontWeight: 600,
+                  letterSpacing: '0.06em',
+                  color: '#D4F5C0',
+                  opacity: 0.4,
+                }}>
+                  →
+                </span>
               </button>
             </div>
           );
