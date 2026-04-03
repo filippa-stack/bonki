@@ -1115,7 +1115,7 @@ export default function Journal() {
               >
                 <span style={{
                   fontSize: '11px', fontWeight: 600, letterSpacing: '2px',
-                  color: `${DRIFTWOOD}aa`, textTransform: 'uppercase', lineHeight: 1,
+                  color: 'rgba(253,246,227,0.45)', textTransform: 'uppercase', lineHeight: 1,
                 }}>
                   Samtal utan anteckningar ({emptyStillUsSessions.length})
                 </span>
