@@ -730,7 +730,7 @@ function StillUsCategoryView({
               }}
             >
               {/* GRATIS badge for free card */}
-              {freeCardId === card.id && !isCompleted && (
+              {freeCardId === card.id && !allTimeCompletedCardIds.includes(card.id) && (
                 <FreeCardBadge />
               )}
 
