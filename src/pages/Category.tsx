@@ -163,6 +163,13 @@ export default function Category() {
     return Array.from(merged);
   }, [isKidsProduct, serverCompletedCardIds, serverCompletedWithDates, optimisticCardIds]);
 
+  // All-time completions — for GRATIS badge (should never reappear after completion)
+  const allTimeCompletedCardIds = useMemo(() => {
+    const ids = new Set(serverCompletedCardIds);
+    optimisticCardIds.forEach(id => ids.add(id));
+    return Array.from(ids);
+  }, [serverCompletedCardIds, optimisticCardIds]);
+
   const backTo = product ? `/product/${product.slug}` : isStillUsCategory ? '/?devState=solo' : '/';
 
   useProductTheme(
@@ -211,6 +218,7 @@ export default function Category() {
         freeCardId={product?.freeCardId}
         product={product}
         productIsPurchased={productIsPurchased}
+        allTimeCompletedCardIds={allTimeCompletedCardIds}
         priceSek={priceSek}
       />
     );
@@ -229,7 +237,7 @@ export default function Category() {
       <div className="px-5 pt-4 pb-24 flex flex-col relative z-[1]">
         {cards.map((card, index) => (
           <div key={card.id} style={{ marginBottom: index === cards.length - 1 ? 0 : '16px', position: 'relative' }}>
-            {product?.freeCardId === card.id && !completedCardIds.includes(card.id) && (
+            {product?.freeCardId === card.id && !allTimeCompletedCardIds.includes(card.id) && (
               <FreeCardBadge />
             )}
             <button
@@ -577,6 +585,7 @@ interface StillUsCategoryViewProps {
   product?: ProductManifest;
   productIsPurchased?: boolean;
   priceSek?: number | null;
+  allTimeCompletedCardIds?: string[];
 }
 
 function StillUsCategoryView({
@@ -592,6 +601,7 @@ function StillUsCategoryView({
   product,
   productIsPurchased = true,
   priceSek = null,
+  allTimeCompletedCardIds = [],
 }: StillUsCategoryViewProps) {
   const completedCount = cards.filter(c => completedCardIds.includes(c.id)).length;
   const [paywallCard, setPaywallCard] = useState<{ id: string; title: string } | null>(null);
@@ -730,7 +740,7 @@ function StillUsCategoryView({
               }}
             >
               {/* GRATIS badge for free card */}
-              {freeCardId === card.id && !isCompleted && (
+              {freeCardId === card.id && !allTimeCompletedCardIds.includes(card.id) && (
                 <FreeCardBadge />
               )}
 

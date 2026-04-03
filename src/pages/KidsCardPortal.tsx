@@ -100,6 +100,10 @@ export default function KidsCardPortal() {
     () => new Set(progress.recentlyCompletedCardIds),
     [progress.recentlyCompletedCardIds],
   );
+  const allTimeSet = useMemo(
+    () => new Set(progress.allTimeCompletedCardIds),
+    [progress.allTimeCompletedCardIds],
+  );
   const activeSet = useMemo(
     () => new Set(progress.activeCardIds),
     [progress.activeCardIds],
@@ -466,7 +470,7 @@ export default function KidsCardPortal() {
                   </div>
                 )}
                 {/* GRATIS badge for free card */}
-                {product?.freeCardId === card.id && !completedSet.has(card.id) && (
+                {product?.freeCardId === card.id && !allTimeSet.has(card.id) && (
                   <FreeCardBadge />
                 )}
                 {!completedSet.has(card.id) && activeSet.has(card.id) && (
