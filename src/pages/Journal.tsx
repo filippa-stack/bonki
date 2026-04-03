@@ -472,7 +472,7 @@ function SessionGroupCard({ group, navigate }: { group: SessionGroup; navigate: 
               <div style={{
                 height: '1px',
                 margin: '10px 0',
-                background: `linear-gradient(90deg, ${DRIFTWOOD}33, ${DRIFTWOOD}22, transparent)`,
+                background: `linear-gradient(90deg, rgba(253,246,227,0.13), rgba(253,246,227,0.09), transparent)`,
               }} />
             )}
             {note.questionText && (
@@ -576,7 +576,7 @@ export default function Journal() {
   
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
   const [activeFilters, setActiveFilters] = useState<Set<FilterChip>>(new Set(['barn', 'par']));
-  const [parExpanded, setParExpanded] = useState(true);
+  
 
   // Fetch data
   useEffect(() => {
@@ -787,14 +787,12 @@ export default function Journal() {
       if (item.type === 'completed') {
         if (isPar && !activeFilters.has('par')) return;
         if (!isPar && !activeFilters.has('barn')) return;
-        if (isPar && bothActive && !parExpanded) return;
         emptySU.push(item);
         return;
       }
 
       if (isPar) {
         if (!activeFilters.has('par')) return;
-        if (bothActive && !parExpanded) return;
       } else {
         if (!activeFilters.has('barn')) return;
       }
@@ -802,7 +800,7 @@ export default function Journal() {
     });
 
     return { visibleItems: visible, emptyStillUsSessions: emptySU };
-  }, [allTimelineItems, activeFilters, parExpanded]);
+  }, [allTimelineItems, activeFilters]);
 
   // ── Group notes by sessionId into envelopes ──
   const groupedItems = useMemo<RenderItem[]>(() => {
@@ -910,7 +908,7 @@ export default function Journal() {
     };
   }, [filteredSessions]);
 
-  const showParPrivacy = activeFilters.has('barn') && activeFilters.has('par') && stillUsSessions.length > 0;
+  
 
 
   // Filtered bookmarks
@@ -951,7 +949,7 @@ export default function Journal() {
         </h1>
         <p style={{
           fontFamily: 'var(--font-serif)', fontSize: '14px', fontStyle: 'italic',
-          color: `${LANTERN_GLOW}77`, marginTop: '6px', lineHeight: 1.4,
+          color: 'rgba(253,246,227,0.4)', marginTop: '6px', lineHeight: 1.4,
         }}>
           Vad ni burit med er.
         </p>
@@ -966,9 +964,9 @@ export default function Journal() {
             onClick={() => setActiveFilters(new Set<FilterChip>(['barn', 'par']))}
             style={{
               height: '30px', paddingLeft: '16px', paddingRight: '16px', borderRadius: '10px',
-              border: `1px solid ${bothActive ? DEEP_SAFFRON : DRIFTWOOD}44`,
+              border: `1px solid ${bothActive ? DEEP_SAFFRON : 'rgba(253,246,227,0.17)'}`,
               background: bothActive ? `${DEEP_SAFFRON}18` : 'transparent',
-              color: bothActive ? LANTERN_GLOW : `${DRIFTWOOD}aa`,
+              color: bothActive ? LANTERN_GLOW : 'rgba(253,246,227,0.55)',
               fontFamily: 'var(--font-sans)', fontSize: '12px', fontWeight: 500,
               letterSpacing: '0.06em', textTransform: 'uppercase',
               cursor: 'pointer', transition: 'all 200ms ease',
@@ -985,9 +983,9 @@ export default function Journal() {
                 onClick={() => toggleFilter(chip)}
                 style={{
                   height: '30px', paddingLeft: '16px', paddingRight: '16px', borderRadius: '10px',
-                  border: `1px solid ${active ? DEEP_SAFFRON : DRIFTWOOD}44`,
+                  border: `1px solid ${active ? DEEP_SAFFRON : 'rgba(253,246,227,0.17)'}`,
                   backgroundColor: active ? `${DEEP_SAFFRON}18` : 'transparent',
-                  color: active ? LANTERN_GLOW : `${DRIFTWOOD}aa`,
+                  color: active ? LANTERN_GLOW : 'rgba(253,246,227,0.55)',
                   fontFamily: 'var(--font-sans)', fontSize: '12px', fontWeight: 500,
                   letterSpacing: '0.06em', textTransform: 'uppercase',
                   cursor: 'pointer', transition: 'all 200ms ease',
@@ -1004,7 +1002,7 @@ export default function Journal() {
       {/* Content */}
       {loading ? (
         <div className="loading-skeleton" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <div style={{ width: '32px', height: '32px', borderRadius: '50%', backgroundColor: `${DRIFTWOOD}33` }} className="animate-pulse" />
+          <div style={{ width: '32px', height: '32px', borderRadius: '50%', backgroundColor: 'rgba(253,246,227,0.13)' }} className="animate-pulse" />
         </div>
       ) : isEmpty ? (
         <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -1050,10 +1048,10 @@ export default function Journal() {
                   onClick={() => pulseData.latestCardId && navigate(`/card/${pulseData.latestCardId}`)}
                   style={{
                     fontWeight: 600,
-                    color: DRIFTWOOD,
+                    color: 'rgba(253,246,227,0.65)',
                     cursor: pulseData.latestCardId ? 'pointer' : 'default',
                     textDecoration: pulseData.latestCardId ? 'underline' : 'none',
-                    textDecorationColor: `${DRIFTWOOD}44`, textUnderlineOffset: '3px',
+                    textDecorationColor: 'rgba(253,246,227,0.17)', textUnderlineOffset: '3px',
                   }}
                 >
                   {pulseData.latestCardName}
@@ -1061,40 +1059,13 @@ export default function Journal() {
                 {' · '}{pulseData.latestRelDate}
               </p>
               {pulseData.uniqueProductCount > 1 && (
-                <p style={{ margin: '4px 0 0', fontSize: '12px', color: `${DRIFTWOOD}dd`, lineHeight: 1.4 }}>
+                <p style={{ margin: '4px 0 0', fontSize: '12px', color: 'rgba(253,246,227,0.45)', lineHeight: 1.4 }}>
                   I {pulseData.uniqueProductCount} olika samtalsprodukter
                 </p>
               )}
             </div>
           )}
 
-          {/* Par Privacy Row */}
-          {showParPrivacy && (
-            <div
-              style={{ margin: '12px 16px 0' }}
-            >
-              <button
-                onClick={() => setParExpanded(prev => !prev)}
-                style={{
-                  width: '100%', backgroundColor: DEEP_DUSK, borderRadius: '12px',
-                  padding: '12px 14px', border: 'none', cursor: 'pointer',
-                  display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                  WebkitTapHighlightColor: 'transparent',
-                }}
-              >
-                <span style={{ fontSize: '14px', color: `${LANTERN_GLOW}77`, textAlign: 'left' }}>
-                  {parExpanded ? 'Visa mindre' : `Still Us · ${stillUsSessions.length} samtal`}
-                </span>
-                <motion.span
-                  animate={{ rotate: parExpanded ? 180 : 0 }}
-                  transition={{ duration: 0.2 }}
-                  style={{ color: `${LANTERN_GLOW}77`, display: 'flex' }}
-                >
-                  <ChevronDown size={18} strokeWidth={1.5} />
-                </motion.span>
-              </button>
-            </div>
-          )}
 
           {/* Timeline */}
           {monthGroups.map((group, gi) => (
@@ -1112,7 +1083,7 @@ export default function Journal() {
                 </span>
                 <div style={{
                   flex: 1, height: '1px',
-                  background: `linear-gradient(90deg, ${DRIFTWOOD}55, transparent)`,
+                  background: 'linear-gradient(90deg, rgba(253,246,227,0.2), transparent)',
                 }} />
               </div>
 
@@ -1144,14 +1115,14 @@ export default function Journal() {
               >
                 <span style={{
                   fontSize: '11px', fontWeight: 600, letterSpacing: '2px',
-                  color: `${DRIFTWOOD}aa`, textTransform: 'uppercase', lineHeight: 1,
+                  color: 'rgba(253,246,227,0.45)', textTransform: 'uppercase', lineHeight: 1,
                 }}>
                   Samtal utan anteckningar ({emptyStillUsSessions.length})
                 </span>
                 <motion.span
                   animate={{ rotate: emptySessionsOpen ? 180 : 0 }}
                   transition={{ duration: 0.2 }}
-                  style={{ color: `${DRIFTWOOD}88`, display: 'flex' }}
+                  style={{ color: 'rgba(253,246,227,0.35)', display: 'flex' }}
                 >
                   <ChevronDown size={14} strokeWidth={1.5} />
                 </motion.span>
@@ -1171,8 +1142,8 @@ export default function Journal() {
                           display: 'flex', justifyContent: 'space-between', alignItems: 'center',
                           opacity: 0.5, fontSize: '13px', padding: '4px 0',
                         }}>
-                          <span style={{ color: DRIFTWOOD }}>{m.cardName}</span>
-                          <span style={{ color: `${DRIFTWOOD}99` }}>
+                          <span style={{ color: 'rgba(253,246,227,0.6)' }}>{m.cardName}</span>
+                          <span style={{ color: 'rgba(253,246,227,0.45)' }}>
                             {new Date(m.date).toLocaleDateString('sv-SE', { day: 'numeric', month: 'short' })}
                           </span>
                         </div>
@@ -1192,16 +1163,16 @@ export default function Journal() {
                 margin: '40px 16px 14px',
                 display: 'flex', alignItems: 'center', gap: '10px',
               }}>
-                <Bookmark size={13} strokeWidth={2} style={{ color: `${DRIFTWOOD}88` }} />
+                <Bookmark size={13} strokeWidth={2} style={{ color: 'rgba(253,246,227,0.35)' }} />
                 <span style={{
                   fontSize: '11px', fontWeight: 600,
-                  letterSpacing: '2px', color: `${DRIFTWOOD}aa`, lineHeight: 1, textTransform: 'uppercase',
+                  letterSpacing: '2px', color: 'rgba(253,246,227,0.45)', lineHeight: 1, textTransform: 'uppercase',
                 }}>
                   Sparade frågor
                 </span>
                 <div style={{
                   flex: 1, height: '1px',
-                  background: `linear-gradient(90deg, ${DRIFTWOOD}33, transparent)`,
+                  background: 'linear-gradient(90deg, rgba(253,246,227,0.13), transparent)',
                 }} />
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', padding: '0 16px' }}>
@@ -1233,12 +1204,12 @@ export default function Journal() {
                           "{b.question_text}"
                         </span>
                         <span style={{
-                          fontSize: '12px', color: `${DRIFTWOOD}99`, display: 'block', marginTop: '8px',
+                          fontSize: '12px', color: 'rgba(253,246,227,0.45)', display: 'block', marginTop: '8px',
                         }}>
                           {cardName} · {catName}
                         </span>
                       </div>
-                      <ChevronRight size={16} strokeWidth={1.5} style={{ color: `${DRIFTWOOD}66`, flexShrink: 0, marginLeft: '8px' }} />
+                      <ChevronRight size={16} strokeWidth={1.5} style={{ color: 'rgba(253,246,227,0.3)', flexShrink: 0, marginLeft: '8px' }} />
                     </motion.button>
                   );
                 })}
