@@ -304,15 +304,17 @@ export default function SessionStepReflection({
       {showBackButton && onBack ? (
         <div style={{
           display: 'flex',
-          flexDirection: 'row',
           alignItems: 'center',
+          justifyContent: 'center',
           width: '100%',
-          gap: '8px',
+          position: 'relative',
         }}>
           <button
             onClick={onBack}
             aria-label="Föregående"
             style={{
+              position: 'absolute',
+              left: 0,
               background: 'none',
               border: 'none',
               cursor: 'pointer',
@@ -322,7 +324,6 @@ export default function SessionStepReflection({
               alignItems: 'center',
               justifyContent: 'center',
               padding: 0,
-              flexShrink: 0,
             }}
           >
             <ChevronLeft size={20} strokeWidth={1.8} style={{ color: stillUsMode ? 'hsl(38 20% 82%)' : 'var(--text-secondary)', opacity: 0.7 }} />
@@ -336,7 +337,9 @@ export default function SessionStepReflection({
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              flex: 1,
+              width: 'auto',
+              minWidth: '200px',
+              maxWidth: '280px',
               height: '52px',
               borderRadius: '14px',
               backgroundColor: ctaBg,
@@ -350,6 +353,8 @@ export default function SessionStepReflection({
               boxShadow: 'none',
               opacity: submitting ? 0.5 : (hadPriorTextRef.current ? 0.90 : 1),
               transition: 'opacity 200ms ease, background-color 260ms ease-out',
+              paddingLeft: '32px',
+              paddingRight: '32px',
             }}
           >
             {submitting ? 'Sparar…' : resolvedCtaLabel}

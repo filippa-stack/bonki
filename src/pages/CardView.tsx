@@ -1369,7 +1369,7 @@ export default function CardView() {
             transition={{ delay: 0.3, duration: 0.3 }}
             style={{ width: '100%' }}
           >
-            <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', width: '100%', gap: '8px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', position: 'relative' }}>
               <button
                 onClick={() => {
                   userDismissedCompletion.current = true;
@@ -1382,6 +1382,8 @@ export default function CardView() {
                 }}
                 aria-label="Föregående"
                 style={{
+                  position: 'absolute',
+                  left: 0,
                   background: 'none',
                   border: 'none',
                   cursor: 'pointer',
@@ -1391,7 +1393,6 @@ export default function CardView() {
                   alignItems: 'center',
                   justifyContent: 'center',
                   padding: 0,
-                  flexShrink: 0,
                 }}
               >
                 <ChevronLeft size={20} strokeWidth={1.8} style={{ color: LANTERN_GLOW, opacity: 0.7 }} />
@@ -1401,7 +1402,9 @@ export default function CardView() {
                   hasNextCard ? postCompletionNav.destination : categoryDest
                 )}
               style={{
-                flex: 1,
+                width: 'auto',
+                minWidth: '200px',
+                maxWidth: '280px',
                 height: '56px',
                 borderRadius: '24px',
                 backgroundColor: 'transparent',
@@ -1414,7 +1417,8 @@ export default function CardView() {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                gap: '6px',
+                paddingLeft: '32px',
+                paddingRight: '32px',
               }}
             >
               {hasNextCard ? (
@@ -1653,7 +1657,7 @@ export default function CardView() {
             {cardId === 'su-mock-0' ? (
               /* su-mock-0: unique CTA → next card */
               <>
-                <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', width: '100%', maxWidth: '520px', gap: '8px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', maxWidth: '520px', position: 'relative' }}>
                   <button
                     onClick={() => {
                       userDismissedCompletion.current = true;
@@ -1666,6 +1670,8 @@ export default function CardView() {
                     }}
                     aria-label="Föregående"
                     style={{
+                      position: 'absolute',
+                      left: 0,
                       background: 'none',
                       border: 'none',
                       cursor: 'pointer',
@@ -1675,7 +1681,6 @@ export default function CardView() {
                       alignItems: 'center',
                       justifyContent: 'center',
                       padding: 0,
-                      flexShrink: 0,
                     }}
                   >
                     <ChevronLeft size={20} strokeWidth={1.8} style={{ color: DRIFTWOOD, opacity: 0.7 }} />
@@ -1686,7 +1691,9 @@ export default function CardView() {
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      flex: 1,
+                      width: 'auto',
+                      minWidth: '200px',
+                      maxWidth: '280px',
                       height: '52px',
                       borderRadius: '24px',
                       backgroundColor: 'transparent',
@@ -1696,6 +1703,8 @@ export default function CardView() {
                       fontSize: '17px',
                       fontWeight: 600,
                       cursor: 'pointer',
+                      paddingLeft: '32px',
+                      paddingRight: '32px',
                     }}
                   >
                     Nästa samtal
@@ -1720,7 +1729,7 @@ export default function CardView() {
               </>
             ) : postCompletionNav.type === 'all_complete' ? (
               /* All done — go home */
-              <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', width: '100%', maxWidth: '520px', gap: '8px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', maxWidth: '520px', position: 'relative' }}>
                  <button
                    onClick={() => {
                      userDismissedCompletion.current = true;
@@ -1733,6 +1742,8 @@ export default function CardView() {
                    }}
                    aria-label="Föregående"
                    style={{
+                     position: 'absolute',
+                     left: 0,
                      background: 'none',
                      border: 'none',
                      cursor: 'pointer',
@@ -1742,7 +1753,6 @@ export default function CardView() {
                      alignItems: 'center',
                      justifyContent: 'center',
                      padding: 0,
-                     flexShrink: 0,
                    }}
                  >
                    <ChevronLeft size={20} strokeWidth={1.8} style={{ color: DRIFTWOOD, opacity: 0.7 }} />
@@ -1753,7 +1763,9 @@ export default function CardView() {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    flex: 1,
+                    width: 'auto',
+                    minWidth: '200px',
+                    maxWidth: '280px',
                     height: '52px',
                     borderRadius: '14px',
                     backgroundColor: DEEP_SAFFRON,
@@ -1763,6 +1775,8 @@ export default function CardView() {
                     fontWeight: 600,
                     border: 'none',
                     cursor: 'pointer',
+                    paddingLeft: '32px',
+                    paddingRight: '32px',
                   }}
                 >
                   Till Ert utrymme
@@ -1771,7 +1785,7 @@ export default function CardView() {
             ) : (
               <>
                 {/* Primary CTA with Föregående */}
-                <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', width: '100%', maxWidth: '520px', gap: '8px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', maxWidth: '520px', position: 'relative' }}>
                   <button
                     onClick={() => {
                       userDismissedCompletion.current = true;
@@ -1784,6 +1798,8 @@ export default function CardView() {
                     }}
                     aria-label="Föregående"
                     style={{
+                      position: 'absolute',
+                      left: 0,
                       background: 'none',
                       border: 'none',
                       cursor: 'pointer',
@@ -1793,7 +1809,6 @@ export default function CardView() {
                       alignItems: 'center',
                       justifyContent: 'center',
                       padding: 0,
-                      flexShrink: 0,
                     }}
                   >
                     <ChevronLeft size={20} strokeWidth={1.8} style={{ color: DRIFTWOOD, opacity: 0.7 }} />
@@ -1804,7 +1819,9 @@ export default function CardView() {
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      flex: 1,
+                      width: 'auto',
+                      minWidth: '200px',
+                      maxWidth: '280px',
                       height: '52px',
                       borderRadius: '24px',
                       backgroundColor: 'transparent',
@@ -1814,6 +1831,8 @@ export default function CardView() {
                       fontSize: '17px',
                       fontWeight: 600,
                       cursor: 'pointer',
+                      paddingLeft: '32px',
+                      paddingRight: '32px',
                     }}
                   >
                     {postCompletionNav.label || 'Nästa samtal'}
@@ -3238,11 +3257,13 @@ export default function CardView() {
             zIndex: 2,
           }}>
             {!(currentStepIndex === 0 && localPromptIndex === 0) ? (
-              <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%', gap: '12px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', position: 'relative' }}>
               <button
                   onClick={() => handleKidsBack()}
                   aria-label="Föregående"
                   style={{
+                    position: 'absolute',
+                    left: 0,
                     background: 'none',
                     border: 'none',
                     cursor: 'pointer',
@@ -3252,7 +3273,6 @@ export default function CardView() {
                     alignItems: 'center',
                     justifyContent: 'center',
                     padding: 0,
-                    flexShrink: 0,
                   }}
                 >
                   <ChevronLeft size={20} strokeWidth={1.8} style={{ color: LANTERN_GLOW, opacity: 0.7 }} />
@@ -3261,7 +3281,9 @@ export default function CardView() {
                   onClick={handleKidsAdvance}
                   whileTap={{ scale: 0.97 }}
                   style={{
-                    flex: 1,
+                    width: 'auto',
+                    minWidth: '200px',
+                    maxWidth: '280px',
                     height: '56px',
                     borderRadius: '14px',
                     backgroundColor: SAFFRON,
@@ -3274,6 +3296,8 @@ export default function CardView() {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
+                    paddingLeft: '32px',
+                    paddingRight: '32px',
                   }}
                 >
                   {isLastPrompt ? 'Avsluta' : 'Fortsätt'}
