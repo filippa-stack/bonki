@@ -1444,7 +1444,7 @@ export default function CardView() {
                   textAlign: 'center',
                 }}
               >
-                {`Tillbaka till ${product?.name ?? 'översikt'}`}
+                {`Till ${product?.name ?? 'översikt'}`}
               </button>
             )}
           </motion.div>
