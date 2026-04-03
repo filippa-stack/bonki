@@ -917,25 +917,31 @@ export default function ProductLibrary() {
               gap: '28px',
             }}
           >
-            {sortedKidsProducts.map((product) => (
-              <PastelTile
-                key={product.id}
-                name={product.name}
-                bg={TILE_COLORS[product.id]!}
-                productId={product.id}
-                tagline={TAGLINES[product.id]}
-                ageLabel={product.ageLabel}
-                accentColor={ACCENT_COLORS[product.id]}
-                taglineColor={TAGLINE_COLORS[product.id]}
-                illustration={ILLUSTRATIONS[product.id]}
-                illustrationOpacity={ILLUSTRATION_OPACITY[product.id]}
-                onClick={() => navigate(`/product/${product.slug}`)}
-                badgeText={buildBadgeText(product)}
-                hasActiveSession={activeProductIds.has(product.id)}
-                tileHeight={TILE_HEIGHTS[product.id] ?? '240px'}
-                wide
-              />
-            ))}
+            {sortedKidsProducts.map((product) => {
+              const count = completedCountMap[product.id] || 0;
+              const ptxt = count > 0 ? `${count} av ${product.cards.length} samtal` : undefined;
+              return (
+                <PastelTile
+                  key={product.id}
+                  name={product.name}
+                  bg={TILE_COLORS[product.id]!}
+                  productId={product.id}
+                  tagline={TAGLINES[product.id]}
+                  ageLabel={product.ageLabel}
+                  accentColor={ACCENT_COLORS[product.id]}
+                  taglineColor={TAGLINE_COLORS[product.id]}
+                  illustration={ILLUSTRATIONS[product.id]}
+                  illustrationOpacity={ILLUSTRATION_OPACITY[product.id]}
+                  onClick={() => navigate(`/product/${product.slug}`)}
+                  badgeText={buildBadgeText(product)}
+                  hasActiveSession={activeProductIds.has(product.id)}
+                  tileHeight={TILE_HEIGHTS[product.id] ?? '240px'}
+                  progressText={ptxt}
+                  lastActive={lastActivityMap[product.id]}
+                  wide
+                />
+              );
+            })}
           </motion.div>
         </div>
 
