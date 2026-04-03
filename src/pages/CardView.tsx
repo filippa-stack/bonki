@@ -2363,6 +2363,7 @@ export default function CardView() {
       }
     };
 
+    hasRenderedContent.current = true;
     return (
       <SessionFocusShell
         productBgColor={product?.backgroundColor}
