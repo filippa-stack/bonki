@@ -1072,7 +1072,7 @@ export default function CardView() {
   //  LOADING GATE — hold a stable surface while async data loads
   // ─────────────────────────────────────────────────────────────
   const isInitializing = normalizedSession.loading || accessLoading || resumeLoading;
-  if (isInitializing && !devState && !showCompletion) {
+  if (isInitializing && !devState && !showCompletion && !hasRenderedContent.current) {
     const loadingBg = product?.backgroundColor ?? 'var(--surface-base, hsl(46, 64%, 89%))';
     return (
       <div
