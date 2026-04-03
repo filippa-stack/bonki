@@ -225,7 +225,7 @@ h1, h2, h3,
     --completion-link: hsl(29, 13%, 37%);
 
     /* Dynamic overrides — set via useThemeVars hook at runtime */
-    --page-bg: var(--color-bg);
+    --page-bg: #0B1026;
     --hero-title-color: var(--text-primary);
     --hero-subtitle-color: var(--text-secondary);
     --btn-primary-bg: var(--color-cta);
