@@ -1,33 +1,30 @@
 
 
-## Fix: Filter orphaned card_ids from progress counts
+## Fix ProductIntro Flash — useProductIntroNeeded
 
-**File:** `src/components/ProductLibrary.tsx`
+**File:** `src/components/ProductIntro.tsx`
 
-**Root cause:** The database contains completed sessions with card_ids from old content structures that no longer exist in the product manifest. The Set counts all unique card_ids regardless, producing counts like "25 av 22".
+**Root cause:** When `user` is briefly `null` during auth settling, the hook sets `checked: true` + `needed: true`, causing a one-frame flash of ProductIntro before the real DB result arrives.
 
-### Change — Filter counts against manifest at the source (lines 535-537)
+### Change — Split the early return (line 344)
 
-Replace the simple `.size` count with a filtered count using `allProducts`:
-
+Replace:
 ```tsx
-for (const [productId, cardIds] of Object.entries(sets)) {
-  const manifest = allProducts.find(p => p.id === productId);
-  if (manifest) {
-    counts[productId] = [...cardIds].filter(id => manifest.cards.some(c => c.id === id)).length;
-  } else {
-    counts[productId] = cardIds.size;
-  }
+if (!user || cancelled) { setNeeded(true); setChecked(true); return; }
+```
+
+With:
+```tsx
+if (cancelled) return;
+if (!user) {
+  // Auth not settled — don't mark checked, keep ProductHome in loading state
+  return;
 }
 ```
 
-This fixes it globally for all products (Still Us and kids products alike). No changes needed at the tile rendering level — `completedCountMap` will already contain the correct filtered count.
-
-The `completedCardSets` state keeps the raw sets (needed for `freeCardId` checks which do match current manifest IDs).
+This keeps `checked` as `false` while auth settles, so ProductHome renders the blank loading div (same background color) instead of flashing ProductIntro.
 
 ### Not changed
-- Tile rendering code (lines 896, 988)
-- Data fetch queries
-- `completedCardSets` (keeps all DB card_ids for badge logic)
-- Any other file
+- ProductIntro component, ProductHome.tsx, any other file
+- Rest of `useProductIntroNeeded` logic
 
