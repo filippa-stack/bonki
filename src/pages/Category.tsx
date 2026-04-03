@@ -163,6 +163,13 @@ export default function Category() {
     return Array.from(merged);
   }, [isKidsProduct, serverCompletedCardIds, serverCompletedWithDates, optimisticCardIds]);
 
+  // All-time completions — for GRATIS badge (should never reappear after completion)
+  const allTimeCompletedCardIds = useMemo(() => {
+    const ids = new Set(serverCompletedCardIds);
+    optimisticCardIds.forEach(id => ids.add(id));
+    return Array.from(ids);
+  }, [serverCompletedCardIds, optimisticCardIds]);
+
   const backTo = product ? `/product/${product.slug}` : isStillUsCategory ? '/?devState=solo' : '/';
 
   useProductTheme(
