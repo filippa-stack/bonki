@@ -218,6 +218,7 @@ export default function Category() {
         freeCardId={product?.freeCardId}
         product={product}
         productIsPurchased={productIsPurchased}
+        allTimeCompletedCardIds={allTimeCompletedCardIds}
         priceSek={priceSek}
       />
     );
