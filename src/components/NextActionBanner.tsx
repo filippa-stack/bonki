@@ -53,7 +53,7 @@ export default function NextActionBanner({
     if (!card) return null;
     label = 'Fortsätt ert samtal';
     subtitle = card.title;
-    ctaText = 'Öppna →';
+    ctaText = 'Öppna';
     labelColor = LANTERN_GLOW;
     onClick = () => navigate(`/card/${card.id}`, { state: { resumed: true } });
 
@@ -64,7 +64,7 @@ export default function NextActionBanner({
     if (!recommendation) return null;
     label = 'Ert nästa steg';
     subtitle = recommendation.displayName;
-    ctaText = 'Utforska →';
+    ctaText = 'Utforska';
     labelColor = DRIFTWOOD;
     onClick = () => navigate(`/product/${recommendation.slug}`);
 
