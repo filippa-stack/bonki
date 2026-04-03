@@ -244,10 +244,10 @@ h1, h2, h3,
   }
 
   body {
-    @apply bg-background text-foreground font-sans;
+    @apply text-foreground font-sans;
     font-family: var(--font-body);
     padding-bottom: env(safe-area-inset-bottom, 0px);
-    background-color: var(--surface-base, hsl(46, 64%, 89%));
+    background-color: #0B1026;
     color: var(--text-primary);
     font-size: 16px;
     line-height: 1.5;
