@@ -1048,10 +1048,10 @@ export default function Journal() {
                   onClick={() => pulseData.latestCardId && navigate(`/card/${pulseData.latestCardId}`)}
                   style={{
                     fontWeight: 600,
-                    color: DRIFTWOOD,
+                    color: 'rgba(253,246,227,0.65)',
                     cursor: pulseData.latestCardId ? 'pointer' : 'default',
                     textDecoration: pulseData.latestCardId ? 'underline' : 'none',
-                    textDecorationColor: `${DRIFTWOOD}44`, textUnderlineOffset: '3px',
+                    textDecorationColor: 'rgba(253,246,227,0.17)', textUnderlineOffset: '3px',
                   }}
                 >
                   {pulseData.latestCardName}
