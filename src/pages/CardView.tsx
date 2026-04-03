@@ -1280,6 +1280,18 @@ export default function CardView() {
             transition={{ delay: 0.2, duration: 0.3 }}
             style={{ width: '100%', marginBottom: '40px' }}
           >
+            <p style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: '11px',
+              fontWeight: 500,
+              letterSpacing: '0.06em',
+              textTransform: 'uppercase',
+              color: 'rgba(253, 246, 227, 0.35)',
+              textAlign: 'center',
+              marginBottom: '8px',
+            }}>
+              Valfritt
+            </p>
             <KidsCompletionNote
               sessionId={activeSessionId}
               spaceId={space?.id ?? null}
