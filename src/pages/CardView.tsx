@@ -1765,7 +1765,7 @@ export default function CardView() {
                     cursor: 'pointer',
                   }}
                 >
-                  Tillbaka till Ert utrymme
+                  Till Ert utrymme
                 </button>
               </div>
             ) : (
