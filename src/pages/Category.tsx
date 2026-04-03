@@ -601,6 +601,7 @@ function StillUsCategoryView({
   product,
   productIsPurchased = true,
   priceSek = null,
+  allTimeCompletedCardIds = [],
 }: StillUsCategoryViewProps) {
   const completedCount = cards.filter(c => completedCardIds.includes(c.id)).length;
   const [paywallCard, setPaywallCard] = useState<{ id: string; title: string } | null>(null);
