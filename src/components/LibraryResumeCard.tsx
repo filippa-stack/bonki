@@ -249,7 +249,7 @@ export default function LibraryResumeCard({ activeTab, global, forceMock }: Libr
 
   return (
     <button
-      onClick={() => navigate(`/product/${display.productSlug}/portal/${display.categoryId}?card=${display.cardId}`)}
+      onClick={() => navigate(`/card/${display.cardId}`)}
       style={{
         width: '100%',
         padding: '16px',
