@@ -99,7 +99,7 @@ export default function NextActionBanner({
         justifyContent: 'space-between',
         width: '88%',
         maxWidth: '340px',
-        margin: '0 auto',
+        margin: '12px auto 0',
         padding: '12px 20px',
         background: `${accentColor}55`,
         backdropFilter: 'blur(24px)',
