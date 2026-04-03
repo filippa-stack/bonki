@@ -1,35 +1,18 @@
 
 
-## Revised: Add Meta Pixel Tracking
+## Add "Fortsätt utforska" Return User Banner
 
-Same plan as before with one adjustment to the `Index.tsx` purchase block — reorder to: read `returnCard` → fire pixel → strip param. This matches the user's preferred clarity.
+**File:** `src/components/ProductLibrary.tsx`
 
-### Files and changes
+**Single change** — insert a new conditional block after line 811 (after the `})()}` that closes the "Nästa steg" suggestion), before line 813 (`<div>`).
 
-**1. `index.html`** — Add Meta Pixel base script in `<head>`, `<noscript><img>` fallback in `<body>`.
+The block renders only when:
+- `activeProductIds.size === 0` (no active session)
+- `Object.keys(completedCountMap).length > 0` (has history)
+- Every product in `defaultKidsOrder` has been tried (`!defaultKidsOrder.find(p => !completedCountMap[p.id])`)
+- A `bonki-last-active-product` slug exists in localStorage and maps to a valid product
 
-**2. Create `src/lib/metaPixel.ts`** — Type-safe `trackPixelEvent` wrapper with UUID `eventID` generation for CAPI dedup.
+The JSX is exactly the code provided in the prompt — glassmorphic card matching the "Nästa steg" tile style, showing "Fortsätt utforska {product.name}" with a progress subtitle "{X} av {Y} samtal" and a faded arrow.
 
-**3. `src/contexts/AuthContext.tsx`** — Fire `CompleteRegistration` on `SIGNED_IN` only if `created_at` < 60s ago.
-
-**4. `src/components/Onboarding.tsx`** — Fire `Lead` alongside existing `trackOnboardingEvent`.
-
-**5. `src/pages/Index.tsx`** — Purchase block (revised order):
-```tsx
-if (searchParams.get('purchase') === 'success') {
-  const returnCard = searchParams.get('returnCard');
-  trackPixelEvent('Purchase', { value: 249, currency: 'SEK' });
-  window.history.replaceState({}, '', window.location.pathname);
-  if (returnCard) {
-    return <Navigate to={`/card/${returnCard}`} replace />;
-  }
-}
-```
-
-**6. `src/App.tsx`** — Add `RoutePageViewTracker` component using `useLocation` + `useEffect` to fire `PageView` on route changes.
-
-### Not changed
-- No new dependencies, no backend changes
-- Protected patterns untouched
-- No Purchase tracking in Paywall files
+No other files or logic changed.
 
