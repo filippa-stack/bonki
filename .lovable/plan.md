@@ -1,15 +1,22 @@
 
 
-## Add Top Margin to NextActionBanner
+## Update ResumeBanner CTA to Solid Fill Pill
 
-**File:** `src/components/NextActionBanner.tsx`
+**Status:** NextActionBanner.tsx ✓ confirmed solid. This is the second solid fill change — for the library-level ResumeBanner.
 
-### Change
+**File:** `src/components/ResumeBanner.tsx`
 
-In the `<motion.button>` style object, change `margin: '0 auto'` to `margin: '12px auto 0'`.
+### Change — "Fortsätt" button style (lines 55-69)
 
-One line, one value.
+Update the CTA button to match NextActionBanner's solid pill:
+
+- Add `border: 'none'`
+- Add `opacity: 1`
+- Change `boxShadow: 'none'` → `'0 2px 8px rgba(0,0,0,0.25)'`
+- Keep existing `backgroundColor`, `color`, `borderRadius`, `letterSpacing`, `height`, `maxWidth`, `padding`
 
 ### Not changed
-- Everything else
+- Dismiss button, text, layout, navigate logic, sessionStorage logic
+- NextActionBanner (already done)
+- Any other file
 
