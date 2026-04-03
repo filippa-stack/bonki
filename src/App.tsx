@@ -171,6 +171,7 @@ const App = () => (
             <Sonner position="bottom-center" offset={{ bottom: 64 }} toastOptions={{ classNames: { toast: 'mx-6' } }} />
             <BrowserRouter>
               <DevStateProvider>
+                <RoutePageViewTracker />
                 <MobileOnlyGate>
                   <DevModeBadge />
                   <AppRoutes />

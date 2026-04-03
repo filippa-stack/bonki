@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { usePageBackground } from '@/hooks/usePageBackground';
 import { useApp } from '@/contexts/AppContext';
 import { trackOnboardingEvent } from '@/lib/trackOnboarding';
+import { trackPixelEvent } from '@/lib/metaPixel';
 import { LANTERN_GLOW } from '@/lib/palette';
 import BonkiButton from '@/components/BonkiButton';
 import bonkiLogo from '@/assets/bonki-logo-transparent.png';
