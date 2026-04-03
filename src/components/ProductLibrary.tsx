@@ -470,6 +470,8 @@ export default function ProductLibrary() {
   // Fetch active sessions across all products for resume indicators
   const { space } = useCoupleSpaceContext();
   const [activeProductIds, setActiveProductIds] = useState<Set<string>>(new Set());
+  const [lastActivityMap, setLastActivityMap] = useState<Record<string, string>>({});
+  const [completedCountMap, setCompletedCountMap] = useState<Record<string, number>>({});
   useEffect(() => {
     const syncLocalPreview = () => {
       if (!isDemoMode()) return;
@@ -490,17 +492,45 @@ export default function ProductLibrary() {
 
     if (!space?.id) return;
     let cancelled = false;
-    supabase
+
+    const fetchActive = supabase
       .from('couple_sessions')
       .select('product_id, last_activity_at')
       .eq('couple_space_id', space.id)
       .eq('status', 'active')
-      .order('last_activity_at', { ascending: false })
-      .then(({ data }) => {
-        if (!cancelled && data) {
-          setActiveProductIds(new Set(data.map(s => s.product_id)));
+      .order('last_activity_at', { ascending: false });
+
+    const fetchCompleted = supabase
+      .from('couple_sessions')
+      .select('product_id')
+      .eq('couple_space_id', space.id)
+      .eq('status', 'completed');
+
+    Promise.all([fetchActive, fetchCompleted]).then(([activeRes, completedRes]) => {
+      if (cancelled) return;
+
+      if (activeRes.data) {
+        setActiveProductIds(new Set(activeRes.data.map(s => s.product_id)));
+        const timestamps: Record<string, string> = {};
+        for (const s of activeRes.data) {
+          if (s.product_id && s.last_activity_at) {
+            timestamps[s.product_id] = s.last_activity_at;
+          }
         }
-      });
+        setLastActivityMap(timestamps);
+      }
+
+      if (completedRes.data) {
+        const counts: Record<string, number> = {};
+        for (const s of completedRes.data) {
+          if (s.product_id) {
+            counts[s.product_id] = (counts[s.product_id] || 0) + 1;
+          }
+        }
+        setCompletedCountMap(counts);
+      }
+    });
+
     return () => { cancelled = true; };
   }, [space?.id]);
 
