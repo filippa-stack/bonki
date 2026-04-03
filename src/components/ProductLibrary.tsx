@@ -344,6 +344,17 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
           }}>
             Fortsätt
           </span>
+          {lastActive && (
+            <span style={{
+              fontFamily: "var(--font-body)",
+              fontSize: '9px',
+              fontWeight: 400,
+              color: '#FDF6E3',
+              opacity: 0.35,
+            }}>
+              {formatRelativeTime(lastActive)}
+            </span>
+          )}
         </div>
       )}
 
