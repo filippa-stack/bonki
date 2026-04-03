@@ -1025,9 +1025,9 @@ export default function Journal() {
                 margin: 0, fontSize: '15px', color: LANTERN_GLOW, lineHeight: 1.5,
                 fontFamily: 'var(--font-sans)',
               }}>
-                Ni har haft{' '}
+                Era samtal växer —{' '}
                 <span style={{ fontWeight: 700, color: DEEP_SAFFRON, fontSize: '18px' }}>{pulseData.total}</span>
-                {' '}samtal sedan {pulseData.monthLabel}.
+                {' '}sedan {pulseData.monthLabel}.
               </p>
               <p style={{ margin: '8px 0 0', fontSize: '13px', color: `${LANTERN_GLOW}88`, lineHeight: 1.5 }}>
                 Senast:{' '}
