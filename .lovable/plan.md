@@ -1,52 +1,35 @@
 
 
-## Library Tile Upgrades — Progress, Guidance, Recency
+## Fix Library Progress Indicators
 
 **File:** `src/components/ProductLibrary.tsx` only
 
-### Change 1 — Expand data fetch + new state
+### Fix 1 — Count unique completed cards
 
-Add two state variables next to `activeProductIds` (line 433):
-```tsx
-const [lastActivityMap, setLastActivityMap] = useState<Record<string, string>>({});
-const [completedCountMap, setCompletedCountMap] = useState<Record<string, number>>({});
-```
+**Lines 474, 503-531:** Add `completedCardSets` state. Change `fetchCompleted` to select `product_id, card_id`. Rebuild handler to deduplicate by card_id using Sets.
 
-Replace the single query (lines 454-464) with parallel fetch:
-- `fetchActive`: existing active sessions query (already there)
-- `fetchCompleted`: `couple_sessions` where `status = 'completed'`, same space filter
+- New state: `const [completedCardSets, setCompletedCardSets] = useState<Record<string, Set<string>>>({});`
+- Select becomes `.select('product_id, card_id')`
+- Handler builds `Record<string, Set<string>>` then derives counts from `.size`
 
-In the `.then()`, populate all three state setters: `activeProductIds`, `lastActivityMap`, `completedCountMap`.
+### Fix 2 — Progress text as block element
 
-### Change 2 — `progressText` prop on PastelTile
+**Lines 428-441:** Change `display: 'inline-flex'` to `display: 'block'` and `marginTop` to `6px`.
 
-Add `progressText?: string` to PastelTile props (line 219 area). Render below the "✦ Samtal 1 gratis" badge when non-empty — subtle `11px` white text at 50% opacity.
+### Fix 3 — Badge visibility via `hideFreeBadge` prop
 
-When mapping kids tiles (line 830), compute:
-```tsx
-const count = completedCountMap[product.id] || 0;
-const progressText = count > 0 ? `${count} av ${product.cards.length} samtal` : undefined;
-```
+**Line 230-237:** Add `hideFreeBadge?: boolean` to PastelTile props.
 
-Also compute and pass `progressText` for the Still Us tile.
+**Lines 404-427:** Wrap the "✦ Samtal 1 gratis" badge `<span>` in `{!hideFreeBadge && ( ... )}`.
 
-### Change 3 — `lastActive` prop + relative time on resume indicator
+**Lines 975-977 (kids tiles):** Compute `freeCardCompleted` from `completedCardSets`, change `progressText` to always show (either `"X av Y samtal"` or `"Y samtal"`), pass `hideFreeBadge={freeCardCompleted}`.
 
-Add `formatRelativeTime` helper above the component. Add `lastActive?: string` prop to PastelTile. When provided and `hasActiveSession` is true, render the relative time below the "Fortsätt" label in `9px` text at 35% opacity.
-
-Pass `lastActive={lastActivityMap[product.id]}` to each tile.
-
-### Change 4 — "Next step" suggestion
-
-Between the `LibraryResumeCard` div and the "FÖRÄLDRAR" section, add a conditional block:
-- Only renders when `activeProductIds.size === 0` AND `completedCountMap` has entries AND there's an untried product
-- Shows: "Nästa steg: prova **{name}** — ert första samtal är gratis."
-- Styled as `13px` muted text with the product name highlighted in `#D4F5C0`
+**Lines 892-921 (Still Us tile):** Same logic — conditionally hide badge, always show progress text.
 
 ### Not changed
-- Tile layout, colors, heights, border radius, illustrations
-- Section headers ("FÖRÄLDRAR", "BARN & FAMILJ")
-- Still Us tile structure (only props added)
-- "Era samtal" card, LibraryResumeCard, sorting logic, loading gate
-- No new files, hooks, or components
+- Tile layout, colors, heights, illustrations, border radius
+- Data fetch structure (parallel `Promise.all`)
+- `lastActivityMap`, `activeProductIds`, resume indicator
+- "Next step" suggestion, sorting logic, loading gate
+- Any other file
 
