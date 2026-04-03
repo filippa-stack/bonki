@@ -908,7 +908,7 @@ export default function Journal() {
     };
   }, [filteredSessions]);
 
-  const showParPrivacy = activeFilters.has('barn') && activeFilters.has('par') && stillUsSessions.length > 0;
+  
 
 
   // Filtered bookmarks
