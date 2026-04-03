@@ -1,34 +1,35 @@
 
 
-## Fix Portal Page Flicker on Navigation
+## Revised: Add Meta Pixel Tracking
 
-**File:** `src/pages/KidsCardPortal.tsx`
+Same plan as before with one adjustment to the `Index.tsx` purchase block — reorder to: read `returnCard` → fire pixel → strip param. This matches the user's preferred clarity.
 
-`useRef` is already imported (line 11). Four small changes:
+### Files and changes
 
-### Change 1: Add ref (after existing refs, ~line 50 area)
+**1. `index.html`** — Add Meta Pixel base script in `<head>`, `<noscript><img>` fallback in `<body>`.
+
+**2. Create `src/lib/metaPixel.ts`** — Type-safe `trackPixelEvent` wrapper with UUID `eventID` generation for CAPI dedup.
+
+**3. `src/contexts/AuthContext.tsx`** — Fire `CompleteRegistration` on `SIGNED_IN` only if `created_at` < 60s ago.
+
+**4. `src/components/Onboarding.tsx`** — Fire `Lead` alongside existing `trackOnboardingEvent`.
+
+**5. `src/pages/Index.tsx`** — Purchase block (revised order):
 ```tsx
-const hasRenderedContent = useRef(false);
+if (searchParams.get('purchase') === 'success') {
+  const returnCard = searchParams.get('returnCard');
+  trackPixelEvent('Purchase', { value: 249, currency: 'SEK' });
+  window.history.replaceState({}, '', window.location.pathname);
+  if (returnCard) {
+    return <Navigate to={`/card/${returnCard}`} replace />;
+  }
+}
 ```
 
-### Change 2: Update loading gate (line 259)
-```tsx
-// FROM:
-if (progress.loading) {
-// TO:
-if (progress.loading && !hasRenderedContent.current) {
-```
-
-### Change 3: Set ref before main return (line 273)
-Add `hasRenderedContent.current = true;` immediately before `return (`.
-
-### Change 4: Reset ref on category change
-```tsx
-useEffect(() => {
-  hasRenderedContent.current = false;
-}, [categoryId]);
-```
+**6. `src/App.tsx`** — Add `RoutePageViewTracker` component using `useLocation` + `useEffect` to fire `PageView` on route changes.
 
 ### Not changed
-- `useKidsProductProgress` hook, portal content, card navigation, paywall logic, animations, any other file
+- No new dependencies, no backend changes
+- Protected patterns untouched
+- No Purchase tracking in Paywall files
 
