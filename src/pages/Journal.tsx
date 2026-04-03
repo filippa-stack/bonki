@@ -983,9 +983,9 @@ export default function Journal() {
                 onClick={() => toggleFilter(chip)}
                 style={{
                   height: '30px', paddingLeft: '16px', paddingRight: '16px', borderRadius: '10px',
-                  border: `1px solid ${active ? DEEP_SAFFRON : DRIFTWOOD}44`,
+                  border: `1px solid ${active ? DEEP_SAFFRON : 'rgba(253,246,227,0.17)'}`,
                   backgroundColor: active ? `${DEEP_SAFFRON}18` : 'transparent',
-                  color: active ? LANTERN_GLOW : `${DRIFTWOOD}aa`,
+                  color: active ? LANTERN_GLOW : 'rgba(253,246,227,0.55)',
                   fontFamily: 'var(--font-sans)', fontSize: '12px', fontWeight: 500,
                   letterSpacing: '0.06em', textTransform: 'uppercase',
                   cursor: 'pointer', transition: 'all 200ms ease',
