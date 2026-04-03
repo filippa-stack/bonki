@@ -1066,33 +1066,6 @@ export default function Journal() {
             </div>
           )}
 
-          {/* Par Privacy Row */}
-          {showParPrivacy && (
-            <div
-              style={{ margin: '12px 16px 0' }}
-            >
-              <button
-                onClick={() => setParExpanded(prev => !prev)}
-                style={{
-                  width: '100%', backgroundColor: DEEP_DUSK, borderRadius: '12px',
-                  padding: '12px 14px', border: 'none', cursor: 'pointer',
-                  display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                  WebkitTapHighlightColor: 'transparent',
-                }}
-              >
-                <span style={{ fontSize: '14px', color: `${LANTERN_GLOW}77`, textAlign: 'left' }}>
-                  {parExpanded ? 'Visa mindre' : `Still Us · ${stillUsSessions.length} samtal`}
-                </span>
-                <motion.span
-                  animate={{ rotate: parExpanded ? 180 : 0 }}
-                  transition={{ duration: 0.2 }}
-                  style={{ color: `${LANTERN_GLOW}77`, display: 'flex' }}
-                >
-                  <ChevronDown size={18} strokeWidth={1.5} />
-                </motion.span>
-              </button>
-            </div>
-          )}
 
           {/* Timeline */}
           {monthGroups.map((group, gi) => (
