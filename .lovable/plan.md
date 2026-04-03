@@ -1,50 +1,35 @@
 
 
-## Fix Still Us Session Page Layout + Visibility
+## Fix Journal Text Contrast
 
-**File:** `src/pages/CardView.tsx` — 4 changes in the Still Us focus mode block
+**File:** `src/pages/Journal.tsx`
 
-### Change 1: Center question card
-Line 2674: `justifyContent: 'flex-end'` → `'center'`
+### Change 1: Question text opacity
+Lines 301, 483: `color: \`${LANTERN_GLOW}88\`` → `\`${LANTERN_GLOW}bb\``
 
-### Change 2: Reduce illustration opacity + add scrim
-Line 2692: `opacity: 0.7` → `0.35`
+Two locations — NoteEntryCard (line 301) and SessionGroupCard (line 483).
 
-After the `</img>` closing (line 2696), before the white question card div (line 2699), insert:
-```tsx
-{/* Dark scrim for readability */}
-<div style={{
-  position: 'absolute',
-  inset: 0,
-  backgroundColor: 'rgba(0, 0, 0, 0.25)',
-  pointerEvents: 'none',
-  zIndex: 0,
-}} />
-```
+### Change 2: Card subtitle opacity
+Line 462: `color: \`${LANTERN_GLOW}55\`` → `\`${LANTERN_GLOW}99\``
 
-### Change 3: Progress bar visibility
-Line 2653: `height: '2px'` → `'4px'`
-Line 2654: `backgroundColor: 'rgba(255,255,255,0.08)'` → `'rgba(255,255,255,0.12)'`
+The card name text below the product name — currently at 33%, bump to ~60%.
 
-### Change 4: Question counter
-After line 2665 (progress bar closing `</div>`), insert:
-```tsx
-<p style={{
-  fontFamily: 'var(--font-sans)',
-  fontSize: '11px',
-  fontWeight: 500,
-  color: '#FDF6E3',
-  opacity: 0.35,
-  textAlign: 'center',
-  margin: '8px 0 0',
-  letterSpacing: '0.03em',
-}}>
-  {localPromptIndex + 1} av {sectionPromptCount}
-</p>
-```
+### Change 3: Date labels
+Line 458: `color: \`${LANTERN_GLOW}77\`` — already at 47%, this is acceptable per the hierarchy. No change needed.
 
-`localPromptIndex` and `sectionPromptCount` are already available in scope.
+### Change 4: "Visa alla" toggle text
+Line 514: `color: \`${DRIFTWOOD}cc\`` → `\`${LANTERN_GLOW}77\``
+
+Switches from driftwood to warm white at 47%.
+
+### Change 5: Month headers
+Line 1109: `color: \`${LANTERN_GLOW}88\`` — already at 53% with fontWeight 600. Bump to `\`${LANTERN_GLOW}99\`` for more presence since these are structural dividers.
+
+### Change 6: Stats "Senast:" line
+Line 1047: `color: \`${LANTERN_GLOW}88\`` → `\`${LANTERN_GLOW}aa\`` (67% — slightly brighter supporting text).
+
+Line 1064: `color: \`${DRIFTWOOD}bb\`` → `\`${DRIFTWOOD}dd\`` (87% — already specified in prompt).
 
 ### Not changed
-- Advance/back handlers, completion logic, AnimatePresence, note/save logic, header, CTA, kids block, any other file.
+- User reflection color (#E9C890), filter chips/logic, Still Us toggle, data fetching, any other file.
 
