@@ -428,8 +428,10 @@ export default function CardView() {
   // ─── Eager session creation for kids products ───
   // Kids products create sessions immediately so resume banners appear on home/library.
   const eagerSessionRef = useRef(false);
+  const hasRenderedContent = useRef(false);
   useEffect(() => {
     eagerSessionRef.current = false;
+    hasRenderedContent.current = false;
   }, [cardId]);
   useEffect(() => {
     const needsEagerSession = isKidsProduct || product?.id === 'still_us';
@@ -1070,7 +1072,7 @@ export default function CardView() {
   //  LOADING GATE — hold a stable surface while async data loads
   // ─────────────────────────────────────────────────────────────
   const isInitializing = normalizedSession.loading || accessLoading || resumeLoading;
-  if (isInitializing && !devState && !showCompletion) {
+  if (isInitializing && !devState && !showCompletion && !hasRenderedContent.current) {
     const loadingBg = product?.backgroundColor ?? 'var(--surface-base, hsl(46, 64%, 89%))';
     return (
       <div
@@ -1164,6 +1166,7 @@ export default function CardView() {
     const gorContentCardId = suMockMatch ? cards[parseInt(suMockMatch[1], 10)]?.id : null;
     const gorExerciseSU = gorContentCardId ? getGorExercise(gorContentCardId) : null;
 
+    hasRenderedContent.current = true;
     return (
       <motion.div
         style={{
@@ -1457,6 +1460,7 @@ export default function CardView() {
     const gorContentCardIdSU = suMockMatchSU ? cards[parseInt(suMockMatchSU[1], 10)]?.id : null;
     const gorExerciseSU = gorContentCardIdSU ? getGorExercise(gorContentCardIdSU) : null;
 
+    hasRenderedContent.current = true;
     return (
       <motion.div
         className="min-h-screen"
@@ -2359,6 +2363,7 @@ export default function CardView() {
       }
     };
 
+    hasRenderedContent.current = true;
     return (
       <SessionFocusShell
         productBgColor={product?.backgroundColor}
@@ -2568,6 +2573,7 @@ export default function CardView() {
     const LANTERN_GLOW_LOCAL = '#FDF6E3';
     const DEEP_SAFFRON_LOCAL = '#D4A03A';
 
+    hasRenderedContent.current = true;
     return (
       <>
         {_devDebug}
@@ -2884,6 +2890,7 @@ export default function CardView() {
     // Note nudge: show full text for first 2 prompts, then just icon unless interacted
     const showFullNudge = localPromptIndex <= 1 || kidsNoteInteractedRef.current;
 
+    hasRenderedContent.current = true;
     return (
       <>
         <div style={{
