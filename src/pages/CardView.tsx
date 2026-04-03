@@ -499,7 +499,6 @@ export default function CardView() {
         .eq('user_id', user.id)
         .gte('step_index', 0)
         .lt('step_index', 100)
-        .neq('text', '')
         .order('step_index', { ascending: false })
         .limit(1);
 

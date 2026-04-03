@@ -118,20 +118,28 @@ export default function LibraryResumeCard({ activeTab, global, forceMock }: Libr
     }
 
     let stepLabel = '';
-    const { data: completions } = await supabase
-      .from('couple_session_completions')
+    const { data: reflections } = await supabase
+      .from('step_reflections')
       .select('step_index')
-      .eq('session_id', session.id);
+      .eq('session_id', session.id)
+      .order('step_index', { ascending: false })
+      .limit(1);
 
     if (fetchId === fetchRef.current) {
       const totalPrompts = card.sections?.reduce(
         (sum, s) => sum + (s.prompts?.length ?? 0), 0
       ) ?? 0;
-      const completedCount = (completions || []).length;
-      const currentPrompt = completedCount + 1;
-      stepLabel = totalPrompts > 1
-        ? `Fråga ${Math.min(currentPrompt, totalPrompts)} av ${totalPrompts}`
-        : '';
+      if (reflections && reflections.length > 0) {
+        const lastIndex = reflections[0].step_index % 100;
+        const currentPrompt = lastIndex + 1;
+        stepLabel = totalPrompts > 1
+          ? `Fråga ${Math.min(currentPrompt, totalPrompts)} av ${totalPrompts}`
+          : '';
+      } else {
+        stepLabel = totalPrompts > 1
+          ? `Fråga 1 av ${totalPrompts}`
+          : '';
+      }
     }
 
     if (fetchId === fetchRef.current) {
