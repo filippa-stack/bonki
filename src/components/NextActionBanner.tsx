@@ -75,7 +75,7 @@ export default function NextActionBanner({
     const hasCompletions = completedCount > 0;
     label = hasCompletions ? 'Nästa samtal' : 'Börja här';
     subtitle = card.title;
-    ctaText = 'Öppna →';
+    ctaText = 'Öppna';
     labelColor = LANTERN_GLOW;
     onClick = () => navigate(`/product/${product.slug}/portal/${nextSuggestedCategoryId}?card=${nextSuggestedCardId}`);
 
