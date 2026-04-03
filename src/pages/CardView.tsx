@@ -2703,12 +2703,21 @@ export default function CardView() {
                   height: '164%',
                   objectFit: 'contain',
                   objectPosition: '50% 45%',
-                  opacity: 0.7,
+                  opacity: 0.35,
                   pointerEvents: 'none',
                   zIndex: 0,
                 }}
               />
             )}
+
+            {/* Dark scrim for readability */}
+            <div style={{
+              position: 'absolute',
+              inset: 0,
+              backgroundColor: 'rgba(0, 0, 0, 0.25)',
+              pointerEvents: 'none',
+              zIndex: 0,
+            }} />
 
             {/* White question card — sizes to content */}
             <div style={{
