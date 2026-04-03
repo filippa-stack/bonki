@@ -1804,20 +1804,19 @@ export default function CardView() {
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      gap: '6px',
                       flex: 1,
                       height: '52px',
-                      borderRadius: '14px',
-                      backgroundColor: DEEP_SAFFRON,
-                      color: MIDNIGHT_INK,
+                      borderRadius: '24px',
+                      backgroundColor: 'transparent',
+                      border: '1px solid rgba(253, 246, 227, 0.2)',
+                      color: 'rgba(253, 246, 227, 0.7)',
                       fontFamily: 'var(--font-sans)',
                       fontSize: '17px',
                       fontWeight: 600,
-                      border: 'none',
                       cursor: 'pointer',
                     }}
                   >
-                    {postCompletionNav.label || 'Nästa samtal'} <ArrowRight size={16} style={{ opacity: 0.7 }} />
+                    {postCompletionNav.label || 'Nästa samtal'}
                   </button>
                 </div>
 
