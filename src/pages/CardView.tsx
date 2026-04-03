@@ -2952,7 +2952,7 @@ export default function CardView() {
           {/* ── Progress bar ── */}
           <div style={{
             width: '100%',
-            height: '3px',
+            height: '4px',
             backgroundColor: PARCHMENT,
           }}>
             <div style={{
