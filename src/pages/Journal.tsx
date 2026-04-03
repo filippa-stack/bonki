@@ -1068,7 +1068,7 @@ export default function Journal() {
                 }}
               >
                 <span style={{ fontSize: '14px', color: `${LANTERN_GLOW}77`, textAlign: 'left' }}>
-                  {parExpanded ? 'Dölj Still Us' : `Ni har ${stillUsSessions.length} Still Us-samtal sparade`}
+                  {parExpanded ? 'Visa mindre' : `Still Us · ${stillUsSessions.length} samtal`}
                 </span>
                 <motion.span
                   animate={{ rotate: parExpanded ? 180 : 0 }}
