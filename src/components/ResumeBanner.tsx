@@ -62,7 +62,9 @@ export default function ResumeBanner({ cardId }: ResumeBannerProps) {
           color: 'var(--cta-text)',
           letterSpacing: '0.2px',
           borderRadius: '20px',
-          boxShadow: 'none',
+          border: 'none',
+          opacity: 1,
+          boxShadow: '0 2px 8px rgba(0,0,0,0.25)',
         }}
       >
         Fortsätt
