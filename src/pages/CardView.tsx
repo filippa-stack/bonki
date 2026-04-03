@@ -2650,8 +2650,8 @@ export default function CardView() {
             {/* Progress bar — full width, 2px */}
             <div style={{
               width: '100%',
-              height: '2px',
-              backgroundColor: 'rgba(255,255,255,0.08)',
+              height: '4px',
+              backgroundColor: 'rgba(255,255,255,0.12)',
             }}>
               <motion.div
                 initial={false}
@@ -2663,6 +2663,19 @@ export default function CardView() {
                 }}
               />
             </div>
+
+            <p style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: '11px',
+              fontWeight: 500,
+              color: '#FDF6E3',
+              opacity: 0.35,
+              textAlign: 'center',
+              margin: '8px 0 0',
+              letterSpacing: '0.03em',
+            }}>
+              {localPromptIndex + 1} av {sectionPromptCount}
+            </p>
           </div>
 
           {/* ── Content area — illustration bg + white question card ── */}
@@ -2671,7 +2684,7 @@ export default function CardView() {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            justifyContent: 'flex-end',
+            justifyContent: 'center',
             position: 'relative',
             overflow: 'visible',
             padding: '12px 16px',
@@ -2689,12 +2702,21 @@ export default function CardView() {
                   height: '164%',
                   objectFit: 'contain',
                   objectPosition: '50% 45%',
-                  opacity: 0.7,
+                  opacity: 0.35,
                   pointerEvents: 'none',
                   zIndex: 0,
                 }}
               />
             )}
+
+            {/* Dark scrim for readability */}
+            <div style={{
+              position: 'absolute',
+              inset: 0,
+              backgroundColor: 'rgba(0, 0, 0, 0.25)',
+              pointerEvents: 'none',
+              zIndex: 0,
+            }} />
 
             {/* White question card — sizes to content */}
             <div style={{
