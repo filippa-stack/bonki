@@ -926,6 +926,17 @@ export default function ProductLibrary() {
               </div>
 
 
+              {/* Bottom scrim for text readability */}
+              <div style={{
+                position: 'absolute',
+                left: 0, right: 0, bottom: 0,
+                height: '70%',
+                background: 'linear-gradient(to top, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.25) 40%, transparent 100%)',
+                pointerEvents: 'none',
+                zIndex: 2,
+                borderRadius: '0 0 22px 22px',
+              }} />
+
               {/* Text */}
               <div style={{
                 position: 'absolute',
