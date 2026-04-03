@@ -389,7 +389,7 @@ export default function CardView() {
   // ─── Auto-show completion when session disappears post-lock ───
   useEffect(() => {
     if (isFromArchive || devState) return;
-    if (activeSessionId && !normalizedSession.sessionId && !normalizedSession.loading && !showCompletion) {
+    if (activeSessionId && !normalizedSession.sessionId && !normalizedSession.loading && !showCompletion && !userDismissedCompletion.current) {
       setShowCompletion(true);
     }
   }, [activeSessionId, normalizedSession.sessionId, normalizedSession.loading, isFromArchive, showCompletion, devState]);
