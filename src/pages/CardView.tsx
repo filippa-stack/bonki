@@ -1619,6 +1619,7 @@ export default function CardView() {
                 <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', width: '100%', maxWidth: '520px', gap: '8px' }}>
                   <button
                     onClick={() => {
+                      userDismissedCompletion.current = true;
                       _setShowCompletion(false);
                       const lastStageIndex = effectiveSteps.length - 1;
                       const lastSection = card.sections.find(s => s.type === effectiveSteps[lastStageIndex]);
