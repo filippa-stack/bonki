@@ -491,7 +491,7 @@ function SessionGroupCard({ group, navigate }: { group: SessionGroup; navigate: 
               fontFamily: 'var(--font-serif)',
               fontSize: '15px',
               fontStyle: 'italic',
-              color: LANTERN_GLOW,
+              color: '#E9C890',
               lineHeight: 1.65,
               whiteSpace: 'pre-wrap',
             }}>
