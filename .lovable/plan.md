@@ -1,45 +1,39 @@
 
 
-## Session Page Visual Polish (4 changes)
+## Journal "Era samtal" Visual Upgrades (4 changes)
 
-**File:** `src/pages/CardView.tsx` — all changes inside the kids live session block (line 2833+)
+**File:** `src/pages/Journal.tsx`
 
-### Change 1: Progress bar height
-Line 2955: `height: '3px'` → `'4px'`
+### Change 1: Warm saffron color for user reflections
 
-No condition is hiding the bar on question 1 — it's already visible. Just increase height for more presence.
+**NoteEntryCard** (line 328): `color: LANTERN_GLOW` → `color: '#E9C890'`
 
-### Change 2: Question counter
-After line 2964 (closing `</div>` of progress bar), insert:
-```tsx
-<p style={{
-  fontFamily: 'var(--font-sans)',
-  fontSize: '11px',
-  fontWeight: 500,
-  color: '#FDF6E3',
-  opacity: 0.35,
-  textAlign: 'center',
-  margin: '8px 0 0',
-  letterSpacing: '0.03em',
-}}>
-  {localPromptIndex + 1} av {totalPrompts}
-</p>
+**SessionGroupCard** note text (line 494): `color: LANTERN_GLOW` → `color: '#E9C890'`
+
+Question text stays unchanged (`LANTERN_GLOW` at 88 opacity, italic).
+
+### Change 2: Warmer opening line
+
+Line 1028-1030: Change text from `Ni har haft` ... `samtal sedan` to:
+
+```
+Era samtal växer —{' '}
+<span ...>{pulseData.total}</span>
+{' '}sedan {pulseData.monthLabel}.
 ```
 
-### Change 3: Always show note nudge text
-Line 2897: `const showFullNudge = localPromptIndex <= 1 || kidsNoteInteractedRef.current;` → `const showFullNudge = true;`
+### Change 3: Show 1 note by default
 
-### Change 4: More visible back arrow
-Line 3198: `opacity: 0.7` → `0.55` — wait, it's already `0.7`. The prompt says increase from `0.35` to `0.55`, but it's currently `0.7`. Since `0.7` is already more visible than the target `0.55`, no opacity change needed. Keep `size={20}` as-is (already 20).
+Line 427: `COLLAPSE_THRESHOLD = 3` → `1`
+Line 429: slice already uses `COLLAPSE_THRESHOLD`, so it will automatically show 1.
+Toggle text (line 522) already reads `Visa alla (N)` / `Visa färre` — no change needed.
 
-**Correction**: The back arrow is already at `opacity: 0.7` and `size={20}`, which exceeds the requested targets. No change needed for Change 4.
+### Change 4: Warmer Still Us toggle text
 
-### Summary of actual edits
-1. Line 2955: height `'3px'` → `'4px'`
-2. After line 2964: insert question counter `<p>`
-3. Line 2897: `showFullNudge = true`
-4. No change needed (already meets spec)
+Line 1071:
+- `'Dölj Still Us'` → `'Visa mindre'`
+- `` `Ni har ${stillUsSessions.length} Still Us-samtal sparade` `` → `` `Still Us · ${stillUsSessions.length} samtal` ``
 
 ### Not changed
-- Progress fraction calc, advance/back handlers, AnimatePresence, note textarea/save logic, header bar, any other file
+- Data fetching, filter logic, navigation, component structure, expand/collapse state, page header, empty state, any other file.
 
