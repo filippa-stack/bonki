@@ -153,6 +153,17 @@ function buildBadgeText(product: { cards: unknown[]; id: string }): string {
   return `${count} ämnen`;
 }
 
+/** Relative time helper for recency labels */
+function formatRelativeTime(isoDate: string): string {
+  const diffMs = Date.now() - new Date(isoDate).getTime();
+  const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+  if (days === 0) return 'Idag';
+  if (days === 1) return 'Igår';
+  if (days < 7) return `${days} dagar sedan`;
+  if (days < 30) return `${Math.floor(days / 7)} veckor sedan`;
+  return `${Math.floor(days / 30)} mån sedan`;
+}
+
 /** Detect return visit for faster animations */
 const IS_RETURN_VISIT = (() => {
   try {
