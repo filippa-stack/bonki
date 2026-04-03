@@ -1836,7 +1836,7 @@ export default function CardView() {
                       textAlign: 'center',
                     }}
                   >
-                    Tillbaka till {product.name}
+                    Till {product.name}
                   </button>
                 )}
               </>
