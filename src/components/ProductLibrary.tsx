@@ -402,35 +402,36 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
           </p>
           )}
           {/* Free badge marker with age label */}
-          <span
-            style={{
-              display: 'inline-flex',
-              alignSelf: 'flex-start',
-              alignItems: 'center',
-              gap: '4px',
-              marginTop: '8px',
-              padding: '4px 12px',
-              borderRadius: '20px',
-              background: 'hsla(0, 0%, 100%, 0.15)',
-              backdropFilter: 'blur(8px)',
-              WebkitBackdropFilter: 'blur(8px)',
-              border: '1px solid hsla(0, 0%, 100%, 0.25)',
-              boxShadow: '0 0 12px hsla(0, 0%, 100%, 0.08), inset 0 1px 0 hsla(0, 0%, 100%, 0.15)',
-              fontFamily: "var(--font-body)",
-              fontSize: '11px',
-              fontWeight: 600,
-              letterSpacing: '0.03em',
-              color: 'hsla(0, 0%, 100%, 0.92)',
-            }}
-          >
-            ✦ Samtal 1 gratis{ageLabel ? ` · ${ageLabel}` : ''}
-          </span>
-          {progressText && (
+          {!hideFreeBadge && (
             <span
               style={{
                 display: 'inline-flex',
                 alignSelf: 'flex-start',
-                marginTop: '4px',
+                alignItems: 'center',
+                gap: '4px',
+                marginTop: '8px',
+                padding: '4px 12px',
+                borderRadius: '20px',
+                background: 'hsla(0, 0%, 100%, 0.15)',
+                backdropFilter: 'blur(8px)',
+                WebkitBackdropFilter: 'blur(8px)',
+                border: '1px solid hsla(0, 0%, 100%, 0.25)',
+                boxShadow: '0 0 12px hsla(0, 0%, 100%, 0.08), inset 0 1px 0 hsla(0, 0%, 100%, 0.15)',
+                fontFamily: "var(--font-body)",
+                fontSize: '11px',
+                fontWeight: 600,
+                letterSpacing: '0.03em',
+                color: 'hsla(0, 0%, 100%, 0.92)',
+              }}
+            >
+              ✦ Samtal 1 gratis{ageLabel ? ` · ${ageLabel}` : ''}
+            </span>
+          )}
+          {progressText && (
+            <span
+              style={{
+                display: 'block',
+                marginTop: '6px',
                 fontFamily: 'var(--font-body)',
                 fontSize: '11px',
                 fontWeight: 500,
