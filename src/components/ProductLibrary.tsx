@@ -153,6 +153,17 @@ function buildBadgeText(product: { cards: unknown[]; id: string }): string {
   return `${count} ämnen`;
 }
 
+/** Relative time helper for recency labels */
+function formatRelativeTime(isoDate: string): string {
+  const diffMs = Date.now() - new Date(isoDate).getTime();
+  const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+  if (days === 0) return 'Idag';
+  if (days === 1) return 'Igår';
+  if (days < 7) return `${days} dagar sedan`;
+  if (days < 30) return `${Math.floor(days / 7)} veckor sedan`;
+  return `${Math.floor(days / 30)} mån sedan`;
+}
+
 /** Detect return visit for faster animations */
 const IS_RETURN_VISIT = (() => {
   try {
@@ -223,10 +234,12 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
   illustrationSize?: string; illustrationPosition?: string; wide?: boolean;
   showFreeBadge?: boolean; badgeText?: string; ageCount?: number;
   hasActiveSession?: boolean; tileHeight?: string;
+  progressText?: string; lastActive?: string;
 }>(function PastelTile({
   name, bg, ageLabel, tagline, onClick, illustration, productId, accentColor, taglineColor,
   illustrationOpacity = 0.90, wide = false,
   hasActiveSession = false, tileHeight = '240px',
+  progressText, lastActive,
 }, ref) {
   const toShadowColor = (hex: string, alpha: number) => {
     const r = parseInt(hex.slice(1, 3), 16);
@@ -331,6 +344,17 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
           }}>
             Fortsätt
           </span>
+          {lastActive && (
+            <span style={{
+              fontFamily: "var(--font-body)",
+              fontSize: '9px',
+              fontWeight: 400,
+              color: '#FDF6E3',
+              opacity: 0.35,
+            }}>
+              {formatRelativeTime(lastActive)}
+            </span>
+          )}
         </div>
       )}
 
@@ -401,6 +425,21 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
           >
             ✦ Samtal 1 gratis{ageLabel ? ` · ${ageLabel}` : ''}
           </span>
+          {progressText && (
+            <span
+              style={{
+                display: 'inline-flex',
+                alignSelf: 'flex-start',
+                marginTop: '4px',
+                fontFamily: 'var(--font-body)',
+                fontSize: '11px',
+                fontWeight: 500,
+                color: 'hsla(0, 0%, 100%, 0.5)',
+              }}
+            >
+              {progressText}
+            </span>
+          )}
         </div>
     </motion.div>
   );
@@ -431,6 +470,8 @@ export default function ProductLibrary() {
   // Fetch active sessions across all products for resume indicators
   const { space } = useCoupleSpaceContext();
   const [activeProductIds, setActiveProductIds] = useState<Set<string>>(new Set());
+  const [lastActivityMap, setLastActivityMap] = useState<Record<string, string>>({});
+  const [completedCountMap, setCompletedCountMap] = useState<Record<string, number>>({});
   useEffect(() => {
     const syncLocalPreview = () => {
       if (!isDemoMode()) return;
@@ -451,17 +492,45 @@ export default function ProductLibrary() {
 
     if (!space?.id) return;
     let cancelled = false;
-    supabase
+
+    const fetchActive = supabase
       .from('couple_sessions')
       .select('product_id, last_activity_at')
       .eq('couple_space_id', space.id)
       .eq('status', 'active')
-      .order('last_activity_at', { ascending: false })
-      .then(({ data }) => {
-        if (!cancelled && data) {
-          setActiveProductIds(new Set(data.map(s => s.product_id)));
+      .order('last_activity_at', { ascending: false });
+
+    const fetchCompleted = supabase
+      .from('couple_sessions')
+      .select('product_id')
+      .eq('couple_space_id', space.id)
+      .eq('status', 'completed');
+
+    Promise.all([fetchActive, fetchCompleted]).then(([activeRes, completedRes]) => {
+      if (cancelled) return;
+
+      if (activeRes.data) {
+        setActiveProductIds(new Set(activeRes.data.map(s => s.product_id)));
+        const timestamps: Record<string, string> = {};
+        for (const s of activeRes.data) {
+          if (s.product_id && s.last_activity_at) {
+            timestamps[s.product_id] = s.last_activity_at;
+          }
         }
-      });
+        setLastActivityMap(timestamps);
+      }
+
+      if (completedRes.data) {
+        const counts: Record<string, number> = {};
+        for (const s of completedRes.data) {
+          if (s.product_id) {
+            counts[s.product_id] = (counts[s.product_id] || 0) + 1;
+          }
+        }
+        setCompletedCountMap(counts);
+      }
+    });
+
     return () => { cancelled = true; };
   }, [space?.id]);
 
@@ -641,6 +710,27 @@ export default function ProductLibrary() {
           <LibraryResumeCard global />
         </div>
 
+        {/* Next step suggestion — only for returning users with no active session */}
+        {activeProductIds.size === 0 && Object.keys(completedCountMap).length > 0 && (() => {
+          const untriedProduct = defaultKidsOrder.find(p => !completedCountMap[p.id]);
+          if (!untriedProduct) return null;
+          return (
+            <div className="px-5" style={{ marginBottom: '12px' }}>
+              <p style={{
+                fontFamily: 'var(--font-body)',
+                fontSize: '13px',
+                color: '#FDF6E3',
+                opacity: 0.45,
+                lineHeight: 1.5,
+              }}>
+                Nästa steg: prova <span style={{ fontWeight: 600, opacity: 1, color: '#D4F5C0' }}>
+                  {untriedProduct.name}
+                </span> — ert första samtal är gratis.
+              </p>
+            </div>
+          );
+        })()}
+
         <div>
         {/* ── Still Us cross-discovery ── */}
         <div className="px-5" style={{ marginTop: '0px' }}>
@@ -690,6 +780,47 @@ export default function ProductLibrary() {
                 boxShadow: '0 8px 24px rgba(0, 0, 0, 0.12), 0 2px 6px rgba(0, 0, 0, 0.06)',
               }}
             >
+              {/* Resume indicator for Still Us */}
+              {activeProductIds.has('still_us') && (
+                <div style={{
+                  position: 'absolute',
+                  top: '12px',
+                  right: '14px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  gap: '3px',
+                  zIndex: 4,
+                }}>
+                  <div style={{
+                    width: '8px',
+                    height: '8px',
+                    borderRadius: '50%',
+                    backgroundColor: '#D4A03A',
+                    boxShadow: '0 0 6px rgba(212, 160, 58, 0.5)',
+                  }} />
+                  <span style={{
+                    fontFamily: 'var(--font-body)',
+                    fontSize: '11px',
+                    fontWeight: 500,
+                    color: '#FDF6E3',
+                    opacity: 0.7,
+                  }}>
+                    Fortsätt
+                  </span>
+                  {lastActivityMap['still_us'] && (
+                    <span style={{
+                      fontFamily: 'var(--font-body)',
+                      fontSize: '9px',
+                      fontWeight: 400,
+                      color: '#FDF6E3',
+                      opacity: 0.35,
+                    }}>
+                      {formatRelativeTime(lastActivityMap['still_us'])}
+                    </span>
+                  )}
+                </div>
+              )}
               {/* Illustration */}
               <div style={{
                 position: 'absolute',
@@ -774,6 +905,20 @@ export default function ProductLibrary() {
                   }}>
                     ✦ Samtal 1 gratis
                   </span>
+                  {(() => {
+                    const suCount = completedCountMap['still_us'] || 0;
+                    if (suCount <= 0) return null;
+                    return (
+                      <span style={{
+                        fontFamily: 'var(--font-body)',
+                        fontSize: '11px',
+                        fontWeight: 500,
+                        color: 'hsla(0, 0%, 100%, 0.5)',
+                      }}>
+                        {suCount} av 22 samtal
+                      </span>
+                    );
+                  })()}
                 </div>
               </div>
             </motion.div>
@@ -827,25 +972,31 @@ export default function ProductLibrary() {
               gap: '28px',
             }}
           >
-            {sortedKidsProducts.map((product) => (
-              <PastelTile
-                key={product.id}
-                name={product.name}
-                bg={TILE_COLORS[product.id]!}
-                productId={product.id}
-                tagline={TAGLINES[product.id]}
-                ageLabel={product.ageLabel}
-                accentColor={ACCENT_COLORS[product.id]}
-                taglineColor={TAGLINE_COLORS[product.id]}
-                illustration={ILLUSTRATIONS[product.id]}
-                illustrationOpacity={ILLUSTRATION_OPACITY[product.id]}
-                onClick={() => navigate(`/product/${product.slug}`)}
-                badgeText={buildBadgeText(product)}
-                hasActiveSession={activeProductIds.has(product.id)}
-                tileHeight={TILE_HEIGHTS[product.id] ?? '240px'}
-                wide
-              />
-            ))}
+            {sortedKidsProducts.map((product) => {
+              const count = completedCountMap[product.id] || 0;
+              const ptxt = count > 0 ? `${count} av ${product.cards.length} samtal` : undefined;
+              return (
+                <PastelTile
+                  key={product.id}
+                  name={product.name}
+                  bg={TILE_COLORS[product.id]!}
+                  productId={product.id}
+                  tagline={TAGLINES[product.id]}
+                  ageLabel={product.ageLabel}
+                  accentColor={ACCENT_COLORS[product.id]}
+                  taglineColor={TAGLINE_COLORS[product.id]}
+                  illustration={ILLUSTRATIONS[product.id]}
+                  illustrationOpacity={ILLUSTRATION_OPACITY[product.id]}
+                  onClick={() => navigate(`/product/${product.slug}`)}
+                  badgeText={buildBadgeText(product)}
+                  hasActiveSession={activeProductIds.has(product.id)}
+                  tileHeight={TILE_HEIGHTS[product.id] ?? '240px'}
+                  progressText={ptxt}
+                  lastActive={lastActivityMap[product.id]}
+                  wide
+                />
+              );
+            })}
           </motion.div>
         </div>
 
