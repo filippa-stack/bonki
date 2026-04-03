@@ -428,8 +428,10 @@ export default function CardView() {
   // ─── Eager session creation for kids products ───
   // Kids products create sessions immediately so resume banners appear on home/library.
   const eagerSessionRef = useRef(false);
+  const hasRenderedContent = useRef(false);
   useEffect(() => {
     eagerSessionRef.current = false;
+    hasRenderedContent.current = false;
   }, [cardId]);
   useEffect(() => {
     const needsEagerSession = isKidsProduct || product?.id === 'still_us';
