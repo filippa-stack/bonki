@@ -472,6 +472,7 @@ export default function ProductLibrary() {
   const [activeProductIds, setActiveProductIds] = useState<Set<string>>(new Set());
   const [lastActivityMap, setLastActivityMap] = useState<Record<string, string>>({});
   const [completedCountMap, setCompletedCountMap] = useState<Record<string, number>>({});
+  const [completedCardSets, setCompletedCardSets] = useState<Record<string, Set<string>>>({});
   useEffect(() => {
     const syncLocalPreview = () => {
       if (!isDemoMode()) return;
