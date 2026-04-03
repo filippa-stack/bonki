@@ -1,44 +1,57 @@
 
 
-## Plan: Fix Onboarding Routing + Returning User Detection + Intro Flash
+## Fix: Cream Flash on Page Reload
 
-Two files, three fixes applied together.
+**File:** `src/index.css` only
 
----
+### Change 1 — Body background (line 246-250)
 
-### File 1: `src/pages/Index.tsx`
-
-**Fix A — DB-backed onboarding bypass for returning users:**
-- Add `completeOnboarding` to the existing `useApp()` destructure
-- Add `useState(false)` for `dbOnboardingChecked`
-- Add `useEffect` after the migration effect that queries `couple_sessions` for any completed session; if found, calls `completeOnboarding()`; always sets `dbOnboardingChecked(true)`
-- Update the onboarding gate to show `<BonkiLoadingScreen />` while `dbOnboardingChecked` is false
-- Add import for `BonkiLoadingScreen`
-
-**Fix B — Module-level audience routing (StrictMode-safe):**
-- Add `let audienceRouteConsumed = false` at module level (above the component)
-- Delete the `useEffect` cleanup block (lines 93–100)
-- Replace the audience routing block with a guarded version that sets `audienceRouteConsumed = true`, removes the localStorage key, and sets the guard key — all synchronously in render
-
-### File 2: `src/pages/ProductHome.tsx`
-
-**Fix C — Tri-state showIntro to eliminate flash:**
-- Change `useState` initializer to return `null` (undecided) when no localStorage key exists, `false` when key exists
-- Update the reconciliation `useEffect` to set `true` or `false` based on `needsIntro`
-- Change the intro render gate from `showIntro && product` to `showIntro === true && product`
-- Add a loading gate: when `showIntro === null`, render a plain div matching the product background — **not** `BonkiLoadingScreen` (wrong background color would cause a visible flash):
-```tsx
-if (showIntro === null) {
-  return (
-    <div style={{
-      minHeight: '100vh',
-      backgroundColor: product?.backgroundColor ?? 'var(--surface-base)',
-    }} />
-  );
-}
+Replace:
+```css
+body {
+  @apply bg-background text-foreground font-sans;
+  font-family: var(--font-body);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  background-color: var(--surface-base, hsl(46, 64%, 89%));
 ```
-- No `BonkiLoadingScreen` import needed in this file
 
-### Files NOT changed
-No changes to `ProductIntro.tsx`, `Onboarding.tsx`, `App.tsx`, `BottomNav`, or any protected patterns.
+With:
+```css
+body {
+  @apply text-foreground font-sans;
+  font-family: var(--font-body);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  background-color: #0B1026;
+```
+
+Removes `bg-background` (resolves to cream) and changes explicit background from cream-fallback to dark.
+
+### Change 2 — `#root` fallback inside `@layer base` (line 259)
+
+Change:
+```css
+background-color: var(--surface-base, hsl(46, 64%, 89%));
+```
+To:
+```css
+background-color: var(--surface-base, #0B1026);
+```
+
+### Change 3 — `--page-bg` default in `:root` (line 228)
+
+Change:
+```css
+--page-bg: var(--color-bg);
+```
+To:
+```css
+--page-bg: #0B1026;
+```
+
+This sets the initial default to dark. React's `useThemeVars` hook will override `--page-bg` at runtime to the correct product/page color once mounted — so light-themed pages still work, but the pre-React flash is dark.
+
+### Not changed
+- `:root` CSS variables (neutrals, background, etc.)
+- `#root` rule on line 6
+- Component styles, theme hooks, protected patterns
 
