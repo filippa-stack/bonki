@@ -923,12 +923,12 @@ export default function Journal() {
 
   const toggleFilter = (chip: FilterChip) => {
     setActiveFilters(prev => {
-      if (prev.has(chip) && prev.size === 1) return prev;
-      const next = new Set(prev);
-      next.has(chip) ? next.delete(chip) : next.add(chip);
-      return next;
+      if (prev.has(chip) && prev.size === 1) return new Set<FilterChip>(['barn', 'par']);
+      return new Set<FilterChip>([chip]);
     });
   };
+
+  const bothActive = activeFilters.has('barn') && activeFilters.has('par');
 
   return (
     <div style={{ minHeight: '100vh', backgroundColor: MIDNIGHT_INK, display: 'flex', flexDirection: 'column' }}>
@@ -962,15 +962,30 @@ export default function Journal() {
         <div
           style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginTop: '16px' }}
         >
+          <button
+            onClick={() => setActiveFilters(new Set<FilterChip>(['barn', 'par']))}
+            style={{
+              height: '30px', paddingLeft: '16px', paddingRight: '16px', borderRadius: '10px',
+              border: `1px solid ${bothActive ? DEEP_SAFFRON : DRIFTWOOD}44`,
+              background: bothActive ? `${DEEP_SAFFRON}18` : 'transparent',
+              color: bothActive ? LANTERN_GLOW : `${DRIFTWOOD}aa`,
+              fontFamily: 'var(--font-sans)', fontSize: '12px', fontWeight: 500,
+              letterSpacing: '0.06em', textTransform: 'uppercase',
+              cursor: 'pointer', transition: 'all 200ms ease',
+              WebkitTapHighlightColor: 'transparent',
+            }}
+          >
+            Alla
+          </button>
           {(['barn', 'par'] as const).map(chip => {
-            const active = activeFilters.has(chip);
+            const active = activeFilters.has(chip) && activeFilters.size === 1;
             return (
               <button
                 key={chip}
                 onClick={() => toggleFilter(chip)}
                 style={{
                   height: '30px', paddingLeft: '16px', paddingRight: '16px', borderRadius: '10px',
-                  border: active ? `1px solid ${DEEP_SAFFRON}44` : `1px solid ${DRIFTWOOD}44`,
+                  border: `1px solid ${active ? DEEP_SAFFRON : DRIFTWOOD}44`,
                   backgroundColor: active ? `${DEEP_SAFFRON}18` : 'transparent',
                   color: active ? LANTERN_GLOW : `${DRIFTWOOD}aa`,
                   fontFamily: 'var(--font-sans)', fontSize: '12px', fontWeight: 500,
