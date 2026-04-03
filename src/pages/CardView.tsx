@@ -2962,6 +2962,18 @@ export default function CardView() {
               transition: 'width 300ms ease',
             }} />
           </div>
+          <p style={{
+            fontFamily: 'var(--font-sans)',
+            fontSize: '11px',
+            fontWeight: 500,
+            color: '#FDF6E3',
+            opacity: 0.35,
+            textAlign: 'center',
+            margin: '8px 0 0',
+            letterSpacing: '0.03em',
+          }}>
+            {localPromptIndex + 1} av {totalPrompts}
+          </p>
 
           {/* ── Content area — illustration bg + white question card ── */}
           <div style={{
