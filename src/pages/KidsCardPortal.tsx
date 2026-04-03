@@ -572,26 +572,31 @@ export default function KidsCardPortal() {
               {promptCount} frågor · {estimateMinutes(promptCount, productSlug)}
             </p>
             {/* ── Start session button ── */}
-            <button
-              onClick={startSession}
-              style={{
-                display: 'inline-block',
-                marginTop: '14px',
-                padding: '10px 32px',
-                borderRadius: '24px',
-                border: 'none',
-                background: SAFFRON_FLAME,
-                cursor: 'pointer',
-                fontFamily: 'var(--font-sans)',
-                fontSize: '15px',
-                fontWeight: 600,
-                color: '#1a1a1a',
-                letterSpacing: '0.3px',
-                boxShadow: `0 4px 16px ${SAFFRON_FLAME}55`,
-              }}
-            >
-              Starta samtal
-            </button>
+            {(() => {
+              const isLocked = product && card.id !== product.freeCardId && !productIsPurchased && !bypassPaywall;
+              return (
+                <button
+                  onClick={startSession}
+                  style={{
+                    display: 'inline-block',
+                    marginTop: '14px',
+                    padding: '10px 32px',
+                    borderRadius: '24px',
+                    border: 'none',
+                    background: isLocked ? 'rgba(255, 255, 255, 0.12)' : SAFFRON_FLAME,
+                    cursor: 'pointer',
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: '15px',
+                    fontWeight: 600,
+                    color: isLocked ? 'var(--text-primary, #FDF6E3)' : '#1a1a1a',
+                    letterSpacing: '0.3px',
+                    boxShadow: isLocked ? 'none' : `0 4px 16px ${SAFFRON_FLAME}55`,
+                  }}
+                >
+                  {isLocked ? 'Lås upp för att starta' : 'Starta samtal'}
+                </button>
+              );
+            })()}
           </motion.div>
         </AnimatePresence>
 
