@@ -1059,7 +1059,7 @@ export default function Journal() {
                 {' · '}{pulseData.latestRelDate}
               </p>
               {pulseData.uniqueProductCount > 1 && (
-                <p style={{ margin: '4px 0 0', fontSize: '12px', color: `${DRIFTWOOD}dd`, lineHeight: 1.4 }}>
+                <p style={{ margin: '4px 0 0', fontSize: '12px', color: 'rgba(253,246,227,0.45)', lineHeight: 1.4 }}>
                   I {pulseData.uniqueProductCount} olika samtalsprodukter
                 </p>
               )}
