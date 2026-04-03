@@ -1,55 +1,24 @@
 
 
-## Make "Nästa steg" Suggestion Tappable
+## Upgrade "Nästa steg" to Tile Style
 
 **File:** `src/components/ProductLibrary.tsx`
 
-### Change (lines 733-743)
+### Change (lines 732-753)
 
-Replace the `<p>` element with a `<button>` that navigates to the suggested product's page on tap.
+Replace the plain text button with a glassmorphic tile matching the "Era samtal" card style.
 
-**From:**
-```tsx
-<p style={{
-  fontFamily: 'var(--font-body)',
-  fontSize: '13px',
-  color: '#FDF6E3',
-  opacity: 0.45,
-  lineHeight: 1.5,
-}}>
-  Nästa steg: prova <span style={{ fontWeight: 600, opacity: 1, color: '#D4F5C0' }}>
-    {untriedProduct.name}
-  </span> — ert första samtal är gratis.
-</p>
-```
+**From:** Plain `<button>` with no background, 13px text, 0.45 opacity
 
-**To:**
-```tsx
-<button
-  onClick={() => navigate(`/product/${untriedProduct.slug}`)}
-  style={{
-    background: 'none',
-    border: 'none',
-    cursor: 'pointer',
-    padding: 0,
-    textAlign: 'left',
-    fontFamily: 'var(--font-body)',
-    fontSize: '13px',
-    color: '#FDF6E3',
-    opacity: 0.45,
-    lineHeight: 1.5,
-    WebkitTapHighlightColor: 'transparent',
-  }}
->
-  Nästa steg: prova <span style={{ fontWeight: 600, opacity: 1, color: '#D4F5C0' }}>
-    {untriedProduct.name}
-  </span> — ert första samtal är gratis.
-</button>
-```
+**To:** Full-width tile with:
+- Dark translucent background (`rgba(15, 15, 15, 0.7)`) + backdrop blur
+- 16px border radius, border glow, multi-layer box shadow
+- Saffron accent dot (36×36px rounded square with ✦ icon)
+- Two-line text: "Prova {name}" + "Ert första samtal är gratis"
+- Arrow hint (→) on the right
 
-`navigate` is already imported and used throughout the component. No other changes needed.
+The conditional logic (lines 728-730, 754-755) stays exactly as-is. Only the inner JSX (lines 732-753) is replaced.
 
 ### Not changed
-- Conditional logic for showing/hiding the suggestion
-- Any other element or file
+- Conditional logic, LibraryResumeCard, "Era samtal" card, any other file
 
