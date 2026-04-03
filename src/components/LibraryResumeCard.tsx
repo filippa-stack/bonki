@@ -118,35 +118,29 @@ export default function LibraryResumeCard({ activeTab, global, forceMock }: Libr
     }
 
     let stepLabel = '';
-    if (session.product_id === 'still_us') {
-      const { data: completions } = await supabase
-        .from('couple_session_completions')
-        .select('step_index')
-        .eq('session_id', session.id);
+    const { data: reflections } = await supabase
+      .from('step_reflections')
+      .select('step_index')
+      .eq('session_id', session.id)
+      .neq('text', '')
+      .order('step_index', { ascending: false })
+      .limit(1);
 
-      if (fetchId === fetchRef.current) {
-        const completedCount = (completions || []).length;
-        const totalPrompts = card.sections?.reduce(
-          (sum, s) => sum + (s.prompts?.length ?? 0), 0
-        ) ?? 0;
+    if (fetchId === fetchRef.current) {
+      const totalPrompts = card.sections?.reduce(
+        (sum, s) => sum + (s.prompts?.length ?? 0), 0
+      ) ?? 0;
+
+      if (reflections && reflections.length > 0) {
+        const lastAnsweredIndex = reflections[0].step_index % 100;
+        const currentPrompt = lastAnsweredIndex + 2;
         stepLabel = totalPrompts > 1
-          ? `Fråga ${completedCount + 1} av ${totalPrompts}`
+          ? `Fråga ${Math.min(currentPrompt, totalPrompts)} av ${totalPrompts}`
           : '';
-      }
-    } else {
-      const { data: completions } = await supabase
-        .from('couple_session_completions')
-        .select('step_index')
-        .eq('session_id', session.id);
-
-      if (fetchId === fetchRef.current) {
-        const completedCount = (completions || []).length;
-        const totalPrompts = card.sections?.reduce(
-          (sum, s) => sum + (s.prompts?.length ?? 0), 0
-        ) ?? 0;
+      } else {
         stepLabel = totalPrompts > 1
-          ? `Fråga ${completedCount + 1} av ${totalPrompts}`
-          : 'Frågor';
+          ? `Fråga 1 av ${totalPrompts}`
+          : '';
       }
     }
 
