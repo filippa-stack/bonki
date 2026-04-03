@@ -1,93 +1,47 @@
 
 
-## Completion Page Emotional Polish
+## Center CTA Buttons on Session + Completion Pages
 
-**File:** `src/pages/CardView.tsx`
+Apply the same layout pattern to 6 CTA rows across 2 files: back arrow becomes `position: absolute; left: 0` so the CTA button centers naturally.
 
-### Change 1: Add "Valfritt" label above reflection input
+### File 1: `src/pages/CardView.tsx`
 
-**Kids block (line ~1276–1289):** Before `<KidsCompletionNote .../>`, add the "Valfritt" tag:
-```tsx
-<p style={{
-  fontFamily: 'var(--font-sans)',
-  fontSize: '11px',
-  fontWeight: 500,
-  letterSpacing: '0.06em',
-  textTransform: 'uppercase',
-  color: 'rgba(253, 246, 227, 0.35)',
-  textAlign: 'center',
-  marginBottom: '8px',
-}}>
-  Valfritt
-</p>
-```
+**Pattern for each CTA row:** Change parent `div` to `position: 'relative', justifyContent: 'center'`. Change back button to `position: 'absolute', left: 0`. Change CTA button: remove `flex: 1`, add `width: 'auto', minWidth: '200px', maxWidth: '280px', paddingLeft: '32px', paddingRight: '32px'`.
 
-**Still Us block (line ~1529–1539):** Add same "Valfritt" tag above `<p>Något ni vill minnas?</p>`.
+**Location A — Kids completion (line ~1372):**
+Parent div → add `position: 'relative'`, change `justifyContent` to `'center'`.
+Back button (line 1373–1398) → add `position: 'absolute', left: 0`.
+CTA button (line 1399–1425) → remove `flex: 1`, add constrained width.
 
-### Change 2: Add saffron completion indicator
+**Location B — Still Us su-mock-0 completion (line ~1656):**
+Parent div → same treatment.
+Back button (line 1657–1682) → absolute left.
+CTA button (line 1683–1702) → remove `flex: 1`, add constrained width.
 
-**Kids block (line ~1200):** The kids block already has a creature circle + saffron ring (lines 1200–1256). No change needed — it already serves as the completion indicator.
+**Location C — Still Us all_complete (line ~1723):**
+Parent div → same treatment.
+Back button (line 1724–1749) → absolute left.
+CTA button (line 1750–1769) → remove `flex: 1`, constrained width. This one uses filled saffron style — keep that, just change sizing.
 
-**Still Us block (line ~1479–1481):** Replace the empty `<div style={{ height: '24px' }} />` spacer with the saffron checkmark circle:
-```tsx
-<div style={{ display: 'flex', justifyContent: 'center' }}>
-  <div style={{
-    width: '40px',
-    height: '40px',
-    borderRadius: '50%',
-    backgroundColor: 'rgba(218, 157, 29, 0.15)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: '16px',
-  }}>
-    <span style={{ color: '#D4A03A', fontSize: '18px' }}>✓</span>
-  </div>
-</div>
-```
+**Location D — Still Us default next (line ~1774):**
+Parent div → same treatment.
+Back button (line 1775–1800) → absolute left.
+CTA button (line 1801–1820) → remove `flex: 1`, constrained width.
 
-### Change 3: Demote "Nästa samtal" buttons to ghost style
+**Location E — Kids live session (line ~3241):**
+Parent div → same treatment.
+Back button (line 3242–3259) → absolute left.
+CTA `motion.button` (line 3260–3280) → remove `flex: 1`, add constrained width.
 
-**Kids block (lines 1387–1413):** Change the primary "Nästa samtal" button from filled saffron to ghost:
-- `backgroundColor: 'transparent'`
-- `border: '1px solid rgba(253, 246, 227, 0.2)'`
-- `color: 'rgba(253, 246, 227, 0.7)'`
-- Remove `<ArrowRight>` icon from the label
+### File 2: `src/components/SessionStepReflection.tsx`
 
-**Still Us block — su-mock-0 CTA (lines 1646–1666):** Same ghost treatment:
-- `backgroundColor: 'transparent'` instead of `DEEP_SAFFRON`
-- `border: '1px solid rgba(253, 246, 227, 0.2)'`
-- `color: 'rgba(253, 246, 227, 0.7)'` instead of `MIDNIGHT_INK`
-- Remove `<ArrowRight>`
-
-**Still Us block — default next CTA (lines 1765–1785):** Same ghost treatment + remove `<ArrowRight>`.
-
-**Still Us block — "all_complete" CTA (lines 1714–1733):** This goes to product home, keep as-is (it's already the only option).
-
-### Change 4: Rename "Tillbaka till X" → "Till X"
-
-**Kids block line 1411:** `Tillbaka till ${product?.name ?? 'översikt'}` → `Till ${product?.name ?? 'översikt'}`
-
-**Kids block line 1435:** Same change.
-
-**Still Us block line 1682:** `Tillbaka till Still Us` → `Till Still Us`
-
-**Still Us block line 1732:** `Tillbaka till Ert utrymme` → `Till Ert utrymme`
-
-**Still Us block line 1804:** `Tillbaka till ${product.name}` → `Till ${product.name}`
-
-### Change 5: Rename "Gör:" → "Prova tillsammans:"
-
-**Kids block line 1320:** `Gör: {gorExerciseSU.title}` → `Prova tillsammans: {gorExerciseSU.title}`
-
-**Still Us block line 1575:** `Gör: {gorExerciseSU.title}` → `Prova tillsammans: {gorExerciseSU.title}`
+**Location F — Still Us live session CTA (line ~305):**
+Parent div (line 305–311) → add `position: 'relative'`, change to `justifyContent: 'center'`.
+Back button (line 312–329) → add `position: 'absolute', left: 0`.
+CTA `motion.button` (line 330–356) → remove `flex: 1`, add `width: 'auto', minWidth: '200px', maxWidth: '280px', paddingLeft: '32px', paddingRight: '32px'`.
 
 ### Not changed
-- Completion headline text/random message system
-- handleCompleteStep or any completion logic
-- Reflection save/flush logic
-- onClick navigation handlers
-- Creature illustration on kids block
-- suppressUntilRef, prevServerStepRef, clearTimeout(pendingSave), hasSyncedRef
+- onClick handlers, button text, ghost/filled styling, icon size/opacity
+- Any logic, state, or data fetching
 - Any other file
 
