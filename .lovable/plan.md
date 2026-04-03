@@ -1,24 +1,22 @@
 
 
-## Upgrade "Nästa steg" to Tile Style
+## NextActionBanner CTA Pill
 
-**File:** `src/components/ProductLibrary.tsx`
+**File:** `src/components/NextActionBanner.tsx`
 
-### Change (lines 732-753)
+### Changes
 
-Replace the plain text button with a glassmorphic tile matching the "Era samtal" card style.
+**1. Remove arrows from ctaText assignments (3 lines)**
+- Line 63: `'Öppna →'` → `'Öppna'`
+- Line 72: `'Utforska →'` → `'Utforska'`
+- Line 81: `'Öppna →'` → `'Öppna'`
 
-**From:** Plain `<button>` with no background, 13px text, 0.45 opacity
+**2. Replace the CTA `<span>` (lines ~126-136) with a solid pill**
 
-**To:** Full-width tile with:
-- Dark translucent background (`rgba(15, 15, 15, 0.7)`) + backdrop blur
-- 16px border radius, border glow, multi-layer box shadow
-- Saffron accent dot (36×36px rounded square with ✦ icon)
-- Two-line text: "Prova {name}" + "Ert första samtal är gratis"
-- Arrow hint (→) on the right
-
-The conditional logic (lines 728-730, 754-755) stays exactly as-is. Only the inner JSX (lines 732-753) is replaced.
+Replace the current white text span with a pill-styled span using `backgroundColor: accentColor`, dark text (`#1A1A2E`), `padding: '8px 16px'`, `borderRadius: '24px'`, inner highlight shadow, no textShadow.
 
 ### Not changed
-- Conditional logic, LibraryResumeCard, "Era samtal" card, any other file
+- Banner background, size, position, border-radius
+- Label/subtitle text, onClick handlers, four-state logic, accentColor derivation
+- Any other file
 
