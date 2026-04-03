@@ -585,6 +585,7 @@ interface StillUsCategoryViewProps {
   product?: ProductManifest;
   productIsPurchased?: boolean;
   priceSek?: number | null;
+  allTimeCompletedCardIds?: string[];
 }
 
 function StillUsCategoryView({
