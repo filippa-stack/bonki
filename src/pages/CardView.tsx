@@ -1488,7 +1488,20 @@ export default function CardView() {
         <div className="px-6 pb-16 relative" style={{ paddingTop: '48px' }}>
           {/* Back arrow removed — Föregående is in the CTA area below */}
 
-          <div style={{ height: '24px' }} />
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <div style={{
+              width: '40px',
+              height: '40px',
+              borderRadius: '50%',
+              backgroundColor: 'rgba(218, 157, 29, 0.15)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginBottom: '16px',
+            }}>
+              <span style={{ color: '#D4A03A', fontSize: '18px' }}>✓</span>
+            </div>
+          </div>
 
           {/* 1. Fixed headline */}
           <motion.div
