@@ -1280,6 +1280,18 @@ export default function CardView() {
             transition={{ delay: 0.2, duration: 0.3 }}
             style={{ width: '100%', marginBottom: '40px' }}
           >
+            <p style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: '11px',
+              fontWeight: 500,
+              letterSpacing: '0.06em',
+              textTransform: 'uppercase',
+              color: 'rgba(253, 246, 227, 0.35)',
+              textAlign: 'center',
+              marginBottom: '8px',
+            }}>
+              Valfritt
+            </p>
             <KidsCompletionNote
               sessionId={activeSessionId}
               spaceId={space?.id ?? null}
@@ -1317,7 +1329,7 @@ export default function CardView() {
                   fontWeight: 600,
                   color: BARK,
                 }}>
-                  Gör: {gorExerciseSU.title}
+                  Prova tillsammans: {gorExerciseSU.title}
                 </span>
                 <span style={{
                   color: DRIFTWOOD,
@@ -1391,14 +1403,14 @@ export default function CardView() {
               style={{
                 flex: 1,
                 height: '56px',
-                borderRadius: '14px',
-                backgroundColor: SAFFRON,
-                border: 'none',
+                borderRadius: '24px',
+                backgroundColor: 'transparent',
+                border: '1px solid rgba(253, 246, 227, 0.2)',
                 cursor: 'pointer',
                 fontFamily: 'var(--font-sans)',
                 fontSize: '17px',
                 fontWeight: 600,
-                color: '#1A1A2E',
+                color: 'rgba(253, 246, 227, 0.7)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -1406,9 +1418,9 @@ export default function CardView() {
               }}
             >
               {hasNextCard ? (
-                <>Nästa samtal <ArrowRight size={16} style={{ opacity: 0.7 }} /></>
+                'Nästa samtal'
               ) : (
-                `Tillbaka till ${product?.name ?? 'översikt'}`
+                `Till ${product?.name ?? 'översikt'}`
               )}
             </button>
             </div>
@@ -1432,7 +1444,7 @@ export default function CardView() {
                   textAlign: 'center',
                 }}
               >
-                {`Tillbaka till ${product?.name ?? 'översikt'}`}
+                {`Till ${product?.name ?? 'översikt'}`}
               </button>
             )}
           </motion.div>
@@ -1476,7 +1488,20 @@ export default function CardView() {
         <div className="px-6 pb-16 relative" style={{ paddingTop: '48px' }}>
           {/* Back arrow removed — Föregående is in the CTA area below */}
 
-          <div style={{ height: '24px' }} />
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <div style={{
+              width: '40px',
+              height: '40px',
+              borderRadius: '50%',
+              backgroundColor: 'rgba(218, 157, 29, 0.15)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginBottom: '16px',
+            }}>
+              <span style={{ color: '#D4A03A', fontSize: '18px' }}>✓</span>
+            </div>
+          </div>
 
           {/* 1. Fixed headline */}
           <motion.div
@@ -1526,6 +1551,18 @@ export default function CardView() {
             className="max-w-md mx-auto"
             style={{ width: '100%' }}
           >
+            <p style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: '11px',
+              fontWeight: 500,
+              letterSpacing: '0.06em',
+              textTransform: 'uppercase',
+              color: 'rgba(253, 246, 227, 0.35)',
+              textAlign: 'center',
+              marginBottom: '8px',
+            }}>
+              Valfritt
+            </p>
             <p
               className="font-sans"
               style={{
@@ -1572,7 +1609,7 @@ export default function CardView() {
                   fontWeight: 600,
                   color: DEEP_SAFFRON,
                 }}>
-                  Gör: {gorExerciseSU.title}
+                  Prova tillsammans: {gorExerciseSU.title}
                 </span>
                 <span style={{
                   color: DRIFTWOOD,
@@ -1649,20 +1686,19 @@ export default function CardView() {
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      gap: '6px',
                       flex: 1,
                       height: '52px',
-                      borderRadius: '14px',
-                      backgroundColor: DEEP_SAFFRON,
-                      color: MIDNIGHT_INK,
+                      borderRadius: '24px',
+                      backgroundColor: 'transparent',
+                      border: '1px solid rgba(253, 246, 227, 0.2)',
+                      color: 'rgba(253, 246, 227, 0.7)',
                       fontFamily: 'var(--font-sans)',
                       fontSize: '17px',
                       fontWeight: 600,
-                      border: 'none',
                       cursor: 'pointer',
                     }}
                   >
-                    Nästa samtal <ArrowRight size={16} style={{ opacity: 0.7 }} />
+                    Nästa samtal
                   </button>
                 </div>
                 <button
@@ -1679,7 +1715,7 @@ export default function CardView() {
                     textAlign: 'center',
                   }}
                 >
-                  Tillbaka till Still Us
+                  Till Still Us
                 </button>
               </>
             ) : postCompletionNav.type === 'all_complete' ? (
@@ -1729,7 +1765,7 @@ export default function CardView() {
                     cursor: 'pointer',
                   }}
                 >
-                  Tillbaka till Ert utrymme
+                  Till Ert utrymme
                 </button>
               </div>
             ) : (
@@ -1768,20 +1804,19 @@ export default function CardView() {
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      gap: '6px',
                       flex: 1,
                       height: '52px',
-                      borderRadius: '14px',
-                      backgroundColor: DEEP_SAFFRON,
-                      color: MIDNIGHT_INK,
+                      borderRadius: '24px',
+                      backgroundColor: 'transparent',
+                      border: '1px solid rgba(253, 246, 227, 0.2)',
+                      color: 'rgba(253, 246, 227, 0.7)',
                       fontFamily: 'var(--font-sans)',
                       fontSize: '17px',
                       fontWeight: 600,
-                      border: 'none',
                       cursor: 'pointer',
                     }}
                   >
-                    {postCompletionNav.label || 'Nästa samtal'} <ArrowRight size={16} style={{ opacity: 0.7 }} />
+                    {postCompletionNav.label || 'Nästa samtal'}
                   </button>
                 </div>
 
@@ -1801,7 +1836,7 @@ export default function CardView() {
                       textAlign: 'center',
                     }}
                   >
-                    Tillbaka till {product.name}
+                    Till {product.name}
                   </button>
                 )}
               </>
