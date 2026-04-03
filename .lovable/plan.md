@@ -1,35 +1,65 @@
 
 
-## Fix Library Progress Indicators
+## Fix Still Us Tile — Progress + Badge
 
-**File:** `src/components/ProductLibrary.tsx` only
+**File:** `src/components/ProductLibrary.tsx`
 
-### Fix 1 — Count unique completed cards
+### Issues found
 
-**Lines 474, 503-531:** Add `completedCardSets` state. Change `fetchCompleted` to select `product_id, card_id`. Rebuild handler to deduplicate by card_id using Sets.
+The Still Us tile (lines 900-935) has a partial implementation with three bugs:
+1. **Wrong freeCardId**: Checks `'su-01'` but the actual `freeCardId` is `'su-mock-0'` (from `still-us-mock.ts`)
+2. **Inline layout**: Progress text sits inside a flex `div` with `gap: '8px'`, rendering beside the badge instead of below it
+3. **Hardcoded count**: Uses `22` instead of `stillUsProduct?.cards.length`
 
-- New state: `const [completedCardSets, setCompletedCardSets] = useState<Record<string, Set<string>>>({});`
-- Select becomes `.select('product_id, card_id')`
-- Handler builds `Record<string, Set<string>>` then derives counts from `.size`
+### Changes
 
-### Fix 2 — Progress text as block element
+**Add product lookup** (near line 460, after existing state):
+```tsx
+const stillUsProduct = allProducts.find(p => p.id === 'still_us');
+```
 
-**Lines 428-441:** Change `display: 'inline-flex'` to `display: 'block'` and `marginTop` to `6px`.
+**Replace lines 892-936** — the "Trust signal badges" div and its contents — with:
+```tsx
+{/* Badge + progress */}
+<div style={{ marginTop: '8px' }}>
+  {(() => {
+    const suCount = completedCountMap['still_us'] || 0;
+    const suFreeCompleted = stillUsProduct?.freeCardId
+      ? (completedCardSets['still_us']?.has(stillUsProduct.freeCardId) ?? false)
+      : false;
+    const totalCards = stillUsProduct?.cards.length ?? 22;
+    return (
+      <>
+        {!suFreeCompleted && (
+          <span style={{
+            /* existing badge styles — unchanged */
+          }}>
+            ✦ Samtal 1 gratis
+          </span>
+        )}
+        <span style={{
+          display: 'block',
+          marginTop: '6px',
+          fontFamily: 'var(--font-body)',
+          fontSize: '11px',
+          fontWeight: 500,
+          color: 'hsla(0, 0%, 100%, 0.5)',
+        }}>
+          {suCount > 0 ? `${suCount} av ${totalCards} samtal` : `${totalCards} samtal`}
+        </span>
+      </>
+    );
+  })()}
+</div>
+```
 
-### Fix 3 — Badge visibility via `hideFreeBadge` prop
-
-**Line 230-237:** Add `hideFreeBadge?: boolean` to PastelTile props.
-
-**Lines 404-427:** Wrap the "✦ Samtal 1 gratis" badge `<span>` in `{!hideFreeBadge && ( ... )}`.
-
-**Lines 975-977 (kids tiles):** Compute `freeCardCompleted` from `completedCardSets`, change `progressText` to always show (either `"X av Y samtal"` or `"Y samtal"`), pass `hideFreeBadge={freeCardCompleted}`.
-
-**Lines 892-921 (Still Us tile):** Same logic — conditionally hide badge, always show progress text.
+Key differences from current code:
+- Parent is a plain `div` (no `display: flex`, no `gap`) so progress text falls to its own line
+- Uses `stillUsProduct?.freeCardId` instead of hardcoded `'su-01'`
+- Uses `stillUsProduct?.cards.length` instead of hardcoded `22`
 
 ### Not changed
-- Tile layout, colors, heights, illustrations, border radius
-- Data fetch structure (parallel `Promise.all`)
-- `lastActivityMap`, `activeProductIds`, resume indicator
-- "Next step" suggestion, sorting logic, loading gate
-- Any other file
+- Tile layout, illustration, colors, border radius, height
+- Resume indicator ("Fortsätt" + relative time)
+- Kids product tiles, data fetch logic, any other file
 
