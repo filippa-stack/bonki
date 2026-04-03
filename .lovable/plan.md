@@ -1,43 +1,22 @@
 
 
-## Fix: Create Draft Row on Prompt Landing
+## Fix Question Counter Visibility
 
-**Root cause:** `useSessionReflections` never writes a `step_reflections` row when a user lands on a prompt — it only writes when `setText` is called (user types) or `markReady` is called. Users who advance without typing leave no trace in `step_reflections`, so resume queries find nothing.
+**File:** `src/pages/CardView.tsx` — style-only changes to three counter elements.
 
-**File:** `src/hooks/useSessionReflections.ts`
+### Changes
 
-**Change:** Add a "touch" upsert at the end of the fetch effect (effect #2, around line 115–140). After fetching the existing reflection, if no row exists (`data` is null), upsert an empty draft row. This ensures every prompt the user visits has a `step_reflections` row.
+**1. Still Us multi-step counter (line 3036)**
+- `opacity: 0.35` → `opacity: 0.55`
+- Add `textShadow: '0 1px 3px rgba(0,0,0,0.5)'`
 
-After the `if (data) { ... }` block and before `setLoading(false)`, add:
+**2. Kids counter (line 3521–3545)**
+The kids counter uses CSS variable colors and has no explicit low opacity on the text. However, the dot indicator at line 3542 has `opacity: 0.6` which is fine. No changes needed here per the user's request — but if the user intended this one, I'll leave it as-is since it uses themed CSS vars.
 
-```tsx
-// If no existing reflection, create an empty draft row to track prompt visit
-if (!data && sessionId && user.id) {
-  supabase
-    .from('step_reflections')
-    .upsert(
-      {
-        session_id: sessionId,
-        step_index: stepIndex,
-        user_id: user.id,
-        text: '',
-        state: 'draft' as any,
-      },
-      { onConflict: 'session_id,step_index,user_id' }
-    )
-    .then(({ error }) => {
-      if (error) console.error('Failed to create draft marker:', error);
-    });
-}
-```
+**3. Still Us 1-step fallback counter (line 3564)**
+- `opacity: 0.4` → `opacity: 0.55`
+- Add `textShadow: '0 1px 3px rgba(0,0,0,0.5)'`
 
-This is fire-and-forget — it doesn't block loading or affect local state. The `onConflict` clause makes it idempotent (safe if a row already exists from a previous visit).
-
-**No other files changed.** The resume queries in CardView.tsx and LibraryResumeCard.tsx are already correct — they just need rows to exist.
-
-**Verification:**
-- Start a session, advance to prompt 3 without typing anything
-- Exit → library banner shows "Pausad vid Fråga 3 av 5"
-- Tap "Fortsätt" → resumes at prompt 3
-- Start a session, type on prompt 2, advance to prompt 4 → banner shows "Fråga 4 av 5"
+### Summary
+Two `<p>` elements updated with higher opacity and text shadow. No logic or layout changes.
 
