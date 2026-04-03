@@ -2709,15 +2709,6 @@ export default function CardView() {
               />
             )}
 
-            {/* Dark scrim for readability */}
-            <div style={{
-              position: 'absolute',
-              inset: 0,
-              backgroundColor: 'rgba(0, 0, 0, 0.25)',
-              pointerEvents: 'none',
-              zIndex: 0,
-            }} />
-
             {/* White question card — sizes to content */}
             <div style={{
               position: 'relative',
