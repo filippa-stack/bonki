@@ -98,7 +98,6 @@ export default function BottomNav() {
                 key={item.id}
                 onClick={() => {
                   if (item.id === 'library') {
-                    localStorage.removeItem('bonki-last-active-product');
                     navigate('/');
                     return;
                   }
