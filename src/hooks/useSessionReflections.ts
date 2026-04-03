@@ -144,6 +144,23 @@ export function useSessionReflections(
         setMyReflection(mapRow(data));
         setLocalText(data.text);
         localTextRef.current = data.text;
+      } else if (sessionId && user.id) {
+        // Create an empty draft row to track prompt visit (fire-and-forget)
+        supabase
+          .from('step_reflections')
+          .upsert(
+            {
+              session_id: sessionId,
+              step_index: stepIndex,
+              user_id: user.id,
+              text: '',
+              state: 'draft' as any,
+            },
+            { onConflict: 'session_id,step_index,user_id' }
+          )
+          .then(({ error }) => {
+            if (error) console.error('Failed to create draft marker:', error);
+          });
       }
       setLoading(false);
     };
