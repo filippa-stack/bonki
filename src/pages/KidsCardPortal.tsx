@@ -562,11 +562,11 @@ export default function KidsCardPortal() {
             <p
               style={{
                 fontFamily: 'var(--font-sans)',
-                fontSize: '13px',
-                fontWeight: 500,
+                fontSize: '12px',
+                fontWeight: 400,
                 color: LANTERN_GLOW,
-                opacity: 0.85,
-                marginTop: '5px',
+                opacity: 0.4,
+                marginTop: '2px',
               }}
             >
               {promptCount} frågor · {estimateMinutes(promptCount, productSlug)}
