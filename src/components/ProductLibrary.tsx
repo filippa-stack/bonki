@@ -897,34 +897,40 @@ export default function ProductLibrary() {
                   marginTop: '8px',
                   flexWrap: 'wrap',
                 }}>
-                  <span style={{
-                    fontFamily: "var(--font-body)",
-                    fontSize: '11px',
-                    fontWeight: 600,
-                    letterSpacing: '0.04em',
-                    color: 'hsla(0, 0%, 100%, 0.9)',
-                    background: 'hsla(0, 0%, 100%, 0.15)',
-                    backdropFilter: 'blur(8px)',
-                    WebkitBackdropFilter: 'blur(8px)',
-                    border: '1px solid hsla(0, 0%, 100%, 0.25)',
-                    borderRadius: '20px',
-                    padding: '4px 12px',
-                    boxShadow: '0 0 12px hsla(0, 0%, 100%, 0.08), inset 0 1px 0 hsla(0, 0%, 100%, 0.15)',
-                  }}>
-                    ✦ Samtal 1 gratis
-                  </span>
                   {(() => {
                     const suCount = completedCountMap['still_us'] || 0;
-                    if (suCount <= 0) return null;
+                    const suFreeCompleted = completedCardSets['still_us']?.has('su-01') ?? false;
                     return (
-                      <span style={{
-                        fontFamily: 'var(--font-body)',
-                        fontSize: '11px',
-                        fontWeight: 500,
-                        color: 'hsla(0, 0%, 100%, 0.5)',
-                      }}>
-                        {suCount} av 22 samtal
-                      </span>
+                      <>
+                        {!suFreeCompleted && (
+                          <span style={{
+                            fontFamily: "var(--font-body)",
+                            fontSize: '11px',
+                            fontWeight: 600,
+                            letterSpacing: '0.04em',
+                            color: 'hsla(0, 0%, 100%, 0.9)',
+                            background: 'hsla(0, 0%, 100%, 0.15)',
+                            backdropFilter: 'blur(8px)',
+                            WebkitBackdropFilter: 'blur(8px)',
+                            border: '1px solid hsla(0, 0%, 100%, 0.25)',
+                            borderRadius: '20px',
+                            padding: '4px 12px',
+                            boxShadow: '0 0 12px hsla(0, 0%, 100%, 0.08), inset 0 1px 0 hsla(0, 0%, 100%, 0.15)',
+                          }}>
+                            ✦ Samtal 1 gratis
+                          </span>
+                        )}
+                        <span style={{
+                          display: 'block',
+                          marginTop: suFreeCompleted ? '0px' : '6px',
+                          fontFamily: 'var(--font-body)',
+                          fontSize: '11px',
+                          fontWeight: 500,
+                          color: 'hsla(0, 0%, 100%, 0.5)',
+                        }}>
+                          {suCount > 0 ? `${suCount} av 22 samtal` : '22 samtal'}
+                        </span>
+                      </>
                     );
                   })()}
                 </div>
