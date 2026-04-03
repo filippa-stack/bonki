@@ -503,7 +503,7 @@ export default function ProductLibrary() {
 
     const fetchCompleted = supabase
       .from('couple_sessions')
-      .select('product_id')
+      .select('product_id, card_id')
       .eq('couple_space_id', space.id)
       .eq('status', 'completed');
 
