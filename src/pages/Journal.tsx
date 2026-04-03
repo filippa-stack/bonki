@@ -325,7 +325,7 @@ function NoteEntryCard({ entry, navigate, index }: { entry: NoteEntry; navigate:
                   margin: blockIndex === 0 ? 0 : '12px 0 0',
                   fontFamily: 'var(--font-serif)',
                   fontSize: '16px',
-                  color: LANTERN_GLOW,
+                  color: '#E9C890',
                   lineHeight: 1.6,
                 }}
               >
