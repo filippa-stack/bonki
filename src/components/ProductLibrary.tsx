@@ -457,9 +457,10 @@ export default function ProductLibrary() {
   const [notifySignedUp, setNotifySignedUp] = useState(false);
   const [notifyLoading, setNotifyLoading] = useState(false);
   const handleNotifyMe = async () => {};
-  void notifySignedUp; void notifyLoading; void handleNotifyMe;
+   void notifySignedUp; void notifyLoading; void handleNotifyMe;
+   const stillUsProduct = allProducts.find(p => p.id === 'still_us');
 
-  useEffect(() => {
+   useEffect(() => {
     if (!tracked.current) {
       tracked.current = true;
       import('@/lib/trackOnboarding').then(m => m.trackOnboardingEvent('lobby_view'));
