@@ -10,6 +10,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { isDemoMode } from '@/lib/demoMode';
 import Onboarding from '@/components/Onboarding';
 import BonkiLoadingScreen from '@/components/BonkiLoadingScreen';
+import { trackPixelEvent } from '@/lib/metaPixel';
 
 import PurchaseScreen from '@/components/PurchaseScreen';
 import ProductLibrary from '@/components/ProductLibrary';
