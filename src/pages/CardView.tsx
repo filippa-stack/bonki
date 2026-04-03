@@ -1657,7 +1657,7 @@ export default function CardView() {
             {cardId === 'su-mock-0' ? (
               /* su-mock-0: unique CTA → next card */
               <>
-                <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', width: '100%', maxWidth: '520px', gap: '8px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', maxWidth: '520px', position: 'relative' }}>
                   <button
                     onClick={() => {
                       userDismissedCompletion.current = true;
@@ -1670,6 +1670,8 @@ export default function CardView() {
                     }}
                     aria-label="Föregående"
                     style={{
+                      position: 'absolute',
+                      left: 0,
                       background: 'none',
                       border: 'none',
                       cursor: 'pointer',
@@ -1679,7 +1681,6 @@ export default function CardView() {
                       alignItems: 'center',
                       justifyContent: 'center',
                       padding: 0,
-                      flexShrink: 0,
                     }}
                   >
                     <ChevronLeft size={20} strokeWidth={1.8} style={{ color: DRIFTWOOD, opacity: 0.7 }} />
@@ -1690,7 +1691,9 @@ export default function CardView() {
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      flex: 1,
+                      width: 'auto',
+                      minWidth: '200px',
+                      maxWidth: '280px',
                       height: '52px',
                       borderRadius: '24px',
                       backgroundColor: 'transparent',
@@ -1700,6 +1703,8 @@ export default function CardView() {
                       fontSize: '17px',
                       fontWeight: 600,
                       cursor: 'pointer',
+                      paddingLeft: '32px',
+                      paddingRight: '32px',
                     }}
                   >
                     Nästa samtal
