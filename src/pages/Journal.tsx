@@ -1083,7 +1083,7 @@ export default function Journal() {
                 </span>
                 <div style={{
                   flex: 1, height: '1px',
-                  background: `linear-gradient(90deg, ${DRIFTWOOD}55, transparent)`,
+                  background: 'linear-gradient(90deg, rgba(253,246,227,0.2), transparent)',
                 }} />
               </div>
 
