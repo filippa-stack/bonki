@@ -2890,6 +2890,7 @@ export default function CardView() {
     // Note nudge: show full text for first 2 prompts, then just icon unless interacted
     const showFullNudge = localPromptIndex <= 1 || kidsNoteInteractedRef.current;
 
+    hasRenderedContent.current = true;
     return (
       <>
         <div style={{
