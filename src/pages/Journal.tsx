@@ -800,7 +800,7 @@ export default function Journal() {
     });
 
     return { visibleItems: visible, emptyStillUsSessions: emptySU };
-  }, [allTimelineItems, activeFilters, parExpanded]);
+  }, [allTimelineItems, activeFilters]);
 
   // ── Group notes by sessionId into envelopes ──
   const groupedItems = useMemo<RenderItem[]>(() => {
