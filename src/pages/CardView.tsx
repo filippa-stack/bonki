@@ -3257,11 +3257,13 @@ export default function CardView() {
             zIndex: 2,
           }}>
             {!(currentStepIndex === 0 && localPromptIndex === 0) ? (
-              <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%', gap: '12px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', position: 'relative' }}>
               <button
                   onClick={() => handleKidsBack()}
                   aria-label="Föregående"
                   style={{
+                    position: 'absolute',
+                    left: 0,
                     background: 'none',
                     border: 'none',
                     cursor: 'pointer',
@@ -3271,7 +3273,6 @@ export default function CardView() {
                     alignItems: 'center',
                     justifyContent: 'center',
                     padding: 0,
-                    flexShrink: 0,
                   }}
                 >
                   <ChevronLeft size={20} strokeWidth={1.8} style={{ color: LANTERN_GLOW, opacity: 0.7 }} />
@@ -3280,7 +3281,9 @@ export default function CardView() {
                   onClick={handleKidsAdvance}
                   whileTap={{ scale: 0.97 }}
                   style={{
-                    flex: 1,
+                    width: 'auto',
+                    minWidth: '200px',
+                    maxWidth: '280px',
                     height: '56px',
                     borderRadius: '14px',
                     backgroundColor: SAFFRON,
@@ -3293,6 +3296,8 @@ export default function CardView() {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
+                    paddingLeft: '32px',
+                    paddingRight: '32px',
                   }}
                 >
                   {isLastPrompt ? 'Avsluta' : 'Fortsätt'}
