@@ -389,7 +389,7 @@ export default function CardView() {
   // ─── Auto-show completion when session disappears post-lock ───
   useEffect(() => {
     if (isFromArchive || devState) return;
-    if (activeSessionId && !normalizedSession.sessionId && !normalizedSession.loading && !showCompletion) {
+    if (activeSessionId && !normalizedSession.sessionId && !normalizedSession.loading && !showCompletion && !userDismissedCompletion.current) {
       setShowCompletion(true);
     }
   }, [activeSessionId, normalizedSession.sessionId, normalizedSession.loading, isFromArchive, showCompletion, devState]);
@@ -429,9 +429,11 @@ export default function CardView() {
   // Kids products create sessions immediately so resume banners appear on home/library.
   const eagerSessionRef = useRef(false);
   const hasRenderedContent = useRef(false);
+  const userDismissedCompletion = useRef(false);
   useEffect(() => {
     eagerSessionRef.current = false;
     hasRenderedContent.current = false;
+    userDismissedCompletion.current = false;
   }, [cardId]);
   useEffect(() => {
     const needsEagerSession = isKidsProduct || product?.id === 'still_us';
@@ -1358,6 +1360,7 @@ export default function CardView() {
             <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', width: '100%', gap: '8px' }}>
               <button
                 onClick={() => {
+                  userDismissedCompletion.current = true;
                   _setShowCompletion(false);
                   const lastStageIndex = effectiveSteps.length - 1;
                   const lastSection = card.sections.find(s => s.type === effectiveSteps[lastStageIndex]);
@@ -1616,6 +1619,7 @@ export default function CardView() {
                 <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', width: '100%', maxWidth: '520px', gap: '8px' }}>
                   <button
                     onClick={() => {
+                      userDismissedCompletion.current = true;
                       _setShowCompletion(false);
                       const lastStageIndex = effectiveSteps.length - 1;
                       const lastSection = card.sections.find(s => s.type === effectiveSteps[lastStageIndex]);
@@ -1683,6 +1687,7 @@ export default function CardView() {
               <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', width: '100%', maxWidth: '520px', gap: '8px' }}>
                  <button
                    onClick={() => {
+                     userDismissedCompletion.current = true;
                      _setShowCompletion(false);
                      const lastStageIndex = effectiveSteps.length - 1;
                      const lastSection = card.sections.find(s => s.type === effectiveSteps[lastStageIndex]);
@@ -1733,6 +1738,7 @@ export default function CardView() {
                 <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', width: '100%', maxWidth: '520px', gap: '8px' }}>
                   <button
                     onClick={() => {
+                      userDismissedCompletion.current = true;
                       _setShowCompletion(false);
                       const lastStageIndex = effectiveSteps.length - 1;
                       const lastSection = card.sections.find(s => s.type === effectiveSteps[lastStageIndex]);
