@@ -450,7 +450,11 @@ export function useProductIntroNeeded(productId: string): { needed: boolean; che
 
     (async () => {
       const { data: { user } } = await supabase.auth.getUser();
-      if (!user || cancelled) { setNeeded(true); setChecked(true); return; }
+      if (cancelled) return;
+      if (!user) {
+        // Auth not settled — don't mark checked, keep ProductHome in loading state
+        return;
+      }
 
       // Check for any completed session in this product
       const { data } = await supabase
