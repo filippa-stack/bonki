@@ -1204,7 +1204,7 @@ export default function Journal() {
                           "{b.question_text}"
                         </span>
                         <span style={{
-                          fontSize: '12px', color: `${DRIFTWOOD}99`, display: 'block', marginTop: '8px',
+                          fontSize: '12px', color: 'rgba(253,246,227,0.45)', display: 'block', marginTop: '8px',
                         }}>
                           {cardName} · {catName}
                         </span>
