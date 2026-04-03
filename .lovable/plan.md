@@ -1,18 +1,43 @@
 
 
-## Add "Fortsätt utforska" Return User Banner
+## Fix LibraryResumeCard — Correct Question Count
 
-**File:** `src/components/ProductLibrary.tsx`
+**File:** `src/components/LibraryResumeCard.tsx`
 
-**Single change** — insert a new conditional block after line 811 (after the `})()}` that closes the "Nästa steg" suggestion), before line 813 (`<div>`).
+**Single change** — replace lines 120–151 (both the Still Us and kids branches that query `couple_session_completions`) with a unified block that queries `step_reflections`:
 
-The block renders only when:
-- `activeProductIds.size === 0` (no active session)
-- `Object.keys(completedCountMap).length > 0` (has history)
-- Every product in `defaultKidsOrder` has been tried (`!defaultKidsOrder.find(p => !completedCountMap[p.id])`)
-- A `bonki-last-active-product` slug exists in localStorage and maps to a valid product
+```tsx
+let stepLabel = '';
+const { data: reflections } = await supabase
+  .from('step_reflections')
+  .select('step_index')
+  .eq('session_id', session.id)
+  .neq('text', '')
+  .order('step_index', { ascending: false })
+  .limit(1);
 
-The JSX is exactly the code provided in the prompt — glassmorphic card matching the "Nästa steg" tile style, showing "Fortsätt utforska {product.name}" with a progress subtitle "{X} av {Y} samtal" and a faded arrow.
+if (fetchId === fetchRef.current) {
+  const totalPrompts = card.sections?.reduce(
+    (sum, s) => sum + (s.prompts?.length ?? 0), 0
+  ) ?? 0;
 
-No other files or logic changed.
+  if (reflections && reflections.length > 0) {
+    const lastAnsweredIndex = reflections[0].step_index % 100;
+    const currentPrompt = lastAnsweredIndex + 2;
+    stepLabel = totalPrompts > 1
+      ? `Fråga ${Math.min(currentPrompt, totalPrompts)} av ${totalPrompts}`
+      : '';
+  } else {
+    stepLabel = totalPrompts > 1
+      ? `Fråga 1 av ${totalPrompts}`
+      : '';
+  }
+}
+```
+
+**Why `% 100` works:** The app encodes step_index as `(stageIndex * 100) + promptIndex`. Kids products always use stage 0, so prompt indices are 0, 1, 2… and `% 100` extracts them directly. Still Us uses stages 0–3, and `% 100` extracts the prompt-within-stage correctly.
+
+**Navigation unchanged** — keeps the existing portal route (`/product/{slug}/portal/{catId}?card={cardId}`).
+
+**No other files changed.**
 
