@@ -988,7 +988,12 @@ export default function ProductLibrary() {
           >
             {sortedKidsProducts.map((product) => {
               const count = completedCountMap[product.id] || 0;
-              const ptxt = count > 0 ? `${count} av ${product.cards.length} samtal` : undefined;
+              const freeCardCompleted = product.freeCardId
+                ? (completedCardSets[product.id]?.has(product.freeCardId) ?? false)
+                : false;
+              const ptxt = count > 0
+                ? `${count} av ${product.cards.length} samtal`
+                : `${product.cards.length} samtal`;
               return (
                 <PastelTile
                   key={product.id}
@@ -1007,6 +1012,7 @@ export default function ProductLibrary() {
                   tileHeight={TILE_HEIGHTS[product.id] ?? '240px'}
                   progressText={ptxt}
                   lastActive={lastActivityMap[product.id]}
+                  hideFreeBadge={freeCardCompleted}
                   wide
                 />
               );
