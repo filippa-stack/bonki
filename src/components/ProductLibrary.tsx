@@ -457,9 +457,10 @@ export default function ProductLibrary() {
   const [notifySignedUp, setNotifySignedUp] = useState(false);
   const [notifyLoading, setNotifyLoading] = useState(false);
   const handleNotifyMe = async () => {};
-  void notifySignedUp; void notifyLoading; void handleNotifyMe;
+   void notifySignedUp; void notifyLoading; void handleNotifyMe;
+   const stillUsProduct = allProducts.find(p => p.id === 'still_us');
 
-  useEffect(() => {
+   useEffect(() => {
     if (!tracked.current) {
       tracked.current = true;
       import('@/lib/trackOnboarding').then(m => m.trackOnboardingEvent('lobby_view'));
@@ -889,17 +890,14 @@ export default function ProductLibrary() {
                 }}>
                   Förbli ett vi medan ni uppfostrar dem
                 </p>
-                {/* Trust signal badges */}
-                <div style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                  marginTop: '8px',
-                  flexWrap: 'wrap',
-                }}>
+                {/* Badge + progress */}
+                <div style={{ marginTop: '8px' }}>
                   {(() => {
                     const suCount = completedCountMap['still_us'] || 0;
-                    const suFreeCompleted = completedCardSets['still_us']?.has('su-01') ?? false;
+                    const suFreeCompleted = stillUsProduct?.freeCardId
+                      ? (completedCardSets['still_us']?.has(stillUsProduct.freeCardId) ?? false)
+                      : false;
+                    const totalCards = stillUsProduct?.cards.length ?? 22;
                     return (
                       <>
                         {!suFreeCompleted && (
@@ -922,13 +920,13 @@ export default function ProductLibrary() {
                         )}
                         <span style={{
                           display: 'block',
-                          marginTop: suFreeCompleted ? '0px' : '6px',
+                          marginTop: '6px',
                           fontFamily: 'var(--font-body)',
                           fontSize: '11px',
                           fontWeight: 500,
                           color: 'hsla(0, 0%, 100%, 0.5)',
                         }}>
-                          {suCount > 0 ? `${suCount} av 22 samtal` : '22 samtal'}
+                          {suCount > 0 ? `${suCount} av ${totalCards} samtal` : `${totalCards} samtal`}
                         </span>
                       </>
                     );
