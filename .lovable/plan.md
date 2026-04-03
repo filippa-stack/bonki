@@ -1,42 +1,43 @@
 
 
-## Fix Session Resume — Include Empty Reflections
+## Fix: Create Draft Row on Prompt Landing
 
-Two files changed.
+**Root cause:** `useSessionReflections` never writes a `step_reflections` row when a user lands on a prompt — it only writes when `setText` is called (user types) or `markReady` is called. Users who advance without typing leave no trace in `step_reflections`, so resume queries find nothing.
 
-### 1. CardView.tsx (line 502)
-Remove `.neq('text', '')` from the resume query. No other lines touched.
+**File:** `src/hooks/useSessionReflections.ts`
 
-### 2. LibraryResumeCard.tsx (lines 120–135)
-Replace the `couple_session_completions` block with a `step_reflections` query (without `.neq('text', '')`):
+**Change:** Add a "touch" upsert at the end of the fetch effect (effect #2, around line 115–140). After fetching the existing reflection, if no row exists (`data` is null), upsert an empty draft row. This ensures every prompt the user visits has a `step_reflections` row.
+
+After the `if (data) { ... }` block and before `setLoading(false)`, add:
 
 ```tsx
-let stepLabel = '';
-const { data: reflections } = await supabase
-  .from('step_reflections')
-  .select('step_index')
-  .eq('session_id', session.id)
-  .order('step_index', { ascending: false })
-  .limit(1);
-
-if (fetchId === fetchRef.current) {
-  const totalPrompts = card.sections?.reduce(
-    (sum, s) => sum + (s.prompts?.length ?? 0), 0
-  ) ?? 0;
-  if (reflections && reflections.length > 0) {
-    const lastIndex = reflections[0].step_index % 100;
-    const currentPrompt = lastIndex + 1;
-    stepLabel = totalPrompts > 1
-      ? `Fråga ${Math.min(currentPrompt, totalPrompts)} av ${totalPrompts}`
-      : '';
-  } else {
-    stepLabel = totalPrompts > 1
-      ? `Fråga 1 av ${totalPrompts}`
-      : '';
-  }
+// If no existing reflection, create an empty draft row to track prompt visit
+if (!data && sessionId && user.id) {
+  supabase
+    .from('step_reflections')
+    .upsert(
+      {
+        session_id: sessionId,
+        step_index: stepIndex,
+        user_id: user.id,
+        text: '',
+        state: 'draft' as any,
+      },
+      { onConflict: 'session_id,step_index,user_id' }
+    )
+    .then(({ error }) => {
+      if (error) console.error('Failed to create draft marker:', error);
+    });
 }
 ```
 
-### Why
-`useSessionReflections` creates a draft row (with empty text) when the user lands on each prompt. The empty-text filter was discarding these rows, causing resume to always start at prompt 1. Removing it lets the highest `step_index` accurately reflect how far the user got.
+This is fire-and-forget — it doesn't block loading or affect local state. The `onConflict` clause makes it idempotent (safe if a row already exists from a previous visit).
+
+**No other files changed.** The resume queries in CardView.tsx and LibraryResumeCard.tsx are already correct — they just need rows to exist.
+
+**Verification:**
+- Start a session, advance to prompt 3 without typing anything
+- Exit → library banner shows "Pausad vid Fråga 3 av 5"
+- Tap "Fortsätt" → resumes at prompt 3
+- Start a session, type on prompt 2, advance to prompt 4 → banner shows "Fråga 4 av 5"
 
