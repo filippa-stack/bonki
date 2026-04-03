@@ -1369,7 +1369,7 @@ export default function CardView() {
             transition={{ delay: 0.3, duration: 0.3 }}
             style={{ width: '100%' }}
           >
-            <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', width: '100%', gap: '8px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', position: 'relative' }}>
               <button
                 onClick={() => {
                   userDismissedCompletion.current = true;
@@ -1382,6 +1382,8 @@ export default function CardView() {
                 }}
                 aria-label="Föregående"
                 style={{
+                  position: 'absolute',
+                  left: 0,
                   background: 'none',
                   border: 'none',
                   cursor: 'pointer',
@@ -1391,7 +1393,6 @@ export default function CardView() {
                   alignItems: 'center',
                   justifyContent: 'center',
                   padding: 0,
-                  flexShrink: 0,
                 }}
               >
                 <ChevronLeft size={20} strokeWidth={1.8} style={{ color: LANTERN_GLOW, opacity: 0.7 }} />
@@ -1401,7 +1402,9 @@ export default function CardView() {
                   hasNextCard ? postCompletionNav.destination : categoryDest
                 )}
               style={{
-                flex: 1,
+                width: 'auto',
+                minWidth: '200px',
+                maxWidth: '280px',
                 height: '56px',
                 borderRadius: '24px',
                 backgroundColor: 'transparent',
@@ -1414,7 +1417,8 @@ export default function CardView() {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                gap: '6px',
+                paddingLeft: '32px',
+                paddingRight: '32px',
               }}
             >
               {hasNextCard ? (
