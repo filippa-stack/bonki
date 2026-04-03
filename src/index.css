@@ -256,7 +256,7 @@ h1, h2, h3,
 
   #root {
     min-height: 100vh;
-    background-color: var(--surface-base, hsl(46, 64%, 89%));
+    background-color: var(--surface-base, #0B1026);
   }
 
   h1, h2, h3, h4 {
