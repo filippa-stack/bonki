@@ -100,6 +100,10 @@ export default function KidsCardPortal() {
     () => new Set(progress.recentlyCompletedCardIds),
     [progress.recentlyCompletedCardIds],
   );
+  const allTimeSet = useMemo(
+    () => new Set(progress.allTimeCompletedCardIds),
+    [progress.allTimeCompletedCardIds],
+  );
   const activeSet = useMemo(
     () => new Set(progress.activeCardIds),
     [progress.activeCardIds],
