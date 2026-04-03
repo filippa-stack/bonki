@@ -504,6 +504,18 @@ export default function KidsCardPortal() {
                 >
                   {card.title}
                 </h2>
+                {allTimeSet.has(card.id) && (
+                  <p style={{
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: '11px',
+                    fontWeight: 500,
+                    color: 'var(--text-primary, #FDF6E3)',
+                    opacity: 0.4,
+                    marginTop: '4px',
+                  }}>
+                    ✓ Genomfört
+                  </p>
+                )}
               </div>
             </motion.div>
           </AnimatePresence>
