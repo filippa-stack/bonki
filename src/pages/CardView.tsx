@@ -576,7 +576,7 @@ export default function CardView() {
   useEffect(() => {
     const sessionChanged = normalizedSession.sessionId !== prevSessionIdRef.current;
     const stepAdvanced = serverStepIndex > prevServerStepRef.current;
-    if (sessionChanged || stepAdvanced) {
+    if ((sessionChanged || stepAdvanced) && !userDismissedCompletion.current) {
       setLocalStepIndex(null);
       setLocalPromptIndex(0);
     }
