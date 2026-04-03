@@ -10,7 +10,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { getProductById } from '@/data/products';
 import { KIDS_PRODUCT_IDS } from '@/hooks/useKidsProductProgress';
-import { buildDynamicSteps } from '@/components/StepProgressIndicator';
+
 import { useDevState } from '@/contexts/DevStateContext';
 import { isDemoMode } from '@/lib/demoMode';
 import { DEMO_SESSION_EVENT, getMostRecentDemoSession } from '@/lib/demoSession';
@@ -125,21 +125,13 @@ export default function LibraryResumeCard({ activeTab, global, forceMock }: Libr
         .eq('session_id', session.id);
 
       if (fetchId === fetchRef.current) {
-        const completedSteps = new Set((completions || []).map(c => c.step_index));
-        const effectiveSteps = card.sections?.map((s: { type: string }) => s.type) ?? [];
-        const dynSteps = buildDynamicSteps(effectiveSteps, true);
-        let currentIdx = 0;
-        for (let i = 0; i < dynSteps.length; i++) {
-          if (!completedSteps.has(i)) { currentIdx = i; break; }
-        }
-        const step = dynSteps[currentIdx];
-        if (step) {
-          const section = card.sections?.[currentIdx];
-          const promptCount = section?.prompts?.length ?? 0;
-          stepLabel = promptCount > 1
-            ? `${step.label.toUpperCase()} · Fråga 1 av ${promptCount}`
-            : step.label.toUpperCase();
-        }
+        const completedCount = (completions || []).length;
+        const totalPrompts = card.sections?.reduce(
+          (sum, s) => sum + (s.prompts?.length ?? 0), 0
+        ) ?? 0;
+        stepLabel = totalPrompts > 1
+          ? `Fråga ${completedCount + 1} av ${totalPrompts}`
+          : '';
       }
     } else {
       const { data: completions } = await supabase
