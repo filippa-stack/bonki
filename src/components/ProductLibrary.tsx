@@ -730,17 +730,26 @@ export default function ProductLibrary() {
           if (!untriedProduct) return null;
           return (
             <div className="px-5" style={{ marginBottom: '12px' }}>
-              <p style={{
-                fontFamily: 'var(--font-body)',
-                fontSize: '13px',
-                color: '#FDF6E3',
-                opacity: 0.45,
-                lineHeight: 1.5,
-              }}>
+              <button
+                onClick={() => navigate(`/product/${untriedProduct.slug}`)}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  padding: 0,
+                  textAlign: 'left',
+                  fontFamily: 'var(--font-body)',
+                  fontSize: '13px',
+                  color: '#FDF6E3',
+                  opacity: 0.45,
+                  lineHeight: 1.5,
+                  WebkitTapHighlightColor: 'transparent',
+                }}
+              >
                 Nästa steg: prova <span style={{ fontWeight: 600, opacity: 1, color: '#D4F5C0' }}>
                   {untriedProduct.name}
                 </span> — ert första samtal är gratis.
-              </p>
+              </button>
             </div>
           );
         })()}
