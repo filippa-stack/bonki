@@ -1715,7 +1715,7 @@ export default function CardView() {
                     textAlign: 'center',
                   }}
                 >
-                  Tillbaka till Still Us
+                  Till Still Us
                 </button>
               </>
             ) : postCompletionNav.type === 'all_complete' ? (
