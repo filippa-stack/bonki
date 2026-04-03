@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { usePageBackground } from '@/hooks/usePageBackground';
 import { useApp } from '@/contexts/AppContext';
 import { trackOnboardingEvent } from '@/lib/trackOnboarding';
+import { trackPixelEvent } from '@/lib/metaPixel';
 import { LANTERN_GLOW } from '@/lib/palette';
 import BonkiButton from '@/components/BonkiButton';
 import bonkiLogo from '@/assets/bonki-logo-transparent.png';
@@ -235,7 +236,8 @@ export default function Onboarding() {
           }}
           onClick={() => {
             localStorage.setItem('bonki-onboarding-audience', selectedAudience!);
-            trackOnboardingEvent('onboarding_complete', { audience: selectedAudience });
+             trackOnboardingEvent('onboarding_complete', { audience: selectedAudience });
+             trackPixelEvent('Lead');
             initializeCoupleSpace();
             completeOnboarding();
           }}

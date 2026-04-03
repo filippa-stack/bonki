@@ -2,6 +2,8 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { useEffect } from "react";
+import { trackPixelEvent } from "@/lib/metaPixel";
 
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { AppProvider, useApp } from "@/contexts/AppContext";
@@ -131,6 +133,14 @@ function ProtectedRoutes() {
 
 
 
+function RoutePageViewTracker() {
+  const location = useLocation();
+  useEffect(() => {
+    trackPixelEvent('PageView');
+  }, [location.pathname]);
+  return null;
+}
+
 function AppRoutes() {
   const { user, loading } = useAuth();
   // Runs during capture loop — detects __sc_step and auto-advances
@@ -161,6 +171,7 @@ const App = () => (
             <Sonner position="bottom-center" offset={{ bottom: 64 }} toastOptions={{ classNames: { toast: 'mx-6' } }} />
             <BrowserRouter>
               <DevStateProvider>
+                <RoutePageViewTracker />
                 <MobileOnlyGate>
                   <DevModeBadge />
                   <AppRoutes />
