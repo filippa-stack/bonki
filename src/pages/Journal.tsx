@@ -1122,7 +1122,7 @@ export default function Journal() {
                 <motion.span
                   animate={{ rotate: emptySessionsOpen ? 180 : 0 }}
                   transition={{ duration: 0.2 }}
-                  style={{ color: `${DRIFTWOOD}88`, display: 'flex' }}
+                  style={{ color: 'rgba(253,246,227,0.35)', display: 'flex' }}
                 >
                   <ChevronDown size={14} strokeWidth={1.5} />
                 </motion.span>
