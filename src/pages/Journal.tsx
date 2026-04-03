@@ -1163,7 +1163,7 @@ export default function Journal() {
                 margin: '40px 16px 14px',
                 display: 'flex', alignItems: 'center', gap: '10px',
               }}>
-                <Bookmark size={13} strokeWidth={2} style={{ color: `${DRIFTWOOD}88` }} />
+                <Bookmark size={13} strokeWidth={2} style={{ color: 'rgba(253,246,227,0.35)' }} />
                 <span style={{
                   fontSize: '11px', fontWeight: 600,
                   letterSpacing: '2px', color: `${DRIFTWOOD}aa`, lineHeight: 1, textTransform: 'uppercase',
