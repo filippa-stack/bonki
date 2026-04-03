@@ -1,31 +1,53 @@
 
 
-## Fix: GRATIS Badge Not Hiding After Free Card Completion
+## Portal Page UX Upgrades (3 changes)
 
-The GRATIS badge reappears because both `KidsCardPortal.tsx` and `Category.tsx` check completions against a 14-day expiring list. The badge should use **all-time** completions so it permanently hides once the free card is done.
+**File:** `src/pages/KidsCardPortal.tsx`
 
-### Root cause
+### Change 1: "✓ Genomfört" indicator below card title
 
-- `KidsCardPortal.tsx` line 469: checks `completedSet` which is built from `progress.recentlyCompletedCardIds` (14-day window)
-- `Category.tsx` line 140-164: `completedCardIds` also filters by 14 days for kids products
+After the `<h2>` title (line 505), inside the `textAlign: 'center'` div (line 494), add the conditional paragraph:
 
-Once the 14-day window passes (or in edge cases), the badge reappears even though the card was completed.
+```tsx
+{allTimeSet.has(card.id) && (
+  <p style={{
+    fontFamily: 'var(--font-sans)',
+    fontSize: '11px',
+    fontWeight: 500,
+    color: 'var(--text-primary, #FDF6E3)',
+    opacity: 0.4,
+    marginTop: '4px',
+  }}>
+    ✓ Genomfört
+  </p>
+)}
+```
 
-### Changes
+`allTimeSet` already exists (line 103).
 
-**1. `src/pages/KidsCardPortal.tsx`**
-- Add a second Set for all-time completions: `const allTimeSet = new Set(progress.allTimeCompletedCardIds)`
-- Change the GRATIS badge condition (line 469) from `!completedSet.has(card.id)` to `!allTimeSet.has(card.id)`
-- Keep `completedSet` (recently completed) for checkmarks and reordering — those should still expire
+### Change 2: Lock indicator on CTA button
 
-**2. `src/pages/Category.tsx`**
-- Add an `allTimeCompletedCardIds` memo that does NOT apply the 14-day filter (uses `serverCompletedCardIds` directly + optimistic IDs)
-- Change the GRATIS badge condition (line 232) from `!completedCardIds.includes(card.id)` to `!allTimeCompletedCardIds.includes(card.id)`
-- Pass `allTimeCompletedCardIds` into `KidsProductCategoryView` for its badge check (line 733)
-- Keep `completedCardIds` (14-day filtered) for checkmarks and progress display
+At line 561-580, update the button to use conditional text, background, color, and boxShadow based on lock state:
+
+```tsx
+const isLocked = product && card.id !== product.freeCardId && !productIsPurchased && !bypassPaywall;
+```
+
+- **Text:** `isLocked ? 'Lås upp för att starta' : 'Starta samtal'`
+- **background:** `isLocked ? 'rgba(255, 255, 255, 0.12)' : SAFFRON_FLAME`
+- **color:** `isLocked ? 'var(--text-primary, #FDF6E3)' : '#1a1a1a'`
+- **boxShadow:** `isLocked ? 'none' : \`0 4px 16px ${SAFFRON_FLAME}55\``
+
+onClick unchanged — already opens paywall for locked cards.
+
+### Change 3: Description text prominence
+
+The subtitle `<p>` at line 530 already has `fontSize: '15px'` — no change needed there.
+
+The metadata line at line 548: change `fontSize` from `'15px'` to `'13px'` and `fontWeight` from `600` to `500` to create more hierarchy (description sells, metadata informs). Add `marginBottom: '0px'` (already effectively 0).
+
+Update the subtitle block (line 530-546): ensure `opacity: 0.85` is added to the style for slight emphasis consistency, and add `marginBottom: '4px'` to separate from metadata.
 
 ### Not changed
-- FreeCardBadge component itself
-- Checkmark/progress display logic (still uses 14-day expiry)
-- Any other file or component
+- Paywall intercept logic, PaywallBottomSheet, card navigation, browse sheet, GRATIS badge, session animation, card image rendering
 
