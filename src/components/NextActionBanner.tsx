@@ -53,7 +53,7 @@ export default function NextActionBanner({
     if (!card) return null;
     label = 'Fortsätt ert samtal';
     subtitle = card.title;
-    ctaText = 'Öppna →';
+    ctaText = 'Öppna';
     labelColor = LANTERN_GLOW;
     onClick = () => navigate(`/card/${card.id}`, { state: { resumed: true } });
 
@@ -64,7 +64,7 @@ export default function NextActionBanner({
     if (!recommendation) return null;
     label = 'Ert nästa steg';
     subtitle = recommendation.displayName;
-    ctaText = 'Utforska →';
+    ctaText = 'Utforska';
     labelColor = DRIFTWOOD;
     onClick = () => navigate(`/product/${recommendation.slug}`);
 
@@ -75,7 +75,7 @@ export default function NextActionBanner({
     const hasCompletions = completedCount > 0;
     label = hasCompletions ? 'Nästa samtal' : 'Börja här';
     subtitle = card.title;
-    ctaText = 'Öppna →';
+    ctaText = 'Öppna';
     labelColor = LANTERN_GLOW;
     onClick = () => navigate(`/product/${product.slug}/portal/${nextSuggestedCategoryId}?card=${nextSuggestedCardId}`);
 
@@ -141,13 +141,16 @@ export default function NextActionBanner({
       <span
         style={{
           fontFamily: 'var(--font-sans)',
-          fontSize: '15px',
+          fontSize: '13px',
           fontWeight: 700,
-          letterSpacing: '0.04em',
-          color: '#FFFFFF',
+          letterSpacing: '0.03em',
+          color: '#1A1A2E',
           flexShrink: 0,
           marginLeft: '12px',
-          textShadow: '0 1px 3px rgba(0,0,0,0.4)',
+          backgroundColor: accentColor,
+          padding: '8px 16px',
+          borderRadius: '24px',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.25)',
         }}
       >
         {ctaText}
