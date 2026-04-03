@@ -325,7 +325,7 @@ function NoteEntryCard({ entry, navigate, index }: { entry: NoteEntry; navigate:
                   margin: blockIndex === 0 ? 0 : '12px 0 0',
                   fontFamily: 'var(--font-serif)',
                   fontSize: '16px',
-                  color: LANTERN_GLOW,
+                  color: '#E9C890',
                   lineHeight: 1.6,
                 }}
               >
@@ -424,7 +424,7 @@ function SessionGroupCard({ group, navigate }: { group: SessionGroup; navigate: 
   const [expanded, setExpanded] = useState(false);
   const accent = getProductAccent(group.productId, group.cardId);
   const productName = getProductName(group.productId, group.cardId);
-  const COLLAPSE_THRESHOLD = 3;
+  const COLLAPSE_THRESHOLD = 1;
   const showToggle = group.notes.length > COLLAPSE_THRESHOLD;
   const displayedNotes = expanded ? group.notes : group.notes.slice(0, COLLAPSE_THRESHOLD);
 
@@ -491,7 +491,7 @@ function SessionGroupCard({ group, navigate }: { group: SessionGroup; navigate: 
               fontFamily: 'var(--font-serif)',
               fontSize: '15px',
               fontStyle: 'italic',
-              color: LANTERN_GLOW,
+              color: '#E9C890',
               lineHeight: 1.65,
               whiteSpace: 'pre-wrap',
             }}>
@@ -1025,9 +1025,9 @@ export default function Journal() {
                 margin: 0, fontSize: '15px', color: LANTERN_GLOW, lineHeight: 1.5,
                 fontFamily: 'var(--font-sans)',
               }}>
-                Ni har haft{' '}
+                Era samtal växer —{' '}
                 <span style={{ fontWeight: 700, color: DEEP_SAFFRON, fontSize: '18px' }}>{pulseData.total}</span>
-                {' '}samtal sedan {pulseData.monthLabel}.
+                {' '}sedan {pulseData.monthLabel}.
               </p>
               <p style={{ margin: '8px 0 0', fontSize: '13px', color: `${LANTERN_GLOW}88`, lineHeight: 1.5 }}>
                 Senast:{' '}
@@ -1068,7 +1068,7 @@ export default function Journal() {
                 }}
               >
                 <span style={{ fontSize: '14px', color: `${LANTERN_GLOW}77`, textAlign: 'left' }}>
-                  {parExpanded ? 'Dölj Still Us' : `Ni har ${stillUsSessions.length} Still Us-samtal sparade`}
+                  {parExpanded ? 'Visa mindre' : `Still Us · ${stillUsSessions.length} samtal`}
                 </span>
                 <motion.span
                   animate={{ rotate: parExpanded ? 180 : 0 }}
