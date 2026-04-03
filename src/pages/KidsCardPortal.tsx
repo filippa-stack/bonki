@@ -275,6 +275,8 @@ export default function KidsCardPortal() {
     );
   }
 
+  hasRenderedContent.current = true;
+
   return (
     <div
       style={{
