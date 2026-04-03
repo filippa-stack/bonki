@@ -1209,7 +1209,7 @@ export default function Journal() {
                           {cardName} · {catName}
                         </span>
                       </div>
-                      <ChevronRight size={16} strokeWidth={1.5} style={{ color: `${DRIFTWOOD}66`, flexShrink: 0, marginLeft: '8px' }} />
+                      <ChevronRight size={16} strokeWidth={1.5} style={{ color: 'rgba(253,246,227,0.3)', flexShrink: 0, marginLeft: '8px' }} />
                     </motion.button>
                   );
                 })}
