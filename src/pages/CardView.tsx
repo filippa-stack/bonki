@@ -1166,6 +1166,7 @@ export default function CardView() {
     const gorContentCardId = suMockMatch ? cards[parseInt(suMockMatch[1], 10)]?.id : null;
     const gorExerciseSU = gorContentCardId ? getGorExercise(gorContentCardId) : null;
 
+    hasRenderedContent.current = true;
     return (
       <motion.div
         style={{
