@@ -1403,14 +1403,14 @@ export default function CardView() {
               style={{
                 flex: 1,
                 height: '56px',
-                borderRadius: '14px',
-                backgroundColor: SAFFRON,
-                border: 'none',
+                borderRadius: '24px',
+                backgroundColor: 'transparent',
+                border: '1px solid rgba(253, 246, 227, 0.2)',
                 cursor: 'pointer',
                 fontFamily: 'var(--font-sans)',
                 fontSize: '17px',
                 fontWeight: 600,
-                color: '#1A1A2E',
+                color: 'rgba(253, 246, 227, 0.7)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -1418,9 +1418,9 @@ export default function CardView() {
               }}
             >
               {hasNextCard ? (
-                <>Nästa samtal <ArrowRight size={16} style={{ opacity: 0.7 }} /></>
+                'Nästa samtal'
               ) : (
-                `Tillbaka till ${product?.name ?? 'översikt'}`
+                `Till ${product?.name ?? 'översikt'}`
               )}
             </button>
             </div>
