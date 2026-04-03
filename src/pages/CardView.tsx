@@ -2573,6 +2573,7 @@ export default function CardView() {
     const LANTERN_GLOW_LOCAL = '#FDF6E3';
     const DEEP_SAFFRON_LOCAL = '#D4A03A';
 
+    hasRenderedContent.current = true;
     return (
       <>
         {_devDebug}
