@@ -923,12 +923,12 @@ export default function Journal() {
 
   const toggleFilter = (chip: FilterChip) => {
     setActiveFilters(prev => {
-      if (prev.has(chip) && prev.size === 1) return prev;
-      const next = new Set(prev);
-      next.has(chip) ? next.delete(chip) : next.add(chip);
-      return next;
+      if (prev.has(chip) && prev.size === 1) return new Set<FilterChip>(['barn', 'par']);
+      return new Set<FilterChip>([chip]);
     });
   };
+
+  const bothActive = activeFilters.has('barn') && activeFilters.has('par');
 
   return (
     <div style={{ minHeight: '100vh', backgroundColor: MIDNIGHT_INK, display: 'flex', flexDirection: 'column' }}>
