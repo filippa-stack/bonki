@@ -780,6 +780,47 @@ export default function ProductLibrary() {
                 boxShadow: '0 8px 24px rgba(0, 0, 0, 0.12), 0 2px 6px rgba(0, 0, 0, 0.06)',
               }}
             >
+              {/* Resume indicator for Still Us */}
+              {activeProductIds.has('still_us') && (
+                <div style={{
+                  position: 'absolute',
+                  top: '12px',
+                  right: '14px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  gap: '3px',
+                  zIndex: 4,
+                }}>
+                  <div style={{
+                    width: '8px',
+                    height: '8px',
+                    borderRadius: '50%',
+                    backgroundColor: '#D4A03A',
+                    boxShadow: '0 0 6px rgba(212, 160, 58, 0.5)',
+                  }} />
+                  <span style={{
+                    fontFamily: 'var(--font-body)',
+                    fontSize: '11px',
+                    fontWeight: 500,
+                    color: '#FDF6E3',
+                    opacity: 0.7,
+                  }}>
+                    Fortsätt
+                  </span>
+                  {lastActivityMap['still_us'] && (
+                    <span style={{
+                      fontFamily: 'var(--font-body)',
+                      fontSize: '9px',
+                      fontWeight: 400,
+                      color: '#FDF6E3',
+                      opacity: 0.35,
+                    }}>
+                      {formatRelativeTime(lastActivityMap['still_us'])}
+                    </span>
+                  )}
+                </div>
+              )}
               {/* Illustration */}
               <div style={{
                 position: 'absolute',
