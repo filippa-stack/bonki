@@ -472,7 +472,7 @@ function SessionGroupCard({ group, navigate }: { group: SessionGroup; navigate: 
               <div style={{
                 height: '1px',
                 margin: '10px 0',
-                background: `linear-gradient(90deg, ${DRIFTWOOD}33, ${DRIFTWOOD}22, transparent)`,
+                background: `linear-gradient(90deg, rgba(253,246,227,0.13), rgba(253,246,227,0.09), transparent)`,
               }} />
             )}
             {note.questionText && (
