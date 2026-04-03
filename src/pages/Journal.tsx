@@ -424,7 +424,7 @@ function SessionGroupCard({ group, navigate }: { group: SessionGroup; navigate: 
   const [expanded, setExpanded] = useState(false);
   const accent = getProductAccent(group.productId, group.cardId);
   const productName = getProductName(group.productId, group.cardId);
-  const COLLAPSE_THRESHOLD = 3;
+  const COLLAPSE_THRESHOLD = 1;
   const showToggle = group.notes.length > COLLAPSE_THRESHOLD;
   const displayedNotes = expanded ? group.notes : group.notes.slice(0, COLLAPSE_THRESHOLD);
 
