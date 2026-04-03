@@ -71,6 +71,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
         // After sign-in, save any pending legal consent
         if (event === 'SIGNED_IN' && session?.user) {
+          // Fire CompleteRegistration only for brand-new accounts (created < 60s ago)
+          const createdAt = new Date(session.user.created_at).getTime();
+          if (Date.now() - createdAt < 60_000) {
+            trackPixelEvent('CompleteRegistration');
+          }
           savePendingLegalConsent(session.user.id);
         }
       }

@@ -235,7 +235,8 @@ export default function Onboarding() {
           }}
           onClick={() => {
             localStorage.setItem('bonki-onboarding-audience', selectedAudience!);
-            trackOnboardingEvent('onboarding_complete', { audience: selectedAudience });
+             trackOnboardingEvent('onboarding_complete', { audience: selectedAudience });
+             trackPixelEvent('Lead');
             initializeCoupleSpace();
             completeOnboarding();
           }}

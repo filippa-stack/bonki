@@ -133,6 +133,14 @@ function ProtectedRoutes() {
 
 
 
+function RoutePageViewTracker() {
+  const location = useLocation();
+  useEffect(() => {
+    trackPixelEvent('PageView');
+  }, [location.pathname]);
+  return null;
+}
+
 function AppRoutes() {
   const { user, loading } = useAuth();
   // Runs during capture loop — detects __sc_step and auto-advances

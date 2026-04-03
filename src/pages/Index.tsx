@@ -176,6 +176,8 @@ export default function Index() {
   const searchParams = new URLSearchParams(window.location.search);
   if (searchParams.get('purchase') === 'success') {
     const returnCard = searchParams.get('returnCard');
+    trackPixelEvent('Purchase', { value: 249, currency: 'SEK' });
+    window.history.replaceState({}, '', window.location.pathname);
     if (returnCard) {
       return <Navigate to={`/card/${returnCard}`} replace />;
     }
