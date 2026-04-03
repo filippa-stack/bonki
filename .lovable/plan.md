@@ -1,30 +1,55 @@
 
 
-## Fix ProductIntro Flash — useProductIntroNeeded
+## Make "Nästa steg" Suggestion Tappable
 
-**File:** `src/components/ProductIntro.tsx`
+**File:** `src/components/ProductLibrary.tsx`
 
-**Root cause:** When `user` is briefly `null` during auth settling, the hook sets `checked: true` + `needed: true`, causing a one-frame flash of ProductIntro before the real DB result arrives.
+### Change (lines 733-743)
 
-### Change — Split the early return (line 344)
+Replace the `<p>` element with a `<button>` that navigates to the suggested product's page on tap.
 
-Replace:
+**From:**
 ```tsx
-if (!user || cancelled) { setNeeded(true); setChecked(true); return; }
+<p style={{
+  fontFamily: 'var(--font-body)',
+  fontSize: '13px',
+  color: '#FDF6E3',
+  opacity: 0.45,
+  lineHeight: 1.5,
+}}>
+  Nästa steg: prova <span style={{ fontWeight: 600, opacity: 1, color: '#D4F5C0' }}>
+    {untriedProduct.name}
+  </span> — ert första samtal är gratis.
+</p>
 ```
 
-With:
+**To:**
 ```tsx
-if (cancelled) return;
-if (!user) {
-  // Auth not settled — don't mark checked, keep ProductHome in loading state
-  return;
-}
+<button
+  onClick={() => navigate(`/product/${untriedProduct.slug}`)}
+  style={{
+    background: 'none',
+    border: 'none',
+    cursor: 'pointer',
+    padding: 0,
+    textAlign: 'left',
+    fontFamily: 'var(--font-body)',
+    fontSize: '13px',
+    color: '#FDF6E3',
+    opacity: 0.45,
+    lineHeight: 1.5,
+    WebkitTapHighlightColor: 'transparent',
+  }}
+>
+  Nästa steg: prova <span style={{ fontWeight: 600, opacity: 1, color: '#D4F5C0' }}>
+    {untriedProduct.name}
+  </span> — ert första samtal är gratis.
+</button>
 ```
 
-This keeps `checked` as `false` while auth settles, so ProductHome renders the blank loading div (same background color) instead of flashing ProductIntro.
+`navigate` is already imported and used throughout the component. No other changes needed.
 
 ### Not changed
-- ProductIntro component, ProductHome.tsx, any other file
-- Rest of `useProductIntroNeeded` logic
+- Conditional logic for showing/hiding the suggestion
+- Any other element or file
 
