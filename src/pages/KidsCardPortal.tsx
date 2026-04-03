@@ -552,6 +552,8 @@ export default function KidsCardPortal() {
                   WebkitBoxOrient: 'vertical',
                   overflow: 'hidden',
                   padding: '0 20px',
+                  opacity: 0.85,
+                  marginBottom: '4px',
                 }}
               >
                 {card.subtitle}
@@ -560,8 +562,8 @@ export default function KidsCardPortal() {
             <p
               style={{
                 fontFamily: 'var(--font-sans)',
-                fontSize: '15px',
-                fontWeight: 600,
+                fontSize: '13px',
+                fontWeight: 500,
                 color: LANTERN_GLOW,
                 opacity: 0.85,
                 marginTop: '5px',
