@@ -522,13 +522,19 @@ export default function ProductLibrary() {
       }
 
       if (completedRes.data) {
+        const sets: Record<string, Set<string>> = {};
         const counts: Record<string, number> = {};
         for (const s of completedRes.data) {
-          if (s.product_id) {
-            counts[s.product_id] = (counts[s.product_id] || 0) + 1;
+          if (s.product_id && s.card_id) {
+            if (!sets[s.product_id]) sets[s.product_id] = new Set();
+            sets[s.product_id].add(s.card_id);
           }
         }
+        for (const [productId, cardIds] of Object.entries(sets)) {
+          counts[productId] = cardIds.size;
+        }
         setCompletedCountMap(counts);
+        setCompletedCardSets(sets);
       }
     });
 
