@@ -533,7 +533,12 @@ export default function ProductLibrary() {
           }
         }
         for (const [productId, cardIds] of Object.entries(sets)) {
-          counts[productId] = cardIds.size;
+          const manifest = allProducts.find(p => p.id === productId);
+          if (manifest) {
+            counts[productId] = [...cardIds].filter(id => manifest.cards.some(c => c.id === id)).length;
+          } else {
+            counts[productId] = cardIds.size;
+          }
         }
         setCompletedCountMap(counts);
         setCompletedCardSets(sets);
