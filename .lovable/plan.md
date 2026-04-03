@@ -1,43 +1,34 @@
 
 
-## Fix Double Flicker on First Session Start
+## Fix "Föregående" Back Button on Completion Page
 
 **File:** `src/pages/CardView.tsx`
 
-### Problem
-Eager session creation triggers `normalizedSession.refetch()`, which sets `loading` back to `true`, causing the loading gate to flash a second time after content has already rendered.
+### Root cause
+The auto-completion effect (line 392) re-sets `showCompletion = true` immediately after the user dismisses it, because the session no longer exists in the database.
 
 ### Changes
 
-**1. Add ref** (near line 430, next to `eagerSessionRef`):
+**1. Add ref** (line 431, next to `hasRenderedContent`):
 ```tsx
-const hasRenderedContent = useRef(false);
+const userDismissedCompletion = useRef(false);
 ```
 
-**2. Reset ref on card change** (line 431-433, existing `useEffect`):
+**2. Reset on card change** (line 432-435, existing effect):
 ```tsx
 useEffect(() => {
   eagerSessionRef.current = false;
   hasRenderedContent.current = false;
+  userDismissedCompletion.current = false;
 }, [cardId]);
 ```
 
-**3. Update loading gate condition** (line 1073):
-```tsx
-if (isInitializing && !devState && !showCompletion && !hasRenderedContent.current) {
-```
+**3. Guard auto-completion effect** (line 392):
+Add `&& !userDismissedCompletion.current` to the condition.
 
-**4. Set ref before content returns** — add `hasRenderedContent.current = true;` before each content return:
-- Before the completion return for kids (~line 1167)
-- Before the completion return for Still Us (~line 1444)
-- Before the Still Us focus mode return (~line 2523, after `if (isStillUsFocusMode && currentSection)`)
-- Before the final return (the kids live session, end of file ~line 4085)
-- Before the archive mode return (~line 2362)
+**4. Set ref before each `_setShowCompletion(false)`** — 4 instances at lines 1361, 1619, 1686, 1736:
+Add `userDismissedCompletion.current = true;` before each `_setShowCompletion(false);` call.
 
 ### Not changed
-- `isInitializing` computation
-- Loading gate JSX
-- Eager session creation logic
-- `normalizedSession.refetch()` calls
-- Any suppression refs, AnimatePresence, or other files
+- Completion RPC logic, step restoration in handlers, suppressUntilRef, AnimatePresence, any other file.
 
