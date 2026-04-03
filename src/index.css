@@ -225,7 +225,7 @@ h1, h2, h3,
     --completion-link: hsl(29, 13%, 37%);
 
     /* Dynamic overrides — set via useThemeVars hook at runtime */
-    --page-bg: var(--color-bg);
+    --page-bg: #0B1026;
     --hero-title-color: var(--text-primary);
     --hero-subtitle-color: var(--text-secondary);
     --btn-primary-bg: var(--color-cta);
@@ -244,10 +244,10 @@ h1, h2, h3,
   }
 
   body {
-    @apply bg-background text-foreground font-sans;
+    @apply text-foreground font-sans;
     font-family: var(--font-body);
     padding-bottom: env(safe-area-inset-bottom, 0px);
-    background-color: var(--surface-base, hsl(46, 64%, 89%));
+    background-color: #0B1026;
     color: var(--text-primary);
     font-size: 16px;
     line-height: 1.5;
@@ -256,7 +256,7 @@ h1, h2, h3,
 
   #root {
     min-height: 100vh;
-    background-color: var(--surface-base, hsl(46, 64%, 89%));
+    background-color: var(--surface-base, #0B1026);
   }
 
   h1, h2, h3, h4 {
