@@ -2650,8 +2650,8 @@ export default function CardView() {
             {/* Progress bar — full width, 2px */}
             <div style={{
               width: '100%',
-              height: '2px',
-              backgroundColor: 'rgba(255,255,255,0.08)',
+              height: '4px',
+              backgroundColor: 'rgba(255,255,255,0.12)',
             }}>
               <motion.div
                 initial={false}
