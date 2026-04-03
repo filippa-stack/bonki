@@ -480,7 +480,7 @@ function SessionGroupCard({ group, navigate }: { group: SessionGroup; navigate: 
                 margin: '0 0 4px',
                 fontSize: '13px',
                 fontStyle: 'italic',
-                color: `${LANTERN_GLOW}88`,
+                color: `${LANTERN_GLOW}bb`,
                 lineHeight: 1.4,
               }}>
                 — {note.questionText}
