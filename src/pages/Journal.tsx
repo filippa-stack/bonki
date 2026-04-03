@@ -459,7 +459,7 @@ function SessionGroupCard({ group, navigate }: { group: SessionGroup; navigate: 
             {formatRelativeDate(group.date)}
           </span>
         </div>
-        <p style={{ margin: '2px 0 0', fontSize: '13px', color: `${LANTERN_GLOW}55` }}>
+        <p style={{ margin: '2px 0 0', fontSize: '13px', color: `${LANTERN_GLOW}99` }}>
           {group.cardName}
         </p>
       </div>
