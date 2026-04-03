@@ -576,7 +576,7 @@ export default function Journal() {
   
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
   const [activeFilters, setActiveFilters] = useState<Set<FilterChip>>(new Set(['barn', 'par']));
-  const [parExpanded, setParExpanded] = useState(true);
+  
 
   // Fetch data
   useEffect(() => {
