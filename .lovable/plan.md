@@ -1,22 +1,40 @@
 
 
-## Fix Still Us Session — Minimal Safe Changes Only
+## Library — Remove "Era samtal" Card + Upgrade Resume CTA
 
-**File:** `src/pages/CardView.tsx` — 3 changes in the `isStillUsFocusMode` block
+### Change 1: Remove "Era samtal" card
+**File:** `src/components/ProductLibrary.tsx`
 
-### Change 1: Remove dark scrim overlay
-Delete the scrim `<div>` (the one with `backgroundColor: 'rgba(0, 0, 0, 0.25)'`). Kids sessions have no scrim.
+Delete lines 1080–1141 (the `{/* Era samtal */}` comment, the entire `<motion.div>` block, and its closing `</div>` on line 1141).
 
-### Change 2: Illustration opacity
-`opacity: 0.35` → `opacity: 0.7` — matching Kids exactly.
+Keep the bottom safe-area spacing div (line 1143–1144) intact.
 
-### Change 3: White card padding
-`padding: '12px 0 4px'` → `padding: '28px 24px 20px'` — matching Kids card spacing.
+### Change 2: Upgrade "Fortsätt" pill
+**File:** `src/components/LibraryResumeCard.tsx`
 
-### NOT changed
-- SectionView rendering (stays as-is)
-- Note nudge position (stays in CTA zone)
-- Header layout (stays as-is)
-- Advance/back handlers, completion logic, AnimatePresence
+Replace the existing `<span>` for "Fortsätt" (lines ~252–260) with a solid Bonki Orange pill:
+```tsx
+<span style={{
+  fontFamily: "var(--font-sans)",
+  fontSize: '13px',
+  fontWeight: 700,
+  letterSpacing: '0.03em',
+  color: '#1A1A2E',
+  flexShrink: 0,
+  marginLeft: '12px',
+  backgroundColor: '#E85D2C',
+  padding: '8px 16px',
+  borderRadius: '24px',
+  boxShadow: '0 2px 8px rgba(0,0,0,0.25)',
+}}>
+  Fortsätt
+</span>
+```
+
+### Not changed
+- Resume card data fetching, navigation, props, or conditional logic
+- "Nästa steg" suggestion tile
+- Product tiles
+- BottomNav
 - Any other file
 
