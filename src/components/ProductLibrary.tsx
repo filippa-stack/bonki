@@ -810,6 +810,73 @@ export default function ProductLibrary() {
           );
         })()}
 
+        {/* Return user nudge — when no active session and all products tried */}
+        {activeProductIds.size === 0 &&
+         Object.keys(completedCountMap).length > 0 &&
+         !defaultKidsOrder.find(p => !completedCountMap[p.id]) && (() => {
+          const lastSlug = localStorage.getItem('bonki-last-active-product');
+          if (!lastSlug) return null;
+          const lastProduct = allProducts.find(p => p.slug === lastSlug);
+          if (!lastProduct) return null;
+          return (
+            <div className="px-5" style={{ marginBottom: '8px' }}>
+              <button
+                onClick={() => navigate(`/product/${lastSlug}`)}
+                style={{
+                  width: '100%',
+                  padding: '16px 20px',
+                  borderRadius: '16px',
+                  background: 'rgba(15, 15, 15, 0.7)',
+                  backdropFilter: 'blur(22px)',
+                  WebkitBackdropFilter: 'blur(22px)',
+                  border: '1px solid rgba(255, 255, 255, 0.12)',
+                  backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.08) 100%)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '14px',
+                  boxShadow: '0 12px 36px rgba(0, 0, 0, 0.40), 0 4px 12px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.12), inset 0 -2px 6px rgba(0, 0, 0, 0.12)',
+                  cursor: 'pointer',
+                  textAlign: 'left',
+                  WebkitTapHighlightColor: 'transparent',
+                }}
+              >
+                <div style={{ flex: 1 }}>
+                  <p style={{
+                    fontFamily: 'var(--font-display)',
+                    fontVariationSettings: "'opsz' 16",
+                    fontSize: '15px',
+                    fontWeight: 400,
+                    color: '#FDF6E3',
+                    lineHeight: 1.3,
+                    margin: 0,
+                  }}>
+                    Fortsätt utforska {lastProduct.name}
+                  </p>
+                  <p style={{
+                    fontFamily: 'var(--font-body)',
+                    fontSize: '11px',
+                    color: 'rgba(253, 246, 227, 0.4)',
+                    marginTop: '2px',
+                    margin: '2px 0 0',
+                  }}>
+                    {completedCountMap[lastProduct.id] || 0} av {lastProduct.cards.length} samtal
+                  </p>
+                </div>
+                <span style={{
+                  fontFamily: 'var(--font-body)',
+                  fontSize: '10px',
+                  fontWeight: 600,
+                  letterSpacing: '0.06em',
+                  color: '#D4F5C0',
+                  opacity: 0.4,
+                }}>
+                  →
+                </span>
+              </button>
+            </div>
+          );
+        })()}
+
         <div>
         {/* ── Still Us cross-discovery ── */}
         <div className="px-5" style={{ marginTop: '0px' }}>
