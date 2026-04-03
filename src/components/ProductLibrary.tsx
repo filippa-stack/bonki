@@ -234,12 +234,12 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
   illustrationSize?: string; illustrationPosition?: string; wide?: boolean;
   showFreeBadge?: boolean; badgeText?: string; ageCount?: number;
   hasActiveSession?: boolean; tileHeight?: string;
-  progressText?: string; lastActive?: string;
+  progressText?: string; lastActive?: string; hideFreeBadge?: boolean;
 }>(function PastelTile({
   name, bg, ageLabel, tagline, onClick, illustration, productId, accentColor, taglineColor,
   illustrationOpacity = 0.90, wide = false,
   hasActiveSession = false, tileHeight = '240px',
-  progressText, lastActive,
+  progressText, lastActive, hideFreeBadge = false,
 }, ref) {
   const toShadowColor = (hex: string, alpha: number) => {
     const r = parseInt(hex.slice(1, 3), 16);
@@ -402,35 +402,36 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
           </p>
           )}
           {/* Free badge marker with age label */}
-          <span
-            style={{
-              display: 'inline-flex',
-              alignSelf: 'flex-start',
-              alignItems: 'center',
-              gap: '4px',
-              marginTop: '8px',
-              padding: '4px 12px',
-              borderRadius: '20px',
-              background: 'hsla(0, 0%, 100%, 0.15)',
-              backdropFilter: 'blur(8px)',
-              WebkitBackdropFilter: 'blur(8px)',
-              border: '1px solid hsla(0, 0%, 100%, 0.25)',
-              boxShadow: '0 0 12px hsla(0, 0%, 100%, 0.08), inset 0 1px 0 hsla(0, 0%, 100%, 0.15)',
-              fontFamily: "var(--font-body)",
-              fontSize: '11px',
-              fontWeight: 600,
-              letterSpacing: '0.03em',
-              color: 'hsla(0, 0%, 100%, 0.92)',
-            }}
-          >
-            ✦ Samtal 1 gratis{ageLabel ? ` · ${ageLabel}` : ''}
-          </span>
-          {progressText && (
+          {!hideFreeBadge && (
             <span
               style={{
                 display: 'inline-flex',
                 alignSelf: 'flex-start',
-                marginTop: '4px',
+                alignItems: 'center',
+                gap: '4px',
+                marginTop: '8px',
+                padding: '4px 12px',
+                borderRadius: '20px',
+                background: 'hsla(0, 0%, 100%, 0.15)',
+                backdropFilter: 'blur(8px)',
+                WebkitBackdropFilter: 'blur(8px)',
+                border: '1px solid hsla(0, 0%, 100%, 0.25)',
+                boxShadow: '0 0 12px hsla(0, 0%, 100%, 0.08), inset 0 1px 0 hsla(0, 0%, 100%, 0.15)',
+                fontFamily: "var(--font-body)",
+                fontSize: '11px',
+                fontWeight: 600,
+                letterSpacing: '0.03em',
+                color: 'hsla(0, 0%, 100%, 0.92)',
+              }}
+            >
+              ✦ Samtal 1 gratis{ageLabel ? ` · ${ageLabel}` : ''}
+            </span>
+          )}
+          {progressText && (
+            <span
+              style={{
+                display: 'block',
+                marginTop: '6px',
                 fontFamily: 'var(--font-body)',
                 fontSize: '11px',
                 fontWeight: 500,
@@ -472,6 +473,7 @@ export default function ProductLibrary() {
   const [activeProductIds, setActiveProductIds] = useState<Set<string>>(new Set());
   const [lastActivityMap, setLastActivityMap] = useState<Record<string, string>>({});
   const [completedCountMap, setCompletedCountMap] = useState<Record<string, number>>({});
+  const [completedCardSets, setCompletedCardSets] = useState<Record<string, Set<string>>>({});
   useEffect(() => {
     const syncLocalPreview = () => {
       if (!isDemoMode()) return;
@@ -502,7 +504,7 @@ export default function ProductLibrary() {
 
     const fetchCompleted = supabase
       .from('couple_sessions')
-      .select('product_id')
+      .select('product_id, card_id')
       .eq('couple_space_id', space.id)
       .eq('status', 'completed');
 
@@ -521,13 +523,19 @@ export default function ProductLibrary() {
       }
 
       if (completedRes.data) {
+        const sets: Record<string, Set<string>> = {};
         const counts: Record<string, number> = {};
         for (const s of completedRes.data) {
-          if (s.product_id) {
-            counts[s.product_id] = (counts[s.product_id] || 0) + 1;
+          if (s.product_id && s.card_id) {
+            if (!sets[s.product_id]) sets[s.product_id] = new Set();
+            sets[s.product_id].add(s.card_id);
           }
         }
+        for (const [productId, cardIds] of Object.entries(sets)) {
+          counts[productId] = cardIds.size;
+        }
         setCompletedCountMap(counts);
+        setCompletedCardSets(sets);
       }
     });
 
@@ -889,34 +897,40 @@ export default function ProductLibrary() {
                   marginTop: '8px',
                   flexWrap: 'wrap',
                 }}>
-                  <span style={{
-                    fontFamily: "var(--font-body)",
-                    fontSize: '11px',
-                    fontWeight: 600,
-                    letterSpacing: '0.04em',
-                    color: 'hsla(0, 0%, 100%, 0.9)',
-                    background: 'hsla(0, 0%, 100%, 0.15)',
-                    backdropFilter: 'blur(8px)',
-                    WebkitBackdropFilter: 'blur(8px)',
-                    border: '1px solid hsla(0, 0%, 100%, 0.25)',
-                    borderRadius: '20px',
-                    padding: '4px 12px',
-                    boxShadow: '0 0 12px hsla(0, 0%, 100%, 0.08), inset 0 1px 0 hsla(0, 0%, 100%, 0.15)',
-                  }}>
-                    ✦ Samtal 1 gratis
-                  </span>
                   {(() => {
                     const suCount = completedCountMap['still_us'] || 0;
-                    if (suCount <= 0) return null;
+                    const suFreeCompleted = completedCardSets['still_us']?.has('su-01') ?? false;
                     return (
-                      <span style={{
-                        fontFamily: 'var(--font-body)',
-                        fontSize: '11px',
-                        fontWeight: 500,
-                        color: 'hsla(0, 0%, 100%, 0.5)',
-                      }}>
-                        {suCount} av 22 samtal
-                      </span>
+                      <>
+                        {!suFreeCompleted && (
+                          <span style={{
+                            fontFamily: "var(--font-body)",
+                            fontSize: '11px',
+                            fontWeight: 600,
+                            letterSpacing: '0.04em',
+                            color: 'hsla(0, 0%, 100%, 0.9)',
+                            background: 'hsla(0, 0%, 100%, 0.15)',
+                            backdropFilter: 'blur(8px)',
+                            WebkitBackdropFilter: 'blur(8px)',
+                            border: '1px solid hsla(0, 0%, 100%, 0.25)',
+                            borderRadius: '20px',
+                            padding: '4px 12px',
+                            boxShadow: '0 0 12px hsla(0, 0%, 100%, 0.08), inset 0 1px 0 hsla(0, 0%, 100%, 0.15)',
+                          }}>
+                            ✦ Samtal 1 gratis
+                          </span>
+                        )}
+                        <span style={{
+                          display: 'block',
+                          marginTop: suFreeCompleted ? '0px' : '6px',
+                          fontFamily: 'var(--font-body)',
+                          fontSize: '11px',
+                          fontWeight: 500,
+                          color: 'hsla(0, 0%, 100%, 0.5)',
+                        }}>
+                          {suCount > 0 ? `${suCount} av 22 samtal` : '22 samtal'}
+                        </span>
+                      </>
                     );
                   })()}
                 </div>
@@ -974,7 +988,12 @@ export default function ProductLibrary() {
           >
             {sortedKidsProducts.map((product) => {
               const count = completedCountMap[product.id] || 0;
-              const ptxt = count > 0 ? `${count} av ${product.cards.length} samtal` : undefined;
+              const freeCardCompleted = product.freeCardId
+                ? (completedCardSets[product.id]?.has(product.freeCardId) ?? false)
+                : false;
+              const ptxt = count > 0
+                ? `${count} av ${product.cards.length} samtal`
+                : `${product.cards.length} samtal`;
               return (
                 <PastelTile
                   key={product.id}
@@ -993,6 +1012,7 @@ export default function ProductLibrary() {
                   tileHeight={TILE_HEIGHTS[product.id] ?? '240px'}
                   progressText={ptxt}
                   lastActive={lastActivityMap[product.id]}
+                  hideFreeBadge={freeCardCompleted}
                   wide
                 />
               );
