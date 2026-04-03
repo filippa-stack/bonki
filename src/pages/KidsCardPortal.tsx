@@ -261,7 +261,7 @@ export default function KidsCardPortal() {
   };
 
   // Show stable loading screen until progress data is ready (prevents reorder glitch)
-  if (progress.loading) {
+  if (progress.loading && !hasRenderedContent.current) {
     return (
       <div style={{ height: '100vh', background: product?.backgroundColor ?? MIDNIGHT_INK }} />
     );
