@@ -425,6 +425,21 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
           >
             ✦ Samtal 1 gratis{ageLabel ? ` · ${ageLabel}` : ''}
           </span>
+          {progressText && (
+            <span
+              style={{
+                display: 'inline-flex',
+                alignSelf: 'flex-start',
+                marginTop: '4px',
+                fontFamily: 'var(--font-body)',
+                fontSize: '11px',
+                fontWeight: 500,
+                color: 'hsla(0, 0%, 100%, 0.5)',
+              }}
+            >
+              {progressText}
+            </span>
+          )}
         </div>
     </motion.div>
   );
