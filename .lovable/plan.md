@@ -1,22 +1,31 @@
 
 
-## Update ResumeBanner CTA to Solid Fill Pill
+## Fix: GRATIS Badge Not Hiding After Free Card Completion
 
-**Status:** NextActionBanner.tsx ✓ confirmed solid. This is the second solid fill change — for the library-level ResumeBanner.
+The GRATIS badge reappears because both `KidsCardPortal.tsx` and `Category.tsx` check completions against a 14-day expiring list. The badge should use **all-time** completions so it permanently hides once the free card is done.
 
-**File:** `src/components/ResumeBanner.tsx`
+### Root cause
 
-### Change — "Fortsätt" button style (lines 55-69)
+- `KidsCardPortal.tsx` line 469: checks `completedSet` which is built from `progress.recentlyCompletedCardIds` (14-day window)
+- `Category.tsx` line 140-164: `completedCardIds` also filters by 14 days for kids products
 
-Update the CTA button to match NextActionBanner's solid pill:
+Once the 14-day window passes (or in edge cases), the badge reappears even though the card was completed.
 
-- Add `border: 'none'`
-- Add `opacity: 1`
-- Change `boxShadow: 'none'` → `'0 2px 8px rgba(0,0,0,0.25)'`
-- Keep existing `backgroundColor`, `color`, `borderRadius`, `letterSpacing`, `height`, `maxWidth`, `padding`
+### Changes
+
+**1. `src/pages/KidsCardPortal.tsx`**
+- Add a second Set for all-time completions: `const allTimeSet = new Set(progress.allTimeCompletedCardIds)`
+- Change the GRATIS badge condition (line 469) from `!completedSet.has(card.id)` to `!allTimeSet.has(card.id)`
+- Keep `completedSet` (recently completed) for checkmarks and reordering — those should still expire
+
+**2. `src/pages/Category.tsx`**
+- Add an `allTimeCompletedCardIds` memo that does NOT apply the 14-day filter (uses `serverCompletedCardIds` directly + optimistic IDs)
+- Change the GRATIS badge condition (line 232) from `!completedCardIds.includes(card.id)` to `!allTimeCompletedCardIds.includes(card.id)`
+- Pass `allTimeCompletedCardIds` into `KidsProductCategoryView` for its badge check (line 733)
+- Keep `completedCardIds` (14-day filtered) for checkmarks and progress display
 
 ### Not changed
-- Dismiss button, text, layout, navigate logic, sessionStorage logic
-- NextActionBanner (already done)
-- Any other file
+- FreeCardBadge component itself
+- Checkmark/progress display logic (still uses 14-day expiry)
+- Any other file or component
 
