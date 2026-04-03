@@ -1551,6 +1551,18 @@ export default function CardView() {
             className="max-w-md mx-auto"
             style={{ width: '100%' }}
           >
+            <p style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: '11px',
+              fontWeight: 500,
+              letterSpacing: '0.06em',
+              textTransform: 'uppercase',
+              color: 'rgba(253, 246, 227, 0.35)',
+              textAlign: 'center',
+              marginBottom: '8px',
+            }}>
+              Valfritt
+            </p>
             <p
               className="font-sans"
               style={{
