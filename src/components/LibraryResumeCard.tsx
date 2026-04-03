@@ -315,12 +315,17 @@ export default function LibraryResumeCard({ activeTab, global, forceMock }: Libr
         </p>
       </div>
       <span style={{
-        fontFamily: "var(--font-body)",
-        fontSize: '15px',
-        fontWeight: 600,
-        color: DEEP_SAFFRON,
+        fontFamily: "var(--font-sans)",
+        fontSize: '13px',
+        fontWeight: 700,
+        letterSpacing: '0.03em',
+        color: '#1A1A2E',
         flexShrink: 0,
         marginLeft: '12px',
+        backgroundColor: '#E85D2C',
+        padding: '8px 16px',
+        borderRadius: '24px',
+        boxShadow: '0 2px 8px rgba(0,0,0,0.25)',
       }}>
         Fortsätt
       </span>

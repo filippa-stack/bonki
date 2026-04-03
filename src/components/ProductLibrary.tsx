@@ -1077,67 +1077,6 @@ export default function ProductLibrary() {
           </motion.div>
         </div>
 
-        {/* Era samtal — compact return-loop hook */}
-        <motion.div
-          initial={{ opacity: 1, y: 0 }}
-          animate={{ opacity: 1, y: 0 }}
-          whileTap={{ scale: 0.97 }}
-          onClick={() => navigate('/journal')}
-          className="cursor-pointer"
-          style={{
-            margin: '28px 20px 16px',
-            padding: '16px 20px',
-            borderRadius: '16px',
-            background: 'rgba(15, 15, 15, 0.7)',
-            backdropFilter: 'blur(22px)',
-            WebkitBackdropFilter: 'blur(22px)',
-            border: '1px solid rgba(255, 255, 255, 0.12)',
-            backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.08) 100%)',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '14px',
-            boxShadow: [
-              '0 12px 36px rgba(0, 0, 0, 0.40)',
-              '0 4px 12px rgba(0, 0, 0, 0.25)',
-              'inset 0 1px 0 rgba(255, 255, 255, 0.12)',
-              'inset 0 -2px 6px rgba(0, 0, 0, 0.12)',
-            ].join(', '),
-          }}
-        >
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ color: '#D4F5C0', opacity: 0.6, flexShrink: 0 }}>
-            <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" />
-          </svg>
-          <div style={{ flex: 1 }}>
-            <p style={{
-              fontFamily: "var(--font-display)",
-              fontVariationSettings: "'opsz' 16",
-              fontSize: '15px',
-              fontWeight: 400,
-              color: '#FDF6E3',
-              lineHeight: 1.3,
-            }}>
-              Era samtal
-            </p>
-            <p style={{
-              fontFamily: "var(--font-body)",
-              fontSize: '10px',
-              color: 'hsla(100, 40%, 80%, 0.55)',
-              marginTop: '2px',
-            }}>
-              Varje samtal sparas
-            </p>
-          </div>
-          <span style={{
-            fontFamily: "var(--font-body)",
-            fontSize: '10px',
-            fontWeight: 600,
-            letterSpacing: '0.06em',
-            color: '#D4F5C0',
-            opacity: 0.55,
-          }}>
-            →
-          </span>
-        </motion.div>
         </div>
 
         {/* Bottom safe-area spacing */}
