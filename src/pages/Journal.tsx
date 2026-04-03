@@ -787,14 +787,12 @@ export default function Journal() {
       if (item.type === 'completed') {
         if (isPar && !activeFilters.has('par')) return;
         if (!isPar && !activeFilters.has('barn')) return;
-        if (isPar && bothActive && !parExpanded) return;
         emptySU.push(item);
         return;
       }
 
       if (isPar) {
         if (!activeFilters.has('par')) return;
-        if (bothActive && !parExpanded) return;
       } else {
         if (!activeFilters.has('barn')) return;
       }
