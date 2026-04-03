@@ -298,7 +298,7 @@ function NoteEntryCard({ entry, navigate, index }: { entry: NoteEntry; navigate:
             margin: '0 0 8px',
             fontSize: '13px',
             fontStyle: 'italic',
-            color: `${LANTERN_GLOW}88`,
+            color: `${LANTERN_GLOW}bb`,
             lineHeight: 1.4,
           }}
         >
@@ -459,7 +459,7 @@ function SessionGroupCard({ group, navigate }: { group: SessionGroup; navigate: 
             {formatRelativeDate(group.date)}
           </span>
         </div>
-        <p style={{ margin: '2px 0 0', fontSize: '13px', color: `${LANTERN_GLOW}55` }}>
+        <p style={{ margin: '2px 0 0', fontSize: '13px', color: `${LANTERN_GLOW}99` }}>
           {group.cardName}
         </p>
       </div>
@@ -480,7 +480,7 @@ function SessionGroupCard({ group, navigate }: { group: SessionGroup; navigate: 
                 margin: '0 0 4px',
                 fontSize: '13px',
                 fontStyle: 'italic',
-                color: `${LANTERN_GLOW}88`,
+                color: `${LANTERN_GLOW}bb`,
                 lineHeight: 1.4,
               }}>
                 — {note.questionText}
@@ -511,7 +511,7 @@ function SessionGroupCard({ group, navigate }: { group: SessionGroup; navigate: 
             style={{
               background: 'none',
               border: 'none',
-              color: `${DRIFTWOOD}cc`,
+              color: `${LANTERN_GLOW}77`,
               fontSize: '12px',
               fontWeight: 500,
               cursor: 'pointer',
@@ -1044,7 +1044,7 @@ export default function Journal() {
                 <span style={{ fontWeight: 700, color: DEEP_SAFFRON, fontSize: '18px' }}>{pulseData.total}</span>
                 {' '}sedan {pulseData.monthLabel}.
               </p>
-              <p style={{ margin: '8px 0 0', fontSize: '13px', color: `${LANTERN_GLOW}88`, lineHeight: 1.5 }}>
+              <p style={{ margin: '8px 0 0', fontSize: '13px', color: `${LANTERN_GLOW}aa`, lineHeight: 1.5 }}>
                 Senast:{' '}
                 <span
                   onClick={() => pulseData.latestCardId && navigate(`/card/${pulseData.latestCardId}`)}
@@ -1061,7 +1061,7 @@ export default function Journal() {
                 {' · '}{pulseData.latestRelDate}
               </p>
               {pulseData.uniqueProductCount > 1 && (
-                <p style={{ margin: '4px 0 0', fontSize: '12px', color: `${DRIFTWOOD}bb`, lineHeight: 1.4 }}>
+                <p style={{ margin: '4px 0 0', fontSize: '12px', color: `${DRIFTWOOD}dd`, lineHeight: 1.4 }}>
                   I {pulseData.uniqueProductCount} olika samtalsprodukter
                 </p>
               )}
@@ -1106,7 +1106,7 @@ export default function Journal() {
               }}>
                 <span style={{
                   fontSize: '11px', fontWeight: 600,
-                  letterSpacing: '2px', color: `${LANTERN_GLOW}88`, lineHeight: 1,
+                  letterSpacing: '2px', color: `${LANTERN_GLOW}99`, lineHeight: 1,
                 }}>
                   {group.label}
                 </span>
