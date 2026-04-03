@@ -1166,7 +1166,7 @@ export default function Journal() {
                 <Bookmark size={13} strokeWidth={2} style={{ color: 'rgba(253,246,227,0.35)' }} />
                 <span style={{
                   fontSize: '11px', fontWeight: 600,
-                  letterSpacing: '2px', color: `${DRIFTWOOD}aa`, lineHeight: 1, textTransform: 'uppercase',
+                  letterSpacing: '2px', color: 'rgba(253,246,227,0.45)', lineHeight: 1, textTransform: 'uppercase',
                 }}>
                   Sparade frågor
                 </span>
