@@ -1460,6 +1460,7 @@ export default function CardView() {
     const gorContentCardIdSU = suMockMatchSU ? cards[parseInt(suMockMatchSU[1], 10)]?.id : null;
     const gorExerciseSU = gorContentCardIdSU ? getGorExercise(gorContentCardIdSU) : null;
 
+    hasRenderedContent.current = true;
     return (
       <motion.div
         className="min-h-screen"
