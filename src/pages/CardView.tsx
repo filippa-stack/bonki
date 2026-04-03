@@ -2663,7 +2663,6 @@ export default function CardView() {
                 }}
               />
             </div>
-            </div>
 
             <p style={{
               fontFamily: 'var(--font-sans)',
