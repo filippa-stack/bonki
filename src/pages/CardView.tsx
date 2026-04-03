@@ -2894,7 +2894,7 @@ export default function CardView() {
     };
 
     // Note nudge: show full text for first 2 prompts, then just icon unless interacted
-    const showFullNudge = localPromptIndex <= 1 || kidsNoteInteractedRef.current;
+    const showFullNudge = true;
 
     hasRenderedContent.current = true;
     return (
@@ -2952,7 +2952,7 @@ export default function CardView() {
           {/* ── Progress bar ── */}
           <div style={{
             width: '100%',
-            height: '3px',
+            height: '4px',
             backgroundColor: PARCHMENT,
           }}>
             <div style={{
@@ -2962,6 +2962,18 @@ export default function CardView() {
               transition: 'width 300ms ease',
             }} />
           </div>
+          <p style={{
+            fontFamily: 'var(--font-sans)',
+            fontSize: '11px',
+            fontWeight: 500,
+            color: '#FDF6E3',
+            opacity: 0.35,
+            textAlign: 'center',
+            margin: '8px 0 0',
+            letterSpacing: '0.03em',
+          }}>
+            {localPromptIndex + 1} av {totalPrompts}
+          </p>
 
           {/* ── Content area — illustration bg + white question card ── */}
           <div style={{
