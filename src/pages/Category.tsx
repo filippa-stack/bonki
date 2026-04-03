@@ -229,7 +229,7 @@ export default function Category() {
       <div className="px-5 pt-4 pb-24 flex flex-col relative z-[1]">
         {cards.map((card, index) => (
           <div key={card.id} style={{ marginBottom: index === cards.length - 1 ? 0 : '16px', position: 'relative' }}>
-            {product?.freeCardId === card.id && !completedCardIds.includes(card.id) && (
+            {product?.freeCardId === card.id && !allTimeCompletedCardIds.includes(card.id) && (
               <FreeCardBadge />
             )}
             <button
