@@ -1609,7 +1609,7 @@ export default function CardView() {
                   fontWeight: 600,
                   color: DEEP_SAFFRON,
                 }}>
-                  Gör: {gorExerciseSU.title}
+                  Prova tillsammans: {gorExerciseSU.title}
                 </span>
                 <span style={{
                   color: DRIFTWOOD,
