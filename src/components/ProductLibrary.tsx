@@ -710,6 +710,27 @@ export default function ProductLibrary() {
           <LibraryResumeCard global />
         </div>
 
+        {/* Next step suggestion — only for returning users with no active session */}
+        {activeProductIds.size === 0 && Object.keys(completedCountMap).length > 0 && (() => {
+          const untriedProduct = defaultKidsOrder.find(p => !completedCountMap[p.id]);
+          if (!untriedProduct) return null;
+          return (
+            <div className="px-5" style={{ marginBottom: '12px' }}>
+              <p style={{
+                fontFamily: 'var(--font-body)',
+                fontSize: '13px',
+                color: '#FDF6E3',
+                opacity: 0.45,
+                lineHeight: 1.5,
+              }}>
+                Nästa steg: prova <span style={{ fontWeight: 600, opacity: 1, color: '#D4F5C0' }}>
+                  {untriedProduct.name}
+                </span> — ert första samtal är gratis.
+              </p>
+            </div>
+          );
+        })()}
+
         <div>
         {/* ── Still Us cross-discovery ── */}
         <div className="px-5" style={{ marginTop: '0px' }}>
