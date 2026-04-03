@@ -202,7 +202,7 @@ function AudienceLabel({ label, subtitle, delay = 0 }: { label: string; subtitle
           fontWeight: 600,
           letterSpacing: '0.15em',
           textTransform: 'uppercase',
-          color: '#A09890',
+          color: 'rgba(253, 246, 227, 0.45)',
           marginBottom: subtitle ? '10px' : '0',
         }}
       >

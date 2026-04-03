@@ -306,7 +306,7 @@ export default function LibraryResumeCard({ activeTab, global, forceMock }: Libr
           fontFamily: "var(--font-body)",
           fontSize: '13px',
           fontWeight: 400,
-          color: DRIFTWOOD,
+          color: 'rgba(253, 246, 227, 0.55)',
           lineHeight: 1.3,
           marginTop: '4px',
           margin: '4px 0 0',
