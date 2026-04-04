@@ -62,3 +62,6 @@ verify_jwt = false
 
 [functions.get-checkin-data]
 verify_jwt = false
+
+[functions.meta-capi]
+verify_jwt = false
