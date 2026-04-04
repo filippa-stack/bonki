@@ -1,29 +1,39 @@
 
 
-## Fix Journal Hero Stats
+## Kill Cream Flash — Override CSS Variable Defaults
 
-**File:** `src/pages/Journal.tsx` — 2 changes
+**File:** `src/index.css` — 4 targeted line changes
 
-### Change 1: Add heroStats useMemo (after line 921)
-
-Insert a new `useMemo` block computing three stats from `allTimelineItems` and `filteredSessions` (or `sessions` if `filteredSessions` isn't available at that scope):
-
-```tsx
-const heroStats = useMemo(() => {
-  const reflectionCount = allTimelineItems.filter(i => i.type === 'note').length;
-  const sessionCount = filteredSessions.length;
-  const monthSet = new Set(filteredSessions.map(s => {
-    const d = new Date(s.last_activity_at || s.created_at);
-    return `${d.getFullYear()}-${d.getMonth()}`;
-  }));
-  return { reflectionCount, sessionCount, monthCount: monthSet.size };
-}, [allTimelineItems, filteredSessions]);
+### Change 1: Line 47
+```css
+/* FROM */ --background: var(--neutral-50);
+/* TO   */ --background: 233 47% 7%;
 ```
 
-### Change 2: Replace stats row JSX (lines 975–1021)
+### Change 2: Line 93
+```css
+/* FROM */ --surface-warm: var(--neutral-50);
+/* TO   */ --surface-warm: 233 47% 7%;
+```
 
-Replace the current two-stat block (`pulseData.total` / `pulseData.uniqueProductCount`) with three stats: **Reflektioner**, **Samtal**, **Månader** — all using `heroStats`. Same styling (28px golden numbers, 10px uppercase labels). Condition changes from `pulseData` to `heroStats`.
+### Change 3: Line 175
+```css
+/* FROM */ --surface-base: hsl(var(--neutral-50));
+/* TO   */ --surface-base: #0B1026;
+```
+
+### Change 4: Lines 187–188
+```css
+/* FROM */
+--color-bg: var(--surface-base);
+--color-bg-base: var(--surface-base);
+/* TO */
+--color-bg: #0B1026;
+--color-bg-base: #0B1026;
+```
 
 ### Not changed
-- Hero title/subtitle, filter pills, card styling, timeline, data fetching, any other file
+- `--neutral-50/100/200/300` definitions (still available for explicit cream references)
+- `body` / `#root` rules, `--page-bg`
+- Component styles, other files
 
