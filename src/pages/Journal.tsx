@@ -1020,21 +1020,26 @@ export default function Journal() {
         </div>
       )}
 
-      {/* Filter chips */}
+      {/* Filter pills */}
       {!isEmpty && !loading && (
-        <div
-          style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginTop: '16px' }}
-        >
+        <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginTop: '16px' }}>
           <button
             onClick={() => setActiveFilters(new Set<FilterChip>(['barn', 'par']))}
             style={{
-              height: '30px', paddingLeft: '16px', paddingRight: '16px', borderRadius: '10px',
-              border: `1px solid ${bothActive ? DEEP_SAFFRON : 'rgba(253,246,227,0.17)'}`,
-              background: bothActive ? `${DEEP_SAFFRON}18` : 'transparent',
-              color: bothActive ? LANTERN_GLOW : 'rgba(253,246,227,0.55)',
-              fontFamily: 'var(--font-sans)', fontSize: '12px', fontWeight: 500,
-              letterSpacing: '0.06em', textTransform: 'uppercase',
-              cursor: 'pointer', transition: 'all 200ms ease',
+              height: '28px',
+              paddingLeft: '14px',
+              paddingRight: '14px',
+              borderRadius: '16px',
+              border: bothActive ? '0.5px solid rgba(233, 200, 144, 0.25)' : '0.5px solid rgba(245, 240, 232, 0.12)',
+              backgroundColor: bothActive ? 'rgba(233, 200, 144, 0.14)' : 'transparent',
+              color: bothActive ? '#E9C890' : 'rgba(245, 240, 232, 0.45)',
+              fontFamily: 'var(--font-sans)',
+              fontSize: '11px',
+              fontWeight: 500,
+              letterSpacing: '0.06em',
+              textTransform: 'uppercase' as const,
+              cursor: 'pointer',
+              transition: 'all 200ms ease',
               WebkitTapHighlightColor: 'transparent',
             }}
           >
@@ -1047,17 +1052,24 @@ export default function Journal() {
                 key={chip}
                 onClick={() => toggleFilter(chip)}
                 style={{
-                  height: '30px', paddingLeft: '16px', paddingRight: '16px', borderRadius: '10px',
-                  border: `1px solid ${active ? DEEP_SAFFRON : 'rgba(253,246,227,0.17)'}`,
-                  backgroundColor: active ? `${DEEP_SAFFRON}18` : 'transparent',
-                  color: active ? LANTERN_GLOW : 'rgba(253,246,227,0.55)',
-                  fontFamily: 'var(--font-sans)', fontSize: '12px', fontWeight: 500,
-                  letterSpacing: '0.06em', textTransform: 'uppercase',
-                  cursor: 'pointer', transition: 'all 200ms ease',
+                  height: '28px',
+                  paddingLeft: '14px',
+                  paddingRight: '14px',
+                  borderRadius: '16px',
+                  border: active ? '0.5px solid rgba(233, 200, 144, 0.25)' : '0.5px solid rgba(245, 240, 232, 0.12)',
+                  backgroundColor: active ? 'rgba(233, 200, 144, 0.14)' : 'transparent',
+                  color: active ? '#E9C890' : 'rgba(245, 240, 232, 0.45)',
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '11px',
+                  fontWeight: 500,
+                  letterSpacing: '0.06em',
+                  textTransform: 'uppercase' as const,
+                  cursor: 'pointer',
+                  transition: 'all 200ms ease',
                   WebkitTapHighlightColor: 'transparent',
                 }}
               >
-                {chip === 'barn' ? 'Barn' : 'Föräldrar'}
+                {chip === 'barn' ? 'Barn' : 'Par'}
               </button>
             );
           })}
