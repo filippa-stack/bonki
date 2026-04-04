@@ -232,7 +232,7 @@ export default function Install() {
               <p
                 style={{
                   fontSize: '12px',
-                  color: 'rgba(245,237,210,0.45)',
+                   color: 'rgba(245,237,210,0.55)',
                   margin: '4px 0 0',
                   textTransform: 'uppercase',
                   letterSpacing: '0.05em',
