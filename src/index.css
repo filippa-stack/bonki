@@ -44,7 +44,7 @@ h1, h2, h3,
     --neutral-300: 40 25% 82%;       /* Warm border — aged paper edge */
 
     /* Tailwind base tokens (HSL without hsl()) */
-    --background: var(--neutral-50);
+    --background: 233 47% 7%;
     --foreground: 20 16% 15%;              /* Bark #2C2420 */
 
     --card: var(--neutral-100);           /* Warm near-white (was #E3DCD4) */
@@ -90,7 +90,7 @@ h1, h2, h3,
     --border-card: none;
 
     /* Custom tokens */
-    --surface-warm: var(--neutral-50);
+    --surface-warm: 233 47% 7%;
     --surface-elevated: var(--neutral-100);
     --surface-chrome: 0 0% 100%;
     --text-gentle: 29 13% 37%;            /* Driftwood */
@@ -172,7 +172,7 @@ h1, h2, h3,
     --color-text-tertiary:  var(--text-tertiary);
 
     /* ── Surface layering (mapped to foundation neutrals) ── */
-    --surface-base:   hsl(var(--neutral-50));
+    --surface-base:   #0B1026;
     --surface-raised: hsl(var(--neutral-100));
     --surface-sunken: hsl(var(--neutral-200));
     --surface-library: hsl(44, 86%, 94%);       /* Lantern Glow #FDF6E3 */
@@ -184,8 +184,8 @@ h1, h2, h3,
     --cta-active:  hsl(16, 78%, 42%);
 
     /* ── Semantic color tokens ── */
-    --color-bg: var(--surface-base);
-    --color-bg-base: var(--surface-base);
+    --color-bg: #0B1026;
+    --color-bg-base: #0B1026;
     --color-surface: hsl(var(--neutral-100));
     --color-surface-primary: hsl(var(--neutral-100));
     --color-surface-secondary: hsl(var(--neutral-100));
