@@ -3,6 +3,7 @@ import { Navigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Shield, Wifi, Zap } from 'lucide-react';
 import BonkiButton from '@/components/BonkiButton';
+import bonkiLogo from '@/assets/bonki-logo-transparent.png';
 import { trackPixelEvent } from '@/lib/metaPixel';
 import { MIDNIGHT_INK, LANTERN_GLOW, BONKI_ORANGE } from '@/lib/palette';
 
@@ -159,7 +160,7 @@ export default function Install() {
         {/* Logo */}
         <motion.div custom={0} variants={fadeUp}>
           <img
-            src="/apple-touch-icon-180x180.png"
+            src={bonkiLogo}
             alt="BONKI"
             style={{ width: '72px', height: '72px', borderRadius: '16px' }}
           />
