@@ -1,26 +1,15 @@
 
 
-## Install Page — Copy, Readability, Logo Fix
+## Fix: Swap back to brand logo illustration
 
-Single file edit: `src/pages/Install.tsx`
+### Why it looks pixelated
+The `pwa-512x512.png` file is actually 1920×1920px — so resolution isn't the issue. The problem is that **PWA app icons are optimized for tiny icon slots** (home screen, task bar). They use aggressive compression and simplified shapes that look fine at 48-64px but fall apart when displayed at 120px on a high-quality page. The file is also 706KB — suspiciously large for what it contains, suggesting it may be a lower-quality image upscaled to 1920px.
 
-### Changes
+### Change
+**File:** `src/pages/Install.tsx`
 
-1. **Fix copy repetition** (lines 176, 184-188)
-   - Headline → "Ni pratar varje dag. Men när pratade ni senast — på riktigt?"
-   - Supporting line → "För familjer och par — skapat med legitimerad psykolog." at `rgba(253, 246, 227, 0.7)`
+1. Add import: `import bonkiLogo from '@/assets/bonki-logo-transparent.png';`
+2. Replace `src="/pwa-512x512.png"` with `src={bonkiLogo}` on line 142
 
-2. **Remove redundant psykolog line** (lines 246-259) — Delete the standalone "Utvecklat med legitimerad psykolog" `<motion.p>` below trust stats
-
-3. **Fix readability — increase text opacity**
-   - Trust stat numbers (line 225): `color: LANTERN_GLOW` → `color: '#E9B44C'`
-   - Trust stat labels (line 235): `0.45` → `0.55`
-   - CTA subtext (line 301): `0.4` → `0.5`
-   - "Redan medlem?" text (line 407): `0.45` → `0.5`
-   - Login link (line 409): `color: BONKI_ORANGE` → `color: 'rgba(253, 246, 227, 0.7)'`
-
-4. **Fix pixelated logo** (line 142) — Replace `src={bonkiLogo}` with `src="/pwa-512x512.png"` for a crisp 512px source rendered at 120px. Remove unused `bonkiLogo` import (line 4).
-
-### What stays untouched
-- BONKI + "På riktigt." header, trust stats structure, CTA button styling/handler, platform detection, Meta Pixel, iOS guide, all other files
+The `bonki-logo-transparent.png` (1122×1629px) is the proper brand creature illustration with transparency — it will render crisply at 120px.
 
