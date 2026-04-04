@@ -1042,7 +1042,7 @@ export default function Journal() {
                 fontFamily: 'var(--font-sans)',
               }}>
                 Era samtal växer —{' '}
-                <span style={{ fontWeight: 700, color: DEEP_SAFFRON, fontSize: '18px' }}>{pulseData.total}</span>
+                <span style={{ fontWeight: 700, color: DEEP_SAFFRON, fontSize: '22px' }}>{pulseData.total}</span>
                 {' '}sedan {pulseData.monthLabel}.
               </p>
               <p style={{ margin: '8px 0 0', fontSize: '13px', color: `${LANTERN_GLOW}aa`, lineHeight: 1.5 }}>
