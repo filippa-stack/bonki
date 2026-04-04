@@ -155,36 +155,37 @@ export default function Install() {
         initial="hidden"
         animate="visible"
         style={{
-          padding: '32px 24px 0',
+          padding: '0 28px',
           textAlign: 'center',
           maxWidth: '360px',
           margin: '0 auto',
         }}
       >
-        <motion.h1
-          custom={4}
+        <motion.h2
+          custom={3}
           variants={fadeUp}
           className="font-serif"
           style={{
-            fontSize: '28px',
-            fontWeight: 700,
-            lineHeight: 1.2,
-            margin: 0,
+            fontSize: '24px',
+            fontWeight: 600,
+            lineHeight: 1.3,
+            color: LANTERN_GLOW,
+            margin: '0 0 12px',
           }}
         >
           Samtal som förändrar er vardag.
-        </motion.h1>
+        </motion.h2>
         <motion.p
-          custom={5}
+          custom={4}
           variants={fadeUp}
           style={{
             fontSize: '15px',
-            lineHeight: 1.5,
-            color: 'rgba(245,237,210,0.65)',
-            margin: '12px 0 0',
+            lineHeight: 1.6,
+            color: 'rgba(253, 246, 227, 0.6)',
+            margin: 0,
           }}
         >
-          Samtalskort för familjer och par — skapade med psykologer, byggda för verkliga samtal.
+          Verktyg för samtalen som inte blir av — för familjer och par.
         </motion.p>
       </motion.section>
 
