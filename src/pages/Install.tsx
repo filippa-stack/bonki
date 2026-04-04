@@ -139,7 +139,7 @@ export default function Install() {
         <motion.img
           custom={2}
           variants={fadeUp}
-          src={bonkiLogo}
+          src="/pwa-512x512.png"
           alt="BONKI"
           style={{
             width: '120px',
