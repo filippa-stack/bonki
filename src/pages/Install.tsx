@@ -126,49 +126,28 @@ export default function Install() {
         </motion.p>
       </motion.section>
 
-      {/* Hero Illustration */}
+      {/* Brand logo */}
       <motion.section
         initial="hidden"
         animate="visible"
         style={{
-          padding: '32px 24px 0',
           display: 'flex',
           justifyContent: 'center',
+          padding: '28px 0 20px',
         }}
       >
-        <motion.div
-          custom={3}
+        <motion.img
+          custom={2}
           variants={fadeUp}
+          src={bonkiLogo}
+          alt="BONKI"
           style={{
-            width: '100%',
-            maxWidth: '360px',
-            height: '40vh',
-            minHeight: '240px',
-            borderRadius: '24px',
-            overflow: 'hidden',
-            position: 'relative',
+            width: '120px',
+            height: '120px',
+            objectFit: 'contain',
+            opacity: 0.9,
           }}
-        >
-          <img
-            src={illustrationStillUs}
-            alt=""
-            style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-              objectPosition: 'center',
-              opacity: 0.85,
-            }}
-          />
-          <div
-            style={{
-              position: 'absolute',
-              inset: 0,
-              background: 'linear-gradient(180deg, transparent 50%, rgba(11,16,38,0.8) 100%)',
-              pointerEvents: 'none',
-            }}
-          />
-        </motion.div>
+        />
       </motion.section>
 
       {/* Value Proposition */}
