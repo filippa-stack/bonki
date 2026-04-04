@@ -223,7 +223,7 @@ export default function Install() {
                 style={{
                   fontSize: '22px',
                   fontWeight: 700,
-                    color: '#E9B44C',
+                    color: '#D4F5C0',
                   margin: 0,
                   lineHeight: 1.2,
                 }}
@@ -233,7 +233,7 @@ export default function Install() {
               <p
                 style={{
                   fontSize: '12px',
-                   color: 'rgba(245,237,210,0.55)',
+                   color: 'rgba(212, 245, 192, 0.45)',
                   margin: '4px 0 0',
                   textTransform: 'uppercase',
                   letterSpacing: '0.05em',
