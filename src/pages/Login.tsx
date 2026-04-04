@@ -323,8 +323,8 @@ export default function Login() {
             </div>
           )}
 
-          <p style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontSize: '13px', color: `rgba(245, 237, 210, 0.5)`, textAlign: 'center', marginTop: '20px', letterSpacing: '0.01em' }}>
-            Ert konto. Era samtal.
+          <p style={{ fontFamily: 'var(--font-sans)', fontSize: '13px', color: 'rgba(253, 246, 227, 0.35)', textAlign: 'center', marginTop: '20px' }}>
+            Gratis att börja — inget kort krävs.
           </p>
 
           {error && (
