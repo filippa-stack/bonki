@@ -150,6 +150,15 @@ export default function Login() {
           >
             På riktigt.
           </p>
+          <p style={{
+            fontFamily: 'var(--font-sans)',
+            fontSize: '14px',
+            color: 'rgba(253, 246, 227, 0.5)',
+            textAlign: 'center',
+            marginTop: '12px',
+          }}>
+            Verktyg för samtalen som inte blir av.
+          </p>
         </motion.div>
 
         {/* Button + terms */}
