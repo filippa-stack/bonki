@@ -130,7 +130,7 @@ export default function Install() {
   }
 
   const scrollToSteps = () => {
-    trackPixelEvent('Lead');
+    trackPixelEvent('InstallCTA');
     stepsRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
