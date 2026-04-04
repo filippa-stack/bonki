@@ -1,13 +1,13 @@
 
 
-## Install Page — Fix Trust Stats Colors
+## Fix: Increase trust stat label visibility
 
-Single file edit: `src/pages/Install.tsx`
+**File:** `src/pages/Install.tsx`, line 236
 
-### Changes
+The labels are at `rgba(212, 245, 192, 0.45)` — too faint on the dark background. Bump to `0.65` for clear readability while still being secondary to the numbers.
 
-1. **Stat numbers** (7, 130+, 1 gratis): `color: '#E9B44C'` → `color: '#D4F5C0'`
-2. **Stat labels** (produkter, samtal, per produkt): `color: 'rgba(245,237,210,0.55)'` → `color: 'rgba(212, 245, 192, 0.45)'`
+**Change:**
+- Line 236: `color: 'rgba(212, 245, 192, 0.45)'` → `color: 'rgba(212, 245, 192, 0.65)'`
 
-Two inline style color swaps, nothing else touched.
+One color opacity change, nothing else.
 
