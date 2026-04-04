@@ -1029,9 +1029,12 @@ export default function Journal() {
             <div
               style={{
                 margin: '20px 16px 0',
-                background: `linear-gradient(135deg, ${DEEP_DUSK}, ${DEEP_DUSK}ee)`,
-                borderRadius: '16px', borderLeft: `3px solid ${DEEP_SAFFRON}`,
-                padding: '16px 16px 14px',
+                borderRadius: '20px',
+                padding: '20px 20px 18px',
+                background: 'linear-gradient(135deg, rgba(212,160,58,0.12) 0%, rgba(212,160,58,0.04) 100%)',
+                border: '1px solid rgba(212,160,58,0.15)',
+                backdropFilter: 'blur(12px)',
+                WebkitBackdropFilter: 'blur(12px)',
               }}
             >
               <p style={{
