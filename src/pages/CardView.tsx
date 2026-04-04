@@ -506,11 +506,10 @@ export default function CardView() {
 
       if (!error && rows && rows.length > 0) {
         const maxStepIndex = rows[0].step_index;
-        const lastAnswered = maxStepIndex % 100;
-        const nextPrompt = lastAnswered + 1;
+        const currentPrompt = maxStepIndex % 100;
 
-        if (nextPrompt < totalPrompts) {
-          setLocalPromptIndex(nextPrompt);
+        if (currentPrompt < totalPrompts) {
+          setLocalPromptIndex(currentPrompt);
         } else {
           // All prompts answered — set to last prompt so completion CTA triggers
           setLocalPromptIndex(totalPrompts - 1);

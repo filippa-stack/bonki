@@ -130,8 +130,7 @@ export default function LibraryResumeCard({ activeTab, global, forceMock }: Libr
         (sum, s) => sum + (s.prompts?.length ?? 0), 0
       ) ?? 0;
       if (reflections && reflections.length > 0) {
-        const lastIndex = reflections[0].step_index % 100;
-        const currentPrompt = lastIndex + 1;
+        const currentPrompt = (reflections[0].step_index % 100) + 1; // 1-indexed for display
         stepLabel = totalPrompts > 1
           ? `Fråga ${Math.min(currentPrompt, totalPrompts)} av ${totalPrompts}`
           : '';
