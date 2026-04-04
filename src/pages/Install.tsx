@@ -390,9 +390,9 @@ export default function Install() {
           textAlign: 'center',
         }}
       >
-        <motion.p custom={10} variants={fadeUp} style={{ fontSize: '14px', color: 'rgba(245,237,210,0.45)', margin: 0 }}>
+        <motion.p custom={10} variants={fadeUp} style={{ fontSize: '14px', color: 'rgba(245,237,210,0.5)', margin: 0 }}>
           Redan medlem?{' '}
-          <Link to="/login" style={{ color: BONKI_ORANGE, textDecoration: 'underline' }}>
+          <Link to="/login" style={{ color: 'rgba(253, 246, 227, 0.7)', textDecoration: 'underline' }}>
             Logga in
           </Link>
         </motion.p>
