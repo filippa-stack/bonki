@@ -943,29 +943,82 @@ export default function Journal() {
   return (
     <div style={{ minHeight: '100vh', backgroundColor: MIDNIGHT_INK, display: 'flex', flexDirection: 'column' }}>
       {/* Header */}
-      <div
-        style={{
-          paddingTop: 'calc(env(safe-area-inset-top, 0px) + 56px)',
-          textAlign: 'center',
-          paddingLeft: '24px',
-          paddingRight: '24px',
-          paddingBottom: '4px',
-        }}
-      >
+      {/* Hero */}
+      <div style={{
+        paddingTop: 'calc(env(safe-area-inset-top, 0px) + 56px)',
+        textAlign: 'center',
+        paddingLeft: '24px',
+        paddingRight: '24px',
+        paddingBottom: '4px',
+      }}>
         <h1 style={{
-          fontFamily: "var(--font-display)",
-          fontVariationSettings: "'opsz' 28",
-          fontSize: '26px', fontWeight: 600, color: LANTERN_GLOW, margin: 0, lineHeight: 1.2,
+          fontFamily: 'var(--font-serif)',
+          fontSize: '26px',
+          fontWeight: 500,
+          color: '#F5F0E8',
+          margin: 0,
         }}>
           Era samtal
         </h1>
         <p style={{
-          fontFamily: 'var(--font-serif)', fontSize: '14px', fontStyle: 'italic',
-          color: 'rgba(253,246,227,0.4)', marginTop: '6px', lineHeight: 1.4,
+          fontFamily: 'var(--font-serif)',
+          fontStyle: 'italic',
+          fontSize: '13px',
+          color: 'rgba(245, 240, 232, 0.4)',
+          marginTop: '4px',
         }}>
-          Vad ni burit med er.
+          Vad ni burit med er
         </p>
       </div>
+
+      {/* Stats row */}
+      {!isEmpty && !loading && pulseData && (
+        <div style={{
+          display: 'flex',
+          justifyContent: 'center',
+          gap: '2.5rem',
+          padding: '20px 24px 16px',
+        }}>
+          <div style={{ textAlign: 'center' }}>
+            <div style={{
+              fontSize: '28px',
+              fontWeight: 500,
+              color: '#E9C890',
+              letterSpacing: '-1px',
+            }}>
+              {pulseData.total}
+            </div>
+            <div style={{
+              fontSize: '10px',
+              textTransform: 'uppercase' as const,
+              letterSpacing: '1.8px',
+              color: 'rgba(245, 240, 232, 0.45)',
+              marginTop: '2px',
+            }}>
+              Samtal
+            </div>
+          </div>
+          <div style={{ textAlign: 'center' }}>
+            <div style={{
+              fontSize: '28px',
+              fontWeight: 500,
+              color: '#E9C890',
+              letterSpacing: '-1px',
+            }}>
+              {pulseData.uniqueProductCount}
+            </div>
+            <div style={{
+              fontSize: '10px',
+              textTransform: 'uppercase' as const,
+              letterSpacing: '1.8px',
+              color: 'rgba(245, 240, 232, 0.45)',
+              marginTop: '2px',
+            }}>
+              Produkter
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Filter chips */}
       {!isEmpty && !loading && (
