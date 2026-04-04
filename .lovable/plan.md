@@ -1,18 +1,29 @@
 
 
-## Fix Journal Empty State Flash on Reload
+## Add Product Name to Empty Sessions List
 
-**File:** `src/pages/Journal.tsx` — 3 small additions
+**File:** `src/pages/Journal.tsx` — 1 change
 
-### Change 1: Add ref (near existing refs/state)
-Add `const hasRenderedContent = useRef(false);` near other ref declarations.
+### Change (line 1260)
 
-### Change 2: Guard empty state condition
-Change `isEmpty ?` to `(isEmpty && !hasRenderedContent.current) ?` so once content has rendered, the empty state never flashes again.
+Replace the card name span with product name + separator + card name:
 
-### Change 3: Set ref when content renders
-Before the `monthGroups.map(...)` block, add `hasRenderedContent.current = true;` so the ref is set as soon as real timeline content is displayed.
+```tsx
+// Line 1260 — currently:
+<span style={{ color: 'rgba(253,246,227,0.6)' }}>{m.cardName}</span>
 
-### Not changed
-- Loading skeleton, empty state content, data fetching, any other file
+// Replace with:
+<span>
+  <span style={{ color: 'rgba(253,246,227,0.45)' }}>
+    {allProducts.find(p => p.id === m.productId)?.name}
+  </span>
+  <span style={{ color: 'rgba(253,246,227,0.35)', margin: '0 6px' }}>·</span>
+  <span style={{ color: 'rgba(253,246,227,0.6)' }}>{m.cardName}</span>
+</span>
+```
+
+### No other changes needed
+- `allProducts` is already imported
+- `CompletedMarker` already has `productId`
+- Header, date column, collapse logic, and all other sections remain untouched
 
