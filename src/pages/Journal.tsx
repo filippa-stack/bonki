@@ -1099,7 +1099,7 @@ export default function Journal() {
               </div>
 
               {/* Items */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', padding: '0 16px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', padding: '0 16px' }}>
                 {group.items.map((item, idx) =>
                   item.type === 'group' ? (
                     <SessionGroupCard key={`grp-${item.sessionId}`} group={item} navigate={navigate} />
