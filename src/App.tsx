@@ -153,7 +153,11 @@ function AppRoutes() {
 
   return (
     <Routes>
-      <Route path="/login" element={user ? <Navigate to="/" replace /> : <Login />} />
+      <Route path="/login" element={
+        user && !new URLSearchParams(window.location.search).has('devState')
+          ? <Navigate to="/" replace />
+          : <Login />
+      } />
       <Route path="/install" element={<Install />} />
       <Route path="/screenshot-export" element={<ScreenshotExport />} />
       <Route path="/analytics" element={<AnalyticsDashboard />} />
