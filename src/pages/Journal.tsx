@@ -1111,7 +1111,7 @@ export default function Journal() {
         <div className="loading-skeleton" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <div style={{ width: '32px', height: '32px', borderRadius: '50%', backgroundColor: 'rgba(253,246,227,0.13)' }} className="animate-pulse" />
         </div>
-      ) : isEmpty ? (
+      ) : (isEmpty && !hasRenderedContent.current) ? (
         <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', textAlign: 'center', padding: '0 40px' }}>
             <svg width="48" height="48" viewBox="0 0 24 24" fill="none" style={{ opacity: 0.3 }}>
