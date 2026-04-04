@@ -1,22 +1,40 @@
 
 
-## Fix Question Counter Visibility
+## Fix Resume Off-by-One
 
-**File:** `src/pages/CardView.tsx` — style-only changes to three counter elements.
+Two files, minimal changes.
 
-### Changes
+### 1. CardView.tsx (lines 508–517)
+Replace the resume index calculation — remove the `+1` so the user returns to the prompt they were on:
 
-**1. Still Us multi-step counter (line 3036)**
-- `opacity: 0.35` → `opacity: 0.55`
-- Add `textShadow: '0 1px 3px rgba(0,0,0,0.5)'`
+```tsx
+// FROM:
+const lastAnswered = maxStepIndex % 100;
+const nextPrompt = lastAnswered + 1;
 
-**2. Kids counter (line 3521–3545)**
-The kids counter uses CSS variable colors and has no explicit low opacity on the text. However, the dot indicator at line 3542 has `opacity: 0.6` which is fine. No changes needed here per the user's request — but if the user intended this one, I'll leave it as-is since it uses themed CSS vars.
+if (nextPrompt < totalPrompts) {
+  setLocalPromptIndex(nextPrompt);
+} else {
 
-**3. Still Us 1-step fallback counter (line 3564)**
-- `opacity: 0.4` → `opacity: 0.55`
-- Add `textShadow: '0 1px 3px rgba(0,0,0,0.5)'`
+// TO:
+const currentPrompt = maxStepIndex % 100;
 
-### Summary
-Two `<p>` elements updated with higher opacity and text shadow. No logic or layout changes.
+if (currentPrompt < totalPrompts) {
+  setLocalPromptIndex(currentPrompt);
+} else {
+```
+
+### 2. LibraryResumeCard.tsx (lines 133–134)
+Collapse to one line — the `+1` here is correct (converting 0-indexed to 1-indexed display label):
+
+```tsx
+// FROM:
+const lastIndex = reflections[0].step_index % 100;
+const currentPrompt = lastIndex + 1;
+
+// TO:
+const currentPrompt = (reflections[0].step_index % 100) + 1; // 1-indexed for display
+```
+
+No other changes.
 
