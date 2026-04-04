@@ -160,7 +160,7 @@ export default function Install() {
         {/* Logo */}
         <motion.div custom={0} variants={fadeUp}>
           <img
-            src="/apple-touch-icon-180x180.png"
+            src={bonkiLogo}
             alt="BONKI"
             style={{ width: '72px', height: '72px', borderRadius: '16px' }}
           />
