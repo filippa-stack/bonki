@@ -11,9 +11,9 @@ export default function Footer() {
       style={{ backgroundColor: 'hsl(var(--surface-chrome))' }}
     >
       <div className="flex flex-col items-center gap-2">
-        <img src={bonkiLogo} alt="Still Us" className="h-6 w-6 object-contain opacity-60" />
+        <img src={bonkiLogo} alt="BONKI" className="h-6 w-6 object-contain opacity-60" />
         <p className="text-xs text-muted-foreground">
-          © {year} Still Us
+          © {year} BONKI
         </p>
       </div>
     </footer>
