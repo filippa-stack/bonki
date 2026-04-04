@@ -284,7 +284,7 @@ export default function Install() {
           variants={fadeUp}
           style={{
             fontSize: '13px',
-            color: 'rgba(245,237,210,0.4)',
+            color: 'rgba(245,237,210,0.5)',
             margin: '12px 0 0',
           }}
         >
