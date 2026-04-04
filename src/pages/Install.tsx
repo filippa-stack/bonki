@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Navigate, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import bonkiLogo from '@/assets/bonki-logo-transparent.png';
+
 
 import { trackPixelEvent } from '@/lib/metaPixel';
 import { MIDNIGHT_INK, LANTERN_GLOW, BONKI_ORANGE } from '@/lib/palette';
@@ -139,7 +139,7 @@ export default function Install() {
         <motion.img
           custom={2}
           variants={fadeUp}
-          src={bonkiLogo}
+          src="/pwa-512x512.png"
           alt="BONKI"
           style={{
             width: '120px',
@@ -173,7 +173,7 @@ export default function Install() {
             margin: '0 0 12px',
           }}
         >
-          Samtal som förändrar er vardag.
+          Ni pratar varje dag. Men när pratade ni senast — på riktigt?
         </motion.h2>
         <motion.p
           custom={4}
@@ -181,11 +181,11 @@ export default function Install() {
           style={{
             fontSize: '15px',
             lineHeight: 1.6,
-            color: 'rgba(253, 246, 227, 0.6)',
+            color: 'rgba(253, 246, 227, 0.7)',
             margin: 0,
           }}
         >
-          Verktyg för samtalen som inte blir av — för familjer och par.
+          För familjer och par — skapat med legitimerad psykolog.
         </motion.p>
       </motion.section>
 
@@ -222,7 +222,7 @@ export default function Install() {
                 style={{
                   fontSize: '22px',
                   fontWeight: 700,
-                  color: LANTERN_GLOW,
+                    color: '#E9B44C',
                   margin: 0,
                   lineHeight: 1.2,
                 }}
@@ -232,7 +232,7 @@ export default function Install() {
               <p
                 style={{
                   fontSize: '12px',
-                  color: 'rgba(245,237,210,0.45)',
+                   color: 'rgba(245,237,210,0.55)',
                   margin: '4px 0 0',
                   textTransform: 'uppercase',
                   letterSpacing: '0.05em',
@@ -243,20 +243,6 @@ export default function Install() {
             </div>
           ))}
         </motion.div>
-        <motion.p
-          custom={6}
-          variants={fadeUp}
-          style={{
-            fontSize: '12px',
-            fontWeight: 500,
-            color: 'rgba(253, 246, 227, 0.45)',
-            textAlign: 'center',
-            marginTop: '12px',
-            letterSpacing: '0.04em',
-          }}
-        >
-          Utvecklat med legitimerad psykolog
-        </motion.p>
       </motion.section>
 
       {/* CTA */}
@@ -298,7 +284,7 @@ export default function Install() {
           variants={fadeUp}
           style={{
             fontSize: '13px',
-            color: 'rgba(245,237,210,0.4)',
+            color: 'rgba(245,237,210,0.5)',
             margin: '12px 0 0',
           }}
         >
@@ -404,9 +390,9 @@ export default function Install() {
           textAlign: 'center',
         }}
       >
-        <motion.p custom={10} variants={fadeUp} style={{ fontSize: '14px', color: 'rgba(245,237,210,0.45)', margin: 0 }}>
+        <motion.p custom={10} variants={fadeUp} style={{ fontSize: '14px', color: 'rgba(245,237,210,0.5)', margin: 0 }}>
           Redan medlem?{' '}
-          <Link to="/login" style={{ color: BONKI_ORANGE, textDecoration: 'underline' }}>
+          <Link to="/login" style={{ color: 'rgba(253, 246, 227, 0.7)', textDecoration: 'underline' }}>
             Logga in
           </Link>
         </motion.p>
