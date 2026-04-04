@@ -243,20 +243,6 @@ export default function Install() {
             </div>
           ))}
         </motion.div>
-        <motion.p
-          custom={6}
-          variants={fadeUp}
-          style={{
-            fontSize: '12px',
-            fontWeight: 500,
-            color: 'rgba(253, 246, 227, 0.45)',
-            textAlign: 'center',
-            marginTop: '12px',
-            letterSpacing: '0.04em',
-          }}
-        >
-          Utvecklat med legitimerad psykolog
-        </motion.p>
       </motion.section>
 
       {/* CTA */}
