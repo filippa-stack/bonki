@@ -920,7 +920,17 @@ export default function Journal() {
     };
   }, [filteredSessions]);
 
-  
+  const heroStats = useMemo(() => {
+    const reflectionCount = allTimelineItems.filter(i => i.type === 'note').length;
+    const sessionCount = filteredSessions.length;
+    const monthSet = new Set(filteredSessions.map(s => {
+      const d = new Date(s.ended_at || new Date().toISOString());
+      return `${d.getFullYear()}-${d.getMonth()}`;
+    }));
+    return { reflectionCount, sessionCount, monthCount: monthSet.size };
+  }, [allTimelineItems, filteredSessions]);
+
+
 
 
   // Filtered bookmarks
@@ -972,7 +982,7 @@ export default function Journal() {
       </div>
 
       {/* Stats row */}
-      {!isEmpty && !loading && pulseData && (
+      {!isEmpty && !loading && (
         <div style={{
           display: 'flex',
           justifyContent: 'center',
@@ -986,7 +996,26 @@ export default function Journal() {
               color: '#E9C890',
               letterSpacing: '-1px',
             }}>
-              {pulseData.total}
+              {heroStats.reflectionCount}
+            </div>
+            <div style={{
+              fontSize: '10px',
+              textTransform: 'uppercase' as const,
+              letterSpacing: '1.8px',
+              color: 'rgba(245, 240, 232, 0.45)',
+              marginTop: '2px',
+            }}>
+              Reflektioner
+            </div>
+          </div>
+          <div style={{ textAlign: 'center' }}>
+            <div style={{
+              fontSize: '28px',
+              fontWeight: 500,
+              color: '#E9C890',
+              letterSpacing: '-1px',
+            }}>
+              {heroStats.sessionCount}
             </div>
             <div style={{
               fontSize: '10px',
@@ -1005,7 +1034,7 @@ export default function Journal() {
               color: '#E9C890',
               letterSpacing: '-1px',
             }}>
-              {pulseData.uniqueProductCount}
+              {heroStats.monthCount}
             </div>
             <div style={{
               fontSize: '10px',
@@ -1014,7 +1043,7 @@ export default function Journal() {
               color: 'rgba(245, 240, 232, 0.45)',
               marginTop: '2px',
             }}>
-              Produkter
+              Månader
             </div>
           </div>
         </div>
