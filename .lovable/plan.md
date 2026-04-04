@@ -1,39 +1,27 @@
 
 
-## Kill Cream Flash — Override CSS Variable Defaults
+## Fix Reflection Count Filter
 
-**File:** `src/index.css` — 4 targeted line changes
+**File:** `src/pages/Journal.tsx` — 1 change
 
-### Change 1: Line 47
-```css
-/* FROM */ --background: var(--neutral-50);
-/* TO   */ --background: 233 47% 7%;
+### Change (lines 923–931)
+
+In the `heroStats` useMemo, change the reflection count source from `allTimelineItems` to `visibleItems`, and update the dependency array:
+
+```tsx
+const heroStats = useMemo(() => {
+  const reflectionCount = visibleItems.filter(i => i.type === 'note').length;
+  const sessionCount = filteredSessions.length;
+  const monthSet = new Set(filteredSessions.map(s => {
+    const d = new Date(s.ended_at || new Date().toISOString());
+    return `${d.getFullYear()}-${d.getMonth()}`;
+  }));
+  return { reflectionCount, sessionCount, monthCount: monthSet.size };
+}, [visibleItems, filteredSessions]);
 ```
 
-### Change 2: Line 93
-```css
-/* FROM */ --surface-warm: var(--neutral-50);
-/* TO   */ --surface-warm: 233 47% 7%;
-```
-
-### Change 3: Line 175
-```css
-/* FROM */ --surface-base: hsl(var(--neutral-50));
-/* TO   */ --surface-base: #0B1026;
-```
-
-### Change 4: Lines 187–188
-```css
-/* FROM */
---color-bg: var(--surface-base);
---color-bg-base: var(--surface-base);
-/* TO */
---color-bg: #0B1026;
---color-bg-base: #0B1026;
-```
+`visibleItems` is the filtered timeline array that already respects the active Barn/Par filter (used by `groupedItems` → `monthGroups` → rendered cards).
 
 ### Not changed
-- `--neutral-50/100/200/300` definitions (still available for explicit cream references)
-- `body` / `#root` rules, `--page-bg`
-- Component styles, other files
+- Samtal/Månader stats, hero layout/styling, any other logic or files
 
