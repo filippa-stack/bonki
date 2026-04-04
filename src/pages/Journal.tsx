@@ -1101,50 +1101,7 @@ export default function Journal() {
         </div>
       ) : (
         <div style={{ flex: 1, overflowY: 'auto', paddingBottom: 'calc(72px + env(safe-area-inset-bottom, 0px))' }}>
-          {/* Pulse Card */}
-          {pulseData && (
-            <div
-              style={{
-                margin: '20px 16px 0',
-                borderRadius: '20px',
-                padding: '20px 20px 18px',
-                background: 'linear-gradient(135deg, rgba(212,160,58,0.12) 0%, rgba(212,160,58,0.04) 100%)',
-                border: '1px solid rgba(212,160,58,0.15)',
-                backdropFilter: 'blur(12px)',
-                WebkitBackdropFilter: 'blur(12px)',
-              }}
-            >
-              <p style={{
-                margin: 0, fontSize: '15px', color: LANTERN_GLOW, lineHeight: 1.5,
-                fontFamily: 'var(--font-sans)',
-              }}>
-                Era samtal växer —{' '}
-                <span style={{ fontWeight: 700, color: DEEP_SAFFRON, fontSize: '22px' }}>{pulseData.total}</span>
-                {' '}sedan {pulseData.monthLabel}.
-              </p>
-              <p style={{ margin: '8px 0 0', fontSize: '13px', color: `${LANTERN_GLOW}aa`, lineHeight: 1.5 }}>
-                Senast:{' '}
-                <span
-                  onClick={() => pulseData.latestCardId && navigate(`/card/${pulseData.latestCardId}`)}
-                  style={{
-                    fontWeight: 600,
-                    color: 'rgba(253,246,227,0.65)',
-                    cursor: pulseData.latestCardId ? 'pointer' : 'default',
-                    textDecoration: pulseData.latestCardId ? 'underline' : 'none',
-                    textDecorationColor: 'rgba(253,246,227,0.17)', textUnderlineOffset: '3px',
-                  }}
-                >
-                  {pulseData.latestCardName}
-                </span>
-                {' · '}{pulseData.latestRelDate}
-              </p>
-              {pulseData.uniqueProductCount > 1 && (
-                <p style={{ margin: '4px 0 0', fontSize: '12px', color: 'rgba(253,246,227,0.45)', lineHeight: 1.4 }}>
-                  I {pulseData.uniqueProductCount} olika samtalsprodukter
-                </p>
-              )}
-            </div>
-          )}
+          {/* (Stats moved to hero section above) */}
 
 
           {/* Timeline */}
