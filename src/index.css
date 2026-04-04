@@ -172,7 +172,7 @@ h1, h2, h3,
     --color-text-tertiary:  var(--text-tertiary);
 
     /* ── Surface layering (mapped to foundation neutrals) ── */
-    --surface-base:   hsl(var(--neutral-50));
+    --surface-base:   #0B1026;
     --surface-raised: hsl(var(--neutral-100));
     --surface-sunken: hsl(var(--neutral-200));
     --surface-library: hsl(44, 86%, 94%);       /* Lantern Glow #FDF6E3 */
