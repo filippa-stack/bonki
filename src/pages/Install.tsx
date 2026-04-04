@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Navigate, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import bonkiLogo from '@/assets/bonki-logo-transparent.png';
-import illustrationStillUs from '@/assets/illustration-still-us-home.png';
+
 import { trackPixelEvent } from '@/lib/metaPixel';
 import { MIDNIGHT_INK, LANTERN_GLOW, BONKI_ORANGE } from '@/lib/palette';
 
