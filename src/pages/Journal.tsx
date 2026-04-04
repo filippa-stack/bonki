@@ -1257,7 +1257,13 @@ export default function Journal() {
                           display: 'flex', justifyContent: 'space-between', alignItems: 'center',
                           opacity: 0.5, fontSize: '13px', padding: '4px 0',
                         }}>
-                          <span style={{ color: 'rgba(253,246,227,0.6)' }}>{m.cardName}</span>
+                          <span>
+                            <span style={{ color: 'rgba(253,246,227,0.45)' }}>
+                              {allProducts.find(p => p.id === m.productId)?.name}
+                            </span>
+                            <span style={{ color: 'rgba(253,246,227,0.35)', margin: '0 6px' }}>·</span>
+                            <span style={{ color: 'rgba(253,246,227,0.6)' }}>{m.cardName}</span>
+                          </span>
                           <span style={{ color: 'rgba(253,246,227,0.45)' }}>
                             {new Date(m.date).toLocaleDateString('sv-SE', { day: 'numeric', month: 'short' })}
                           </span>
