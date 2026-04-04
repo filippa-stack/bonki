@@ -456,7 +456,10 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
   );
 });
 export default function ProductLibrary() {
-  useDefaultTheme();
+  useLayoutEffect(() => {
+    document.documentElement.classList.remove('theme-verdigris');
+    document.body.classList.remove('verdigris-grain', 'verdigris-lightleak');
+  }, []);
   usePageBackground('#0B1026');
   const navigate = useNavigate();
   const tracked = useRef(false);
