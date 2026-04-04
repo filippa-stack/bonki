@@ -186,10 +186,12 @@ function formatRelativeDate(dateStr: string): string {
   const diffDays = Math.floor((today.getTime() - target.getTime()) / (1000 * 60 * 60 * 24));
   if (diffDays === 0) return 'idag';
   if (diffDays === 1) return 'igår';
-  if (diffDays < 7) {
-    return ['söndag', 'måndag', 'tisdag', 'onsdag', 'torsdag', 'fredag', 'lördag'][date.getDay()];
+  const day = date.getDate();
+  const month = SWEDISH_MONTHS[date.getMonth()];
+  if (date.getFullYear() !== now.getFullYear()) {
+    return `${day} ${month} ${date.getFullYear()}`;
   }
-  return `${date.getDate()} ${SWEDISH_MONTHS[date.getMonth()]}`;
+  return `${day} ${month}`;
 }
 
 
