@@ -90,7 +90,7 @@ h1, h2, h3,
     --border-card: none;
 
     /* Custom tokens */
-    --surface-warm: var(--neutral-50);
+    --surface-warm: 233 47% 7%;
     --surface-elevated: var(--neutral-100);
     --surface-chrome: 0 0% 100%;
     --text-gentle: 29 13% 37%;            /* Driftwood */
