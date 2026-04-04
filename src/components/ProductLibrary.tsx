@@ -1,7 +1,6 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import BonkiLoadingScreen from '@/components/BonkiLoadingScreen';
 import { usePageBackground } from '@/hooks/usePageBackground';
-import { useDefaultTheme } from '@/hooks/useDefaultTheme';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { allProducts } from '@/data/products';
@@ -457,7 +456,10 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
   );
 });
 export default function ProductLibrary() {
-  useDefaultTheme();
+  useLayoutEffect(() => {
+    document.documentElement.classList.remove('theme-verdigris');
+    document.body.classList.remove('verdigris-grain', 'verdigris-lightleak');
+  }, []);
   usePageBackground('#0B1026');
   const navigate = useNavigate();
   const tracked = useRef(false);
