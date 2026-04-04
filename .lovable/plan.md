@@ -1,14 +1,26 @@
 
 
-## Increase text visibility on login page
+## Fix: Library page cream flash
 
-**File:** `src/pages/Login.tsx`
+**File:** `src/components/ProductLibrary.tsx`
 
-### Change 1: "På riktigt." — bump opacity from 0.7 to 0.85
-Line 149: `color: rgba(212, 245, 192, 0.7)` → `rgba(212, 245, 192, 0.85)`
+### Change 1: Add `useLayoutEffect` to React import (line 1)
+```tsx
+import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+```
 
-### Change 2: "Verktyg för samtalen som inte blir av." — bump opacity from 0.5 to 0.65
-Line 156: `color: rgba(253, 246, 227, 0.5)` → `rgba(253, 246, 227, 0.65)`
+### Change 2: Remove `useDefaultTheme` import (line 4)
+Delete: `import { useDefaultTheme } from '@/hooks/useDefaultTheme';`
 
-Two opacity values. Nothing else changed.
+### Change 3: Replace `useDefaultTheme()` call (~line 460)
+Remove the `useDefaultTheme()` call. Keep `usePageBackground('#0B1026')`. Add inline Verdigris cleanup:
+
+```tsx
+useLayoutEffect(() => {
+  document.documentElement.classList.remove('theme-verdigris');
+  document.body.classList.remove('verdigris-grain', 'verdigris-lightleak');
+}, []);
+```
+
+This removes the cream `--surface-base` assignment that caused the flash, while still cleaning up Verdigris classes. One file, three small edits.
 
