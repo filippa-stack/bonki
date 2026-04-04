@@ -150,6 +150,15 @@ export default function Login() {
           >
             På riktigt.
           </p>
+          <p style={{
+            fontFamily: 'var(--font-sans)',
+            fontSize: '14px',
+            color: 'rgba(253, 246, 227, 0.5)',
+            textAlign: 'center',
+            marginTop: '12px',
+          }}>
+            Verktyg för samtalen som inte blir av.
+          </p>
         </motion.div>
 
         {/* Button + terms */}
@@ -269,11 +278,16 @@ export default function Login() {
 
                 <button
                   onClick={() => { setShowEmailForm(true); setError(null); }}
-                  className="w-full h-14 flex items-center justify-center gap-2 text-base font-medium rounded-xl"
+                  className="w-full flex items-center justify-center gap-2 font-medium"
                   style={{
-                    color: `rgba(245, 237, 210, 0.7)`,
-                    border: 'none',
-                    background: 'none',
+                    height: '48px',
+                    background: 'transparent',
+                    border: '1px solid rgba(253, 246, 227, 0.2)',
+                    borderRadius: '12px',
+                    cursor: 'pointer',
+                    fontSize: '15px',
+                    fontWeight: 500,
+                    color: 'rgba(253, 246, 227, 0.7)',
                   }}
                 >
                   <Mail className="w-5 h-5" />
@@ -300,7 +314,7 @@ export default function Login() {
 
           {!magicLinkSent && (
             <div className={`text-center mt-5 transition-transform duration-200 ${termsError ? 'animate-[shake_0.3s_ease-in-out]' : ''}`}>
-              <div className="[&_label]:text-[rgba(245,237,210,0.6)] [&_button]:text-[rgba(212,245,192,0.7)]">
+              <div className="[&_label]:text-[rgba(245,237,210,0.6)] [&_button]:text-[rgba(212,245,192,0.7)] [&_button[role=checkbox]]:border-[rgba(253,246,227,0.3)] [&_button[role=checkbox]]:bg-[rgba(255,255,255,0.1)] [&_button[role=checkbox][data-state=checked]]:bg-[#E85D2C] [&_button[role=checkbox][data-state=checked]]:border-[#E85D2C] [&_button[role=checkbox]]:h-5 [&_button[role=checkbox]]:w-5">
                 <TermsConsent checked={termsAccepted} onCheckedChange={(val) => { setTermsAccepted(val); if (val) setTermsError(false); }} />
               </div>
               {termsError && (
@@ -309,8 +323,8 @@ export default function Login() {
             </div>
           )}
 
-          <p style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontSize: '13px', color: `rgba(245, 237, 210, 0.5)`, textAlign: 'center', marginTop: '20px', letterSpacing: '0.01em' }}>
-            Ert konto. Era samtal.
+          <p style={{ fontFamily: 'var(--font-sans)', fontSize: '13px', color: 'rgba(253, 246, 227, 0.35)', textAlign: 'center', marginTop: '20px' }}>
+            Gratis att börja — inget kort krävs.
           </p>
 
           {error && (
