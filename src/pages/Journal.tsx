@@ -651,6 +651,7 @@ export default function Journal() {
   }, [space?.id]);
 
   const loading = sessions === null || takeaways === null || reflections === null;
+  const hasRenderedContent = useRef(false);
 
   const stillUsSessions = useMemo(() => {
     if (!sessions) return [];
