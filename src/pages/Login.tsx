@@ -278,11 +278,16 @@ export default function Login() {
 
                 <button
                   onClick={() => { setShowEmailForm(true); setError(null); }}
-                  className="w-full h-14 flex items-center justify-center gap-2 text-base font-medium rounded-xl"
+                  className="w-full flex items-center justify-center gap-2 font-medium"
                   style={{
-                    color: `rgba(245, 237, 210, 0.7)`,
-                    border: 'none',
-                    background: 'none',
+                    height: '48px',
+                    background: 'transparent',
+                    border: '1px solid rgba(253, 246, 227, 0.2)',
+                    borderRadius: '12px',
+                    cursor: 'pointer',
+                    fontSize: '15px',
+                    fontWeight: 500,
+                    color: 'rgba(253, 246, 227, 0.7)',
                   }}
                 >
                   <Mail className="w-5 h-5" />
