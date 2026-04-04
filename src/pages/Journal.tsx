@@ -242,7 +242,8 @@ function NoteEntryCard({ entry, navigate, index }: { entry: NoteEntry; navigate:
   return (
     <div
       style={{
-        backgroundColor: isTakeaway ? `${accent.deep}14` : '#2E3142',
+        backgroundColor: `${accent.light}22`,
+        border: `0.5px solid ${accent.light}18`,
         borderRadius: '16px',
         padding: '0 16px 14px',
         overflow: 'hidden',
