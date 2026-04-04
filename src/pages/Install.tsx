@@ -173,7 +173,7 @@ export default function Install() {
             margin: '0 0 12px',
           }}
         >
-          Samtal som förändrar er vardag.
+          Ni pratar varje dag. Men när pratade ni senast — på riktigt?
         </motion.h2>
         <motion.p
           custom={4}
