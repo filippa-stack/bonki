@@ -1,27 +1,18 @@
 
 
-## Fix Reflection Count Filter
+## Fix Journal Empty State Flash on Reload
 
-**File:** `src/pages/Journal.tsx` — 1 change
+**File:** `src/pages/Journal.tsx` — 3 small additions
 
-### Change (lines 923–931)
+### Change 1: Add ref (near existing refs/state)
+Add `const hasRenderedContent = useRef(false);` near other ref declarations.
 
-In the `heroStats` useMemo, change the reflection count source from `allTimelineItems` to `visibleItems`, and update the dependency array:
+### Change 2: Guard empty state condition
+Change `isEmpty ?` to `(isEmpty && !hasRenderedContent.current) ?` so once content has rendered, the empty state never flashes again.
 
-```tsx
-const heroStats = useMemo(() => {
-  const reflectionCount = visibleItems.filter(i => i.type === 'note').length;
-  const sessionCount = filteredSessions.length;
-  const monthSet = new Set(filteredSessions.map(s => {
-    const d = new Date(s.ended_at || new Date().toISOString());
-    return `${d.getFullYear()}-${d.getMonth()}`;
-  }));
-  return { reflectionCount, sessionCount, monthCount: monthSet.size };
-}, [visibleItems, filteredSessions]);
-```
-
-`visibleItems` is the filtered timeline array that already respects the active Barn/Par filter (used by `groupedItems` → `monthGroups` → rendered cards).
+### Change 3: Set ref when content renders
+Before the `monthGroups.map(...)` block, add `hasRenderedContent.current = true;` so the ref is set as soon as real timeline content is displayed.
 
 ### Not changed
-- Samtal/Månader stats, hero layout/styling, any other logic or files
+- Loading skeleton, empty state content, data fetching, any other file
 
