@@ -116,7 +116,7 @@ export default function InstallGuideBanner() {
                   margin: 0,
                 }}
               >
-                Still Us
+                BONKI
               </p>
               <p
                 style={{
