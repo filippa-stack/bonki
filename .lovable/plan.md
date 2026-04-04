@@ -1,46 +1,66 @@
 
 
-## Journal Visual Refinements — 4 Changes
+## Journal Redesign — Prompt A (Visual Foundation)
 
-**File:** `src/pages/Journal.tsx`
+**File:** `src/pages/Journal.tsx` — 4 changes
 
-### Change 1: Elevate stats/pulse card (lines 1029-1066)
+### Change 1: Hero + Stats Row (lines 939–964, 1036–1078)
 
-Replace the pulse card container styling:
-- Remove `borderLeft: 3px solid ${DEEP_SAFFRON}`
-- Replace `background` with warm saffron gradient: `linear-gradient(135deg, rgba(212,160,58,0.12) 0%, rgba(212,160,58,0.04) 100%)`
-- Add `border: 1px solid rgba(212,160,58,0.15)`
-- Change `borderRadius` to `20px`, padding to `20px 20px 18px`
-- Add `backdropFilter: blur(12px)` and `WebkitBackdropFilter: blur(12px)`
-- Bump the `{pulseData.total}` span fontSize from `18px` to `22px`
+**Remove** the entire pulse card block (lines 1036–1078) — the "Era samtal växer" gradient card with Senast link and product count.
 
-### Change 2: Remove colored left borders, strengthen background tint
+**Replace** the header section (lines 942–964) with the new hero + stats layout:
+- Title: "Era samtal" — `fontSize: 26px`, `fontWeight: 500`, `color: '#F5F0E8'`, `fontFamily: var(--font-serif)`
+- Subtitle: "Vad ni burit med er" — `13px`, italic, `rgba(245,240,232,0.4)`
+- Stats row (only when `!isEmpty && !loading`): two centered stats (Samtal count using `pulseData.total`, Produkter count using `pulseData.uniqueProductCount`) with `28px` golden numbers (`#E9C890`), `10px` uppercase labels (`rgba(245,240,232,0.45)`, letter-spacing `1.8px`), `gap: 2.5rem`
 
-**NoteEntryCard** (line 242-248): Card already has no borderLeft — it uses a top color bar instead. No borderLeft to remove. The `backgroundColor` is `#2E3142` for non-takeaway cards. Keep as-is since this card uses the top accent bar pattern, not left borders.
+The `pulseData` object already provides `.total` and `.uniqueProductCount` — no new computation needed.
 
-**SessionGroupCard** (line 433-438): Same — uses top accent bar, no borderLeft. No change needed.
+### Change 2: Filter Pill Styling (lines 966–1007)
 
-Both card types already use `borderRadius: 16px` and no left borders. The current design already matches the target. No changes needed here.
+Update all three filter buttons (Alla, Barn, Par):
 
-### Change 3: Truncate question text to 2 lines
+**Inactive style:** `height: 28px`, `padding: 5px 14px`, `borderRadius: 16px`, `border: 0.5px solid rgba(245,240,232,0.12)`, `backgroundColor: transparent`, `color: rgba(245,240,232,0.45)`, `fontSize: 11px`, `fontWeight: 500`, `letterSpacing: 0.06em`, `textTransform: uppercase`
 
-**NoteEntryCard** question text (lines 296-306): Add line-clamp styles to the `<p>` containing `— {entry.questionText}`:
+**Active style:** `backgroundColor: rgba(233,200,144,0.14)`, `color: #E9C890`, `border: 0.5px solid rgba(233,200,144,0.25)`
+
+Rename `'Föräldrar'` → `'Par'` on line 1003.
+
+### Change 3: Product-Colored Card Backgrounds (lines 242–248, 437–442)
+
+**NoteEntryCard** (line 243): Change `backgroundColor: isTakeaway ? \`${accent.deep}14\` : '#2E3142'` → `backgroundColor: \`${accent.light}22\``  
+Add: `border: \`0.5px solid ${accent.light}18\``
+
+**SessionGroupCard** (line 438): Change `backgroundColor: '#2E3142'` → `backgroundColor: \`${accent.light}22\``  
+Add: `border: \`0.5px solid ${accent.light}18\``
+
+Both cards already have `borderRadius: 16px` and no left borders. Product name styling already uses `accent.light`. Keep reflection text as `#E9C890`.
+
+### Change 4: Date Format Fix (lines 181–193)
+
+Replace `formatRelativeDate` — remove the weekday-name branch (lines 189–190). After "igår", go straight to `"${day} ${month}"` format. Add year when different from current year. `SWEDISH_MONTHS` already exists on line 101.
+
+New function body:
 ```tsx
-display: '-webkit-box',
-WebkitLineClamp: 2,
-WebkitBoxOrient: 'vertical' as const,
-overflow: 'hidden',
+function formatRelativeDate(dateStr: string): string {
+  const date = new Date(dateStr);
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const target = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  const diffDays = Math.floor((today.getTime() - target.getTime()) / (1000 * 60 * 60 * 24));
+  if (diffDays === 0) return 'idag';
+  if (diffDays === 1) return 'igår';
+  const day = date.getDate();
+  const month = SWEDISH_MONTHS[date.getMonth()];
+  if (date.getFullYear() !== now.getFullYear()) {
+    return `${day} ${month} ${date.getFullYear()}`;
+  }
+  return `${day} ${month}`;
+}
 ```
 
-**SessionGroupCard** question text (lines 478-487): Same truncation treatment.
-
-### Change 4: More spacing between cards
-
-Line 1091: Change `gap: '12px'` to `gap: '16px'` in the items container.
-
-### Summary of actual edits
-1. Pulse card: new gradient/border styling + larger number (lines 1029-1066)
-2. Question truncation in NoteEntryCard (line 296-306)
-3. Question truncation in SessionGroupCard (line 478-487)
-4. Card gap from 12px → 16px (line 1091)
+### Not changed
+- Data fetching, expand/collapse, navigation, auth, empty state
+- Reflection color `#E9C890`
+- All protected code patterns (suppressUntilRef, prevServerStepRef, hasSyncedRef, etc.)
+- No other files
 
