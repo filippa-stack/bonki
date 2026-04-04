@@ -486,6 +486,10 @@ function SessionGroupCard({ group, navigate }: { group: SessionGroup; navigate: 
                 fontStyle: 'italic',
                 color: `${LANTERN_GLOW}bb`,
                 lineHeight: 1.4,
+                display: '-webkit-box',
+                WebkitLineClamp: 2,
+                WebkitBoxOrient: 'vertical' as const,
+                overflow: 'hidden',
               }}>
                 — {note.questionText}
               </p>
