@@ -300,6 +300,10 @@ function NoteEntryCard({ entry, navigate, index }: { entry: NoteEntry; navigate:
             fontStyle: 'italic',
             color: `${LANTERN_GLOW}bb`,
             lineHeight: 1.4,
+            display: '-webkit-box',
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: 'vertical' as const,
+            overflow: 'hidden',
           }}
         >
           — {entry.questionText}
@@ -482,6 +486,10 @@ function SessionGroupCard({ group, navigate }: { group: SessionGroup; navigate: 
                 fontStyle: 'italic',
                 color: `${LANTERN_GLOW}bb`,
                 lineHeight: 1.4,
+                display: '-webkit-box',
+                WebkitLineClamp: 2,
+                WebkitBoxOrient: 'vertical' as const,
+                overflow: 'hidden',
               }}>
                 — {note.questionText}
               </p>
@@ -1029,9 +1037,12 @@ export default function Journal() {
             <div
               style={{
                 margin: '20px 16px 0',
-                background: `linear-gradient(135deg, ${DEEP_DUSK}, ${DEEP_DUSK}ee)`,
-                borderRadius: '16px', borderLeft: `3px solid ${DEEP_SAFFRON}`,
-                padding: '16px 16px 14px',
+                borderRadius: '20px',
+                padding: '20px 20px 18px',
+                background: 'linear-gradient(135deg, rgba(212,160,58,0.12) 0%, rgba(212,160,58,0.04) 100%)',
+                border: '1px solid rgba(212,160,58,0.15)',
+                backdropFilter: 'blur(12px)',
+                WebkitBackdropFilter: 'blur(12px)',
               }}
             >
               <p style={{
@@ -1039,7 +1050,7 @@ export default function Journal() {
                 fontFamily: 'var(--font-sans)',
               }}>
                 Era samtal växer —{' '}
-                <span style={{ fontWeight: 700, color: DEEP_SAFFRON, fontSize: '18px' }}>{pulseData.total}</span>
+                <span style={{ fontWeight: 700, color: DEEP_SAFFRON, fontSize: '22px' }}>{pulseData.total}</span>
                 {' '}sedan {pulseData.monthLabel}.
               </p>
               <p style={{ margin: '8px 0 0', fontSize: '13px', color: `${LANTERN_GLOW}aa`, lineHeight: 1.5 }}>
@@ -1088,7 +1099,7 @@ export default function Journal() {
               </div>
 
               {/* Items */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', padding: '0 16px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', padding: '0 16px' }}>
                 {group.items.map((item, idx) =>
                   item.type === 'group' ? (
                     <SessionGroupCard key={`grp-${item.sessionId}`} group={item} navigate={navigate} />
