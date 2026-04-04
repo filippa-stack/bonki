@@ -36,6 +36,7 @@ import SharedSummary from "./pages/SharedSummary";
 import Journal from "./pages/Journal";
 import Diary from "./pages/Diary";
 import Login from "./pages/Login";
+import Install from "./pages/Install";
 import NotFound from "./pages/NotFound";
 import ScreenshotExport from "./pages/ScreenshotExport";
 import AnalyticsDashboard from "./pages/AnalyticsDashboard";
