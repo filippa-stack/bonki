@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import BonkiButton from '@/components/BonkiButton';
 import { usePageBackground } from '@/hooks/usePageBackground';
 import { useDefaultTheme } from '@/hooks/useDefaultTheme';
@@ -651,6 +651,7 @@ export default function Journal() {
   }, [space?.id]);
 
   const loading = sessions === null || takeaways === null || reflections === null;
+  const hasRenderedContent = useRef(false);
 
   const stillUsSessions = useMemo(() => {
     if (!sessions) return [];
@@ -1110,7 +1111,7 @@ export default function Journal() {
         <div className="loading-skeleton" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <div style={{ width: '32px', height: '32px', borderRadius: '50%', backgroundColor: 'rgba(253,246,227,0.13)' }} className="animate-pulse" />
         </div>
-      ) : isEmpty ? (
+      ) : (isEmpty && !hasRenderedContent.current) ? (
         <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', textAlign: 'center', padding: '0 40px' }}>
             <svg width="48" height="48" viewBox="0 0 24 24" fill="none" style={{ opacity: 0.3 }}>
@@ -1130,6 +1131,7 @@ export default function Journal() {
         </div>
       ) : (
         <div style={{ flex: 1, overflowY: 'auto', paddingBottom: 'calc(72px + env(safe-area-inset-bottom, 0px))' }}>
+          {(() => { hasRenderedContent.current = true; return null; })()}
           {/* (Stats moved to hero section above) */}
 
 
