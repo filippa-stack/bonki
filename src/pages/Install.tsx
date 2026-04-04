@@ -3,6 +3,7 @@ import { Navigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Shield, Wifi, Zap } from 'lucide-react';
 import BonkiButton from '@/components/BonkiButton';
+import bonkiLogo from '@/assets/bonki-logo-transparent.png';
 import { trackPixelEvent } from '@/lib/metaPixel';
 import { MIDNIGHT_INK, LANTERN_GLOW, BONKI_ORANGE } from '@/lib/palette';
 
