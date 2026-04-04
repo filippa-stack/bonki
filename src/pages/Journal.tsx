@@ -186,10 +186,12 @@ function formatRelativeDate(dateStr: string): string {
   const diffDays = Math.floor((today.getTime() - target.getTime()) / (1000 * 60 * 60 * 24));
   if (diffDays === 0) return 'idag';
   if (diffDays === 1) return 'igår';
-  if (diffDays < 7) {
-    return ['söndag', 'måndag', 'tisdag', 'onsdag', 'torsdag', 'fredag', 'lördag'][date.getDay()];
+  const day = date.getDate();
+  const month = SWEDISH_MONTHS[date.getMonth()];
+  if (date.getFullYear() !== now.getFullYear()) {
+    return `${day} ${month} ${date.getFullYear()}`;
   }
-  return `${date.getDate()} ${SWEDISH_MONTHS[date.getMonth()]}`;
+  return `${day} ${month}`;
 }
 
 
@@ -240,7 +242,8 @@ function NoteEntryCard({ entry, navigate, index }: { entry: NoteEntry; navigate:
   return (
     <div
       style={{
-        backgroundColor: isTakeaway ? `${accent.deep}14` : '#2E3142',
+        backgroundColor: `${accent.light}22`,
+        border: `0.5px solid ${accent.light}18`,
         borderRadius: '16px',
         padding: '0 16px 14px',
         overflow: 'hidden',
@@ -435,7 +438,8 @@ function SessionGroupCard({ group, navigate }: { group: SessionGroup; navigate: 
   return (
     <div
       style={{
-        backgroundColor: '#2E3142',
+        backgroundColor: `${accent.light}22`,
+        border: `0.5px solid ${accent.light}18`,
         borderRadius: '16px',
         overflow: 'hidden',
         position: 'relative',
@@ -939,45 +943,103 @@ export default function Journal() {
   return (
     <div style={{ minHeight: '100vh', backgroundColor: MIDNIGHT_INK, display: 'flex', flexDirection: 'column' }}>
       {/* Header */}
-      <div
-        style={{
-          paddingTop: 'calc(env(safe-area-inset-top, 0px) + 56px)',
-          textAlign: 'center',
-          paddingLeft: '24px',
-          paddingRight: '24px',
-          paddingBottom: '4px',
-        }}
-      >
+      {/* Hero */}
+      <div style={{
+        paddingTop: 'calc(env(safe-area-inset-top, 0px) + 56px)',
+        textAlign: 'center',
+        paddingLeft: '24px',
+        paddingRight: '24px',
+        paddingBottom: '4px',
+      }}>
         <h1 style={{
-          fontFamily: "var(--font-display)",
-          fontVariationSettings: "'opsz' 28",
-          fontSize: '26px', fontWeight: 600, color: LANTERN_GLOW, margin: 0, lineHeight: 1.2,
+          fontFamily: 'var(--font-serif)',
+          fontSize: '26px',
+          fontWeight: 500,
+          color: '#F5F0E8',
+          margin: 0,
         }}>
           Era samtal
         </h1>
         <p style={{
-          fontFamily: 'var(--font-serif)', fontSize: '14px', fontStyle: 'italic',
-          color: 'rgba(253,246,227,0.4)', marginTop: '6px', lineHeight: 1.4,
+          fontFamily: 'var(--font-serif)',
+          fontStyle: 'italic',
+          fontSize: '13px',
+          color: 'rgba(245, 240, 232, 0.4)',
+          marginTop: '4px',
         }}>
-          Vad ni burit med er.
+          Vad ni burit med er
         </p>
       </div>
 
-      {/* Filter chips */}
+      {/* Stats row */}
+      {!isEmpty && !loading && pulseData && (
+        <div style={{
+          display: 'flex',
+          justifyContent: 'center',
+          gap: '2.5rem',
+          padding: '20px 24px 16px',
+        }}>
+          <div style={{ textAlign: 'center' }}>
+            <div style={{
+              fontSize: '28px',
+              fontWeight: 500,
+              color: '#E9C890',
+              letterSpacing: '-1px',
+            }}>
+              {pulseData.total}
+            </div>
+            <div style={{
+              fontSize: '10px',
+              textTransform: 'uppercase' as const,
+              letterSpacing: '1.8px',
+              color: 'rgba(245, 240, 232, 0.45)',
+              marginTop: '2px',
+            }}>
+              Samtal
+            </div>
+          </div>
+          <div style={{ textAlign: 'center' }}>
+            <div style={{
+              fontSize: '28px',
+              fontWeight: 500,
+              color: '#E9C890',
+              letterSpacing: '-1px',
+            }}>
+              {pulseData.uniqueProductCount}
+            </div>
+            <div style={{
+              fontSize: '10px',
+              textTransform: 'uppercase' as const,
+              letterSpacing: '1.8px',
+              color: 'rgba(245, 240, 232, 0.45)',
+              marginTop: '2px',
+            }}>
+              Produkter
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Filter pills */}
       {!isEmpty && !loading && (
-        <div
-          style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginTop: '16px' }}
-        >
+        <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginTop: '16px' }}>
           <button
             onClick={() => setActiveFilters(new Set<FilterChip>(['barn', 'par']))}
             style={{
-              height: '30px', paddingLeft: '16px', paddingRight: '16px', borderRadius: '10px',
-              border: `1px solid ${bothActive ? DEEP_SAFFRON : 'rgba(253,246,227,0.17)'}`,
-              background: bothActive ? `${DEEP_SAFFRON}18` : 'transparent',
-              color: bothActive ? LANTERN_GLOW : 'rgba(253,246,227,0.55)',
-              fontFamily: 'var(--font-sans)', fontSize: '12px', fontWeight: 500,
-              letterSpacing: '0.06em', textTransform: 'uppercase',
-              cursor: 'pointer', transition: 'all 200ms ease',
+              height: '28px',
+              paddingLeft: '14px',
+              paddingRight: '14px',
+              borderRadius: '16px',
+              border: bothActive ? '0.5px solid rgba(233, 200, 144, 0.25)' : '0.5px solid rgba(245, 240, 232, 0.12)',
+              backgroundColor: bothActive ? 'rgba(233, 200, 144, 0.14)' : 'transparent',
+              color: bothActive ? '#E9C890' : 'rgba(245, 240, 232, 0.45)',
+              fontFamily: 'var(--font-sans)',
+              fontSize: '11px',
+              fontWeight: 500,
+              letterSpacing: '0.06em',
+              textTransform: 'uppercase' as const,
+              cursor: 'pointer',
+              transition: 'all 200ms ease',
               WebkitTapHighlightColor: 'transparent',
             }}
           >
@@ -990,17 +1052,24 @@ export default function Journal() {
                 key={chip}
                 onClick={() => toggleFilter(chip)}
                 style={{
-                  height: '30px', paddingLeft: '16px', paddingRight: '16px', borderRadius: '10px',
-                  border: `1px solid ${active ? DEEP_SAFFRON : 'rgba(253,246,227,0.17)'}`,
-                  backgroundColor: active ? `${DEEP_SAFFRON}18` : 'transparent',
-                  color: active ? LANTERN_GLOW : 'rgba(253,246,227,0.55)',
-                  fontFamily: 'var(--font-sans)', fontSize: '12px', fontWeight: 500,
-                  letterSpacing: '0.06em', textTransform: 'uppercase',
-                  cursor: 'pointer', transition: 'all 200ms ease',
+                  height: '28px',
+                  paddingLeft: '14px',
+                  paddingRight: '14px',
+                  borderRadius: '16px',
+                  border: active ? '0.5px solid rgba(233, 200, 144, 0.25)' : '0.5px solid rgba(245, 240, 232, 0.12)',
+                  backgroundColor: active ? 'rgba(233, 200, 144, 0.14)' : 'transparent',
+                  color: active ? '#E9C890' : 'rgba(245, 240, 232, 0.45)',
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '11px',
+                  fontWeight: 500,
+                  letterSpacing: '0.06em',
+                  textTransform: 'uppercase' as const,
+                  cursor: 'pointer',
+                  transition: 'all 200ms ease',
                   WebkitTapHighlightColor: 'transparent',
                 }}
               >
-                {chip === 'barn' ? 'Barn' : 'Föräldrar'}
+                {chip === 'barn' ? 'Barn' : 'Par'}
               </button>
             );
           })}
@@ -1032,50 +1101,7 @@ export default function Journal() {
         </div>
       ) : (
         <div style={{ flex: 1, overflowY: 'auto', paddingBottom: 'calc(72px + env(safe-area-inset-bottom, 0px))' }}>
-          {/* Pulse Card */}
-          {pulseData && (
-            <div
-              style={{
-                margin: '20px 16px 0',
-                borderRadius: '20px',
-                padding: '20px 20px 18px',
-                background: 'linear-gradient(135deg, rgba(212,160,58,0.12) 0%, rgba(212,160,58,0.04) 100%)',
-                border: '1px solid rgba(212,160,58,0.15)',
-                backdropFilter: 'blur(12px)',
-                WebkitBackdropFilter: 'blur(12px)',
-              }}
-            >
-              <p style={{
-                margin: 0, fontSize: '15px', color: LANTERN_GLOW, lineHeight: 1.5,
-                fontFamily: 'var(--font-sans)',
-              }}>
-                Era samtal växer —{' '}
-                <span style={{ fontWeight: 700, color: DEEP_SAFFRON, fontSize: '22px' }}>{pulseData.total}</span>
-                {' '}sedan {pulseData.monthLabel}.
-              </p>
-              <p style={{ margin: '8px 0 0', fontSize: '13px', color: `${LANTERN_GLOW}aa`, lineHeight: 1.5 }}>
-                Senast:{' '}
-                <span
-                  onClick={() => pulseData.latestCardId && navigate(`/card/${pulseData.latestCardId}`)}
-                  style={{
-                    fontWeight: 600,
-                    color: 'rgba(253,246,227,0.65)',
-                    cursor: pulseData.latestCardId ? 'pointer' : 'default',
-                    textDecoration: pulseData.latestCardId ? 'underline' : 'none',
-                    textDecorationColor: 'rgba(253,246,227,0.17)', textUnderlineOffset: '3px',
-                  }}
-                >
-                  {pulseData.latestCardName}
-                </span>
-                {' · '}{pulseData.latestRelDate}
-              </p>
-              {pulseData.uniqueProductCount > 1 && (
-                <p style={{ margin: '4px 0 0', fontSize: '12px', color: 'rgba(253,246,227,0.45)', lineHeight: 1.4 }}>
-                  I {pulseData.uniqueProductCount} olika samtalsprodukter
-                </p>
-              )}
-            </div>
-          )}
+          {/* (Stats moved to hero section above) */}
 
 
           {/* Timeline */}
