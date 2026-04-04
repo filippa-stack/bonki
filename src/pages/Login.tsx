@@ -146,7 +146,7 @@ export default function Login() {
           </h1>
           <p
             className="font-serif italic"
-            style={{ fontSize: '22px', color: `rgba(212, 245, 192, 0.7)`, textAlign: 'center', marginTop: '4px' }}
+            style={{ fontSize: '22px', color: `rgba(212, 245, 192, 0.85)`, textAlign: 'center', marginTop: '4px' }}
           >
             På riktigt.
           </p>
