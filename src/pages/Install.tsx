@@ -223,7 +223,7 @@ export default function Install() {
                 style={{
                   fontSize: '22px',
                   fontWeight: 700,
-                    color: '#E9B44C',
+                    color: '#D4F5C0',
                   margin: 0,
                   lineHeight: 1.2,
                 }}
