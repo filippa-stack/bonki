@@ -1105,39 +1105,86 @@ export default function Journal() {
 
 
           {/* Timeline */}
-          {monthGroups.map((group, gi) => (
-            <div key={group.key}>
-              {/* Month header */}
-              <div style={{
-                margin: `${gi === 0 ? '28px' : '36px'} 16px 14px`,
-                display: 'flex', alignItems: 'center', gap: '10px',
-              }}>
-                <span style={{
-                  fontSize: '11px', fontWeight: 600,
-                  letterSpacing: '2px', color: `${LANTERN_GLOW}99`, lineHeight: 1,
-                }}>
-                  {group.label}
-                </span>
-                <div style={{
-                  flex: 1, height: '1px',
-                  background: 'linear-gradient(90deg, rgba(253,246,227,0.2), transparent)',
-                }} />
-              </div>
+          <div style={{ position: 'relative' }}>
+            {/* Spine */}
+            <div style={{
+              position: 'absolute',
+              left: '2.05rem',
+              top: 0,
+              bottom: 0,
+              width: '1px',
+              backgroundColor: 'rgba(245, 240, 232, 0.07)',
+              pointerEvents: 'none',
+            }} />
 
-              {/* Items */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', padding: '0 16px' }}>
-                {group.items.map((item, idx) =>
-                  item.type === 'group' ? (
-                    <SessionGroupCard key={`grp-${item.sessionId}`} group={item} navigate={navigate} />
-                  ) : item.type === 'note' ? (
-                    <NoteEntryCard key={item.id} entry={item as NoteEntry} navigate={navigate} index={idx} />
-                  ) : (
-                    <CompletedMarkerRow key={item.id} marker={item as CompletedMarker} index={idx} />
-                  )
-                )}
-              </div>
-            </div>
-          ))}
+            {monthGroups.map((group, gi) => {
+              const currentMonthKey = monthKey(new Date().toISOString());
+              const isCurrentMonth = group.key === currentMonthKey;
+              return (
+                <div key={group.key}>
+                  {/* Month header with dot */}
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '10px',
+                    marginLeft: '1.75rem',
+                    paddingLeft: '16px',
+                    marginBottom: '12px',
+                    marginTop: gi === 0 ? '28px' : '24px',
+                    position: 'relative',
+                  }}>
+                    {/* Dot on the spine */}
+                    <div style={{
+                      position: 'absolute',
+                      left: 'calc(-1.75rem + 2.05rem - 4px)',
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      width: '9px',
+                      height: '9px',
+                      borderRadius: '50%',
+                      backgroundColor: isCurrentMonth ? '#E9C890' : 'rgba(245, 240, 232, 0.25)',
+                    }} />
+                    {/* Month name */}
+                    <span style={{
+                      fontSize: '10px',
+                      textTransform: 'uppercase',
+                      letterSpacing: '2px',
+                      color: isCurrentMonth ? '#E9C890' : 'rgba(245, 240, 232, 0.4)',
+                      fontFamily: 'var(--font-sans)',
+                      fontWeight: 500,
+                      lineHeight: 1,
+                    }}>
+                      {group.label}
+                    </span>
+                    {/* Right-aligned summary */}
+                    <span style={{
+                      marginLeft: 'auto',
+                      fontSize: '11px',
+                      fontStyle: 'italic',
+                      color: 'rgba(245, 240, 232, 0.35)',
+                      fontFamily: 'var(--font-sans)',
+                      paddingRight: '16px',
+                    }}>
+                      {group.items.length} samtal
+                    </span>
+                  </div>
+
+                  {/* Items */}
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginLeft: '1.75rem', paddingLeft: '16px', paddingRight: '16px' }}>
+                    {group.items.map((item, idx) =>
+                      item.type === 'group' ? (
+                        <SessionGroupCard key={`grp-${item.sessionId}`} group={item} navigate={navigate} />
+                      ) : item.type === 'note' ? (
+                        <NoteEntryCard key={item.id} entry={item as NoteEntry} navigate={navigate} index={idx} />
+                      ) : (
+                        <CompletedMarkerRow key={item.id} marker={item as CompletedMarker} index={idx} />
+                      )
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
 
           {/* ── Still Us empty sessions (collapsible) ── */}
           {emptyStillUsSessions.length > 0 && (
