@@ -184,8 +184,8 @@ h1, h2, h3,
     --cta-active:  hsl(16, 78%, 42%);
 
     /* ── Semantic color tokens ── */
-    --color-bg: var(--surface-base);
-    --color-bg-base: var(--surface-base);
+    --color-bg: #0B1026;
+    --color-bg-base: #0B1026;
     --color-surface: hsl(var(--neutral-100));
     --color-surface-primary: hsl(var(--neutral-100));
     --color-surface-secondary: hsl(var(--neutral-100));
