@@ -438,7 +438,8 @@ function SessionGroupCard({ group, navigate }: { group: SessionGroup; navigate: 
   return (
     <div
       style={{
-        backgroundColor: '#2E3142',
+        backgroundColor: `${accent.light}22`,
+        border: `0.5px solid ${accent.light}18`,
         borderRadius: '16px',
         overflow: 'hidden',
         position: 'relative',
