@@ -924,7 +924,7 @@ export default function Journal() {
     const reflectionCount = allTimelineItems.filter(i => i.type === 'note').length;
     const sessionCount = filteredSessions.length;
     const monthSet = new Set(filteredSessions.map(s => {
-      const d = new Date(s.last_activity_at || s.created_at);
+      const d = new Date(s.ended_at || new Date().toISOString());
       return `${d.getFullYear()}-${d.getMonth()}`;
     }));
     return { reflectionCount, sessionCount, monthCount: monthSet.size };
