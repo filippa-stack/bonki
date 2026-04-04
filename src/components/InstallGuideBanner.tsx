@@ -99,7 +99,7 @@ export default function InstallGuideBanner() {
             >
               <img
                 src="/apple-touch-icon-180x180.png"
-                alt="Still Us"
+                alt="BONKI"
                 style={{ width: '100%', height: '100%', objectFit: 'cover' }}
               />
             </div>
@@ -116,7 +116,7 @@ export default function InstallGuideBanner() {
                   margin: 0,
                 }}
               >
-                Still Us
+                BONKI
               </p>
               <p
                 style={{

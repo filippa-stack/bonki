@@ -36,6 +36,7 @@ import SharedSummary from "./pages/SharedSummary";
 import Journal from "./pages/Journal";
 import Diary from "./pages/Diary";
 import Login from "./pages/Login";
+import Install from "./pages/Install";
 import NotFound from "./pages/NotFound";
 import ScreenshotExport from "./pages/ScreenshotExport";
 import AnalyticsDashboard from "./pages/AnalyticsDashboard";
@@ -153,7 +154,7 @@ function AppRoutes() {
   return (
     <Routes>
       <Route path="/login" element={user ? <Navigate to="/" replace /> : <Login />} />
-      {/* Demo param: allow /login to render even without session */}
+      <Route path="/install" element={<Install />} />
       <Route path="/screenshot-export" element={<ScreenshotExport />} />
       <Route path="/analytics" element={<AnalyticsDashboard />} />
       <Route path="/*" element={<ProtectedRoutes />} />
