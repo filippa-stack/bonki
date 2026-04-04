@@ -1,13 +1,13 @@
 
 
-## Fix: Increase trust stat label visibility
+## Fix: Replace CTA subtext
 
-**File:** `src/pages/Install.tsx`, line 236
+**File:** `src/pages/Install.tsx`
 
-The labels are at `rgba(212, 245, 192, 0.45)` — too faint on the dark background. Bump to `0.65` for clear readability while still being secondary to the numbers.
+Change the text below the "Öppna appen" button:
 
-**Change:**
-- Line 236: `color: 'rgba(212, 245, 192, 0.45)'` → `color: 'rgba(212, 245, 192, 0.65)'`
+**From:** "Ingen nedladdning krävs — öppnas direkt i din webbläsare."
+**To:** "Gratis att börja — inget kort krävs."
 
-One color opacity change, nothing else.
+One string change, nothing else.
 
