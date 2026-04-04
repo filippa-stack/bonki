@@ -87,49 +87,42 @@ export default function Install() {
         overflowX: 'hidden',
       }}
     >
-      {/* Logo + Wordmark + Tagline */}
+      {/* BONKI text + tagline */}
       <motion.section
         initial="hidden"
         animate="visible"
         style={{
-          padding: '56px 24px 0',
+          paddingTop: 'calc(env(safe-area-inset-top, 0px) + 48px)',
           textAlign: 'center',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          gap: '8px',
         }}
       >
-        <motion.img
+        <motion.h1
           custom={0}
           variants={fadeUp}
-          src={bonkiLogo}
-          alt="BONKI"
-          style={{ width: '72px', height: '72px', borderRadius: '16px' }}
-        />
+          className="font-serif"
+          style={{
+            fontSize: '40px',
+            fontWeight: 600,
+            color: '#D4F5C0',
+            letterSpacing: '0.04em',
+            margin: 0,
+          }}
+        >
+          BONKI
+        </motion.h1>
         <motion.p
           custom={1}
           variants={fadeUp}
           className="font-serif"
           style={{
-            fontSize: '20px',
-            fontWeight: 700,
-            letterSpacing: '0.08em',
-            margin: '8px 0 0',
+            fontSize: '16px',
+            fontStyle: 'italic',
+            color: '#D4F5C0',
+            opacity: 0.6,
+            marginTop: '4px',
           }}
         >
-          BONKI
-        </motion.p>
-        <motion.p
-          custom={2}
-          variants={fadeUp}
-          style={{
-            fontSize: '14px',
-            color: 'rgba(245,237,210,0.55)',
-            margin: 0,
-          }}
-        >
-          Verktyg för samtalen som inte blir av
+          På riktigt.
         </motion.p>
       </motion.section>
 
