@@ -1,40 +1,35 @@
 
 
-## Fix Resume Off-by-One
+## Pre-Launch Cleanup & Rebrand to BONKI (Revised)
 
-Two files, minimal changes.
+### What changed from previous plan
+- **Item 6 (check-in page): KEPT** — `public/check-in/index.html` stays. It's a functioning feature with Edge Functions (`complete-slider-checkin`, `get-checkin-data`) connected to the database.
+- **Item 7 (email auto-confirm): CORRECTED** — Auto-confirm stays **disabled**. Email verification is the correct setting for a paid product with ad-driven traffic. No auth config change needed (it's already disabled by default).
 
-### 1. CardView.tsx (lines 508–517)
-Replace the resume index calculation — remove the `+1` so the user returns to the prompt they were on:
+### Changes to make
 
-```tsx
-// FROM:
-const lastAnswered = maxStepIndex % 100;
-const nextPrompt = lastAnswered + 1;
+**1. Delete `src/components/TestModeBanner.tsx`**
+Dead code, not imported anywhere. Safe to remove.
 
-if (nextPrompt < totalPrompts) {
-  setLocalPromptIndex(nextPrompt);
-} else {
+**2. Rebrand `index.html`**
+- `<title>Still Us</title>` → `<title>BONKI</title>`
+- `<meta name="description">` → `"Samtalskort för relationer — på riktigt"`
+- `<meta name="author">` → `"BONKI"`
+- `<meta name="apple-mobile-web-app-title">` → `"BONKI"`
+- `<meta property="og:title">` → `"BONKI"`
+- `<meta property="og:description">` → updated copy
+- OG image URL → use the existing `bonki-logo.png` or a dedicated OG image if available
 
-// TO:
-const currentPrompt = maxStepIndex % 100;
+**3. Rebrand `src/components/Footer.tsx`**
+- `© {year} Still Us` → `© {year} BONKI`
+- `alt="Still Us"` → `alt="BONKI"`
 
-if (currentPrompt < totalPrompts) {
-  setLocalPromptIndex(currentPrompt);
-} else {
-```
+### NOT changed
+- `public/check-in/` — left intact
+- Email auto-confirm — left disabled (email verification stays on)
+- No logic, data model, or Edge Function changes
 
-### 2. LibraryResumeCard.tsx (lines 133–134)
-Collapse to one line — the `+1` here is correct (converting 0-indexed to 1-indexed display label):
-
-```tsx
-// FROM:
-const lastIndex = reflections[0].step_index % 100;
-const currentPrompt = lastIndex + 1;
-
-// TO:
-const currentPrompt = (reflections[0].step_index % 100) + 1; // 1-indexed for display
-```
-
-No other changes.
+### Post-implementation (manual)
+- Connect `bonkistudio.com` domain via Project Settings → Domains
+- Visually verify PWA icons show BONKI branding before launch
 
