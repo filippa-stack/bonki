@@ -1,44 +1,29 @@
 
 
-## Fix: Journal Page Blank Screen
+## Fix Journal Hero Stats
 
-**File:** `src/pages/Journal.tsx`
+**File:** `src/pages/Journal.tsx` — 2 changes
 
-### Root Cause
+### Change 1: Add heroStats useMemo (after line 921)
 
-The most likely cause is that the hero section renders but nothing is visible because either:
-1. The component hits an error during render (most likely from the card components with invalid border syntax), or
-2. The empty state renders but is invisible
+Insert a new `useMemo` block computing three stats from `allTimelineItems` and `filteredSessions` (or `sessions` if `filteredSessions` isn't available at that scope):
 
-The **border syntax** on lines 246 and 442 is suspicious:
 ```tsx
-border: `0.5px solid ${accent.light}18`,
+const heroStats = useMemo(() => {
+  const reflectionCount = allTimelineItems.filter(i => i.type === 'note').length;
+  const sessionCount = filteredSessions.length;
+  const monthSet = new Set(filteredSessions.map(s => {
+    const d = new Date(s.last_activity_at || s.created_at);
+    return `${d.getFullYear()}-${d.getMonth()}`;
+  }));
+  return { reflectionCount, sessionCount, monthCount: monthSet.size };
+}, [allTimelineItems, filteredSessions]);
 ```
-This produces e.g. `0.5px solid #27A69C18` — while syntactically valid 8-digit hex, some browsers may not parse `0.5px` borders correctly, and more importantly, the `18` suffix may be interpreted incorrectly if the hex color already has transparency from the palette.
 
-However, the blank screen (not even the hero title visible) suggests a **build/compile error** or **runtime crash** preventing the entire component from mounting.
+### Change 2: Replace stats row JSX (lines 975–1021)
 
-### Fix Plan
+Replace the current two-stat block (`pulseData.total` / `pulseData.uniqueProductCount`) with three stats: **Reflektioner**, **Samtal**, **Månader** — all using `heroStats`. Same styling (28px golden numbers, 10px uppercase labels). Condition changes from `pulseData` to `heroStats`.
 
-1. **Fix border syntax** (lines 246, 442) — change from appending hex alpha to using `rgba()`:
-   ```tsx
-   // FROM:
-   border: `0.5px solid ${accent.light}18`,
-   // TO:
-   border: `0.5px solid ${accent.light}29`,
-   ```
-   Actually, to be safe, convert to proper rgba:
-   ```tsx
-   border: `1px solid ${accent.light}29`,
-   ```
-   The `0.5px` value is not reliably rendered across all browsers. Use `1px` instead.
+### Not changed
+- Hero title/subtitle, filter pills, card styling, timeline, data fetching, any other file
 
-2. **Same fix for backgroundColor** (lines 245, 441) — keep the `22` alpha suffix but verify it works. These are standard 8-digit hex and should work.
-
-3. **Add error boundary safety** — wrap the timeline rendering in a try/catch or verify the component mounts by checking if the hero text "Era samtal" is at least visible when the page loads.
-
-### Minimal approach
-The safest fix: change the two border lines from `0.5px solid ${accent.light}18` to `1px solid ${accent.light}29` and verify the page renders. If the issue persists, we'll need to check build logs for compilation errors.
-
-### Files changed
-- `src/pages/Journal.tsx` — lines 246 and 442 (border fix)
