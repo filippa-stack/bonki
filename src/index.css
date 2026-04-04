@@ -44,7 +44,7 @@ h1, h2, h3,
     --neutral-300: 40 25% 82%;       /* Warm border — aged paper edge */
 
     /* Tailwind base tokens (HSL without hsl()) */
-    --background: var(--neutral-50);
+    --background: 233 47% 7%;
     --foreground: 20 16% 15%;              /* Bark #2C2420 */
 
     --card: var(--neutral-100);           /* Warm near-white (was #E3DCD4) */
