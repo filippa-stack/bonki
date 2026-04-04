@@ -289,7 +289,7 @@ export default function Install() {
             margin: '12px 0 0',
           }}
         >
-          Ingen nedladdning krävs — öppnas direkt i din webbläsare.
+          Gratis att börja — inget kort krävs.
         </motion.p>
       </motion.section>
 
