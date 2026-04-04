@@ -1,9 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
-import { Navigate, Link } from 'react-router-dom';
+import { Navigate, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Shield, Wifi, Zap } from 'lucide-react';
-import BonkiButton from '@/components/BonkiButton';
 import bonkiLogo from '@/assets/bonki-logo-transparent.png';
+import illustrationStillUs from '@/assets/illustration-still-us-home.png';
 import { trackPixelEvent } from '@/lib/metaPixel';
 import { MIDNIGHT_INK, LANTERN_GLOW, BONKI_ORANGE } from '@/lib/palette';
 
@@ -21,12 +20,6 @@ function isStandalone(): boolean {
     window.matchMedia('(display-mode: standalone)').matches ||
     (navigator as any).standalone === true
   );
-}
-
-function isIOSNonSafari(): boolean {
-  const ua = navigator.userAgent;
-  if (!/iPad|iPhone|iPod/.test(ua)) return false;
-  return /CriOS|FxiOS|OPiOS|EdgiOS/.test(ua);
 }
 
 const ORANGE_GRADIENT = 'linear-gradient(180deg, #E85D2C 0%, #C44D22 100%)';
@@ -47,92 +40,42 @@ const fadeUp = {
   }),
 };
 
-function StepItem({ step, text }: { step: number; text: string }) {
-  return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-      <span
-        style={{
-          width: '28px',
-          height: '28px',
-          borderRadius: '50%',
-          background: 'rgba(232, 93, 44, 0.15)',
-          color: BONKI_ORANGE,
-          fontSize: '13px',
-          fontWeight: 700,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          flexShrink: 0,
-        }}
-      >
-        {step}
-      </span>
-      <span style={{ fontSize: '15px', color: LANTERN_GLOW, lineHeight: 1.4 }}>
-        {text}
-      </span>
-    </div>
-  );
-}
-
-function BenefitCard({ icon, title, desc }: { icon: React.ReactNode; title: string; desc: string }) {
-  return (
-    <div
-      style={{
-        background: 'rgba(255,255,255,0.06)',
-        backdropFilter: 'blur(20px)',
-        WebkitBackdropFilter: 'blur(20px)',
-        border: '1px solid rgba(255,255,255,0.1)',
-        borderRadius: '16px',
-        padding: '20px',
-        display: 'flex',
-        gap: '14px',
-        alignItems: 'flex-start',
-      }}
-    >
-      <div
-        style={{
-          width: '40px',
-          height: '40px',
-          borderRadius: '12px',
-          background: 'rgba(232, 93, 44, 0.12)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          flexShrink: 0,
-          color: BONKI_ORANGE,
-        }}
-      >
-        {icon}
-      </div>
-      <div>
-        <p style={{ fontSize: '15px', fontWeight: 600, color: LANTERN_GLOW, margin: 0, lineHeight: 1.3 }}>
-          {title}
-        </p>
-        <p style={{ fontSize: '13px', color: 'rgba(245,237,210,0.6)', margin: '4px 0 0', lineHeight: 1.4 }}>
-          {desc}
-        </p>
-      </div>
-    </div>
-  );
-}
-
 export default function Install() {
   const [platform, setPlatform] = useState<Platform>(null);
-  const [nonSafari, setNonSafari] = useState(false);
-  const stepsRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
+  const iosGuideRef = useRef<HTMLDivElement>(null);
+  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
 
   useEffect(() => {
     setPlatform(detectPlatform());
-    setNonSafari(isIOSNonSafari());
+    trackPixelEvent('PageView');
+
+    const handler = (e: Event) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+    };
+    window.addEventListener('beforeinstallprompt', handler);
+    return () => window.removeEventListener('beforeinstallprompt', handler);
   }, []);
 
   if (isStandalone()) {
     return <Navigate to="/" replace />;
   }
 
-  const scrollToSteps = () => {
+  const handleCTA = async () => {
     trackPixelEvent('InstallCTA');
-    stepsRef.current?.scrollIntoView({ behavior: 'smooth' });
+
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      return;
+    }
+
+    if (platform === 'ios') {
+      iosGuideRef.current?.scrollIntoView({ behavior: 'smooth' });
+      return;
+    }
+
+    navigate('/');
   };
 
   return (
@@ -144,207 +87,342 @@ export default function Install() {
         overflowX: 'hidden',
       }}
     >
-      {/* Hero */}
+      {/* Logo + Wordmark + Tagline */}
       <motion.section
         initial="hidden"
         animate="visible"
         style={{
-          padding: '60px 24px 40px',
+          padding: '56px 24px 0',
           textAlign: 'center',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          gap: '20px',
+          gap: '8px',
         }}
       >
-        {/* Logo */}
-        <motion.div custom={0} variants={fadeUp}>
-          <img
-            src={bonkiLogo}
-            alt="BONKI"
-            style={{ width: '72px', height: '72px', borderRadius: '16px' }}
-          />
-        </motion.div>
-
-        <motion.h1
+        <motion.img
+          custom={0}
+          variants={fadeUp}
+          src={bonkiLogo}
+          alt="BONKI"
+          style={{ width: '72px', height: '72px', borderRadius: '16px' }}
+        />
+        <motion.p
           custom={1}
           variants={fadeUp}
           className="font-serif"
           style={{
-            fontSize: '32px',
+            fontSize: '20px',
             fontWeight: 700,
-            lineHeight: 1.15,
-            margin: 0,
-            maxWidth: '300px',
+            letterSpacing: '0.08em',
+            margin: '8px 0 0',
           }}
         >
-          Samtalskort för relationer — på riktigt
-        </motion.h1>
-
-        {/* Social proof */}
-        <motion.div
+          BONKI
+        </motion.p>
+        <motion.p
           custom={2}
           variants={fadeUp}
           style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
             fontSize: '14px',
-            color: 'rgba(245,237,210,0.7)',
+            color: 'rgba(245,237,210,0.55)',
+            margin: 0,
           }}
         >
-          <span style={{ color: '#F5C518' }}>★ 4.9</span>
-          <span>·</span>
-          <span>10 000+ par</span>
-        </motion.div>
-
-        {/* Primary CTA */}
-        <motion.div custom={3} variants={fadeUp} style={{ width: '100%', maxWidth: '320px' }}>
-          <BonkiButton
-            onClick={scrollToSteps}
-            style={{
-              background: ORANGE_GRADIENT,
-              boxShadow: ORANGE_SHADOW,
-              color: '#FFFDF7',
-            }}
-          >
-            Installera appen
-          </BonkiButton>
-        </motion.div>
+          Verktyg för samtalen som inte blir av
+        </motion.p>
       </motion.section>
 
-      {/* Benefits */}
+      {/* Hero Illustration */}
       <motion.section
         initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: '-40px' }}
+        animate="visible"
         style={{
-          padding: '0 24px 40px',
+          padding: '32px 24px 0',
           display: 'flex',
-          flexDirection: 'column',
-          gap: '12px',
-          maxWidth: '400px',
-          margin: '0 auto',
+          justifyContent: 'center',
         }}
       >
-        <motion.div custom={0} variants={fadeUp}>
-          <BenefitCard
-            icon={<Shield size={20} />}
-            title="Privat & säkert"
-            desc="Era samtal stannar mellan er. Ingen data delas."
+        <motion.div
+          custom={3}
+          variants={fadeUp}
+          style={{
+            width: '100%',
+            maxWidth: '360px',
+            height: '40vh',
+            minHeight: '240px',
+            borderRadius: '24px',
+            overflow: 'hidden',
+            position: 'relative',
+          }}
+        >
+          <img
+            src={illustrationStillUs}
+            alt=""
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              objectPosition: 'center',
+              opacity: 0.85,
+            }}
           />
-        </motion.div>
-        <motion.div custom={1} variants={fadeUp}>
-          <BenefitCard
-            icon={<Wifi size={20} />}
-            title="Fungerar offline"
-            desc="Använd appen var som helst, även utan internet."
-          />
-        </motion.div>
-        <motion.div custom={2} variants={fadeUp}>
-          <BenefitCard
-            icon={<Zap size={20} />}
-            title="Ingen appbutik"
-            desc="Installera direkt från webbläsaren på 10 sekunder."
+          <div
+            style={{
+              position: 'absolute',
+              inset: 0,
+              background: 'linear-gradient(180deg, transparent 50%, rgba(11,16,38,0.8) 100%)',
+              pointerEvents: 'none',
+            }}
           />
         </motion.div>
       </motion.section>
 
-      {/* Install Steps */}
+      {/* Value Proposition */}
       <motion.section
-        ref={stepsRef}
         initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: '-40px' }}
+        animate="visible"
         style={{
-          padding: '40px 24px',
-          maxWidth: '400px',
+          padding: '32px 24px 0',
+          textAlign: 'center',
+          maxWidth: '360px',
           margin: '0 auto',
         }}
       >
-        <motion.h2
-          custom={0}
+        <motion.h1
+          custom={4}
           variants={fadeUp}
           className="font-serif"
           style={{
-            fontSize: '22px',
-            fontWeight: 600,
-            marginBottom: '24px',
-            textAlign: 'center',
+            fontSize: '28px',
+            fontWeight: 700,
+            lineHeight: 1.2,
+            margin: 0,
           }}
         >
-          Så installerar du
-        </motion.h2>
+          Samtal som förändrar er vardag.
+        </motion.h1>
+        <motion.p
+          custom={5}
+          variants={fadeUp}
+          style={{
+            fontSize: '15px',
+            lineHeight: 1.5,
+            color: 'rgba(245,237,210,0.65)',
+            margin: '12px 0 0',
+          }}
+        >
+          Samtalskort för familjer och par — skapade med psykologer, byggda för verkliga samtal.
+        </motion.p>
+      </motion.section>
 
-        {nonSafari ? (
+      {/* Trust Stats */}
+      <motion.section
+        initial="hidden"
+        animate="visible"
+        style={{
+          padding: '32px 24px 0',
+          maxWidth: '360px',
+          margin: '0 auto',
+        }}
+      >
+        <motion.div
+          custom={6}
+          variants={fadeUp}
+          style={{
+            display: 'flex',
+            justifyContent: 'space-around',
+            textAlign: 'center',
+            background: 'rgba(255,255,255,0.04)',
+            borderRadius: '16px',
+            padding: '20px 12px',
+            border: '1px solid rgba(255,255,255,0.06)',
+          }}
+        >
+          {[
+            { number: '7', label: 'produkter' },
+            { number: '130+', label: 'samtal' },
+            { number: '1 gratis', label: 'per produkt' },
+          ].map((stat) => (
+            <div key={stat.label} style={{ flex: 1 }}>
+              <p
+                style={{
+                  fontSize: '22px',
+                  fontWeight: 700,
+                  color: LANTERN_GLOW,
+                  margin: 0,
+                  lineHeight: 1.2,
+                }}
+              >
+                {stat.number}
+              </p>
+              <p
+                style={{
+                  fontSize: '12px',
+                  color: 'rgba(245,237,210,0.45)',
+                  margin: '4px 0 0',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em',
+                }}
+              >
+                {stat.label}
+              </p>
+            </div>
+          ))}
+        </motion.div>
+      </motion.section>
+
+      {/* CTA */}
+      <motion.section
+        initial="hidden"
+        animate="visible"
+        style={{
+          padding: '36px 24px 0',
+          maxWidth: '360px',
+          margin: '0 auto',
+          textAlign: 'center',
+        }}
+      >
+        <motion.button
+          custom={7}
+          variants={fadeUp}
+          whileTap={{ scale: 0.95, y: 2 }}
+          transition={{ type: 'tween', duration: 0.12 }}
+          onClick={handleCTA}
+          style={{
+            width: '100%',
+            padding: '16px 32px',
+            borderRadius: '24px',
+            border: 'none',
+            cursor: 'pointer',
+            fontFamily: 'var(--font-display)',
+            fontSize: '17px',
+            fontWeight: 600,
+            background: ORANGE_GRADIENT,
+            boxShadow: ORANGE_SHADOW,
+            color: '#FFFDF7',
+            textShadow: '0 1px 2px rgba(0,0,0,0.15)',
+          }}
+        >
+          Öppna appen
+        </motion.button>
+        <motion.p
+          custom={8}
+          variants={fadeUp}
+          style={{
+            fontSize: '13px',
+            color: 'rgba(245,237,210,0.4)',
+            margin: '12px 0 0',
+          }}
+        >
+          Ingen nedladdning krävs — öppnas direkt i din webbläsare.
+        </motion.p>
+      </motion.section>
+
+      {/* iOS Install Guide */}
+      {platform === 'ios' && (
+        <motion.section
+          ref={iosGuideRef}
+          initial="hidden"
+          animate="visible"
+          style={{
+            padding: '36px 24px 0',
+            maxWidth: '360px',
+            margin: '0 auto',
+          }}
+        >
           <motion.div
-            custom={1}
+            custom={9}
             variants={fadeUp}
             style={{
-              background: 'rgba(232, 93, 44, 0.1)',
-              border: '1px solid rgba(232, 93, 44, 0.25)',
-              borderRadius: '12px',
-              padding: '16px 20px',
-              fontSize: '14px',
-              lineHeight: 1.5,
-              textAlign: 'center',
+              background: 'rgba(255,255,255,0.06)',
+              border: '1px solid rgba(255,255,255,0.1)',
+              borderRadius: '16px',
+              padding: '20px',
             }}
           >
-            Öppna den här sidan i <strong>Safari</strong> för att kunna installera appen på din hemskärm.
+            <p
+              style={{
+                fontSize: '15px',
+                fontWeight: 600,
+                color: LANTERN_GLOW,
+                margin: '0 0 16px',
+                textAlign: 'center',
+              }}
+            >
+              Lägg till på hemskärmen
+            </p>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '16px',
+              }}
+            >
+              <div style={{ textAlign: 'center' }}>
+                <div
+                  style={{
+                    width: '44px',
+                    height: '44px',
+                    borderRadius: '12px',
+                    background: 'rgba(232,93,44,0.12)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    margin: '0 auto 6px',
+                    fontSize: '20px',
+                    color: BONKI_ORANGE,
+                  }}
+                >
+                  ⎋
+                </div>
+                <span style={{ fontSize: '12px', color: 'rgba(245,237,210,0.55)' }}>
+                  Tryck dela
+                </span>
+              </div>
+              <span style={{ fontSize: '18px', color: 'rgba(245,237,210,0.3)' }}>→</span>
+              <div style={{ textAlign: 'center' }}>
+                <div
+                  style={{
+                    width: '44px',
+                    height: '44px',
+                    borderRadius: '12px',
+                    background: 'rgba(232,93,44,0.12)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    margin: '0 auto 6px',
+                    fontSize: '20px',
+                    color: BONKI_ORANGE,
+                  }}
+                >
+                  +
+                </div>
+                <span style={{ fontSize: '12px', color: 'rgba(245,237,210,0.55)' }}>
+                  Lägg till
+                </span>
+              </div>
+            </div>
           </motion.div>
-        ) : !platform ? (
-          /* Desktop */
-          <motion.div
-            custom={1}
-            variants={fadeUp}
-            style={{
-              textAlign: 'center',
-              fontSize: '15px',
-              color: 'rgba(245,237,210,0.7)',
-              lineHeight: 1.5,
-            }}
-          >
-            Öppna den här sidan på din mobil för att installera appen.
-          </motion.div>
-        ) : (
-          <motion.div custom={1} variants={fadeUp} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-            {platform === 'ios' ? (
-              <>
-                <StepItem step={1} text="Tryck på dela-ikonen ⎋ längst ner i Safari" />
-                <StepItem step={2} text='Scrolla ner och välj "Lägg till på hemskärmen"' />
-                <StepItem step={3} text="Tryck Lägg till — klart!" />
-              </>
-            ) : (
-              <>
-                <StepItem step={1} text="Tryck på ⋮-menyn uppe till höger i Chrome" />
-                <StepItem step={2} text='Välj "Lägg till på startskärmen"' />
-                <StepItem step={3} text="Tryck Installera — klart!" />
-              </>
-            )}
-          </motion.div>
-        )}
+        </motion.section>
+      )}
 
-        {/* Bottom CTA */}
-        <div style={{ marginTop: '32px', maxWidth: '320px', marginLeft: 'auto', marginRight: 'auto' }}>
-          <BonkiButton
-            onClick={scrollToSteps}
-            style={{
-              background: ORANGE_GRADIENT,
-              boxShadow: ORANGE_SHADOW,
-              color: '#FFFDF7',
-            }}
-          >
-            Installera appen
-          </BonkiButton>
-        </div>
-
-        {/* Login link */}
-        <p style={{ textAlign: 'center', marginTop: '20px', fontSize: '14px', color: 'rgba(245,237,210,0.5)' }}>
+      {/* Login link */}
+      <motion.section
+        initial="hidden"
+        animate="visible"
+        style={{
+          padding: '32px 24px 48px',
+          textAlign: 'center',
+        }}
+      >
+        <motion.p custom={10} variants={fadeUp} style={{ fontSize: '14px', color: 'rgba(245,237,210,0.45)', margin: 0 }}>
           Redan medlem?{' '}
           <Link to="/login" style={{ color: BONKI_ORANGE, textDecoration: 'underline' }}>
             Logga in
           </Link>
-        </p>
+        </motion.p>
       </motion.section>
     </div>
   );
