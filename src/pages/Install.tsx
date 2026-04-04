@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Navigate, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import bonkiLogo from '@/assets/bonki-logo-transparent.png';
-import illustrationStillUs from '@/assets/illustration-still-us-home.png';
+
 import { trackPixelEvent } from '@/lib/metaPixel';
 import { MIDNIGHT_INK, LANTERN_GLOW, BONKI_ORANGE } from '@/lib/palette';
 
@@ -87,95 +87,67 @@ export default function Install() {
         overflowX: 'hidden',
       }}
     >
-      {/* Logo + Wordmark + Tagline */}
+      {/* BONKI text + tagline */}
       <motion.section
         initial="hidden"
         animate="visible"
         style={{
-          padding: '56px 24px 0',
+          paddingTop: 'calc(env(safe-area-inset-top, 0px) + 48px)',
           textAlign: 'center',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          gap: '8px',
         }}
       >
-        <motion.img
+        <motion.h1
           custom={0}
           variants={fadeUp}
-          src={bonkiLogo}
-          alt="BONKI"
-          style={{ width: '72px', height: '72px', borderRadius: '16px' }}
-        />
+          className="font-serif"
+          style={{
+            fontSize: '40px',
+            fontWeight: 600,
+            color: '#D4F5C0',
+            letterSpacing: '0.04em',
+            margin: 0,
+          }}
+        >
+          BONKI
+        </motion.h1>
         <motion.p
           custom={1}
           variants={fadeUp}
           className="font-serif"
           style={{
-            fontSize: '20px',
-            fontWeight: 700,
-            letterSpacing: '0.08em',
-            margin: '8px 0 0',
+            fontSize: '16px',
+            fontStyle: 'italic',
+            color: '#D4F5C0',
+            opacity: 0.6,
+            marginTop: '4px',
           }}
         >
-          BONKI
-        </motion.p>
-        <motion.p
-          custom={2}
-          variants={fadeUp}
-          style={{
-            fontSize: '14px',
-            color: 'rgba(245,237,210,0.55)',
-            margin: 0,
-          }}
-        >
-          Verktyg för samtalen som inte blir av
+          På riktigt.
         </motion.p>
       </motion.section>
 
-      {/* Hero Illustration */}
+      {/* Brand logo */}
       <motion.section
         initial="hidden"
         animate="visible"
         style={{
-          padding: '32px 24px 0',
           display: 'flex',
           justifyContent: 'center',
+          padding: '28px 0 20px',
         }}
       >
-        <motion.div
-          custom={3}
+        <motion.img
+          custom={2}
           variants={fadeUp}
+          src={bonkiLogo}
+          alt="BONKI"
           style={{
-            width: '100%',
-            maxWidth: '360px',
-            height: '40vh',
-            minHeight: '240px',
-            borderRadius: '24px',
-            overflow: 'hidden',
-            position: 'relative',
+            width: '120px',
+            height: '120px',
+            objectFit: 'contain',
+            opacity: 0.9,
           }}
-        >
-          <img
-            src={illustrationStillUs}
-            alt=""
-            style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-              objectPosition: 'center',
-              opacity: 0.85,
-            }}
-          />
-          <div
-            style={{
-              position: 'absolute',
-              inset: 0,
-              background: 'linear-gradient(180deg, transparent 50%, rgba(11,16,38,0.8) 100%)',
-              pointerEvents: 'none',
-            }}
-          />
-        </motion.div>
+        />
       </motion.section>
 
       {/* Value Proposition */}
@@ -183,36 +155,37 @@ export default function Install() {
         initial="hidden"
         animate="visible"
         style={{
-          padding: '32px 24px 0',
+          padding: '0 28px',
           textAlign: 'center',
           maxWidth: '360px',
           margin: '0 auto',
         }}
       >
-        <motion.h1
-          custom={4}
+        <motion.h2
+          custom={3}
           variants={fadeUp}
           className="font-serif"
           style={{
-            fontSize: '28px',
-            fontWeight: 700,
-            lineHeight: 1.2,
-            margin: 0,
+            fontSize: '24px',
+            fontWeight: 600,
+            lineHeight: 1.3,
+            color: LANTERN_GLOW,
+            margin: '0 0 12px',
           }}
         >
           Samtal som förändrar er vardag.
-        </motion.h1>
+        </motion.h2>
         <motion.p
-          custom={5}
+          custom={4}
           variants={fadeUp}
           style={{
             fontSize: '15px',
-            lineHeight: 1.5,
-            color: 'rgba(245,237,210,0.65)',
-            margin: '12px 0 0',
+            lineHeight: 1.6,
+            color: 'rgba(253, 246, 227, 0.6)',
+            margin: 0,
           }}
         >
-          Samtalskort för familjer och par — skapade med psykologer, byggda för verkliga samtal.
+          Verktyg för samtalen som inte blir av — för familjer och par.
         </motion.p>
       </motion.section>
 
@@ -270,6 +243,20 @@ export default function Install() {
             </div>
           ))}
         </motion.div>
+        <motion.p
+          custom={6}
+          variants={fadeUp}
+          style={{
+            fontSize: '12px',
+            fontWeight: 500,
+            color: 'rgba(253, 246, 227, 0.45)',
+            textAlign: 'center',
+            marginTop: '12px',
+            letterSpacing: '0.04em',
+          }}
+        >
+          Utvecklat med legitimerad psykolog
+        </motion.p>
       </motion.section>
 
       {/* CTA */}
