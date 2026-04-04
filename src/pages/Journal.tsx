@@ -1131,6 +1131,7 @@ export default function Journal() {
         </div>
       ) : (
         <div style={{ flex: 1, overflowY: 'auto', paddingBottom: 'calc(72px + env(safe-area-inset-bottom, 0px))' }}>
+          {(() => { hasRenderedContent.current = true; return null; })()}
           {/* (Stats moved to hero section above) */}
 
 
