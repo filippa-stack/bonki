@@ -1,35 +1,33 @@
 
 
-## Pre-Launch Cleanup & Rebrand to BONKI (Revised)
+## `/install` Landing Page — Updated with Bonki Orange
 
-### What changed from previous plan
-- **Item 6 (check-in page): KEPT** — `public/check-in/index.html` stays. It's a functioning feature with Edge Functions (`complete-slider-checkin`, `get-checkin-data`) connected to the database.
-- **Item 7 (email auto-confirm): CORRECTED** — Auto-confirm stays **disabled**. Email verification is the correct setting for a paid product with ad-driven traffic. No auth config change needed (it's already disabled by default).
+Same plan as approved, with one design change: **Primary CTA uses Bonki Orange (#E85D2C)** instead of Saffron, matching the onboarding "Börja" button style.
 
-### Changes to make
+### CTA style
 
-**1. Delete `src/components/TestModeBanner.tsx`**
-Dead code, not imported anywhere. Safe to remove.
+```tsx
+style={{
+  background: 'linear-gradient(180deg, #E85D2C 0%, #C44D22 100%)',
+  boxShadow: [
+    '0 10px 28px rgba(232, 93, 44, 0.35)',
+    '0 4px 10px rgba(232, 93, 44, 0.20)',
+    '0 1px 3px rgba(0, 0, 0, 0.12)',
+    'inset 0 1.5px 0 rgba(255, 255, 255, 0.35)',
+    'inset 0 -2px 6px rgba(0, 0, 0, 0.12)',
+  ].join(', '),
+}}
+```
 
-**2. Rebrand `index.html`**
-- `<title>Still Us</title>` → `<title>BONKI</title>`
-- `<meta name="description">` → `"Samtalskort för relationer — på riktigt"`
-- `<meta name="author">` → `"BONKI"`
-- `<meta name="apple-mobile-web-app-title">` → `"BONKI"`
-- `<meta property="og:title">` → `"BONKI"`
-- `<meta property="og:description">` → updated copy
-- OG image URL → use the existing `bonki-logo.png` or a dedicated OG image if available
+This is consistent with `Onboarding.tsx` which already overrides BonkiButton with the same Bonki Orange gradient.
 
-**3. Rebrand `src/components/Footer.tsx`**
-- `© {year} Still Us` → `© {year} BONKI`
-- `alt="Still Us"` → `alt="BONKI"`
+### Files
 
-### NOT changed
-- `public/check-in/` — left intact
-- Email auto-confirm — left disabled (email verification stays on)
-- No logic, data model, or Edge Function changes
+| Action | File |
+|--------|------|
+| Create | `src/pages/Install.tsx` — full page, platform detection (iOS/Android/Desktop), Bonki Orange CTA |
+| Edit | `src/App.tsx` — add `/install` public route |
+| Edit | `src/components/InstallGuideBanner.tsx` — rebrand "Still Us" → "BONKI" |
 
-### Post-implementation (manual)
-- Connect `bonkistudio.com` domain via Project Settings → Domains
-- Visually verify PWA icons show BONKI branding before launch
+Everything else unchanged: platform-adaptive instructions, iOS non-Safari nudge, Meta Pixel tracking, dark background, no BottomNav.
 
