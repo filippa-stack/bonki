@@ -920,7 +920,17 @@ export default function Journal() {
     };
   }, [filteredSessions]);
 
-  
+  const heroStats = useMemo(() => {
+    const reflectionCount = allTimelineItems.filter(i => i.type === 'note').length;
+    const sessionCount = filteredSessions.length;
+    const monthSet = new Set(filteredSessions.map(s => {
+      const d = new Date(s.last_activity_at || s.created_at);
+      return `${d.getFullYear()}-${d.getMonth()}`;
+    }));
+    return { reflectionCount, sessionCount, monthCount: monthSet.size };
+  }, [allTimelineItems, filteredSessions]);
+
+
 
 
   // Filtered bookmarks
