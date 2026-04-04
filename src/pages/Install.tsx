@@ -3,6 +3,7 @@ import { Navigate, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
 
+import bonkiLogo from '@/assets/bonki-logo-transparent.png';
 import { trackPixelEvent } from '@/lib/metaPixel';
 import { MIDNIGHT_INK, LANTERN_GLOW, BONKI_ORANGE } from '@/lib/palette';
 
@@ -139,7 +140,7 @@ export default function Install() {
         <motion.img
           custom={2}
           variants={fadeUp}
-          src="/pwa-512x512.png"
+          src={bonkiLogo}
           alt="BONKI"
           style={{
             width: '120px',
