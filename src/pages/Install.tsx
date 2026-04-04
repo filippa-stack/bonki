@@ -181,7 +181,7 @@ export default function Install() {
           style={{
             fontSize: '15px',
             lineHeight: 1.6,
-            color: 'rgba(253, 246, 227, 0.6)',
+            color: 'rgba(253, 246, 227, 0.7)',
             margin: 0,
           }}
         >
