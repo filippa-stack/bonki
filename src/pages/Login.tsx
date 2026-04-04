@@ -153,7 +153,7 @@ export default function Login() {
           <p style={{
             fontFamily: 'var(--font-sans)',
             fontSize: '14px',
-            color: 'rgba(253, 246, 227, 0.5)',
+            color: 'rgba(253, 246, 227, 0.65)',
             textAlign: 'center',
             marginTop: '12px',
           }}>
