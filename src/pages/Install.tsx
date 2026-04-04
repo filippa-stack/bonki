@@ -185,7 +185,7 @@ export default function Install() {
             margin: 0,
           }}
         >
-          Verktyg för samtalen som inte blir av — för familjer och par.
+          För familjer och par — skapat med legitimerad psykolog.
         </motion.p>
       </motion.section>
 
