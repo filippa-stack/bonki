@@ -40,9 +40,11 @@ Deno.serve(async (req) => {
     const pixelId = Deno.env.get("META_PIXEL_ID");
     const accessToken = Deno.env.get("META_ACCESS_TOKEN");
     if (!pixelId || !accessToken) {
-      console.error("META_PIXEL_ID or META_ACCESS_TOKEN not configured");
-      return new Response(JSON.stringify({ error: "server_config" }), {
-        status: 500,
+      // Log which ones are missing for debugging
+      console.error("Missing secrets — META_PIXEL_ID:", !!pixelId, "META_ACCESS_TOKEN:", !!accessToken);
+      // Return 200 to not block client — server-side tracking is best-effort
+      return new Response(JSON.stringify({ ok: false, reason: "secrets_not_configured" }), {
+        status: 200,
         headers: { ...headers, "Content-Type": "application/json" },
       });
     }
@@ -113,8 +115,8 @@ Deno.serve(async (req) => {
 
     if (!metaRes.ok) {
       console.error("Meta CAPI error:", metaRes.status, metaBody);
-      return new Response(JSON.stringify({ error: "capi_failed" }), {
-        status: 502,
+      return new Response(JSON.stringify({ ok: false, reason: "capi_error" }), {
+        status: 200,
         headers: { ...headers, "Content-Type": "application/json" },
       });
     }
@@ -125,8 +127,8 @@ Deno.serve(async (req) => {
     });
   } catch (err) {
     console.error("meta-capi error:", err);
-    return new Response(JSON.stringify({ error: "internal" }), {
-      status: 500,
+    return new Response(JSON.stringify({ ok: false, reason: "internal" }), {
+      status: 200,
       headers: { ...headers, "Content-Type": "application/json" },
     });
   }
