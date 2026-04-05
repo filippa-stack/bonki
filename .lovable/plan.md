@@ -1,24 +1,30 @@
 
 
-## Install Page Redesign
+## Get CTA Above the Fold
 
-Three targeted changes to `src/pages/Install.tsx` — no new files, no structural changes.
+The creature logo (220px) + headline + sub-copy + stats currently push the CTA below ~620px viewport height. Two approaches to fix this:
 
-### Changes
+### Option A: Reduce creature to ~180px + tighten gaps (recommended)
+- Creature: 220px → 180px (still dominant, but saves 40px)
+- Remove tagline bottom margin or reduce heading `fontSize` from 24px → 22px
+- Trust stats internal padding: `20px 12px` → `16px 10px`
+- Net savings: ~60-70px — enough to get CTA fully visible
 
-**1. Larger creature logo (hero)**
-- Scale logo from 120×120px to 220×220px, add subtle drop-shadow
-- Reduce section padding from `28px 0 20px` to `12px 0 8px`
+### Option B: Keep 220px creature, compress everything else aggressively
+- Heading font: 24px → 20px
+- Sub-copy font: 15px → 14px, reduce margin
+- Stats padding: more aggressive compression
+- Risk: text becomes too small and loses premium feel
 
-**2. Clearer trust stats**
-- Replace `{ number: '1 gratis', label: 'per produkt' }` with `{ number: '7', label: 'gratis samtal' }`
+### Recommendation
+Option A — creature at 180px is still large and prominent, and the page breathes better. The CTA will be fully visible on standard phones (375×667 and up).
 
-**3. Compress vertical spacing (CTA above fold)**
-- Top padding: `48px` → `24px`
-- Value proposition margin: `0 auto` → `-4px auto 0`
-- Trust stats padding: `32px` → `20px`
-- CTA section padding: `36px` → `24px`
-
-### What stays untouched
-BONKI heading, tagline, headline copy, button styling, iOS guide, login link, sub-CTA text, Meta pixel tracking.
+### Changes to `src/pages/Install.tsx`
+1. Creature: `width/height: '220px'` → `'180px'`
+2. Creature section padding: `'12px 0 8px'` → `'8px 0 4px'`
+3. Headline font-size: `'24px'` → `'22px'`, margin-bottom: `'12px'` → `'8px'`
+4. Sub-copy margin-bottom in section: `margin: '0 0 24px'` kept but section margin tightened: `'-4px auto 0'` → `'-8px auto 0'`
+5. Stats container padding: `'20px 12px'` → `'16px 10px'`
+6. Stats section top padding: `'20px'` → `'14px'`
+7. CTA section top padding: `'24px'` → `'16px'`
 
