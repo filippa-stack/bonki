@@ -1,17 +1,20 @@
 
 
-## Update Wordmark Logo Styling
+## Create Favicon from Creature PNG on Dark Background
 
-Apply consistent, minimal styling to the BONKI wordmark `<img>` on both pages — no background, no padding, `maxHeight: 40px`, `width: auto`, `objectFit: contain`.
+Generate the favicon using the uploaded transparent creature PNG (`BONKI_1.png`) composited onto the `#0B1026` theme background, then replace the current favicon.
 
-### Changes
+### Steps
 
-**1. Login page (`src/pages/Login.tsx`, line 142-146)**
-- Change the `<img>` style from `{ width: 200, height: 'auto', margin: '0 auto', display: 'block' }` to `{ maxHeight: '40px', width: 'auto', objectFit: 'contain', margin: '0 auto', display: 'block' }`
+1. **Copy uploaded image** — `user-uploads://BONKI_1.png` → `/tmp/BONKI_1.png`
+2. **Generate favicon** — Use Python/Pillow to:
+   - Create a 512×512 canvas filled with `#0B1026`
+   - Paste the creature PNG centered with padding (~15% margin)
+   - Export as 32×32 and 180×180 PNGs
+   - Save to `public/favicon.png` (32px) and update `public/apple-touch-icon-180x180.png`
+3. **Preview at actual size** — Render a comparison image showing the new favicon at 16px, 32px, and 64px so we can judge sharpness before committing
+4. **Update `index.html`** if file paths change (current refs already point to `/favicon.png`)
 
-**2. Library page (`src/components/ProductLibrary.tsx`, lines 688-707)**
-- Remove background/padding styles from the wrapping `<motion.h1>` if any exist
-- Change the `<img>` style from `{ width: 180, ... }` to `{ maxHeight: '40px', width: 'auto', objectFit: 'contain', margin: '0 auto', display: 'block', filter: 'drop-shadow(...)' }`
-
-Both logos will sit directly on their dark page backgrounds with no visible container.
+### Why this should help
+The transparent PNG on a solid dark background eliminates any edge artifacts from mismatched backgrounds. The contrast between green creature and dark navy should be cleaner than the current version.
 
