@@ -1,25 +1,22 @@
 
 
-## Switch BONKI Header Font to Bebas Neue
+## Replace BONKI Text with Wordmark Logo Image
 
-Replace the current Cormorant serif font on the "BONKI" heading with Bebas Neue for a bolder, more distinctive brand presence.
+Use the uploaded wordmark image (`3_1.png`) in place of the Bebas Neue text on both pages.
 
-### Changes
+### Steps
 
-**1. Load Bebas Neue font (`index.html`)**
-- Add `Bebas+Neue` to the existing Google Fonts `<link>` tag
+1. **Copy asset** — `user-uploads://3_1.png` → `src/assets/bonki-wordmark.png`
 
-**2. Register font in Tailwind (`tailwind.config.ts`)**
-- Add `fontFamily.display-brand: ['Bebas Neue', 'sans-serif']` for optional utility use
+2. **Login page (`src/pages/Login.tsx`, lines 141-145)**
+   - Replace `<h1>BONKI</h1>` with `<img src={bonkiWordmark} alt="BONKI" />` (~200px wide, centered)
+   - The image has a dark navy background that blends with the page's Midnight Ink background
 
-**3. Login page (`src/pages/Login.tsx`, line 141-146)**
-- Change `className="font-serif"` and inline font styles to use `fontFamily: "'Bebas Neue', sans-serif"`
-- Adjust `letterSpacing` to `0.08em` (Bebas Neue benefits from wider tracking)
-- Bump `fontSize` to `48px` (Bebas Neue runs smaller than Cormorant at same size)
+3. **Library page (`src/components/ProductLibrary.tsx`, lines 700-701)**
+   - Replace `BONKI` text inside `<motion.h1>` with `<img src={bonkiWordmark} alt="BONKI" />` (~180px wide)
+   - Apply a subtle `drop-shadow` filter to replicate the existing text glow effect
 
-**4. Library page (`src/components/ProductLibrary.tsx`, line ~690-702)**
-- Same font-family swap on the `BONKI` `<motion.h1>`
-- Match letter-spacing and size adjustments
-
-No other files reference the BONKI heading font directly.
+### Notes
+- Taglines ("På riktigt.", "Verktyg för samtalen...") remain unchanged
+- The wordmark's dark background blends naturally with both pages' dark backgrounds
 
