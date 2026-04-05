@@ -1545,6 +1545,7 @@ export type Database = {
         }
         Returns: Json
       }
+      advance_tillbaka_cards: { Args: never; Returns: undefined }
       assert_one_active_session_per_space: {
         Args: { p_couple_space_id: string }
         Returns: undefined
