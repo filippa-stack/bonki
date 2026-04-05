@@ -18,9 +18,9 @@ export function useDefaultTheme() {
     document.body.classList.remove('verdigris-grain', 'verdigris-lightleak');
 
     const root = document.documentElement;
-    root.style.setProperty('--text-primary', 'hsl(20, 16%, 15%)');
-    root.style.setProperty('--text-secondary', 'hsl(29, 13%, 37%)');
-    root.style.setProperty('--surface-base', 'hsl(46, 64%, 89%)');
+    root.style.setProperty('--text-primary', 'hsl(36, 20%, 88%)');
+    root.style.setProperty('--text-secondary', 'hsl(36, 15%, 65%)');
+    root.style.setProperty('--surface-base', '#0B1026');
     root.style.removeProperty('--product-bg');
   }, []);
 }

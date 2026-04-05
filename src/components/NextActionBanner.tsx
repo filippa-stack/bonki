@@ -16,7 +16,6 @@ import { getNextProductRecommendation } from '@/lib/productRecommendations';
 import {
   SAFFRON_FLAME,
   LANTERN_GLOW,
-  DRIFTWOOD,
 } from '@/lib/palette';
 
 interface NextActionBannerProps {
@@ -65,7 +64,7 @@ export default function NextActionBanner({
     label = 'Ert nästa steg';
     subtitle = recommendation.displayName;
     ctaText = 'Utforska';
-    labelColor = DRIFTWOOD;
+    labelColor = 'rgba(253, 246, 227, 0.65)';
     onClick = () => navigate(`/product/${recommendation.slug}`);
 
   // STATE 3: Has next suggested card within this product

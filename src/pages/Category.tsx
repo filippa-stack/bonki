@@ -194,7 +194,7 @@ export default function Category() {
         <div className="h-14 border-b border-border" style={{ backgroundColor: 'var(--surface-raised)' }} />
         <div className="px-5 pt-12 space-y-4 max-w-md mx-auto text-center">
           <div className="h-6 w-40 rounded bg-muted/30 animate-pulse mx-auto" />
-          <p className="text-sm" style={{ color: DRIFTWOOD }}>{t('category.not_found')}</p>
+          <p className="text-sm" style={{ color: isStillUsCategory ? 'rgba(253, 246, 227, 0.6)' : DRIFTWOOD }}>{t('category.not_found')}</p>
         </div>
       </div>
     );
@@ -659,7 +659,7 @@ function StillUsCategoryView({
             style={{
               fontFamily: 'var(--font-serif)',
               fontSize: '14px',
-              color: DRIFTWOOD,
+              color: 'rgba(253, 246, 227, 0.6)',
               textAlign: 'center',
               marginTop: '6px',
               lineHeight: 1.4,
@@ -675,9 +675,9 @@ function StillUsCategoryView({
             fontFamily: 'var(--font-sans)',
             fontSize: '13px',
             fontWeight: 400,
-            color: DRIFTWOOD,
-            textAlign: 'center',
-            marginTop: '6px',
+             color: 'rgba(253, 246, 227, 0.6)',
+             textAlign: 'center',
+             marginTop: '6px',
           }}
         >
           {completedCount} av {cards.length} samtal utforskade
@@ -764,7 +764,7 @@ function StillUsCategoryView({
                       fontFamily: 'var(--font-sans)',
                       fontSize: '14px',
                       fontWeight: 400,
-                      color: DRIFTWOOD,
+                      color: 'rgba(253, 246, 227, 0.6)',
                       lineHeight: 1.4,
                       display: 'block',
                       marginTop: '5px',
@@ -802,8 +802,7 @@ function StillUsCategoryView({
           style={{
             fontSize: '14px',
             fontStyle: 'italic',
-            color: DRIFTWOOD,
-            opacity: 0.7,
+            color: 'rgba(253, 246, 227, 0.6)',
           }}
         >
           {allCompleted
