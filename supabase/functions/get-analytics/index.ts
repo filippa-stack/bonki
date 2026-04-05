@@ -8,7 +8,7 @@ const corsHeaders = {
 const EXCLUDED_USER_IDS = [
   'b29f4c84-0426-4b8f-9293-dccf9141a4b5', // admin
   '8105cd94-be94-473e-977a-883e461cfea8', // bernhard.emma@gmail.com
-  '999288dd-b73a-4829-9d0d-72a8b54b6385', // emma@bonkistudio.com
+  '999288dd-b73a-4829-9d0d-72a8b54b6385', // emma@bonkiapp.com
 ]
 
 Deno.serve(async (req) => {
