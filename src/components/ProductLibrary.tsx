@@ -692,7 +692,7 @@ export default function ProductLibrary() {
             <img
               src={bonkiWordmark}
               alt="BONKI"
-              style={{ maxHeight: '40px', width: 'auto', objectFit: 'contain', margin: '0 auto', display: 'block', filter: 'drop-shadow(0 0 30px hsla(100, 60%, 80%, 0.2))' }}
+              style={{ maxHeight: '60px', width: 'auto', objectFit: 'contain', margin: '0 auto', display: 'block', filter: 'drop-shadow(0 0 30px hsla(100, 60%, 80%, 0.2))' }}
             />
           </motion.h1>
           <motion.p
