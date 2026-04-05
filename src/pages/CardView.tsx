@@ -1073,7 +1073,7 @@ export default function CardView() {
   // ─────────────────────────────────────────────────────────────
   const isInitializing = normalizedSession.loading || accessLoading || resumeLoading;
   if (isInitializing && !devState && !showCompletion && !hasRenderedContent.current) {
-    const loadingBg = product?.backgroundColor ?? 'var(--surface-base, hsl(46, 64%, 89%))';
+    const loadingBg = product?.backgroundColor ?? 'var(--surface-base, #0B1026)';
     return (
       <div
         style={{
