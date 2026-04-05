@@ -132,7 +132,12 @@ export default function DevModeBadge() {
   const [searchParams] = useSearchParams();
   const [open, setOpen] = useState(false);
 
-  const enabled = isDevToolsEnabled() && isDevAdmin(user?.id);
+  const devToolsOn = isDevToolsEnabled();
+  const adminCheck = isDevAdmin(user?.id);
+  if (devToolsOn) {
+    console.log('[DevModeBadge] user?.id =', user?.id, '| isDevAdmin =', adminCheck);
+  }
+  const enabled = devToolsOn && adminCheck;
 
   // Keyboard shortcut: backtick (`) toggles panel
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
