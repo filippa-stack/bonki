@@ -1,27 +1,19 @@
 
 
-## Favicon Mockups for Both Logo Options
+## Regenerate Favicon Mockups with Browser-Quality Resampling
 
-I'll generate two mobile screen mockups showing how each uploaded image looks as a favicon — in the browser address bar (16px), browser tab (20px), and as a home screen icon (120px).
+The previous mockups used basic downscaling, which made the icons look pixelated. The current live favicon looks crisp because browsers use high-quality resampling (similar to Lanczos/bicubic). We'll regenerate the mockups using the same technique.
 
-### What I'll create
+### What changes
 
-Two side-by-side PNG mockups saved to `/mnt/documents/`:
-
-1. **Option A — Creature logo** (`2-4.png`): The embracing figures illustration
-2. **Option B — BONKI wordmark** (`3-3.png`): The bold text logo
-
-Each mockup will show an iPhone-style screen with:
-- Safari address bar with 16x16 favicon next to "bonki.lovable.app"
-- A browser tab preview with 20x20 favicon + "BONKI" title
-- Home screen icon preview (rounded square, 120x120) simulating the PWA app icon
+- Use **LANCZOS resampling** (highest quality) when scaling down the new creature logo (`2-4.png`) and wordmark (`3-3.png`) to 16px, 20px, 32px, and 120px sizes
+- Add slight **sharpening** after downscale to simulate how Retina displays render small icons
+- Render against realistic Safari UI chrome for accurate representation
+- Output to `/mnt/documents/` as updated mockup PNGs, replacing the previous versions
 
 ### Steps
 
-1. Copy both uploaded images into the project workspace
-2. Generate the mockups using Python/Pillow, rendering each image at favicon sizes against both light (address bar) and dark (home screen icon) backgrounds
-3. Save to `/mnt/documents/favicon-mockup-creature.png` and `/mnt/documents/favicon-mockup-wordmark.png`
-
-### Key detail
-The creature logo has fine line art that may lose detail at 16px. The wordmark is bold text that may become illegible at 16px. The mockups will reveal exactly how each performs at small sizes.
+1. Re-run the Python/Pillow mockup script with `Image.LANCZOS` resampling and a mild sharpen filter at small sizes
+2. QA each mockup by visual inspection
+3. Deliver updated `favicon-mockup-creature.png` and `favicon-mockup-wordmark.png`
 
