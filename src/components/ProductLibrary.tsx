@@ -687,22 +687,12 @@ export default function ProductLibrary() {
           <motion.h1
             initial={{ opacity: 1, y: 0 }}
             animate={{ opacity: 1, y: 0 }}
-            style={{
-              fontFamily: "'Bebas Neue', sans-serif",
-              fontSize: '52px',
-              fontWeight: 400,
-              color: '#D4F5C0',
-              lineHeight: 1.1,
-              letterSpacing: '0.08em',
-              marginBottom: '12px',
-              transition: 'color 400ms ease',
-              textShadow: '0 0 30px hsla(100, 60%, 80%, 0.2), 0 2px 24px hsla(230, 25%, 10%, 0.9), 0 0 60px hsla(230, 25%, 10%, 0.5)',
-            }}
+            style={{ marginBottom: '12px' }}
           >
             <img
               src={bonkiWordmark}
               alt="BONKI"
-              style={{ width: 180, height: 'auto', margin: '0 auto', display: 'block', filter: 'drop-shadow(0 0 30px hsla(100, 60%, 80%, 0.2))' }}
+              style={{ maxHeight: '40px', width: 'auto', objectFit: 'contain', margin: '0 auto', display: 'block', filter: 'drop-shadow(0 0 30px hsla(100, 60%, 80%, 0.2))' }}
             />
           </motion.h1>
           <motion.p
