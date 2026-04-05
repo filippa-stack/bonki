@@ -58,6 +58,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     let initialSessionResolved = false;
 
+    // Safety net: if getSession() hangs (e.g. Lovable preview), release loading after 8s
+    const authTimeout = setTimeout(() => {
+      if (!initialSessionResolved) {
+        console.warn('[AuthContext] getSession() timed out after 8s — releasing loading gate');
+        initialSessionResolved = true;
+        setLoading(false);
+      }
+    }, 8000);
+
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         setSession(session);
@@ -84,6 +93,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     supabase.auth.getSession()
       .then(({ data: { session } }) => {
         initialSessionResolved = true;
+        clearTimeout(authTimeout);
         setSession(session);
         setUser(session?.user ?? null);
         setLoading(false);
@@ -91,12 +101,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       .catch((err) => {
         console.error("[AuthContext] getSession failed:", err);
         initialSessionResolved = true;
+        clearTimeout(authTimeout);
         setSession(null);
         setUser(null);
         setLoading(false);
       });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      subscription.unsubscribe();
+      clearTimeout(authTimeout);
+    };
   }, []);
 
   const signOut = async () => {
