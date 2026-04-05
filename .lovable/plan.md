@@ -1,27 +1,39 @@
 
 
-## Polish Install Page to Headspace Tier
+## Elevate Install Page to 10/10
 
-Four changes to `src/pages/Install.tsx`:
+### Core Insight
+Headspace uses ONE hero visual, generous whitespace, and everything above fold. Currently we have wordmark + creature + headline all fighting for attention.
 
-### 1. Replace "BONKI" text heading with wordmark image
-- Import `bonki-wordmark.png` (already used on Login and Library pages)
-- Replace the `<motion.h1>BONKI</motion.h1>` (lines 100-113) with a `<motion.img>` using the wordmark asset
-- Style: `maxHeight: 36px`, `objectFit: 'contain'`, no background — matches brand spec
-- Keep the "På riktigt." tagline below it as-is
+### Changes to `src/pages/Install.tsx`
 
-### 2. Add breathing animation to creature logo
-- Wrap or animate the existing creature `<motion.img>` with a slow vertical float: `animate={{ y: [0, -6, 0] }}` over ~4s, infinite, easeInOut
-- Subtle enough to feel alive without being distracting
+**1. Enlarge wordmark to 48px** (currently 36px, Login uses 60px)
+- Change `maxHeight: '36px'` → `maxHeight: '48px'`
 
-### 3. Remove border + background from trust stats container
-- Remove `background: 'rgba(255,255,255,0.04)'` and `border: '1px solid rgba(255,255,255,0.06)'` from the stats div (line 211-214)
-- Let the numbers float freely against the dark background (cleaner, more Headspace-like)
+**2. Tighten creature section — reduce to 160px**
+- 180px creature + 48px wordmark + headline is too much. Reduce creature to 160px to reclaim vertical space while keeping it prominent.
+- Creature padding: `'8px 0 4px'` → `'4px 0 0'`
 
-### 4. Add trust badge for psychologist credential
-- Replace the plain text "För familjer och par — skapat med legitimerad psykolog." with a slightly styled badge element (small shield/check icon + text)
-- Uses existing palette colors, subtle `rgba` background pill
+**3. Merge tagline into headline**
+- Remove the separate "På riktigt." tagline (saves ~30px vertical space)
+- The headline already captures the brand voice
 
-### Files changed
-- `src/pages/Install.tsx` only
+**4. Compress value prop section**
+- Reduce headline font from 22px → 20px
+- Reduce section horizontal padding from 28px → 24px
+- Trust badge margin: tighten top spacing
+
+**5. Stats — softer labels**
+- Change label `textTransform` from `'uppercase'` to `'none'` and bump to 13px
+- Reduces the "dashboard" feel, more editorial
+
+**6. Ensure sub-CTA + login link visible**
+- CTA section padding: `'16px 24px 0'` → `'12px 24px 0'`
+- Login section padding: `'32px 24px 48px'` → `'20px 24px 36px'`
+
+### Net effect
+~50-60px saved vertically. Everything including "Redan medlem?" fits above fold on 375×667.
+
+### File changed
+`src/pages/Install.tsx` only
 
