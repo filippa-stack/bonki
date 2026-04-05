@@ -1,19 +1,14 @@
 
 
-## Replace Wordmark with New Transparent PNG + Size Bump
+## Replace Creature Logo on Onboarding and Login
+
+Swap the current creature logo (`bonki-logo-transparent.png`) with the new uploaded illustration on both the onboarding screen and login page.
 
 ### Steps
 
-1. **Copy asset** — `user-uploads://BONKI_2_1.png` → `src/assets/bonki-wordmark.png` (overwrite existing)
+1. **Copy asset** — `user-uploads://BONKI_1_3.png` → `src/assets/bonki-logo-transparent.png` (overwrite existing)
 
-2. **Login page (`src/pages/Login.tsx`, line 145)**
-   - Change `maxHeight: '40px'` → `maxHeight: '60px'`
-   - The parent `<motion.div>` (line 138) has no background/padding — confirmed clean
+2. **No code changes needed** — Both `Onboarding.tsx` (line 9) and `Login.tsx` (line 13) already import from `@/assets/bonki-logo-transparent.png`, so the new image will appear automatically.
 
-3. **Library page (`src/components/ProductLibrary.tsx`, line 695)**
-   - Change `maxHeight: '40px'` → `maxHeight: '60px'`
-   - The parent `<motion.h1>` (line 687-691) only has `marginBottom: '12px'` — no background/padding to remove
-   - Keep the existing `drop-shadow` filter
-
-Both pages already have no visible container styling — the only change is the asset swap and the height bump.
+The new illustration is a transparent PNG with the same soft green line-art style, so it will work with the existing radial glow backdrop on onboarding and the dark background on login.
 
