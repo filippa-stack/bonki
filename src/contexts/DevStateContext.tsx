@@ -17,31 +17,30 @@ export function DevStateProvider({ children }: { children: React.ReactNode }) {
   const [params] = useSearchParams();
 
   const devState = useMemo<DevState>(() => {
-    if (!isDevToolsEnabled()) return null;
-
     const raw = params.get('devState');
-    if (!raw) {
-      try {
-        const persisted = sessionStorage.getItem(DEV_STATE_STORAGE_KEY);
-        if (persisted && VALID_STATES.includes(persisted as DevState)) {
-          return persisted as DevState;
-        }
-      } catch {}
-      return null;
-    }
 
-    if (VALID_STATES.includes(raw as DevState)) {
-      try {
-        sessionStorage.setItem(DEV_STATE_STORAGE_KEY, raw);
-      } catch {}
+    // If devState param exists, treat it as implicit dev activation
+    if (raw && VALID_STATES.includes(raw as DevState)) {
+      try { sessionStorage.setItem(DEV_STATE_STORAGE_KEY, raw); } catch {}
       return raw as DevState;
     }
 
+    // For persisted states, still require dev tools enabled
+    if (!isDevToolsEnabled()) return null;
+
+    // Check persisted session state
     try {
-      sessionStorage.removeItem(DEV_STATE_STORAGE_KEY);
+      const persisted = sessionStorage.getItem(DEV_STATE_STORAGE_KEY);
+      if (persisted && VALID_STATES.includes(persisted as DevState)) {
+        return persisted as DevState;
+      }
     } catch {}
 
-    console.warn(`[DevState] Unknown devState: "${raw}". Valid: ${VALID_STATES.join(', ')}`);
+    if (raw) {
+      try { sessionStorage.removeItem(DEV_STATE_STORAGE_KEY); } catch {}
+      console.warn(`[DevState] Unknown devState: "${raw}". Valid: ${VALID_STATES.join(', ')}`);
+    }
+
     return null;
   }, [params]);
 
