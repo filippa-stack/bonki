@@ -1,14 +1,25 @@
 
 
-## Replace Favicon with New Creature Logo
+## Switch BONKI Header Font to Bebas Neue
 
-### Steps
+Replace the current Cormorant serif font on the "BONKI" heading with Bebas Neue for a bolder, more distinctive brand presence.
 
-1. Copy `user-uploads://2_1.png` to `public/favicon.png` (overwriting the current one)
-2. No changes needed to `index.html` — it already references `/favicon.png`
-3. Also update the PWA icons (`apple-touch-icon-180x180.png`, `pwa-192x192.png`, `pwa-512x512.png`) with the same new creature logo, resized appropriately
+### Changes
 
-### Notes
-- The existing `<link rel="icon" type="image/png" href="/favicon.png" />` in index.html stays as-is
-- PWA manifest already references the icon files by name, so replacing them in-place is sufficient
+**1. Load Bebas Neue font (`index.html`)**
+- Add `Bebas+Neue` to the existing Google Fonts `<link>` tag
+
+**2. Register font in Tailwind (`tailwind.config.ts`)**
+- Add `fontFamily.display-brand: ['Bebas Neue', 'sans-serif']` for optional utility use
+
+**3. Login page (`src/pages/Login.tsx`, line 141-146)**
+- Change `className="font-serif"` and inline font styles to use `fontFamily: "'Bebas Neue', sans-serif"`
+- Adjust `letterSpacing` to `0.08em` (Bebas Neue benefits from wider tracking)
+- Bump `fontSize` to `48px` (Bebas Neue runs smaller than Cormorant at same size)
+
+**4. Library page (`src/components/ProductLibrary.tsx`, line ~690-702)**
+- Same font-family swap on the `BONKI` `<motion.h1>`
+- Match letter-spacing and size adjustments
+
+No other files reference the BONKI heading font directly.
 
