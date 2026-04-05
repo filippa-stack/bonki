@@ -1,19 +1,14 @@
 
 
-## Regenerate Favicon Mockups with Browser-Quality Resampling
-
-The previous mockups used basic downscaling, which made the icons look pixelated. The current live favicon looks crisp because browsers use high-quality resampling (similar to Lanczos/bicubic). We'll regenerate the mockups using the same technique.
-
-### What changes
-
-- Use **LANCZOS resampling** (highest quality) when scaling down the new creature logo (`2-4.png`) and wordmark (`3-3.png`) to 16px, 20px, 32px, and 120px sizes
-- Add slight **sharpening** after downscale to simulate how Retina displays render small icons
-- Render against realistic Safari UI chrome for accurate representation
-- Output to `/mnt/documents/` as updated mockup PNGs, replacing the previous versions
+## Replace Favicon with New Creature Logo
 
 ### Steps
 
-1. Re-run the Python/Pillow mockup script with `Image.LANCZOS` resampling and a mild sharpen filter at small sizes
-2. QA each mockup by visual inspection
-3. Deliver updated `favicon-mockup-creature.png` and `favicon-mockup-wordmark.png`
+1. Copy `user-uploads://2_1.png` to `public/favicon.png` (overwriting the current one)
+2. No changes needed to `index.html` — it already references `/favicon.png`
+3. Also update the PWA icons (`apple-touch-icon-180x180.png`, `pwa-192x192.png`, `pwa-512x512.png`) with the same new creature logo, resized appropriately
+
+### Notes
+- The existing `<link rel="icon" type="image/png" href="/favicon.png" />` in index.html stays as-is
+- PWA manifest already references the icon files by name, so replacing them in-place is sufficient
 
