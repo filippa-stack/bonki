@@ -11,6 +11,7 @@ import { Loader2, Mail, ArrowLeft, CheckCircle, Eye } from 'lucide-react';
 import { isDemoParam, enterDemoMode } from '@/lib/demoMode';
 import { MIDNIGHT_INK, LANTERN_GLOW, BONKI_ORANGE } from '@/lib/palette';
 import bonkiLogo from '@/assets/bonki-logo-transparent.png';
+import bonkiWordmark from '@/assets/bonki-wordmark.png';
 
 import TermsConsent from '@/components/TermsConsent';
 import { TERMS_VERSION, PRIVACY_VERSION } from '@/lib/legal';
@@ -138,11 +139,11 @@ export default function Login() {
           animate={{ opacity: 1 }}
           transition={{ delay: BEAT_1, duration: 0.15 }}
         >
-          <h1
-            style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: '48px', fontWeight: 400, lineHeight: 1.1, color: GHOST_GLOW, letterSpacing: '0.08em', textAlign: 'center' }}
-          >
-            BONKI
-          </h1>
+          <img
+            src={bonkiWordmark}
+            alt="BONKI"
+            style={{ width: 200, height: 'auto', margin: '0 auto', display: 'block' }}
+          />
           <p
             className="font-serif italic"
             style={{ fontSize: '22px', color: `rgba(212, 245, 192, 0.85)`, textAlign: 'center', marginTop: '4px' }}

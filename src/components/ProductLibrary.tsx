@@ -17,6 +17,7 @@ import creaturesTrio from '@/assets/creatures-trio.png';
 import creatureLionGirl from '@/assets/creature-lion-girl.png';
 import creatureGirl from '@/assets/creature-girl.png';
 import creatureLionSolo from '@/assets/creature-lion-solo.png';
+import bonkiWordmark from '@/assets/bonki-wordmark.png';
 
 import illustrationStillUs from '@/assets/illustration-still-us-tile.png';
 import illustrationJagIMig from '@/assets/illustration-jag-i-mig.png';
@@ -698,7 +699,11 @@ export default function ProductLibrary() {
               textShadow: '0 0 30px hsla(100, 60%, 80%, 0.2), 0 2px 24px hsla(230, 25%, 10%, 0.9), 0 0 60px hsla(230, 25%, 10%, 0.5)',
             }}
           >
-            BONKI
+            <img
+              src={bonkiWordmark}
+              alt="BONKI"
+              style={{ width: 180, height: 'auto', margin: '0 auto', display: 'block', filter: 'drop-shadow(0 0 30px hsla(100, 60%, 80%, 0.2))' }}
+            />
           </motion.h1>
           <motion.p
             initial={{ opacity: 1, y: 0 }}
