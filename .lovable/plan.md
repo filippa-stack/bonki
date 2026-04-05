@@ -1,69 +1,27 @@
 
 
-## Pre-Launch Audit Fixes — Round 2
+## Favicon Mockups for Both Logo Options
 
-Four files, one concern each.
+I'll generate two mobile screen mockups showing how each uploaded image looks as a favicon — in the browser address bar (16px), browser tab (20px), and as a home screen icon (120px).
 
-### Fix 1: Category.tsx — Replace Driftwood in Still Us sections
-**File:** `src/pages/Category.tsx`
+### What I'll create
 
-Five lines where `DRIFTWOOD` is used on the dark `#2E2233` background:
+Two side-by-side PNG mockups saved to `/mnt/documents/`:
 
-- **Line 197** — "not found" text: conditional since `pageBg` varies. Use `isStillUsCategory ? 'rgba(253, 246, 227, 0.6)' : DRIFTWOOD`
-- **Line 662** — subtitle `color`: change to `'rgba(253, 246, 227, 0.6)'` (this is inside the Still Us render branch starting ~line 620)
-- **Line 678** — progress count `color`: same
-- **Line 767** — card subtitle `color`: same
-- **Line 805** — bottom message `color`: same (remove the separate `opacity: 0.7` on line 806 since the rgba already has 0.6 opacity)
+1. **Option A — Creature logo** (`2-4.png`): The embracing figures illustration
+2. **Option B — BONKI wordmark** (`3-3.png`): The bold text logo
 
-Non-Still-Us Driftwood usages remain untouched.
+Each mockup will show an iPhone-style screen with:
+- Safari address bar with 16x16 favicon next to "bonki.lovable.app"
+- A browser tab preview with 20x20 favicon + "BONKI" title
+- Home screen icon preview (rounded square, 120x120) simulating the PWA app icon
 
-### Fix 2: NextActionBanner.tsx — Replace Driftwood in "all done" state
-**File:** `src/components/NextActionBanner.tsx` — line 68
+### Steps
 
-```
-// FROM:
-labelColor = DRIFTWOOD;
-// TO:
-labelColor = 'rgba(253, 246, 227, 0.65)';
-```
+1. Copy both uploaded images into the project workspace
+2. Generate the mockups using Python/Pillow, rendering each image at favicon sizes against both light (address bar) and dark (home screen icon) backgrounds
+3. Save to `/mnt/documents/favicon-mockup-creature.png` and `/mnt/documents/favicon-mockup-wordmark.png`
 
-Also remove the `DRIFTWOOD` import if it becomes unused. Check if it's used elsewhere in the file first — it is not (only states 1 and 3 use `LANTERN_GLOW`).
-
-### Fix 3: Header.tsx — Remove localStorage.removeItem
-**File:** `src/components/Header.tsx` — lines 196-199
-
-```
-// FROM:
-onClick={() => {
-  localStorage.removeItem('bonki-last-active-product');
-  navigate('/', { replace: false });
-}}
-// TO:
-onClick={() => {
-  navigate('/', { replace: false });
-}}
-```
-
-### Fix 4: useDefaultTheme.ts — Set dark defaults instead of cream
-**File:** `src/hooks/useDefaultTheme.ts` — lines 21-23
-
-```
-// FROM:
-root.style.setProperty('--text-primary', 'hsl(20, 16%, 15%)');
-root.style.setProperty('--text-secondary', 'hsl(29, 13%, 37%)');
-root.style.setProperty('--surface-base', 'hsl(46, 64%, 89%)');
-// TO:
-root.style.setProperty('--text-primary', 'hsl(36, 20%, 88%)');
-root.style.setProperty('--text-secondary', 'hsl(36, 15%, 65%)');
-root.style.setProperty('--surface-base', '#0B1026');
-```
-
-The text values switch from dark-on-cream to light-on-dark to match the app's dark default. `--surface-base` uses the same Midnight Ink as `:root`.
-
-### Not changed
-- Non-Still-Us Driftwood in Category.tsx
-- NextActionBanner states 1 and 3 (LANTERN_GLOW)
-- Header navigation logic
-- useDefaultTheme Verdigris cleanup logic
-- Any other file
+### Key detail
+The creature logo has fine line art that may lose detail at 16px. The wordmark is bold text that may become illegible at 16px. The mockups will reveal exactly how each performs at small sizes.
 
