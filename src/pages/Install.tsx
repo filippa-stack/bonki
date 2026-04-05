@@ -160,7 +160,7 @@ export default function Install() {
           padding: '0 28px',
           textAlign: 'center',
           maxWidth: '360px',
-          margin: '0 auto',
+          margin: '-4px auto 0',
         }}
       >
         <motion.h2
