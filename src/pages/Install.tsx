@@ -134,7 +134,7 @@ export default function Install() {
             height: '160px',
             objectFit: 'contain',
             opacity: 0.95,
-            filter: 'drop-shadow(0 8px 32px rgba(212, 245, 192, 0.08))',
+            filter: 'drop-shadow(0 8px 32px rgba(212, 245, 192, 0.15)) drop-shadow(0 0 60px rgba(212, 245, 192, 0.06))',
           }}
         />
       </motion.section>
@@ -155,7 +155,7 @@ export default function Install() {
           variants={fadeUp}
           className="font-serif"
           style={{
-            fontSize: '20px',
+            fontSize: 'clamp(22px, 5.5vw, 26px)',
             fontWeight: 600,
             lineHeight: 1.3,
             color: LANTERN_GLOW,
@@ -257,12 +257,12 @@ export default function Install() {
           onClick={handleCTA}
           style={{
             width: '100%',
-            padding: '16px 32px',
+            padding: '14px 32px',
             borderRadius: '24px',
             border: 'none',
             cursor: 'pointer',
             fontFamily: 'var(--font-display)',
-            fontSize: '17px',
+            fontSize: '16px',
             fontWeight: 600,
             background: ORANGE_GRADIENT,
             boxShadow: ORANGE_SHADOW,
