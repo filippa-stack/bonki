@@ -1173,14 +1173,14 @@ export default function Journal() {
                       width: '9px',
                       height: '9px',
                       borderRadius: '50%',
-                      backgroundColor: 'rgba(253, 246, 227, 0.6)',
+                      backgroundColor: '#E9C890',
                     }} />
                     {/* Month name */}
                     <span style={{
                       fontSize: '10px',
                       textTransform: 'uppercase',
                       letterSpacing: '2px',
-                      color: 'rgba(253, 246, 227, 0.6)',
+                      color: '#E9C890',
                       fontFamily: 'var(--font-sans)',
                       fontWeight: 500,
                       lineHeight: 1,
