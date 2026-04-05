@@ -1,29 +1,26 @@
 
 
-## Pre-Publish Status
+## Problem
 
-The two critical fixes (Stripe fallback URLs → bonkiapp.com, CORS allowlist → bonkiapp.com) are already applied and deployed. The app is published and public at `bonki.lovable.app`. Secrets (Stripe, Meta, Resend) are all configured.
+The database contains a stored **procedure** (`advance_tillbaka_cards`) whose return type is NULL. Lovable's internal schema diffing tool (`GetProcs`) tries to scan the return type as a string and crashes on NULL — blocking every publish attempt.
 
-## Remaining Issues (Minor)
+## Fix
 
-### 1. Twitter meta tag references `@bonkistudio`
-**File:** `index.html` line 43
-`<meta name="twitter:site" content="@bonkistudio" />` — update to your new Twitter/X handle if you have one, or remove it.
+Create a migration that:
+1. Drops the existing `advance_tillbaka_cards` procedure
+2. Recreates it as a **function** returning `void` (which the schema differ can handle), preserving the exact same logic
 
-### 2. Analytics admin list references old email
-**File:** `supabase/functions/get-analytics/index.ts` line 11
-Comment says `emma@bonkistudio.com` — cosmetic only (the UUID is what matters), but worth updating for clarity.
+This is a safe change — the procedure body and behavior remain identical. The only difference is `CREATE OR REPLACE FUNCTION ... RETURNS void` instead of `CREATE OR REPLACE PROCEDURE`.
 
-### 3. "Edit with Lovable" badge is visible
-The badge is currently shown on your published app. You can hide it if you're on a paid plan.
+## Steps
 
-### 4. Custom domain not yet connected
-`bonkiapp.com` is not connected as a custom domain to this project. Until you connect it in **Project Settings → Domains**, visitors to `bonkiapp.com` won't reach your app. You'll need to:
-- Add `bonkiapp.com` and `www.bonkiapp.com` in the domain settings
-- Point DNS A records for `@` and `www` to `185.158.133.1`
-- Add the TXT verification record Lovable provides
+1. **Run a migration** with:
+   - `DROP PROCEDURE IF EXISTS public.advance_tillbaka_cards();`
+   - `CREATE OR REPLACE FUNCTION public.advance_tillbaka_cards() RETURNS void ...` (same body)
+2. **Publish** — the schema diff should now succeed
 
----
+## Risk
 
-**Items 1-2** are quick cosmetic edits. **Item 3** is a setting toggle. **Item 4** is the most important — without it, your new domain doesn't serve the app.
+- Low risk. No data is changed. The function body is identical.
+- Any cron job or caller invoking `CALL advance_tillbaka_cards()` would need to switch to `SELECT advance_tillbaka_cards()` instead, but since edge functions typically use `supabase.rpc()` this should work transparently.
 
