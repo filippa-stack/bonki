@@ -270,7 +270,7 @@ export default function KidsCardPortal() {
   if (!product || !category || !card) {
     return (
       <div style={{ minHeight: '100vh', background: MIDNIGHT_INK, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <p style={{ color: DRIFTWOOD, fontSize: '14px' }}>Produkten hittades inte</p>
+        <p style={{ color: 'rgba(253, 246, 227, 0.7)', fontSize: '14px' }}>Produkten hittades inte</p>
       </div>
     );
   }

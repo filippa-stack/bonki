@@ -1,7 +1,7 @@
-import { useState, useEffect, useMemo, useRef } from 'react';
+import { useState, useEffect, useMemo, useRef, useLayoutEffect } from 'react';
 import BonkiButton from '@/components/BonkiButton';
 import { usePageBackground } from '@/hooks/usePageBackground';
-import { useDefaultTheme } from '@/hooks/useDefaultTheme';
+
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { ChevronRight, ChevronDown, Check, Bookmark, Play } from 'lucide-react';
@@ -574,7 +574,10 @@ function SessionGroupCard({ group, navigate }: { group: SessionGroup; navigate: 
 }
 
 export default function Journal() {
-  useDefaultTheme();
+  useLayoutEffect(() => {
+    document.documentElement.classList.remove('theme-verdigris');
+    document.body.classList.remove('verdigris-grain', 'verdigris-lightleak');
+  }, []);
   usePageBackground(MIDNIGHT_INK);
   const navigate = useNavigate();
   const { space } = useCoupleSpaceContext();
@@ -1107,7 +1110,7 @@ export default function Journal() {
       )}
 
       {/* Content */}
-      {loading ? (
+      {(loading && !hasRenderedContent.current) ? (
         <div className="loading-skeleton" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <div style={{ width: '32px', height: '32px', borderRadius: '50%', backgroundColor: 'rgba(253,246,227,0.13)' }} className="animate-pulse" />
         </div>
