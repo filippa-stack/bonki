@@ -142,7 +142,7 @@ export default function Login() {
           <img
             src={bonkiWordmark}
             alt="BONKI"
-            style={{ maxHeight: '60px', width: 'auto', objectFit: 'contain', margin: '0 auto', display: 'block' }}, width: 'auto', objectFit: 'contain', margin: '0 auto', display: 'block' }} }}
+            style={{ maxHeight: '60px', width: 'auto', objectFit: 'contain', margin: '0 auto', display: 'block' }}
           />
           <p
             className="font-serif italic"
