@@ -139,8 +139,7 @@ export default function Login() {
           transition={{ delay: BEAT_1, duration: 0.15 }}
         >
           <h1
-            className="font-serif"
-            style={{ fontSize: '42px', fontWeight: 700, lineHeight: 1.1, color: GHOST_GLOW, letterSpacing: '0.02em', textAlign: 'center' }}
+            style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: '48px', fontWeight: 400, lineHeight: 1.1, color: GHOST_GLOW, letterSpacing: '0.08em', textAlign: 'center' }}
           >
             BONKI
           </h1>

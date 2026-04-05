@@ -15,6 +15,7 @@ export default {
     extend: {
       fontFamily: {
         display: ['Cormorant', 'Georgia', 'serif'],
+        'display-brand': ['Bebas Neue', 'sans-serif'],
         serif: ['Cormorant', 'Georgia', 'serif'],
         sans: ['DM Sans', 'Segoe UI', 'sans-serif'],
         body: ['DM Sans', 'Segoe UI', 'sans-serif'],
