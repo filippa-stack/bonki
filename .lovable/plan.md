@@ -1,34 +1,28 @@
 
 
-## Fix Product Home Double Blink on Reload
+## Make All Month Headers Use Lantern Glow Color
 
-**File:** `src/components/KidsProductHome.tsx` — 3 small additions
+**File:** `src/pages/Journal.tsx` — 2 changes on lines 1176 and 1183
 
-### 1. Add ref (after existing hooks, ~line 333)
-```tsx
-const hasRenderedContent = useRef(false);
+### Change 1: Month dot color (line 1176)
+Remove the conditional and use Lantern Glow for all months:
 ```
-`useRef` is already imported via React.
-
-### 2. Update loading gate (line 349)
-```tsx
 // FROM:
-if (progress.loading) {
+backgroundColor: isCurrentMonth ? '#E9C890' : 'rgba(245, 240, 232, 0.25)',
 // TO:
-if (progress.loading && !hasRenderedContent.current) {
+backgroundColor: 'rgba(253, 246, 227, 0.6)',
 ```
 
-### 3. Set ref before main return (line 353)
-Add `hasRenderedContent.current = true;` immediately before the `return (` of the main JSX.
-
-### 4. Reset on product change (after the ref declaration)
-```tsx
-useEffect(() => {
-  hasRenderedContent.current = false;
-}, [product.id]);
+### Change 2: Month label color (line 1183)
 ```
-`useEffect` is already imported.
+// FROM:
+color: isCurrentMonth ? '#E9C890' : 'rgba(245, 240, 232, 0.4)',
+// TO:
+color: 'rgba(253, 246, 227, 0.6)',
+```
 
-### Not changed
-- Loading gate JSX, progress hook, tiles, banners, any other file
+Uses `#FDF6E3` (Lantern Glow) at 0.6 opacity — consistent with the typography standard for subtitles and date labels. The `isCurrentMonth` variable and gold distinction are removed so all months look identical.
+
+### Nothing else changes
+- Spine, cards, counts, layout all untouched
 
