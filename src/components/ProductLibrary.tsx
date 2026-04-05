@@ -17,6 +17,7 @@ import creaturesTrio from '@/assets/creatures-trio.png';
 import creatureLionGirl from '@/assets/creature-lion-girl.png';
 import creatureGirl from '@/assets/creature-girl.png';
 import creatureLionSolo from '@/assets/creature-lion-solo.png';
+import bonkiWordmark from '@/assets/bonki-wordmark.png';
 
 import illustrationStillUs from '@/assets/illustration-still-us-tile.png';
 import illustrationJagIMig from '@/assets/illustration-jag-i-mig.png';
