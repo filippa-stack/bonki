@@ -65,6 +65,16 @@ export default function BonkiLoadingScreen() {
             animation: 'bonkiBreath 2s ease-in-out infinite',
           }}
         />
+        <p style={{
+          fontFamily: 'var(--font-sans)',
+          fontSize: '13px',
+          color: 'rgba(253, 246, 227, 0.3)',
+          marginTop: '16px',
+          margin: 0,
+          marginBlockStart: '16px',
+        }}>
+          Laddar...
+        </p>
       </div>
     </div>
   );
