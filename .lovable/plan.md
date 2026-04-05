@@ -1,28 +1,22 @@
 
 
-## Make All Month Headers Use Lantern Glow Color
+## Match Month Header Dates to Hero Stats Color
 
-**File:** `src/pages/Journal.tsx` — 2 changes on lines 1176 and 1183
+**File:** `src/pages/Journal.tsx` — 2 lines
 
-### Change 1: Month dot color (line 1176)
-Remove the conditional and use Lantern Glow for all months:
-```
-// FROM:
-backgroundColor: isCurrentMonth ? '#E9C890' : 'rgba(245, 240, 232, 0.25)',
-// TO:
-backgroundColor: 'rgba(253, 246, 227, 0.6)',
-```
+The hero stats (Reflektioner, Samtal, Månader) use `#E9C890`. The month headers currently use `rgba(253, 246, 227, 0.6)`. Update both the dot and label to `#E9C890`.
 
-### Change 2: Month label color (line 1183)
+### Changes
+
+**Line 1176 — Month dot:**
 ```
-// FROM:
-color: isCurrentMonth ? '#E9C890' : 'rgba(245, 240, 232, 0.4)',
-// TO:
-color: 'rgba(253, 246, 227, 0.6)',
+backgroundColor: 'rgba(253, 246, 227, 0.6)'  →  backgroundColor: '#E9C890'
 ```
 
-Uses `#FDF6E3` (Lantern Glow) at 0.6 opacity — consistent with the typography standard for subtitles and date labels. The `isCurrentMonth` variable and gold distinction are removed so all months look identical.
+**Line 1183 — Month label:**
+```
+color: 'rgba(253, 246, 227, 0.6)'  →  color: '#E9C890'
+```
 
-### Nothing else changes
-- Spine, cards, counts, layout all untouched
+Nothing else changes.
 
