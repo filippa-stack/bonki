@@ -134,7 +134,7 @@ export default function Install() {
         style={{
           display: 'flex',
           justifyContent: 'center',
-          padding: '12px 0 8px',
+          padding: '8px 0 4px',
         }}
       >
         <motion.img
@@ -143,8 +143,8 @@ export default function Install() {
           src={bonkiLogo}
           alt="BONKI"
           style={{
-    width: '220px',
-    height: '220px',
+    width: '180px',
+    height: '180px',
     objectFit: 'contain',
     opacity: 0.95,
     filter: 'drop-shadow(0 8px 32px rgba(212, 245, 192, 0.08))',
@@ -160,7 +160,7 @@ export default function Install() {
           padding: '0 28px',
           textAlign: 'center',
           maxWidth: '360px',
-          margin: '-4px auto 0',
+          margin: '-8px auto 0',
         }}
       >
         <motion.h2
@@ -168,11 +168,11 @@ export default function Install() {
           variants={fadeUp}
           className="font-serif"
           style={{
-            fontSize: '24px',
+            fontSize: '22px',
             fontWeight: 600,
             lineHeight: 1.3,
             color: LANTERN_GLOW,
-            margin: '0 0 12px',
+            margin: '0 0 8px',
           }}
         >
           Ni pratar varje dag. Men när pratade ni senast — på riktigt?
@@ -196,7 +196,7 @@ export default function Install() {
         initial="hidden"
         animate="visible"
         style={{
-          padding: '20px 24px 0',
+          padding: '14px 24px 0',
           maxWidth: '360px',
           margin: '0 auto',
         }}
@@ -210,7 +210,7 @@ export default function Install() {
             textAlign: 'center',
             background: 'rgba(255,255,255,0.04)',
             borderRadius: '16px',
-            padding: '20px 12px',
+            padding: '16px 10px',
             border: '1px solid rgba(255,255,255,0.06)',
           }}
         >
@@ -252,7 +252,7 @@ export default function Install() {
         initial="hidden"
         animate="visible"
         style={{
-  padding: '24px 24px 0',
+  padding: '16px 24px 0',
           maxWidth: '360px',
           margin: '0 auto',
           textAlign: 'center',
