@@ -1,38 +1,28 @@
 
 
-## Elevate Install Page to 10/10
+## Assessment: 8.5/10 — Close but Not Quite Headspace
 
-### Core Insight
-Headspace uses ONE hero visual, generous whitespace, and everything above fold. Currently we have wordmark + creature + headline all fighting for attention.
+The page works well and everything is above fold. Here's what separates it from a true 10/10:
 
-### Changes to `src/pages/Install.tsx`
+### What's strong
+- CTA visible without scrolling
+- Trust badge with shield icon looks professional
+- Breathing animation on creature adds life
+- Stats are clean and readable
 
-**1. Enlarge wordmark to 48px** (currently 36px, Login uses 60px)
-- Change `maxHeight: '36px'` → `maxHeight: '48px'`
+### What needs fixing (3 changes)
 
-**2. Tighten creature section — reduce to 160px**
-- 180px creature + 48px wordmark + headline is too much. Reduce creature to 160px to reclaim vertical space while keeping it prominent.
-- Creature padding: `'8px 0 4px'` → `'4px 0 0'`
+**1. Headline font size too small — lacks hero impact**
+- Currently 20px serif. Headspace uses ~24-28px for their hero copy.
+- Increase to `clamp(22px, 5.5vw, 26px)` for responsive scaling. This gives presence without breaking the fold.
 
-**3. Merge tagline into headline**
-- Remove the separate "På riktigt." tagline (saves ~30px vertical space)
-- The headline already captures the brand voice
+**2. CTA button padding is excessive — looks bloated**
+- Currently `padding: '16px 32px'` — the button is visually taller than it needs to be.
+- Reduce to `padding: '14px 32px'` for a sleeker profile. Also reduce `fontSize` from `17px` to `16px`.
 
-**4. Compress value prop section**
-- Reduce headline font from 22px → 20px
-- Reduce section horizontal padding from 28px → 24px
-- Trust badge margin: tighten top spacing
-
-**5. Stats — softer labels**
-- Change label `textTransform` from `'uppercase'` to `'none'` and bump to 13px
-- Reduces the "dashboard" feel, more editorial
-
-**6. Ensure sub-CTA + login link visible**
-- CTA section padding: `'16px 24px 0'` → `'12px 24px 0'`
-- Login section padding: `'32px 24px 48px'` → `'20px 24px 36px'`
-
-### Net effect
-~50-60px saved vertically. Everything including "Redan medlem?" fits above fold on 375×667.
+**3. Creature glow too subtle — needs warmth**
+- Current `drop-shadow(0 8px 32px rgba(212, 245, 192, 0.08))` is barely visible.
+- Increase to `rgba(212, 245, 192, 0.15)` and add a second layer: `drop-shadow(0 0 60px rgba(212, 245, 192, 0.06))` for atmospheric warmth.
 
 ### File changed
 `src/pages/Install.tsx` only
