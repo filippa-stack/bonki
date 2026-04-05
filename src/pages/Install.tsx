@@ -104,26 +104,12 @@ export default function Install() {
           src={bonkiWordmark}
           alt="BONKI"
           style={{
-            maxHeight: '36px',
+            maxHeight: '48px',
             objectFit: 'contain',
             margin: '0 auto',
             display: 'block',
           }}
         />
-        <motion.p
-          custom={1}
-          variants={fadeUp}
-          className="font-serif"
-          style={{
-            fontSize: '16px',
-            fontStyle: 'italic',
-            color: '#D4F5C0',
-            opacity: 0.6,
-            marginTop: '4px',
-          }}
-        >
-          På riktigt.
-        </motion.p>
       </motion.section>
 
       {/* Brand logo */}
@@ -133,7 +119,7 @@ export default function Install() {
         style={{
           display: 'flex',
           justifyContent: 'center',
-          padding: '8px 0 4px',
+          padding: '4px 0 0',
         }}
       >
         <motion.img
@@ -144,8 +130,8 @@ export default function Install() {
           animate={{ y: [0, -6, 0] }}
           transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
           style={{
-            width: '180px',
-            height: '180px',
+            width: '160px',
+            height: '160px',
             objectFit: 'contain',
             opacity: 0.95,
             filter: 'drop-shadow(0 8px 32px rgba(212, 245, 192, 0.08))',
@@ -158,7 +144,7 @@ export default function Install() {
         initial="hidden"
         animate="visible"
         style={{
-          padding: '0 28px',
+          padding: '0 24px',
           textAlign: 'center',
           maxWidth: '360px',
           margin: '-8px auto 0',
@@ -169,11 +155,11 @@ export default function Install() {
           variants={fadeUp}
           className="font-serif"
           style={{
-            fontSize: '22px',
+            fontSize: '20px',
             fontWeight: 600,
             lineHeight: 1.3,
             color: LANTERN_GLOW,
-            margin: '0 0 8px',
+            margin: '0 0 6px',
           }}
         >
           Ni pratar varje dag. Men när pratade ni senast — på riktigt?
@@ -204,7 +190,7 @@ export default function Install() {
         initial="hidden"
         animate="visible"
         style={{
-          padding: '14px 24px 0',
+          padding: '10px 24px 0',
           maxWidth: '360px',
           margin: '0 auto',
         }}
@@ -241,8 +227,8 @@ export default function Install() {
                   fontSize: '12px',
                    color: 'rgba(212, 245, 192, 0.65)',
                   margin: '4px 0 0',
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.05em',
+                   textTransform: 'none' as const,
+                   letterSpacing: '0.02em',
                 }}
               >
                 {stat.label}
@@ -257,7 +243,7 @@ export default function Install() {
         initial="hidden"
         animate="visible"
         style={{
-  padding: '16px 24px 0',
+  padding: '12px 24px 0',
           maxWidth: '360px',
           margin: '0 auto',
           textAlign: 'center',
@@ -393,7 +379,7 @@ export default function Install() {
         initial="hidden"
         animate="visible"
         style={{
-          padding: '32px 24px 48px',
+          padding: '20px 24px 36px',
           textAlign: 'center',
         }}
       >
