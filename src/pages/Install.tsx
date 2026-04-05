@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
 import { Navigate, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-
+import { ShieldCheck } from 'lucide-react';
 
 import bonkiLogo from '@/assets/bonki-logo-transparent.png';
+import bonkiWordmark from '@/assets/bonki-wordmark.png';
 import { trackPixelEvent } from '@/lib/metaPixel';
 import { MIDNIGHT_INK, LANTERN_GLOW, BONKI_ORANGE } from '@/lib/palette';
 
@@ -97,20 +98,18 @@ export default function Install() {
           textAlign: 'center',
         }}
       >
-        <motion.h1
+        <motion.img
           custom={0}
           variants={fadeUp}
-          className="font-serif"
+          src={bonkiWordmark}
+          alt="BONKI"
           style={{
-            fontSize: '40px',
-            fontWeight: 600,
-            color: '#D4F5C0',
-            letterSpacing: '0.04em',
-            margin: 0,
+            maxHeight: '36px',
+            objectFit: 'contain',
+            margin: '0 auto',
+            display: 'block',
           }}
-        >
-          BONKI
-        </motion.h1>
+        />
         <motion.p
           custom={1}
           variants={fadeUp}
@@ -142,12 +141,14 @@ export default function Install() {
           variants={fadeUp}
           src={bonkiLogo}
           alt="BONKI"
+          animate={{ y: [0, -6, 0] }}
+          transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
           style={{
-    width: '180px',
-    height: '180px',
-    objectFit: 'contain',
-    opacity: 0.95,
-    filter: 'drop-shadow(0 8px 32px rgba(212, 245, 192, 0.08))',
+            width: '180px',
+            height: '180px',
+            objectFit: 'contain',
+            opacity: 0.95,
+            filter: 'drop-shadow(0 8px 32px rgba(212, 245, 192, 0.08))',
           }}
         />
       </motion.section>
@@ -177,18 +178,25 @@ export default function Install() {
         >
           Ni pratar varje dag. Men när pratade ni senast — på riktigt?
         </motion.h2>
-        <motion.p
+        <motion.div
           custom={4}
           variants={fadeUp}
           style={{
-            fontSize: '15px',
-            lineHeight: 1.6,
-            color: 'rgba(253, 246, 227, 0.7)',
-            margin: 0,
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '6px',
+            padding: '6px 14px',
+            borderRadius: '20px',
+            background: 'rgba(212, 245, 192, 0.08)',
+            border: '1px solid rgba(212, 245, 192, 0.12)',
+            margin: '0 auto',
           }}
         >
-          För familjer och par — skapat med legitimerad psykolog.
-        </motion.p>
+          <ShieldCheck size={14} style={{ color: '#D4F5C0', opacity: 0.8, flexShrink: 0 }} />
+          <span style={{ fontSize: '13px', color: 'rgba(253, 246, 227, 0.7)' }}>
+            Skapat med legitimerad psykolog
+          </span>
+        </motion.div>
       </motion.section>
 
       {/* Trust Stats */}
@@ -208,10 +216,7 @@ export default function Install() {
             display: 'flex',
             justifyContent: 'space-around',
             textAlign: 'center',
-            background: 'rgba(255,255,255,0.04)',
-            borderRadius: '16px',
             padding: '16px 10px',
-            border: '1px solid rgba(255,255,255,0.06)',
           }}
         >
           {[
