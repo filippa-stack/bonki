@@ -93,7 +93,7 @@ export default function Install() {
         initial="hidden"
         animate="visible"
         style={{
-          paddingTop: 'calc(env(safe-area-inset-top, 0px) + 48px)',
+          paddingTop: 'calc(env(safe-area-inset-top, 0px) + 24px)',
           textAlign: 'center',
         }}
       >
@@ -134,7 +134,7 @@ export default function Install() {
         style={{
           display: 'flex',
           justifyContent: 'center',
-          padding: '28px 0 20px',
+          padding: '12px 0 8px',
         }}
       >
         <motion.img
@@ -143,10 +143,11 @@ export default function Install() {
           src={bonkiLogo}
           alt="BONKI"
           style={{
-            width: '120px',
-            height: '120px',
-            objectFit: 'contain',
-            opacity: 0.9,
+    width: '220px',
+    height: '220px',
+    objectFit: 'contain',
+    opacity: 0.95,
+    filter: 'drop-shadow(0 8px 32px rgba(212, 245, 192, 0.08))',
           }}
         />
       </motion.section>
@@ -159,7 +160,7 @@ export default function Install() {
           padding: '0 28px',
           textAlign: 'center',
           maxWidth: '360px',
-          margin: '0 auto',
+          margin: '-4px auto 0',
         }}
       >
         <motion.h2
@@ -195,7 +196,7 @@ export default function Install() {
         initial="hidden"
         animate="visible"
         style={{
-          padding: '32px 24px 0',
+          padding: '20px 24px 0',
           maxWidth: '360px',
           margin: '0 auto',
         }}
@@ -216,7 +217,7 @@ export default function Install() {
           {[
             { number: '7', label: 'produkter' },
             { number: '130+', label: 'samtal' },
-            { number: '1 gratis', label: 'per produkt' },
+            { number: '7', label: 'gratis samtal' },
           ].map((stat) => (
             <div key={stat.label} style={{ flex: 1 }}>
               <p
@@ -251,7 +252,7 @@ export default function Install() {
         initial="hidden"
         animate="visible"
         style={{
-          padding: '36px 24px 0',
+  padding: '24px 24px 0',
           maxWidth: '360px',
           margin: '0 auto',
           textAlign: 'center',
