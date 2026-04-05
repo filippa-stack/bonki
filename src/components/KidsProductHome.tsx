@@ -12,7 +12,7 @@
  *  4. Still Us only: intro session entry in hero zone
  */
 
-import { useMemo } from 'react';
+import { useMemo, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import type { ProductManifest } from '@/types/product';
@@ -334,6 +334,11 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
   const { space } = useCoupleSpaceContext();
   const progress = useKidsProductProgress(product);
   const tileImages = useFirstCardImages(product, progress);
+  const hasRenderedContent = useRef(false);
+
+  useEffect(() => {
+    hasRenderedContent.current = false;
+  }, [product.id]);
 
   const bg = product.backgroundColor;
   const tileLight = product.tileLight ?? bg;
@@ -346,9 +351,11 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
 
 
   // Loading gate — prevent flash while progress resolves
-  if (progress.loading) {
+  if (progress.loading && !hasRenderedContent.current) {
     return <div style={{ minHeight: '100vh', backgroundColor: bg }} />;
   }
+
+  hasRenderedContent.current = true;
 
   return (
     <div className="min-h-screen relative overflow-x-hidden" style={{ backgroundColor: bg }}>
