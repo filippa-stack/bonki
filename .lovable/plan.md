@@ -1,43 +1,34 @@
 
 
-## Auth Bootstrap Timeout Safety Net
+## Fix Product Home Double Blink on Reload
 
-Two small, tightly-scoped changes to prevent the Lovable preview from hanging on a blank dark screen forever.
+**File:** `src/components/KidsProductHome.tsx` — 3 small additions
 
----
+### 1. Add ref (after existing hooks, ~line 333)
+```tsx
+const hasRenderedContent = useRef(false);
+```
+`useRef` is already imported via React.
 
-### 1. Add 8-second timeout to auth bootstrap
+### 2. Update loading gate (line 349)
+```tsx
+// FROM:
+if (progress.loading) {
+// TO:
+if (progress.loading && !hasRenderedContent.current) {
+```
 
-**File:** `src/contexts/AuthContext.tsx`
+### 3. Set ref before main return (line 353)
+Add `hasRenderedContent.current = true;` immediately before the `return (` of the main JSX.
 
-Inside the existing `useEffect`, wrap the current logic with a `setTimeout` safety net:
+### 4. Reset on product change (after the ref declaration)
+```tsx
+useEffect(() => {
+  hasRenderedContent.current = false;
+}, [product.id]);
+```
+`useEffect` is already imported.
 
-- **Add** `const authTimeout = setTimeout(...)` that fires after 8 000 ms
-- On timeout: set `loading` to `false`, mark `initialSessionResolved = true`, but do **not** touch `user`/`session`
-- **Add** `clearTimeout(authTimeout)` in both the `.then()` and `.catch()` blocks of `getSession()`
-- **Add** `clearTimeout(authTimeout)` in the cleanup return
-
-Nothing else in AuthContext changes — `signOut`, `onAuthStateChange` event handling, and legal consent logic stay exactly as-is.
-
-### 2. Add "Laddar..." label to loading screen
-
-**File:** `src/components/BonkiLoadingScreen.tsx`
-
-Add a `<p>` element with text "Laddar..." below the existing logo/mark divs, inside the centered column. Styled at 13 px, muted cream color (`rgba(253,246,227,0.3)`), `marginTop: 16px`.
-
----
-
-### What stays untouched
-- `signOut` function
-- `onAuthStateChange` callback logic
-- `getSession()` then/catch logic (only `clearTimeout` added)
-- All other files
-
-### Expected behavior
-| Scenario | Result |
-|---|---|
-| Production (normal auth) | Resolves in < 2 s, timeout cleared, no change |
-| Lovable preview (auth hangs) | After 8 s, loading releases → login renders |
-| Slow 3G | Auth still resolves within 8 s window |
-| Loading screen visible | Shows "Laddar..." text instead of blank dark screen |
+### Not changed
+- Loading gate JSX, progress hook, tiles, banners, any other file
 
