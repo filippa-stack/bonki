@@ -1,20 +1,19 @@
 
 
-## Create Favicon from Creature PNG on Dark Background
-
-Generate the favicon using the uploaded transparent creature PNG (`BONKI_1.png`) composited onto the `#0B1026` theme background, then replace the current favicon.
+## Replace Wordmark with New Transparent PNG + Size Bump
 
 ### Steps
 
-1. **Copy uploaded image** — `user-uploads://BONKI_1.png` → `/tmp/BONKI_1.png`
-2. **Generate favicon** — Use Python/Pillow to:
-   - Create a 512×512 canvas filled with `#0B1026`
-   - Paste the creature PNG centered with padding (~15% margin)
-   - Export as 32×32 and 180×180 PNGs
-   - Save to `public/favicon.png` (32px) and update `public/apple-touch-icon-180x180.png`
-3. **Preview at actual size** — Render a comparison image showing the new favicon at 16px, 32px, and 64px so we can judge sharpness before committing
-4. **Update `index.html`** if file paths change (current refs already point to `/favicon.png`)
+1. **Copy asset** — `user-uploads://BONKI_2_1.png` → `src/assets/bonki-wordmark.png` (overwrite existing)
 
-### Why this should help
-The transparent PNG on a solid dark background eliminates any edge artifacts from mismatched backgrounds. The contrast between green creature and dark navy should be cleaner than the current version.
+2. **Login page (`src/pages/Login.tsx`, line 145)**
+   - Change `maxHeight: '40px'` → `maxHeight: '60px'`
+   - The parent `<motion.div>` (line 138) has no background/padding — confirmed clean
+
+3. **Library page (`src/components/ProductLibrary.tsx`, line 695)**
+   - Change `maxHeight: '40px'` → `maxHeight: '60px'`
+   - The parent `<motion.h1>` (line 687-691) only has `marginBottom: '12px'` — no background/padding to remove
+   - Keep the existing `drop-shadow` filter
+
+Both pages already have no visible container styling — the only change is the asset swap and the height bump.
 
