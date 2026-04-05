@@ -105,10 +105,7 @@ export default function ProductHome() {
         <div className="text-center space-y-4">
           <p className="font-serif text-lg" style={{ color: 'var(--text-primary)' }}>Produkten hittades inte</p>
           <button
-            onClick={() => {
-              localStorage.removeItem('bonki-last-active-product');
-              navigate('/');
-            }}
+onClick={() => navigate('/')}
             className="font-serif text-sm underline"
             style={{ color: 'var(--color-text-secondary)' }}
           >
@@ -134,10 +131,7 @@ export default function ProductHome() {
         className="px-5 pt-14 pb-4"
       >
         <button
-          onClick={() => {
-            localStorage.removeItem('bonki-last-active-product');
-            navigate('/');
-          }}
+onClick={() => navigate('/')}
           className="flex items-center gap-1.5 font-serif text-sm mb-6"
           style={{ color: 'var(--color-text-secondary)', opacity: 0.7 }}
         >
