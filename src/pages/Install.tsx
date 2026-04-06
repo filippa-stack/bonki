@@ -104,7 +104,7 @@ export default function Install() {
         style={{
           display: 'flex',
           justifyContent: 'center',
-          padding: '4px 0 0',
+          padding: '8px 0 0',
         }}
       >
         <motion.img
@@ -114,11 +114,11 @@ export default function Install() {
           animate={{ y: [0, -6, 0] }}
           transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
           style={{
-            width: '160px',
-            height: '160px',
+            width: '172px',
+            height: '172px',
             objectFit: 'contain',
-            opacity: 0.95,
-            filter: 'drop-shadow(0 8px 32px rgba(212, 245, 192, 0.15)) drop-shadow(0 0 60px rgba(212, 245, 192, 0.06))',
+            opacity: 1.0,
+            filter: 'drop-shadow(0 8px 32px rgba(212, 245, 192, 0.20)) drop-shadow(0 0 60px rgba(212, 245, 192, 0.10))',
           }}
         />
       </section>
@@ -129,7 +129,7 @@ export default function Install() {
           padding: '0 24px',
           textAlign: 'center',
           maxWidth: '360px',
-          margin: '-8px auto 0',
+          margin: '4px auto 0',
         }}
       >
         <h2
@@ -176,6 +176,7 @@ export default function Install() {
             display: 'flex',
             justifyContent: 'space-around',
             textAlign: 'center',
+            borderTop: '1px solid rgba(212, 245, 192, 0.08)',
             padding: '16px 10px',
           }}
         >
@@ -187,7 +188,7 @@ export default function Install() {
             <div key={stat.label} style={{ flex: 1 }}>
               <p
                 style={{
-                  fontSize: '22px',
+                  fontSize: '24px',
                   fontWeight: 700,
                   color: '#D4F5C0',
                   margin: 0,
@@ -198,7 +199,7 @@ export default function Install() {
               </p>
               <p
                 style={{
-                  fontSize: '12px',
+                  fontSize: '13px',
                   color: 'rgba(212, 245, 192, 0.65)',
                   margin: '4px 0 0',
                   textTransform: 'none' as const,
@@ -340,7 +341,7 @@ export default function Install() {
       {/* Login link */}
       <section
         style={{
-          padding: '20px 24px 36px',
+          padding: '14px 24px 36px',
           textAlign: 'center',
         }}
       >
