@@ -750,7 +750,7 @@ export default function CardView() {
           setLocalPromptIndex(0);
         }
         toastOnce('step_retry', () =>
-          toast('Vi sparar så fort vi kan. Fortsätt bara.', { duration: 2500 })
+          toast('Vi sparar så fort vi kan. Fortsätt bara.', { id: 'step-retry', duration: 2500 })
         );
         return;
       }
@@ -870,6 +870,7 @@ export default function CardView() {
     }
     toastOnce('step_retry', () =>
       toast('Något gick fel. Försök igen.', {
+        id: 'step-error',
         duration: 4000,
         style: {
           background: 'var(--surface-base)',
