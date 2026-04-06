@@ -205,7 +205,19 @@ export function useSessionReflections(
   const setText = useCallback((text: string) => {
     setLocalText(text);
     localTextRef.current = text;
-    setMyReflection(prev => prev ? { ...prev, text } : null);
+    setMyReflection(prev =>
+      prev
+        ? { ...prev, text }
+        : {
+            id: '',
+            sessionId: sessionIdRef.current || '',
+            stepIndex: stepIndexRef.current,
+            userId: userIdRef.current || '',
+            text,
+            state: 'draft' as ReflectionState,
+            updatedAt: new Date().toISOString(),
+          }
+    );
 
     if (pendingSave.current) clearTimeout(pendingSave.current);
 
