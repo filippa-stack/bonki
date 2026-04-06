@@ -12,12 +12,13 @@ import { DevStateProvider } from "@/contexts/DevStateContext";
 import ActiveSessionGuard from "@/components/ActiveSessionGuard";
 import InstallGuideBanner from "@/components/InstallGuideBanner";
 import BonkiLoadingScreen from "@/components/BonkiLoadingScreen";
+import { useRouteTheme } from "@/hooks/useRouteTheme";
 import BottomNav from "@/components/BottomNav";
 import DevModeBadge from "@/components/DevModeBadge";
 import { isDemoMode } from "@/lib/demoMode";
 import { SiteSettingsProvider } from "@/contexts/SiteSettingsContext";
-import { CoupleSpaceProvider } from "@/contexts/CoupleSpaceContext";
-import { NormalizedSessionProvider } from "@/contexts/NormalizedSessionContext";
+import { CoupleSpaceProvider, useCoupleSpaceContext } from "@/contexts/CoupleSpaceContext";
+import { NormalizedSessionProvider, useNormalizedSessionContext } from "@/contexts/NormalizedSessionContext";
 import { OptimisticCompletionsProvider } from "@/contexts/OptimisticCompletionsContext";
 
 import MobileOnlyGate from "@/components/MobileOnlyGate";
@@ -65,14 +66,21 @@ function ProtectedRoutes() {
   const location = useLocation();
   const hasProtectedRendered = useRef(false);
 
+  const { loading: spaceLoading } = useCoupleSpaceContext();
+  const { loading: sessionLoading } = useNormalizedSessionContext();
+
   if (loading && !hasProtectedRendered.current) {
+    return <BonkiLoadingScreen />;
+  }
+
+  // Unified loading gate: wait for space + session data before first paint
+  if (!hasProtectedRendered.current && (spaceLoading || sessionLoading)) {
     return <BonkiLoadingScreen />;
   }
 
   hasProtectedRendered.current = true;
 
   if (!user && !isDemoMode()) {
-    // Preserve query params (e.g. ?demo=1) when redirecting to login
     const loginPath = `/login${location.search}`;
     return <Navigate to={loginPath} replace />;
   }
@@ -148,8 +156,8 @@ function RoutePageViewTracker() {
 function AppRoutes() {
   const { user, loading } = useAuth();
   const hasAppRendered = useRef(false);
-  // Runs during capture loop — detects __sc_step and auto-advances
   useCaptureController();
+  useRouteTheme();
 
   if (loading && !hasAppRendered.current) {
     return <BonkiLoadingScreen />;
