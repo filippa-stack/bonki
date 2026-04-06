@@ -24,8 +24,8 @@ export default defineConfig(({ mode }) => ({
         globPatterns: ["**/*.{js,css,html,ico,png,svg,woff2}"],
       },
       manifest: {
-        name: "Still Us",
-        short_name: "Still Us",
+        name: "BONKI",
+        short_name: "BONKI",
         description: "Ett gemensamt utrymme för er relation",
         theme_color: "#2D4A3E",
         background_color: "#F5F1EC",

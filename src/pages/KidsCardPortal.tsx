@@ -134,6 +134,7 @@ export default function KidsCardPortal() {
 
   const [direction, setDirection] = useState<1 | -1>(1);
   const [browseOpen, setBrowseOpen] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
   const card = categoryCards[currentIndex];
 
   // Portal-open animation state
