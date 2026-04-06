@@ -17,8 +17,8 @@ import BottomNav from "@/components/BottomNav";
 import DevModeBadge from "@/components/DevModeBadge";
 import { isDemoMode } from "@/lib/demoMode";
 import { SiteSettingsProvider } from "@/contexts/SiteSettingsContext";
-import { CoupleSpaceProvider } from "@/contexts/CoupleSpaceContext";
-import { NormalizedSessionProvider } from "@/contexts/NormalizedSessionContext";
+import { CoupleSpaceProvider, useCoupleSpaceContext } from "@/contexts/CoupleSpaceContext";
+import { NormalizedSessionProvider, useNormalizedSessionContext } from "@/contexts/NormalizedSessionContext";
 import { OptimisticCompletionsProvider } from "@/contexts/OptimisticCompletionsContext";
 
 import MobileOnlyGate from "@/components/MobileOnlyGate";
