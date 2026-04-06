@@ -17,7 +17,7 @@ export default function BonkiLoadingScreen() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        zIndex: 9999,
+        zIndex: 50,
       }}
     >
       <style dangerouslySetInnerHTML={{ __html: KEYFRAMES }} />

@@ -117,9 +117,8 @@ export default function Login() {
       }}
     >
       <motion.div
-        initial={{ opacity: 0 }}
+        initial={false}
         animate={{ opacity: 1 }}
-        transition={{ duration: 0.15 }}
         className="w-full max-w-xs text-center"
         style={{ marginTop: '-80px' }}
       >
