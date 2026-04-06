@@ -134,7 +134,10 @@ export default function KidsCardPortal() {
 
   const [direction, setDirection] = useState<1 | -1>(1);
   const [browseOpen, setBrowseOpen] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
   const card = categoryCards[currentIndex];
+
+  useEffect(() => { setImageLoaded(false); }, [card?.id]);
 
   // Portal-open animation state
   const [portalPhase, setPortalPhase] = useState<'idle' | 'phase1' | 'phase2' | 'phase3'>('idle');
@@ -440,6 +443,7 @@ export default function KidsCardPortal() {
                     <img
                       src={imageSrc}
                       alt={card.title}
+                      onLoad={() => setImageLoaded(true)}
                       style={{
                         position: 'absolute',
                         inset: 0,
@@ -447,7 +451,8 @@ export default function KidsCardPortal() {
                         height: '100%',
                         objectFit: 'contain',
                         objectPosition: '50% 50%',
-                        opacity: 1,
+                        opacity: imageLoaded ? 1 : 0,
+                        transition: 'opacity 300ms ease-in',
                         zIndex: 1,
                       }}
                     />
