@@ -75,7 +75,7 @@ export default function Install() {
     <div
       style={{
         minHeight: '100vh',
-        background: MIDNIGHT_INK,
+        background: `radial-gradient(ellipse 80% 50% at 50% 30%, rgba(212, 245, 192, 0.03) 0%, transparent 70%), ${MIDNIGHT_INK}`,
         color: LANTERN_GLOW,
         overflowX: 'hidden',
       }}
@@ -118,7 +118,7 @@ export default function Install() {
             height: '172px',
             objectFit: 'contain',
             opacity: 1.0,
-            filter: 'drop-shadow(0 8px 32px rgba(212, 245, 192, 0.20)) drop-shadow(0 0 60px rgba(212, 245, 192, 0.10))',
+            filter: 'drop-shadow(0 8px 32px rgba(212, 245, 192, 0.20)) drop-shadow(0 0 60px rgba(212, 245, 192, 0.10)) drop-shadow(0 0 100px rgba(212, 245, 192, 0.06))',
           }}
         />
       </section>
@@ -129,7 +129,7 @@ export default function Install() {
           padding: '0 24px',
           textAlign: 'center',
           maxWidth: '360px',
-          margin: '4px auto 0',
+          margin: '8px auto 0',
         }}
       >
         <h2
@@ -138,6 +138,7 @@ export default function Install() {
             fontSize: 'clamp(22px, 5.5vw, 26px)',
             fontWeight: 600,
             lineHeight: 1.3,
+            letterSpacing: '0.01em',
             color: LANTERN_GLOW,
             margin: '0 0 6px',
           }}
@@ -166,7 +167,7 @@ export default function Install() {
       {/* Trust Stats */}
       <section
         style={{
-          padding: '10px 24px 0',
+          padding: '16px 24px 0',
           maxWidth: '360px',
           margin: '0 auto',
         }}
@@ -176,8 +177,8 @@ export default function Install() {
             display: 'flex',
             justifyContent: 'space-around',
             textAlign: 'center',
-            borderTop: '1px solid rgba(212, 245, 192, 0.08)',
-            padding: '16px 10px',
+            borderTop: '1px solid rgba(212, 245, 192, 0.10)',
+            padding: '20px 10px',
           }}
         >
           {[
@@ -216,7 +217,7 @@ export default function Install() {
       {/* CTA */}
       <section
         style={{
-          padding: '12px 24px 0',
+          padding: '16px 24px 0',
           maxWidth: '360px',
           margin: '0 auto',
           textAlign: 'center',
