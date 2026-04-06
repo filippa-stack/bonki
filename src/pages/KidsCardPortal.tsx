@@ -344,12 +344,12 @@ export default function KidsCardPortal() {
         <span
           style={{
             fontFamily: 'var(--font-sans)',
-            fontSize: '12px',
+            fontSize: '10px',
             fontWeight: 600,
-            letterSpacing: '1.5px',
+            letterSpacing: '2px',
             textTransform: 'uppercase',
             color: LANTERN_GLOW,
-            opacity: 0.7,
+            opacity: 0.45,
           }}
         >
           {category.title}
@@ -503,9 +503,9 @@ export default function KidsCardPortal() {
                   style={{
                     fontFamily: 'var(--font-display)',
                     fontSize: '28px',
-                    fontWeight: 700,
+                    fontWeight: 400,
                     color: LANTERN_GLOW,
-                    textShadow: '0 1px 6px rgba(0,0,0,0.4)',
+                    letterSpacing: '-0.3px',
                     margin: 0,
                   }}
                 >
@@ -551,15 +551,14 @@ export default function KidsCardPortal() {
                   fontFamily: 'var(--font-sans)',
                   fontSize: '15px',
                   fontWeight: 500,
-                  color: LANTERN_GLOW,
-                  lineHeight: 1.4,
+                  color: 'rgba(255, 255, 255, 0.6)',
+                  lineHeight: 1.6,
                   margin: 0,
                   display: '-webkit-box',
                   WebkitLineClamp: 2,
                   WebkitBoxOrient: 'vertical',
                   overflow: 'hidden',
                   padding: '0 20px',
-                  opacity: 0.85,
                   marginBottom: '4px',
                 }}
               >
@@ -571,8 +570,8 @@ export default function KidsCardPortal() {
                 fontFamily: 'var(--font-sans)',
                 fontSize: '12px',
                 fontWeight: 400,
-                color: LANTERN_GLOW,
-                opacity: 0.4,
+                color: 'rgba(255, 255, 255, 0.35)',
+                letterSpacing: '0.3px',
                 marginTop: '2px',
               }}
             >
@@ -587,17 +586,17 @@ export default function KidsCardPortal() {
                   style={{
                     display: 'inline-block',
                     marginTop: '14px',
-                    padding: '10px 32px',
-                    borderRadius: '24px',
-                    border: 'none',
-                    background: isLocked ? 'rgba(255, 255, 255, 0.12)' : SAFFRON_FLAME,
+                    padding: '16px 64px',
+                    borderRadius: '12px',
+                    border: isLocked ? '0.5px solid rgba(255, 255, 255, 0.12)' : '0.5px solid rgba(255, 255, 255, 0.3)',
+                    background: 'transparent',
                     cursor: 'pointer',
                     fontFamily: 'var(--font-sans)',
                     fontSize: '15px',
-                    fontWeight: 600,
-                    color: isLocked ? 'var(--text-primary, #FDF6E3)' : '#1a1a1a',
+                    fontWeight: 500,
+                    color: isLocked ? 'rgba(255, 255, 255, 0.5)' : 'rgba(255, 255, 255, 0.85)',
                     letterSpacing: '0.3px',
-                    boxShadow: isLocked ? 'none' : `0 4px 16px ${SAFFRON_FLAME}55`,
+                    WebkitTapHighlightColor: 'transparent',
                   }}
                 >
                   {isLocked ? 'Lås upp för att starta' : 'Starta samtal'}
@@ -628,21 +627,21 @@ export default function KidsCardPortal() {
               disabled={isFirst}
               aria-label="Föregående samtal"
               style={{
-                background: isFirst ? 'none' : `${LANTERN_GLOW}15`,
-                border: 'none',
+                background: 'transparent',
+                border: '0.5px solid rgba(255, 255, 255, 0.15)',
                 borderRadius: '50%',
                 cursor: isFirst ? 'default' : 'pointer',
                 color: LANTERN_GLOW,
                 opacity: isFirst ? 0.2 : 0.8,
-                width: '40px',
-                height: '40px',
+                width: '28px',
+                height: '28px',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                transition: 'opacity 200ms, background 200ms',
+                transition: 'opacity 200ms',
               }}
             >
-              <ChevronLeft size={22} strokeWidth={2} />
+              <ChevronLeft size={14} strokeWidth={2} />
             </button>
             <span
               style={{
@@ -661,21 +660,21 @@ export default function KidsCardPortal() {
               disabled={isLast}
               aria-label="Nästa samtal"
               style={{
-                background: isLast ? 'none' : `${LANTERN_GLOW}15`,
-                border: 'none',
+                background: 'transparent',
+                border: '0.5px solid rgba(255, 255, 255, 0.15)',
                 borderRadius: '50%',
                 cursor: isLast ? 'default' : 'pointer',
                 color: LANTERN_GLOW,
                 opacity: isLast ? 0.2 : 0.8,
-                width: '40px',
-                height: '40px',
+                width: '28px',
+                height: '28px',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                transition: 'opacity 200ms, background 200ms',
+                transition: 'opacity 200ms',
               }}
             >
-              <ChevronRight size={22} strokeWidth={2} />
+              <ChevronRight size={14} strokeWidth={2} />
             </button>
           </div>
 
@@ -683,18 +682,19 @@ export default function KidsCardPortal() {
           <button
             onClick={() => setBrowseOpen(true)}
             style={{
-              background: `${LANTERN_GLOW}18`,
-              border: `1px solid ${LANTERN_GLOW}35`,
-              borderRadius: '20px',
+              background: 'transparent',
+              border: '0.5px solid rgba(255, 255, 255, 0.1)',
+              borderRadius: '12px',
               cursor: 'pointer',
               fontFamily: 'var(--font-sans)',
-              fontSize: '15px',
-              color: LANTERN_GLOW,
-              padding: '8px 22px',
-              opacity: 0.85,
+              fontSize: '12px',
+              fontWeight: 400,
+              color: 'rgba(255, 255, 255, 0.3)',
+              padding: '8px 20px',
+              letterSpacing: '0.3px',
             }}
           >
-            Utforska alla samtal ↓
+            Utforska alla samtal
           </button>
         </div>
       </div>
