@@ -1,44 +1,62 @@
 
 
-## Clear Test Accounts for First-Time User Testing
-
-### What gets deleted (Live environment)
-
-All data tied to emma@bonkistudio.com and sofia@bonkistudio.com across these tables, in dependency order:
-
-1. **couple_session_completions** — for sessions in their spaces
-2. **couple_session_steps** — for sessions in their spaces
-3. **step_reflections** — by user_id (276 rows)
-4. **reflection_responses** — by user_id
-5. **couple_takeaways** — by couple_space_id (4 rows)
-6. **card_takeaways** — via card_sessions in their spaces
-7. **question_bookmarks** — by couple_space_id (1 row)
-8. **prompt_notes** — by couple_space_id (18 rows)
-9. **couple_card_visits** — by couple_space_id
-10. **couple_journey_meta** — by couple_space_id
-11. **couple_progress** — by couple_space_id
-12. **beta_feedback** — by couple_space_id (2 rows)
-13. **card_sessions** — by couple_space_id (1 row)
-14. **couple_sessions** — by couple_space_id (42 rows)
-15. **topic_proposals** — by couple_space_id
-16. **onboarding_events** — by user_id
-17. **notification_preferences** — by user_id
-18. **user_product_access** — by user_id (2 rows)
-19. **user_settings** — by user_id
-20. **user_backups** — by user_id
-21. **product_interest** — by user_id
-22. **couple_members** — by user_id (3 memberships)
-23. **couple_spaces** — the 2 active spaces (+ 1 old left space for Sofia)
-24. **system_events** — by couple_space_id
-
-### Implementation
-
-A single SQL migration that deletes all rows in the correct order (child tables first to avoid FK issues). The migration targets Live data using the three specific space IDs and two user IDs.
-
-The accounts themselves (auth.users) are NOT touched — only the application data is removed. When they log in again, the app will auto-create a fresh couple space, giving them a true first-time experience.
+## Portal Page Design Refresh — Portal-Only Inline Changes
 
 ### Scope
-- **Spaces cleared:** `7ebc060a-...`, `b96c1e5c-...`, `2f7568ba-...`
-- **Users cleared:** `999288dd-...` (Emma), `d3ac01ff-...` (Sofia)
-- **Auth untouched:** They can still log in with their existing credentials
+3 files only. No global components touched.
+
+### File 1: `src/pages/KidsCardPortal.tsx`
+
+**Change 1 — "Starta samtal" button (lines 585–604)**
+Replace solid `SAFFRON_FLAME` fill + `borderRadius: 24px` with ghost outline:
+- `background: 'transparent'`, `border: '0.5px solid rgba(255,255,255,0.3)'`, `borderRadius: '12px'`
+- `padding: '16px 64px'`, `fontSize: '15px'`, `fontWeight: 500`, `color: 'rgba(255,255,255,0.85)'`
+- Remove `boxShadow`. Locked variant gets same ghost shape but with `rgba(255,255,255,0.12)` border and `rgba(255,255,255,0.5)` text.
+
+**Change 2 — Pagination arrows (lines 626–679)**
+- Width/height from `40px` → `28px`
+- Replace `background: ${LANTERN_GLOW}15` with `background: 'transparent'`
+- Add `border: '0.5px solid rgba(255,255,255,0.15)'`
+- Icon size from `22` → `14`
+
+**Change 3 — "Utforska alla samtal" (lines 683–698)**
+- `background: 'transparent'`, `border: '0.5px solid rgba(255,255,255,0.1)'`
+- `borderRadius: '12px'`, `fontSize: '12px'`, `fontWeight: 400`
+- `color: 'rgba(255,255,255,0.3)'`, remove `opacity: 0.85`
+- Remove arrow `↓` from text
+
+**Change 4 — Typography (lines 502–578)**
+- Card title (h2): `fontWeight: 400` (from 700), add `letterSpacing: '-0.3px'`, remove `textShadow`
+- Description (subtitle p): `color: 'rgba(255,255,255,0.6)'` (replace LANTERN_GLOW + 0.85), `lineHeight: 1.6`
+- Metadata (frågor line): `fontSize: '12px'`, `color: 'rgba(255,255,255,0.35)'`, `letterSpacing: '0.3px'`
+- Category header (top bar span): `fontSize: '10px'`, `letterSpacing: '2px'`, `opacity: 0.45` (from 0.7)
+
+### File 2: `src/components/FreeCardBadge.tsx`
+FreeCardBadge is used on both portal tiles AND Category.tsx (library tiles). Both are on dark backgrounds, so frosted glass works everywhere.
+
+Replace entire style block:
+- `background: 'rgba(255,255,255,0.18)'`
+- `backdropFilter: 'blur(8px)'`, `WebkitBackdropFilter: 'blur(8px)'`
+- `border: '0.5px solid rgba(255,255,255,0.15)'`
+- `color: 'rgba(255,255,255,0.9)'`
+- `fontSize: '10px'`, `fontWeight: 500`, `padding: '5px 14px'`, `borderRadius: '20px'`
+- Remove BONKI_ORANGE and LANTERN_GLOW imports (no longer needed)
+
+### File 3: `src/pages/still-us-routes/SuIntroPortal.tsx`
+
+**CTA "Vi är redo" (lines 183–207)**
+Replace solid saffron fill with ghost outline:
+- `background: 'transparent'`, `border: '0.5px solid rgba(255,255,255,0.3)'`, `borderRadius: '12px'`
+- `padding: '16px 64px'`, `fontSize: '15px'`, `fontWeight: 500`
+- `color: 'rgba(255,255,255,0.85)'`, remove `boxShadow`
+
+**Typography**
+- Title h1: `fontWeight: 400` (from 700), add `letterSpacing: '-0.3px'`
+- Metadata (ca 10–20 min): `fontSize: '12px'`, `color: 'rgba(255,255,255,0.35)'` (replace LANTERN + opacity)
+
+### NOT changed
+- BonkiButton.tsx, button.tsx, LoadingCta.tsx
+- Background colors on any page
+- Paywall, onboarding, session, library buttons
+- Portal animation logic
 
