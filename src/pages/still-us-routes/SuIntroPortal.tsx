@@ -11,7 +11,6 @@ import { usePageBackground } from '@/hooks/usePageBackground';
 import { useCardImage } from '@/hooks/useCardImage';
 
 const LANTERN = COLORS.lanternGlow;
-const SAFFRON = COLORS.deepSaffron;
 const BG = COLORS.emberNight;
 
 export default function SuIntroPortal() {
@@ -148,8 +147,9 @@ export default function SuIntroPortal() {
             style={{
               fontFamily: 'var(--font-display)',
               fontSize: '26px',
-              fontWeight: 700,
+              fontWeight: 400,
               color: LANTERN,
+              letterSpacing: '-0.3px',
               margin: '0 0 8px',
             }}
           >
@@ -170,9 +170,9 @@ export default function SuIntroPortal() {
           <p
             style={{
               fontFamily: 'var(--font-sans)',
-              fontSize: '11px',
-              color: LANTERN,
-              opacity: 0.5,
+              fontSize: '12px',
+              color: 'rgba(255, 255, 255, 0.35)',
+              letterSpacing: '0.3px',
             }}
           >
             ca 10–20 min
@@ -191,16 +191,17 @@ export default function SuIntroPortal() {
             display: 'inline-flex',
             alignItems: 'center',
             justifyContent: 'center',
-            padding: '14px 40px',
-            background: SAFFRON,
-            borderRadius: '14px',
-            border: 'none',
+            padding: '16px 64px',
+            borderRadius: '12px',
+            border: '0.5px solid rgba(255, 255, 255, 0.3)',
+            background: 'transparent',
             cursor: 'pointer',
-            fontFamily: 'var(--font-serif)',
-            fontSize: '16px',
-            fontWeight: 600,
-            color: '#1a1008',
-            boxShadow: `0 4px 20px rgba(232, 145, 58, 0.35), 0 2px 8px rgba(0,0,0,0.2)`,
+            fontFamily: 'var(--font-sans)',
+            fontSize: '15px',
+            fontWeight: 500,
+            color: 'rgba(255, 255, 255, 0.85)',
+            letterSpacing: '0.3px',
+            WebkitTapHighlightColor: 'transparent',
           }}
         >
           Vi är redo
