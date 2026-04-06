@@ -134,8 +134,10 @@ export function useSettingsSync(
 
     async function loadSettings() {
       try {
-        // First migrate any existing device data
-        await migrateDeviceData(userId);
+        // First migrate any existing device data (skip if no legacy device_id)
+        if (getDeviceId()) {
+          await migrateDeviceData(userId);
+        }
 
         const { data, error } = await supabase
           .from('user_settings')
