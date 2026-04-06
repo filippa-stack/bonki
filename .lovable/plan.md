@@ -1,42 +1,82 @@
 
 
-## Post-Launch Quick Fixes (3 items)
+## Root Cause
 
-### Fix 1: PWA name "Still Us" → "BONKI"
+Two interacting bugs cause text loss during typing:
 
-**File:** `vite.config.ts` (lines 27–28)
+### Bug 1: `setText` silently drops text when `myReflection` is null
 
-The PWA manifest is defined inline in the Vite config (no separate `manifest.webmanifest` file). Change:
-- `name: "Still Us"` → `name: "BONKI"`
-- `short_name: "Still Us"` → `short_name: "BONKI"`
+In `useSessionReflections.ts` line ~199:
+```js
+setMyReflection(prev => prev ? { ...prev, text } : null);
+```
+When a new prompt loads, the fetch finds no existing row, creates an empty draft (fire-and-forget), but **does not** set `myReflection` locally. So `myReflection` stays `null`. When the user types, `setText` tries to spread into `prev` — but `prev` is null, so it returns null. The autosave still works (it reads from refs), but `myReflection` never becomes non-null from user input alone.
 
-### Fix 2: Illustration fade-in on portal navigation
+### Bug 2: CardView sync effect clears text on every `myReflection` change
 
-**File:** `src/pages/KidsCardPortal.tsx`
+In `CardView.tsx` lines 657–665:
+```js
+useEffect(() => {
+    if (kidsNoteSession.loading) return;
+    if (kidsNoteSession.myReflection?.text && ...) {
+      setKidsNoteLocalText(kidsNoteSession.myReflection.text);
+    } else {
+      setKidsNoteLocalText('');  // ← wipes user's text
+    }
+  }, [kidsNoteSession.loading, kidsNoteSession.myReflection, ...]);
+```
+Since `myReflection` stays null (bug 1), this effect always takes the `else` branch and **clears `kidsNoteLocalText`** whenever the effect re-runs — e.g. when `loading` transitions, or when the realtime subscription delivers the empty-draft row (with `text: ''`, which is falsy).
 
-The image rendering happens inside the `PortalCardImage` render-prop pattern (line 438–455). The fix needs to live in the parent component that renders the `<img>`, not inside `PortalCardImage` itself.
+The combination: user types → autosave timer starts → realtime delivers empty draft row → `myReflection` becomes `{ text: '' }` → sync effect fires → `myReflection.text` is falsy → `setKidsNoteLocalText('')` → **text gone**.
 
-1. Add `imageLoaded` state and reset it when card changes
-2. Add `onLoad` handler and opacity transition to the `<img>` at line 440–453
+## Fix
 
-Since the image is rendered inside a render-prop callback `{(imageSrc) => ...}`, the state must live in the parent component scope. The `card.id` used for reset will come from the current card in the carousel.
+### File 1: `src/hooks/useSessionReflections.ts`
 
-### Fix 3: Loading screen flash — already fixed ✓
+In `setText` callback (~line 199), handle the null case by creating a skeleton reflection object:
+```js
+setMyReflection(prev =>
+  prev
+    ? { ...prev, text }
+    : {
+        id: '',
+        sessionId: sessionIdRef.current || '',
+        stepIndex: stepIndexRef.current,
+        userId: userIdRef.current || '',
+        text,
+        state: 'draft' as ReflectionState,
+        updatedAt: new Date().toISOString(),
+      }
+);
+```
 
-Both guards are confirmed present in `src/App.tsx`:
-- `ProtectedRoutes`: `if (loading && !hasProtectedRendered.current)` 
-- `AppRoutes`: `if (loading && !hasAppRendered.current)`
+### File 2: `src/pages/CardView.tsx`
 
-No changes needed.
+Change the sync effect (lines 657–665) to only sync on initial load, not on every myReflection change. Use a `hasSyncedRef` pattern (same as `SessionStepReflection` already does):
 
-### Summary
+```js
+const kidsNoteSyncedRef = useRef(false);
 
-| # | File | Change |
-|---|---|---|
-| 1 | `vite.config.ts` | Update `name` and `short_name` to "BONKI" |
-| 2 | `src/pages/KidsCardPortal.tsx` | Add `imageLoaded` state + fade-in on card illustration |
-| 3 | `src/App.tsx` | No change needed (already implemented) |
+useEffect(() => { kidsNoteSyncedRef.current = false; }, [kidsNoteStepIndex]);
+
+useEffect(() => {
+    if (kidsNoteSession.loading) return;
+    if (kidsNoteSyncedRef.current) return; // Already synced for this prompt
+    kidsNoteSyncedRef.current = true;
+    if (kidsNoteSession.myReflection?.text && 
+        kidsNoteSession.myReflection.stepIndex === kidsNoteStepIndex) {
+      setKidsNoteLocalText(kidsNoteSession.myReflection.text);
+      setKidsNoteExpanded(true);
+    } else {
+      setKidsNoteLocalText('');
+    }
+  }, [kidsNoteSession.loading, kidsNoteSession.myReflection, kidsNoteStepIndex]);
+```
+
+Remove `localPromptIndex` from dependencies (redundant — `kidsNoteStepIndex` already encodes it).
 
 ### Not changed
-Auth logic, route definitions, session logic, BonkiButton, portal design.
+- Auth logic, route definitions, session lifecycle
+- `SessionStepReflection.tsx` (already uses `hasSyncedRef` correctly)
+- Any other file
 
