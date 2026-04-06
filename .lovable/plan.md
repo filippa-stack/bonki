@@ -1,21 +1,40 @@
 
 
-## Lock Down Dev/Demo Mode on Production
+## Fix: Toast Stacking in CardView
+
+### Problem
+The "Vi sparar så fort vi kan" toast stacks on every step advancement because each call to `toastOnce` creates a new Sonner toast instance (the 3s debounce allows new ones through). Multiple toasts pile up at the bottom of the screen.
+
+### Fix
+Add a fixed `id` to both retry toasts in `src/pages/CardView.tsx` so Sonner **replaces** the existing toast instead of stacking a new one.
 
 ### Changes
 
-**File 1: `src/lib/devTools.ts`**
-- Add `isPreviewEnvironment()` with explicit production domain blocklist (`bonkiapp.com`, `www.bonkiapp.com`, `bonki.lovable.app`) + allowlist (`localhost`, `preview--`, `.local`)
-- Guard `isDevToolsEnabled()` with early `return false` if not preview environment
+**File: `src/pages/CardView.tsx`**
 
-**File 2: `src/lib/demoMode.ts`**
-- Import `isPreviewEnvironment` from devTools
-- Guard `isDemoParam()` with early `return false` if not preview environment
+1. **Line 752-754** — Add fixed `id: 'step-retry'`:
+```typescript
+toastOnce('step_retry', () =>
+  toast('Vi sparar så fort vi kan. Fortsätt bara.', { id: 'step-retry', duration: 2500 })
+);
+```
 
-**File 3: `src/contexts/DevStateContext.tsx`**
-- Import `isPreviewEnvironment` from devTools
-- In the `useMemo`, return `null` early if `!isPreviewEnvironment()` before checking URL params
+2. **Line 871-881** — Add fixed `id: 'step-error'`:
+```typescript
+toastOnce('step_retry', () =>
+  toast('Något gick fel. Försök igen.', {
+    id: 'step-error',
+    duration: 4000,
+    style: {
+      background: 'var(--surface-base)',
+      color: 'var(--color-text-primary)',
+      fontFamily: 'var(--font-body)',
+      fontSize: '14px',
+    },
+  })
+);
+```
 
 ### Not changed
-Auth, routes, paywall components, session logic, product access tables.
+Session creation, completion logic, navigation, resume banner, auth, paywall.
 
