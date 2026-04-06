@@ -61,23 +61,70 @@ import DissolutionSettings from "./pages/DissolutionSettings";
 
 const queryClient = new QueryClient();
 
+function ProtectedContent() {
+  const { loading: spaceLoading } = useCoupleSpaceContext();
+  const { loading: sessionLoading } = useNormalizedSessionContext();
+  const hasContentRendered = useRef(false);
+
+  if (!hasContentRendered.current && (spaceLoading || sessionLoading)) {
+    return <BonkiLoadingScreen />;
+  }
+  hasContentRendered.current = true;
+
+  return (
+    <>
+      <InstallGuideBanner />
+      <ActiveSessionGuard>
+        <div style={{ minHeight: '100vh', background: 'var(--page-bg, #0B1026)' }}>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/categories" element={<Navigate to="/" replace />} />
+            <Route path="/still-us/explore" element={<StillUsExplore />} />
+            <Route path="/still-us/intro" element={<SuIntroPortal />} />
+            <Route path="/category/:categoryId" element={<Category />} />
+            <Route path="/card/:cardId" element={<CardView />} />
+            <Route path="/preview/:cardId" element={<CardPreview />} />
+            <Route path="/product/:slug" element={<ProductHome />} />
+            <Route path="/product/:productSlug/portal/:categoryId" element={<KidsCardPortal />} />
+            <Route path="/saved" element={<Navigate to="/journal" replace />} />
+            <Route path="/shared" element={<SharedSummary />} />
+            <Route path="/journal" element={<Journal />} />
+            <Route path="/diary/:productId" element={<Diary />} />
+            <Route path="/session/:cardId/complete" element={<CardCompletePage />} />
+            <Route path="/session/:cardId/tillbaka" element={<TillbakaPage />} />
+            <Route path="/session/:cardId/tillbaka-complete" element={<TillbakaComplete />} />
+            <Route path="/check-in/*" element={<Navigate to="/product/still-us" replace />} />
+            <Route path="/share" element={<Navigate to="/product/still-us" replace />} />
+            <Route path="/format-preview" element={<Navigate to="/product/still-us" replace />} />
+            <Route path="/tier2-setup" element={<Navigate to="/product/still-us" replace />} />
+            <Route path="/session/:cardId/start" element={<Navigate to="/product/still-us" replace />} />
+            <Route path="/session/:cardId/complete-session1" element={<Navigate to="/product/still-us" replace />} />
+            <Route path="/session/:cardId/session2-start" element={<Navigate to="/product/still-us" replace />} />
+            <Route path="/session/:cardId/live-session2" element={<Navigate to="/product/still-us" replace />} />
+            <Route path="/journey" element={<Journey />} />
+            <Route path="/solo-reflect/:cardId" element={<SoloReflect />} />
+            <Route path="/journey-preview" element={<JourneyPreview />} />
+            <Route path="/unlock" element={<Paywall />} />
+            <Route path="/paywall-full" element={<PaywallFullScreen />} />
+            <Route path="/ceremony" element={<CompletionCeremony />} />
+            <Route path="/settings/dissolve" element={<DissolutionSettings />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </div>
+        <BottomNav />
+      </ActiveSessionGuard>
+    </>
+  );
+}
+
 function ProtectedRoutes() {
   const { user, loading } = useAuth();
   const location = useLocation();
   const hasProtectedRendered = useRef(false);
 
-  const { loading: spaceLoading } = useCoupleSpaceContext();
-  const { loading: sessionLoading } = useNormalizedSessionContext();
-
   if (loading && !hasProtectedRendered.current) {
     return <BonkiLoadingScreen />;
   }
-
-  // Unified loading gate: wait for space + session data before first paint
-  if (!hasProtectedRendered.current && (spaceLoading || sessionLoading)) {
-    return <BonkiLoadingScreen />;
-  }
-
   hasProtectedRendered.current = true;
 
   if (!user && !isDemoMode()) {
@@ -87,58 +134,13 @@ function ProtectedRoutes() {
 
   return (
     <CoupleSpaceProvider>
-    <NormalizedSessionProvider>
-    <OptimisticCompletionsProvider>
-    <AppProvider>
-      
-      <InstallGuideBanner />
-      <ActiveSessionGuard>
-        <div style={{ minHeight: '100vh', background: 'var(--page-bg, #0B1026)' }}>
-            <Routes>
-              <Route path="/" element={<Index />} />
-              
-              <Route path="/categories" element={<Navigate to="/" replace />} />
-              <Route path="/still-us/explore" element={<StillUsExplore />} />
-              <Route path="/still-us/intro" element={<SuIntroPortal />} />
-              <Route path="/category/:categoryId" element={<Category />} />
-              <Route path="/card/:cardId" element={<CardView />} />
-              <Route path="/preview/:cardId" element={<CardPreview />} />
-              <Route path="/product/:slug" element={<ProductHome />} />
-              <Route path="/product/:productSlug/portal/:categoryId" element={<KidsCardPortal />} />
-              <Route path="/saved" element={<Navigate to="/journal" replace />} />
-              <Route path="/shared" element={<SharedSummary />} />
-              <Route path="/journal" element={<Journal />} />
-              <Route path="/diary/:productId" element={<Diary />} />
-
-              {/* Still Us: only card-complete and tillbaka routes kept */}
-              <Route path="/session/:cardId/complete" element={<CardCompletePage />} />
-              <Route path="/session/:cardId/tillbaka" element={<TillbakaPage />} />
-              <Route path="/session/:cardId/tillbaka-complete" element={<TillbakaComplete />} />
-
-              {/* Legacy Still Us routes → redirect to product home */}
-              <Route path="/check-in/*" element={<Navigate to="/product/still-us" replace />} />
-              <Route path="/share" element={<Navigate to="/product/still-us" replace />} />
-              <Route path="/format-preview" element={<Navigate to="/product/still-us" replace />} />
-              <Route path="/tier2-setup" element={<Navigate to="/product/still-us" replace />} />
-              <Route path="/session/:cardId/start" element={<Navigate to="/product/still-us" replace />} />
-              <Route path="/session/:cardId/complete-session1" element={<Navigate to="/product/still-us" replace />} />
-              <Route path="/session/:cardId/session2-start" element={<Navigate to="/product/still-us" replace />} />
-              <Route path="/session/:cardId/live-session2" element={<Navigate to="/product/still-us" replace />} />
-              <Route path="/journey" element={<Journey />} />
-              <Route path="/solo-reflect/:cardId" element={<SoloReflect />} />
-              <Route path="/journey-preview" element={<JourneyPreview />} />
-              <Route path="/unlock" element={<Paywall />} />
-              <Route path="/paywall-full" element={<PaywallFullScreen />} />
-              <Route path="/ceremony" element={<CompletionCeremony />} />
-              <Route path="/settings/dissolve" element={<DissolutionSettings />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-        </div>
-        <BottomNav />
-      </ActiveSessionGuard>
-    </AppProvider>
-    </OptimisticCompletionsProvider>
-    </NormalizedSessionProvider>
+      <NormalizedSessionProvider>
+        <OptimisticCompletionsProvider>
+          <AppProvider>
+            <ProtectedContent />
+          </AppProvider>
+        </OptimisticCompletionsProvider>
+      </NormalizedSessionProvider>
     </CoupleSpaceProvider>
   );
 }
