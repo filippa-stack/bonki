@@ -1,38 +1,44 @@
 
 
-## Install Page: 8.5 → 10/10
+## Clear Test Accounts for First-Time User Testing
 
-### Issues visible in the screenshot
+### What gets deleted (Live environment)
 
-1. **No atmospheric depth** — the page is flat Midnight Ink from top to bottom. Premium apps (Headspace, Calm) use a subtle radial gradient behind the hero to create depth and draw the eye.
+All data tied to emma@bonkistudio.com and sofia@bonkistudio.com across these tables, in dependency order:
 
-2. **Creature floats in a void** — the logo sits on flat dark with a barely-visible glow. It needs a warm ambient radial behind it to feel like it's "alive" in the space.
+1. **couple_session_completions** — for sessions in their spaces
+2. **couple_session_steps** — for sessions in their spaces
+3. **step_reflections** — by user_id (276 rows)
+4. **reflection_responses** — by user_id
+5. **couple_takeaways** — by couple_space_id (4 rows)
+6. **card_takeaways** — via card_sessions in their spaces
+7. **question_bookmarks** — by couple_space_id (1 row)
+8. **prompt_notes** — by couple_space_id (18 rows)
+9. **couple_card_visits** — by couple_space_id
+10. **couple_journey_meta** — by couple_space_id
+11. **couple_progress** — by couple_space_id
+12. **beta_feedback** — by couple_space_id (2 rows)
+13. **card_sessions** — by couple_space_id (1 row)
+14. **couple_sessions** — by couple_space_id (42 rows)
+15. **topic_proposals** — by couple_space_id
+16. **onboarding_events** — by user_id
+17. **notification_preferences** — by user_id
+18. **user_product_access** — by user_id (2 rows)
+19. **user_settings** — by user_id
+20. **user_backups** — by user_id
+21. **product_interest** — by user_id
+22. **couple_members** — by user_id (3 memberships)
+23. **couple_spaces** — the 2 active spaces (+ 1 old left space for Sofia)
+24. **system_events** — by couple_space_id
 
-3. **Headline lacks letterspacing** — the serif text at this size needs `letterSpacing: '0.01em'` to breathe. Currently it feels slightly cramped.
+### Implementation
 
-4. **Stats section is visually orphaned** — the thin border-top is too subtle. The numbers and labels need slightly more vertical padding to feel like a deliberate design element rather than floating text.
+A single SQL migration that deletes all rows in the correct order (child tables first to avoid FK issues). The migration targets Live data using the three specific space IDs and two user IDs.
 
-5. **No visual hierarchy between sections** — everything has the same spacing rhythm. The gap between the trust badge and stats should be larger than the gap between headline and badge.
+The accounts themselves (auth.users) are NOT touched — only the application data is removed. When they log in again, the app will auto-create a fresh couple space, giving them a true first-time experience.
 
-### Changes (Install.tsx only)
-
-**1. Add radial ambient glow behind the page**
-- On the root `div`, add a layered background: a soft radial gradient centered at ~30% from top, using `rgba(212, 245, 192, 0.03)` fading to transparent, on top of MIDNIGHT_INK. This creates subtle atmospheric depth.
-
-**2. Increase creature glow warmth**  
-- Add a third drop-shadow layer with a warm teal tone: `drop-shadow(0 0 100px rgba(212, 245, 192, 0.06))` for wide atmospheric spread.
-
-**3. Headline letterspacing**
-- Add `letterSpacing: '0.01em'` to the h2 for refined serif typography.
-
-**4. Section spacing adjustments**
-- Value proposition section: increase top margin from `4px` to `8px`
-- Stats section: increase top padding from `10px` to `16px` and inner padding from `16px 10px` to `20px 10px`
-- CTA section: increase top padding from `12px` to `16px`
-
-**5. Stats border refinement**
-- Increase border opacity from `0.08` to `0.10` so the divider is actually visible
-
-### File changed
-`src/pages/Install.tsx` only — five surgical tweaks, no structural changes.
+### Scope
+- **Spaces cleared:** `7ebc060a-...`, `b96c1e5c-...`, `2f7568ba-...`
+- **Users cleared:** `999288dd-...` (Emma), `d3ac01ff-...` (Sofia)
+- **Auth untouched:** They can still log in with their existing credentials
 
