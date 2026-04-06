@@ -86,7 +86,7 @@ export default function Index() {
   useThemeSwitcher();
 
   const migrationRan = useRef(false);
-  const [dbOnboardingChecked, setDbOnboardingChecked] = useState(false);
+  const [dbOnboardingChecked, setDbOnboardingChecked] = useState(hasCompletedOnboarding);
 
   // One-time migration: paid_at → user_product_access
   useEffect(() => {
