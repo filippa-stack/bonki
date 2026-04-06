@@ -1,33 +1,61 @@
 
 
-## Bonki Bug Fix — Free Card Reflections, Toast, and Completion Nav
+## Bonki Performance & Flicker Elimination — Root-Level Fix
 
 ### Summary
-5 targeted changes in `CardView.tsx` fixing: (1) kids notes lost when session ID arrives late, (2) step completion failing when RPC can't find session, (3) toast styling mismatch, (4) lingering session not completing server-side, (5) wrong completedSessionCount for kids products.
+3 changes: new `useRouteTheme` hook (useLayoutEffect-based background sync), unified loading gate in `ProtectedRoutes`, and inline style on `<html>` in index.html.
 
-### Changes — all in `src/pages/CardView.tsx`
+### Critical scoping rule
+- `useRouteTheme()` → called in `AppRoutes` (inside `BrowserRouter`, outside providers)
+- Unified loading gate → inside `ProtectedRoutes` (inside `CoupleSpaceProvider` + `NormalizedSessionProvider`)
+- These are two different levels. Do NOT hoist space/session loading checks into `AppRoutes`.
 
-**Change 1 — Session recovery for kids notes (after line 645)**
-Add a `prevKidsSessionIdRef` + `useEffect` that re-pushes `kidsNoteLocalText` into `kidsNoteSession.setText()` when `activeSessionId` transitions from null to valid. Mirrors the existing pattern in `SessionStepReflection.tsx`.
+```text
+BrowserRouter
+  └── AppRoutes
+        ├── useRouteTheme()              ← HERE (no provider needed)
+        └── Routes
+             └── /* → ProtectedRoutes
+                    ├── CoupleSpaceProvider
+                    │   └── NormalizedSessionProvider
+                    │       └── AppProvider
+                    │           ├── unified gate   ← HERE (contexts available)
+                    │           └── ActiveSessionGuard → Routes
+```
 
-**Change 2 — activeSessionId fallback in handleCompleteStep (line 724)**
-After the RPC lookup returns null, check `activeSessionId` as fallback before the lazy-activate path. Guarded by `!== 'dev-session'`.
+### Change 1: Create `src/hooks/useRouteTheme.ts`
+New file. Uses `useLocation().pathname` + `useLayoutEffect` to set `--surface-base`, `--page-bg`, `--color-bg`, `--color-bg-base`, and `document.body.style.backgroundColor` synchronously before paint. Resolves colors from static product manifests (`allProducts`, `getProductForCard`). Defaults to `#0B1026`.
 
-**Change 3 — Style the "Vi sparar" toast + dismiss on card change**
-- Line 752: Add inline `style` block matching the error toast pattern.
-- Line 433 effect: Add `toast.dismiss('step-retry')` on `cardId` change.
+Route matching:
+- `/product/:slug` → `product.backgroundColor`
+- `/card/:cardId` → product-for-card backgroundColor
+- `/shared`, `/diary` → `#1A1A2E`
+- Everything else → `#0B1026`
 
-**Change 4 — Complete lingering session in fallback (line 744)**
-When `sessionId` is still null on the last step, do one final `get_active_session_state` check. If found and `card_id` matches, call `complete_couple_session_step` via the existing RPC. Wrapped in try/catch; `setShowCompletion(true)` always fires.
+### Change 2: Unified loading gate in `ProtectedRoutes` (App.tsx)
+**In `AppRoutes`**: Add `useRouteTheme()` call only — no loading gate here.
 
-**Change 5 — completedSessionCount via card_id membership (line 332)**
-Replace `.eq('product_id', ...)` with `.in('card_id', productCardIds)` for kids products. Falls back to `product_id` filter for legacy Still Us cards.
+**In `ProtectedRoutes`**: After the existing auth check, before rendering children, add a combined gate:
+```typescript
+const { loading: spaceLoading } = useCoupleSpaceContext();
+const { loading: sessionLoading } = useNormalizedSessionContext();
+
+if (!hasProtectedRendered.current && (spaceLoading || sessionLoading)) {
+  return <BonkiLoadingScreen />;
+}
+```
+This replaces the sequential cascade (auth loader → saffron dot → skeleton) with one screen. The `hasProtectedRendered` ref prevents re-engagement after first render.
+
+### Change 3: `index.html` — inline style on `<html>`
+Add `style="background-color: #0B1026;"` to the `<html lang="sv">` tag.
 
 ### Files modified
-| File | Lines affected |
+| File | Action |
 |---|---|
-| `src/pages/CardView.tsx` | ~433, ~645, ~724, ~744, ~752, ~332 |
+| `src/hooks/useRouteTheme.ts` | Create |
+| `src/App.tsx` | Edit (~8 lines) |
+| `index.html` | Edit (1 attribute) |
 
 ### Not changed
-All items in the DO NOT CHANGE list. No other files touched. No database migrations. No edge function changes.
+All DO NOT CHANGE items. No removal of `hasRenderedContent` refs, `usePageBackground`, `useProductTheme`, `ActiveSessionGuard`, or any autosave/session machinery.
 
