@@ -6,12 +6,15 @@
  * click required. The flag persists in sessionStorage for the tab.
  */
 
+import { isPreviewEnvironment } from '@/lib/devTools';
+
 const DEMO_KEY = 'bonki-demo-mode';
 const DEMO_ENTERED_KEY = 'bonki-demo-entered';
 
 /** Was ?demo=1 used (or previously set in this tab)? Auto-enters demo. */
 export function isDemoParam(): boolean {
   if (typeof window === 'undefined') return false;
+  if (!isPreviewEnvironment()) return false;
   const params = new URLSearchParams(window.location.search);
   if (params.get('demo') === '1') {
     try {
