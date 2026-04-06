@@ -328,16 +328,31 @@ export default function CardView() {
       .then(({ data }) => {
         setCompletedSessionId(data?.id ?? null);
       });
-    // Count completed sessions for this product
-    supabase
-      .from('couple_sessions')
-      .select('id', { count: 'exact', head: true })
-      .eq('couple_space_id', space.id)
-      .eq('status', 'completed')
-      .eq('product_id', product?.id ?? 'still_us')
-      .then(({ count }) => {
-        setCompletedSessionCount(count ?? 0);
-      });
+    // Count completed sessions for this product — resolve via card_id membership
+    // instead of product_id (product_id is stale due to 4-param RPC overload bug)
+    const productCardIds = product?.cards.map(c => c.id) ?? [];
+    if (productCardIds.length > 0) {
+      supabase
+        .from('couple_sessions')
+        .select('id', { count: 'exact', head: true })
+        .eq('couple_space_id', space.id)
+        .eq('status', 'completed')
+        .in('card_id', productCardIds)
+        .then(({ count }) => {
+          setCompletedSessionCount(count ?? 0);
+        });
+    } else {
+      // Fallback for legacy Still Us cards not in product manifests
+      supabase
+        .from('couple_sessions')
+        .select('id', { count: 'exact', head: true })
+        .eq('couple_space_id', space.id)
+        .eq('status', 'completed')
+        .eq('product_id', 'still_us')
+        .then(({ count }) => {
+          setCompletedSessionCount(count ?? 0);
+        });
+    }
   }, [space, cardId, devState, showCompletion, product?.id, isFromArchive]);
 
   // ─── Stale/orphan session detection ───
@@ -434,6 +449,7 @@ export default function CardView() {
     eagerSessionRef.current = false;
     hasRenderedContent.current = false;
     userDismissedCompletion.current = false;
+    toast.dismiss('step-retry');
   }, [cardId]);
   useEffect(() => {
     const needsEagerSession = isKidsProduct || product?.id === 'still_us';
@@ -643,6 +659,20 @@ export default function CardView() {
   );
   const [kidsNoteExpanded, setKidsNoteExpanded] = useState(false);
   const [kidsNoteLocalText, setKidsNoteLocalText] = useState('');
+
+  // ─── Recovery: re-push typed text when session arrives late ───
+  // Mirrors the null→valid pattern in SessionStepReflection.tsx (lines 93–103).
+  // Without this, notes typed before activeSessionId resolves are silently lost.
+  const prevKidsSessionIdRef = useRef<string | null>(isKidsProduct ? (activeSessionId ?? null) : null);
+  useEffect(() => {
+    const wasNull = !prevKidsSessionIdRef.current;
+    const nowValid = !!(isKidsProduct && activeSessionId);
+    prevKidsSessionIdRef.current = isKidsProduct ? (activeSessionId ?? null) : null;
+
+    if (wasNull && nowValid && kidsNoteLocalText.trim()) {
+      kidsNoteSession.setText(kidsNoteLocalText);
+    }
+  }, [activeSessionId, isKidsProduct]); // kidsNoteLocalText intentionally excluded — only fire on session ID transitions
   const [kidsNoteSaveIndicator, setKidsNoteSaveIndicator] = useState<'idle' | 'saved'>('idle');
   const kidsNoteInteractedRef = useRef(false);
   const kidsNoteTextareaRef = useRef<HTMLTextAreaElement>(null);
@@ -722,6 +752,12 @@ export default function CardView() {
       sessionId = row?.session_id ?? null;
     }
 
+    // Fallback: use activeSessionId if RPC returned null (can happen when
+    // the eager session was just created and normalizedSession hasn't refetched yet)
+    if (!sessionId && activeSessionId && activeSessionId !== 'dev-session') {
+      sessionId = activeSessionId;
+    }
+
     if (!sessionId) {
       const card = getCardById(cardId);
       if (space?.id && card) {
@@ -744,13 +780,40 @@ export default function CardView() {
       if (!sessionId) {
         if (isDevToolsEnabled()) console.warn('[step-complete] no session after retry — advancing locally');
         if (displayIndex >= effectiveSteps.length - 1) {
+          // Try one more time to find and complete the session via RPC
+          // (the eager session may have finished creating since the first check)
+          try {
+            const { data: lastCheck } = await supabase.rpc('get_active_session_state');
+            const lastRow = Array.isArray(lastCheck) ? lastCheck[0] : lastCheck;
+            if (lastRow?.session_id && lastRow?.card_id === cardId) {
+              const { data: completeData } = await supabase.rpc('complete_couple_session_step', {
+                p_session_id: lastRow.session_id,
+                p_step_index: displayIndex,
+              });
+              const completeResult = Array.isArray(completeData) ? completeData[0] : completeData;
+              if (completeResult?.is_session_complete) {
+                normalizedSession.refetch();
+              }
+            }
+          } catch (e) {
+            if (isDevToolsEnabled()) console.error('[step-complete] cleanup complete failed:', e);
+          }
           setShowCompletion(true);
         } else {
           setLocalStepIndex(displayIndex + 1);
           setLocalPromptIndex(0);
         }
         toastOnce('step_retry', () =>
-          toast('Vi sparar så fort vi kan. Fortsätt bara.', { id: 'step-retry', duration: 2500 })
+          toast('Vi sparar så fort vi kan. Fortsätt bara.', {
+            id: 'step-retry',
+            duration: 2500,
+            style: {
+              background: 'var(--surface-base)',
+              color: 'var(--color-text-primary)',
+              fontFamily: 'var(--font-body)',
+              fontSize: '14px',
+            },
+          })
         );
         return;
       }
