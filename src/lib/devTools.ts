@@ -9,11 +9,24 @@
  * unless explicitly opted-in via (1) or (2).
  */
 
+/** True on localhost or Lovable preview URLs — false on published domain */
+export function isPreviewEnvironment(): boolean {
+  if (typeof window === 'undefined') return false;
+  const host = window.location.hostname;
+  // Explicitly block production domains
+  if (host === 'bonkiapp.com' || host === 'www.bonkiapp.com') return false;
+  if (host === 'bonki.lovable.app') return false;
+  return host === 'localhost'
+    || host.includes('preview--')
+    || host.endsWith('.local');
+}
+
 /** The only user ID allowed to activate dev tools */
 const DEV_ADMIN_UID = 'b29f4c84-0426-4b8f-9293-dccf9141a4b5';
 
 export function isDevToolsEnabled(): boolean {
   if (typeof window === 'undefined') return false;
+  if (!isPreviewEnvironment()) return false;
 
   const params = new URLSearchParams(window.location.search);
   if (params.get('dev') === '1') {

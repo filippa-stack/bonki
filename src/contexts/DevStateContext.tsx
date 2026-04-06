@@ -1,6 +1,6 @@
 import { createContext, useContext, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { isDevToolsEnabled } from '@/lib/devTools';
+import { isDevToolsEnabled, isPreviewEnvironment } from '@/lib/devTools';
 import type { DevState } from '@/hooks/useDevState';
 
 const DEV_STATE_STORAGE_KEY = 'bonki-dev-state';
@@ -17,6 +17,8 @@ export function DevStateProvider({ children }: { children: React.ReactNode }) {
   const [params] = useSearchParams();
 
   const devState = useMemo<DevState>(() => {
+    if (!isPreviewEnvironment()) return null;
+
     const raw = params.get('devState');
 
     // If devState param exists, treat it as implicit dev activation
