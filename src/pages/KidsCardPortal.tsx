@@ -28,7 +28,6 @@ import {
   MIDNIGHT_INK,
   LANTERN_GLOW,
   DRIFTWOOD,
-  SAFFRON_FLAME,
 } from '@/lib/palette';
 
 /* ── Helpers ── */

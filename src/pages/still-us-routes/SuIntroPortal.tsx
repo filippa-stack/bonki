@@ -11,7 +11,6 @@ import { usePageBackground } from '@/hooks/usePageBackground';
 import { useCardImage } from '@/hooks/useCardImage';
 
 const LANTERN = COLORS.lanternGlow;
-const SAFFRON = COLORS.deepSaffron;
 const BG = COLORS.emberNight;
 
 export default function SuIntroPortal() {
