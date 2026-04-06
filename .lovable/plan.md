@@ -1,29 +1,31 @@
 
 
-## Assessment: 8.5/10 — Close but Not Quite Headspace
+## Fix Post-Publish Flickering (5 fixes)
 
-The page works well and everything is above fold. Here's what separates it from a true 10/10:
+### Fix 1: Install.tsx — Remove all entrance animations
+- Remove the `fadeUp` variants object entirely
+- Replace all `motion.section` → `section`, `motion.img` → `img`, `motion.h2` → `h2`, `motion.div` → `div`, `motion.p` → `p`
+- Keep the creature logo as `motion.img` ONLY for its breathing `animate={{ y: [0, -6, 0] }}` — remove `custom` and `variants` props from it
+- Keep CTA as `motion.button` with ONLY `whileTap={{ scale: 0.97 }}` — remove `custom`, `variants`, and `transition` props
+- Remove `framer-motion` import if no longer needed (it will still be needed for the two motion elements above)
 
-### What's strong
-- CTA visible without scrolling
-- Trust badge with shield icon looks professional
-- Breathing animation on creature adds life
-- Stats are clean and readable
+### Fix 2: Install.tsx — CTA button cleanup
+- Already handled in Fix 1: the button keeps only `whileTap={{ scale: 0.97 }}`
 
-### What needs fixing (3 changes)
+### Fix 3: BonkiLoadingScreen.tsx — Reduce z-index
+- Change `zIndex: 9999` → `zIndex: 50`
+- The `dangerouslySetInnerHTML` keyframes are a static string and harmless; no change needed there
 
-**1. Headline font size too small — lacks hero impact**
-- Currently 20px serif. Headspace uses ~24-28px for their hero copy.
-- Increase to `clamp(22px, 5.5vw, 26px)` for responsive scaling. This gives presence without breaking the fold.
+### Fix 4: Login.tsx — Remove entrance flicker
+- Change the outer `motion.div` from `initial={{ opacity: 0 }}` → `initial={false}`
+- Change the creature `motion.img` from `initial={{ opacity: 0, scale: 0.92 }}` → `initial={false}`
+- These two changes eliminate the fade-in re-trigger on state changes
 
-**2. CTA button padding is excessive — looks bloated**
-- Currently `padding: '16px 32px'` — the button is visually taller than it needs to be.
-- Reduce to `padding: '14px 32px'` for a sleeker profile. Also reduce `fontSize` from `17px` to `16px`.
+### Fix 5: InstallGuideBanner.tsx — No changes needed
+- The banner uses `AnimatePresence` with a delayed mount (1.5s timeout) and only appears once per session. Its animation is intentional entrance behavior, not a flicker bug. No change required.
 
-**3. Creature glow too subtle — needs warmth**
-- Current `drop-shadow(0 8px 32px rgba(212, 245, 192, 0.08))` is barely visible.
-- Increase to `rgba(212, 245, 192, 0.15)` and add a second layer: `drop-shadow(0 0 60px rgba(212, 245, 192, 0.06))` for atmospheric warmth.
-
-### File changed
-`src/pages/Install.tsx` only
+### Files changed
+- `src/pages/Install.tsx`
+- `src/components/BonkiLoadingScreen.tsx`
+- `src/pages/Login.tsx`
 
