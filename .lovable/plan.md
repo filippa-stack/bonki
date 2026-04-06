@@ -1,43 +1,19 @@
 
 
-## Performance: Apply Fixes 3 + 4
+## Stop Loading Screen Flash Between Pages
 
-Two surgical changes, no structural risk.
+### What
+Add `hasRenderedContent` ref gates to both `AppRoutes` and `ProtectedRoutes` in `src/App.tsx` so `BonkiLoadingScreen` only appears on cold start, not during page navigation.
 
-### Fix 3: `src/hooks/useSettingsSync.ts`
-In `loadSettings()`, skip the `migrateDeviceData` call when no device_id exists in localStorage. Change:
+### Changes — `src/App.tsx` only
 
-```
-await migrateDeviceData(userId);
-```
-to:
-```
-if (getDeviceId()) {
-  await migrateDeviceData(userId);
-}
-```
-
-This avoids a wasted query + potential insert round-trip on every app load for users who never had the old device-based system.
-
-### Fix 4: `src/pages/Index.tsx`
-Move the synchronous onboarding short-circuit out of the `useEffect` and into the `useState` initializer. Change:
-
-```typescript
-const [dbOnboardingChecked, setDbOnboardingChecked] = useState(false);
-```
-to:
-```typescript
-const [dbOnboardingChecked, setDbOnboardingChecked] = useState(hasCompletedOnboarding);
-```
-
-This eliminates one render frame where `dbOnboardingChecked` is `false` despite `hasCompletedOnboarding` being `true`, removing a flash of `BonkiLoadingScreen`. The existing `useEffect` still handles the DB fallback for users who cleared localStorage.
-
-### Files changed
-- `src/hooks/useSettingsSync.ts` — 3-line guard around `migrateDeviceData`
-- `src/pages/Index.tsx` — 1-line change to `useState` initializer
+1. Add `useRef` to the existing React import
+2. In `ProtectedRoutes`: add `const hasProtectedRendered = useRef(false)`, change loading gate to `if (loading && !hasProtectedRendered.current)`, set `hasProtectedRendered.current = true` before the main return
+3. In `AppRoutes`: add `const hasAppRendered = useRef(false)`, change loading gate to `if (loading && !hasAppRendered.current)`, set `hasAppRendered.current = true` before the main return
 
 ### Not changed
-- App.tsx provider nesting (Fix 2 — deferred)
-- AuthContext prefetch (Fix 5 — deferred)
-- useCoupleSpace RPC consolidation (Fix 1 — deferred)
+- AuthContext loading logic
+- Redirect-to-login logic
+- Route definitions
+- Any other file
 
