@@ -1,31 +1,26 @@
 
 
-## Fix Post-Publish Flickering (5 fixes)
+## Polish Install to True 10/10
 
-### Fix 1: Install.tsx — Remove all entrance animations
-- Remove the `fadeUp` variants object entirely
-- Replace all `motion.section` → `section`, `motion.img` → `img`, `motion.h2` → `h2`, `motion.div` → `div`, `motion.p` → `p`
-- Keep the creature logo as `motion.img` ONLY for its breathing `animate={{ y: [0, -6, 0] }}` — remove `custom` and `variants` props from it
-- Keep CTA as `motion.button` with ONLY `whileTap={{ scale: 0.97 }}` — remove `custom`, `variants`, and `transition` props
-- Remove `framer-motion` import if no longer needed (it will still be needed for the two motion elements above)
+### 1. Give headline breathing room
+- Change creature section padding from `'4px 0 0'` to `'8px 0 0'`
+- Change value proposition margin from `'-8px auto 0'` to `'4px auto 0'`
+- This adds ~16px of air between creature and headline
 
-### Fix 2: Install.tsx — CTA button cleanup
-- Already handled in Fix 1: the button keeps only `whileTap={{ scale: 0.97 }}`
+### 2. Elevate stats with subtle dividers
+- Add a thin `1px` top border (`rgba(212, 245, 192, 0.08)`) to the stats container
+- Bump stat numbers to `24px` and labels to `13px` for better readability
+- This frames them as a distinct section rather than floating numbers
 
-### Fix 3: BonkiLoadingScreen.tsx — Reduce z-index
-- Change `zIndex: 9999` → `zIndex: 50`
-- The `dangerouslySetInnerHTML` keyframes are a static string and harmless; no change needed there
+### 3. Tighten CTA group (button + subtext + login)
+- Reduce login section padding from `'20px 24px 36px'` to `'14px 24px 36px'`
+- This pulls "Redan medlem?" closer to the CTA sub-text, creating one cohesive action block
 
-### Fix 4: Login.tsx — Remove entrance flicker
-- Change the outer `motion.div` from `initial={{ opacity: 0 }}` → `initial={false}`
-- Change the creature `motion.img` from `initial={{ opacity: 0, scale: 0.92 }}` → `initial={false}`
-- These two changes eliminate the fade-in re-trigger on state changes
+### 4. Boost creature presence
+- Increase creature from `160px` to `172px`
+- Increase glow intensity: first shadow from `0.15` to `0.20`, second from `0.06` to `0.10`
+- Full opacity (`1.0` instead of `0.95`)
 
-### Fix 5: InstallGuideBanner.tsx — No changes needed
-- The banner uses `AnimatePresence` with a delayed mount (1.5s timeout) and only appears once per session. Its animation is intentional entrance behavior, not a flicker bug. No change required.
-
-### Files changed
-- `src/pages/Install.tsx`
-- `src/components/BonkiLoadingScreen.tsx`
-- `src/pages/Login.tsx`
+### File changed
+`src/pages/Install.tsx` only
 
