@@ -117,9 +117,8 @@ export default function Login() {
       }}
     >
       <motion.div
-        initial={{ opacity: 0 }}
+        initial={false}
         animate={{ opacity: 1 }}
-        transition={{ duration: 0.15 }}
         className="w-full max-w-xs text-center"
         style={{ marginTop: '-80px' }}
       >
@@ -127,17 +126,15 @@ export default function Login() {
         <motion.img
           src={bonkiLogo}
           alt="Bonki"
-          initial={{ opacity: 0, scale: 0.92 }}
+          initial={false}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.05, duration: 0.4 }}
           style={{ width: 120, height: 120, margin: '0 auto 16px', objectFit: 'contain' }}
         />
 
         {/* Brand hierarchy */}
         <motion.div
-          initial={{ opacity: 0 }}
+          initial={false}
           animate={{ opacity: 1 }}
-          transition={{ delay: BEAT_1, duration: 0.15 }}
         >
           <img
             src={bonkiWordmark}
@@ -163,9 +160,8 @@ export default function Login() {
 
         {/* Button + terms */}
         <motion.div
-          initial={{ opacity: 0 }}
+          initial={false}
           animate={{ opacity: 1 }}
-          transition={{ delay: BEAT_2, duration: 0.15 }}
           style={{ marginTop: '40px' }}
         >
           <AnimatePresence mode="wait">

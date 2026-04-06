@@ -33,15 +33,6 @@ const ORANGE_SHADOW = [
   'inset 0 -2px 6px rgba(0, 0, 0, 0.12)',
 ].join(', ');
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 20 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: { delay: i * 0.1, duration: 0.5, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
-  }),
-};
-
 export default function Install() {
   const [platform, setPlatform] = useState<Platform>(null);
   const navigate = useNavigate();
@@ -90,17 +81,13 @@ export default function Install() {
       }}
     >
       {/* BONKI text + tagline */}
-      <motion.section
-        initial="hidden"
-        animate="visible"
+      <section
         style={{
           paddingTop: 'calc(env(safe-area-inset-top, 0px) + 24px)',
           textAlign: 'center',
         }}
       >
-        <motion.img
-          custom={0}
-          variants={fadeUp}
+        <img
           src={bonkiWordmark}
           alt="BONKI"
           style={{
@@ -110,12 +97,10 @@ export default function Install() {
             display: 'block',
           }}
         />
-      </motion.section>
+      </section>
 
       {/* Brand logo */}
-      <motion.section
-        initial="hidden"
-        animate="visible"
+      <section
         style={{
           display: 'flex',
           justifyContent: 'center',
@@ -123,8 +108,7 @@ export default function Install() {
         }}
       >
         <motion.img
-          custom={2}
-          variants={fadeUp}
+          initial={false}
           src={bonkiLogo}
           alt="BONKI"
           animate={{ y: [0, -6, 0] }}
@@ -137,12 +121,10 @@ export default function Install() {
             filter: 'drop-shadow(0 8px 32px rgba(212, 245, 192, 0.15)) drop-shadow(0 0 60px rgba(212, 245, 192, 0.06))',
           }}
         />
-      </motion.section>
+      </section>
 
       {/* Value Proposition */}
-      <motion.section
-        initial="hidden"
-        animate="visible"
+      <section
         style={{
           padding: '0 24px',
           textAlign: 'center',
@@ -150,9 +132,7 @@ export default function Install() {
           margin: '-8px auto 0',
         }}
       >
-        <motion.h2
-          custom={3}
-          variants={fadeUp}
+        <h2
           className="font-serif"
           style={{
             fontSize: 'clamp(22px, 5.5vw, 26px)',
@@ -163,10 +143,8 @@ export default function Install() {
           }}
         >
           Ni pratar varje dag. Men när pratade ni senast — på riktigt?
-        </motion.h2>
-        <motion.div
-          custom={4}
-          variants={fadeUp}
+        </h2>
+        <div
           style={{
             display: 'inline-flex',
             alignItems: 'center',
@@ -182,22 +160,18 @@ export default function Install() {
           <span style={{ fontSize: '13px', color: 'rgba(253, 246, 227, 0.7)' }}>
             Skapat med legitimerad psykolog
           </span>
-        </motion.div>
-      </motion.section>
+        </div>
+      </section>
 
       {/* Trust Stats */}
-      <motion.section
-        initial="hidden"
-        animate="visible"
+      <section
         style={{
           padding: '10px 24px 0',
           maxWidth: '360px',
           margin: '0 auto',
         }}
       >
-        <motion.div
-          custom={6}
-          variants={fadeUp}
+        <div
           style={{
             display: 'flex',
             justifyContent: 'space-around',
@@ -215,7 +189,7 @@ export default function Install() {
                 style={{
                   fontSize: '22px',
                   fontWeight: 700,
-                    color: '#D4F5C0',
+                  color: '#D4F5C0',
                   margin: 0,
                   lineHeight: 1.2,
                 }}
@@ -225,35 +199,30 @@ export default function Install() {
               <p
                 style={{
                   fontSize: '12px',
-                   color: 'rgba(212, 245, 192, 0.65)',
+                  color: 'rgba(212, 245, 192, 0.65)',
                   margin: '4px 0 0',
-                   textTransform: 'none' as const,
-                   letterSpacing: '0.02em',
+                  textTransform: 'none' as const,
+                  letterSpacing: '0.02em',
                 }}
               >
                 {stat.label}
               </p>
             </div>
           ))}
-        </motion.div>
-      </motion.section>
+        </div>
+      </section>
 
       {/* CTA */}
-      <motion.section
-        initial="hidden"
-        animate="visible"
+      <section
         style={{
-  padding: '12px 24px 0',
+          padding: '12px 24px 0',
           maxWidth: '360px',
           margin: '0 auto',
           textAlign: 'center',
         }}
       >
         <motion.button
-          custom={7}
-          variants={fadeUp}
-          whileTap={{ scale: 0.95, y: 2 }}
-          transition={{ type: 'tween', duration: 0.12 }}
+          whileTap={{ scale: 0.97 }}
           onClick={handleCTA}
           style={{
             width: '100%',
@@ -272,9 +241,7 @@ export default function Install() {
         >
           Öppna appen
         </motion.button>
-        <motion.p
-          custom={8}
-          variants={fadeUp}
+        <p
           style={{
             fontSize: '13px',
             color: 'rgba(245,237,210,0.5)',
@@ -282,24 +249,20 @@ export default function Install() {
           }}
         >
           Gratis att börja — inget kort krävs.
-        </motion.p>
-      </motion.section>
+        </p>
+      </section>
 
       {/* iOS Install Guide */}
       {platform === 'ios' && (
-        <motion.section
+        <section
           ref={iosGuideRef}
-          initial="hidden"
-          animate="visible"
           style={{
             padding: '36px 24px 0',
             maxWidth: '360px',
             margin: '0 auto',
           }}
         >
-          <motion.div
-            custom={9}
-            variants={fadeUp}
+          <div
             style={{
               background: 'rgba(255,255,255,0.06)',
               border: '1px solid rgba(255,255,255,0.1)',
@@ -370,26 +333,24 @@ export default function Install() {
                 </span>
               </div>
             </div>
-          </motion.div>
-        </motion.section>
+          </div>
+        </section>
       )}
 
       {/* Login link */}
-      <motion.section
-        initial="hidden"
-        animate="visible"
+      <section
         style={{
           padding: '20px 24px 36px',
           textAlign: 'center',
         }}
       >
-        <motion.p custom={10} variants={fadeUp} style={{ fontSize: '14px', color: 'rgba(245,237,210,0.5)', margin: 0 }}>
+        <p style={{ fontSize: '14px', color: 'rgba(245,237,210,0.5)', margin: 0 }}>
           Redan medlem?{' '}
           <Link to="/login" style={{ color: 'rgba(253, 246, 227, 0.7)', textDecoration: 'underline' }}>
             Logga in
           </Link>
-        </motion.p>
-      </motion.section>
+        </p>
+      </section>
     </div>
   );
 }
