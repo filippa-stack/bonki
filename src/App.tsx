@@ -12,6 +12,7 @@ import { DevStateProvider } from "@/contexts/DevStateContext";
 import ActiveSessionGuard from "@/components/ActiveSessionGuard";
 import InstallGuideBanner from "@/components/InstallGuideBanner";
 import BonkiLoadingScreen from "@/components/BonkiLoadingScreen";
+import { useRouteTheme } from "@/hooks/useRouteTheme";
 import BottomNav from "@/components/BottomNav";
 import DevModeBadge from "@/components/DevModeBadge";
 import { isDemoMode } from "@/lib/demoMode";
