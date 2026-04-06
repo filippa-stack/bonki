@@ -66,14 +66,21 @@ function ProtectedRoutes() {
   const location = useLocation();
   const hasProtectedRendered = useRef(false);
 
+  const { loading: spaceLoading } = useCoupleSpaceContext();
+  const { loading: sessionLoading } = useNormalizedSessionContext();
+
   if (loading && !hasProtectedRendered.current) {
+    return <BonkiLoadingScreen />;
+  }
+
+  // Unified loading gate: wait for space + session data before first paint
+  if (!hasProtectedRendered.current && (spaceLoading || sessionLoading)) {
     return <BonkiLoadingScreen />;
   }
 
   hasProtectedRendered.current = true;
 
   if (!user && !isDemoMode()) {
-    // Preserve query params (e.g. ?demo=1) when redirecting to login
     const loginPath = `/login${location.search}`;
     return <Navigate to={loginPath} replace />;
   }
@@ -151,8 +158,8 @@ function AppRoutes() {
   const hasAppRendered = useRef(false);
   // Runs during capture loop — detects __sc_step and auto-advances
   useCaptureController();
-
-  if (loading && !hasAppRendered.current) {
+  // Sync background CSS vars from route before paint
+  useRouteTheme();
     return <BonkiLoadingScreen />;
   }
 
