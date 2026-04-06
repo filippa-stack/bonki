@@ -1,40 +1,33 @@
 
 
-## Fix: Toast Stacking in CardView
+## Bonki Bug Fix — Free Card Reflections, Toast, and Completion Nav
 
-### Problem
-The "Vi sparar så fort vi kan" toast stacks on every step advancement because each call to `toastOnce` creates a new Sonner toast instance (the 3s debounce allows new ones through). Multiple toasts pile up at the bottom of the screen.
+### Summary
+5 targeted changes in `CardView.tsx` fixing: (1) kids notes lost when session ID arrives late, (2) step completion failing when RPC can't find session, (3) toast styling mismatch, (4) lingering session not completing server-side, (5) wrong completedSessionCount for kids products.
 
-### Fix
-Add a fixed `id` to both retry toasts in `src/pages/CardView.tsx` so Sonner **replaces** the existing toast instead of stacking a new one.
+### Changes — all in `src/pages/CardView.tsx`
 
-### Changes
+**Change 1 — Session recovery for kids notes (after line 645)**
+Add a `prevKidsSessionIdRef` + `useEffect` that re-pushes `kidsNoteLocalText` into `kidsNoteSession.setText()` when `activeSessionId` transitions from null to valid. Mirrors the existing pattern in `SessionStepReflection.tsx`.
 
-**File: `src/pages/CardView.tsx`**
+**Change 2 — activeSessionId fallback in handleCompleteStep (line 724)**
+After the RPC lookup returns null, check `activeSessionId` as fallback before the lazy-activate path. Guarded by `!== 'dev-session'`.
 
-1. **Line 752-754** — Add fixed `id: 'step-retry'`:
-```typescript
-toastOnce('step_retry', () =>
-  toast('Vi sparar så fort vi kan. Fortsätt bara.', { id: 'step-retry', duration: 2500 })
-);
-```
+**Change 3 — Style the "Vi sparar" toast + dismiss on card change**
+- Line 752: Add inline `style` block matching the error toast pattern.
+- Line 433 effect: Add `toast.dismiss('step-retry')` on `cardId` change.
 
-2. **Line 871-881** — Add fixed `id: 'step-error'`:
-```typescript
-toastOnce('step_retry', () =>
-  toast('Något gick fel. Försök igen.', {
-    id: 'step-error',
-    duration: 4000,
-    style: {
-      background: 'var(--surface-base)',
-      color: 'var(--color-text-primary)',
-      fontFamily: 'var(--font-body)',
-      fontSize: '14px',
-    },
-  })
-);
-```
+**Change 4 — Complete lingering session in fallback (line 744)**
+When `sessionId` is still null on the last step, do one final `get_active_session_state` check. If found and `card_id` matches, call `complete_couple_session_step` via the existing RPC. Wrapped in try/catch; `setShowCompletion(true)` always fires.
+
+**Change 5 — completedSessionCount via card_id membership (line 332)**
+Replace `.eq('product_id', ...)` with `.in('card_id', productCardIds)` for kids products. Falls back to `product_id` filter for legacy Still Us cards.
+
+### Files modified
+| File | Lines affected |
+|---|---|
+| `src/pages/CardView.tsx` | ~433, ~645, ~724, ~744, ~752, ~332 |
 
 ### Not changed
-Session creation, completion logic, navigation, resume banner, auth, paywall.
+All items in the DO NOT CHANGE list. No other files touched. No database migrations. No edge function changes.
 
