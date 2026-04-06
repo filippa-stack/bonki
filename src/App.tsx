@@ -156,10 +156,10 @@ function RoutePageViewTracker() {
 function AppRoutes() {
   const { user, loading } = useAuth();
   const hasAppRendered = useRef(false);
-  // Runs during capture loop — detects __sc_step and auto-advances
   useCaptureController();
-  // Sync background CSS vars from route before paint
   useRouteTheme();
+
+  if (loading && !hasAppRendered.current) {
     return <BonkiLoadingScreen />;
   }
 
