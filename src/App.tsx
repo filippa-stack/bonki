@@ -2,7 +2,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { trackPixelEvent } from "@/lib/metaPixel";
 
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
@@ -63,10 +63,13 @@ const queryClient = new QueryClient();
 function ProtectedRoutes() {
   const { user, loading } = useAuth();
   const location = useLocation();
+  const hasProtectedRendered = useRef(false);
 
-  if (loading) {
+  if (loading && !hasProtectedRendered.current) {
     return <BonkiLoadingScreen />;
   }
+
+  hasProtectedRendered.current = true;
 
   if (!user && !isDemoMode()) {
     // Preserve query params (e.g. ?demo=1) when redirecting to login
@@ -144,12 +147,15 @@ function RoutePageViewTracker() {
 
 function AppRoutes() {
   const { user, loading } = useAuth();
+  const hasAppRendered = useRef(false);
   // Runs during capture loop — detects __sc_step and auto-advances
   useCaptureController();
 
-  if (loading) {
+  if (loading && !hasAppRendered.current) {
     return <BonkiLoadingScreen />;
   }
+
+  hasAppRendered.current = true;
 
   return (
     <Routes>
