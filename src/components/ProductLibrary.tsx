@@ -983,10 +983,10 @@ export default function ProductLibrary() {
               {/* Illustration */}
               <div style={{
                 position: 'absolute',
-                top: '0%',
-                left: '-15%',
-                right: '-15%',
-                bottom: '-45%',
+                top: '-15%',
+                left: '-5%',
+                right: '-5%',
+                bottom: '-10%',
                 pointerEvents: 'none',
                 zIndex: 1,
               }}>
@@ -998,7 +998,7 @@ export default function ProductLibrary() {
                     width: '100%',
                     height: '100%',
                     objectFit: 'contain',
-                    objectPosition: 'center 12%',
+                    objectPosition: 'center bottom',
                     opacity: 1,
                     filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.10))',
                   }}
