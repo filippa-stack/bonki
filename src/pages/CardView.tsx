@@ -431,7 +431,7 @@ export default function CardView() {
     abandonCheckedRef.current = true;
 
     (async () => {
-      if (isDevToolsEnabled()) console.log('[lazy] abandon other session', normalizedSession.sessionId);
+      console.log('[lazy] abandon other session', normalizedSession.sessionId);
       await supabase.rpc('abandon_active_session', {
         p_session_id: normalizedSession.sessionId,
       });
@@ -467,7 +467,7 @@ export default function CardView() {
     if (!cardData) return;
 
     (async () => {
-      if (isDevToolsEnabled()) console.log('[eager] creating session for kids product', cardId);
+      console.log('[eager] creating session for kids product', cardId);
       const { error } = await supabase.rpc('activate_couple_session', {
         p_couple_space_id: space!.id,
         p_category_id: cardData.categoryId,
@@ -761,7 +761,7 @@ export default function CardView() {
     if (!sessionId) {
       const card = getCardById(cardId);
       if (space?.id && card) {
-        if (isDevToolsEnabled()) console.log('[step-complete] no sessionId — lazy activate');
+        console.log('[step-complete] no sessionId — lazy activate');
         const { error: actErr } = await supabase.rpc('activate_couple_session', {
           p_couple_space_id: space.id,
           p_category_id: card.categoryId,
@@ -870,14 +870,14 @@ export default function CardView() {
 
     if (result === 'session_inactive') {
       // Session was abandoned/replaced — try to recover with the current active session
-      if (isDevToolsEnabled()) console.log('[step-complete] session_inactive — attempting recovery');
+      console.log('[step-complete] session_inactive — attempting recovery');
       const { data: freshState } = await supabase.rpc('get_active_session_state');
       const row = Array.isArray(freshState) ? freshState[0] : freshState;
       const freshSessionId = row?.session_id ?? null;
 
       if (freshSessionId && freshSessionId !== sessionId && row?.card_id === cardId) {
         // We have a valid active session for THIS card — retry with it
-        if (isDevToolsEnabled()) console.log('[step-complete] recovered fresh sessionId:', freshSessionId);
+        console.log('[step-complete] recovered fresh sessionId:', freshSessionId);
         const { data: retryData, error: retryErr } = await supabase.rpc('complete_couple_session_step', {
           p_session_id: freshSessionId,
           p_step_index: displayIndex,
