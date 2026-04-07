@@ -27,8 +27,8 @@ export const productIntros: Record<string, ProductIntroData> = {
     productId: 'still_us',
     slides: [
       {
-        heading: 'Välkommen till Still Us',
-        body: 'Ni pratar varje dag. Om hämtningen, middagen, helgen. Men när pratade ni senast med varandra — på riktigt?\n\nStill Us är för par som fortfarande fungerar, men som märkt att något tystnat. Samtalen tar er förbi det praktiska och in i det som finns under. Det här är inte terapi — det är de samtal ni redan vill ha, men inte hittar vägen in till.',
+        heading: 'Välkommen till Vårt Vi',
+        body: 'Ni pratar varje dag. Om hämtningen, middagen, helgen. Men när pratade ni senast med varandra — på riktigt?\n\nVårt Vi är för par som fortfarande fungerar, men som märkt att något tystnat. Samtalen tar er förbi det praktiska och in i det som finns under. Det här är inte terapi — det är de samtal ni redan vill ha, men inte hittar vägen in till.',
       },
     ],
     ctaLabel: 'Börja utforska',
