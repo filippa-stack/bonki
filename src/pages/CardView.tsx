@@ -436,6 +436,28 @@ export default function CardView() {
         p_session_id: normalizedSession.sessionId,
       });
       await normalizedSession.refetch();
+
+      // Create session for the new card now that the old one is abandoned
+      const needsEagerSession = isKidsProduct || product?.id === 'still_us';
+      if (needsEagerSession && space?.id && cardId && !eagerSessionRef.current) {
+        eagerSessionRef.current = true;
+        const cardData = getCardById(cardId);
+        if (cardData) {
+          console.log('[eager] creating session after abandon for', cardId);
+          const { error } = await supabase.rpc('activate_couple_session', {
+            p_couple_space_id: space.id,
+            p_category_id: cardData.categoryId,
+            p_card_id: cardId,
+            p_step_count: effectiveSteps.length,
+            p_product_id: product?.id ?? 'still_us',
+          });
+          if (!error) {
+            await normalizedSession.refetch();
+          } else {
+            console.error('[eager] session creation after abandon failed:', error);
+          }
+        }
+      }
     })();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [devState, isFromArchive, showCompletion, normalizedSession.loading, normalizedSession.sessionId, space?.id, cardId]);
