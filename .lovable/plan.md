@@ -1,28 +1,21 @@
 
 
-## Copy changes in `src/pages/KidsCardPortal.tsx`
+## Fix: Add null-reflection guard to sync effect
 
-### Change 1 — Remove question count from metadata (line 585)
-Both free and non-free cards.
+**File:** `src/pages/CardView.tsx` — line 715
 
-`{promptCount} frågor · {estimateMinutes(promptCount, productSlug)}`
-→ `{estimateMinutes(promptCount, productSlug)}`
+**Change:** Insert one guard line after the stale-data check (line 715), before setting `kidsNoteSyncedRef.current = true`.
 
-### Change 2 — Non-free card counter (line 664)
-`Samtal {currentIndex + 1} av {categoryCards.length}`
-→ `{currentIndex + 1} av {categoryCards.length} i {category.title}`
+```typescript
+// Line 715 (existing):
+if (kidsNoteSession.myReflection && kidsNoteSession.myReflection.stepIndex !== kidsNoteStepIndex) return;
+// NEW line 716:
+if (!kidsNoteSession.myReflection && kidsNoteSession.sessionId) return;
+// Then existing line 716 continues:
+kidsNoteSyncedRef.current = true;
+```
 
-### Change 3 — Free card counter (lines 691–703)
-Replace `Samtal 1 av {product.cards.length}` with:
-`1 av {product.cards.length} samtal i {product.name}`
+This single added line prevents the sync effect from finalizing (and clearing text) when `myReflection` is null but a session exists (fetch still in flight). The effect will re-trigger when the fetch completes and `myReflection` updates.
 
-### Change 4 — Browse link text (line 728)
-`Utforska alla samtal` → conditional:
-- Free card: `Utforska {product.name}`
-- Non-free: `Fler i {category.title}`
-
-Product names verified: sexualitetskort → "Närhet & Intimitet", still_us → "Vårt Vi".
-
-### Files changed
-Only `src/pages/KidsCardPortal.tsx` — 4 text-only edits.
+Nothing else in this effect or file changes.
 
