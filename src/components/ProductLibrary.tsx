@@ -234,12 +234,12 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
   illustrationSize?: string; illustrationPosition?: string; wide?: boolean;
   showFreeBadge?: boolean; badgeText?: string; ageCount?: number;
   hasActiveSession?: boolean; tileHeight?: string;
-  progressText?: string; lastActive?: string; hideFreeBadge?: boolean;
+  progressText?: string; lastActive?: string; hideFreeBadge?: boolean; totalCards?: number;
 }>(function PastelTile({
   name, bg, ageLabel, tagline, onClick, illustration, productId, accentColor, taglineColor,
   illustrationOpacity = 0.90, wide = false,
   hasActiveSession = false, tileHeight = '240px',
-  progressText, lastActive, hideFreeBadge = false,
+  progressText, lastActive, hideFreeBadge = false, totalCards,
 }, ref) {
   const toShadowColor = (hex: string, alpha: number) => {
     const r = parseInt(hex.slice(1, 3), 16);
@@ -413,31 +413,31 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
           </p>
           )}
           {/* Free badge marker with age label */}
-          {!hideFreeBadge && (
-            <span
-              style={{
-                display: 'inline-flex',
-                alignSelf: 'flex-start',
-                alignItems: 'center',
-                gap: '4px',
-                marginTop: '8px',
-                padding: '4px 12px',
-                borderRadius: '20px',
-                background: 'hsla(0, 0%, 100%, 0.15)',
-                backdropFilter: 'blur(8px)',
-                WebkitBackdropFilter: 'blur(8px)',
-                border: '1px solid hsla(0, 0%, 100%, 0.25)',
-                boxShadow: '0 0 12px hsla(0, 0%, 100%, 0.08), inset 0 1px 0 hsla(0, 0%, 100%, 0.15)',
-                fontFamily: "var(--font-body)",
-                fontSize: '11px',
-                fontWeight: 600,
-                letterSpacing: '0.03em',
-                color: 'hsla(0, 0%, 100%, 0.92)',
-              }}
-            >
-              ✦ Samtal 1 gratis{ageLabel ? ` · ${ageLabel}` : ''}
-            </span>
-          )}
+          <span
+            style={{
+              display: 'inline-flex',
+              alignSelf: 'flex-start',
+              alignItems: 'center',
+              gap: '4px',
+              marginTop: '8px',
+              padding: '4px 12px',
+              borderRadius: '20px',
+              background: 'hsla(0, 0%, 100%, 0.15)',
+              backdropFilter: 'blur(8px)',
+              WebkitBackdropFilter: 'blur(8px)',
+              border: '1px solid hsla(0, 0%, 100%, 0.25)',
+              boxShadow: '0 0 12px hsla(0, 0%, 100%, 0.08), inset 0 1px 0 hsla(0, 0%, 100%, 0.15)',
+              fontFamily: "var(--font-body)",
+              fontSize: '11px',
+              fontWeight: 600,
+              letterSpacing: '0.03em',
+              color: 'hsla(0, 0%, 100%, 0.92)',
+            }}
+          >
+            {hideFreeBadge
+              ? `✦ 1 av ${totalCards ?? '?'} utforskade`
+              : `✦ Samtal 1 gratis${ageLabel ? ` · ${ageLabel}` : ''}`}
+          </span>
           {progressText && (
             <span
               style={{
@@ -1045,24 +1045,22 @@ export default function ProductLibrary() {
                     const totalCards = stillUsProduct?.cards.length ?? 22;
                     return (
                       <>
-                        {!suFreeCompleted && (
-                          <span style={{
-                            fontFamily: "var(--font-body)",
-                            fontSize: '11px',
-                            fontWeight: 600,
-                            letterSpacing: '0.04em',
-                            color: 'hsla(0, 0%, 100%, 0.9)',
-                            background: 'hsla(0, 0%, 100%, 0.15)',
-                            backdropFilter: 'blur(8px)',
-                            WebkitBackdropFilter: 'blur(8px)',
-                            border: '1px solid hsla(0, 0%, 100%, 0.25)',
-                            borderRadius: '20px',
-                            padding: '4px 12px',
-                            boxShadow: '0 0 12px hsla(0, 0%, 100%, 0.08), inset 0 1px 0 hsla(0, 0%, 100%, 0.15)',
-                          }}>
-                            ✦ Samtal 1 gratis
-                          </span>
-                        )}
+                        <span style={{
+                          fontFamily: "var(--font-body)",
+                          fontSize: '11px',
+                          fontWeight: 600,
+                          letterSpacing: '0.04em',
+                          color: 'hsla(0, 0%, 100%, 0.9)',
+                          background: 'hsla(0, 0%, 100%, 0.15)',
+                          backdropFilter: 'blur(8px)',
+                          WebkitBackdropFilter: 'blur(8px)',
+                          border: '1px solid hsla(0, 0%, 100%, 0.25)',
+                          borderRadius: '20px',
+                          padding: '4px 12px',
+                          boxShadow: '0 0 12px hsla(0, 0%, 100%, 0.08), inset 0 1px 0 hsla(0, 0%, 100%, 0.15)',
+                        }}>
+                          {suFreeCompleted ? `✦ 1 av ${totalCards} utforskade` : '✦ Samtal 1 gratis'}
+                        </span>
                         <span style={{
                           display: 'block',
                           marginTop: '6px',
@@ -1156,6 +1154,7 @@ export default function ProductLibrary() {
                   progressText={ptxt}
                   lastActive={lastActivityMap[product.id]}
                   hideFreeBadge={freeCardCompleted}
+                  totalCards={product.cards.length}
                   wide
                 />
               );

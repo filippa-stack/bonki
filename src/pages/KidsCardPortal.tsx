@@ -606,7 +606,7 @@ export default function KidsCardPortal() {
                     WebkitTapHighlightColor: 'transparent',
                   }}
                 >
-                  {isLocked ? 'Lås upp för att starta' : 'Starta samtal'}
+                  {isLocked ? 'Lås upp alla samtal' : 'Starta samtal'}
                 </button>
               );
             })()}
