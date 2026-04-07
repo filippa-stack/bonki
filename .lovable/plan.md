@@ -1,21 +1,46 @@
 
 
-## Fix: Add null-reflection guard to sync effect
+## Fix: Install page standalone redirect + login link prominence
 
-**File:** `src/pages/CardView.tsx` — line 715
+**File:** `src/pages/Install.tsx` — two changes
 
-**Change:** Insert one guard line after the stale-data check (line 715), before setting `kidsNoteSyncedRef.current = true`.
+### Change 1 — Redirect to `/login` instead of `/` (line 54-56)
+
+The existing standalone check already redirects, but to `/`. Change it to `/login`.
 
 ```typescript
-// Line 715 (existing):
-if (kidsNoteSession.myReflection && kidsNoteSession.myReflection.stepIndex !== kidsNoteStepIndex) return;
-// NEW line 716:
-if (!kidsNoteSession.myReflection && kidsNoteSession.sessionId) return;
-// Then existing line 716 continues:
-kidsNoteSyncedRef.current = true;
+// FROM:
+if (isStandalone()) {
+  return <Navigate to="/" replace />;
+}
+
+// TO:
+if (isStandalone()) {
+  return <Navigate to="/login" replace />;
+}
 ```
 
-This single added line prevents the sync effect from finalizing (and clearing text) when `myReflection` is null but a session exists (fetch still in flight). The effect will re-trigger when the fetch completes and `myReflection` updates.
+### Change 2 — Make login link more prominent (lines 349-354)
 
-Nothing else in this effect or file changes.
+Increase font size and opacity on the "Redan medlem?" text and link.
+
+```typescript
+// FROM:
+<p style={{ fontSize: '14px', color: 'rgba(245,237,210,0.5)', margin: 0 }}>
+  Redan medlem?{' '}
+  <Link to="/login" style={{ color: 'rgba(253, 246, 227, 0.7)', textDecoration: 'underline' }}>
+    Logga in
+  </Link>
+</p>
+
+// TO:
+<p style={{ fontSize: '15px', color: 'rgba(245,237,210,0.65)', margin: 0 }}>
+  Redan medlem?{' '}
+  <Link to="/login" style={{ color: 'rgba(253, 246, 227, 0.85)', textDecoration: 'underline', fontWeight: 600 }}>
+    Logga in
+  </Link>
+</p>
+```
+
+Nothing else changes.
 
