@@ -1,29 +1,32 @@
+## Copy changes in `src/pages/KidsCardPortal.tsx`
 
+### Change 1 — Remove question count from metadata (line 585)
+Both free and non-free cards.
 
-## Fix: Set intro-seen flag before "Utforska alla samtal" navigation
+**Line 585:** `{promptCount} frågor · {estimateMinutes(promptCount, productSlug)}`
+→ `{estimateMinutes(promptCount, productSlug)}`
 
-**File:** `src/pages/KidsCardPortal.tsx` — line 707
+### Change 2 — Non-free card counter (line 664)
+**Line 664:** `Samtal {currentIndex + 1} av {categoryCards.length}`
+→ `{currentIndex + 1} av {categoryCards.length} i {category.title}`
 
-**Root cause:** The free card "Utforska alla samtal" button navigates to `/product/${product.slug}` without setting `bonki-intro-seen-{id}` in localStorage, so ProductHome re-shows the intro.
+### Change 3 — Free card counter section (lines 691–703)
+Remove the "Samtal 1 av {product.cards.length}" span entirely.
 
-**Change:** Add the localStorage flag before navigating.
+Replace with a new static line that renders **below** the "Starta samtal" button area (move it after the button block, around line 617). Actually, since lines 691–703 are already below the button, we keep it there but change the text:
 
-**Line 707 — replace:**
-```typescript
-onClick={() => isFreeCard ? navigate(`/product/${product.slug}`) : setBrowseOpen(true)}
-```
+→ `1 av {product.cards.length} samtal i {product.name}`
 
-**With:**
-```typescript
-onClick={() => {
-  if (isFreeCard) {
-    localStorage.setItem(`bonki-intro-seen-${product.id}`, '1');
-    navigate(`/product/${product.slug}`);
-  } else {
-    setBrowseOpen(true);
-  }
-}}
-```
+### Change 4 — Browse link text (line 728)
+**Line 728:** `Utforska alla samtal`
+→ Conditional:
+- If `isFreeCard`: `Utforska {product.name}`
+- Else: `Fler i {category.title}`
 
-Nothing else changes.
+Product names confirmed in manifests:
+- sexualitetskort → "Närhet & Intimitet" ✓
+- still_us → "Vårt Vi" ✓
+- All others match their display names ✓
 
+### Files changed
+Only `src/pages/KidsCardPortal.tsx` — 4 text edits, no logic/layout/routing changes.
