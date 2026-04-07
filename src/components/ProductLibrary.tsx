@@ -235,11 +235,13 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
   showFreeBadge?: boolean; badgeText?: string; ageCount?: number;
   hasActiveSession?: boolean; tileHeight?: string;
   progressText?: string; lastActive?: string; hideFreeBadge?: boolean; totalCards?: number; completedCount?: number;
+  isPurchased?: boolean;
 }>(function PastelTile({
   name, bg, ageLabel, tagline, onClick, illustration, productId, accentColor, taglineColor,
   illustrationOpacity = 0.90, wide = false,
   hasActiveSession = false, tileHeight = '240px',
   progressText, lastActive, hideFreeBadge = false, totalCards, completedCount,
+  isPurchased = false,
 }, ref) {
   const toShadowColor = (hex: string, alpha: number) => {
     const r = parseInt(hex.slice(1, 3), 16);
@@ -283,6 +285,20 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
         ].join(', '),
       }}
     >
+      {/* Ghost Glow ownership sparkle */}
+      {isPurchased && (
+        <div style={{
+          position: 'absolute',
+          top: '12px',
+          right: '12px',
+          fontSize: '18px',
+          color: '#D4F5C0',
+          textShadow: '0 0 8px #D4F5C0, 0 0 16px rgba(212, 245, 192, 0.4)',
+          opacity: 0.85,
+          pointerEvents: 'none',
+          zIndex: 2,
+        }}>✦</div>
+      )}
       {/* Illustration — right-aligned, bleeds off edge dramatically */}
       {illustration && (
         <div
@@ -436,7 +452,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
           >
             {hideFreeBadge
               ? `✦ ${completedCount || 1} av ${totalCards ?? '?'} utforskade`
-              : `✦ Samtal 1 av ${totalCards ?? '?'} gratis${ageLabel ? ` · ${ageLabel}` : ''}`}
+              : `✦ ${totalCards ?? '?'} samtal ✦ Första gratis${ageLabel ? ` · ${ageLabel}` : ''}`}
           </span>
         </div>
     </motion.div>
@@ -909,6 +925,20 @@ export default function ProductLibrary() {
                 boxShadow: '0 8px 24px rgba(0, 0, 0, 0.12), 0 2px 6px rgba(0, 0, 0, 0.06)',
               }}
             >
+              {/* Ghost Glow ownership sparkle for Still Us */}
+              {purchased.has('still_us') && !activeProductIds.has('still_us') && (
+                <div style={{
+                  position: 'absolute',
+                  top: '12px',
+                  right: '12px',
+                  fontSize: '18px',
+                  color: '#D4F5C0',
+                  textShadow: '0 0 8px #D4F5C0, 0 0 16px rgba(212, 245, 192, 0.4)',
+                  opacity: 0.85,
+                  pointerEvents: 'none',
+                  zIndex: 2,
+                }}>✦</div>
+              )}
               {/* Resume indicator for Still Us */}
               {activeProductIds.has('still_us') && (
                 <div style={{
@@ -1045,7 +1075,7 @@ export default function ProductLibrary() {
                           padding: '4px 12px',
                           boxShadow: '0 0 12px hsla(0, 0%, 100%, 0.08), inset 0 1px 0 hsla(0, 0%, 100%, 0.15)',
                         }}>
-                          {suFreeCompleted ? `✦ ${suCount || 1} av ${totalCards} utforskade` : `✦ Samtal 1 av ${totalCards} gratis`}
+                          {suFreeCompleted ? `✦ ${suCount || 1} av ${totalCards} utforskade` : `✦ ${totalCards} samtal ✦ Första gratis`}
                         </span>
                       </>
                     );
@@ -1128,6 +1158,7 @@ export default function ProductLibrary() {
                   hasActiveSession={activeProductIds.has(product.id)}
                   tileHeight={TILE_HEIGHTS[product.id] ?? '240px'}
                   completedCount={count}
+                  isPurchased={purchased.has(product.id)}
                   lastActive={lastActivityMap[product.id]}
                   hideFreeBadge={freeCardCompleted}
                   totalCards={product.cards.length}
