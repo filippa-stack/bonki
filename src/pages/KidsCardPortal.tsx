@@ -704,7 +704,14 @@ export default function KidsCardPortal() {
 
           {/* Browse all */}
           <button
-            onClick={() => isFreeCard ? navigate(`/product/${product.slug}`) : setBrowseOpen(true)}
+            onClick={() => {
+              if (isFreeCard) {
+                localStorage.setItem(`bonki-intro-seen-${product.id}`, '1');
+                navigate(`/product/${product.slug}`);
+              } else {
+                setBrowseOpen(true);
+              }
+            }}
             style={{
               background: 'transparent',
               border: '0.5px solid rgba(255, 255, 255, 0.1)',
