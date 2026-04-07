@@ -169,7 +169,7 @@ export const cards: Card[] = [
         content: '',
         prompts: [
           'Vad behöver hända — eller sägas — innan du faktiskt kan sluta tänka på dagen?',
-          'Vad gör ni med tiden mellan barnens läggning och er egen — och hur bestäms det?',
+          'Vad gör ni med tiden mellan 'Vad gör ni med tiden mellan barnets läggning och er egen — och hur bestäms det?', och er egen — och hur bestäms det?',
           'Är det något du fortsätter att göra på kvällarna som egentligen inte behöver göras — men som känns fel att sluta med?',
           'Efter läggning gör ni olika saker. En fortsätter "lite till", den andra sätter sig. Ingen säger något, men båda drar egna slutsatser.\n\nHur signalerar du att kvällen är slut för dig — utan att säga det rakt ut?',
         ],
@@ -211,7 +211,7 @@ export const cards: Card[] = [
         content: '',
         prompts: [
           'I vilka situationer känner du dig mest trygg i ditt sätt att vara förälder?',
-          'Tänk på ett tillfälle nyligen när ni hanterade något med barnen på väldigt olika sätt — hur kändes det för dig i stunden?',
+          'Tänk på ett tillfälle nyligen när ni hanterade något 'Tänk på ett tillfälle nyligen när ni hanterade något med barnet på väldigt olika sätt — hur kändes det för dig i stunden?', väldigt olika sätt — hur kändes det för dig i stunden?',
           'Har du märkt att du ibland förklarar dig mer än du ville — som om du behövde rättfärdiga ditt sätt att göra saker?',
           'Ni gör samma saker, men på olika sätt. Barnet märker och kommenterar skillnaderna.\n\nNär barnet märker att ni gör saker på olika sätt — vad tror du det lär sig om er?',
         ],
@@ -336,8 +336,8 @@ export const cards: Card[] = [
         title: 'Frågor',
         content: '',
         prompts: [
-          'Efter att du satt en gräns med barnen — hur vet du om det landade rätt?',
-          'Vad är det barnen gör som väcker den starkaste reaktionen i dig — den som ibland till och med överraskar dig själv?',
+          'Efter att du satt en gräns 'Efter att du satt en gräns med barnet — hur vet du om det landade rätt?', hur vet du om det landade rätt?',
+          'Vad är 'Vad är det barnet gör som väcker den starkaste reaktionen i dig — den som ibland till och med överraskar dig själv?', som väcker den starkaste reaktionen i dig — den som ibland till och med överraskar dig själv?',
           'Vad händer mellan er när ni inte är överens om hur hårt eller mjukt en gräns ska sättas?',
           'Ett beteende väcker olika impulser. Den ena vill agera direkt, den andra vill avvakta.\n\nVad tror du att din partner försöker skydda - i de stunderna där ni agerar olika snabbt?',
         ],
@@ -357,7 +357,7 @@ export const cards: Card[] = [
         title: 'Frågor',
         content: '',
         prompts: [
-          'Vad hoppas du att barnen lär sig av att se hur ni är mot varandra?',
+          'Vad hoppas du 'Vad hoppas du att barnet lär sig av att se hur ni är mot varandra?', sig av att se hur ni är mot varandra?',
           'Vilken värdering är viktigast för dig i teorin — men svårast att faktiskt följa hemma?',
           'Gör er relation det lättare eller svårare att leva som du egentligen vill?',
           'Barnet beter sig respektlöst. En markerar direkt mot barnet. Den andra reagerar mer på hur gränsen sätts: ton, ordval eller situation.\n\nNär ni reagerar olika i ett spänt ögonblick med barnet - vad försökte du skydda?',
