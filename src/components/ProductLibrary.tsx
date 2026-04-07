@@ -998,7 +998,7 @@ export default function ProductLibrary() {
                     width: '100%',
                     height: '100%',
                     objectFit: 'contain',
-                    objectPosition: 'center bottom',
+                    objectPosition: 'center center',
                     opacity: 1,
                     filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.10))',
                   }}
