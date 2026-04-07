@@ -582,7 +582,7 @@ export default function KidsCardPortal() {
                 marginTop: '2px',
               }}
             >
-              {promptCount} frågor · {estimateMinutes(promptCount, productSlug)}
+              {estimateMinutes(promptCount, productSlug)}
             </p>
             {/* ── Start session button ── */}
             {(() => {
@@ -661,7 +661,7 @@ export default function KidsCardPortal() {
                 textAlign: 'center',
               }}
             >
-              Samtal {currentIndex + 1} av {categoryCards.length}
+              {currentIndex + 1} av {categoryCards.length} i {category.title}
             </span>
             <button
               onClick={goNext}
@@ -698,7 +698,7 @@ export default function KidsCardPortal() {
                 textAlign: 'center',
               }}
             >
-              Samtal 1 av {product.cards.length}
+              1 av {product.cards.length} samtal i {product.name}
             </span>
           )}
 
@@ -725,7 +725,7 @@ export default function KidsCardPortal() {
               letterSpacing: '0.3px',
             }}
           >
-            Utforska alla samtal
+            {isFreeCard ? `Utforska ${product.name}` : `Fler i ${category.title}`}
           </button>
         </div>
       </div>
