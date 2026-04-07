@@ -2650,6 +2650,7 @@ export default function CardView() {
   }
 
   const exitBackTo = isFromArchive ? '/shared' : (
+    isFreeCard && product ? `/product/${product.slug}` :
     product && category ? `/product/${product.slug}/portal/${category.id}` :
     product ? `/product/${product.slug}` : '/'
   );
