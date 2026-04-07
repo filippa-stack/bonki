@@ -1,61 +1,22 @@
 
 
-## Library tile ownership indicator + badge text update
+## Fix Vårt Vi tile illustration positioning
 
-### Changes in `src/components/ProductLibrary.tsx`
+### Problem
+The Vårt Vi tile illustration container spans `top: 0%, bottom: -45%` with `objectPosition: 'center 12%'`, pushing the creature down and partially off-tile. PastelTile uses `top: -15%, bottom: -10%` with `objectPosition: 'center bottom'`, keeping the creature centered and visible.
 
-#### 1. Badge text — new three-state format
+### Fix in `src/components/ProductLibrary.tsx` (lines 984–1005)
 
-**PastelTile (line 437–439):** Change from current two-state to:
-```typescript
-{hideFreeBadge
-  ? `✦ ${completedCount || 1} av ${totalCards ?? '?'} utforskade`
-  : `✦ ${totalCards ?? '?'} samtal ✦ Första gratis${ageLabel ? ` · ${ageLabel}` : ''}`}
-```
+Update the Vårt Vi illustration container and image styles to match PastelTile:
 
-**Vårt Vi tile (line 1048):** Change from current two-state to:
-```typescript
-{suFreeCompleted ? `✦ ${suCount || 1} av ${totalCards} utforskade` : `✦ ${totalCards} samtal ✦ Första gratis`}
-```
+**Container (lines 986–989):**
+- `top: '0%'` → `top: '-15%'`
+- `left: '-15%'` → `left: '-5%'`
+- `right: '-15%'` → `right: '-5%'`
+- `bottom: '-45%'` → `bottom: '-10%'`
 
-#### 2. Ghost Glow ownership sparkle on PastelTile
+**Image (line 1001):**
+- `objectPosition: 'center 12%'` → `objectPosition: 'center bottom'`
 
-Add `isPurchased?: boolean` prop to PastelTile (line 237).
-
-Inside the tile `<motion.div>` (after line 284, before the illustration), add:
-```tsx
-{isPurchased && (
-  <div style={{
-    position: 'absolute',
-    top: '12px',
-    right: '12px',
-    fontSize: '18px',
-    color: '#D4F5C0',
-    textShadow: '0 0 8px #D4F5C0, 0 0 16px rgba(212, 245, 192, 0.4)',
-    opacity: 0.85,
-    pointerEvents: 'none',
-    zIndex: 2,
-  }}>✦</div>
-)}
-```
-
-Tile container already has `position: 'relative'` (line 274) — no change needed.
-
-#### 3. Ghost Glow sparkle on Vårt Vi tile
-
-Same sparkle element added inside the Vårt Vi `<motion.div>` (after line 910 area), but only when `purchased.has('still_us')`. The tile already has `position: 'relative'` (line 907).
-
-Needs to not conflict with the existing resume indicator at top-right — the resume indicator is at `top: 12px, right: 14px`. When there's an active session, skip the sparkle OR offset it. Simplest: only show sparkle when there's NO active session on that tile (the resume dot already signals ownership implicitly).
-
-#### 4. Pass `isPurchased` to PastelTile calls
-
-In the kids product tile loop (~line 1130), add:
-```typescript
-isPurchased={purchased.has(product.id)}
-```
-
-`purchased` is already available from `useAllProductAccess()` (line 454).
-
-### Files changed
-- `src/components/ProductLibrary.tsx` only
+No other changes — badges, sparkle, text, scrim all untouched.
 
