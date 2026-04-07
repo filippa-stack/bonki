@@ -1,21 +1,50 @@
 
 
-## Un-gate console.log calls in CardView.tsx
+## Fix: Free card 409 — create session after abandon completes
 
-### What changes
+**File:** `src/pages/CardView.tsx` — 1 change
 
-Remove the `if (isDevToolsEnabled())` guard from all 5 gated `console.log` lines in `src/pages/CardView.tsx`, so they always fire — enabling production tracing of session creation and recovery.
+### Root cause
+The abandon effect (line 433) and eager creation effect (line 454) race. The eager effect sees `normalizedSession.sessionId` is still set for another card and bails (line 463), but sometimes fires before the abandon completes, causing a 409.
 
-### Lines to edit
+### Change
+In the abandon effect's async block (lines 433–439), after `refetch()` completes, immediately create the eager session for the new card instead of relying on the separate effect to re-trigger.
 
-| Line | Before | After |
-|------|--------|-------|
-| 434 | `if (isDevToolsEnabled()) console.log('[lazy] abandon...')` | `console.log('[lazy] abandon...')` |
-| 470 | `if (isDevToolsEnabled()) console.log('[eager] creating...')` | `console.log('[eager] creating...')` |
-| 764 | `if (isDevToolsEnabled()) console.log('[step-complete] no sessionId...')` | `console.log('[step-complete] no sessionId...')` |
-| 873 | `if (isDevToolsEnabled()) console.log('[step-complete] session_inactive...')` | `console.log('[step-complete] session_inactive...')` |
-| 880 | `if (isDevToolsEnabled()) console.log('[step-complete] recovered...')` | `console.log('[step-complete] recovered...')` |
+**Lines 433–439 → replace with:**
 
-### File
-- `src/pages/CardView.tsx` — 5 single-line edits (remove gate prefix only)
+```typescript
+(async () => {
+  console.log('[lazy] abandon other session', normalizedSession.sessionId);
+  await supabase.rpc('abandon_active_session', {
+    p_session_id: normalizedSession.sessionId,
+  });
+  await normalizedSession.refetch();
+
+  // Create session for the new card now that the old one is abandoned
+  const needsEagerSession = isKidsProduct || product?.id === 'still_us';
+  if (needsEagerSession && space?.id && cardId && !eagerSessionRef.current) {
+    eagerSessionRef.current = true;
+    const cardData = getCardById(cardId);
+    if (cardData) {
+      console.log('[eager] creating session after abandon for', cardId);
+      const { error } = await supabase.rpc('activate_couple_session', {
+        p_couple_space_id: space.id,
+        p_category_id: cardData.categoryId,
+        p_card_id: cardId,
+        p_step_count: effectiveSteps.length,
+        p_product_id: product?.id ?? 'still_us',
+      });
+      if (!error) {
+        await normalizedSession.refetch();
+      } else {
+        console.error('[eager] session creation after abandon failed:', error);
+      }
+    }
+  }
+})();
+```
+
+### What stays unchanged
+- The separate eager creation effect (lines 454–485) — still needed for the no-abandon path
+- All other session logic, card rendering, non-free card behavior
 
