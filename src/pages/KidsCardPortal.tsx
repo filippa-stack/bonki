@@ -509,7 +509,8 @@ export default function KidsCardPortal() {
                     fontSize: '28px',
                     fontWeight: 400,
                     color: LANTERN_GLOW,
-                    letterSpacing: '-0.3px',
+                    letterSpacing: '1.5px',
+                    textTransform: 'uppercase',
                     margin: 0,
                   }}
                 >

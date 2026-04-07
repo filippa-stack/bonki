@@ -3061,6 +3061,7 @@ export default function CardView() {
                 fontSize: '15px',
                 fontWeight: 400,
                 color: LANTERN_GLOW,
+                ...(isKidsProduct ? { textTransform: 'uppercase' as const, letterSpacing: '1.5px' } : {}),
               }}>
                 {card.title}
               </span>
@@ -3433,7 +3434,7 @@ export default function CardView() {
 
         {/* Floating illustration peek — kids products */}
         {cardImageUrl && card && (
-          <IllustrationPeek imageUrl={cardImageUrl} cardTitle={card.title} productBgColor={product?.backgroundColor} />
+          <IllustrationPeek imageUrl={cardImageUrl} cardTitle={card.title} productBgColor={product?.backgroundColor} isKidsProduct={isKidsProduct} />
         )}
       </>
     );
@@ -3477,7 +3478,7 @@ export default function CardView() {
 
       {/* Floating illustration peek — kids/family products only */}
       {!showStartScreen && cardImageUrl && card && product?.id !== 'still_us' && (isLive || devState === 'browse') && (
-        <IllustrationPeek imageUrl={cardImageUrl} cardTitle={card.title} productBgColor={product?.backgroundColor} />
+        <IllustrationPeek imageUrl={cardImageUrl} cardTitle={card.title} productBgColor={product?.backgroundColor} isKidsProduct={isKidsProduct} />
       )}
 
 
