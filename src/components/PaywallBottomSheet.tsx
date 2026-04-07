@@ -284,8 +284,10 @@ export default function PaywallBottomSheet({
               <p
                 style={{
                   fontFamily: 'var(--font-sans)',
-                  fontSize: '13px',
-                  color: DRIFTWOOD,
+                  fontSize: '15px',
+                  fontWeight: 500,
+                  color: LANTERN_GLOW,
+                  opacity: 0.75,
                   margin: 0,
                   marginTop: '16px',
                 }}
