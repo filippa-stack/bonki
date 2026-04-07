@@ -713,6 +713,13 @@ export default function CardView() {
     if (kidsNoteSession.loading) return;
     if (kidsNoteSyncedRef.current) return;
     kidsNoteSyncedRef.current = true;
+    console.log('[kids-note-sync]', {
+      hasText: !!kidsNoteSession.myReflection?.text,
+      text: kidsNoteSession.myReflection?.text?.slice(0, 20),
+      stepIndex: kidsNoteSession.myReflection?.stepIndex,
+      expectedStep: kidsNoteStepIndex,
+      sessionId: kidsNoteSession.sessionId,
+    });
     if (kidsNoteSession.myReflection?.text && kidsNoteSession.myReflection.stepIndex === kidsNoteStepIndex) {
       setKidsNoteLocalText(kidsNoteSession.myReflection.text);
       setKidsNoteExpanded(true);
