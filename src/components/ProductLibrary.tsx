@@ -234,12 +234,12 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
   illustrationSize?: string; illustrationPosition?: string; wide?: boolean;
   showFreeBadge?: boolean; badgeText?: string; ageCount?: number;
   hasActiveSession?: boolean; tileHeight?: string;
-  progressText?: string; lastActive?: string; hideFreeBadge?: boolean; totalCards?: number;
+  progressText?: string; lastActive?: string; hideFreeBadge?: boolean; totalCards?: number; completedCount?: number;
 }>(function PastelTile({
   name, bg, ageLabel, tagline, onClick, illustration, productId, accentColor, taglineColor,
   illustrationOpacity = 0.90, wide = false,
   hasActiveSession = false, tileHeight = '240px',
-  progressText, lastActive, hideFreeBadge = false, totalCards,
+  progressText, lastActive, hideFreeBadge = false, totalCards, completedCount,
 }, ref) {
   const toShadowColor = (hex: string, alpha: number) => {
     const r = parseInt(hex.slice(1, 3), 16);
@@ -435,23 +435,9 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
             }}
           >
             {hideFreeBadge
-              ? `✦ 1 av ${totalCards ?? '?'} utforskade`
-              : `✦ Samtal 1 gratis${ageLabel ? ` · ${ageLabel}` : ''}`}
+              ? `✦ ${completedCount || 1} av ${totalCards ?? '?'} utforskade`
+              : `✦ Samtal 1 av ${totalCards ?? '?'} gratis${ageLabel ? ` · ${ageLabel}` : ''}`}
           </span>
-          {progressText && (
-            <span
-              style={{
-                display: 'block',
-                marginTop: '6px',
-                fontFamily: 'var(--font-body)',
-                fontSize: '11px',
-                fontWeight: 500,
-                color: 'hsla(0, 0%, 100%, 0.5)',
-              }}
-            >
-              {progressText}
-            </span>
-          )}
         </div>
     </motion.div>
   );
@@ -1059,17 +1045,7 @@ export default function ProductLibrary() {
                           padding: '4px 12px',
                           boxShadow: '0 0 12px hsla(0, 0%, 100%, 0.08), inset 0 1px 0 hsla(0, 0%, 100%, 0.15)',
                         }}>
-                          {suFreeCompleted ? `✦ 1 av ${totalCards} utforskade` : '✦ Samtal 1 gratis'}
-                        </span>
-                        <span style={{
-                          display: 'block',
-                          marginTop: '6px',
-                          fontFamily: 'var(--font-body)',
-                          fontSize: '11px',
-                          fontWeight: 500,
-                          color: 'hsla(0, 0%, 100%, 0.5)',
-                        }}>
-                          {suCount > 0 ? `${suCount} av ${totalCards} samtal` : `${totalCards} samtal`}
+                          {suFreeCompleted ? `✦ ${suCount || 1} av ${totalCards} utforskade` : `✦ Samtal 1 av ${totalCards} gratis`}
                         </span>
                       </>
                     );
@@ -1151,7 +1127,7 @@ export default function ProductLibrary() {
                   badgeText={buildBadgeText(product)}
                   hasActiveSession={activeProductIds.has(product.id)}
                   tileHeight={TILE_HEIGHTS[product.id] ?? '240px'}
-                  progressText={ptxt}
+                  completedCount={count}
                   lastActive={lastActivityMap[product.id]}
                   hideFreeBadge={freeCardCompleted}
                   totalCards={product.cards.length}
