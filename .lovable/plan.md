@@ -1,48 +1,41 @@
 
 
-## Three copy changes for conversion clarity
+## Two bug fixes
 
-### Change 1 — Post-free-card badge on library tiles
+### Bug 1 — "Utforska [product]" routes to intro page
 
-**Files:** `src/components/ProductLibrary.tsx`
+**Root cause:** In `ProductHome.tsx`, the `useEffect` (line 46-49) unconditionally overrides the localStorage-based `showIntro = false` with `setShowIntro(true)` when `useProductIntroNeeded` returns `needed: true`. The DB hook checks for *completed sessions*, not whether the user has *seen the intro*. So a user who saw the intro and explored the free card — but hasn't completed any session — gets the intro again.
 
-**Kids tiles (line ~416–439):** Instead of hiding the badge entirely when `hideFreeBadge` is true, show it with different text. Change from:
+**Fix (line 46-49):** Add the localStorage check inside the effect so the DB result doesn't override an explicit "seen" flag:
 
-```tsx
-{!hideFreeBadge && (
-  <span ...>✦ Samtal 1 gratis{ageLabel ? ` · ${ageLabel}` : ''}</span>
-)}
+```typescript
+useEffect(() => {
+  if (!introChecked) return;
+  const alreadySeen = product?.id
+    ? !!localStorage.getItem(`bonki-intro-seen-${product.id}`)
+    : false;
+  if (alreadySeen) {
+    setShowIntro(false);
+    return;
+  }
+  if (needsIntro) {
+    setShowIntro(true);
+  } else {
+    setShowIntro(false);
+    if (product?.id) localStorage.setItem(`bonki-intro-seen-${product.id}`, '1');
+  }
+}, [introChecked, needsIntro]);
 ```
 
-To render the badge always, but with conditional text:
-- Not completed: `✦ Samtal 1 gratis` (current)
-- Completed: `✦ 1 av {totalCards} utforskade` — where totalCards comes from a new prop (the product's total card count)
+This ensures the localStorage flag (set by KidsCardPortal and ProductIntro) takes priority over the DB check. No other file changes needed.
 
-Add a `totalCards` prop to `PastelTile` and pass `product.cards.length` from the kids tile render loop (line ~1141). The badge styling stays identical.
+### Bug 2 — Library tile shows "Still Us" instead of "Vårt Vi"
 
-**Still Us tile (line ~1048–1064):** Same pattern — when `suFreeCompleted` is true, show `✦ 1 av {totalCards} utforskade` instead of hiding the badge.
+**File:** `src/components/ProductLibrary.tsx`, line 1025
 
-### Change 2 — Locked card CTA on portal
-
-**File:** `src/pages/KidsCardPortal.tsx` (line 609)
-
-Change: `'Lås upp för att starta'` → `'Lås upp alla samtal'`
-
-### Change 3 — Prominent scope line on paywalls
-
-**File:** `src/pages/PaywallFullScreen.tsx` (lines 247–258)
-- Change `fontSize` from `'14px'` to `'16px'`
-- Change `opacity` from `0.5` to `0.75`
-
-**File:** `src/components/PaywallBottomSheet.tsx` (lines 284–294)
-- Change `fontSize` from `'13px'` to `'15px'`
-- Change `color` from `DRIFTWOOD` to `LANTERN_GLOW`
-- Add `opacity: 0.75`
-- Add `fontWeight: 500`
+**Fix:** Change the hardcoded string from `Still Us` to `Vårt Vi`.
 
 ### Files changed
-- `src/components/ProductLibrary.tsx` — badge logic + new prop
-- `src/pages/KidsCardPortal.tsx` — one string
-- `src/pages/PaywallFullScreen.tsx` — font size + opacity
-- `src/components/PaywallBottomSheet.tsx` — font size + color + opacity
+- `src/pages/ProductHome.tsx` — effect logic (lines 46-54)
+- `src/components/ProductLibrary.tsx` — one string (line 1025)
 
