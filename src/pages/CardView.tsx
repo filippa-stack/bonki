@@ -712,6 +712,7 @@ export default function CardView() {
   useEffect(() => {
     if (kidsNoteSession.loading) return;
     if (kidsNoteSyncedRef.current) return;
+    if (kidsNoteSession.myReflection && kidsNoteSession.myReflection.stepIndex !== kidsNoteStepIndex) return;
     kidsNoteSyncedRef.current = true;
     console.log('[kids-note-sync]', {
       hasText: !!kidsNoteSession.myReflection?.text,
@@ -720,7 +721,7 @@ export default function CardView() {
       expectedStep: kidsNoteStepIndex,
       sessionId: kidsNoteSession.sessionId,
     });
-    if (kidsNoteSession.myReflection?.text && kidsNoteSession.myReflection.stepIndex === kidsNoteStepIndex) {
+    if (kidsNoteSession.myReflection?.text) {
       setKidsNoteLocalText(kidsNoteSession.myReflection.text);
       setKidsNoteExpanded(true);
     } else {
