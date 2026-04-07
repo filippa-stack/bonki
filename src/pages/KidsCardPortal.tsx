@@ -279,6 +279,8 @@ export default function KidsCardPortal() {
 
   hasRenderedContent.current = true;
 
+  const isFreeCard = card.id === product.freeCardId;
+
   return (
     <div
       style={{
@@ -386,7 +388,7 @@ export default function KidsCardPortal() {
               whileHover={portalPhase === 'idle' ? { scale: 1.02, boxShadow: '0 8px 32px rgba(0,0,0,0.25)' } : undefined}
               whileTap={portalPhase === 'idle' ? { scale: 0.97, y: 0 } : undefined}
               onClick={startSession}
-              drag={portalPhase === 'idle' ? 'x' : false}
+              drag={portalPhase === 'idle' && !isFreeCard ? 'x' : false}
               dragConstraints={{ left: 0, right: 0 }}
               dragElastic={0.15}
               onDragEnd={handleDragEnd}
@@ -626,6 +628,7 @@ export default function KidsCardPortal() {
           }}
         >
           {/* Prev / Next arrows */}
+          {!isFreeCard && (
           <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
             <button
               onClick={goPrev}
@@ -682,10 +685,26 @@ export default function KidsCardPortal() {
               <ChevronRight size={14} strokeWidth={2} />
             </button>
           </div>
+          )}
+
+          {/* Free card: product-scoped counter */}
+          {isFreeCard && (
+            <span
+              style={{
+                fontFamily: 'var(--font-sans)',
+                fontSize: '15px',
+                color: LANTERN_GLOW,
+                opacity: 0.6,
+                textAlign: 'center',
+              }}
+            >
+              Samtal 1 av {product.cards.length}
+            </span>
+          )}
 
           {/* Browse all */}
           <button
-            onClick={() => setBrowseOpen(true)}
+            onClick={() => isFreeCard ? navigate(`/product/${product.slug}`) : setBrowseOpen(true)}
             style={{
               background: 'transparent',
               border: '0.5px solid rgba(255, 255, 255, 0.1)',
