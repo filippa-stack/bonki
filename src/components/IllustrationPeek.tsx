@@ -8,13 +8,15 @@ interface IllustrationPeekProps {
   cardTitle: string;
   /** Product background color — used as overlay bg when expanded */
   productBgColor?: string;
+  /** When true, title renders uppercase with wide letter-spacing */
+  isKidsProduct?: boolean;
 }
 
 /**
  * Floating thumbnail bubble + fullscreen reveal overlay.
  * Positioned top-right below header. Uses product bg color when expanded.
  */
-export default function IllustrationPeek({ imageUrl, cardTitle, productBgColor }: IllustrationPeekProps) {
+export default function IllustrationPeek({ imageUrl, cardTitle, productBgColor, isKidsProduct }: IllustrationPeekProps) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -132,7 +134,8 @@ export default function IllustrationPeek({ imageUrl, cardTitle, productBgColor }
                 fontFamily: 'var(--font-serif)',
                 fontSize: '18px',
                 fontWeight: 600,
-                textTransform: 'capitalize',
+                textTransform: isKidsProduct ? 'uppercase' : 'capitalize',
+                letterSpacing: isKidsProduct ? '1.5px' : undefined,
                 color: 'hsla(0, 0%, 100%, 0.85)',
                 marginTop: '20px',
                 textAlign: 'center',
