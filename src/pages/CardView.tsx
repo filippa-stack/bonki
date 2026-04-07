@@ -713,6 +713,7 @@ export default function CardView() {
     if (kidsNoteSession.loading) return;
     if (kidsNoteSyncedRef.current) return;
     if (kidsNoteSession.myReflection && kidsNoteSession.myReflection.stepIndex !== kidsNoteStepIndex) return;
+    if (!kidsNoteSession.myReflection && kidsNoteSession.sessionId) return;
     kidsNoteSyncedRef.current = true;
     console.log('[kids-note-sync]', {
       hasText: !!kidsNoteSession.myReflection?.text,
