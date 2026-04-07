@@ -1,43 +1,22 @@
 
 
-## Fix: Sync effect consumes stale reflection data
+## Fix: Free card exit → product home
 
-**File:** `src/pages/CardView.tsx` — lines 714–723
+**File:** `src/pages/CardView.tsx` — line 2652
 
 ### Change
 
-Add a stale-data guard: if `myReflection` exists but its `stepIndex` doesn't match `kidsNoteStepIndex`, bail out early (don't set `kidsNoteSyncedRef = true`). This lets the effect re-run when the hook fetches the correct prompt's data.
+Add `isFreeCard` check (already defined at line 199) so free card exit routes to product home instead of category portal.
 
-**Lines 714–723 — replace:**
-
-```typescript
-    if (kidsNoteSyncedRef.current) return;
-    kidsNoteSyncedRef.current = true;
-    console.log('[kids-note-sync]', {
-      hasText: !!kidsNoteSession.myReflection?.text,
-      text: kidsNoteSession.myReflection?.text?.slice(0, 20),
-      stepIndex: kidsNoteSession.myReflection?.stepIndex,
-      expectedStep: kidsNoteStepIndex,
-      sessionId: kidsNoteSession.sessionId,
-    });
-    if (kidsNoteSession.myReflection?.text && kidsNoteSession.myReflection.stepIndex === kidsNoteStepIndex) {
-```
-
-**With:**
+**Lines 2652–2655 — replace with:**
 
 ```typescript
-    if (kidsNoteSyncedRef.current) return;
-    if (kidsNoteSession.myReflection && kidsNoteSession.myReflection.stepIndex !== kidsNoteStepIndex) return;
-    kidsNoteSyncedRef.current = true;
-    console.log('[kids-note-sync]', {
-      hasText: !!kidsNoteSession.myReflection?.text,
-      text: kidsNoteSession.myReflection?.text?.slice(0, 20),
-      stepIndex: kidsNoteSession.myReflection?.stepIndex,
-      expectedStep: kidsNoteStepIndex,
-      sessionId: kidsNoteSession.sessionId,
-    });
-    if (kidsNoteSession.myReflection?.text) {
+  const exitBackTo = isFromArchive ? '/shared' : (
+    isFreeCard && product ? `/product/${product.slug}` :
+    product && category ? `/product/${product.slug}/portal/${category.id}` :
+    product ? `/product/${product.slug}` : '/'
+  );
 ```
 
-Nothing else changes — the rest of the effect, dependencies, and all other code stays as-is.
+Nothing else changes.
 
