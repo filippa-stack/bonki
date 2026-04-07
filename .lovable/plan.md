@@ -1,22 +1,27 @@
 
 
-## Update send-notification-email to use Resend connector
+## Free card portal — show full product scope
 
-### What's changing
+**File:** `src/pages/KidsCardPortal.tsx` only
 
-The `send-notification-email` edge function currently calls the Resend API directly using the old `RESEND_API_KEY` secret. We'll switch it to use the Resend connector gateway with `RESEND_API_KEY_1`, which provides automatic token refresh.
+### Approach
 
-The `auth-email-hook` does **not** use Resend — it enqueues emails via the Lovable email queue system. No changes needed there.
+Add a boolean `isFreeCard = card?.id === product?.freeCardId` computed once. Then use it in three places:
 
-### Plan
+### Changes
 
-1. **Update `send-notification-email/index.ts`**
-   - Replace `Deno.env.get("RESEND_API_KEY")` with `Deno.env.get("RESEND_API_KEY_1")`
-   - Add `LOVABLE_API_KEY` env var check
-   - Change the Resend API call from direct (`https://api.resend.com/emails`) to gateway (`https://connector-gateway.lovable.dev/resend/emails`) with proper `Authorization` and `X-Connection-Api-Key` headers
+1. **Counter text (line ~661)**
+   - When `isFreeCard`: show `Samtal 1 av {product.cards.length}` (total product cards)
+   - Otherwise: keep existing `Samtal {currentIndex + 1} av {categoryCards.length}`
 
-2. **Deploy** the updated edge function
+2. **Hide arrows when `isFreeCard` (lines ~629–684)**
+   - Wrap the two arrow buttons in a condition: only render when `!isFreeCard`
+   - Also disable swipe drag: change `drag={portalPhase === 'idle' ? 'x' : false}` to also require `!isFreeCard`
 
-### Files modified
-- `supabase/functions/send-notification-email/index.ts`
+3. **"Utforska alla samtal" button (lines ~687–703)**
+   - When `isFreeCard`: navigate directly to `/product/${product.slug}` instead of opening `PortalBrowseSheet`
+   - Otherwise: keep current `setBrowseOpen(true)` behavior
+
+### No changes to
+- Session logic, card rendering, paywall, portal animation, or any other component
 
