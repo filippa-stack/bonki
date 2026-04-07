@@ -23,10 +23,18 @@ Deno.serve(async (req) => {
 
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-    const resendApiKey = Deno.env.get("RESEND_API_KEY");
+    const resendApiKey = Deno.env.get("RESEND_API_KEY_1");
+    const lovableApiKey = Deno.env.get("LOVABLE_API_KEY");
 
     if (!resendApiKey) {
-      return new Response(JSON.stringify({ error: "RESEND_API_KEY not configured" }), {
+      return new Response(JSON.stringify({ error: "RESEND_API_KEY_1 not configured" }), {
+        status: 500,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    if (!lovableApiKey) {
+      return new Response(JSON.stringify({ error: "LOVABLE_API_KEY not configured" }), {
         status: 500,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
@@ -163,10 +171,13 @@ Deno.serve(async (req) => {
           html: "<p>Din partner delade en tanke i Still Us.</p>",
         };
 
-    const resendRes = await fetch("https://api.resend.com/emails", {
+    const GATEWAY_URL = "https://connector-gateway.lovable.dev/resend";
+
+    const resendRes = await fetch(`${GATEWAY_URL}/emails`, {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${resendApiKey}`,
+        Authorization: `Bearer ${lovableApiKey}`,
+        "X-Connection-Api-Key": resendApiKey,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
