@@ -1046,6 +1046,7 @@ export default function ProductLibrary() {
                           boxShadow: '0 0 12px hsla(0, 0%, 100%, 0.08), inset 0 1px 0 hsla(0, 0%, 100%, 0.15)',
                         }}>
                           {suFreeCompleted ? `✦ ${suCount || 1} av ${totalCards} utforskade` : `✦ Samtal 1 av ${totalCards} gratis`}
+                        </span>
                       </>
                     );
                   })()}
