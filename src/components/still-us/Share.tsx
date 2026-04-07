@@ -18,7 +18,7 @@ const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
 const DEFAULT_INVITE_MESSAGE = (link: string) =>
-  `Hej. Jag hittade något jag vill prova med dig. Det heter Still Us — 22 veckor av samtal om oss. Börja med en snabb check-in: ${link}`;
+  `Hej. Jag hittade något jag vill prova med dig. Det heter Vårt Vi — 22 veckor av samtal om oss. Börja med en snabb check-in: ${link}`;
 
 interface ShareProps {
   /** Whether partner is already linked */
@@ -78,7 +78,7 @@ export default function Share({
     if (navigator.share) {
       try {
         await navigator.share({
-          title: 'Still Us',
+          title: 'Vårt Vi',
           text: hasPartner ? undefined : textToShare,
           url: hasPartner ? shareLink : undefined,
         });
@@ -148,7 +148,7 @@ export default function Share({
       >
         {hasPartner
           ? `Din partner behöver göra sin check-in för Vecka ${weekNumber}: ${cardTitle ?? ''}`
-          : 'Still Us är gjort för er båda. Du har redan gjort din check-in — nu är det din partners tur.'}
+          : 'Vårt Vi är gjort för er båda. Du har redan gjort din check-in — nu är det din partners tur.'}
       </motion.p>
 
       {/* ── First-time: editable message textarea ── */}

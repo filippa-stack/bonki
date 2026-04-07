@@ -72,7 +72,7 @@ const PAGES = [
   { path: '/?devState=onboarding', label: '👋 Onboarding' },
   { path: '/unlock', label: '💳 Paywall' },
   // ── Product Intro (Welcome) Pages ──
-  { path: '/?devState=productIntro&product=still-us', label: '🎴 Intro: Still Us' },
+  { path: '/?devState=productIntro&product=still-us', label: '🎴 Intro: Vårt Vi' },
   { path: '/?devState=productIntro&product=jag-i-mig', label: '🎴 Intro: Jag i Mig' },
   { path: '/?devState=productIntro&product=jag-med-andra', label: '🎴 Intro: Jag med Andra' },
   { path: '/?devState=productIntro&product=jag-i-varlden', label: '🎴 Intro: Jag i Världen' },
@@ -80,7 +80,7 @@ const PAGES = [
   { path: '/?devState=productIntro&product=syskonkort', label: '🎴 Intro: Syskonkort' },
   { path: '/?devState=productIntro&product=sexualitetskort', label: '🎴 Intro: Sexualitetskort' },
   // ── Paywall Full Screen ──
-  { path: '/paywall-full?product=still_us', label: '💳 Paywall: Still Us' },
+  { path: '/paywall-full?product=still_us', label: '💳 Paywall: Vårt Vi' },
   { path: '/paywall-full?product=jag_i_mig', label: '💳 Paywall: Jag i Mig' },
   { path: '/paywall-full?product=jag_med_andra', label: '💳 Paywall: Jag med Andra' },
   { path: '/paywall-full?product=jag_i_varlden', label: '💳 Paywall: Jag i Världen' },
@@ -88,7 +88,7 @@ const PAGES = [
   { path: '/paywall-full?product=syskonkort', label: '💳 Paywall: Syskonkort' },
   { path: '/paywall-full?product=sexualitetskort', label: '💳 Paywall: Sexualitetskort' },
   // ── Product Welcome Pages ──
-  { path: '/product/still-us', label: '🏠 Still Us Home' },
+  { path: '/product/still-us', label: '🏠 Vårt Vi Home' },
   { path: '/product/jag-i-mig', label: '🏠 Jag i Mig Home' },
   { path: '/product/jag-med-andra', label: '🏠 Jag med Andra Home' },
   { path: '/product/jag-i-varlden', label: '🏠 Jag i Världen Home' },

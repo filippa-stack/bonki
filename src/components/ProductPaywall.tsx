@@ -248,7 +248,7 @@ export default function ProductPaywall({ product, onAccessGranted, cardId, curre
                 marginTop: '8px',
               }}
             >
-              Ingår i Still Us · {totalCards || 'alla'} samtalsämnen
+              Ingår i Vårt Vi · {totalCards || 'alla'} samtalsämnen
             </p>
 
             {/* 3. Value line */}
@@ -315,7 +315,7 @@ export default function ProductPaywall({ product, onAccessGranted, cardId, curre
               {loading ? (
                 <span style={{ opacity: 0.8 }}>Förbereder...</span>
               ) : (
-                'Lås upp Still Us'
+                'Lås upp Vårt Vi'
               )}
             </button>
 

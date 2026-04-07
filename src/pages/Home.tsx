@@ -1332,7 +1332,7 @@ function ActionCard({
             opacity: 0.7,
             margin: '12px 0 0',
           }}>
-            {initName} kan låsa upp resten av Still Us.
+            {initName} kan låsa upp resten av Vårt Vi.
           </p>
 
           <motion.button

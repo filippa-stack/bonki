@@ -1213,11 +1213,11 @@ export default function CardView() {
     // Build a synthetic ProductManifest for Still Us (legacy cards not in allProducts)
     const effectiveProduct: import('@/types/product').ProductManifest = product ?? {
       id: 'still_us',
-      name: 'Still Us',
+      name: 'Vårt Vi',
       slug: 'still-us',
       tagline: 'De samtal som annars aldrig blir av',
       description: 'Verktyg för att prata om det som är svårt — innan det blir för svårt.',
-      headerTitle: 'Still Us',
+      headerTitle: 'Vårt Vi',
       accentColor: 'hsl(158, 35%, 18%)',
       accentColorMuted: 'hsl(158, 20%, 92%)',
       secondaryAccent: 'hsl(41, 78%, 48%)',
@@ -1821,7 +1821,7 @@ export default function CardView() {
                     textAlign: 'center',
                   }}
                 >
-                  Till Still Us
+                  Till Vårt Vi
                 </button>
               </>
             ) : postCompletionNav.type === 'all_complete' ? (
@@ -2554,7 +2554,7 @@ export default function CardView() {
                 justifyContent: 'center',
               }}
             >
-              {archiveIsLastPrompt ? 'Tillbaka till Still Us' : 'Nästa'}
+              {archiveIsLastPrompt ? 'Tillbaka till Vårt Vi' : 'Nästa'}
             </motion.button>
           </div>
         }
