@@ -1,26 +1,16 @@
 
 
-## Add diagnostic log to kids-note-sync effect
+## Fix: Sync effect consumes stale reflection data
 
-**File:** `src/pages/CardView.tsx` — 1 change (lines 712–722)
+**File:** `src/pages/CardView.tsx` — lines 714–723
 
 ### Change
 
-Add a `console.log('[kids-note-sync]', ...)` after setting `kidsNoteSyncedRef.current = true` and before the conditional, matching the user's provided snippet exactly.
+Add a stale-data guard: if `myReflection` exists but its `stepIndex` doesn't match `kidsNoteStepIndex`, bail out early (don't set `kidsNoteSyncedRef = true`). This lets the effect re-run when the hook fetches the correct prompt's data.
 
-**Current (lines 712–722):**
-```typescript
-useEffect(() => {
-    if (kidsNoteSession.loading) return;
-    if (kidsNoteSyncedRef.current) return;
-    kidsNoteSyncedRef.current = true;
-    if (kidsNoteSession.myReflection?.text && kidsNoteSession.myReflection.stepIndex === kidsNoteStepIndex) {
-```
+**Lines 714–723 — replace:**
 
-**Replace with:**
 ```typescript
-useEffect(() => {
-    if (kidsNoteSession.loading) return;
     if (kidsNoteSyncedRef.current) return;
     kidsNoteSyncedRef.current = true;
     console.log('[kids-note-sync]', {
@@ -33,5 +23,21 @@ useEffect(() => {
     if (kidsNoteSession.myReflection?.text && kidsNoteSession.myReflection.stepIndex === kidsNoteStepIndex) {
 ```
 
-Everything else stays unchanged.
+**With:**
+
+```typescript
+    if (kidsNoteSyncedRef.current) return;
+    if (kidsNoteSession.myReflection && kidsNoteSession.myReflection.stepIndex !== kidsNoteStepIndex) return;
+    kidsNoteSyncedRef.current = true;
+    console.log('[kids-note-sync]', {
+      hasText: !!kidsNoteSession.myReflection?.text,
+      text: kidsNoteSession.myReflection?.text?.slice(0, 20),
+      stepIndex: kidsNoteSession.myReflection?.stepIndex,
+      expectedStep: kidsNoteStepIndex,
+      sessionId: kidsNoteSession.sessionId,
+    });
+    if (kidsNoteSession.myReflection?.text) {
+```
+
+Nothing else changes — the rest of the effect, dependencies, and all other code stays as-is.
 
