@@ -52,7 +52,7 @@ export default function Install() {
   }, []);
 
   if (isStandalone()) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/login" replace />;
   }
 
   const handleCTA = async () => {
@@ -346,9 +346,9 @@ export default function Install() {
           textAlign: 'center',
         }}
       >
-        <p style={{ fontSize: '14px', color: 'rgba(245,237,210,0.5)', margin: 0 }}>
+        <p style={{ fontSize: '15px', color: 'rgba(245,237,210,0.65)', margin: 0 }}>
           Redan medlem?{' '}
-          <Link to="/login" style={{ color: 'rgba(253, 246, 227, 0.7)', textDecoration: 'underline' }}>
+          <Link to="/login" style={{ color: 'rgba(253, 246, 227, 0.85)', textDecoration: 'underline', fontWeight: 600 }}>
             Logga in
           </Link>
         </p>
