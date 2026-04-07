@@ -14,7 +14,7 @@ export type NotificationTemplate = {
 export const notificationTemplates: Record<string, NotificationTemplate> = {
   N1: {
     type: 'N1',
-    title: 'Ny vecka i Still Us',
+    title: 'Ny vecka i Vårt Vi',
     body: 'Veckans samtalskort är redo. Börja med din check-in när du vill.',
     deepLink: '/check-in/{cardSlug}',
   },
@@ -38,7 +38,7 @@ export const notificationTemplates: Record<string, NotificationTemplate> = {
   },
   N5: {
     type: 'N5',
-    title: 'Still Us väntar på er',
+    title: 'Vårt Vi väntar på er',
     body: 'Det har gått ett tag. Ert samtalskort finns kvar.',
     deepLink: '/',
   },
@@ -51,7 +51,7 @@ export const notificationTemplates: Record<string, NotificationTemplate> = {
   N7: {
     type: 'N7',
     title: 'Välkomna till hela resan',
-    body: 'Still Us är upplåst. 22 veckor av samtal väntar.',
+    body: 'Vårt Vi är upplåst. 22 veckor av samtal väntar.',
     deepLink: '/',
   },
   N8: {

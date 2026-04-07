@@ -131,7 +131,7 @@ export default function AnalyticsDashboard() {
           <div className="flex items-center gap-1.5">
             {[
               { value: 'all', label: 'Alla' },
-              { value: 'still_us', label: 'Still Us' },
+              { value: 'still_us', label: 'Vårt Vi' },
               { value: 'kids', label: 'Barn' },
             ].map(opt => (
               <button

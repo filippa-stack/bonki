@@ -165,7 +165,7 @@ export default function SuIntroPortal() {
               margin: '0 0 6px',
             }}
           >
-            En introduktion till hur Still Us fungerar — och ett första steg mot att prata på riktigt.
+            En introduktion till hur Vårt Vi fungerar — och ett första steg mot att prata på riktigt.
           </p>
           <p
             style={{
