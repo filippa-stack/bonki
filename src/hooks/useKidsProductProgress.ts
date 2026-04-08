@@ -75,8 +75,9 @@ export function useKidsProductProgress(product: ProductManifest | undefined): Ki
 
   // Extracted DB fetch as a stable callback for reuse by navigation + realtime
   const fetchFromDb = useCallback(async () => {
-    if (!space?.id || !productId) return;
+    if (!space?.id || !product) return;
 
+    const productCardIds = product.cards.map(c => c.id);
     const fetchId = ++fetchCounterRef.current;
     setLoading(true);
 
@@ -84,7 +85,7 @@ export function useKidsProductProgress(product: ProductManifest | undefined): Ki
       .from('couple_sessions')
       .select('card_id, ended_at')
       .eq('couple_space_id', space.id)
-      .eq('product_id', productId)
+      .in('card_id', productCardIds)
       .eq('status', 'completed')
       .order('ended_at', { ascending: false });
 
@@ -92,7 +93,7 @@ export function useKidsProductProgress(product: ProductManifest | undefined): Ki
       .from('couple_sessions')
       .select('id, card_id, category_id')
       .eq('couple_space_id', space.id)
-      .eq('product_id', productId)
+      .in('card_id', productCardIds)
       .eq('status', 'active')
       .limit(1);
 
@@ -139,7 +140,7 @@ export function useKidsProductProgress(product: ProductManifest | undefined): Ki
     }
 
     if (fetchId === fetchCounterRef.current) setLoading(false);
-  }, [space?.id, productId]);
+  }, [space?.id, product]);
 
   // Re-fetch on navigation and local preview session changes
   useEffect(() => {
@@ -193,7 +194,7 @@ export function useKidsProductProgress(product: ProductManifest | undefined): Ki
 
   // Realtime: re-fetch when session status changes in this space
   useEffect(() => {
-    if (isLocalPreview || !space?.id || !productId) return;
+    if (isLocalPreview || !space?.id || !product) return;
 
     const debounceRef = { current: undefined as ReturnType<typeof setTimeout> | undefined };
 
