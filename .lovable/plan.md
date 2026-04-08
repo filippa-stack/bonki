@@ -1,59 +1,52 @@
 
 
-## Fix: BottomNav floating mid-screen on iPhone PWA
+## Fix: Card illustration double-slide on browse sheet selection
 
 ### Root cause
 
-The BottomNav uses Tailwind's `fixed bottom-0` which sets `bottom: 0`. On iOS PWA standalone mode, `position: fixed` can misbehave when:
+In `KidsCardPortal.tsx` (line 379–387), every card change triggers the `slideVariants` animation via `AnimatePresence mode="wait"`. This makes sense for swipe navigation (directional slide), but when selecting a card from the `PortalBrowseSheet`, the animation is jarring — the old card slides out and the new one slides in unnecessarily.
 
-1. **`backdropFilter` / `-webkit-backdrop-filter`** creates an implicit compositing layer that iOS sometimes mispositions
-2. The safe-area inset is applied only as `paddingBottom` but not factored into the actual `bottom` position
+### Fix
 
-### Fix (single file: `src/components/BottomNav.tsx`)
+**File: `src/pages/KidsCardPortal.tsx`**
 
-**Change 1 — Move all positioning to inline `style` to avoid Tailwind/iOS conflicts:**
+1. Add a ref to track whether the card change came from the browse sheet:
+   ```ts
+   const fromBrowse = useRef(false);
+   ```
 
-Replace:
-```tsx
-className="fixed bottom-0 left-0 right-0 z-40"
-style={{
-  paddingBottom: 'env(safe-area-inset-bottom, 0px)',
-  background: 'rgba(0, 0, 0, 0.85)',
-  backdropFilter: 'blur(12px)',
-  WebkitBackdropFilter: 'blur(12px)',
-  border: 'none',
-  boxShadow: 'none',
-}}
-```
+2. In the `goToIndex` callback (used by browse sheet), set the flag:
+   ```ts
+   const goToIndex = useCallback((index: number) => {
+     fromBrowse.current = true;
+     setDirection(index > currentIndex ? 1 : -1);
+     setCurrentIndex(index);
+   }, [currentIndex]);
+   ```
 
-With:
-```tsx
-className="z-40"
-style={{
-  position: 'fixed',
-  bottom: '0px',
-  left: '0px',
-  right: '0px',
-  paddingBottom: 'env(safe-area-inset-bottom, 0px)',
-  background: 'rgba(0, 0, 0, 0.85)',
-  backdropFilter: 'blur(12px)',
-  WebkitBackdropFilter: 'blur(12px)',
-  border: 'none',
-  boxShadow: 'none',
-  WebkitTransform: 'translateZ(0)',
-  transform: 'translateZ(0)',
-}}
-```
+3. Reset the flag after the card renders, via an effect:
+   ```ts
+   useEffect(() => { fromBrowse.current = false; }, [card?.id]);
+   ```
 
-**Key additions:**
-- `transform: translateZ(0)` — forces GPU compositing, which fixes iOS Safari's fixed-position miscalculation in standalone PWA mode. This is the standard workaround for iOS treating `position: fixed` elements incorrectly in standalone/fullscreen contexts.
-- Moving `position`, `bottom`, `left`, `right` to inline styles ensures no Tailwind class-order conflicts on iOS WebKit.
+4. On the `motion.div` (line 380–387), conditionally disable animation when coming from the browse sheet:
+   ```tsx
+   <motion.div
+     key={card.id}
+     custom={direction}
+     variants={slideVariants}
+     initial={fromBrowse.current ? "center" : false}
+     animate="center"
+     exit={fromBrowse.current ? "center" : "exit"}
+     transition={{ duration: fromBrowse.current ? 0 : 0.35, ease: [0.22, 1, 0.36, 1] }}
+     ...
+   ```
 
-### Why this works
+   When `fromBrowse` is true: `initial="center"`, `exit="center"`, and `duration: 0` — the new card appears instantly with no slide. When false (swipe/arrow): normal directional slide animation.
 
-iOS standalone PWA mode uses a different viewport model than Safari tabs. The `translateZ(0)` hack promotes the element to its own compositing layer, preventing iOS from miscalculating the fixed positioning. This is a well-documented iOS WebKit workaround.
+### Files changed
+- `src/pages/KidsCardPortal.tsx` — add `fromBrowse` ref, update `goToIndex`, adjust motion props
 
 ### No other files changed
-
-No `100dvh` used. No parent transforms introduced. Single file edit.
+`PortalBrowseSheet.tsx`, `App.tsx`, and route-level `AnimatePresence` are untouched.
 
