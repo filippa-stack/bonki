@@ -16,6 +16,9 @@ serve(async (req) => {
     const stripeKey = Deno.env.get("STRIPE_SECRET_KEY");
     const webhookSecret = Deno.env.get("STRIPE_WEBHOOK_SECRET");
 
+    console.log('STRIPE_SECRET_KEY present:', !!stripeKey, 'length:', stripeKey?.length);
+    console.log('STRIPE_WEBHOOK_SECRET present:', !!webhookSecret);
+
     if (!stripeKey) {
       return new Response("Stripe not configured", { status: 503 });
     }
@@ -34,8 +37,10 @@ serve(async (req) => {
       const verifyRes = await fetch(`https://api.stripe.com/v1/events/${parsed.id}`, {
         headers: { Authorization: `Bearer ${stripeKey}` },
       });
+      console.log('Verify response status:', verifyRes.status, verifyRes.statusText);
       if (!verifyRes.ok) {
-        console.error("Event verification failed");
+        const errBody = await verifyRes.text();
+        console.error("Event verification failed:", verifyRes.status, errBody);
         return new Response("Invalid event", { status: 400 });
       }
       event = await verifyRes.json();
