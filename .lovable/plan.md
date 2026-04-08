@@ -1,58 +1,98 @@
 
 
-## Free card portal cleanup + completion copy + locked CTA (with purchase guard)
+## Emotional progress pills + heart ownership mockup
 
-Three changes across two files. The double-slide fix is already live.
+### Change 1: PastelTile badge (lines 431–456)
 
----
+Replace the badge text and add Lantern Glow tint for "tried" state:
 
-### Change 1: Free card portal — clean layout ONLY pre-purchase (KidsCardPortal.tsx)
+**Copy:**
+- Non-purchased: `Första samtalet gratis · {age}`
+- Tried (free done, not purchased): `Ert första samtal ✓`
+- Purchased: `{X} samtal tillsammans`
 
-`productIsPurchased` is already available (line 148). The guard is `isFreeCard && !productIsPurchased`.
+**Styling:** The "tried" state gets `background: hsla(45, 80%, 92%, 0.15)` and `border: 1px solid hsla(45, 70%, 85%, 0.30)` — a subtle Lantern Glow warmth. Other states keep the current frosted white glass.
 
-1. **Hide time estimate pre-purchase** — wrap the `estimateMinutes` paragraph (lines 580–591) in `{!(isFreeCard && !productIsPurchased) && (...)}`.
+**Implementation:** Replace lines 431–456:
+```tsx
+{/* Progress pill */}
+<span
+  style={{
+    display: 'inline-flex',
+    alignSelf: 'flex-start',
+    alignItems: 'center',
+    gap: '4px',
+    marginTop: '8px',
+    padding: '4px 12px',
+    borderRadius: '20px',
+    background: isPurchased
+      ? 'hsla(0, 0%, 100%, 0.15)'
+      : hideFreeBadge
+        ? 'hsla(45, 80%, 92%, 0.15)'
+        : 'hsla(0, 0%, 100%, 0.15)',
+    backdropFilter: 'blur(8px)',
+    WebkitBackdropFilter: 'blur(8px)',
+    border: isPurchased
+      ? '1px solid hsla(0, 0%, 100%, 0.25)'
+      : hideFreeBadge
+        ? '1px solid hsla(45, 70%, 85%, 0.30)'
+        : '1px solid hsla(0, 0%, 100%, 0.25)',
+    boxShadow: '0 0 12px hsla(0, 0%, 100%, 0.08), inset 0 1px 0 hsla(0, 0%, 100%, 0.15)',
+    fontFamily: "var(--font-body)",
+    fontSize: '11px',
+    fontWeight: 600,
+    letterSpacing: '0.03em',
+    color: 'hsla(0, 0%, 100%, 0.92)',
+  }}
+>
+  {isPurchased
+    ? `${completedCount || 0} samtal tillsammans`
+    : hideFreeBadge
+      ? 'Ert första samtal ✓'
+      : `Första samtalet gratis${ageLabel ? ` · ${ageLabel}` : ''}`}
+</span>
+```
 
-2. **Hide counter pre-purchase** — change the guard on lines 696–708 from `{isFreeCard && (...)}` to `{isFreeCard && !productIsPurchased && (...)}`. (This block shows "1 av N samtal" — hidden after purchase so the free card looks like any other card.)
+### Change 2: Still Us badge (lines 1064–1079)
 
-3. **"Utforska" link pre-purchase only** — the browse button (lines 711–734) currently checks `isFreeCard` to decide text/behavior. Update the `isFreeCard` checks inside to `isFreeCard && !productIsPurchased`. After purchase, the free card shows "Fler i {category.title}" and opens the browse sheet like all other cards.
+Same three-state logic using `purchased.has('still_us')` and `suFreeCompleted`:
 
-4. **Dynamic locked CTA** — line 614: replace `'Lås upp alla samtal'` with `` `Lås upp alla ${product.cards.length} samtal` ``.
+```tsx
+<span style={{
+  fontFamily: "var(--font-body)",
+  fontSize: '11px',
+  fontWeight: 600,
+  letterSpacing: '0.04em',
+  color: 'hsla(0, 0%, 100%, 0.9)',
+  background: purchased.has('still_us')
+    ? 'hsla(0, 0%, 100%, 0.15)'
+    : suFreeCompleted
+      ? 'hsla(45, 80%, 92%, 0.15)'
+      : 'hsla(0, 0%, 100%, 0.15)',
+  backdropFilter: 'blur(8px)',
+  WebkitBackdropFilter: 'blur(8px)',
+  border: purchased.has('still_us')
+    ? '1px solid hsla(0, 0%, 100%, 0.25)'
+    : suFreeCompleted
+      ? '1px solid hsla(45, 70%, 85%, 0.30)'
+      : '1px solid hsla(0, 0%, 100%, 0.25)',
+  borderRadius: '20px',
+  padding: '4px 12px',
+  boxShadow: '0 0 12px hsla(0, 0%, 100%, 0.08), inset 0 1px 0 hsla(0, 0%, 100%, 0.15)',
+}}>
+  {purchased.has('still_us')
+    ? `${suCount || 0} samtal tillsammans`
+    : suFreeCompleted
+      ? 'Ert första samtal ✓'
+      : `Första samtalet gratis`}
+</span>
+```
 
-After purchase, the free card portal is identical to every other card — time estimate, counter, arrows, browse sheet all present.
+### Change 3: Heart ownership mockup
 
----
-
-### Change 2: Completion copy — free card pre-purchase only (CardView.tsx)
-
-`hasProductAccess` is already available (line 201). Guard: `isFreeCard && !hasProductAccess && product?.id !== 'still_us'`.
-
-1. **Affirmation** (line 1371) — conditionally render:
-   ```tsx
-   {isFreeCard && !hasProductAccess && product?.id !== 'still_us'
-     ? 'Ert första samtal är klart.'
-     : `Ni pratade om ${card.title}.`}
-   ```
-
-2. **Subtitle** — add after line 1372, inside the same guard:
-   ```tsx
-   {isFreeCard && !hasProductAccess && product?.id !== 'still_us' && (
-     <p style={{ fontSize: '16px', color: 'rgba(253,246,227,0.7)', textAlign: 'center', marginTop: '-16px', marginBottom: '32px' }}>
-       Det här var ert första steg. Nästa samtal väntar.
-     </p>
-   )}
-   ```
-
-After purchase, even the free card completion says "Ni pratade om {title}." like all other cards.
-
----
-
-### Change 3: Dynamic locked CTA count
-
-Already covered in Change 1 item 4. Applies to all products.
-
----
+After implementing the pill changes, generate a PNG mockup showing the uploaded heart scribble (`omtänksamt_utrymme_cropped_copy.png` — the empty/outline heart) rendered as a white silhouette at ~20px in the top-right corner of a purchased tile, replacing the current ✦ sparkle. This is a visual comparison only, not a code change.
 
 ### Files changed
-- `src/pages/KidsCardPortal.tsx` — purchase guard on free card layout + dynamic locked CTA
-- `src/pages/CardView.tsx` — purchase guard on free card completion copy
+- `src/components/ProductLibrary.tsx` — pill copy + tried-state Lantern Glow tint in both PastelTile and Still Us tile
+- `/mnt/documents/` — heart ownership mockup PNG (generated artifact)
 
