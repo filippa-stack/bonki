@@ -212,10 +212,15 @@ export default function KidsCardPortal() {
     }
   }, [navigate, card, portalPhase, isStillUs, product, productIsPurchased]);
 
+  const fromBrowse = useRef(false);
+
   const goToIndex = useCallback((index: number) => {
+    fromBrowse.current = true;
     setDirection(index > currentIndex ? 1 : -1);
     setCurrentIndex(index);
   }, [currentIndex]);
+
+  useEffect(() => { fromBrowse.current = false; }, [card?.id]);
 
   const goNext = useCallback(() => {
     if (!isLast) {
@@ -381,10 +386,10 @@ export default function KidsCardPortal() {
               key={card.id}
               custom={direction}
               variants={slideVariants}
-              initial={false}
+              initial={fromBrowse.current ? "center" : false}
               animate="center"
-              exit="exit"
-              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+              exit={fromBrowse.current ? "center" : "exit"}
+              transition={{ duration: fromBrowse.current ? 0 : 0.35, ease: [0.22, 1, 0.36, 1] }}
               whileHover={portalPhase === 'idle' ? { scale: 1.02, boxShadow: '0 8px 32px rgba(0,0,0,0.25)' } : undefined}
               whileTap={portalPhase === 'idle' ? { scale: 0.97, y: 0 } : undefined}
               onClick={startSession}
