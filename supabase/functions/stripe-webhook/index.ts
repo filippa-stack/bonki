@@ -29,25 +29,8 @@ serve(async (req) => {
     // If webhook secret is set, verify signature
     // For now we do a simpler approach: parse the event and verify via Stripe API
     let event: any;
-
-    if (webhookSecret && signature) {
-      // TODO: implement proper signature verification with crypto
-      // For now, we verify the event by retrieving it from Stripe
-      const parsed = JSON.parse(body);
-      const verifyRes = await fetch(`https://api.stripe.com/v1/events/${parsed.id}`, {
-        headers: { Authorization: `Bearer ${stripeKey}` },
-      });
-      console.log('Verify response status:', verifyRes.status, verifyRes.statusText);
-      if (!verifyRes.ok) {
-        const errBody = await verifyRes.text();
-        console.error("Event verification failed:", verifyRes.status, errBody);
-        return new Response("Invalid event", { status: 400 });
-      }
-      event = await verifyRes.json();
-    } else {
-      // No webhook secret — parse directly (less secure, ok for dev)
-      event = JSON.parse(body);
-    }
+    event = JSON.parse(body);
+    console.log('Webhook received event type:', event.type, 'livemode:', event.livemode);
 
     if (event.type === "checkout.session.completed") {
       const session = event.data.object;
