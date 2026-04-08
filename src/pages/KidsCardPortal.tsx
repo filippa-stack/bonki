@@ -577,6 +577,7 @@ export default function KidsCardPortal() {
                 {card.subtitle}
               </p>
             )}
+            {!(isFreeCard && !productIsPurchased) && (
             <p
               style={{
                 fontFamily: 'var(--font-sans)',
@@ -589,6 +590,7 @@ export default function KidsCardPortal() {
             >
               {estimateMinutes(promptCount, productSlug)}
             </p>
+            )}
             {/* ── Start session button ── */}
             {(() => {
               const isLocked = product && card.id !== product.freeCardId && !productIsPurchased && !bypassPaywall;
@@ -611,7 +613,7 @@ export default function KidsCardPortal() {
                     WebkitTapHighlightColor: 'transparent',
                   }}
                 >
-                  {isLocked ? 'Lås upp alla samtal' : 'Starta samtal'}
+                  {isLocked ? `Lås upp alla ${product.cards.length} samtal` : 'Starta samtal'}
                 </button>
               );
             })()}
@@ -693,7 +695,7 @@ export default function KidsCardPortal() {
           )}
 
           {/* Free card: product-scoped counter */}
-          {isFreeCard && (
+          {isFreeCard && !productIsPurchased && (
             <span
               style={{
                 fontFamily: 'var(--font-sans)',
@@ -710,7 +712,7 @@ export default function KidsCardPortal() {
           {/* Browse all */}
           <button
             onClick={() => {
-              if (isFreeCard) {
+              if (isFreeCard && !productIsPurchased) {
                 localStorage.setItem(`bonki-intro-seen-${product.id}`, '1');
                 navigate(`/product/${product.slug}`);
               } else {
@@ -730,7 +732,7 @@ export default function KidsCardPortal() {
               letterSpacing: '0.3px',
             }}
           >
-            {isFreeCard ? `Utforska ${product.name}` : `Fler i ${category.title}`}
+            {isFreeCard && !productIsPurchased ? `Utforska ${product.name}` : `Fler i ${category.title}`}
           </button>
         </div>
       </div>

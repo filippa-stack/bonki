@@ -1368,8 +1368,24 @@ export default function CardView() {
               marginBottom: '32px',
             }}
           >
-            Ni pratade om {card.title}.
+            {isFreeCard && !hasProductAccess && product?.id !== 'still_us'
+              ? 'Ert första samtal är klart.'
+              : `Ni pratade om ${card.title}.`}
           </motion.p>
+
+          {isFreeCard && !hasProductAccess && product?.id !== 'still_us' && (
+            <p style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: '16px',
+              fontWeight: 400,
+              color: 'rgba(253, 246, 227, 0.7)',
+              textAlign: 'center',
+              marginTop: '-16px',
+              marginBottom: '32px',
+            }}>
+              Det här var ert första steg. Nästa samtal väntar.
+            </p>
+          )}
 
           {/* 3. Note nudge */}
           <motion.div
