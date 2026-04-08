@@ -94,6 +94,7 @@ serve(async (req) => {
         "Content-Type": "application/x-www-form-urlencoded",
       },
       body: new URLSearchParams({
+        "customer_creation": "always",
         mode: "payment",
         "line_items[0][price_data][currency]": "sek",
         "line_items[0][price_data][product_data][name]": product.name,
