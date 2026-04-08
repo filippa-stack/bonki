@@ -1,52 +1,58 @@
 
 
-## Fix: Card illustration double-slide on browse sheet selection
+## Free card portal cleanup + completion copy + locked CTA (with purchase guard)
 
-### Root cause
+Three changes across two files. The double-slide fix is already live.
 
-In `KidsCardPortal.tsx` (line 379–387), every card change triggers the `slideVariants` animation via `AnimatePresence mode="wait"`. This makes sense for swipe navigation (directional slide), but when selecting a card from the `PortalBrowseSheet`, the animation is jarring — the old card slides out and the new one slides in unnecessarily.
+---
 
-### Fix
+### Change 1: Free card portal — clean layout ONLY pre-purchase (KidsCardPortal.tsx)
 
-**File: `src/pages/KidsCardPortal.tsx`**
+`productIsPurchased` is already available (line 148). The guard is `isFreeCard && !productIsPurchased`.
 
-1. Add a ref to track whether the card change came from the browse sheet:
-   ```ts
-   const fromBrowse = useRef(false);
-   ```
+1. **Hide time estimate pre-purchase** — wrap the `estimateMinutes` paragraph (lines 580–591) in `{!(isFreeCard && !productIsPurchased) && (...)}`.
 
-2. In the `goToIndex` callback (used by browse sheet), set the flag:
-   ```ts
-   const goToIndex = useCallback((index: number) => {
-     fromBrowse.current = true;
-     setDirection(index > currentIndex ? 1 : -1);
-     setCurrentIndex(index);
-   }, [currentIndex]);
-   ```
+2. **Hide counter pre-purchase** — change the guard on lines 696–708 from `{isFreeCard && (...)}` to `{isFreeCard && !productIsPurchased && (...)}`. (This block shows "1 av N samtal" — hidden after purchase so the free card looks like any other card.)
 
-3. Reset the flag after the card renders, via an effect:
-   ```ts
-   useEffect(() => { fromBrowse.current = false; }, [card?.id]);
-   ```
+3. **"Utforska" link pre-purchase only** — the browse button (lines 711–734) currently checks `isFreeCard` to decide text/behavior. Update the `isFreeCard` checks inside to `isFreeCard && !productIsPurchased`. After purchase, the free card shows "Fler i {category.title}" and opens the browse sheet like all other cards.
 
-4. On the `motion.div` (line 380–387), conditionally disable animation when coming from the browse sheet:
+4. **Dynamic locked CTA** — line 614: replace `'Lås upp alla samtal'` with `` `Lås upp alla ${product.cards.length} samtal` ``.
+
+After purchase, the free card portal is identical to every other card — time estimate, counter, arrows, browse sheet all present.
+
+---
+
+### Change 2: Completion copy — free card pre-purchase only (CardView.tsx)
+
+`hasProductAccess` is already available (line 201). Guard: `isFreeCard && !hasProductAccess && product?.id !== 'still_us'`.
+
+1. **Affirmation** (line 1371) — conditionally render:
    ```tsx
-   <motion.div
-     key={card.id}
-     custom={direction}
-     variants={slideVariants}
-     initial={fromBrowse.current ? "center" : false}
-     animate="center"
-     exit={fromBrowse.current ? "center" : "exit"}
-     transition={{ duration: fromBrowse.current ? 0 : 0.35, ease: [0.22, 1, 0.36, 1] }}
-     ...
+   {isFreeCard && !hasProductAccess && product?.id !== 'still_us'
+     ? 'Ert första samtal är klart.'
+     : `Ni pratade om ${card.title}.`}
    ```
 
-   When `fromBrowse` is true: `initial="center"`, `exit="center"`, and `duration: 0` — the new card appears instantly with no slide. When false (swipe/arrow): normal directional slide animation.
+2. **Subtitle** — add after line 1372, inside the same guard:
+   ```tsx
+   {isFreeCard && !hasProductAccess && product?.id !== 'still_us' && (
+     <p style={{ fontSize: '16px', color: 'rgba(253,246,227,0.7)', textAlign: 'center', marginTop: '-16px', marginBottom: '32px' }}>
+       Det här var ert första steg. Nästa samtal väntar.
+     </p>
+   )}
+   ```
+
+After purchase, even the free card completion says "Ni pratade om {title}." like all other cards.
+
+---
+
+### Change 3: Dynamic locked CTA count
+
+Already covered in Change 1 item 4. Applies to all products.
+
+---
 
 ### Files changed
-- `src/pages/KidsCardPortal.tsx` — add `fromBrowse` ref, update `goToIndex`, adjust motion props
-
-### No other files changed
-`PortalBrowseSheet.tsx`, `App.tsx`, and route-level `AnimatePresence` are untouched.
+- `src/pages/KidsCardPortal.tsx` — purchase guard on free card layout + dynamic locked CTA
+- `src/pages/CardView.tsx` — purchase guard on free card completion copy
 
