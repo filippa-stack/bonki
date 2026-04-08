@@ -1,23 +1,22 @@
 
 
-## Remove broken event verification from stripe-webhook
+## Add `customer_creation: 'always'` to Stripe Checkout
 
-The Stripe event verification via API fetch is failing due to an account/mode mismatch. The payments are live and real money is being charged. We need to skip verification now so purchases actually unlock products. Proper HMAC signature verification can be added later.
+### What
+Add a single parameter `customer_creation=always` to the Stripe checkout session creation in `create-checkout/index.ts`. This ensures Stripe creates a real customer record (with email) instead of a "Guest" entry.
 
-### Changes
+### Change
 
-**File: `supabase/functions/stripe-webhook/index.ts`**
+**File: `supabase/functions/create-checkout/index.ts`** (line ~95 area, inside the `URLSearchParams`)
 
-Replace the entire verification block (lines ~33-48) — remove the `if (webhookSecret && signature)` branch and the `else` branch — with:
+Add this entry to the existing params object:
 
-```typescript
-let event: any;
-event = JSON.parse(body);
-console.log('Webhook received event type:', event.type, 'livemode:', event.livemode);
+```
+"customer_creation": "always",
 ```
 
-This removes the broken Stripe API event-retrieval verification and parses the webhook payload directly. The `STRIPE_SECRET_KEY` is NOT changed — it stays as the live key.
+This goes alongside the existing `mode`, `line_items`, `success_url`, `cancel_url`, `metadata`, and `customer_email` params.
 
 ### Deployment
-Deploy `stripe-webhook` immediately after the code change.
+Deploy `create-checkout` edge function immediately after the code change.
 
