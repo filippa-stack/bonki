@@ -76,14 +76,20 @@ export default function BottomNav() {
 
   return (
     <nav
-      className="fixed bottom-0 left-0 right-0 z-40"
+      className="z-40"
       style={{
+        position: 'fixed',
+        bottom: '0px',
+        left: '0px',
+        right: '0px',
         paddingBottom: 'env(safe-area-inset-bottom, 0px)',
         background: 'rgba(0, 0, 0, 0.85)',
         backdropFilter: 'blur(12px)',
         WebkitBackdropFilter: 'blur(12px)',
         border: 'none',
         boxShadow: 'none',
+        WebkitTransform: 'translateZ(0)',
+        transform: 'translateZ(0)',
       }}
     >
       <div style={{ background: 'transparent' }}>
