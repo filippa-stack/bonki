@@ -1,31 +1,13 @@
 
 
-## Fix: useKidsProductProgress — query by card_id membership instead of product_id
+## Redeploy stripe-webhook edge function
 
-### Problem
-Sessions may have stale `product_id: 'still_us'` due to the old RPC overload bug. Filtering by `product_id` misses sessions that actually belong to the product.
+Redeploy the `stripe-webhook` edge function so it picks up the latest secret values from your project secrets store. No code changes needed — just a fresh deployment.
 
-### Change in `src/hooks/useKidsProductProgress.ts`
+### What happens
+- The edge function is redeployed with the same code
+- On next invocation it will read the current values of `STRIPE_SECRET_KEY` and `STRIPE_WEBHOOK_SECRET`
 
-**1. Update `fetchFromDb` guard and queries (lines 77–97)**
-
-- Compute `productCardIds = product.cards.map(c => c.id)` at the top of the callback
-- Guard: change `if (!space?.id || !productId) return;` → `if (!space?.id || !product) return;`
-- Line 87: replace `.eq('product_id', productId)` → `.in('card_id', productCardIds)`
-- Line 95: replace `.eq('product_id', productId)` → `.in('card_id', productCardIds)`
-
-**2. Update dependency array (line 142)**
-
-- Change `[space?.id, productId]` → `[space?.id, product]`
-- Since `product` is a manifest object that's stable per-product, this won't cause extra re-renders
-
-**3. Realtime subscription guard (around line 185)**
-
-- Update guard from `if (isLocalPreview || !space?.id || !productId) return;` → `if (isLocalPreview || !space?.id || !product) return;`
-- The channel name can keep using `productId` (cosmetic only)
-
-No changes to expiry logic, next-card sequencing, demo mode, or realtime event handling.
-
-### Files changed
-- `src/hooks/useKidsProductProgress.ts` only
+### File touched
+None — deployment only.
 
