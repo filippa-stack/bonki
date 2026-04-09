@@ -34,7 +34,28 @@ const categories: Category[] = [
 ];
 
 const cards: Card[] = [
-  // ── K1: Vi blev syskon ──
+  // ── K1: Vi blev syskon (free card first) ──
+  {
+    id: 'sk-syskonkunskap',
+    title: 'Syskonkunskap',
+    subtitle: 'Hur väl känner en egentligen sitt syskon?',
+    categoryId: 'sk-vi-blev-syskon',
+    sections: [
+      {
+        id: 'sk-syskonkunskap-opening',
+        type: 'opening',
+        title: 'Frågor',
+        content: '',
+        prompts: [
+          'Om du och ditt syskon skulle sova borta, vilka tre saker tror du att ditt syskon skulle ta med sig?',
+          'Vem skulle ditt syskon vilja bjuda hem till en familjemiddag?',
+          'Vad tror du att ditt syskon tycker är det svåraste med att vara syskon till dig?',
+          'Vad tycker du är det bästa med att ha syskon? Vad tror du ditt syskon skulle svara?',
+          'Har ditt syskon någon egenskap som ingen annan du känner har?',
+        ],
+      },
+    ],
+  },
   {
     id: 'sk-att-fa-ett-syskon',
     title: 'Att få ett syskon',
@@ -53,27 +74,6 @@ const cards: Card[] = [
           'Vad hade du önskat att du visste när du skulle bli någons syskon?',
           'Vilka fördelar och nackdelar finns med att ha syskon?',
           'Vad tror du att du kan göra, eller vad har du gjort, för att ditt syskon ska känna sig välkommet och älskat?',
-        ],
-      },
-    ],
-  },
-  {
-    id: 'sk-syskonkunskap',
-    title: 'Syskonkunskap',
-    subtitle: 'Hur väl känner en egentligen sitt syskon?',
-    categoryId: 'sk-vi-blev-syskon',
-    sections: [
-      {
-        id: 'sk-syskonkunskap-opening',
-        type: 'opening',
-        title: 'Frågor',
-        content: '',
-        prompts: [
-          'Om du och ditt syskon skulle sova borta, vilka tre saker tror du att ditt syskon skulle ta med sig?',
-          'Vem skulle ditt syskon vilja bjuda hem till en familjemiddag?',
-          'Vad tror du att ditt syskon tycker är det svåraste med att vara syskon till dig?',
-          'Vad tycker du är det bästa med att ha syskon? Vad tror du ditt syskon skulle svara?',
-          'Har ditt syskon någon egenskap som ingen annan du känner har?',
         ],
       },
     ],

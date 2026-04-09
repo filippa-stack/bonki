@@ -3,14 +3,66 @@ import type { Category, Card } from '@/types';
 import heroImage from '@/assets/illustration-jag-med-andra.png';
 
 const categories: Category[] = [
-  { id: 'jma-vem-ar-jag', title: 'Att höra till', subtitle: 'Att hitta sin plats — bland andra och i sig själv.', description: 'Olikhet, utseende, jämlikhet, utanförskap och acceptans', cardCount: 5 },
   { id: 'jma-jag-och-andra', title: 'Att vara nära', subtitle: 'Det som händer mellan människor — i det nära och det ärliga.', description: 'Kontakt, vänskap, respekt, sanning och integritet', cardCount: 5 },
+  { id: 'jma-vem-ar-jag', title: 'Att höra till', subtitle: 'Att hitta sin plats — bland andra och i sig själv.', description: 'Olikhet, utseende, jämlikhet, utanförskap och acceptans', cardCount: 5 },
   { id: 'jma-varlden-omkring-mig', title: 'När det blir svårt', subtitle: 'Konflikter, gränser och känslan av att ha gjort fel.', description: 'Tävling, konflikt, kritik, gränser och skuld', cardCount: 5 },
   { id: 'jma-vad-tror-jag-pa', title: 'Att vara sig själv', subtitle: 'Press, mod och de stora frågorna om vem en är.', description: 'Prestation, avund, skam, misslyckande, mod och tankeexperiment', cardCount: 6 },
 ];
 
 const cards: Card[] = [
-  // ── K1: Att höra till ──
+  // ── K1: Att vara nära (free card first) ──
+  {
+    id: 'jma-vanskap', title: 'Vänskap', subtitle: 'Vad som gör en vänskap äkta – och hur den kan förändras',
+    categoryId: 'jma-jag-och-andra',
+    sections: [{ id: 'jma-vanskap-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
+      'Varför tror du att din vän valde dig som vän?',
+      'Varför valde du din vän?',
+      'Har du blivit kompis med någon du inte tyckte om från början? Vad fick dig att ändra mening?',
+      'Behöver en ha många vänner eller räcker det med en?',
+      'En kompis slutar höra av sig och verkar inte vilja ses mer. Kan hen bestämma att ni inte är vänner längre? Hur kan en tänka om en vänskap som inte blev som en hoppats?',
+    ]}],
+  },
+  {
+    id: 'jma-kontakt', title: 'Kontakt', subtitle: 'Att läsa av hur någon mår – och vad en gör med det en ser',
+    categoryId: 'jma-jag-och-andra',
+    sections: [{ id: 'jma-kontakt-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
+      'Kan en se på någon hur de mår, utan att de säger något? Vad brukar du titta på?',
+      'Om någon säger att hen är glad men ser ledsen ut, vilket tror du stämmer?',
+      'Om någons ord inte stämmer med det du ser, vad gör du då?',
+      'Du har en god vän som säger att allt är bra hemma, men en annan person har berättat att vännen kanske inte mår riktigt bra. Vad tänker du? Vad skulle du göra?',
+    ]}],
+  },
+  {
+    id: 'jma-respekt', title: 'Respekt', subtitle: 'Att behandla andra väl – även när en tänker och tror olika',
+    categoryId: 'jma-jag-och-andra',
+    sections: [{ id: 'jma-respekt-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
+      'Vad betyder det att respektera någon?',
+      'Varför är det viktigt att få respekt och visa respekt?',
+      'Två av dina kompisar tror på olika saker när det gäller religion. Kan en vara nära vänner trots det? Vad tror du kan göra det svårt, och vad kan hjälpa?',
+    ]}],
+  },
+  {
+    id: 'jma-sanning', title: 'Sanning', subtitle: 'Ärlighet och dess gränser – när är det rätt att inte säga allt?',
+    categoryId: 'jma-jag-och-andra',
+    sections: [{ id: 'jma-sanning-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
+      'Kan sanningen vara olika för olika personer?',
+      'Är det fel att inte säga sanningen?',
+      'Om du gör någon glad genom att inte säga sanningen, är det okej?',
+      'Hur känns det när någon är oärlig?',
+      'En god vän har handlat nya kläder med pengar som hen fick i present. Du tycker inte att kläderna passar vännen, men hen verkar trivas i dem. Vad säger du när hen frågar vad du tycker?',
+    ]}],
+  },
+  {
+    id: 'jma-integritet', title: 'Integritet', subtitle: 'Att stå för det en tror på – även när det är svårt',
+    categoryId: 'jma-jag-och-andra',
+    sections: [{ id: 'jma-integritet-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
+      'Vad betyder det att ha integritet?',
+      'När kan det vara svårt att säga nej eller vad en tycker?',
+      'När kan det vara viktigt att stå upp för någon annan?',
+      'Du märker att några i klassen behandlar en klasskompis dåligt, och alla vet om det men ingen gör något. Vad stoppar folk från att ingripa? Vad tror du att du själv skulle kunna göra?',
+    ]}],
+  },
+  // ── K2: Att höra till ──
   {
     id: 'jma-annorlunda', title: 'Olik', subtitle: 'Att vara sig själv när omgivningen vill att en ska passa in',
     categoryId: 'jma-vem-ar-jag',
@@ -60,58 +112,6 @@ const cards: Card[] = [
       'Hur vet en skillnaden mellan saker en bör acceptera och saker en bör försöka förändra?',
       'Hur känns det att behöva acceptera att någon inte tycker som du?',
       'Bills pappa var med i en olycka när Bill var liten. Han skadade sina ben och sitter i rullstol. Bill undrar om pappa är ledsen att han inte kan vara med och spela fotboll och leka som de andra vuxna. Då svarar pappa: "Jo det är jag. Men jag har accepterat det och det finns ju massa andra saker jag kan göra som de andra papporna inte kan!" Så drar han upp Bill i knäet och snurrar rullstolen åt sidan så att Bill kiknar av skratt. Hur menade pappa?',
-    ]}],
-  },
-  // ── K2: Att vara nära ──
-  {
-    id: 'jma-kontakt', title: 'Kontakt', subtitle: 'Att läsa av hur någon mår – och vad en gör med det en ser',
-    categoryId: 'jma-jag-och-andra',
-    sections: [{ id: 'jma-kontakt-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
-      'Kan en se på någon hur de mår, utan att de säger något? Vad brukar du titta på?',
-      'Om någon säger att hen är glad men ser ledsen ut, vilket tror du stämmer?',
-      'Om någons ord inte stämmer med det du ser, vad gör du då?',
-      'Du har en god vän som säger att allt är bra hemma, men en annan person har berättat att vännen kanske inte mår riktigt bra. Vad tänker du? Vad skulle du göra?',
-    ]}],
-  },
-  {
-    id: 'jma-vanskap', title: 'Vänskap', subtitle: 'Vad som gör en vänskap äkta – och hur den kan förändras',
-    categoryId: 'jma-jag-och-andra',
-    sections: [{ id: 'jma-vanskap-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
-      'Varför tror du att din vän valde dig som vän?',
-      'Varför valde du din vän?',
-      'Har du blivit kompis med någon du inte tyckte om från början? Vad fick dig att ändra mening?',
-      'Behöver en ha många vänner eller räcker det med en?',
-      'En kompis slutar höra av sig och verkar inte vilja ses mer. Kan hen bestämma att ni inte är vänner längre? Hur kan en tänka om en vänskap som inte blev som en hoppats?',
-    ]}],
-  },
-  {
-    id: 'jma-respekt', title: 'Respekt', subtitle: 'Att behandla andra väl – även när en tänker och tror olika',
-    categoryId: 'jma-jag-och-andra',
-    sections: [{ id: 'jma-respekt-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
-      'Vad betyder det att respektera någon?',
-      'Varför är det viktigt att få respekt och visa respekt?',
-      'Två av dina kompisar tror på olika saker när det gäller religion. Kan en vara nära vänner trots det? Vad tror du kan göra det svårt, och vad kan hjälpa?',
-    ]}],
-  },
-  {
-    id: 'jma-sanning', title: 'Sanning', subtitle: 'Ärlighet och dess gränser – när är det rätt att inte säga allt?',
-    categoryId: 'jma-jag-och-andra',
-    sections: [{ id: 'jma-sanning-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
-      'Kan sanningen vara olika för olika personer?',
-      'Är det fel att inte säga sanningen?',
-      'Om du gör någon glad genom att inte säga sanningen, är det okej?',
-      'Hur känns det när någon är oärlig?',
-      'En god vän har handlat nya kläder med pengar som hen fick i present. Du tycker inte att kläderna passar vännen, men hen verkar trivas i dem. Vad säger du när hen frågar vad du tycker?',
-    ]}],
-  },
-  {
-    id: 'jma-integritet', title: 'Integritet', subtitle: 'Att stå för det en tror på – även när det är svårt',
-    categoryId: 'jma-jag-och-andra',
-    sections: [{ id: 'jma-integritet-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
-      'Vad betyder det att ha integritet?',
-      'När kan det vara svårt att säga nej eller vad en tycker?',
-      'När kan det vara viktigt att stå upp för någon annan?',
-      'Du märker att några i klassen behandlar en klasskompis dåligt, och alla vet om det men ingen gör något. Vad stoppar folk från att ingripa? Vad tror du att du själv skulle kunna göra?',
     ]}],
   },
   // ── K3: När det blir svårt ──
