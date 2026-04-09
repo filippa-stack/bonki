@@ -212,6 +212,27 @@ function formatRelativeDate(dateStr: string): string {
   return `${day} ${month}`;
 }
 
+      {/* Creature illustration */}
+      {PRODUCT_ILLUSTRATION[entry.productId] && (
+        <img
+          src={PRODUCT_ILLUSTRATION[entry.productId]}
+          alt=""
+          aria-hidden="true"
+          style={{
+            position: 'absolute',
+            top: '-6px',
+            right: '-6px',
+            width: '56px',
+            height: '56px',
+            borderRadius: '50%',
+            objectFit: 'cover',
+            objectPosition: 'center 30%',
+            opacity: 0.22,
+            pointerEvents: 'none',
+          }}
+        />
+      )}
+
 
 function monthKey(dateStr: string): string {
   const d = new Date(dateStr);
