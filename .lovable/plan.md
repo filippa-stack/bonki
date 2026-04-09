@@ -1,49 +1,36 @@
 
 
-## Move Install Guide Into Onboarding, Remove /install Route
+## Eliminate Illustration Flicker in KidsCardPortal
 
-### Summary
-Convert Onboarding from a single-screen component into a two-step flow: Step 1 is a platform-aware install guide (reusing logic from Install.tsx), Step 2 is the existing audience selection. The `/install` route redirects to `/login`.
+Four surgical edits across two files. No routes, session logic, AnimatePresence modes, or other files modified.
 
-### Changes
+---
 
-**1. `src/App.tsx`** — Replace Install route with redirect
-- Remove `import Install` 
-- Change `<Route path="/install" element={<Install />} />` to `<Route path="/install" element={<Navigate to="/login" replace />} />`
+### File 1: `src/pages/KidsCardPortal.tsx`
 
-**2. `src/components/Onboarding.tsx`** — Add install step as step 0
+**Edit A — Preload adjacent cards (insert after line 137)**
 
-Add state: `const [step, setStep] = useState<'install' | 'audience'>(() => { ... })`
+Add a `useEffect` that creates `new Image()` for `categoryCards[currentIndex - 1]` and `categoryCards[currentIndex + 1]`, warming the browser cache before the user swipes.
 
-Initial step logic:
-- If `localStorage.getItem('bonki-install-step-seen')` → start at `'audience'`
-- If standalone mode (`window.matchMedia('(display-mode: standalone)').matches || navigator.standalone`) → start at `'audience'`
-- Otherwise → start at `'install'`
+**Edit B — Smart cache detection (replace line 140)**
 
-When `step === 'install'`, render the install guide view instead of the audience selection. Reuse the same platform detection and visual components from Install.tsx:
+Replace `useEffect(() => { setImageLoaded(false); }, [card?.id])` with a version that creates a test `Image`, checks `testImg.complete`, and only resets `imageLoaded` to `false` if the image isn't already cached.
 
-- **Platform detection vars**: `isSafari`, `isIOS`, `isAndroid`, `isIOSNonSafari` (copied from Install.tsx)
-- **State**: `copied`, `deferredPrompt`, `promptOutcome`
-- **`beforeinstallprompt` listener** in a useEffect
-- **Shared components**: `StepRow`, `SafariShareIcon`, step circle/text styles
+**Edit C — Synchronous decoding (modify line ~451)**
 
-Install step views (same conditional logic as Install.tsx):
-- iOS Safari → 3-step guide with share icon SVG
-- iOS non-Safari → "Öppna i Safari" card with "Kopiera länk" button  
-- Android → native prompt button or 2-step manual guide
-- Desktop → native prompt or "use mobile" message
+Add `decoding="sync"` to the `<img>` tag inside the `PortalCardImage` render prop, forcing same-frame paint.
 
-Skip link on all install views: **"Hoppa över — fortsätt i webbläsaren"** — fontSize: 15px, color: `#E85D2C`, opacity: 0.7, centered. On tap: sets `localStorage.setItem('bonki-install-step-seen', '1')` and transitions to `'audience'` step.
+---
 
-When `step === 'audience'`, render the current onboarding content (logo, headline, audience pills, Börja button) — unchanged.
+### File 2: `src/components/KidsProductHome.tsx`
 
-The install step uses the same Midnight Ink background and Lantern Glow text colors as the current onboarding. Logo is shown at the top (same as current) for visual continuity.
+**Edit D — Preload first portal card per category (insert after line 353)**
 
-**3. `src/pages/Install.tsx`** — Keep as dead code (no route points to it)
+Add a `useEffect` keyed on `tileImages` that loops through and creates `new Image()` for each `/card-images/${id}.webp`, so images are warm before the user taps into any portal.
 
-### What stays untouched
-- Audience selection UI, routing logic, `completeOnboarding`, `initializeCoupleSpace`
-- All session/reflection/payment logic
-- `InstallGuideBanner` component (separate concern)
-- Protected patterns from handover
+---
+
+### What this achieves
+
+When viewing card N, cards N-1 and N+1 are already fetched. On swipe, `testImg.complete` returns `true` → no opacity fade → `decoding="sync"` paints on the same frame → zero flicker. And from the product home, the first card in each category is pre-cached before the user even taps a tile.
 
