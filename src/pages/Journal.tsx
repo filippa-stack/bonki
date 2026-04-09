@@ -221,7 +221,7 @@ function getProductAccent(productId: string, cardId?: string): { light: string; 
   const colors = productTileColors[paletteKey];
   return colors
     ? { light: colors.tileLight, mid: colors.tileMid, deep: colors.tileDeep }
-    : { light: DEEP_SAFFRON, mid: DEEP_SAFFRON, deep: DEEP_SAFFRON };
+    : { light: LANTERN_GLOW, mid: MIDNIGHT_INK, deep: MIDNIGHT_INK };
 }
 
 function splitReflectionBlocks(text: string): string[] {
@@ -242,8 +242,8 @@ function NoteEntryCard({ entry, navigate, index }: { entry: NoteEntry; navigate:
   return (
     <div
       style={{
-        backgroundColor: `${accent.light}22`,
-        border: `0.5px solid ${accent.light}18`,
+        backgroundColor: accent.mid,
+        border: `0.5px solid ${accent.deep}44`,
         borderRadius: '16px',
         padding: '0 16px 14px',
         overflow: 'hidden',
@@ -253,7 +253,7 @@ function NoteEntryCard({ entry, navigate, index }: { entry: NoteEntry; navigate:
       {/* Top color bar */}
       <div style={{
         height: '2px',
-        background: `${accent.mid}66`,
+        background: accent.deep,
         marginLeft: '-16px',
         marginRight: '-16px',
         marginBottom: '16px',
@@ -267,15 +267,15 @@ function NoteEntryCard({ entry, navigate, index }: { entry: NoteEntry; navigate:
           alignItems: 'baseline',
         }}>
           {getProductName(entry.productId, entry.cardId) && (
-            <span style={{ fontSize: '13px', fontWeight: 600, color: accent.light }}>
+            <span style={{ fontSize: '13px', fontWeight: 600, color: LANTERN_GLOW }}>
               {getProductName(entry.productId, entry.cardId)}
             </span>
           )}
-          <span style={{ fontSize: '11px', color: `${LANTERN_GLOW}77` }}>
+          <span style={{ fontSize: '11px', color: `${LANTERN_GLOW}66` }}>
             {formatRelativeDate(entry.date)}
           </span>
         </div>
-        <p style={{ margin: '2px 0 0', fontSize: '12px', color: `${LANTERN_GLOW}55` }}>
+        <p style={{ margin: '2px 0 0', fontSize: '12px', color: `${LANTERN_GLOW}88` }}>
           {entry.cardName}
         </p>
       </div>
@@ -301,7 +301,7 @@ function NoteEntryCard({ entry, navigate, index }: { entry: NoteEntry; navigate:
             margin: '0 0 8px',
             fontSize: '13px',
             fontStyle: 'italic',
-            color: `${LANTERN_GLOW}bb`,
+            color: accent.deep,
             lineHeight: 1.4,
             display: '-webkit-box',
             WebkitLineClamp: 2,
@@ -332,7 +332,7 @@ function NoteEntryCard({ entry, navigate, index }: { entry: NoteEntry; navigate:
                   margin: blockIndex === 0 ? 0 : '12px 0 0',
                   fontFamily: 'var(--font-serif)',
                   fontSize: '16px',
-                  color: '#E9C890',
+                  color: LANTERN_GLOW,
                   lineHeight: 1.6,
                 }}
               >
@@ -346,7 +346,7 @@ function NoteEntryCard({ entry, navigate, index }: { entry: NoteEntry; navigate:
             style={{
               background: 'none',
               border: 'none',
-              color: accent.mid,
+              color: `${LANTERN_GLOW}aa`,
               fontSize: '13px',
               fontWeight: 500,
               cursor: 'pointer',
@@ -438,8 +438,8 @@ function SessionGroupCard({ group, navigate }: { group: SessionGroup; navigate: 
   return (
     <div
       style={{
-        backgroundColor: `${accent.light}22`,
-        border: `0.5px solid ${accent.light}18`,
+        backgroundColor: accent.mid,
+        border: `0.5px solid ${accent.deep}44`,
         borderRadius: '16px',
         overflow: 'hidden',
         position: 'relative',
@@ -448,7 +448,7 @@ function SessionGroupCard({ group, navigate }: { group: SessionGroup; navigate: 
       {/* Top accent bar */}
       <div style={{
         height: '2px',
-        background: `${accent.mid}66`,
+        background: accent.deep,
       }} />
 
       {/* Header */}
@@ -459,15 +459,15 @@ function SessionGroupCard({ group, navigate }: { group: SessionGroup; navigate: 
           alignItems: 'baseline',
         }}>
           {productName && (
-            <span style={{ fontSize: '13px', fontWeight: 600, color: accent.light }}>
+            <span style={{ fontSize: '13px', fontWeight: 600, color: LANTERN_GLOW }}>
               {productName}
             </span>
           )}
-          <span style={{ fontSize: '11px', color: `${LANTERN_GLOW}77` }}>
+          <span style={{ fontSize: '11px', color: `${LANTERN_GLOW}66` }}>
             {formatRelativeDate(group.date)}
           </span>
         </div>
-        <p style={{ margin: '2px 0 0', fontSize: '13px', color: `${LANTERN_GLOW}99` }}>
+        <p style={{ margin: '2px 0 0', fontSize: '13px', color: `${LANTERN_GLOW}88` }}>
           {group.cardName}
         </p>
       </div>
@@ -480,7 +480,7 @@ function SessionGroupCard({ group, navigate }: { group: SessionGroup; navigate: 
               <div style={{
                 height: '1px',
                 margin: '10px 0',
-                background: `linear-gradient(90deg, rgba(253,246,227,0.13), rgba(253,246,227,0.09), transparent)`,
+                background: `linear-gradient(90deg, ${LANTERN_GLOW}22, ${LANTERN_GLOW}11, transparent)`,
               }} />
             )}
             {note.questionText && (
@@ -488,7 +488,7 @@ function SessionGroupCard({ group, navigate }: { group: SessionGroup; navigate: 
                 margin: '0 0 4px',
                 fontSize: '13px',
                 fontStyle: 'italic',
-                color: `${LANTERN_GLOW}bb`,
+                color: accent.deep,
                 lineHeight: 1.4,
                 display: '-webkit-box',
                 WebkitLineClamp: 2,
@@ -503,7 +503,7 @@ function SessionGroupCard({ group, navigate }: { group: SessionGroup; navigate: 
               fontFamily: 'var(--font-serif)',
               fontSize: '15px',
               fontStyle: 'italic',
-              color: '#E9C890',
+               color: LANTERN_GLOW,
               lineHeight: 1.65,
               whiteSpace: 'pre-wrap',
             }}>
@@ -523,7 +523,7 @@ function SessionGroupCard({ group, navigate }: { group: SessionGroup; navigate: 
             style={{
               background: 'none',
               border: 'none',
-              color: `${LANTERN_GLOW}77`,
+              color: `${LANTERN_GLOW}88`,
               fontSize: '12px',
               fontWeight: 500,
               cursor: 'pointer',
@@ -541,7 +541,7 @@ function SessionGroupCard({ group, navigate }: { group: SessionGroup; navigate: 
         <div style={{
           margin: '14px 12px 0',
           padding: '12px 14px',
-          backgroundColor: `${accent.deep}14`,
+          backgroundColor: `${accent.deep}33`,
           borderRadius: '12px',
         }}>
           <p style={{
