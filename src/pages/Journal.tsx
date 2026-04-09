@@ -244,13 +244,12 @@ function NoteEntryCard({ entry, navigate, index }: { entry: NoteEntry; navigate:
     <div
       style={{
         backgroundColor: accent.bg,
-        backgroundImage: 'linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.35))',
         borderLeft: `3px solid ${accent.light}`,
         borderRadius: '14px',
         padding: '16px 16px 14px',
         overflow: 'hidden',
         position: 'relative',
-        boxShadow: `0 2px 16px rgba(0,0,0,0.35), inset 0 1px 0 ${accent.light}12`,
+        boxShadow: '0 2px 12px rgba(0,0,0,0.25)',
       }}
     >
 
@@ -262,15 +261,15 @@ function NoteEntryCard({ entry, navigate, index }: { entry: NoteEntry; navigate:
           alignItems: 'baseline',
         }}>
           {getProductName(entry.productId, entry.cardId) && (
-          <span style={{ fontSize: '13px', fontWeight: 600, color: accent.light, letterSpacing: '0.04em' }}>
+          <span style={{ fontSize: '13px', fontWeight: 600, color: LANTERN_GLOW, letterSpacing: '0.04em', textShadow: '0 1px 8px rgba(0,0,0,0.5)' }}>
               {getProductName(entry.productId, entry.cardId)}
             </span>
           )}
-          <span style={{ fontSize: '11px', color: `${accent.light}88` }}>
+          <span style={{ fontSize: '11px', color: `${LANTERN_GLOW}88`, textShadow: '0 1px 4px rgba(0,0,0,0.3)' }}>
             {formatRelativeDate(entry.date)}
           </span>
         </div>
-        <p style={{ margin: '2px 0 0', fontSize: '12px', color: `${accent.light}bb` }}>
+        <p style={{ margin: '2px 0 0', fontSize: '12px', color: `${LANTERN_GLOW}cc`, textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>
           {entry.cardName}
         </p>
       </div>
@@ -283,7 +282,8 @@ function NoteEntryCard({ entry, navigate, index }: { entry: NoteEntry; navigate:
           fontWeight: 600,
           textTransform: 'uppercase',
           letterSpacing: '0.08em',
-          color: `${accent.light}77`,
+          color: `${LANTERN_GLOW}66`,
+          textShadow: '0 1px 3px rgba(0,0,0,0.3)',
         }}>
           Ni bar med er
         </p>
@@ -296,8 +296,9 @@ function NoteEntryCard({ entry, navigate, index }: { entry: NoteEntry; navigate:
             margin: '0 0 8px',
             fontSize: '13px',
             fontStyle: 'italic',
-            color: `${accent.light}99`,
+            color: `${LANTERN_GLOW}88`,
             lineHeight: 1.4,
+            textShadow: '0 1px 4px rgba(0,0,0,0.3)',
             display: '-webkit-box',
             WebkitLineClamp: 2,
             WebkitBoxOrient: 'vertical' as const,
@@ -342,8 +343,9 @@ function NoteEntryCard({ entry, navigate, index }: { entry: NoteEntry; navigate:
             style={{
               background: 'none',
               border: 'none',
-              color: `${accent.light}99`,
+              color: `${LANTERN_GLOW}77`,
               fontSize: '13px',
+              textShadow: '0 1px 4px rgba(0,0,0,0.3)',
               fontWeight: 500,
               cursor: 'pointer',
               padding: 0,
@@ -435,12 +437,11 @@ function SessionGroupCard({ group, navigate }: { group: SessionGroup; navigate: 
     <div
       style={{
         backgroundColor: accent.bg,
-        backgroundImage: 'linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.35))',
         borderLeft: `3px solid ${accent.light}`,
         borderRadius: '14px',
         overflow: 'hidden',
         position: 'relative',
-        boxShadow: `0 2px 16px rgba(0,0,0,0.35), inset 0 1px 0 ${accent.light}12`,
+        boxShadow: '0 2px 12px rgba(0,0,0,0.25)',
       }}
     >
 
@@ -452,15 +453,15 @@ function SessionGroupCard({ group, navigate }: { group: SessionGroup; navigate: 
           alignItems: 'baseline',
         }}>
           {productName && (
-            <span style={{ fontSize: '13px', fontWeight: 600, color: accent.light, letterSpacing: '0.04em' }}>
+            <span style={{ fontSize: '13px', fontWeight: 600, color: LANTERN_GLOW, letterSpacing: '0.04em', textShadow: '0 1px 8px rgba(0,0,0,0.5)' }}>
               {productName}
             </span>
           )}
-          <span style={{ fontSize: '11px', color: `${accent.light}88` }}>
+          <span style={{ fontSize: '11px', color: `${LANTERN_GLOW}88`, textShadow: '0 1px 4px rgba(0,0,0,0.3)' }}>
             {formatRelativeDate(group.date)}
           </span>
         </div>
-        <p style={{ margin: '2px 0 0', fontSize: '13px', color: `${accent.light}bb` }}>
+        <p style={{ margin: '2px 0 0', fontSize: '13px', color: `${LANTERN_GLOW}cc`, textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>
           {group.cardName}
         </p>
       </div>
@@ -473,7 +474,7 @@ function SessionGroupCard({ group, navigate }: { group: SessionGroup; navigate: 
               <div style={{
                 height: '1px',
                 margin: '10px 0',
-                background: `linear-gradient(90deg, ${accent.light}20, ${accent.light}10, transparent)`,
+                background: `linear-gradient(90deg, ${LANTERN_GLOW}22, ${LANTERN_GLOW}11, transparent)`,
               }} />
             )}
             {note.questionText && (
@@ -481,8 +482,9 @@ function SessionGroupCard({ group, navigate }: { group: SessionGroup; navigate: 
                 margin: '0 0 4px',
                 fontSize: '13px',
                 fontStyle: 'italic',
-                color: `${accent.light}99`,
+                color: `${LANTERN_GLOW}88`,
                 lineHeight: 1.4,
+                textShadow: '0 1px 4px rgba(0,0,0,0.3)',
                 display: '-webkit-box',
                 WebkitLineClamp: 2,
                 WebkitBoxOrient: 'vertical' as const,
@@ -517,8 +519,9 @@ function SessionGroupCard({ group, navigate }: { group: SessionGroup; navigate: 
             style={{
               background: 'none',
               border: 'none',
-              color: `${accent.light}99`,
+              color: `${LANTERN_GLOW}77`,
               fontSize: '12px',
+              textShadow: '0 1px 4px rgba(0,0,0,0.3)',
               fontWeight: 500,
               cursor: 'pointer',
               padding: 0,
@@ -544,7 +547,8 @@ function SessionGroupCard({ group, navigate }: { group: SessionGroup; navigate: 
             fontWeight: 600,
             textTransform: 'uppercase',
             letterSpacing: '0.08em',
-            color: `${accent.light}77`,
+            color: `${LANTERN_GLOW}66`,
+            textShadow: '0 1px 3px rgba(0,0,0,0.3)',
           }}>
             Ni bar med er
           </p>
