@@ -243,21 +243,14 @@ function NoteEntryCard({ entry, navigate, index }: { entry: NoteEntry; navigate:
     <div
       style={{
         backgroundColor: `${accent.light}22`,
-        border: `0.5px solid ${accent.light}18`,
-        borderRadius: '16px',
-        padding: '0 16px 14px',
+        border: '1px solid rgba(255, 255, 255, 0.06)',
+        borderRadius: '22px',
+        padding: '18px 18px 16px',
+        boxShadow: '0 4px 16px rgba(0,0,0,0.12), 0 1px 4px rgba(0,0,0,0.06)',
         overflow: 'hidden',
         position: 'relative',
       }}
     >
-      {/* Top color bar */}
-      <div style={{
-        height: '2px',
-        background: `${accent.mid}66`,
-        marginLeft: '-16px',
-        marginRight: '-16px',
-        marginBottom: '16px',
-      }} />
 
       {/* Metadata — top, matching SessionGroupCard */}
       <div style={{ lineHeight: 1.3, marginBottom: '10px' }}>
@@ -439,17 +432,13 @@ function SessionGroupCard({ group, navigate }: { group: SessionGroup; navigate: 
     <div
       style={{
         backgroundColor: `${accent.light}22`,
-        border: `0.5px solid ${accent.light}18`,
-        borderRadius: '16px',
+        border: '1px solid rgba(255, 255, 255, 0.06)',
+        borderRadius: '22px',
+        boxShadow: '0 4px 16px rgba(0,0,0,0.12), 0 1px 4px rgba(0,0,0,0.06)',
         overflow: 'hidden',
         position: 'relative',
       }}
     >
-      {/* Top accent bar */}
-      <div style={{
-        height: '2px',
-        background: `${accent.mid}66`,
-      }} />
 
       {/* Header */}
       <div style={{ padding: '16px 16px 0' }}>
@@ -985,72 +974,19 @@ export default function Journal() {
         </p>
       </div>
 
-      {/* Stats row */}
+      {/* Stats narrative */}
       {!isEmpty && !loading && (
-        <div style={{
-          display: 'flex',
-          justifyContent: 'center',
-          gap: '2.5rem',
-          padding: '20px 24px 16px',
+        <p style={{
+          fontFamily: 'var(--font-serif)',
+          fontStyle: 'italic',
+          fontSize: '15px',
+          color: 'rgba(245, 240, 232, 0.5)',
+          textAlign: 'center',
+          marginTop: '8px',
+          padding: '0 24px',
         }}>
-          <div style={{ textAlign: 'center' }}>
-            <div style={{
-              fontSize: '28px',
-              fontWeight: 500,
-              color: '#E9C890',
-              letterSpacing: '-1px',
-            }}>
-              {heroStats.reflectionCount}
-            </div>
-            <div style={{
-              fontSize: '10px',
-              textTransform: 'uppercase' as const,
-              letterSpacing: '1.8px',
-              color: 'rgba(245, 240, 232, 0.45)',
-              marginTop: '2px',
-            }}>
-              Reflektioner
-            </div>
-          </div>
-          <div style={{ textAlign: 'center' }}>
-            <div style={{
-              fontSize: '28px',
-              fontWeight: 500,
-              color: '#E9C890',
-              letterSpacing: '-1px',
-            }}>
-              {heroStats.sessionCount}
-            </div>
-            <div style={{
-              fontSize: '10px',
-              textTransform: 'uppercase' as const,
-              letterSpacing: '1.8px',
-              color: 'rgba(245, 240, 232, 0.45)',
-              marginTop: '2px',
-            }}>
-              Samtal
-            </div>
-          </div>
-          <div style={{ textAlign: 'center' }}>
-            <div style={{
-              fontSize: '28px',
-              fontWeight: 500,
-              color: '#E9C890',
-              letterSpacing: '-1px',
-            }}>
-              {heroStats.monthCount}
-            </div>
-            <div style={{
-              fontSize: '10px',
-              textTransform: 'uppercase' as const,
-              letterSpacing: '1.8px',
-              color: 'rgba(245, 240, 232, 0.45)',
-              marginTop: '2px',
-            }}>
-              Månader
-            </div>
-          </div>
-        </div>
+          {heroStats.reflectionCount} reflektioner från {heroStats.sessionCount} samtal{pulseData ? ` sedan ${pulseData.monthLabel}` : ''}.
+        </p>
       )}
 
       {/* Filter pills */}
@@ -1059,18 +995,16 @@ export default function Journal() {
           <button
             onClick={() => setActiveFilters(new Set<FilterChip>(['barn', 'par']))}
             style={{
-              height: '28px',
+              height: '36px',
               paddingLeft: '14px',
               paddingRight: '14px',
-              borderRadius: '16px',
-              border: bothActive ? '0.5px solid rgba(233, 200, 144, 0.25)' : '0.5px solid rgba(245, 240, 232, 0.12)',
+              borderRadius: '20px',
+              border: bothActive ? '0.5px solid rgba(233, 200, 144, 0.25)' : '0.5px solid transparent',
               backgroundColor: bothActive ? 'rgba(233, 200, 144, 0.14)' : 'transparent',
               color: bothActive ? '#E9C890' : 'rgba(245, 240, 232, 0.45)',
               fontFamily: 'var(--font-sans)',
-              fontSize: '11px',
+              fontSize: '13px',
               fontWeight: 500,
-              letterSpacing: '0.06em',
-              textTransform: 'uppercase' as const,
               cursor: 'pointer',
               transition: 'all 200ms ease',
               WebkitTapHighlightColor: 'transparent',
@@ -1085,18 +1019,16 @@ export default function Journal() {
                 key={chip}
                 onClick={() => toggleFilter(chip)}
                 style={{
-                  height: '28px',
+                  height: '36px',
                   paddingLeft: '14px',
                   paddingRight: '14px',
-                  borderRadius: '16px',
-                  border: active ? '0.5px solid rgba(233, 200, 144, 0.25)' : '0.5px solid rgba(245, 240, 232, 0.12)',
+                  borderRadius: '20px',
+                  border: active ? '0.5px solid rgba(233, 200, 144, 0.25)' : '0.5px solid transparent',
                   backgroundColor: active ? 'rgba(233, 200, 144, 0.14)' : 'transparent',
                   color: active ? '#E9C890' : 'rgba(245, 240, 232, 0.45)',
                   fontFamily: 'var(--font-sans)',
-                  fontSize: '11px',
+                  fontSize: '13px',
                   fontWeight: 500,
-                  letterSpacing: '0.06em',
-                  textTransform: 'uppercase' as const,
                   cursor: 'pointer',
                   transition: 'all 200ms ease',
                   WebkitTapHighlightColor: 'transparent',
