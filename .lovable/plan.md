@@ -1,50 +1,52 @@
 
 
-## Pill text redesign — text-only changes
+## Convert card images to WebP + preload creature illustrations
 
-### Summary
-Update the pill text strings in `src/components/ProductLibrary.tsx` for both PastelTile and Vårt Vi tile. Move age labels from pills to taglines. No styling changes.
+### Step 1: Convert 128 PNGs to WebP (script)
 
-### PastelTile changes
+Run a shell script using `cwebp` (via nix) to convert all 128 files in `public/card-images/` from PNG to WebP at quality 85, then delete the originals.
 
-**Tagline (line 428):** Change `{tagline}` → `{tagline}{ageLabel ? ` · ${ageLabel}` : ''}`
-
-**Pill text (lines 461–465):** Replace the ternary with 4-state logic:
-```tsx
-{isPurchased
-  ? (completedCount ?? 0) > 0
-    ? `✦ ${completedCount} samtal`
-    : '✦ Börja er resa'
-  : hideFreeBadge
-    ? '✦ Ert första samtal ✓'
-    : `✦ ${totalCards || 0} samtal · Prova först`}
+```bash
+for f in public/card-images/*.png; do
+  nix run nixpkgs#libwebp -- -q 85 "$f" -o "${f%.png}.webp"
+done
+rm public/card-images/*.png
 ```
 
-Note: The current pill text doesn't include the ✦ character inline — it's rendered via the Ghost Glow sparkle in the corner for purchased state. Looking at the current text on lines 461–465, the sparkle characters are NOT in the pill text. The user's spec includes ✦ in all pill states. I need to confirm whether ✦ should be added to the pill text or if it was just notational.
+### Step 2: Update useCardImage.ts
 
-Given the user's explicit spec says the pill reads `✦ 20 samtal · Prova först` etc., I'll include the ✦ in the pill text for all states. The corner Ghost Glow sparkle is separate and stays untouched.
-
-### Vårt Vi tile changes
-
-**Tagline (line 1062):** No change — no age label for couples product.
-
-**Pill text (lines 1096–1100):** Same 4-state logic using `purchased.has('still_us')`, `suCount`, `suFreeCompleted`, `totalCards`:
+Change line 60 from `.png` to `.webp`:
 ```tsx
-{purchased.has('still_us')
-  ? (suCount > 0)
-    ? `✦ ${suCount} samtal`
-    : '✦ Börja er resa'
-  : suFreeCompleted
-    ? '✦ Ert första samtal ✓'
-    : `✦ ${totalCards} samtal · Prova först`}
+return `/card-images/${cardId}.webp`;
+```
+
+Update the comment on line 3 accordingly.
+
+This is the **only code reference** to `card-images/*.png` in the entire codebase.
+
+### Step 3: Preload creature illustrations in KidsProductHome
+
+Add a `useEffect` in `KidsProductHome` that creates `<link rel="prefetch">` tags for the product's `heroImage` and the next-card images. These are Vite-bundled assets from `src/assets/` (already hashed URLs), so prefetching them on the product home screen ensures they're cached before the user taps into a card portal.
+
+```tsx
+useEffect(() => {
+  if (product.heroImage) {
+    const link = document.createElement('link');
+    link.rel = 'prefetch';
+    link.href = product.heroImage;
+    document.head.appendChild(link);
+  }
+}, [product.heroImage]);
 ```
 
 ### Files changed
-- `src/components/ProductLibrary.tsx` — pill text strings (2 locations) + tagline text (1 location)
+- `public/card-images/` — 128 PNGs → 128 WebPs (script, ~60-70% size reduction)
+- `src/hooks/useCardImage.ts` — `.png` → `.webp` on line 60
+- `src/components/KidsProductHome.tsx` — add hero image prefetch in useEffect
 
 ### What stays untouched
-- All pill styling (colors, backgrounds, borders, blur, Lantern Glow tint, positioning)
-- Ghost Glow corner sparkle
-- All layout, navigation, and session logic
-- All variable/prop logic (`hideFreeBadge`, `isPurchased`, etc.)
+- All card IDs, filenames (just extension change)
+- All product manifests, card data, categories
+- All styling, layout, navigation logic
+- `src/assets/` creature PNGs (these are processed by Vite, no format change needed)
 
