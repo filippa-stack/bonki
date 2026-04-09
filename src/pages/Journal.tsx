@@ -21,6 +21,24 @@ import { isDemoMode } from '@/lib/demoMode';
 import { useDevState } from '@/contexts/DevStateContext';
 import { DEMO_DIARY_EVENT } from '@/lib/demoDiary';
 
+import jimImage from '@/assets/illustration-jag-i-mig.png';
+import jmaImage from '@/assets/illustration-jag-med-andra.png';
+import jivImage from '@/assets/illustration-jag-i-varlden.png';
+import illustrationVardag from '@/assets/illustration-vardag.png';
+import illustrationSyskon from '@/assets/illustration-syskon.png';
+import illustrationSexualitet from '@/assets/illustration-sexualitet.png';
+import illustrationStillUs from '@/assets/illustration-still-us-home.png';
+
+const PRODUCT_ILLUSTRATION: Record<string, string> = {
+  jag_i_mig: jimImage,
+  jag_med_andra: jmaImage,
+  jag_i_varlden: jivImage,
+  vardagskort: illustrationVardag,
+  syskonkort: illustrationSyskon,
+  sexualitetskort: illustrationSexualitet,
+  still_us: illustrationStillUs,
+};
+
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 const STILL_US_ID = 'still_us';
 
@@ -296,10 +314,6 @@ function NoteEntryCard({ entry, navigate, index }: { entry: NoteEntry; navigate:
             fontStyle: 'italic',
             color: `${LANTERN_GLOW}bb`,
             lineHeight: 1.4,
-            display: '-webkit-box',
-            WebkitLineClamp: 2,
-            WebkitBoxOrient: 'vertical' as const,
-            overflow: 'hidden',
           }}
         >
           — {entry.questionText}
@@ -441,7 +455,25 @@ function SessionGroupCard({ group, navigate }: { group: SessionGroup; navigate: 
     >
 
       {/* Header */}
-      <div style={{ padding: '16px 16px 0' }}>
+      <div style={{ padding: '16px 16px 0', position: 'relative' }}>
+        {PRODUCT_ILLUSTRATION[group.productId] && (
+          <img
+            src={PRODUCT_ILLUSTRATION[group.productId]}
+            alt=""
+            aria-hidden="true"
+            style={{
+              position: 'absolute',
+              top: '14px',
+              right: '14px',
+              width: '36px',
+              height: '36px',
+              borderRadius: '50%',
+              objectFit: 'cover',
+              opacity: 0.18,
+              pointerEvents: 'none',
+            }}
+          />
+        )}
         <div style={{
           display: 'flex',
           justifyContent: 'space-between',
@@ -479,10 +511,6 @@ function SessionGroupCard({ group, navigate }: { group: SessionGroup; navigate: 
                 fontStyle: 'italic',
                 color: `${LANTERN_GLOW}bb`,
                 lineHeight: 1.4,
-                display: '-webkit-box',
-                WebkitLineClamp: 2,
-                WebkitBoxOrient: 'vertical' as const,
-                overflow: 'hidden',
               }}>
                 — {note.questionText}
               </p>
@@ -1105,18 +1133,17 @@ export default function Journal() {
                       left: 'calc(-1.75rem + 2.05rem - 4px)',
                       top: '50%',
                       transform: 'translateY(-50%)',
-                      width: '9px',
-                      height: '9px',
+                      width: '7px',
+                      height: '7px',
                       borderRadius: '50%',
                       backgroundColor: '#E9C890',
                     }} />
                     {/* Month name */}
                     <span style={{
-                      fontSize: '10px',
-                      textTransform: 'uppercase',
-                      letterSpacing: '2px',
+                      fontSize: '14px',
+                      letterSpacing: '0.02em',
                       color: '#E9C890',
-                      fontFamily: 'var(--font-sans)',
+                      fontFamily: 'var(--font-display)',
                       fontWeight: 500,
                       lineHeight: 1,
                     }}>
