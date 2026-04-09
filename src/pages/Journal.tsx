@@ -243,13 +243,13 @@ function NoteEntryCard({ entry, navigate, index }: { entry: NoteEntry; navigate:
   return (
     <div
       style={{
-        background: `linear-gradient(135deg, ${accent.mid}, ${accent.deep}cc)`,
+        backgroundColor: accent.bg,
         borderLeft: `3px solid ${accent.light}`,
         borderRadius: '14px',
         padding: '16px 16px 14px',
         overflow: 'hidden',
         position: 'relative',
-        boxShadow: `0 2px 12px rgba(0,0,0,0.25), 0 0 0 0.5px ${accent.deep}33`,
+        boxShadow: '0 2px 12px rgba(0,0,0,0.25)',
       }}
     >
 
@@ -261,15 +261,15 @@ function NoteEntryCard({ entry, navigate, index }: { entry: NoteEntry; navigate:
           alignItems: 'baseline',
         }}>
           {getProductName(entry.productId, entry.cardId) && (
-          <span style={{ fontSize: '13px', fontWeight: 600, color: LANTERN_GLOW, letterSpacing: '0.04em' }}>
+          <span style={{ fontSize: '13px', fontWeight: 600, color: accent.light, letterSpacing: '0.04em' }}>
               {getProductName(entry.productId, entry.cardId)}
             </span>
           )}
-          <span style={{ fontSize: '11px', color: `${LANTERN_GLOW}66` }}>
+          <span style={{ fontSize: '11px', color: `${accent.light}77` }}>
             {formatRelativeDate(entry.date)}
           </span>
         </div>
-        <p style={{ margin: '2px 0 0', fontSize: '12px', color: `${LANTERN_GLOW}88` }}>
+        <p style={{ margin: '2px 0 0', fontSize: '12px', color: `${accent.light}aa` }}>
           {entry.cardName}
         </p>
       </div>
@@ -282,7 +282,7 @@ function NoteEntryCard({ entry, navigate, index }: { entry: NoteEntry; navigate:
           fontWeight: 600,
           textTransform: 'uppercase',
           letterSpacing: '0.08em',
-          color: `${LANTERN_GLOW}55`,
+          color: `${accent.light}66`,
         }}>
           Ni bar med er
         </p>
@@ -295,7 +295,7 @@ function NoteEntryCard({ entry, navigate, index }: { entry: NoteEntry; navigate:
             margin: '0 0 8px',
             fontSize: '13px',
             fontStyle: 'italic',
-            color: `${LANTERN_GLOW}73`,
+            color: `${accent.light}88`,
             lineHeight: 1.4,
             display: '-webkit-box',
             WebkitLineClamp: 2,
@@ -340,7 +340,7 @@ function NoteEntryCard({ entry, navigate, index }: { entry: NoteEntry; navigate:
             style={{
               background: 'none',
               border: 'none',
-              color: `${LANTERN_GLOW}60`,
+              color: `${accent.light}77`,
               fontSize: '13px',
               fontWeight: 500,
               cursor: 'pointer',
