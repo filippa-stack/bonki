@@ -270,6 +270,27 @@ function NoteEntryCard({ entry, navigate, index }: { entry: NoteEntry; navigate:
       }}
     >
 
+      {/* Creature illustration */}
+      {PRODUCT_ILLUSTRATION[entry.productId] && (
+        <img
+          src={PRODUCT_ILLUSTRATION[entry.productId]}
+          alt=""
+          aria-hidden="true"
+          style={{
+            position: 'absolute',
+            top: '-6px',
+            right: '-6px',
+            width: '56px',
+            height: '56px',
+            borderRadius: '50%',
+            objectFit: 'cover',
+            objectPosition: 'center 30%',
+            opacity: 0.22,
+            pointerEvents: 'none',
+          }}
+        />
+      )}
+
       {/* Metadata — top, matching SessionGroupCard */}
       <div style={{ lineHeight: 1.3, marginBottom: '10px' }}>
         <div style={{
@@ -282,7 +303,7 @@ function NoteEntryCard({ entry, navigate, index }: { entry: NoteEntry; navigate:
               {getProductName(entry.productId, entry.cardId)}
             </span>
           )}
-          <span style={{ fontSize: '11px', color: `${LANTERN_GLOW}77` }}>
+          <span style={{ fontSize: '11px', color: `${LANTERN_GLOW}77`, marginRight: '52px' }}>
             {formatRelativeDate(entry.date)}
           </span>
         </div>
@@ -462,13 +483,14 @@ function SessionGroupCard({ group, navigate }: { group: SessionGroup; navigate: 
             aria-hidden="true"
             style={{
               position: 'absolute',
-              top: '14px',
-              right: '14px',
-              width: '36px',
-              height: '36px',
+              top: '-6px',
+              right: '-6px',
+              width: '56px',
+              height: '56px',
               borderRadius: '50%',
               objectFit: 'cover',
-              opacity: 0.18,
+              objectPosition: 'center 30%',
+              opacity: 0.22,
               pointerEvents: 'none',
             }}
           />
@@ -483,7 +505,7 @@ function SessionGroupCard({ group, navigate }: { group: SessionGroup; navigate: 
               {productName}
             </span>
           )}
-          <span style={{ fontSize: '11px', color: `${LANTERN_GLOW}77` }}>
+          <span style={{ fontSize: '11px', color: `${LANTERN_GLOW}77`, marginRight: '52px' }}>
             {formatRelativeDate(group.date)}
           </span>
         </div>
@@ -857,8 +879,18 @@ export default function Journal() {
       const regularNotes = notes.filter(n => !n.id.startsWith('takeaway-'));
 
       if (regularNotes.length === 0 && takeawayNote) {
-        // Solo takeaway — render as regular card
-        result.push(takeawayNote);
+        // Solo takeaway — still render as a group so it gets the session envelope
+        result.push({
+          type: 'group',
+          sessionId,
+          notes: [],
+          takeaway: takeawayNote,
+          productId: takeawayNote.productId,
+          cardId: takeawayNote.cardId,
+          cardName: takeawayNote.cardName,
+          categoryName: takeawayNote.categoryName,
+          date: takeawayNote.date,
+        });
       } else if (regularNotes.length === 1 && !takeawayNote) {
         // Solo note — render as regular card
         result.push(regularNotes[0]);
@@ -1105,7 +1137,7 @@ export default function Journal() {
               top: 0,
               bottom: 0,
               width: '1px',
-              backgroundColor: 'rgba(245, 240, 232, 0.07)',
+              backgroundColor: 'rgba(245, 240, 232, 0.12)',
               pointerEvents: 'none',
             }} />
 
