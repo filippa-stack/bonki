@@ -286,7 +286,7 @@ function NoteEntryCard({ entry, navigate, index }: { entry: NoteEntry; navigate:
             {formatRelativeDate(entry.date)}
           </span>
         </div>
-        <p style={{ margin: '2px 0 0', fontSize: '12px', color: `${LANTERN_GLOW}55` }}>
+        <p style={{ margin: '2px 0 0', fontSize: '12px', color: `${LANTERN_GLOW}55`, textTransform: 'uppercase', letterSpacing: '1px' }}>
           {entry.cardName}
         </p>
       </div>
@@ -311,7 +311,6 @@ function NoteEntryCard({ entry, navigate, index }: { entry: NoteEntry; navigate:
           style={{
             margin: '0 0 8px',
             fontSize: '13px',
-            fontStyle: 'italic',
             color: `${LANTERN_GLOW}bb`,
             lineHeight: 1.4,
           }}
@@ -488,7 +487,7 @@ function SessionGroupCard({ group, navigate }: { group: SessionGroup; navigate: 
             {formatRelativeDate(group.date)}
           </span>
         </div>
-        <p style={{ margin: '2px 0 0', fontSize: '13px', color: `${LANTERN_GLOW}99` }}>
+        <p style={{ margin: '2px 0 0', fontSize: '13px', color: `${LANTERN_GLOW}99`, textTransform: 'uppercase', letterSpacing: '1px' }}>
           {group.cardName}
         </p>
       </div>
@@ -508,7 +507,6 @@ function SessionGroupCard({ group, navigate }: { group: SessionGroup; navigate: 
               <p style={{
                 margin: '0 0 4px',
                 fontSize: '13px',
-                fontStyle: 'italic',
                 color: `${LANTERN_GLOW}bb`,
                 lineHeight: 1.4,
               }}>
@@ -1005,10 +1003,10 @@ export default function Journal() {
       {/* Stats narrative */}
       {!isEmpty && !loading && (
         <p style={{
-          fontFamily: 'var(--font-serif)',
-          fontStyle: 'italic',
+          fontFamily: 'var(--font-sans)',
           fontSize: '15px',
-          color: 'rgba(245, 240, 232, 0.5)',
+          fontWeight: 500,
+          color: 'rgba(245, 240, 232, 0.7)',
           textAlign: 'center',
           marginTop: '8px',
           padding: '0 24px',
