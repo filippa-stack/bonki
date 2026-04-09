@@ -709,7 +709,7 @@ export default function ProductLibrary() {
               textShadow: '0 1px 16px hsla(230, 25%, 10%, 0.8)',
             }}
           >
-            Verktyg för samtalen som inte blir av
+            För samtalen som vill bli av
           </motion.p>
         </motion.div>
 
