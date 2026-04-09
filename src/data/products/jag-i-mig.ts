@@ -34,27 +34,7 @@ const categories: Category[] = [
 ];
 
 const cards: Card[] = [
-  // ── K1: Mina känslor — Trygg, Glad, Ledsen, Arg, Rädd ──
-  {
-    id: 'jim-trygg',
-    title: 'Trygg',
-    subtitle: 'Det som gör att jag känner mig säker och omhändertagen',
-    categoryId: 'jim-mina-kanslor',
-    sections: [
-      {
-        id: 'jim-trygg-opening',
-        type: 'opening',
-        title: 'Frågor',
-        content: '',
-        prompts: [
-          'Hur känns det i kroppen att vara trygg?',
-          'Varför är det viktigt att känna sig trygg?',
-          'Hur får du någon annan att känna sig trygg?',
-          'Berätta om när du känner dig trygg. Vad eller vem hjälper dig att känna dig trygg?',
-        ],
-      },
-    ],
-  },
+  // ── K1: Mina känslor — Glad, Trygg, Ledsen, Arg, Rädd ──
   {
     id: 'jim-glad',
     title: 'Glad',
@@ -74,6 +54,26 @@ const cards: Card[] = [
           'Kan du bli glad av andras skratt?',
           'Hur kan du göra någon annan glad?',
           'När blev du senast riktigt glad för något?',
+        ],
+      },
+    ],
+  },
+  {
+    id: 'jim-trygg',
+    title: 'Trygg',
+    subtitle: 'Det som gör att jag känner mig säker och omhändertagen',
+    categoryId: 'jim-mina-kanslor',
+    sections: [
+      {
+        id: 'jim-trygg-opening',
+        type: 'opening',
+        title: 'Frågor',
+        content: '',
+        prompts: [
+          'Hur känns det i kroppen att vara trygg?',
+          'Varför är det viktigt att känna sig trygg?',
+          'Hur får du någon annan att känna sig trygg?',
+          'Berätta om när du känner dig trygg. Vad eller vem hjälper dig att känna dig trygg?',
         ],
       },
     ],

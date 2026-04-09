@@ -3,9 +3,9 @@ import type { Category, Card } from '@/types';
 import heroImage from '@/assets/illustration-jag-i-varlden.png';
 
 const categories: Category[] = [
+  { id: 'jiv-varlden-omkring-mig', title: 'Omvärlden', subtitle: 'Normer, press och frågor som påverkar oss alla.', description: 'Sociala medier, fördomar, prestation, hälsa och psykisk ohälsa', cardCount: 5 },
   { id: 'jiv-vem-ar-jag', title: 'Vem är jag', subtitle: 'Det som formar dig inifrån – identitet, roller och självbild.', description: 'Identitet, självkänsla, roller och bekräftelse', cardCount: 4 },
   { id: 'jiv-jag-och-andra', title: 'Jag & andra', subtitle: 'Hur vi pratar, bråkar och bryr oss om varandra.', description: 'Vänskap, kommunikation, medkänsla, konflikter och mobbning', cardCount: 5 },
-  { id: 'jiv-varlden-omkring-mig', title: 'Omvärlden', subtitle: 'Normer, press och frågor som påverkar oss alla.', description: 'Sociala medier, fördomar, prestation, hälsa och psykisk ohälsa', cardCount: 5 },
   { id: 'jiv-vad-tror-jag-pa', title: 'Vad tror jag på', subtitle: 'Värderingar, mening och det som är större än oss.', description: 'Kärlek, sexualitet, moral & etik, frihet, existens och aktivism', cardCount: 6 },
 ];
 
@@ -18,7 +18,23 @@ const qsCard = (id: string, title: string, subtitle: string, catId: string, ques
 });
 
 const cards: Card[] = [
-  // ── K1: Vem är jag ──
+  // ── K1: Omvärlden (free card first) ──
+  qsCard('jiv-fordomar', 'Fördomar', 'Hur vi bedömer varandra – och varför vi gör det utan att tänka på det', 'jiv-varlden-omkring-mig',
+    ['Varför tror du att vi människor har fördomar om varandra?','Om någon träffade dig under endast en timme, vilken felaktig bedömning hade de kunnat göra om dig?','Berätta om ett tillfälle då du hade en fördom som visade sig inte stämma. Vad fick dig att ändra dig?','Hur kan du upptäcka fördomar som inte märks så tydligt hos andra?','Har någon påpekat att du har en fördom? Stämde det?'],
+    'Du och ditt kompisgäng sitter och diskuterar fördomar. En påstår sig vara helt utan fördomar. Är det möjligt?'),
+  qsCard('jiv-social-media', 'Social media', 'Sociala mediers roll i ungas liv -- glädje, press och risker', 'jiv-varlden-omkring-mig',
+    ['När blir du glad av något som har hänt på sociala medier?','Mår du dåligt ibland av något du har sett eller läst på sociala medier? Ge exempel.','Kan sociala medier vara farliga? Berätta hur du tänker.','På vilket sätt har sociala medier haft en positiv inverkan på ditt liv?','Vad tror du att de i din ålder gjorde innan sociala medier fanns?'],
+    'Du lägger ut en bild, ingen gillar den. Hur påverkas du? Utveckla.'),
+  qsCard('jiv-prestation', 'Prestation', 'Krav och förväntningar – varifrån de kommer och hur de påverkar', 'jiv-varlden-omkring-mig',
+    ['Beskriv ett tillfälle då du gjorde en särskild ansträngning för att slutföra något. Vad fick dig att inte ge upp?','Känner du att det är viktigt att bli "bäst" i allt du gör? Varför?','När kan ett misslyckande vara bra?','De krav du har på dig själv och din framtid – vet du om det är du själv eller någon annan som ställt dem?'],
+    'Vuxna och lärare pratar ofta om att det är viktigt att engagera sig nu för att få en bra framtid. Om du blundar och tänker på din framtid -- hur vill du att den ska se ut?'),
+  qsCard('jiv-halsa', 'Hälsa', 'Vad hälsa egentligen innebär – och när hälsofokus kan bli ett problem', 'jiv-varlden-omkring-mig',
+    ['Kan en se på en kropp att den är hälsosam? Berätta.','Tror du att överdriven hälsomedvetenhet kan bli ohälsosam? Vad kan det bero på?','Hälsa kan betyda olika saker för olika personer. Berätta om något du tycker är hälsosamt som någon du känner inte håller med om.','Finns det tillfällen då du har ansvar för någon annans hälsa? Ge exempel.'],
+    'Tänk dig att några i din omgivning är väldigt fokuserade på träning och kost och förväntar sig att andra gör likadant. Hur påverkar det dig? Hur kan du förhålla dig till det?'),
+  qsCard('jiv-psykisk-ohalsa', 'Psykisk ohälsa', 'Att förstå skillnaden mellan att må dåligt och att behöva hjälp', 'jiv-varlden-omkring-mig',
+    ['Beskriv hur det känns när du mår bra.','Hur vet du när du inte mår bra?','Vem pratar du med när något inte känns bra?','Hur vet en skillnaden mellan att må dåligt och psykisk ohälsa?','Vilka är fördelarna och nackdelarna med att få en diagnos för psykisk ohälsa?','Om en vän berättade att de ibland inte orkar eller att livet känns för tungt -- vad skulle du göra? Vem skulle du kontakta?'],
+    'Om en vän delade något online som fick dig att oroa dig för hens säkerhet -- vad är det första du skulle göra? Vem kan du ta hjälp av?'),
+  // ── K2: Vem är jag ──
   qsCard('jiv-identitet', 'Identitet', 'Vem en är och vem en vill vara – och hur det kan skilja sig åt', 'jiv-vem-ar-jag',
     ['På vilka sätt kan personer visa att de tillhör en speciell grupp?','Beskriv första gången du verkligen kände tillhörighet. Vad fick dig att känna så?','Uppfattar du dig själv på samma sätt som du vill att andra ska uppfatta dig?','Vilken del av din identitet önskar du fick mer utrymme?'],
     'Du har träffat nya kompisar och börjat klä dig annorlunda jämfört med tidigare. Finns det någonting i din identitet som förblir oförändrat trots att ditt yttre har förändrats? Berätta hur du tänker.'),
@@ -31,7 +47,7 @@ const cards: Card[] = [
   qsCard('jiv-bekraftelse', 'Bekräftelse', 'Behovet av att bli sedd och hörd – och när det kan gå för långt', 'jiv-vem-ar-jag',
     ['På vilka sätt kan en person få bekräftelse från andra?','Varför är det så värdefullt att få bekräftelse för saker vi gör?','Är bekräftelse alltid något bra? Kan det skada?','På vilket sätt kan en bli beroende av bekräftelse? Vad tror du det beror på?','Vilken sorts bekräftelse betyder mest för dig?'],
     'Du har skrivit en lång uppsats om något som du bryr dig mycket om. Du har lagt ner väldigt många timmar på den och det känns lite utlämnande att visa den för andra. När du gör det, för läraren och dina vuxna, får du inte riktigt någon respons utöver "vad bra". Är det nog? Vad hade du behövt?'),
-  // ── K2: Jag & andra ──
+  // ── K3: Jag & andra ──
   qsCard('jiv-vanskap', 'Vänskap', 'Vad som håller en vänskap levande – och om alla vänskaper är lika värda', 'jiv-jag-och-andra',
     ['Varför tror du att människan är naturligt programmerad att behöva vänner?','Är vänskap något en väljer eller något som bara uppstår?','Hur skulle du definiera en vän för livet? Vad krävs för en sådan relation?','Kan en ha olika typer av vänskapsrelationer? Hur kan de i så fall se ut?'],
     'En person har flera olika vänner. Vissa av dem är mer populära än andra. Några kan vara tråkiga, men finns alltid där. Är några vänner mer värda än andra? Kan en värdera vänskap? Förklara.'),
@@ -47,22 +63,6 @@ const cards: Card[] = [
   qsCard('jiv-mobbning', 'Mobbning', 'Vad mobbning är och inte är – och vilket ansvar var och en har', 'jiv-jag-och-andra',
     ['Vad är skillnaden mellan ett bråk och mobbning?','Hur tror du att mobbning har förändrats sedan dina vuxna var barn?','Kan du ge ett exempel på hur en vuxen kan bli mobbad?','Vad skulle ett barn respektive en vuxen kunna göra för att få hjälp om de blir mobbade?','Kan en vara mobbare utan att veta om det? Ge exempel.'],
     'Tänk dig att det finns elever i din klass som alltid är ensamma och saknar vänner. Ingen gör dem något direkt, men ingen inkluderar dem heller. Kan det räknas som mobbning? Vilket ansvar har du och klassen?'),
-  // ── K3: Världen omkring mig ──
-  qsCard('jiv-social-media', 'Social media', 'Sociala mediers roll i ungas liv -- glädje, press och risker', 'jiv-varlden-omkring-mig',
-    ['När blir du glad av något som har hänt på sociala medier?','Mår du dåligt ibland av något du har sett eller läst på sociala medier? Ge exempel.','Kan sociala medier vara farliga? Berätta hur du tänker.','På vilket sätt har sociala medier haft en positiv inverkan på ditt liv?','Vad tror du att de i din ålder gjorde innan sociala medier fanns?'],
-    'Du lägger ut en bild, ingen gillar den. Hur påverkas du? Utveckla.'),
-  qsCard('jiv-fordomar', 'Fördomar', 'Hur vi bedömer varandra – och varför vi gör det utan att tänka på det', 'jiv-varlden-omkring-mig',
-    ['Varför tror du att vi människor har fördomar om varandra?','Om någon träffade dig under endast en timme, vilken felaktig bedömning hade de kunnat göra om dig?','Berätta om ett tillfälle då du hade en fördom som visade sig inte stämma. Vad fick dig att ändra dig?','Hur kan du upptäcka fördomar som inte märks så tydligt hos andra?','Har någon påpekat att du har en fördom? Stämde det?'],
-    'Du och ditt kompisgäng sitter och diskuterar fördomar. En påstår sig vara helt utan fördomar. Är det möjligt?'),
-  qsCard('jiv-prestation', 'Prestation', 'Krav och förväntningar – varifrån de kommer och hur de påverkar', 'jiv-varlden-omkring-mig',
-    ['Beskriv ett tillfälle då du gjorde en särskild ansträngning för att slutföra något. Vad fick dig att inte ge upp?','Känner du att det är viktigt att bli "bäst" i allt du gör? Varför?','När kan ett misslyckande vara bra?','De krav du har på dig själv och din framtid – vet du om det är du själv eller någon annan som ställt dem?'],
-    'Vuxna och lärare pratar ofta om att det är viktigt att engagera sig nu för att få en bra framtid. Om du blundar och tänker på din framtid -- hur vill du att den ska se ut?'),
-  qsCard('jiv-halsa', 'Hälsa', 'Vad hälsa egentligen innebär – och när hälsofokus kan bli ett problem', 'jiv-varlden-omkring-mig',
-    ['Kan en se på en kropp att den är hälsosam? Berätta.','Tror du att överdriven hälsomedvetenhet kan bli ohälsosam? Vad kan det bero på?','Hälsa kan betyda olika saker för olika personer. Berätta om något du tycker är hälsosamt som någon du känner inte håller med om.','Finns det tillfällen då du har ansvar för någon annans hälsa? Ge exempel.'],
-    'Tänk dig att några i din omgivning är väldigt fokuserade på träning och kost och förväntar sig att andra gör likadant. Hur påverkar det dig? Hur kan du förhålla dig till det?'),
-  qsCard('jiv-psykisk-ohalsa', 'Psykisk ohälsa', 'Att förstå skillnaden mellan att må dåligt och att behöva hjälp', 'jiv-varlden-omkring-mig',
-    ['Beskriv hur det känns när du mår bra.','Hur vet du när du inte mår bra?','Vem pratar du med när något inte känns bra?','Hur vet en skillnaden mellan att må dåligt och psykisk ohälsa?','Vilka är fördelarna och nackdelarna med att få en diagnos för psykisk ohälsa?','Om en vän berättade att de ibland inte orkar eller att livet känns för tungt -- vad skulle du göra? Vem skulle du kontakta?'],
-    'Om en vän delade något online som fick dig att oroa dig för hens säkerhet -- vad är det första du skulle göra? Vem kan du ta hjälp av?'),
   // ── K4: Vad tror jag på ──
   qsCard('jiv-karlek', 'Kärlek', 'Kärlekens många former – attraktion, förälskelse och hur det förändras', 'jiv-vad-tror-jag-pa',
     ['Hur känns kärlek?','Hur kan kärlek se ut för olika personer?','Vad finns det för likheter och skillnader mellan vänskap och kärlek?','Varför behöver vi kärlek? Kan en leva utan kärlek och ändå må bra?','Är det skillnad på attraktion, förälskelse, att vara kär och kärlek? Hur vet en skillnaden?','Hur kan ens kärlek till en person förändras över tid?','Vad kan orsaka att en slutar älska någon?'],
@@ -101,7 +101,7 @@ export const jagIVarldenProduct: ProductManifest = {
   tileDeep: '#606613',
   pronounMode: 'du',
   heroImage,
-  freeCardId: 'jiv-identitet',
+  freeCardId: 'jiv-fordomar',
   ageLabel: '12+',
   paywallDescription: 'Lås upp alla samtal om världen, rättvisa och att hitta sin plats.',
   categories,

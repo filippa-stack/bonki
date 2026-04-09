@@ -3,51 +3,14 @@ import type { Category, Card } from '@/types';
 import heroImage from '@/assets/illustration-sexualitet.png';
 
 const categories: Category[] = [
-  { id: 'sex-min-identitet', title: 'Min identitet', subtitle: 'Kropp, kön och den du är – på ditt sätt.', description: 'Könsidentitet, sexuell läggning, onani och kroppsideal', cardCount: 4 },
   { id: 'sex-normer-och-paverkan', title: 'Normer & påverkan', subtitle: 'Det som formar våra tankar om sex och relationer.', description: 'Normer, kärlek, pornografi och tabun', cardCount: 4 },
+  { id: 'sex-min-identitet', title: 'Min identitet', subtitle: 'Kropp, kön och den du är – på ditt sätt.', description: 'Könsidentitet, sexuell läggning, onani och kroppsideal', cardCount: 4 },
   { id: 'sex-relation-och-ansvar', title: 'Relation & ansvar', subtitle: 'Samtycke, respekt och hur vi är med varandra.', description: 'Samtycke, ansvar, misstag och konsekvenser', cardCount: 4 },
   { id: 'sex-skydd-och-makt', title: 'Makt & skyddslöshet', subtitle: 'Risker, gränser och att ta hand om sig själv.', description: 'Sex som hot och sexuella övergrepp', cardCount: 2 },
 ];
 
 const cards: Card[] = [
-  // ── K1: Min identitet ──
-  { id: 'sex-konsidentitet', title: 'Könsidentitet', subtitle: 'Vem en är som kön – och vad som händer när det inte stämmer med omvärldens bild', categoryId: 'sex-min-identitet', sections: [{ id: 'sex-konsidentitet-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
-    'När började du tänka på vilket kön du har?',
-    'Har du någon gång behövt försvara din könsidentitet?',
-    'Hur tror du att en person som känner att deras könsidentitet inte stämmer med deras kropp kan ha det? Vad tror du att den behöver?',
-    'Vad innebär begreppen cisperson och transperson?',
-    'Vad är könsdysfori? Hur kan det påverka en person?',
-    'Vad skulle du göra om omgivningen uppfattade din könstillhörighet annorlunda än du själv uppfattar den?',
-    'Måste en vara man eller kvinna?',
-    'Vad betyder det att vara icke-binär?',
-    'Vart kan du vända dig och vem kan du prata med om du upplever att din könsidentitet inte överensstämmer med ditt kroppsliga kön?',
-  ]}]},
-  { id: 'sex-sexuell-laggning', title: 'Sexuell läggning', subtitle: 'Vem en attraheras av – och hur en förstår och uttrycker det', categoryId: 'sex-min-identitet', sections: [{ id: 'sex-sexuell-laggning-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
-    'Har du någon gång funderat på din sexuella läggning?',
-    'Hur vet en person om den är heterosexuell eller HBTQI?',
-    'Tror du att ens sexuella läggning förblir densamma hela livet, eller kan den förändras?',
-    'Vad innebär det att vara asexuell? Aromantisk?',
-    'Vad innebär begreppet queer? Var har det sitt ursprung?',
-    'Hur skulle du reagera om någon du känner kom ut som heterosexuell? Skulle du reagera annorlunda om hen kom ut som HBTQI?',
-    'Varför tror du att det oftast är HBTQI-personer som "kommer ut"? Kan det finnas för- och nackdelar, för personen eller för omgivningen?',
-    'Vad innebär pride? Varför finns pride-parader?',
-  ]}]},
-  { id: 'sex-onani', title: 'Onani', subtitle: 'Att utforska sin kropp och sin sexualitet på egen hand', categoryId: 'sex-min-identitet', sections: [{ id: 'sex-onani-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
-    'Vilka syften finns med att onanera?',
-     'Vad kan en lära sig av att onanera?',
-     'På vilka olika sätt kan det vara bra för hälsan att onanera?',
-     'Är det enbart privat att onanera, eller kan en göra det tillsammans med någon annan? I vilka sammanhang?',
-  ]}]},
-  { id: 'sex-kroppsideal', title: 'Kroppsideal', subtitle: 'Hur ideal och förväntningar på kroppen påverkar hur vi ser på oss själva', categoryId: 'sex-min-identitet', sections: [{ id: 'sex-kroppsideal-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
-    'Vad tror du folk menar när de pratar om en "normal" kropp? Finns det en sådan?',
-    'Känner du att du måste se ut på ett visst sätt? Hur då?',
-    'På vilka sätt kan en påverkas av omgivningen att se ut på ett visst sätt?',
-    'Vad kan vara bra eller dåligt med att trender för kroppsideal förändras?',
-    'Vad är ett kroppskomplex?',
-    'Vad kan kroppskomplex leda till för en människa?',
-    'På vilka sätt kan ens självbild påverka ens sexuella relationer?',
-  ]}]},
-  // ── K2: Normer & påverkan ──
+  // ── K1: Normer & påverkan (free card first) ──
   { id: 'sex-normer', title: 'Normer', subtitle: 'Samhällets oskrivna regler om sex – vad de är och varifrån de kommer', categoryId: 'sex-normer-och-paverkan', sections: [{ id: 'sex-normer-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
     'Vilka normer finns kring sexualitet?',
     'Hur tror du att Sverige skiljer sig från resten av världen när det gäller samhällets syn på sex och sexualitet?',
@@ -87,6 +50,43 @@ const cards: Card[] = [
     'När kan det vara okej att dela sina kinks eller fetischer med någon?',
     'Många sexuella sammanhang som involverar kinks brukar ha regler och "säkerhetsspärrar", till exempel safewords, för att minska risken för att någon far illa eller blir obekväm. Ofta diskuteras även utförandet innan en börjar. Kan det finnas fördelar med att göra så även i andra sexuella sammanhang?',
     'Kan en hjälpa vad en tänder på?',
+  ]}]},
+  // ── K2: Min identitet ──
+  { id: 'sex-konsidentitet', title: 'Könsidentitet', subtitle: 'Vem en är som kön – och vad som händer när det inte stämmer med omvärldens bild', categoryId: 'sex-min-identitet', sections: [{ id: 'sex-konsidentitet-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
+    'När började du tänka på vilket kön du har?',
+    'Har du någon gång behövt försvara din könsidentitet?',
+    'Hur tror du att en person som känner att deras könsidentitet inte stämmer med deras kropp kan ha det? Vad tror du att den behöver?',
+    'Vad innebär begreppen cisperson och transperson?',
+    'Vad är könsdysfori? Hur kan det påverka en person?',
+    'Vad skulle du göra om omgivningen uppfattade din könstillhörighet annorlunda än du själv uppfattar den?',
+    'Måste en vara man eller kvinna?',
+    'Vad betyder det att vara icke-binär?',
+    'Vart kan du vända dig och vem kan du prata med om du upplever att din könsidentitet inte överensstämmer med ditt kroppsliga kön?',
+  ]}]},
+  { id: 'sex-sexuell-laggning', title: 'Sexuell läggning', subtitle: 'Vem en attraheras av – och hur en förstår och uttrycker det', categoryId: 'sex-min-identitet', sections: [{ id: 'sex-sexuell-laggning-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
+    'Har du någon gång funderat på din sexuella läggning?',
+    'Hur vet en person om den är heterosexuell eller HBTQI?',
+    'Tror du att ens sexuella läggning förblir densamma hela livet, eller kan den förändras?',
+    'Vad innebär det att vara asexuell? Aromantisk?',
+    'Vad innebär begreppet queer? Var har det sitt ursprung?',
+    'Hur skulle du reagera om någon du känner kom ut som heterosexuell? Skulle du reagera annorlunda om hen kom ut som HBTQI?',
+    'Varför tror du att det oftast är HBTQI-personer som "kommer ut"? Kan det finnas för- och nackdelar, för personen eller för omgivningen?',
+    'Vad innebär pride? Varför finns pride-parader?',
+  ]}]},
+  { id: 'sex-onani', title: 'Onani', subtitle: 'Att utforska sin kropp och sin sexualitet på egen hand', categoryId: 'sex-min-identitet', sections: [{ id: 'sex-onani-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
+    'Vilka syften finns med att onanera?',
+     'Vad kan en lära sig av att onanera?',
+     'På vilka olika sätt kan det vara bra för hälsan att onanera?',
+     'Är det enbart privat att onanera, eller kan en göra det tillsammans med någon annan? I vilka sammanhang?',
+  ]}]},
+  { id: 'sex-kroppsideal', title: 'Kroppsideal', subtitle: 'Hur ideal och förväntningar på kroppen påverkar hur vi ser på oss själva', categoryId: 'sex-min-identitet', sections: [{ id: 'sex-kroppsideal-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
+    'Vad tror du folk menar när de pratar om en "normal" kropp? Finns det en sådan?',
+    'Känner du att du måste se ut på ett visst sätt? Hur då?',
+    'På vilka sätt kan en påverkas av omgivningen att se ut på ett visst sätt?',
+    'Vad kan vara bra eller dåligt med att trender för kroppsideal förändras?',
+    'Vad är ett kroppskomplex?',
+    'Vad kan kroppskomplex leda till för en människa?',
+    'På vilka sätt kan ens självbild påverka ens sexuella relationer?',
   ]}]},
   // ── K3: Relation & ansvar ──
   { id: 'sex-samtycke', title: 'Samtycke', subtitle: 'Att sex kräver ett aktivt och frivilligt ja – och vad som gäller när det är oklart', categoryId: 'sex-relation-och-ansvar', sections: [{ id: 'sex-samtycke-opening', type: 'opening', title: 'Frågor', content: '', prompts: [
