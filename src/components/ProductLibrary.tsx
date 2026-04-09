@@ -285,20 +285,6 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
         ].join(', '),
       }}
     >
-      {/* Ghost Glow ownership sparkle */}
-      {isPurchased && (
-        <div style={{
-          position: 'absolute',
-          top: '12px',
-          right: '12px',
-          fontSize: '18px',
-          color: '#D4F5C0',
-          textShadow: '0 0 8px #D4F5C0, 0 0 16px rgba(212, 245, 192, 0.4)',
-          opacity: 0.85,
-          pointerEvents: 'none',
-          zIndex: 2,
-        }}>✦</div>
-      )}
       {/* Illustration — right-aligned, bleeds off edge dramatically */}
       {illustration && (
         <div
@@ -937,20 +923,6 @@ export default function ProductLibrary() {
                 boxShadow: '0 8px 24px rgba(0, 0, 0, 0.12), 0 2px 6px rgba(0, 0, 0, 0.06)',
               }}
             >
-              {/* Ghost Glow ownership sparkle for Still Us */}
-              {purchased.has('still_us') && !activeProductIds.has('still_us') && (
-                <div style={{
-                  position: 'absolute',
-                  top: '12px',
-                  right: '12px',
-                  fontSize: '18px',
-                  color: '#D4F5C0',
-                  textShadow: '0 0 8px #D4F5C0, 0 0 16px rgba(212, 245, 192, 0.4)',
-                  opacity: 0.85,
-                  pointerEvents: 'none',
-                  zIndex: 2,
-                }}>✦</div>
-              )}
               {/* Resume indicator for Still Us */}
               {activeProductIds.has('still_us') && (
                 <div style={{
