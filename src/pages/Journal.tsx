@@ -270,6 +270,27 @@ function NoteEntryCard({ entry, navigate, index }: { entry: NoteEntry; navigate:
       }}
     >
 
+      {/* Creature illustration */}
+      {PRODUCT_ILLUSTRATION[entry.productId] && (
+        <img
+          src={PRODUCT_ILLUSTRATION[entry.productId]}
+          alt=""
+          aria-hidden="true"
+          style={{
+            position: 'absolute',
+            top: '-6px',
+            right: '-6px',
+            width: '56px',
+            height: '56px',
+            borderRadius: '50%',
+            objectFit: 'cover',
+            objectPosition: 'center 30%',
+            opacity: 0.22,
+            pointerEvents: 'none',
+          }}
+        />
+      )}
+
       {/* Metadata — top, matching SessionGroupCard */}
       <div style={{ lineHeight: 1.3, marginBottom: '10px' }}>
         <div style={{
