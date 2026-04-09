@@ -352,6 +352,15 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
     }
   }, [product.heroImage]);
 
+  // Preload first portal card image per category for flicker-free entry
+  useEffect(() => {
+    tileImages.forEach((src) => {
+      if (!src) return;
+      const img = new Image();
+      img.src = src;
+    });
+  }, [tileImages]);
+
   const bg = product.backgroundColor;
   const tileLight = product.tileLight ?? bg;
   const isSU = product.slug === 'still-us';

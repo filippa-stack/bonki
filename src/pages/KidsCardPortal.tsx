@@ -137,7 +137,30 @@ export default function KidsCardPortal() {
   const [imageLoaded, setImageLoaded] = useState(false);
   const card = categoryCards[currentIndex];
 
-  useEffect(() => { setImageLoaded(false); }, [card?.id]);
+  // Smart cache detection — skip fade if image already cached
+  useEffect(() => {
+    if (!card?.id) return;
+    const testImg = new Image();
+    testImg.src = `/card-images/${card.id}.webp`;
+    if (testImg.complete) {
+      setImageLoaded(true);
+    } else {
+      setImageLoaded(false);
+    }
+  }, [card?.id]);
+
+  // Preload adjacent card images for flicker-free swiping
+  useEffect(() => {
+    const preload = (id: string | undefined) => {
+      if (!id) return;
+      const img = new Image();
+      img.src = `/card-images/${id}.webp`;
+    };
+    const prevCard = categoryCards[currentIndex - 1];
+    const nextCard = categoryCards[currentIndex + 1];
+    if (prevCard) preload(prevCard.id);
+    if (nextCard) preload(nextCard.id);
+  }, [currentIndex, categoryCards]);
 
   // Portal-open animation state
   const [portalPhase, setPortalPhase] = useState<'idle' | 'phase1' | 'phase2' | 'phase3'>('idle');
@@ -450,6 +473,7 @@ export default function KidsCardPortal() {
                     <img
                       src={imageSrc}
                       alt={card.title}
+                      decoding="sync"
                       onLoad={() => setImageLoaded(true)}
                       style={{
                         position: 'absolute',
