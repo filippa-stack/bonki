@@ -431,18 +431,14 @@ function SessionGroupCard({ group, navigate }: { group: SessionGroup; navigate: 
   return (
     <div
       style={{
-        backgroundColor: accent.mid,
-        border: `0.5px solid ${accent.deep}44`,
-        borderRadius: '16px',
+        background: `linear-gradient(135deg, ${accent.mid}, ${accent.deep}cc)`,
+        borderLeft: `3px solid ${accent.light}`,
+        borderRadius: '14px',
         overflow: 'hidden',
         position: 'relative',
+        boxShadow: `0 2px 12px rgba(0,0,0,0.25), 0 0 0 0.5px ${accent.deep}33`,
       }}
     >
-      {/* Top accent bar */}
-      <div style={{
-        height: '2px',
-        background: accent.deep,
-      }} />
 
       {/* Header */}
       <div style={{ padding: '16px 16px 0' }}>
@@ -452,7 +448,7 @@ function SessionGroupCard({ group, navigate }: { group: SessionGroup; navigate: 
           alignItems: 'baseline',
         }}>
           {productName && (
-            <span style={{ fontSize: '13px', fontWeight: 600, color: LANTERN_GLOW }}>
+            <span style={{ fontSize: '13px', fontWeight: 600, color: LANTERN_GLOW, letterSpacing: '0.04em' }}>
               {productName}
             </span>
           )}
@@ -481,7 +477,7 @@ function SessionGroupCard({ group, navigate }: { group: SessionGroup; navigate: 
                 margin: '0 0 4px',
                 fontSize: '13px',
                 fontStyle: 'italic',
-                color: accent.deep,
+                color: `${LANTERN_GLOW}73`,
                 lineHeight: 1.4,
                 display: '-webkit-box',
                 WebkitLineClamp: 2,
@@ -516,7 +512,7 @@ function SessionGroupCard({ group, navigate }: { group: SessionGroup; navigate: 
             style={{
               background: 'none',
               border: 'none',
-              color: `${LANTERN_GLOW}88`,
+              color: `${LANTERN_GLOW}60`,
               fontSize: '12px',
               fontWeight: 500,
               cursor: 'pointer',
@@ -534,7 +530,7 @@ function SessionGroupCard({ group, navigate }: { group: SessionGroup; navigate: 
         <div style={{
           margin: '14px 12px 0',
           padding: '12px 14px',
-          backgroundColor: `${accent.deep}33`,
+          backgroundColor: 'rgba(0,0,0,0.15)',
           borderRadius: '12px',
         }}>
           <p style={{
@@ -543,7 +539,7 @@ function SessionGroupCard({ group, navigate }: { group: SessionGroup; navigate: 
             fontWeight: 600,
             textTransform: 'uppercase',
             letterSpacing: '0.08em',
-            color: `${accent.mid}dd`,
+            color: `${LANTERN_GLOW}55`,
           }}>
             Ni bar med er
           </p>
