@@ -205,7 +205,7 @@ function monthLabel(dateStr: string): string {
   return `${SWEDISH_MONTHS[d.getMonth()].toUpperCase()} ${d.getFullYear()}`;
 }
 
-function getProductAccent(productId: string, cardId?: string): { light: string; mid: string; deep: string } {
+function getProductAccent(productId: string, cardId?: string): { light: string; mid: string; deep: string; bg: string } {
   // Resolve effective product from card if needed
   let effectiveProduct = productId;
   if (cardId) {
@@ -219,9 +219,10 @@ function getProductAccent(productId: string, cardId?: string): { light: string; 
   // Map product ID to palette key (products use underscores in palette)
   const paletteKey = effectiveProduct.replace(/-/g, '_');
   const colors = productTileColors[paletteKey];
-  return colors
-    ? { light: colors.tileLight, mid: colors.tileMid, deep: colors.tileDeep }
-    : { light: LANTERN_GLOW, mid: MIDNIGHT_INK, deep: MIDNIGHT_INK };
+  const product = allProducts.find(p => p.id === effectiveProduct);
+  return colors && product
+    ? { light: colors.tileLight, mid: colors.tileMid, deep: colors.tileDeep, bg: product.backgroundColor }
+    : { light: LANTERN_GLOW, mid: MIDNIGHT_INK, deep: MIDNIGHT_INK, bg: MIDNIGHT_INK };
 }
 
 function splitReflectionBlocks(text: string): string[] {
