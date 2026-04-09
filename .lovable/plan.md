@@ -1,36 +1,59 @@
 
 
-## Eliminate Illustration Flicker in KidsCardPortal
+## Journal Visual Polish — 3 Changes in `src/pages/Journal.tsx`
 
-Four surgical edits across two files. No routes, session logic, AnimatePresence modes, or other files modified.
-
----
-
-### File 1: `src/pages/KidsCardPortal.tsx`
-
-**Edit A — Preload adjacent cards (insert after line 137)**
-
-Add a `useEffect` that creates `new Image()` for `categoryCards[currentIndex - 1]` and `categoryCards[currentIndex + 1]`, warming the browser cache before the user swipes.
-
-**Edit B — Smart cache detection (replace line 140)**
-
-Replace `useEffect(() => { setImageLoaded(false); }, [card?.id])` with a version that creates a test `Image`, checks `testImg.complete`, and only resets `imageLoaded` to `false` if the image isn't already cached.
-
-**Edit C — Synchronous decoding (modify line ~451)**
-
-Add `decoding="sync"` to the `<img>` tag inside the `PortalCardImage` render prop, forcing same-frame paint.
+No data fetching, filtering, grouping, or session logic modified. Single file only.
 
 ---
 
-### File 2: `src/components/KidsProductHome.tsx`
+### Change 1 — Replace stats grid with narrative sentence (lines 988–1054)
 
-**Edit D — Preload first portal card per category (insert after line 353)**
+Remove the entire stats row div (three columns: Reflektioner / Samtal / Månader with gold numbers). Replace with:
 
-Add a `useEffect` keyed on `tileImages` that loops through and creates `new Image()` for each `/card-images/${id}.webp`, so images are warm before the user taps into any portal.
+```tsx
+<p style={{
+  fontFamily: 'var(--font-serif)',
+  fontStyle: 'italic',
+  fontSize: '15px',
+  color: 'rgba(245, 240, 232, 0.5)',
+  textAlign: 'center',
+  marginTop: '8px',
+  padding: '0 24px',
+}}>
+  {heroStats.reflectionCount} reflektioner från {heroStats.sessionCount} samtal{pulseData ? ` sedan ${pulseData.monthLabel}` : ''}.
+</p>
+```
+
+Uses existing `heroStats` and `pulseData.monthLabel` — no new data needed.
 
 ---
 
-### What this achieves
+### Change 2 — Soften filter pills (lines 1058–1109)
 
-When viewing card N, cards N-1 and N+1 are already fetched. On swipe, `testImg.complete` returns `true` → no opacity fade → `decoding="sync"` paints on the same frame → zero flicker. And from the product home, the first card in each category is pre-cached before the user even taps a tile.
+For all three buttons (Alla, Barn, Par):
+- `height: '28px'` → `'36px'`
+- Remove `textTransform: 'uppercase'`
+- Remove `letterSpacing: '0.06em'`
+- `fontSize: '11px'` → `'13px'`
+- `borderRadius: '16px'` → `'20px'`
+- Inactive border: `'0.5px solid rgba(245, 240, 232, 0.12)'` → `'0.5px solid transparent'`
+- Active state styling stays exactly as-is
+
+---
+
+### Change 3 — Upgrade card styling
+
+**NoteEntryCard** (lines 242–363):
+- `borderRadius: '16px'` → `'22px'`
+- Add `boxShadow: '0 4px 16px rgba(0,0,0,0.12), 0 1px 4px rgba(0,0,0,0.06)'`
+- `border` → `'1px solid rgba(255, 255, 255, 0.06)'`
+- Remove the "Top color bar" div (lines 253–260)
+- `padding: '0 16px 14px'` → `'18px 18px 16px'`
+
+**SessionGroupCard** (lines 438–573):
+- `borderRadius: '16px'` → `'22px'`
+- Add `boxShadow: '0 4px 16px rgba(0,0,0,0.12), 0 1px 4px rgba(0,0,0,0.06)'`
+- `border` → `'1px solid rgba(255, 255, 255, 0.06)'`
+- Remove the "Top accent bar" div (lines 448–452)
+- Adjust header padding since top bar is gone (the `padding: '16px 16px 0'` on the header div stays, it just no longer sits below the bar)
 
