@@ -1,43 +1,42 @@
 
 
-## Journal card styling — solid product-colored backgrounds
+## Journal cards — premium visual upgrade
 
-### Summary
-Update rendering styles in `Journal.tsx` so conversation cards use solid product-colored backgrounds instead of transparent overlays. Text colors adjusted for readability on the new backgrounds. No data/logic changes.
+### Design critique of current state
 
-### Changes in `src/pages/Journal.tsx`
+The screenshots show flat, monochrome rectangles that feel disconnected from the library's rich, layered aesthetic. Three specific issues:
 
-**`getProductAccent` fallback** — Change fallback `mid` to `MIDNIGHT_INK` (#1A1A2E) so cards without a product match still look intentional.
+1. **Flat backgrounds** — solid `accent.mid` with no depth. The library tiles have gradient scrims, illustrations, and backdrop-blur pills. The journal cards feel like colored post-its.
+2. **Question text unreadable** — `accent.deep` on `accent.mid` produces poor contrast on several products (especially Vårt Vi blue-on-blue and Jag i Mig teal-on-teal).
+3. **No elevation** — cards sit flush against the dark background with no shadow or separation, making the page feel flat.
 
-**`NoteEntryCard` styling:**
-- Background: `accent.mid` (solid) instead of `${accent.light}22`
-- Border: `${accent.deep}44`
-- Top color bar: `accent.deep`
-- Product name + card title: `LANTERN_GLOW` / `${LANTERN_GLOW}88`
-- Date: `${LANTERN_GLOW}66`
-- Question text ("—" lines): `accent.deep`
-- Reflection text: `LANTERN_GLOW` (#FDF6E3)
-- "Läs mer" button: `${LANTERN_GLOW}aa`
+### Changes (all in `src/pages/Journal.tsx`, rendering only)
 
-**`SessionGroupCard` styling:**
-- Same background/border/text pattern as NoteEntryCard
-- Takeaway block bg: `${accent.deep}33`
-- Divider lines: `${LANTERN_GLOW}22`
-- "Visa alla" toggle: `${LANTERN_GLOW}88`
+**Both `NoteEntryCard` and `SessionGroupCard`:**
 
-### Post-implementation verification
-Confirm these four protected patterns are still present and unmodified:
-- `suppressUntilRef` → `src/hooks/useNormalizedSessionState.ts`
-- `prevServerStepRef` → `src/pages/CardView.tsx`
-- `clearTimeout(pendingSave.current)` → `src/hooks/useSessionReflections.ts` + `src/hooks/useCardTakeaway.ts`
-- `hasSyncedRef` → `src/components/SessionStepReflection.tsx`
+| Element | Current | New |
+|---|---|---|
+| Background | Flat `accent.mid` | Subtle gradient: `linear-gradient(135deg, ${accent.mid}, ${accent.deep}cc)` — diagonal warmth, echoes library scrim |
+| Top bar | 2px horizontal `accent.deep` | Remove. Replace with 3px **left vertical stripe** in `accent.light` — editorial, premium |
+| Box shadow | None | `0 2px 12px rgba(0,0,0,0.25), 0 0 0 0.5px ${accent.deep}33` — subtle lift |
+| Border | `0.5px solid ${accent.deep}44` | Remove (shadow handles separation) |
+| Question text `—` | `accent.deep` (unreadable) | `${LANTERN_GLOW}73` — standard question opacity from brand spec |
+| Product name | `LANTERN_GLOW` solid | Add `letterSpacing: '0.04em'` for premium feel |
+| "Visa alla" / "Läs mer" | `${LANTERN_GLOW}88` / `aa` | `${LANTERN_GLOW}60` — standard interactive opacity |
+| Takeaway label "Ni bar med er" | `${accent.mid}dd` (invisible on gradient) | `${LANTERN_GLOW}55` |
+| Takeaway block bg | `${accent.deep}33` | `rgba(0,0,0,0.15)` — works on any gradient |
+| Border radius | `16px` | `14px` — tighter, matching library tile feel |
 
-### Files changed
-- `src/pages/Journal.tsx` — rendering styles only
+**`CompletedMarkerRow`** — no changes.
+
+**Visual result:** Cards go from flat colored blocks to rich, layered surfaces with diagonal gradients, left accent stripes, and soft elevation — the same visual language as the library tiles but adapted for text-heavy content.
 
 ### What stays untouched
-- All data fetching, session queries, status filters
-- Timeline grouping, month markers, spine
-- Pulse card, bookmark cards
-- All protected refs (in their actual files listed above)
+- All data fetching, queries, filters, timeline logic
+- All protected refs (`suppressUntilRef`, `prevServerStepRef`, `clearTimeout(pendingSave.current)`, `hasSyncedRef`)
+- Spine, month markers, pulse card, bookmarks
+- `getProductAccent` function and fallback logic
+
+### Files changed
+- `src/pages/Journal.tsx` — inline styles in `NoteEntryCard` and `SessionGroupCard` only
 
