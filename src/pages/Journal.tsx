@@ -307,7 +307,7 @@ function NoteEntryCard({ entry, navigate, index }: { entry: NoteEntry; navigate:
             {formatRelativeDate(entry.date)}
           </span>
         </div>
-        <p style={{ margin: '2px 0 0', fontSize: '12px', color: `${LANTERN_GLOW}55`, textTransform: 'uppercase', letterSpacing: '1px' }}>
+        <p style={{ margin: '2px 0 0', fontSize: '12px', color: `${LANTERN_GLOW}55` }}>
           {entry.cardName}
         </p>
       </div>
@@ -509,7 +509,7 @@ function SessionGroupCard({ group, navigate }: { group: SessionGroup; navigate: 
             {formatRelativeDate(group.date)}
           </span>
         </div>
-        <p style={{ margin: '2px 0 0', fontSize: '13px', color: `${LANTERN_GLOW}99`, textTransform: 'uppercase', letterSpacing: '1px' }}>
+        <p style={{ margin: '2px 0 0', fontSize: '13px', color: `${LANTERN_GLOW}99` }}>
           {group.cardName}
         </p>
       </div>
