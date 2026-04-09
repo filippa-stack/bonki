@@ -1,98 +1,50 @@
 
 
-## Emotional progress pills + heart ownership mockup
+## Pill text redesign — text-only changes
 
-### Change 1: PastelTile badge (lines 431–456)
+### Summary
+Update the pill text strings in `src/components/ProductLibrary.tsx` for both PastelTile and Vårt Vi tile. Move age labels from pills to taglines. No styling changes.
 
-Replace the badge text and add Lantern Glow tint for "tried" state:
+### PastelTile changes
 
-**Copy:**
-- Non-purchased: `Första samtalet gratis · {age}`
-- Tried (free done, not purchased): `Ert första samtal ✓`
-- Purchased: `{X} samtal tillsammans`
+**Tagline (line 428):** Change `{tagline}` → `{tagline}{ageLabel ? ` · ${ageLabel}` : ''}`
 
-**Styling:** The "tried" state gets `background: hsla(45, 80%, 92%, 0.15)` and `border: 1px solid hsla(45, 70%, 85%, 0.30)` — a subtle Lantern Glow warmth. Other states keep the current frosted white glass.
-
-**Implementation:** Replace lines 431–456:
+**Pill text (lines 461–465):** Replace the ternary with 4-state logic:
 ```tsx
-{/* Progress pill */}
-<span
-  style={{
-    display: 'inline-flex',
-    alignSelf: 'flex-start',
-    alignItems: 'center',
-    gap: '4px',
-    marginTop: '8px',
-    padding: '4px 12px',
-    borderRadius: '20px',
-    background: isPurchased
-      ? 'hsla(0, 0%, 100%, 0.15)'
-      : hideFreeBadge
-        ? 'hsla(45, 80%, 92%, 0.15)'
-        : 'hsla(0, 0%, 100%, 0.15)',
-    backdropFilter: 'blur(8px)',
-    WebkitBackdropFilter: 'blur(8px)',
-    border: isPurchased
-      ? '1px solid hsla(0, 0%, 100%, 0.25)'
-      : hideFreeBadge
-        ? '1px solid hsla(45, 70%, 85%, 0.30)'
-        : '1px solid hsla(0, 0%, 100%, 0.25)',
-    boxShadow: '0 0 12px hsla(0, 0%, 100%, 0.08), inset 0 1px 0 hsla(0, 0%, 100%, 0.15)',
-    fontFamily: "var(--font-body)",
-    fontSize: '11px',
-    fontWeight: 600,
-    letterSpacing: '0.03em',
-    color: 'hsla(0, 0%, 100%, 0.92)',
-  }}
->
-  {isPurchased
-    ? `${completedCount || 0} samtal tillsammans`
-    : hideFreeBadge
-      ? 'Ert första samtal ✓'
-      : `Första samtalet gratis${ageLabel ? ` · ${ageLabel}` : ''}`}
-</span>
+{isPurchased
+  ? (completedCount ?? 0) > 0
+    ? `✦ ${completedCount} samtal`
+    : '✦ Börja er resa'
+  : hideFreeBadge
+    ? '✦ Ert första samtal ✓'
+    : `✦ ${totalCards || 0} samtal · Prova först`}
 ```
 
-### Change 2: Still Us badge (lines 1064–1079)
+Note: The current pill text doesn't include the ✦ character inline — it's rendered via the Ghost Glow sparkle in the corner for purchased state. Looking at the current text on lines 461–465, the sparkle characters are NOT in the pill text. The user's spec includes ✦ in all pill states. I need to confirm whether ✦ should be added to the pill text or if it was just notational.
 
-Same three-state logic using `purchased.has('still_us')` and `suFreeCompleted`:
+Given the user's explicit spec says the pill reads `✦ 20 samtal · Prova först` etc., I'll include the ✦ in the pill text for all states. The corner Ghost Glow sparkle is separate and stays untouched.
 
+### Vårt Vi tile changes
+
+**Tagline (line 1062):** No change — no age label for couples product.
+
+**Pill text (lines 1096–1100):** Same 4-state logic using `purchased.has('still_us')`, `suCount`, `suFreeCompleted`, `totalCards`:
 ```tsx
-<span style={{
-  fontFamily: "var(--font-body)",
-  fontSize: '11px',
-  fontWeight: 600,
-  letterSpacing: '0.04em',
-  color: 'hsla(0, 0%, 100%, 0.9)',
-  background: purchased.has('still_us')
-    ? 'hsla(0, 0%, 100%, 0.15)'
-    : suFreeCompleted
-      ? 'hsla(45, 80%, 92%, 0.15)'
-      : 'hsla(0, 0%, 100%, 0.15)',
-  backdropFilter: 'blur(8px)',
-  WebkitBackdropFilter: 'blur(8px)',
-  border: purchased.has('still_us')
-    ? '1px solid hsla(0, 0%, 100%, 0.25)'
-    : suFreeCompleted
-      ? '1px solid hsla(45, 70%, 85%, 0.30)'
-      : '1px solid hsla(0, 0%, 100%, 0.25)',
-  borderRadius: '20px',
-  padding: '4px 12px',
-  boxShadow: '0 0 12px hsla(0, 0%, 100%, 0.08), inset 0 1px 0 hsla(0, 0%, 100%, 0.15)',
-}}>
-  {purchased.has('still_us')
-    ? `${suCount || 0} samtal tillsammans`
-    : suFreeCompleted
-      ? 'Ert första samtal ✓'
-      : `Första samtalet gratis`}
-</span>
+{purchased.has('still_us')
+  ? (suCount > 0)
+    ? `✦ ${suCount} samtal`
+    : '✦ Börja er resa'
+  : suFreeCompleted
+    ? '✦ Ert första samtal ✓'
+    : `✦ ${totalCards} samtal · Prova först`}
 ```
-
-### Change 3: Heart ownership mockup
-
-After implementing the pill changes, generate a PNG mockup showing the uploaded heart scribble (`omtänksamt_utrymme_cropped_copy.png` — the empty/outline heart) rendered as a white silhouette at ~20px in the top-right corner of a purchased tile, replacing the current ✦ sparkle. This is a visual comparison only, not a code change.
 
 ### Files changed
-- `src/components/ProductLibrary.tsx` — pill copy + tried-state Lantern Glow tint in both PastelTile and Still Us tile
-- `/mnt/documents/` — heart ownership mockup PNG (generated artifact)
+- `src/components/ProductLibrary.tsx` — pill text strings (2 locations) + tagline text (1 location)
+
+### What stays untouched
+- All pill styling (colors, backgrounds, borders, blur, Lantern Glow tint, positioning)
+- Ghost Glow corner sparkle
+- All layout, navigation, and session logic
+- All variable/prop logic (`hideFreeBadge`, `isPurchased`, etc.)
 
