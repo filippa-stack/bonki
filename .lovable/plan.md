@@ -1,43 +1,43 @@
 
 
-## Reorder free cards to first position in all products
+## Journal card styling — solid product-colored backgrounds
 
-### Analysis
+### Summary
+Update rendering styles in `Journal.tsx` so conversation cards use solid product-colored backgrounds instead of transparent overlays. Text colors adjusted for readability on the new backgrounds. No data/logic changes.
 
-| Product | freeCardId | Free card's category | Category position | Card position in category | Needs change? |
-|---|---|---|---|---|---|
-| Jag i Mig | `jim-glad` | `jim-mina-kanslor` | 1st | 2nd (after `jim-trygg`) | Move card to pos 1 |
-| Jag med Andra | `jma-vanskap` | `jma-jag-och-andra` | 2nd | 2nd (after `jma-kontakt`) | Move category to 1st + card to pos 1 |
-| Jag i Varlden | `jiv-fordomar` (new) | `jiv-varlden-omkring-mig` | 3rd | 2nd (after `jiv-social-media`) | Change freeCardId + move category to 1st + card to pos 1 |
-| Vardagskort | `vk-hur-var-din-dag` | `vk-min-dag` | 1st | 1st | No change needed |
-| Syskonkort | `sk-syskonkunskap` | `sk-vi-blev-syskon` | 1st | 2nd (after `sk-att-fa-ett-syskon`) | Move card to pos 1 |
-| Sexualitetskort | `sex-normer` | `sex-normer-och-paverkan` | 2nd | 1st in its category | Move category to 1st |
-| Still Us | `su-mock-0` | `su-mock-vardagen` | 1st | 1st | No change needed |
+### Changes in `src/pages/Journal.tsx`
 
-### Changes per file
+**`getProductAccent` fallback** — Change fallback `mid` to `MIDNIGHT_INK` (#1A1A2E) so cards without a product match still look intentional.
 
-**1. `src/data/products/jag-i-mig.ts`** — Swap `jim-glad` before `jim-trygg` in the cards array (move lines 58-67 before lines 38-57).
+**`NoteEntryCard` styling:**
+- Background: `accent.mid` (solid) instead of `${accent.light}22`
+- Border: `${accent.deep}44`
+- Top color bar: `accent.deep`
+- Product name + card title: `LANTERN_GLOW` / `${LANTERN_GLOW}88`
+- Date: `${LANTERN_GLOW}66`
+- Question text ("—" lines): `accent.deep`
+- Reflection text: `LANTERN_GLOW` (#FDF6E3)
+- "Läs mer" button: `${LANTERN_GLOW}aa`
 
-**2. `src/data/products/jag-med-andra.ts`** — Two changes:
-- Categories array: move `jma-jag-och-andra` to position 1 (before `jma-vem-ar-jag`)
-- Cards array: move `jma-vanskap` block before `jma-kontakt`, and move all K2 cards before K1 cards
+**`SessionGroupCard` styling:**
+- Same background/border/text pattern as NoteEntryCard
+- Takeaway block bg: `${accent.deep}33`
+- Divider lines: `${LANTERN_GLOW}22`
+- "Visa alla" toggle: `${LANTERN_GLOW}88`
 
-**3. `src/data/products/jag-i-varlden.ts`** — Three changes:
-- Change `freeCardId` from `'jiv-identitet'` to `'jiv-fordomar'`
-- Categories array: move `jiv-varlden-omkring-mig` to position 1
-- Cards array: move `jiv-fordomar` to first position in K3 cards, and move all K3 cards before K1 cards
+### Post-implementation verification
+Confirm these four protected patterns are still present and unmodified:
+- `suppressUntilRef` → `src/hooks/useNormalizedSessionState.ts`
+- `prevServerStepRef` → `src/pages/CardView.tsx`
+- `clearTimeout(pendingSave.current)` → `src/hooks/useSessionReflections.ts` + `src/hooks/useCardTakeaway.ts`
+- `hasSyncedRef` → `src/components/SessionStepReflection.tsx`
 
-**4. `src/data/products/syskonkort.ts`** — Move `sk-syskonkunskap` before `sk-att-fa-ett-syskon` in the cards array.
-
-**5. `src/data/products/sexualitetskort.ts`** — Two changes:
-- Categories array: move `sex-normer-och-paverkan` to position 1
-- Cards array: move all K2 cards (starting with `sex-normer`) before K1 cards
-
-**6. No changes** to `vardagskort.ts` or `still-us-mock.ts`.
+### Files changed
+- `src/pages/Journal.tsx` — rendering styles only
 
 ### What stays untouched
-- All card content, IDs, prompts, sections
-- All category IDs, titles, subtitles, descriptions
-- Only `jag-i-varlden.ts` freeCardId changes; all others keep their current freeCardId
-- No logic changes anywhere
+- All data fetching, session queries, status filters
+- Timeline grouping, month markers, spine
+- Pulse card, bookmark cards
+- All protected refs (in their actual files listed above)
 
