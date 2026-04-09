@@ -1,52 +1,43 @@
 
 
-## Convert card images to WebP + preload creature illustrations
+## Reorder free cards to first position in all products
 
-### Step 1: Convert 128 PNGs to WebP (script)
+### Analysis
 
-Run a shell script using `cwebp` (via nix) to convert all 128 files in `public/card-images/` from PNG to WebP at quality 85, then delete the originals.
+| Product | freeCardId | Free card's category | Category position | Card position in category | Needs change? |
+|---|---|---|---|---|---|
+| Jag i Mig | `jim-glad` | `jim-mina-kanslor` | 1st | 2nd (after `jim-trygg`) | Move card to pos 1 |
+| Jag med Andra | `jma-vanskap` | `jma-jag-och-andra` | 2nd | 2nd (after `jma-kontakt`) | Move category to 1st + card to pos 1 |
+| Jag i Varlden | `jiv-fordomar` (new) | `jiv-varlden-omkring-mig` | 3rd | 2nd (after `jiv-social-media`) | Change freeCardId + move category to 1st + card to pos 1 |
+| Vardagskort | `vk-hur-var-din-dag` | `vk-min-dag` | 1st | 1st | No change needed |
+| Syskonkort | `sk-syskonkunskap` | `sk-vi-blev-syskon` | 1st | 2nd (after `sk-att-fa-ett-syskon`) | Move card to pos 1 |
+| Sexualitetskort | `sex-normer` | `sex-normer-och-paverkan` | 2nd | 1st in its category | Move category to 1st |
+| Still Us | `su-mock-0` | `su-mock-vardagen` | 1st | 1st | No change needed |
 
-```bash
-for f in public/card-images/*.png; do
-  nix run nixpkgs#libwebp -- -q 85 "$f" -o "${f%.png}.webp"
-done
-rm public/card-images/*.png
-```
+### Changes per file
 
-### Step 2: Update useCardImage.ts
+**1. `src/data/products/jag-i-mig.ts`** — Swap `jim-glad` before `jim-trygg` in the cards array (move lines 58-67 before lines 38-57).
 
-Change line 60 from `.png` to `.webp`:
-```tsx
-return `/card-images/${cardId}.webp`;
-```
+**2. `src/data/products/jag-med-andra.ts`** — Two changes:
+- Categories array: move `jma-jag-och-andra` to position 1 (before `jma-vem-ar-jag`)
+- Cards array: move `jma-vanskap` block before `jma-kontakt`, and move all K2 cards before K1 cards
 
-Update the comment on line 3 accordingly.
+**3. `src/data/products/jag-i-varlden.ts`** — Three changes:
+- Change `freeCardId` from `'jiv-identitet'` to `'jiv-fordomar'`
+- Categories array: move `jiv-varlden-omkring-mig` to position 1
+- Cards array: move `jiv-fordomar` to first position in K3 cards, and move all K3 cards before K1 cards
 
-This is the **only code reference** to `card-images/*.png` in the entire codebase.
+**4. `src/data/products/syskonkort.ts`** — Move `sk-syskonkunskap` before `sk-att-fa-ett-syskon` in the cards array.
 
-### Step 3: Preload creature illustrations in KidsProductHome
+**5. `src/data/products/sexualitetskort.ts`** — Two changes:
+- Categories array: move `sex-normer-och-paverkan` to position 1
+- Cards array: move all K2 cards (starting with `sex-normer`) before K1 cards
 
-Add a `useEffect` in `KidsProductHome` that creates `<link rel="prefetch">` tags for the product's `heroImage` and the next-card images. These are Vite-bundled assets from `src/assets/` (already hashed URLs), so prefetching them on the product home screen ensures they're cached before the user taps into a card portal.
-
-```tsx
-useEffect(() => {
-  if (product.heroImage) {
-    const link = document.createElement('link');
-    link.rel = 'prefetch';
-    link.href = product.heroImage;
-    document.head.appendChild(link);
-  }
-}, [product.heroImage]);
-```
-
-### Files changed
-- `public/card-images/` — 128 PNGs → 128 WebPs (script, ~60-70% size reduction)
-- `src/hooks/useCardImage.ts` — `.png` → `.webp` on line 60
-- `src/components/KidsProductHome.tsx` — add hero image prefetch in useEffect
+**6. No changes** to `vardagskort.ts` or `still-us-mock.ts`.
 
 ### What stays untouched
-- All card IDs, filenames (just extension change)
-- All product manifests, card data, categories
-- All styling, layout, navigation logic
-- `src/assets/` creature PNGs (these are processed by Vite, no format change needed)
+- All card content, IDs, prompts, sections
+- All category IDs, titles, subtitles, descriptions
+- Only `jag-i-varlden.ts` freeCardId changes; all others keep their current freeCardId
+- No logic changes anywhere
 
