@@ -1,59 +1,38 @@
 
 
-## Journal Visual Polish — 3 Changes in `src/pages/Journal.tsx`
+## Journal Visual Polish — Changes 4, 5 & 6
 
-No data fetching, filtering, grouping, or session logic modified. Single file only.
-
----
-
-### Change 1 — Replace stats grid with narrative sentence (lines 988–1054)
-
-Remove the entire stats row div (three columns: Reflektioner / Samtal / Månader with gold numbers). Replace with:
-
-```tsx
-<p style={{
-  fontFamily: 'var(--font-serif)',
-  fontStyle: 'italic',
-  fontSize: '15px',
-  color: 'rgba(245, 240, 232, 0.5)',
-  textAlign: 'center',
-  marginTop: '8px',
-  padding: '0 24px',
-}}>
-  {heroStats.reflectionCount} reflektioner från {heroStats.sessionCount} samtal{pulseData ? ` sedan ${pulseData.monthLabel}` : ''}.
-</p>
-```
-
-Uses existing `heroStats` and `pulseData.monthLabel` — no new data needed.
+Single file: `src/pages/Journal.tsx`. No logic changes.
 
 ---
 
-### Change 2 — Soften filter pills (lines 1058–1109)
+### Change 4 — Warm up month headers (~lines 1102–1124)
 
-For all three buttons (Alla, Barn, Par):
-- `height: '28px'` → `'36px'`
+**Spine dot** (lines 1108–1109): `width`/`height` from `'9px'` → `'7px'`.
+
+**Month label span** (lines 1114–1121):
+- `fontSize`: `'10px'` → `'14px'`
 - Remove `textTransform: 'uppercase'`
-- Remove `letterSpacing: '0.06em'`
-- `fontSize: '11px'` → `'13px'`
-- `borderRadius: '16px'` → `'20px'`
-- Inactive border: `'0.5px solid rgba(245, 240, 232, 0.12)'` → `'0.5px solid transparent'`
-- Active state styling stays exactly as-is
+- `letterSpacing`: `'2px'` → `'0.02em'`
+- `fontFamily`: `'var(--font-sans)'` → `'var(--font-display)'`
+- `fontWeight` stays `500`
 
 ---
 
-### Change 3 — Upgrade card styling
+### Change 5 — Product creature illustration in SessionGroupCard
 
-**NoteEntryCard** (lines 242–363):
-- `borderRadius: '16px'` → `'22px'`
-- Add `boxShadow: '0 4px 16px rgba(0,0,0,0.12), 0 1px 4px rgba(0,0,0,0.06)'`
-- `border` → `'1px solid rgba(255, 255, 255, 0.06)'`
-- Remove the "Top color bar" div (lines 253–260)
-- `padding: '0 16px 14px'` → `'18px 18px 16px'`
+**Imports** (top of file): Add 7 illustration imports:
+- `jimImage`, `jmaImage`, `jivImage`, `illustrationVardag`, `illustrationSyskon`, `illustrationSexualitet`, `illustrationStillUs`
 
-**SessionGroupCard** (lines 438–573):
-- `borderRadius: '16px'` → `'22px'`
-- Add `boxShadow: '0 4px 16px rgba(0,0,0,0.12), 0 1px 4px rgba(0,0,0,0.06)'`
-- `border` → `'1px solid rgba(255, 255, 255, 0.06)'`
-- Remove the "Top accent bar" div (lines 448–452)
-- Adjust header padding since top bar is gone (the `padding: '16px 16px 0'` on the header div stays, it just no longer sits below the bar)
+**Constant map** (after imports): `PRODUCT_ILLUSTRATION: Record<string, string>` mapping product IDs to imported images.
+
+**SessionGroupCard header** (line 444): Add `position: 'relative'` to the header div. After the date span (line 457), insert a conditionally rendered `<img>` with absolute positioning (`top: 14px`, `right: 14px`, `36×36px`, `borderRadius: 50%`, `opacity: 0.18`, `pointerEvents: 'none'`).
+
+---
+
+### Change 6 — Remove question text truncation
+
+**NoteEntryCard** (lines 299–302): Remove `display: '-webkit-box'`, `WebkitLineClamp: 2`, `WebkitBoxOrient: 'vertical' as const`, and `overflow: 'hidden'` from the question `<p>` style. Keep fontSize, fontStyle, color, lineHeight.
+
+**SessionGroupCard** (lines 482–485): Same four properties removed from the question `<p>` style. Keep all other styling.
 
