@@ -425,7 +425,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
               textShadow: '0 1px 3px rgba(0,0,0,0.8), 0 0 8px rgba(0,0,0,0.6), 0 0 20px rgba(0,0,0,0.4)',
             }}
           >
-            {tagline}
+            {tagline}{ageLabel ? ` · ${ageLabel}` : ''}
           </p>
           )}
           {/* Progress pill */}
@@ -459,10 +459,12 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
             }}
           >
             {isPurchased
-              ? `${completedCount || 0} samtal tillsammans`
+              ? (completedCount ?? 0) > 0
+                ? `✦ ${completedCount} samtal`
+                : '✦ Börja er resa'
               : hideFreeBadge
-                ? 'Ert första samtal ✓'
-                : `Första samtalet gratis${ageLabel ? ` · ${ageLabel}` : ''}`}
+                ? '✦ Ert första samtal ✓'
+                : `✦ ${totalCards || 0} samtal · Prova först`}
           </span>
         </div>
     </motion.div>
@@ -1094,10 +1096,12 @@ export default function ProductLibrary() {
                           boxShadow: '0 0 12px hsla(0, 0%, 100%, 0.08), inset 0 1px 0 hsla(0, 0%, 100%, 0.15)',
                         }}>
                           {purchased.has('still_us')
-                            ? `${suCount || 0} samtal tillsammans`
+                            ? suCount > 0
+                              ? `✦ ${suCount} samtal`
+                              : '✦ Börja er resa'
                             : suFreeCompleted
-                              ? 'Ert första samtal ✓'
-                              : 'Första samtalet gratis'}
+                              ? '✦ Ert första samtal ✓'
+                              : `✦ ${totalCards} samtal · Prova först`}
                         </span>
                       </>
                     );
