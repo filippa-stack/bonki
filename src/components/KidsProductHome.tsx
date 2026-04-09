@@ -340,6 +340,18 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
     hasRenderedContent.current = false;
   }, [product.id]);
 
+  // Prefetch hero illustration so it's cached before portal navigation
+  useEffect(() => {
+    if (product.heroImage) {
+      const link = document.createElement('link');
+      link.rel = 'prefetch';
+      link.as = 'image';
+      link.href = product.heroImage;
+      document.head.appendChild(link);
+      return () => { document.head.removeChild(link); };
+    }
+  }, [product.heroImage]);
+
   const bg = product.backgroundColor;
   const tileLight = product.tileLight ?? bg;
   const isSU = product.slug === 'still-us';

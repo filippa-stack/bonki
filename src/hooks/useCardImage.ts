@@ -1,6 +1,6 @@
 /**
  * useCardImage — returns the URL for a card's illustration.
- * All images are served as standalone files from /card-images/{cardId}.png.
+ * All images are served as standalone files from /card-images/{cardId}.webp.
  * No ZIP extraction needed.
  */
 
@@ -57,7 +57,7 @@ const CARD_IDS_WITH_IMAGES = new Set([
  */
 export function useCardImage(cardId: string | null | undefined): string | null {
   if (!cardId || !CARD_IDS_WITH_IMAGES.has(cardId)) return null;
-  return `/card-images/${cardId}.png`;
+  return `/card-images/${cardId}.webp`;
 }
 
 /** Check if a card has an image mapped */
