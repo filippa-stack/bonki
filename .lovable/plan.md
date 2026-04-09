@@ -1,37 +1,43 @@
 
 
-## Journal cards — warmth pass (match product homes)
+## Reorder free cards to first position in all products
 
-### Summary
-Remove the dark scrim overlay, switch all metadata text from `accent.light` to `LANTERN_GLOW` with `textShadow` for readability — matching how product home screens achieve warmth on saturated backgrounds. Keep `accent.light` only for the left stripe.
+### Analysis
 
-### Changes in `src/pages/Journal.tsx`
+| Product | freeCardId | Free card's category | Category position | Card position in category | Needs change? |
+|---|---|---|---|---|---|
+| Jag i Mig | `jim-glad` | `jim-mina-kanslor` | 1st | 2nd (after `jim-trygg`) | Move card to pos 1 |
+| Jag med Andra | `jma-vanskap` | `jma-jag-och-andra` | 2nd | 2nd (after `jma-kontakt`) | Move category to 1st + card to pos 1 |
+| Jag i Varlden | `jiv-fordomar` (new) | `jiv-varlden-omkring-mig` | 3rd | 2nd (after `jiv-social-media`) | Change freeCardId + move category to 1st + card to pos 1 |
+| Vardagskort | `vk-hur-var-din-dag` | `vk-min-dag` | 1st | 1st | No change needed |
+| Syskonkort | `sk-syskonkunskap` | `sk-vi-blev-syskon` | 1st | 2nd (after `sk-att-fa-ett-syskon`) | Move card to pos 1 |
+| Sexualitetskort | `sex-normer` | `sex-normer-och-paverkan` | 2nd | 1st in its category | Move category to 1st |
+| Still Us | `su-mock-0` | `su-mock-vardagen` | 1st | 1st | No change needed |
 
-**Both `NoteEntryCard` and `SessionGroupCard`:**
+### Changes per file
 
-**Background**: Remove `backgroundImage: 'linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.35))'`. Keep solid `accent.bg`.
+**1. `src/data/products/jag-i-mig.ts`** — Swap `jim-glad` before `jim-trygg` in the cards array (move lines 58-67 before lines 38-57).
 
-**Box shadow**: Simplify from `0 2px 16px rgba(0,0,0,0.35), inset 0 1px 0 ${accent.light}12` to `0 2px 12px rgba(0,0,0,0.25)`.
+**2. `src/data/products/jag-med-andra.ts`** — Two changes:
+- Categories array: move `jma-jag-och-andra` to position 1 (before `jma-vem-ar-jag`)
+- Cards array: move `jma-vanskap` block before `jma-kontakt`, and move all K2 cards before K1 cards
 
-**Text color mapping** (all switch from `accent.light` to `LANTERN_GLOW`):
+**3. `src/data/products/jag-i-varlden.ts`** — Three changes:
+- Change `freeCardId` from `'jiv-identitet'` to `'jiv-fordomar'`
+- Categories array: move `jiv-varlden-omkring-mig` to position 1
+- Cards array: move `jiv-fordomar` to first position in K3 cards, and move all K3 cards before K1 cards
 
-| Element | New color | textShadow |
-|---|---|---|
-| Product name | `LANTERN_GLOW` | `0 1px 8px rgba(0,0,0,0.5)` |
-| Card name | `${LANTERN_GLOW}cc` | `0 1px 6px rgba(0,0,0,0.4)` |
-| Date | `${LANTERN_GLOW}88` | `0 1px 4px rgba(0,0,0,0.3)` |
-| Question | `${LANTERN_GLOW}88` | `0 1px 4px rgba(0,0,0,0.3)` |
-| Reflection text | `LANTERN_GLOW` (unchanged) | Keep `0 0 20px rgba(0,0,0,0.3)` |
-| "Läs mer" / "Visa alla" | `${LANTERN_GLOW}77` | `0 1px 4px rgba(0,0,0,0.3)` |
-| Takeaway label | `${LANTERN_GLOW}66` | `0 1px 3px rgba(0,0,0,0.3)` |
-| Separator | `${LANTERN_GLOW}22` gradient | — |
+**4. `src/data/products/syskonkort.ts`** — Move `sk-syskonkunskap` before `sk-att-fa-ett-syskon` in the cards array.
 
-**Left stripe**: Stays `accent.light` — the only accent-colored element, providing product identity.
+**5. `src/data/products/sexualitetskort.ts`** — Two changes:
+- Categories array: move `sex-normer-och-paverkan` to position 1
+- Cards array: move all K2 cards (starting with `sex-normer`) before K1 cards
+
+**6. No changes** to `vardagskort.ts` or `still-us-mock.ts`.
 
 ### What stays untouched
-- `getProductAccent` function, all data fetching, timeline logic, protected refs
-- Spine, month markers, pulse card, bookmarks, CompletedMarkerRow
-
-### Files changed
-- `src/pages/Journal.tsx` — inline styles only
+- All card content, IDs, prompts, sections
+- All category IDs, titles, subtitles, descriptions
+- Only `jag-i-varlden.ts` freeCardId changes; all others keep their current freeCardId
+- No logic changes anywhere
 
