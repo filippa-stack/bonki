@@ -174,7 +174,7 @@ function AppRoutes() {
           ? <Navigate to="/" replace />
           : <Login />
       } />
-      <Route path="/install" element={<Install />} />
+      <Route path="/install" element={<Navigate to="/login" replace />} />
       <Route path="/screenshot-export" element={<ScreenshotExport />} />
       <Route path="/analytics" element={<AnalyticsDashboard />} />
       <Route path="/*" element={<ProtectedRoutes />} />
