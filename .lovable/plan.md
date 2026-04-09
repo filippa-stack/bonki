@@ -1,44 +1,49 @@
 
 
-## Redesign Install Page — Browser-Aware PWA Install Guide
+## Move Install Guide Into Onboarding, Remove /install Route
 
-### File changed
-`src/pages/Install.tsx` — single file, rendering only
+### Summary
+Convert Onboarding from a single-screen component into a two-step flow: Step 1 is a platform-aware install guide (reusing logic from Install.tsx), Step 2 is the existing audience selection. The `/install` route redirects to `/login`.
 
-### What stays
-- Standalone redirect, Meta Pixel tracking, all imports
-- Brand header: wordmark, creature, headline, badge, trust stats (lines 83–215)
-- Background/dark theme, `beforeinstallprompt` listener structure
+### Changes
 
-### What gets removed
-- `handleCTA` function, "Öppna appen" button, "Gratis att börja" text
-- `iosGuideRef`, old iOS guide card (⎋/+ icons)
-- "Redan medlem?" login link
-- Old `platform` state (replaced by detection vars)
+**1. `src/App.tsx`** — Replace Install route with redirect
+- Remove `import Install` 
+- Change `<Route path="/install" element={<Install />} />` to `<Route path="/install" element={<Navigate to="/login" replace />} />`
 
-### What gets added
+**2. `src/components/Onboarding.tsx`** — Add install step as step 0
 
-**Detection vars** (top of component):
-- `isSafari`, `isIOS`, `isAndroid`, `isIOSNonSafari`
-- `copied` state, `promptOutcome` state
+Add state: `const [step, setStep] = useState<'install' | 'audience'>(() => { ... })`
 
-**Handlers**: `handleInstallClick` (Android/desktop prompt), `handleCopyLink` (iOS non-Safari clipboard)
+Initial step logic:
+- If `localStorage.getItem('bonki-install-step-seen')` → start at `'audience'`
+- If standalone mode (`window.matchMedia('(display-mode: standalone)').matches || navigator.standalone`) → start at `'audience'`
+- Otherwise → start at `'install'`
 
-**Four conditional views** below trust stats:
+When `step === 'install'`, render the install guide view instead of the audience selection. Reuse the same platform detection and visual components from Install.tsx:
 
-| Condition | View | Content |
-|---|---|---|
-| `isIOSNonSafari` | B | "Öppna i Safari" card + "Kopiera länk" button |
-| `isIOS` (Safari) | A | 3-step vertical guide with numbered circles, connector lines, inline Safari share SVG |
-| `isAndroid` | C | Native prompt button if available, else 2-step manual guide |
-| Desktop fallback | D | Native prompt button if available, else "Öppna på mobil" message |
+- **Platform detection vars**: `isSafari`, `isIOS`, `isAndroid`, `isIOSNonSafari` (copied from Install.tsx)
+- **State**: `copied`, `deferredPrompt`, `promptOutcome`
+- **`beforeinstallprompt` listener** in a useEffect
+- **Shared components**: `StepRow`, `SafariShareIcon`, step circle/text styles
 
-Android/Desktop views have sub-states for prompt available, accepted, and fallback manual steps.
+Install step views (same conditional logic as Install.tsx):
+- iOS Safari → 3-step guide with share icon SVG
+- iOS non-Safari → "Öppna i Safari" card with "Kopiera länk" button  
+- Android → native prompt button or 2-step manual guide
+- Desktop → native prompt or "use mobile" message
 
-**Bottom link** (all views): "Redan installerat? Öppna Bonki →" → `/login`
+Skip link on all install views: **"Hoppa över — fortsätt i webbläsaren"** — fontSize: 15px, color: `#E85D2C`, opacity: 0.7, centered. On tap: sets `localStorage.setItem('bonki-install-step-seen', '1')` and transitions to `'audience'` step.
 
-### Implementation approach
-Rewrite the component keeping the same structure: imports → detection → useEffects → return JSX. The brand header section (lines 83–215) is preserved verbatim. Everything from the old CTA section onward is replaced with the four conditional views rendered via simple if/else blocks, plus the universal bottom link.
+When `step === 'audience'`, render the current onboarding content (logo, headline, audience pills, Börja button) — unchanged.
 
-Step circles use consistent styling (32px, orange border/tint). Connector lines between steps use absolute-positioned 1px divs. The inline Safari share SVG is hardcoded in step 1.
+The install step uses the same Midnight Ink background and Lantern Glow text colors as the current onboarding. Logo is shown at the top (same as current) for visual continuity.
+
+**3. `src/pages/Install.tsx`** — Keep as dead code (no route points to it)
+
+### What stays untouched
+- Audience selection UI, routing logic, `completeOnboarding`, `initializeCoupleSpace`
+- All session/reflection/payment logic
+- `InstallGuideBanner` component (separate concern)
+- Protected patterns from handover
 
