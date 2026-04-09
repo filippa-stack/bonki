@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from 'react';
-import { Navigate, Link, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ShieldCheck } from 'lucide-react';
 
@@ -8,15 +8,6 @@ import bonkiWordmark from '@/assets/bonki-wordmark.png';
 import { trackPixelEvent } from '@/lib/metaPixel';
 import { MIDNIGHT_INK, LANTERN_GLOW, BONKI_ORANGE } from '@/lib/palette';
 
-type Platform = 'ios' | 'android' | null;
-
-function detectPlatform(): Platform {
-  const ua = navigator.userAgent || '';
-  if (/iPad|iPhone|iPod/.test(ua)) return 'ios';
-  if (/Android/.test(ua)) return 'android';
-  return null;
-}
-
 function isStandalone(): boolean {
   return (
     window.matchMedia('(display-mode: standalone)').matches ||
@@ -24,25 +15,82 @@ function isStandalone(): boolean {
   );
 }
 
-const ORANGE_GRADIENT = 'linear-gradient(180deg, #E85D2C 0%, #C44D22 100%)';
-const ORANGE_SHADOW = [
-  '0 10px 28px rgba(232, 93, 44, 0.35)',
-  '0 4px 10px rgba(232, 93, 44, 0.20)',
-  '0 1px 3px rgba(0, 0, 0, 0.12)',
-  'inset 0 1.5px 0 rgba(255, 255, 255, 0.35)',
-  'inset 0 -2px 6px rgba(0, 0, 0, 0.12)',
-].join(', ');
+/* ── Shared step styles ── */
+const stepCircleStyle: React.CSSProperties = {
+  width: 32, height: 32, borderRadius: '50%',
+  background: 'rgba(232,93,44,0.15)',
+  border: '1.5px solid rgba(232,93,44,0.4)',
+  display: 'flex', alignItems: 'center', justifyContent: 'center',
+  fontFamily: 'var(--font-display)', fontSize: 15, color: '#E85D2C',
+  flexShrink: 0,
+};
+const stepTextStyle: React.CSSProperties = {
+  fontFamily: 'var(--font-sans)', fontSize: 15, lineHeight: 1.5, color: '#FDF6E3',
+};
+const helperStyle: React.CSSProperties = {
+  fontSize: 12, color: 'rgba(253,246,227,0.5)', marginTop: 4,
+};
+const sectionHeadlineStyle: React.CSSProperties = {
+  fontFamily: 'var(--font-display)', fontSize: 20, color: '#FDF6E3',
+  textAlign: 'center', marginBottom: 24,
+};
+const confirmTextStyle: React.CSSProperties = {
+  fontSize: 14, color: 'rgba(253,246,227,0.5)', textAlign: 'center',
+};
+const ctaButtonStyle: React.CSSProperties = {
+  background: '#E85D2C', color: '#FDF6E3', border: 'none', borderRadius: 12,
+  padding: '14px 32px', fontSize: 16, fontWeight: 600,
+  fontFamily: 'var(--font-sans)', cursor: 'pointer', width: '100%',
+};
+
+/* ── Step row with optional connector ── */
+function StepRow({ num, children, isLast }: { num: number; children: React.ReactNode; isLast?: boolean }) {
+  return (
+    <div style={{ position: 'relative' }}>
+      <div style={{ display: 'flex', gap: 14, alignItems: 'flex-start' }}>
+        <div style={{ position: 'relative' }}>
+          <div style={stepCircleStyle}>{num}</div>
+          {!isLast && (
+            <div style={{
+              position: 'absolute', left: '50%', top: 32,
+              width: 1, height: 20,
+              background: 'rgba(253,246,227,0.1)',
+              transform: 'translateX(-50%)',
+            }} />
+          )}
+        </div>
+        <div style={{ flex: 1, paddingTop: 4 }}>{children}</div>
+      </div>
+      {!isLast && <div style={{ height: 20 }} />}
+    </div>
+  );
+}
+
+/* ── Safari share icon SVG ── */
+const SafariShareIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ verticalAlign: 'middle', marginLeft: 6 }}>
+    <path d="M12 3L12 15" stroke="#FDF6E3" strokeWidth="1.5" strokeLinecap="round"/>
+    <path d="M8 7L12 3L16 7" stroke="#FDF6E3" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M8 10H6C5.44772 10 5 10.4477 5 11V20C5 20.5523 5.44772 21 6 21H18C18.5523 21 19 20.5523 19 20V11C19 10.4477 18.5523 10 18 10H16" stroke="#FDF6E3" strokeWidth="1.5" strokeLinecap="round"/>
+  </svg>
+);
 
 export default function Install() {
-  const [platform, setPlatform] = useState<Platform>(null);
   const navigate = useNavigate();
-  const iosGuideRef = useRef<HTMLDivElement>(null);
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+  const [promptOutcome, setPromptOutcome] = useState<'pending' | 'accepted' | 'dismissed'>('pending');
+  const [copied, setCopied] = useState(false);
+
+  const isSafari = /^((?!chrome|android|crios|fxios|opr|edg).)*safari/i.test(navigator.userAgent);
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  const isAndroid = /android/i.test(navigator.userAgent);
+  const isIOSNonSafari = isIOS && !isSafari;
 
   useEffect(() => {
-    setPlatform(detectPlatform());
     trackPixelEvent('PageView');
+  }, []);
 
+  useEffect(() => {
     const handler = (e: Event) => {
       e.preventDefault();
       setDeferredPrompt(e);
@@ -55,20 +103,152 @@ export default function Install() {
     return <Navigate to="/login" replace />;
   }
 
-  const handleCTA = async () => {
-    trackPixelEvent('InstallCTA');
+  const handleInstallClick = async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    setPromptOutcome(outcome === 'accepted' ? 'accepted' : 'dismissed');
+    setDeferredPrompt(null);
+  };
 
-    if (deferredPrompt) {
-      deferredPrompt.prompt();
-      return;
+  const handleCopyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch { /* noop */ }
+  };
+
+  /* ── Conditional view rendering ── */
+  const renderInstallView = () => {
+    // VIEW B: iOS non-Safari
+    if (isIOSNonSafari) {
+      return (
+        <section style={{ padding: '24px 24px 0', maxWidth: 360, margin: '0 auto' }}>
+          <div style={{
+            background: 'rgba(232,93,44,0.08)', border: '1px solid rgba(232,93,44,0.25)',
+            borderRadius: 16, padding: 24, textAlign: 'center',
+          }}>
+            <p style={{ fontFamily: 'var(--font-display)', fontSize: 20, color: '#FDF6E3', marginBottom: 8, marginTop: 0 }}>
+              Öppna i Safari
+            </p>
+            <p style={{ fontSize: 15, color: 'rgba(253,246,227,0.7)', lineHeight: 1.5, marginBottom: 20 }}>
+              Bonki kan bara läggas till på hemskärmen via Safari. Det tar bara några sekunder.
+            </p>
+            <button onClick={handleCopyLink} style={ctaButtonStyle}>
+              {copied ? 'Kopierad ✓' : 'Kopiera länk'}
+            </button>
+            <p style={{ fontSize: 13, color: 'rgba(253,246,227,0.45)', marginTop: 12 }}>
+              Klistra sedan in länken i Safari
+            </p>
+          </div>
+        </section>
+      );
     }
 
-    if (platform === 'ios') {
-      iosGuideRef.current?.scrollIntoView({ behavior: 'smooth' });
-      return;
+    // VIEW A: iOS Safari
+    if (isIOS) {
+      return (
+        <section style={{ padding: '24px 24px 0', maxWidth: 360, margin: '0 auto' }}>
+          <p style={{ ...sectionHeadlineStyle, margin: '0 0 24px' }}>Lägg till Bonki på din hemskärm</p>
+          <StepRow num={1}>
+            <p style={{ ...stepTextStyle, margin: 0 }}>
+              Tryck på <strong>dela-knappen</strong> i Safaris verktygsfält nedanför
+              <SafariShareIcon />
+            </p>
+            <p style={{ ...helperStyle, margin: '4px 0 0' }}>
+              Ser du den inte? Tryck på ⋯-knappen längst ner i Safari först.
+            </p>
+          </StepRow>
+          <StepRow num={2}>
+            <p style={{ ...stepTextStyle, margin: 0 }}>
+              Scrolla ner i menyn och tryck <strong>Lägg till på hemskärmen</strong>
+            </p>
+            <p style={{ ...helperStyle, margin: '4px 0 0' }}>
+              Du kan behöva scrolla — den syns inte direkt.
+            </p>
+          </StepRow>
+          <StepRow num={3} isLast>
+            <p style={{ ...stepTextStyle, margin: 0 }}>
+              Tryck <strong>Lägg till</strong> uppe till höger — klart!
+            </p>
+          </StepRow>
+          <p style={{ ...confirmTextStyle, marginTop: 24 }}>
+            Sen hittar du Bonki som en app på din hemskärm
+          </p>
+          <p style={{ ...confirmTextStyle, marginTop: 8 }}>
+            Ingen nedladdning. Ingen app store. Bara er.
+          </p>
+        </section>
+      );
     }
 
-    navigate('/');
+    // VIEW C: Android
+    if (isAndroid) {
+      return (
+        <section style={{ padding: '24px 24px 0', maxWidth: 360, margin: '0 auto' }}>
+          <p style={{ ...sectionHeadlineStyle, margin: '0 0 24px' }}>Lägg till Bonki på din hemskärm</p>
+          {deferredPrompt && promptOutcome === 'pending' ? (
+            <>
+              <button onClick={handleInstallClick} style={{ ...ctaButtonStyle, maxWidth: 360, margin: '0 auto', display: 'block' }}>
+                Lägg till Bonki
+              </button>
+              <p style={{ ...confirmTextStyle, marginTop: 16 }}>
+                Ingen nedladdning. Ingen app store. Bara er.
+              </p>
+            </>
+          ) : promptOutcome === 'accepted' ? (
+            <button disabled style={{ ...ctaButtonStyle, background: 'rgba(232,93,44,0.3)', opacity: 0.7, cursor: 'default' }}>
+              Bonki är tillagd ✓
+            </button>
+          ) : (
+            <>
+              <StepRow num={1}>
+                <p style={{ ...stepTextStyle, margin: 0 }}>
+                  Tryck på <strong>⋮-menyn</strong> uppe till höger i din webbläsare
+                </p>
+              </StepRow>
+              <StepRow num={2} isLast>
+                <p style={{ ...stepTextStyle, margin: 0 }}>
+                  Tryck <strong>Lägg till på startskärmen</strong>
+                </p>
+              </StepRow>
+              <p style={{ ...confirmTextStyle, marginTop: 24 }}>
+                Sen hittar du Bonki som en app på din hemskärm
+              </p>
+              <p style={{ ...confirmTextStyle, marginTop: 8 }}>
+                Ingen nedladdning. Ingen app store. Bara er.
+              </p>
+            </>
+          )}
+        </section>
+      );
+    }
+
+    // VIEW D: Desktop
+    return (
+      <section style={{ padding: '24px 24px 0', maxWidth: 360, margin: '0 auto', textAlign: 'center' }}>
+        {deferredPrompt && promptOutcome === 'pending' ? (
+          <>
+            <p style={{ ...sectionHeadlineStyle, margin: '0 0 24px' }}>Lägg till Bonki</p>
+            <button onClick={handleInstallClick} style={ctaButtonStyle}>
+              Lägg till Bonki
+            </button>
+            <p style={{ ...confirmTextStyle, marginTop: 16 }}>
+              Bonki fungerar bäst på mobilen, men du kan lägga till den här också.
+            </p>
+          </>
+        ) : promptOutcome === 'accepted' ? (
+          <button disabled style={{ ...ctaButtonStyle, background: 'rgba(232,93,44,0.3)', opacity: 0.7, cursor: 'default' }}>
+            Bonki är tillagd ✓
+          </button>
+        ) : (
+          <p style={{ fontFamily: 'var(--font-sans)', fontSize: 15, color: 'rgba(253,246,227,0.6)', textAlign: 'center', lineHeight: 1.5, padding: '0 24px' }}>
+            Öppna bonkiapp.com på din mobil för den bästa upplevelsen.
+          </p>
+        )}
+      </section>
+    );
   };
 
   return (
@@ -80,33 +260,17 @@ export default function Install() {
         overflowX: 'hidden',
       }}
     >
-      {/* BONKI text + tagline */}
-      <section
-        style={{
-          paddingTop: 'calc(env(safe-area-inset-top, 0px) + 24px)',
-          textAlign: 'center',
-        }}
-      >
+      {/* BONKI wordmark */}
+      <section style={{ paddingTop: 'calc(env(safe-area-inset-top, 0px) + 24px)', textAlign: 'center' }}>
         <img
           src={bonkiWordmark}
           alt="BONKI"
-          style={{
-            maxHeight: '48px',
-            objectFit: 'contain',
-            margin: '0 auto',
-            display: 'block',
-          }}
+          style={{ maxHeight: '48px', objectFit: 'contain', margin: '0 auto', display: 'block' }}
         />
       </section>
 
-      {/* Brand logo */}
-      <section
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          padding: '8px 0 0',
-        }}
-      >
+      {/* Brand creature */}
+      <section style={{ display: 'flex', justifyContent: 'center', padding: '8px 0 0' }}>
         <motion.img
           initial={false}
           src={bonkiLogo}
@@ -114,49 +278,29 @@ export default function Install() {
           animate={{ y: [0, -6, 0] }}
           transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
           style={{
-            width: '172px',
-            height: '172px',
-            objectFit: 'contain',
-            opacity: 1.0,
+            width: '172px', height: '172px', objectFit: 'contain', opacity: 1.0,
             filter: 'drop-shadow(0 8px 32px rgba(212, 245, 192, 0.20)) drop-shadow(0 0 60px rgba(212, 245, 192, 0.10)) drop-shadow(0 0 100px rgba(212, 245, 192, 0.06))',
           }}
         />
       </section>
 
-      {/* Value Proposition */}
-      <section
-        style={{
-          padding: '0 24px',
-          textAlign: 'center',
-          maxWidth: '360px',
-          margin: '8px auto 0',
-        }}
-      >
+      {/* Headline + badge */}
+      <section style={{ padding: '0 24px', textAlign: 'center', maxWidth: '360px', margin: '8px auto 0' }}>
         <h2
           className="font-serif"
           style={{
-            fontSize: 'clamp(22px, 5.5vw, 26px)',
-            fontWeight: 600,
-            lineHeight: 1.3,
-            letterSpacing: '0.01em',
-            color: LANTERN_GLOW,
-            margin: '0 0 6px',
+            fontSize: 'clamp(22px, 5.5vw, 26px)', fontWeight: 600, lineHeight: 1.3,
+            letterSpacing: '0.01em', color: LANTERN_GLOW, margin: '0 0 6px',
           }}
         >
           Ni pratar varje dag. Men när pratade ni senast — på riktigt?
         </h2>
-        <div
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '6px',
-            padding: '6px 14px',
-            borderRadius: '20px',
-            background: 'rgba(212, 245, 192, 0.08)',
-            border: '1px solid rgba(212, 245, 192, 0.12)',
-            margin: '0 auto',
-          }}
-        >
+        <div style={{
+          display: 'inline-flex', alignItems: 'center', gap: '6px',
+          padding: '6px 14px', borderRadius: '20px',
+          background: 'rgba(212, 245, 192, 0.08)', border: '1px solid rgba(212, 245, 192, 0.12)',
+          margin: '0 auto',
+        }}>
           <ShieldCheck size={14} style={{ color: '#D4F5C0', opacity: 0.8, flexShrink: 0 }} />
           <span style={{ fontSize: '13px', color: 'rgba(253, 246, 227, 0.7)' }}>
             Skapat med legitimerad psykolog
@@ -164,49 +308,22 @@ export default function Install() {
         </div>
       </section>
 
-      {/* Trust Stats */}
-      <section
-        style={{
-          padding: '16px 24px 0',
-          maxWidth: '360px',
-          margin: '0 auto',
-        }}
-      >
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-around',
-            textAlign: 'center',
-            borderTop: '1px solid rgba(212, 245, 192, 0.10)',
-            padding: '20px 10px',
-          }}
-        >
+      {/* Trust stats */}
+      <section style={{ padding: '16px 24px 0', maxWidth: '360px', margin: '0 auto' }}>
+        <div style={{
+          display: 'flex', justifyContent: 'space-around', textAlign: 'center',
+          borderTop: '1px solid rgba(212, 245, 192, 0.10)', padding: '20px 10px',
+        }}>
           {[
             { number: '7', label: 'produkter' },
             { number: '130+', label: 'samtal' },
             { number: '7', label: 'gratis samtal' },
           ].map((stat) => (
             <div key={stat.label} style={{ flex: 1 }}>
-              <p
-                style={{
-                  fontSize: '24px',
-                  fontWeight: 700,
-                  color: '#D4F5C0',
-                  margin: 0,
-                  lineHeight: 1.2,
-                }}
-              >
+              <p style={{ fontSize: '24px', fontWeight: 700, color: '#D4F5C0', margin: 0, lineHeight: 1.2 }}>
                 {stat.number}
               </p>
-              <p
-                style={{
-                  fontSize: '13px',
-                  color: 'rgba(212, 245, 192, 0.65)',
-                  margin: '4px 0 0',
-                  textTransform: 'none' as const,
-                  letterSpacing: '0.02em',
-                }}
-              >
+              <p style={{ fontSize: '13px', color: 'rgba(212, 245, 192, 0.65)', margin: '4px 0 0', letterSpacing: '0.02em' }}>
                 {stat.label}
               </p>
             </div>
@@ -214,144 +331,21 @@ export default function Install() {
         </div>
       </section>
 
-      {/* CTA */}
-      <section
-        style={{
-          padding: '16px 24px 0',
-          maxWidth: '360px',
-          margin: '0 auto',
-          textAlign: 'center',
-        }}
-      >
-        <motion.button
-          whileTap={{ scale: 0.97 }}
-          onClick={handleCTA}
-          style={{
-            width: '100%',
-            padding: '14px 32px',
-            borderRadius: '24px',
-            border: 'none',
-            cursor: 'pointer',
-            fontFamily: 'var(--font-display)',
-            fontSize: '16px',
-            fontWeight: 600,
-            background: ORANGE_GRADIENT,
-            boxShadow: ORANGE_SHADOW,
-            color: '#FFFDF7',
-            textShadow: '0 1px 2px rgba(0,0,0,0.15)',
-          }}
-        >
-          Öppna appen
-        </motion.button>
-        <p
-          style={{
-            fontSize: '13px',
-            color: 'rgba(245,237,210,0.5)',
-            margin: '12px 0 0',
-          }}
-        >
-          Gratis att börja — inget kort krävs.
-        </p>
-      </section>
+      {/* Conditional install view */}
+      {renderInstallView()}
 
-      {/* iOS Install Guide */}
-      {platform === 'ios' && (
-        <section
-          ref={iosGuideRef}
+      {/* Bottom link — all views */}
+      <section style={{ textAlign: 'center', padding: '0 24px' }}>
+        <button
+          onClick={() => navigate('/login')}
           style={{
-            padding: '36px 24px 0',
-            maxWidth: '360px',
-            margin: '0 auto',
+            fontSize: 14, color: '#E85D2C', opacity: 0.7, textAlign: 'center',
+            marginTop: 32, marginBottom: 40, cursor: 'pointer',
+            background: 'none', border: 'none', fontFamily: 'var(--font-sans)',
           }}
         >
-          <div
-            style={{
-              background: 'rgba(255,255,255,0.06)',
-              border: '1px solid rgba(255,255,255,0.1)',
-              borderRadius: '16px',
-              padding: '20px',
-            }}
-          >
-            <p
-              style={{
-                fontSize: '15px',
-                fontWeight: 600,
-                color: LANTERN_GLOW,
-                margin: '0 0 16px',
-                textAlign: 'center',
-              }}
-            >
-              Lägg till på hemskärmen
-            </p>
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '16px',
-              }}
-            >
-              <div style={{ textAlign: 'center' }}>
-                <div
-                  style={{
-                    width: '44px',
-                    height: '44px',
-                    borderRadius: '12px',
-                    background: 'rgba(232,93,44,0.12)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    margin: '0 auto 6px',
-                    fontSize: '20px',
-                    color: BONKI_ORANGE,
-                  }}
-                >
-                  ⎋
-                </div>
-                <span style={{ fontSize: '12px', color: 'rgba(245,237,210,0.55)' }}>
-                  Tryck dela
-                </span>
-              </div>
-              <span style={{ fontSize: '18px', color: 'rgba(245,237,210,0.3)' }}>→</span>
-              <div style={{ textAlign: 'center' }}>
-                <div
-                  style={{
-                    width: '44px',
-                    height: '44px',
-                    borderRadius: '12px',
-                    background: 'rgba(232,93,44,0.12)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    margin: '0 auto 6px',
-                    fontSize: '20px',
-                    color: BONKI_ORANGE,
-                  }}
-                >
-                  +
-                </div>
-                <span style={{ fontSize: '12px', color: 'rgba(245,237,210,0.55)' }}>
-                  Lägg till
-                </span>
-              </div>
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* Login link */}
-      <section
-        style={{
-          padding: '14px 24px 36px',
-          textAlign: 'center',
-        }}
-      >
-        <p style={{ fontSize: '15px', color: 'rgba(245,237,210,0.65)', margin: 0 }}>
-          Redan medlem?{' '}
-          <Link to="/login" style={{ color: 'rgba(253, 246, 227, 0.85)', textDecoration: 'underline', fontWeight: 600 }}>
-            Logga in
-          </Link>
-        </p>
+          Redan installerat? Öppna Bonki →
+        </button>
       </section>
     </div>
   );
