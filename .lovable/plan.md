@@ -1,43 +1,44 @@
 
 
-## Reorder free cards to first position in all products
+## Redesign Install Page — Browser-Aware PWA Install Guide
 
-### Analysis
+### File changed
+`src/pages/Install.tsx` — single file, rendering only
 
-| Product | freeCardId | Free card's category | Category position | Card position in category | Needs change? |
-|---|---|---|---|---|---|
-| Jag i Mig | `jim-glad` | `jim-mina-kanslor` | 1st | 2nd (after `jim-trygg`) | Move card to pos 1 |
-| Jag med Andra | `jma-vanskap` | `jma-jag-och-andra` | 2nd | 2nd (after `jma-kontakt`) | Move category to 1st + card to pos 1 |
-| Jag i Varlden | `jiv-fordomar` (new) | `jiv-varlden-omkring-mig` | 3rd | 2nd (after `jiv-social-media`) | Change freeCardId + move category to 1st + card to pos 1 |
-| Vardagskort | `vk-hur-var-din-dag` | `vk-min-dag` | 1st | 1st | No change needed |
-| Syskonkort | `sk-syskonkunskap` | `sk-vi-blev-syskon` | 1st | 2nd (after `sk-att-fa-ett-syskon`) | Move card to pos 1 |
-| Sexualitetskort | `sex-normer` | `sex-normer-och-paverkan` | 2nd | 1st in its category | Move category to 1st |
-| Still Us | `su-mock-0` | `su-mock-vardagen` | 1st | 1st | No change needed |
+### What stays
+- Standalone redirect, Meta Pixel tracking, all imports
+- Brand header: wordmark, creature, headline, badge, trust stats (lines 83–215)
+- Background/dark theme, `beforeinstallprompt` listener structure
 
-### Changes per file
+### What gets removed
+- `handleCTA` function, "Öppna appen" button, "Gratis att börja" text
+- `iosGuideRef`, old iOS guide card (⎋/+ icons)
+- "Redan medlem?" login link
+- Old `platform` state (replaced by detection vars)
 
-**1. `src/data/products/jag-i-mig.ts`** — Swap `jim-glad` before `jim-trygg` in the cards array (move lines 58-67 before lines 38-57).
+### What gets added
 
-**2. `src/data/products/jag-med-andra.ts`** — Two changes:
-- Categories array: move `jma-jag-och-andra` to position 1 (before `jma-vem-ar-jag`)
-- Cards array: move `jma-vanskap` block before `jma-kontakt`, and move all K2 cards before K1 cards
+**Detection vars** (top of component):
+- `isSafari`, `isIOS`, `isAndroid`, `isIOSNonSafari`
+- `copied` state, `promptOutcome` state
 
-**3. `src/data/products/jag-i-varlden.ts`** — Three changes:
-- Change `freeCardId` from `'jiv-identitet'` to `'jiv-fordomar'`
-- Categories array: move `jiv-varlden-omkring-mig` to position 1
-- Cards array: move `jiv-fordomar` to first position in K3 cards, and move all K3 cards before K1 cards
+**Handlers**: `handleInstallClick` (Android/desktop prompt), `handleCopyLink` (iOS non-Safari clipboard)
 
-**4. `src/data/products/syskonkort.ts`** — Move `sk-syskonkunskap` before `sk-att-fa-ett-syskon` in the cards array.
+**Four conditional views** below trust stats:
 
-**5. `src/data/products/sexualitetskort.ts`** — Two changes:
-- Categories array: move `sex-normer-och-paverkan` to position 1
-- Cards array: move all K2 cards (starting with `sex-normer`) before K1 cards
+| Condition | View | Content |
+|---|---|---|
+| `isIOSNonSafari` | B | "Öppna i Safari" card + "Kopiera länk" button |
+| `isIOS` (Safari) | A | 3-step vertical guide with numbered circles, connector lines, inline Safari share SVG |
+| `isAndroid` | C | Native prompt button if available, else 2-step manual guide |
+| Desktop fallback | D | Native prompt button if available, else "Öppna på mobil" message |
 
-**6. No changes** to `vardagskort.ts` or `still-us-mock.ts`.
+Android/Desktop views have sub-states for prompt available, accepted, and fallback manual steps.
 
-### What stays untouched
-- All card content, IDs, prompts, sections
-- All category IDs, titles, subtitles, descriptions
-- Only `jag-i-varlden.ts` freeCardId changes; all others keep their current freeCardId
-- No logic changes anywhere
+**Bottom link** (all views): "Redan installerat? Öppna Bonki →" → `/login`
+
+### Implementation approach
+Rewrite the component keeping the same structure: imports → detection → useEffects → return JSX. The brand header section (lines 83–215) is preserved verbatim. Everything from the old CTA section onward is replaced with the four conditional views rendered via simple if/else blocks, plus the universal bottom link.
+
+Step circles use consistent styling (32px, orange border/tint). Connector lines between steps use absolute-positioned 1px divs. The inline Safari share SVG is hardcoded in step 1.
 
