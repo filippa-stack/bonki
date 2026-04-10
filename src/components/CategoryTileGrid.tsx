@@ -61,6 +61,10 @@ function hexToRgb(hex: string): string {
   return `${r},${g},${b}`;
 }
 
+function hexToRgba(hex: string, alpha: number): string {
+  return `rgba(${hexToRgb(hex)},${alpha})`;
+}
+
 function CategoryTile({
   tile,
   product,
@@ -116,7 +120,7 @@ function CategoryTile({
         backgroundImage: 'none',
         backgroundColor: tile.bg,
         border: 'none',
-        boxShadow: 'none',
+        boxShadow: `0 4px 24px ${hexToRgba(tile.bg, 0.25)}`,
         padding: 0,
         aspectRatio: isOddLast ? '2 / 1' : '1 / 1',
         ...(isOddLast ? { gridColumn: '1 / -1' } : {}),
@@ -163,7 +167,7 @@ function CategoryTile({
           left: 0,
           right: 0,
           height: '60%',
-          background: 'linear-gradient(to top, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.25) 50%, transparent 100%)',
+          background: 'linear-gradient(to top, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.12) 50%, transparent 100%)',
           borderRadius: 'inherit',
           zIndex: 2,
           pointerEvents: 'none',
@@ -191,7 +195,7 @@ function CategoryTile({
             opacity: nameOpacity,
             lineHeight: 1.2,
             display: 'block',
-            textShadow: '0 1px 3px rgba(0,0,0,0.9), 0 2px 8px rgba(0,0,0,0.7)',
+            textShadow: '0 1px 4px rgba(0,0,0,0.5), 0 2px 8px rgba(0,0,0,0.3)',
           }}
         >
           {cat.title}
@@ -205,7 +209,7 @@ function CategoryTile({
             lineHeight: 1.3,
             marginTop: '3px',
             display: 'block',
-            textShadow: '0 1px 3px rgba(0,0,0,0.8), 0 2px 6px rgba(0,0,0,0.5)',
+            textShadow: '0 1px 4px rgba(0,0,0,0.5), 0 2px 8px rgba(0,0,0,0.3)',
           }}
         >
           {tile.sub}
