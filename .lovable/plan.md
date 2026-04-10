@@ -1,31 +1,30 @@
 
 
-## Add Public Privacy Policy Page
+## Brighten Library Tiles — Per-Product Colored Glow
 
-### What we're building
-A standalone `/privacy` page displaying Bonki's full Swedish privacy policy, publicly accessible without login.
+The tiles feel heavy due to three compounding dark layers: a strong black scrim, black-only box shadows, and heavy text shadows. Here's the fix.
 
-### Changes
+### Changes (all in `src/components/ProductLibrary.tsx`)
 
-**1. Create `src/pages/PrivacyPolicy.tsx`**
-- Background: `#0B1026`, text: `#C8BDB0`, headings: `#D4943A`
-- Max-width 720px, centered, 40px padding
-- "← Tillbaka" link at top navigating to `/`
-- All 9 sections of Swedish privacy policy text exactly as specified
-- No BottomNav (page is outside ProtectedContent)
+**1. Reduce bottom scrim opacity** (lines 364-372)
+- Change from `rgba(0,0,0,0.55)` / `rgba(0,0,0,0.25)` to `rgba(0,0,0,0.35)` / `rgba(0,0,0,0.12)`
+- Keeps text readable but lets the saturated tile color shine through
 
-**2. Add route in `src/App.tsx`**
-- Add `<Route path="/privacy" element={<PrivacyPolicy />} />` in the `AppRoutes` component alongside `/login`, `/install`, `/screenshot-export`, `/analytics` — outside `ProtectedRoutes`
-- Import `PrivacyPolicy` from `@/pages/PrivacyPolicy`
+**2. Add per-tile colored glow to boxShadow** (lines 282-285)
+- Use each tile's own `bg` color (which is already the product accent — teal for Jag i Mig, pink for Jag med Andra, mint for Vardag, etc.) via the existing `hexToRgba(bg, 0.20)` helper
+- New shadow: `0 4px 28px ${hexToRgba(bg, 0.20)}, 0 2px 8px rgba(0,0,0,0.08)`
+- Every tile radiates its own accent color — no shared/hardcoded color
+
+**3. Soften text shadows** (lines 396, 411)
+- Title: reduce from `0.9/0.7/0.5/0.3` to `0.5/0.3` (two layers instead of four)
+- Tagline: same reduction — still readable, no longer a dark blanket
 
 ### What stays untouched
-- No changes to any existing component, hook, context, or route
-- `TermsConsent.tsx` unchanged
-- `BottomNav` only renders inside `ProtectedContent`, so it won't appear on `/privacy`
+- All tile colors, illustrations, positions, sizes, heights
+- Page background (`#0B1026`)
+- All existing components, hooks, contexts, routes
+- No new files or dependencies
 
-### Verification
-- `/privacy` loads without authentication
-- Full text visible, styled correctly
-- Back link works
-- No regressions on existing routes
+### Result
+Each tile emits its own colored glow against the dark background — teal for Jag i Mig, pink for Jag med Andra, mint for Vardag, purple for Syskon, coral for Närhet & Intimitet, lime for Jag i Världen. The reduced scrim and softer text shadows let the saturated backgrounds breathe.
 
