@@ -246,25 +246,16 @@ export default function LibraryResumeCard({ activeTab, global, forceMock }: Libr
       onClick={() => navigate(`/card/${display.cardId}`)}
       style={{
         width: '100%',
-        padding: '16px',
-        background: hexToRgba(tileBg, 0.18),
-        backdropFilter: 'blur(22px)',
-        WebkitBackdropFilter: 'blur(22px)',
+        padding: '18px 20px',
+        background: `linear-gradient(135deg, ${hexToRgba(tileBg, 0.35)} 0%, ${hexToRgba(tileBg, 0.15)} 100%)`,
         border: `1px solid ${hexToRgba(tileBg, 0.35)}`,
-        borderRadius: '16px',
+        borderRadius: '22px',
         cursor: 'pointer',
         textAlign: 'left',
         display: 'flex',
         alignItems: 'center',
-        backgroundImage: `linear-gradient(135deg, ${hexToRgba(tileBg, 0.28)} 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.10) 100%)`,
-        boxShadow: [
-          `0 20px 60px rgba(0, 0, 0, 0.50)`,
-          `0 8px 24px rgba(0, 0, 0, 0.30)`,
-          `0 2px 6px rgba(0, 0, 0, 0.15)`,
-          `0 0 50px ${hexToRgba(tileBg, 0.30)}`,
-          `inset 0 1px 0 rgba(255, 255, 255, 0.18)`,
-          `inset 0 -2px 6px rgba(0, 0, 0, 0.15)`,
-        ].join(', '),
+        boxShadow: `0 0 40px ${hexToRgba(tileBg, 0.3)}, 0 0 80px ${hexToRgba(tileBg, 0.15)}, inset 0 1px 0 rgba(255,255,255,0.12)`,
+        WebkitTapHighlightColor: 'transparent',
       }}
     >
       <div style={{ flex: 1, minWidth: 0 }}>
