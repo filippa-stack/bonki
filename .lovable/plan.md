@@ -1,15 +1,24 @@
 
 
-## Update Favicon
+## Update LibraryResumeCard Styling & Layout
 
-### What changes
-1. **Copy** the uploaded image to `public/favicon.png` (overwrites the current one)
-2. **Delete** `public/favicon.ico` if it exists (browsers auto-request `/favicon.ico` which can override the `.png`)
-3. No code changes needed — `index.html` already references `/favicon.png`
+### Changes to `src/components/LibraryResumeCard.tsx`
 
-### Risk
-**None.** The favicon is a static asset served by the browser. Existing users will simply see the new icon on their next page load. No data, sessions, authentication, or functionality is touched.
+**1. Button background** (line ~189)
+- `background: 'rgba(15, 15, 15, 0.7)'` → `` background: hexToRgba(tileBg, 0.15) ``
 
-### Note
-The uploaded image is square (ideal). Browsers will scale it down automatically. For best crispness, the image should be at least 48×48px — your upload looks well above that.
+**2. Button border** (line ~192)
+- `border: '1px solid rgba(255, 255, 255, 0.12)'` → `` border: `1px solid ${hexToRgba(tileBg, 0.25)}` ``
+
+**3. Background gradient** (line ~196)
+- First stop changes from `rgba(255,255,255,0.08)` to `${hexToRgba(tileBg, 0.2)}`
+- Template literal: `` backgroundImage: `linear-gradient(135deg, ${hexToRgba(tileBg, 0.2)} 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.10) 100%)` ``
+
+**4. Title text** (line ~215)
+- Change from `{display.productName} · {display.cardTitle}` to `Fortsätt utforska {display.productName}`
+
+**5. Step label** (line ~224)
+- Change from `{display.stepLabel}` to `{display.stepLabel} · {display.cardTitle}`
+
+No other files or logic touched.
 
