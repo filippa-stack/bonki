@@ -58,6 +58,7 @@ import PaywallFullScreen from "./pages/PaywallFullScreen";
 import SoloReflect from "./pages/SoloReflect";
 import JourneyPreview from "./pages/JourneyPreview";
 import DissolutionSettings from "./pages/DissolutionSettings";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
 
 const queryClient = new QueryClient();
 
@@ -177,6 +178,7 @@ function AppRoutes() {
       <Route path="/install" element={<Navigate to="/login" replace />} />
       <Route path="/screenshot-export" element={<ScreenshotExport />} />
       <Route path="/analytics" element={<AnalyticsDashboard />} />
+      <Route path="/privacy" element={<PrivacyPolicy />} />
       <Route path="/*" element={<ProtectedRoutes />} />
     </Routes>
   );
