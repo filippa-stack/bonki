@@ -280,8 +280,8 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
           ? '1px solid rgba(0, 0, 0, 0.08)'
           : '1px solid rgba(255, 255, 255, 0.15)',
         boxShadow: [
-          `0 8px 24px rgba(0, 0, 0, 0.12)`,
-          `0 2px 6px rgba(0, 0, 0, 0.06)`,
+          `0 4px 28px ${hexToRgba(bg, 0.20)}`,
+          `0 2px 8px rgba(0, 0, 0, 0.08)`,
         ].join(', '),
       }}
     >
@@ -365,7 +365,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
         position: 'absolute',
         left: 0, right: 0, bottom: 0,
         height: '70%',
-        background: 'linear-gradient(to top, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.25) 40%, transparent 100%)',
+        background: 'linear-gradient(to top, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.12) 40%, transparent 100%)',
         pointerEvents: 'none',
         zIndex: 1,
         borderRadius: '0 0 22px 22px',
@@ -393,7 +393,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
             lineHeight: 1.15,
             color: accentColor || '#FDF6E3',
             letterSpacing: '-0.01em',
-            textShadow: '0 1px 3px rgba(0,0,0,0.9), 0 0 8px rgba(0,0,0,0.7), 0 0 20px rgba(0,0,0,0.5), 0 0 40px rgba(0,0,0,0.3)',
+            textShadow: '0 1px 3px rgba(0,0,0,0.5), 0 0 8px rgba(0,0,0,0.3)',
           }}
         >
           {name}
@@ -408,7 +408,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
               opacity: 0.9,
               marginTop: '4px',
               lineHeight: 1.4,
-              textShadow: '0 1px 3px rgba(0,0,0,0.8), 0 0 8px rgba(0,0,0,0.6), 0 0 20px rgba(0,0,0,0.4)',
+              textShadow: '0 1px 3px rgba(0,0,0,0.5), 0 0 8px rgba(0,0,0,0.3)',
             }}
           >
             {tagline}{ageLabel ? ` · ${ageLabel}` : ''}
