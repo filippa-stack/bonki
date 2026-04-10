@@ -1,21 +1,22 @@
 
 
-## Replace Final 2 Still Us Card Images
+## Update Capacitor Config + Add Scripts
 
-File replacement only. No code changes.
+Capacitor v8 is already installed. Two small changes only.
 
-### Mapping
+### Change 1: `capacitor.config.ts`
+Update `appId` from `app.lovable.1604837d627c4368a714aa6b770c1b8c` to `com.bonkistudio.bonki`. Keep everything else (appName, webDir, server block) unchanged.
 
-| Uploaded file | Card title | Target file |
-|---|---|---|
-| att_säga_ifrån-2.png | Att säga ifrån | su-mock-12.webp (replaces previous version) |
-| Att_fortsätta_välja.png | Att fortsätta välja | su-mock-20.webp |
+### Change 2: `package.json`
+Add two scripts to the `"scripts"` block:
+```json
+"cap:sync": "npx cap sync",
+"cap:open:android": "npx cap open android"
+```
 
-### Process
-
-1. Copy uploaded PNGs to `/tmp/`
-2. Convert to WebP (85% quality) using ffmpeg
-3. Overwrite `su-mock-12.webp` and `su-mock-20.webp` in `/public/card-images/`
-
-This completes all 21 card images (su-mock-0 through su-mock-20).
+### What stays untouched
+- All dependencies (Capacitor v8.2.0 stays)
+- `appName: 'BONKI'` stays
+- Server config stays (preview URL for dev)
+- All source files, components, configs
 
