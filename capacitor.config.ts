@@ -1,7 +1,7 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'app.lovable.1604837d627c4368a714aa6b770c1b8c',
+  appId: 'com.bonkistudio.bonki',
   appName: 'BONKI',
   webDir: 'dist',
   server: {
