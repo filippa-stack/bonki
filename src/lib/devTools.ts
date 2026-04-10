@@ -18,6 +18,7 @@ export function isPreviewEnvironment(): boolean {
   if (host === 'bonki.lovable.app') return false;
   return host === 'localhost'
     || host.includes('preview--')
+    || host.endsWith('.lovableproject.com')
     || host.endsWith('.local');
 }
 
