@@ -1,24 +1,22 @@
 
 
-## Update LibraryResumeCard Styling & Layout
+## Make LibraryResumeCard always use product tile color
 
-### Changes to `src/components/LibraryResumeCard.tsx`
+### Change
+In `src/components/LibraryResumeCard.tsx`, remove the conditional that only applies product color when `global` is true. Always use the product's tile color from `PRODUCT_TILE_COLORS` as `tileBg`.
 
-**1. Button background** (line ~189)
-- `background: 'rgba(15, 15, 15, 0.7)'` → `` background: hexToRgba(tileBg, 0.15) ``
+**Before (~line 183):**
+```js
+const useProductBg = !!global;
+const tileBg = useProductBg
+  ? (PRODUCT_TILE_COLORS[display.productId] ?? DEEP_DUSK)
+  : DEEP_DUSK;
+```
 
-**2. Button border** (line ~192)
-- `border: '1px solid rgba(255, 255, 255, 0.12)'` → `` border: `1px solid ${hexToRgba(tileBg, 0.25)}` ``
+**After:**
+```js
+const tileBg = PRODUCT_TILE_COLORS[display.productId] ?? DEEP_DUSK;
+```
 
-**3. Background gradient** (line ~196)
-- First stop changes from `rgba(255,255,255,0.08)` to `${hexToRgba(tileBg, 0.2)}`
-- Template literal: `` backgroundImage: `linear-gradient(135deg, ${hexToRgba(tileBg, 0.2)} 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.10) 100%)` ``
-
-**4. Title text** (line ~215)
-- Change from `{display.productName} · {display.cardTitle}` to `Fortsätt utforska {display.productName}`
-
-**5. Step label** (line ~224)
-- Change from `{display.stepLabel}` to `{display.stepLabel} · {display.cardTitle}`
-
-No other files or logic touched.
+This single change makes the banner visibly tinted with the paused product's color in all contexts, matching the already-working global variant.
 
