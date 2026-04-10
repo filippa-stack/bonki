@@ -294,7 +294,7 @@ export default function Home() {
           transform: 'translateX(-50%)',
           width: '140vw',
           height: '55vh',
-          background: `radial-gradient(ellipse 60% 50% at 50% 45%, ${COLORS.emberMid}30 0%, ${COLORS.deepSaffron}10 50%, transparent 100%)`,
+          background: `radial-gradient(ellipse 60% 50% at 50% 45%, ${COLORS.emberMid}40 0%, ${COLORS.deepSaffron}20 50%, transparent 100%)`,
           pointerEvents: 'none',
           zIndex: 0,
         }}
@@ -331,7 +331,7 @@ export default function Home() {
           left: 0,
           right: 0,
           height: '85%',
-          background: `linear-gradient(to top, ${COLORS.emberNight} 0%, ${COLORS.emberNight}F2 18%, rgba(46,34,51,0.85) 35%, rgba(71,52,84,0.4) 60%, rgba(71,52,84,0.1) 80%, transparent 100%)`,
+          background: `linear-gradient(to top, ${COLORS.emberNight} 0%, ${COLORS.emberNight}F2 18%, rgba(46,34,51,0.65) 35%, rgba(71,52,84,0.25) 60%, rgba(71,52,84,0.1) 80%, transparent 100%)`,
           pointerEvents: 'none',
         }} />
       </motion.div>
@@ -366,7 +366,7 @@ export default function Home() {
             color: COLORS.lanternGlow,
             letterSpacing: '-0.02em',
             lineHeight: 1.15,
-            textShadow: `0 2px 20px rgba(0,0,0,0.7), 0 0 60px ${COLORS.emberNight}`,
+            textShadow: `0 2px 20px rgba(0,0,0,0.5), 0 0 60px ${COLORS.emberNight}`,
             margin: 0,
           }}>
             Ert utrymme
