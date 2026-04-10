@@ -239,10 +239,7 @@ export default function LibraryResumeCard({ activeTab, global, forceMock }: Libr
   const display = devMock || resume;
   if (!display) return null;
 
-  const useProductBg = !!global;
-  const tileBg = useProductBg
-    ? (PRODUCT_TILE_COLORS[display.productId] ?? DEEP_DUSK)
-    : DEEP_DUSK;
+  const tileBg = PRODUCT_TILE_COLORS[display.productId] ?? DEEP_DUSK;
 
   return (
     <button
