@@ -1,21 +1,28 @@
 
 
-## Make the resume banner more visually distinct
+## Replace LibraryResumeCard button style
 
-### Problem
-The product tile colors (e.g. `#C6D423` lime for Jag i Världen) at 0.15 opacity against the dark `#0B1026` page background produce almost no visible tint. The border at 0.25 opacity is equally subtle.
+### Change
+In `src/components/LibraryResumeCard.tsx`, replace the entire `style={{...}}` object on the `<button>` element with the user's provided style block. This removes `backdropFilter`, `WebkitBackdropFilter`, and `backgroundImage`, replacing them with a stronger gradient fill and a two-layer outer glow using the product tile color.
 
-### Solution
-Increase the opacity values so the color tint is clearly visible:
+### Exact edit
+Replace the button's style object (currently spanning ~lines 191–207) with:
 
-**In `src/components/LibraryResumeCard.tsx`:**
+```js
+style={{
+  width: '100%',
+  padding: '18px 20px',
+  background: `linear-gradient(135deg, ${hexToRgba(tileBg, 0.35)} 0%, ${hexToRgba(tileBg, 0.15)} 100%)`,
+  border: `1px solid ${hexToRgba(tileBg, 0.35)}`,
+  borderRadius: '22px',
+  cursor: 'pointer',
+  textAlign: 'left',
+  display: 'flex',
+  alignItems: 'center',
+  boxShadow: `0 0 40px ${hexToRgba(tileBg, 0.3)}, 0 0 80px ${hexToRgba(tileBg, 0.15)}, inset 0 1px 0 rgba(255,255,255,0.12)`,
+  WebkitTapHighlightColor: 'transparent',
+}}
+```
 
-| Property | Current | New |
-|---|---|---|
-| `background` | `hexToRgba(tileBg, 0.15)` | `hexToRgba(tileBg, 0.18)` |
-| `border` | `hexToRgba(tileBg, 0.25)` | `hexToRgba(tileBg, 0.35)` |
-| `backgroundImage` first stop | `hexToRgba(tileBg, 0.2)` | `hexToRgba(tileBg, 0.28)` |
-| Outer glow shadow | `hexToRgba(tileBg, 0.20)` | `hexToRgba(tileBg, 0.30)` |
-
-This bumps the tint enough to be clearly visible while still keeping the glassy, premium feel. The border gets the biggest boost since it's the primary visual edge. No logic or data changes.
+Single file, no logic changes.
 
