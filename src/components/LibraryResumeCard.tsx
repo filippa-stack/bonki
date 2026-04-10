@@ -250,16 +250,16 @@ export default function LibraryResumeCard({ activeTab, global, forceMock }: Libr
       style={{
         width: '100%',
         padding: '16px',
-        background: 'rgba(15, 15, 15, 0.7)',
+        background: hexToRgba(tileBg, 0.15),
         backdropFilter: 'blur(22px)',
         WebkitBackdropFilter: 'blur(22px)',
-        border: '1px solid rgba(255, 255, 255, 0.12)',
+        border: `1px solid ${hexToRgba(tileBg, 0.25)}`,
         borderRadius: '16px',
         cursor: 'pointer',
         textAlign: 'left',
         display: 'flex',
         alignItems: 'center',
-        backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.10) 100%)',
+        backgroundImage: `linear-gradient(135deg, ${hexToRgba(tileBg, 0.2)} 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.10) 100%)`,
         boxShadow: [
           `0 20px 60px rgba(0, 0, 0, 0.50)`,
           `0 8px 24px rgba(0, 0, 0, 0.30)`,
@@ -283,7 +283,7 @@ export default function LibraryResumeCard({ activeTab, global, forceMock }: Libr
           whiteSpace: 'nowrap',
           margin: 0,
         }}>
-          {display.productName} · {display.cardTitle}
+          Fortsätt utforska {display.productName}
         </p>
         <p style={{
           fontFamily: "var(--font-body)",
@@ -294,7 +294,7 @@ export default function LibraryResumeCard({ activeTab, global, forceMock }: Libr
           marginTop: '4px',
           margin: '4px 0 0',
         }}>
-          {display.stepLabel}
+          {display.stepLabel} · {display.cardTitle}
         </p>
       </div>
       <span style={{
