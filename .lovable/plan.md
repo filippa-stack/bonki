@@ -1,35 +1,15 @@
 
 
-## Remove Page Transition Animation
+## Update Favicon
 
-### Scope
-Only `src/components/PageTransition.tsx` needs changing. `App.tsx` does not use `PageTransition` or `AnimatePresence`, so no changes there.
+### What changes
+1. **Copy** the uploaded image to `public/favicon.png` (overwrites the current one)
+2. **Delete** `public/favicon.ico` if it exists (browsers auto-request `/favicon.ico` which can override the `.png`)
+3. No code changes needed — `index.html` already references `/favicon.png`
 
-### Change
+### Risk
+**None.** The favicon is a static asset served by the browser. Existing users will simply see the new icon on their next page load. No data, sessions, authentication, or functionality is touched.
 
-**`src/components/PageTransition.tsx`** — Replace the entire file with a simple pass-through wrapper:
-
-```tsx
-import { ReactNode, forwardRef } from 'react';
-
-interface PageTransitionProps {
-  children: ReactNode;
-  className?: string;
-}
-
-const PageTransition = forwardRef<HTMLDivElement, PageTransitionProps>(
-  ({ children, className }, ref) => (
-    <div ref={ref} style={{ width: '100%', minHeight: '100vh' }} className={className || ''}>
-      {children}
-    </div>
-  )
-);
-
-PageTransition.displayName = 'PageTransition';
-export default PageTransition;
-```
-
-- Removes `framer-motion` import, `motion.div`, all animation props
-- Keeps the `forwardRef` signature and `style` so any future consumer still works
-- No other files touched
+### Note
+The uploaded image is square (ideal). Browsers will scale it down automatically. For best crispness, the image should be at least 48×48px — your upload looks well above that.
 
