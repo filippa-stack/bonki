@@ -20,7 +20,7 @@ export default function SoloReflect({ cardIndex, onComplete, onSkip }: SoloRefle
   const prompt = getSoloReflectionPrompt(cardIndex);
 
   return (
-    <div style={{
+    <div data-sensitive style={{
       minHeight: '100vh',
       backgroundColor: COLORS.emberNight,
       display: 'flex',

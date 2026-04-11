@@ -35,7 +35,7 @@ export default function SessionTakeaway({ sessionId }: SessionTakeawayProps) {
   }
 
   return (
-    <div>
+    <div data-sensitive>
       <div>
         <textarea
           value={text}

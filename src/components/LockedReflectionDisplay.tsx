@@ -78,7 +78,7 @@ export default function LockedReflectionDisplay({ sessionId, stepIndex }: Props)
   });
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginBottom: '32px' }}>
+    <div data-sensitive style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginBottom: '32px' }}>
       {sortedEntries.map((entry, i) => {
         const isCompletion = entry.stepIndex === maxStepIndex;
         const promptLabel = isCompletion

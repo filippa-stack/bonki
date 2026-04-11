@@ -1002,7 +1002,7 @@ export default function Journal() {
   const bothActive = activeFilters.has('barn') && activeFilters.has('par');
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: MIDNIGHT_INK, display: 'flex', flexDirection: 'column' }}>
+    <div data-sensitive style={{ minHeight: '100vh', backgroundColor: MIDNIGHT_INK, display: 'flex', flexDirection: 'column' }}>
       {/* Header */}
       {/* Hero */}
       <div style={{

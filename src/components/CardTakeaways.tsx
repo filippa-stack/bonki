@@ -83,7 +83,7 @@ export default function CardTakeaways({ cardId, compact = false }: CardTakeaways
   };
 
   return (
-    <div className={`space-y-3 ${compact ? '' : 'pt-2'}`}>
+    <div data-sensitive className={`space-y-3 ${compact ? '' : 'pt-2'}`}>
       {/* Private textarea */}
       <div className="space-y-1.5">
         <div className="h-px bg-border/30 mb-4" />

@@ -500,7 +500,7 @@ export default function Diary() {
   const isEmpty = !loading && entries.length === 0;
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#F8F4EE' }}>
+    <div data-sensitive className="min-h-screen" style={{ backgroundColor: '#F8F4EE' }}>
       <Header title="" showBack backTo={`/product/${product.slug}`} />
 
       <div className="px-5" style={{ paddingTop: '8px', paddingBottom: 'calc(72px + env(safe-area-inset-bottom, 0px))' }}>

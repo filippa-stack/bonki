@@ -310,7 +310,7 @@ export default function KidsCardPortal() {
   const isFreeCard = card.id === product.freeCardId;
 
   return (
-    <div
+    <div data-sensitive
       style={{
         height: '100vh',
         background: product?.backgroundColor ?? MIDNIGHT_INK,
