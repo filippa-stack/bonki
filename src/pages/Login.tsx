@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BEAT_1, BEAT_2 } from '@/lib/motion';
@@ -7,11 +7,12 @@ import { Button } from '@/components/ui/button';
 import { lovable } from '@/integrations/lovable/index';
 import { supabase } from '@/integrations/supabase/client';
 import { useSiteSettings } from '@/contexts/SiteSettingsContext';
-import { Loader2, Mail, ArrowLeft, CheckCircle, Eye } from 'lucide-react';
+import { Loader2, Mail, ArrowLeft, Eye } from 'lucide-react';
 import { isDemoParam, enterDemoMode } from '@/lib/demoMode';
 import { MIDNIGHT_INK, LANTERN_GLOW, BONKI_ORANGE } from '@/lib/palette';
 import bonkiLogo from '@/assets/bonki-logo-transparent.png';
 import bonkiWordmark from '@/assets/bonki-wordmark.png';
+import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp';
 
 import TermsConsent from '@/components/TermsConsent';
 import { TERMS_VERSION, PRIVACY_VERSION } from '@/lib/legal';
@@ -26,17 +27,43 @@ const ORANGE_SHADOW = [
   'inset 0 -2px 6px rgba(0, 0, 0, 0.12)',
 ].join(', ');
 
+const RESEND_COOLDOWN = 60;
+
 export default function Login() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [verifying, setVerifying] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [termsError, setTermsError] = useState(false);
   const { settings } = useSiteSettings();
   const [showEmailForm, setShowEmailForm] = useState(false);
   const [email, setEmail] = useState('');
-  const [magicLinkSent, setMagicLinkSent] = useState(false);
+  const [otpSent, setOtpSent] = useState(false);
+  const [otpCode, setOtpCode] = useState('');
+  const [resendCooldown, setResendCooldown] = useState(0);
+  const cooldownRef = useRef<ReturnType<typeof setInterval>>();
+
+  useEffect(() => {
+    return () => {
+      if (cooldownRef.current) clearInterval(cooldownRef.current);
+    };
+  }, []);
+
+  const startCooldown = () => {
+    setResendCooldown(RESEND_COOLDOWN);
+    if (cooldownRef.current) clearInterval(cooldownRef.current);
+    cooldownRef.current = setInterval(() => {
+      setResendCooldown((prev) => {
+        if (prev <= 1) {
+          clearInterval(cooldownRef.current);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+  };
 
   const checkTerms = () => {
     if (!termsAccepted) {
@@ -88,20 +115,63 @@ export default function Login() {
     try {
       const { error } = await supabase.auth.signInWithOtp({
         email: email.trim(),
-        options: {
-          emailRedirectTo: window.location.origin,
-        },
       });
 
       if (error) {
         setError(error.message || t('login.error_generic'));
         localStorage.removeItem('pending-legal-consent');
       } else {
-        setMagicLinkSent(true);
+        setOtpSent(true);
+        setOtpCode('');
+        startCooldown();
       }
     } catch (err) {
       setError(t('login.error_start'));
       localStorage.removeItem('pending-legal-consent');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleVerifyOtp = async () => {
+    if (otpCode.length !== 6) return;
+    setVerifying(true);
+    setError(null);
+
+    try {
+      const { error } = await supabase.auth.verifyOtp({
+        email: email.trim(),
+        token: otpCode,
+        type: 'email',
+      });
+
+      if (error) {
+        setError(t('login.otp_invalid'));
+        setOtpCode('');
+      }
+    } catch (err) {
+      setError(t('login.error_generic'));
+    } finally {
+      setVerifying(false);
+    }
+  };
+
+  const handleResend = async () => {
+    if (resendCooldown > 0) return;
+    setLoading(true);
+    setError(null);
+
+    try {
+      const { error } = await supabase.auth.signInWithOtp({
+        email: email.trim(),
+      });
+      if (error) {
+        setError(error.message || t('login.error_generic'));
+      } else {
+        startCooldown();
+      }
+    } catch {
+      setError(t('login.error_generic'));
     } finally {
       setLoading(false);
     }
@@ -165,32 +235,79 @@ export default function Login() {
           style={{ marginTop: '40px' }}
         >
           <AnimatePresence mode="wait">
-            {magicLinkSent ? (
+            {otpSent ? (
               <motion.div
-                key="sent"
+                key="otp"
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -8 }}
                 transition={{ duration: 0.2 }}
                 className="flex flex-col items-center gap-3"
               >
-                <CheckCircle className="w-8 h-8" style={{ color: GHOST_GLOW }} />
                 <p className="font-serif text-base" style={{ color: LANTERN_GLOW }}>
                   {t('login.magic_link_sent_title')}
                 </p>
                 <p className="text-sm" style={{ color: LANTERN_GLOW, opacity: 0.65 }}>
                   {t('login.magic_link_sent_hint')}
                 </p>
-                <p className="text-xs mt-2" style={{ color: LANTERN_GLOW, opacity: 0.4 }}>
+
+                <div className="mt-2 [&_input]:!bg-[rgba(255,255,255,0.08)] [&_input]:!text-[#FDF6E3] [&_input]:!border-[rgba(255,255,255,0.15)]">
+                  <InputOTP
+                    maxLength={6}
+                    value={otpCode}
+                    onChange={(val) => setOtpCode(val)}
+                    onComplete={handleVerifyOtp}
+                  >
+                    <InputOTPGroup>
+                      <InputOTPSlot index={0} className="!w-11 !h-13 !text-lg !bg-[rgba(255,255,255,0.08)] !text-[#FDF6E3] !border-[rgba(255,255,255,0.2)]" />
+                      <InputOTPSlot index={1} className="!w-11 !h-13 !text-lg !bg-[rgba(255,255,255,0.08)] !text-[#FDF6E3] !border-[rgba(255,255,255,0.2)]" />
+                      <InputOTPSlot index={2} className="!w-11 !h-13 !text-lg !bg-[rgba(255,255,255,0.08)] !text-[#FDF6E3] !border-[rgba(255,255,255,0.2)]" />
+                      <InputOTPSlot index={3} className="!w-11 !h-13 !text-lg !bg-[rgba(255,255,255,0.08)] !text-[#FDF6E3] !border-[rgba(255,255,255,0.2)]" />
+                      <InputOTPSlot index={4} className="!w-11 !h-13 !text-lg !bg-[rgba(255,255,255,0.08)] !text-[#FDF6E3] !border-[rgba(255,255,255,0.2)]" />
+                      <InputOTPSlot index={5} className="!w-11 !h-13 !text-lg !bg-[rgba(255,255,255,0.08)] !text-[#FDF6E3] !border-[rgba(255,255,255,0.2)]" />
+                    </InputOTPGroup>
+                  </InputOTP>
+                </div>
+
+                <button
+                  onClick={handleVerifyOtp}
+                  disabled={verifying || otpCode.length !== 6}
+                  className="w-full h-14 text-base font-semibold rounded-xl flex items-center justify-center gap-2 border-0 text-white disabled:opacity-50 mt-2"
+                  style={{
+                    background: ORANGE_GRADIENT,
+                    boxShadow: ORANGE_SHADOW,
+                  }}
+                >
+                  {verifying ? (
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                  ) : null}
+                  {t('login.otp_submit')}
+                </button>
+
+                <div className="flex items-center gap-3 mt-1">
+                  <button
+                    onClick={handleResend}
+                    disabled={resendCooldown > 0 || loading}
+                    className="text-sm disabled:opacity-40"
+                    style={{ color: `rgba(245, 237, 210, 0.6)` }}
+                  >
+                    {resendCooldown > 0
+                      ? `${t('login.otp_resend')} (${resendCooldown}s)`
+                      : t('login.otp_resend')}
+                  </button>
+                  <span style={{ color: 'rgba(255,255,255,0.15)' }}>·</span>
+                  <button
+                    onClick={() => { setOtpSent(false); setShowEmailForm(false); setEmail(''); setOtpCode(''); setError(null); }}
+                    className="text-sm"
+                    style={{ color: `rgba(245, 237, 210, 0.6)` }}
+                  >
+                    {t('login.back_to_login')}
+                  </button>
+                </div>
+
+                <p className="text-xs mt-1" style={{ color: LANTERN_GLOW, opacity: 0.4 }}>
                   {t('login.magic_link_spam_tip')}
                 </p>
-                <button
-                  onClick={() => { setMagicLinkSent(false); setShowEmailForm(false); setEmail(''); }}
-                  className="text-sm underline mt-2"
-                  style={{ color: `rgba(245, 237, 210, 0.6)` }}
-                >
-                  {t('login.back_to_login')}
-                </button>
               </motion.div>
             ) : showEmailForm ? (
               <motion.div
@@ -308,7 +425,7 @@ export default function Login() {
             )}
           </AnimatePresence>
 
-          {!magicLinkSent && (
+          {!otpSent && (
             <div className={`text-center mt-5 transition-transform duration-200 ${termsError ? 'animate-[shake_0.3s_ease-in-out]' : ''}`}>
               <div className="[&_label]:text-[rgba(245,237,210,0.6)] [&_button]:text-[rgba(212,245,192,0.7)] [&_button[role=checkbox]]:border-[rgba(253,246,227,0.3)] [&_button[role=checkbox]]:bg-[rgba(255,255,255,0.1)] [&_button[role=checkbox][data-state=checked]]:bg-[#E85D2C] [&_button[role=checkbox][data-state=checked]]:border-[#E85D2C] [&_button[role=checkbox]]:h-5 [&_button[role=checkbox]]:w-5">
                 <TermsConsent checked={termsAccepted} onCheckedChange={(val) => { setTermsAccepted(val); if (val) setTermsError(false); }} />
