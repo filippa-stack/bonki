@@ -59,7 +59,7 @@ export default function CardReflections({ cardId }: CardReflectionsProps) {
   };
 
   return (
-    <div className="space-y-6 py-6 border-t border-divider">
+    <div data-sensitive className="space-y-6 py-6 border-t border-divider">
       {/* Private notes — first */}
       <div>
         <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">

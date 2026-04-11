@@ -78,7 +78,7 @@ export default function ArchiveTakeaway({ sessionId, initialText }: ArchiveTakea
   };
 
   return (
-    <div style={{ marginTop: '16px' }}>
+    <div data-sensitive style={{ marginTop: '16px' }}>
       {hasExisting ? (
         <p
           style={{

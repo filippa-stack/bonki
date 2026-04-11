@@ -156,7 +156,7 @@ export default function SessionStepReflection({
   const triggerColor = stillUsMode ? 'hsl(38 25% 92%)' : 'var(--text-primary)';
 
   return (
-    <motion.div
+    <motion.div data-sensitive
       className="reflection-field-wrapper"
       style={{
         width: '100%',

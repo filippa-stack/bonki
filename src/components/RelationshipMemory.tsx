@@ -18,6 +18,7 @@ export default function RelationshipMemory({ cardTitle, categoryTitle, completed
 
   return (
     <motion.div
+      data-sensitive
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.15 }}

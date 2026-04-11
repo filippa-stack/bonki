@@ -29,6 +29,7 @@ export default function ReflectionMemoryCard({
 
   return (
     <motion.button
+      data-sensitive
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       onClick={onClick}

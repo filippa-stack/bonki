@@ -14,7 +14,7 @@ export default function SavedConversations() {
   );
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: 'var(--color-bg-base)' }}>
+    <div data-sensitive className="min-h-screen" style={{ backgroundColor: 'var(--color-bg-base)' }}>
       <Header title={t('saved.title')} showBack backTo="/" />
 
       <div className="px-6 pt-8 pb-12">
