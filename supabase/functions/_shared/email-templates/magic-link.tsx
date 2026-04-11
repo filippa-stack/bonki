@@ -4,7 +4,6 @@ import * as React from 'npm:react@18.3.1'
 
 import {
   Body,
-  Button,
   Container,
   Head,
   Heading,
@@ -15,27 +14,28 @@ import {
 
 interface MagicLinkEmailProps {
   siteName: string
-  confirmationUrl: string
+  token: string
 }
 
 export const MagicLinkEmail = ({
   siteName,
-  confirmationUrl,
+  token,
 }: MagicLinkEmailProps) => (
   <Html lang="sv" dir="ltr">
     <Head />
-    <Preview>Din inloggningslänk för Bonki</Preview>
+    <Preview>Din inloggningskod för Bonki: {token}</Preview>
     <Body style={main}>
       <Container style={container}>
-        <Heading style={h1}>Din inloggningslänk</Heading>
+        <Heading style={h1}>Din inloggningskod</Heading>
         <Text style={text}>
-          Klicka på knappen nedan för att logga in på Bonki. Länken upphör att gälla inom kort.
+          Ange koden nedan i appen för att logga in på Bonki.
         </Text>
-        <Button style={button} href={confirmationUrl}>
-          Logga in
-        </Button>
+        <Text style={code}>{token}</Text>
+        <Text style={text}>
+          Koden gäller i 10 minuter. Använd den inte? Ignorera det här mejlet.
+        </Text>
         <Text style={footer}>
-          Om du inte begärde den här länken kan du ignorera det här mejlet.
+          Om du inte begärde den här koden kan du ignorera det här mejlet.
         </Text>
       </Container>
     </Body>
@@ -58,13 +58,15 @@ const text = {
   lineHeight: '1.6',
   margin: '0 0 28px',
 }
-const button = {
-  backgroundColor: '#E85D2C',
-  color: '#ffffff',
-  fontSize: '15px',
+const code = {
+  fontSize: '36px',
   fontWeight: 'bold' as const,
+  color: '#1A1A2E',
+  letterSpacing: '8px',
+  textAlign: 'center' as const,
+  padding: '20px 0',
+  margin: '0 0 28px',
+  backgroundColor: '#F5F0E8',
   borderRadius: '12px',
-  padding: '14px 24px',
-  textDecoration: 'none',
 }
 const footer = { fontSize: '12px', color: '#999999', margin: '32px 0 0' }

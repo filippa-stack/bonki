@@ -19,7 +19,7 @@ const corsHeaders = {
 const EMAIL_SUBJECTS: Record<string, string> = {
   signup: 'Bekräfta din e-post',
   invite: 'Du har blivit inbjuden',
-  magiclink: 'Din inloggningslänk',
+  magiclink: 'Din inloggningskod',
   recovery: 'Återställ ditt lösenord',
   email_change: 'Bekräfta din e-poständring',
   reauthentication: 'Din verifieringskod',
@@ -57,7 +57,7 @@ const SAMPLE_DATA: Record<string, object> = {
   },
   magiclink: {
     siteName: SITE_NAME,
-    confirmationUrl: SAMPLE_PROJECT_URL,
+    token: '123456',
   },
   recovery: {
     siteName: SITE_NAME,
