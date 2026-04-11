@@ -1,29 +1,44 @@
 
 
-## Use product-color fill for LibraryResumeCard
+## Switch Login from Magic Link to OTP Code
 
-### Change
-Replace the button's `style` object in `src/components/LibraryResumeCard.tsx` with a product-colored background at meaningful opacity, matching the energy of the product tiles below.
+### Problem
+On iOS PWA, magic links open in Safari (not the standalone PWA), creating the session in the wrong context. The custom Swedish email template isn't even being invoked in Live — users get the default English template.
 
-### Exact edit
+### Solution
+Replace the magic link flow with a 6-digit OTP code the user types directly in the app.
 
-Replace the button style block with:
+### Changes
 
-```js
-style={{
-  width: '100%',
-  padding: '18px 20px',
-  background: `linear-gradient(135deg, ${hexToRgba(tileBg, 0.55)} 0%, ${hexToRgba(tileBg, 0.30)} 100%)`,
-  border: `1px solid ${hexToRgba(tileBg, 0.7)}`,
-  borderRadius: '22px',
-  cursor: 'pointer',
-  textAlign: 'left',
-  display: 'flex',
-  alignItems: 'center',
-  boxShadow: `0 0 30px ${hexToRgba(tileBg, 0.25)}, 0 4px 20px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.15)`,
-  WebkitTapHighlightColor: 'transparent',
-}}
-```
+**1. Enable project emails** (prerequisite)
+- Call `toggle_project_emails(enabled: true)` so the auth-email-hook is invoked in Live
+- Deploy `auth-email-hook` to ensure it's active
 
-Single file, no logic changes.
+**2. Login page (`src/pages/Login.tsx`)**
+- After `signInWithOtp` succeeds, show a 6-digit code input (using existing `InputOTP` component) instead of the "check your email" confirmation
+- On submit, call `supabase.auth.verifyOtp({ email, token, type: 'email' })`
+- Add a "Skicka igen" resend button with 60s cooldown timer
+- Remove `emailRedirectTo` from the `signInWithOtp` options (not needed for code flow)
+
+**3. Magic link email template (`supabase/functions/_shared/email-templates/magic-link.tsx`)**
+- Accept `token` prop instead of `confirmationUrl`
+- Replace the clickable `<Button>` with a large, prominent 6-digit code display (styled `<Text>` with letter-spacing)
+- Update copy: "Ange koden nedan i appen" instead of "Klicka på knappen"
+- Remove the `confirmationUrl` prop entirely so there's nothing to tap
+
+**4. Auth email hook (`supabase/functions/auth-email-hook/index.ts`)**
+- Change `EMAIL_SUBJECTS.magiclink` from `'Din inloggningslänk'` to `'Din inloggningskod'`
+- `templateProps.token` is already passed from `payload.data.token` — no change needed there
+- Update `SAMPLE_DATA.magiclink` to include `token: '123456'` for preview
+
+**5. Translations (`src/i18n/sv.json`)**
+- `send_magic_link` → `"Skicka kod"`
+- `magic_link_sent_title` → `"Ange koden"`
+- `magic_link_sent_hint` → `"Vi har skickat en 6-siffrig kod till din e-post."`
+- Add: `otp_submit: "Verifiera"`, `otp_resend: "Skicka igen"`, `otp_invalid: "Fel kod, försök igen"`
+
+### What stays the same
+- Google OAuth (works fine already)
+- Terms consent, demo mode, auth context
+- All other email templates (signup, recovery, etc.)
 
