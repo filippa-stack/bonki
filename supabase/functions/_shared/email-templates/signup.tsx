@@ -4,7 +4,6 @@ import * as React from 'npm:react@18.3.1'
 
 import {
   Body,
-  Button,
   Container,
   Head,
   Heading,
@@ -17,27 +16,25 @@ interface SignupEmailProps {
   siteName: string
   siteUrl: string
   recipient: string
-  confirmationUrl: string
+  token: string
 }
 
 export const SignupEmail = ({
   siteName,
   siteUrl,
   recipient,
-  confirmationUrl,
+  token,
 }: SignupEmailProps) => (
   <Html lang="sv" dir="ltr">
     <Head />
-    <Preview>Bekräfta din e-post för Bonki</Preview>
+    <Preview>Din bekräftelsekod för Bonki: {token}</Preview>
     <Body style={main}>
       <Container style={container}>
         <Heading style={h1}>Välkommen till Bonki</Heading>
         <Text style={text}>
-          Tack för att du registrerade dig! Bekräfta din e-postadress ({recipient}) genom att klicka på knappen nedan.
+          Tack för att du registrerade dig! Ange koden nedan i appen för att bekräfta din e-postadress ({recipient}).
         </Text>
-        <Button style={button} href={confirmationUrl}>
-          Bekräfta e-post
-        </Button>
+        <Text style={code}>{token}</Text>
         <Text style={footer}>
           Om du inte skapade ett konto kan du ignorera det här mejlet.
         </Text>
@@ -62,13 +59,15 @@ const text = {
   lineHeight: '1.6',
   margin: '0 0 28px',
 }
-const button = {
-  backgroundColor: '#E85D2C',
-  color: '#ffffff',
-  fontSize: '15px',
+const code = {
+  fontSize: '36px',
   fontWeight: 'bold' as const,
+  color: '#1A1A2E',
+  letterSpacing: '8px',
+  textAlign: 'center' as const,
+  padding: '20px 0',
+  margin: '0 0 28px',
+  backgroundColor: '#F5F0E8',
   borderRadius: '12px',
-  padding: '14px 24px',
-  textDecoration: 'none',
 }
 const footer = { fontSize: '12px', color: '#999999', margin: '32px 0 0' }
