@@ -11,6 +11,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/sonner';
 import { isDemoMode } from '@/lib/demoMode';
 
+import { isProductFreeForUser } from '@/lib/freeCardPolicy';
 import LibraryResumeCard from '@/components/LibraryResumeCard';
 import watermarkMamma from '@/assets/watermark-mamma.png';
 import creaturesTrio from '@/assets/creatures-trio.png';
@@ -234,13 +235,13 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
   illustrationSize?: string; illustrationPosition?: string; wide?: boolean;
   showFreeBadge?: boolean; badgeText?: string; ageCount?: number;
   hasActiveSession?: boolean; tileHeight?: string;
-  progressText?: string; lastActive?: string; hideFreeBadge?: boolean; totalCards?: number; completedCount?: number;
+  progressText?: string; lastActive?: string; hideFreeBadge?: boolean; showFreeLabel?: boolean; totalCards?: number; completedCount?: number;
   isPurchased?: boolean;
 }>(function PastelTile({
   name, bg, ageLabel, tagline, onClick, illustration, productId, accentColor, taglineColor,
   illustrationOpacity = 0.90, wide = false,
   hasActiveSession = false, tileHeight = '240px',
-  progressText, lastActive, hideFreeBadge = false, totalCards, completedCount,
+  progressText, lastActive, hideFreeBadge = false, showFreeLabel = false, totalCards, completedCount,
   isPurchased = false,
 }, ref) {
   const toShadowColor = (hex: string, alpha: number) => {
@@ -448,9 +449,11 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
               ? (completedCount ?? 0) > 0
                 ? `✦ ${completedCount} samtal`
                 : '✦ Börja er resa'
-              : hideFreeBadge
-                ? '✦ Ert första samtal ✓'
-                : `✦ ${totalCards || 0} samtal · Prova först`}
+              : showFreeLabel
+                ? `✦ ${totalCards || 0} samtal · Prova först`
+                : hideFreeBadge
+                  ? '✦ Ert första samtal ✓'
+                  : `✦ ${totalCards || 0} samtal`}
           </span>
         </div>
     </motion.div>
@@ -1042,6 +1045,8 @@ export default function ProductLibrary() {
                     const suFreeCompleted = stillUsProduct?.freeCardId
                       ? (completedCardSets['still_us']?.has(stillUsProduct.freeCardId) ?? false)
                       : false;
+                    const suFreeEligible = isProductFreeForUser('still_us');
+                    const suShowFreeLabel = suFreeEligible && !suFreeCompleted;
                     const totalCards = stillUsProduct?.cards.length ?? 22;
                     return (
                       <>
@@ -1071,9 +1076,11 @@ export default function ProductLibrary() {
                             ? suCount > 0
                               ? `✦ ${suCount} samtal`
                               : '✦ Börja er resa'
-                            : suFreeCompleted
-                              ? '✦ Ert första samtal ✓'
-                              : `✦ ${totalCards} samtal · Prova först`}
+                            : suShowFreeLabel
+                              ? `✦ ${totalCards} samtal · Prova först`
+                              : suFreeCompleted
+                                ? '✦ Ert första samtal ✓'
+                                : `✦ ${totalCards} samtal`}
                         </span>
                       </>
                     );
@@ -1136,6 +1143,8 @@ export default function ProductLibrary() {
               const freeCardCompleted = product.freeCardId
                 ? (completedCardSets[product.id]?.has(product.freeCardId) ?? false)
                 : false;
+              const freeEligible = isProductFreeForUser(product.id);
+              const showFreeLabel = freeEligible && !freeCardCompleted;
               const ptxt = count > 0
                 ? `${count} av ${product.cards.length} samtal`
                 : `${product.cards.length} samtal`;
@@ -1159,6 +1168,7 @@ export default function ProductLibrary() {
                   isPurchased={purchased.has(product.id)}
                   lastActive={lastActivityMap[product.id]}
                   hideFreeBadge={freeCardCompleted}
+                  showFreeLabel={showFreeLabel}
                   totalCards={product.cards.length}
                   wide
                 />
