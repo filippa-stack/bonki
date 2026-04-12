@@ -513,7 +513,7 @@ export default function KidsCardPortal() {
                   </div>
                 )}
                 {/* GRATIS badge for free card */}
-                {product?.freeCardId === card.id && !allTimeSet.has(card.id) && (
+                {product?.freeCardId === card.id && !allTimeSet.has(card.id) && isProductFreeForUser(product.id) && (
                   <FreeCardBadge />
                 )}
                 {!completedSet.has(card.id) && activeSet.has(card.id) && (
