@@ -9,6 +9,7 @@
  */
 
 import { useState, useMemo, useCallback, useRef, useEffect } from 'react';
+import { isProductFreeForUser } from '@/lib/freeCardPolicy';
 import { usePageBackground } from '@/hooks/usePageBackground';
 import FreeCardBadge from '@/components/FreeCardBadge';
 import PaywallBottomSheet from '@/components/PaywallBottomSheet';
@@ -307,7 +308,7 @@ export default function KidsCardPortal() {
 
   hasRenderedContent.current = true;
 
-  const isFreeCard = card.id === product.freeCardId;
+  const isFreeCard = card.id === product.freeCardId && isProductFreeForUser(product.id);
 
   return (
     <div data-sensitive
