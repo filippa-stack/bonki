@@ -6,6 +6,7 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import { getCompletionMessages } from '@/lib/pronouns';
 import { getProductForCard } from '@/data/products';
+import { isProductFreeForUser } from '@/lib/freeCardPolicy';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
@@ -67,7 +68,7 @@ export default function CompletedSessionView({
   const isChildProduct = product && product.id !== 'still_us';
   const cardIllustration = useCardImage(cardId);
   const { hasAccess: productIsPurchased } = useProductAccess(product?.id ?? '');
-  const isFreeCard = product?.freeCardId === cardId;
+  const isFreeCard = product?.freeCardId === cardId && isProductFreeForUser(product?.id ?? '');
 
   const headline = useMemo(() =>
     completionMessages[Math.floor(Math.random() * completionMessages.length)],
