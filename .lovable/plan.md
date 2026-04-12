@@ -1,46 +1,42 @@
 
-Goal: make email login send the BONKI Swedish 6-digit code email instead of the default English login-link email.
 
-What I found
-- `src/pages/Login.tsx` still calls `supabase.auth.signInWithOtp({ email })` without the OTP-forcing option, so the app is still requesting the link-style flow.
-- Your custom email templates are already correct: both `magic-link.tsx` and `signup.tsx` render the 6-digit token only.
-- The `auth-email-hook` code is present, but the earlier logs show only boot/shutdown entries and no real email invocations, which means auth emails are not being routed through the custom hook in the active environment.
-- This project uses separate Test and Live environments, so the published app can still send default emails even if the hook/templates exist in Test.
+## Fix: Route auth emails through the custom auth-email-hook
 
-Plan
-1. Fix the client auth request
-- Update both email send paths in `src/pages/Login.tsx`:
-  - initial send
-  - resend
-- Add the OTP code-flow option so login requests generate a code instead of a magic link.
+### Root cause (confirmed by logs)
 
-2. Re-activate custom auth emails in the active environment
-- Re-deploy the existing `auth-email-hook`.
-- Verify the project’s custom auth-email handling is enabled for the active environment so auth events are routed through the hook instead of the platform default template.
+The Supabase Auth hook URI in Live points to:
+```
+https://api.lovable.dev/projects/1604837d-627c-4368-a714-aa6b770c1b8c/backend/email-hook
+```
 
-3. Push the fix to Live
-- Publish/update the project so:
-  - the frontend OTP request change reaches the published app
-  - the live environment uses the deployed auth email hook
+This Lovable API proxy intercepts all auth email events and sends its own default English template. Your custom `auth-email-hook` edge function never receives the events — it only gets `/preview` requests from the Cloud UI.
 
-4. Verify end-to-end
-- Test from the actual URL you’re using.
-- Confirm:
-  - the hook receives real invocations
-  - the received email is BONKI-branded / Swedish
-  - it shows only the 6-digit code
-  - there is no login link
-  - OTP verification still signs the user in correctly
+The hook reports `"success": true`, so Supabase believes the email was handled. But the proxy sends the default template, not your custom BONKI Swedish template.
 
-Technical details
-- File to change: `src/pages/Login.tsx`
-- No template rewrite is needed unless you want copy/styling adjustments later.
-- Main root causes to fix:
-  1. login flow still requests the wrong email mode
-  2. custom auth-email routing is not active in the environment currently sending the emails
+### What needs to happen
 
-Success criteria
-- Requesting email login sends a Swedish BONKI email
-- Email contains only the 6-digit code
-- No default English Lovable email appears
-- `auth-email-hook` shows actual invocation logs during the test
+The Lovable proxy needs to forward auth email events to the deployed `auth-email-hook` edge function instead of handling them with default templates. This is controlled by the project email activation state within Lovable's platform.
+
+### Plan
+
+1. **Re-scaffold auth email templates**
+   - Call `scaffold_auth_email_templates` to force the platform to re-register this project's custom auth email hook with the proxy layer
+   - This is not about changing template code — it's about triggering the platform reconciliation that tells the proxy "this project has custom templates, forward events to the edge function"
+
+2. **Re-deploy auth-email-hook**
+   - Deploy the edge function to ensure the proxy has a valid target to forward to
+
+3. **Verify the routing changed**
+   - Trigger a login from the published app
+   - Check auth logs: the hook URL should either change or the proxy should now forward to the edge function
+   - Check edge function logs: should show `Received auth event` entries instead of only boot/shutdown
+   - Check the received email: should be BONKI-branded, Swedish, 6-digit code only
+
+### Why this is different from previous attempts
+
+Previous attempts only re-deployed the edge function. The issue is not the edge function — it's the proxy layer configuration. Re-scaffolding triggers a different reconciliation path that updates how the proxy handles auth events for this project.
+
+### Fallback
+
+If re-scaffolding still doesn't change the proxy behavior, this is a platform-level issue where the proxy's project email forwarding state is stuck. At that point, the correct escalation is to Lovable platform support with the concrete finding: "Auth hook fires to api.lovable.dev proxy successfully, but proxy sends default template instead of forwarding to the project's custom auth-email-hook edge function."
+
