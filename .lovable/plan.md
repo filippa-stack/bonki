@@ -1,25 +1,16 @@
 
 
-## Prompt 1: Utility function + stop deleting audience key
+## Prompt 2: Apply free card policy to paywall gates
 
-### Changes
+Two one-line changes plus imports.
 
-**1. Create `src/lib/freeCardPolicy.ts`**
-```typescript
-const AUDIENCE_PRODUCT_MAP: Record<string, string> = {
-  young: 'jag_i_mig',
-  middle: 'jag_med_andra',
-  teen: 'jag_i_varlden',
-  couple: 'still_us',
-};
+### File 1: `src/pages/CardView.tsx`
+- Add import: `import { isProductFreeForUser } from '@/lib/freeCardPolicy';`
+- Line 199: Change `const isFreeCard = !!(product?.freeCardId && cardId === product.freeCardId);` → `const isFreeCard = !!(product?.freeCardId && cardId === product.freeCardId && isProductFreeForUser(product.id));`
 
-export function isProductFreeForUser(productId: string): boolean {
-  const audience = localStorage.getItem('bonki-onboarding-audience');
-  if (!audience) return true;
-  return AUDIENCE_PRODUCT_MAP[audience] === productId;
-}
-```
+### File 2: `src/pages/KidsCardPortal.tsx`
+- Add import: `import { isProductFreeForUser } from '@/lib/freeCardPolicy';`
+- Line 310: Change `const isFreeCard = card.id === product.freeCardId;` → `const isFreeCard = card.id === product.freeCardId && isProductFreeForUser(product.id);`
 
-**2. Edit `src/pages/Index.tsx`**
-Remove line 156 (`localStorage.removeItem('bonki-onboarding-audience');`) so the audience key persists permanently after onboarding.
+No other logic changes in either file.
 
