@@ -47,3 +47,5 @@ project_id = "wcienwozdurwhswaarjy"
     verify_jwt = false
   [functions.update-step-completion]
     verify_jwt = false
+  [functions.process-email-queue]
+    verify_jwt = true

@@ -31,7 +31,7 @@ export const InviteEmail = ({
       <Container style={container}>
         <Heading style={h1}>Du har blivit inbjuden</Heading>
         <Text style={text}>
-          Du har blivit inbjuden till Bonki. Klicka på knappen nedan för att acceptera inbjudan och skapa ditt konto.
+          Någon har bjudit in dig till Bonki. Klicka på knappen nedan för att acceptera inbjudan och skapa ditt konto.
         </Text>
         <Button style={button} href={confirmationUrl}>
           Acceptera inbjudan

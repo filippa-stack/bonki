@@ -22,11 +22,11 @@ export const ReauthenticationEmail = ({ token }: ReauthenticationEmailProps) => 
     <Preview>Din verifieringskod för Bonki: {token}</Preview>
     <Body style={main}>
       <Container style={container}>
-        <Heading style={h1}>Din verifieringskod</Heading>
+        <Heading style={h1}>Bekräfta din identitet</Heading>
         <Text style={text}>Ange koden nedan för att bekräfta din identitet:</Text>
         <Text style={code}>{token}</Text>
         <Text style={footer}>
-          Om du inte begärde den här koden kan du ignorera det här mejlet.
+          Koden gäller en kort stund. Om du inte begärde den kan du ignorera det här mejlet.
         </Text>
       </Container>
     </Body>

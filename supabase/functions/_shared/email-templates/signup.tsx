@@ -14,27 +14,26 @@ import {
 
 interface SignupEmailProps {
   siteName: string
-  siteUrl: string
-  recipient: string
   token: string
 }
 
 export const SignupEmail = ({
   siteName,
-  siteUrl,
-  recipient,
   token,
 }: SignupEmailProps) => (
   <Html lang="sv" dir="ltr">
     <Head />
-    <Preview>Din bekräftelsekod för Bonki: {token}</Preview>
+    <Preview>Bekräfta ditt konto på Bonki: {token}</Preview>
     <Body style={main}>
       <Container style={container}>
         <Heading style={h1}>Välkommen till Bonki</Heading>
         <Text style={text}>
-          Tack för att du registrerade dig! Ange koden nedan i appen för att bekräfta din e-postadress ({recipient}).
+          Ange koden nedan i appen för att bekräfta din e-postadress.
         </Text>
         <Text style={code}>{token}</Text>
+        <Text style={text}>
+          Koden gäller i 10 minuter.
+        </Text>
         <Text style={footer}>
           Om du inte skapade ett konto kan du ignorera det här mejlet.
         </Text>
