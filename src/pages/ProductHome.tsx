@@ -10,6 +10,7 @@ import { useThemeSwitcher } from '@/hooks/useThemeSwitcher';
 import ProductIntro, { useProductIntroNeeded } from '@/components/ProductIntro';
 import KidsProductHome from '@/components/KidsProductHome';
 import { KIDS_PRODUCT_IDS } from '@/hooks/useKidsProductProgress';
+import { isProductFreeForUser } from '@/lib/freeCardPolicy';
 
 /** Still Us free card ID */
 export default function ProductHome() {
@@ -81,7 +82,7 @@ export default function ProductHome() {
         onStartFreeCard={() => {
           if (product.id) localStorage.setItem(`bonki-intro-seen-${product.id}`, '1');
           setShowIntro(false);
-          if (product.freeCardId) {
+          if (product.freeCardId && isProductFreeForUser(product.id)) {
             localStorage.setItem('bonki-last-active-product', product.slug);
             const freeCard = product.cards.find(c => c.id === product.freeCardId);
             const catId = freeCard?.categoryId;
