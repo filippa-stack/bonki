@@ -4,6 +4,7 @@
 // All session state must come from normalized tables.
 
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import { isProductFreeForUser } from '@/lib/freeCardPolicy';
 import { QUESTION_HOOKS } from '@/data/questionHooks';
 import { useParams, useNavigate, useSearchParams, useLocation } from 'react-router-dom';
 import {
@@ -196,7 +197,7 @@ export default function CardView() {
   const cardImageUrl = useCardImage(cardId);
 
   // ─── Paywall: check if user has access to this product ───
-  const isFreeCard = !!(product?.freeCardId && cardId === product.freeCardId);
+  const isFreeCard = !!(product?.freeCardId && cardId === product.freeCardId && isProductFreeForUser(product.id));
   const paywallProductId = product?.id ?? (isStillUsCard ? 'still_us' : '');
   const { hasAccess: hasProductAccess, loading: accessLoading } = useProductAccess(paywallProductId);
   const [demoBypassed, setDemoBypassed] = useState(false);
