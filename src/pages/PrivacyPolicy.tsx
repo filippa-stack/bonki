@@ -59,7 +59,7 @@ export default function PrivacyPolicy() {
             <li>Invända mot behandling av dina uppgifter</li>
             <li>Begära dataportabilitet</li>
           </ul>
-          <p>Kontakta oss på <a href="mailto:hej@bonkiapp.com" style={{ color: '#D4943A' }}>hej@bonkiapp.com</a> för att utöva dina rättigheter.</p>
+          <p>Kontakta oss på <a href="mailto:sofia@bonkistudio.com" style={{ color: '#D4943A' }}>sofia@bonkistudio.com</a> för att utöva dina rättigheter.</p>
         </Section>
 
         <Section title="6. Barn och integritet">
@@ -76,7 +76,7 @@ export default function PrivacyPolicy() {
 
         <Section title="9. Kontakt">
           <p>Bonki Studio</p>
-          <p>E-post: <a href="mailto:hej@bonkiapp.com" style={{ color: '#D4943A' }}>hej@bonkiapp.com</a></p>
+          <p>E-post: <a href="mailto:sofia@bonkistudio.com" style={{ color: '#D4943A' }}>sofia@bonkistudio.com</a></p>
           <p>Webb: <a href="https://bonkiapp.com" style={{ color: '#D4943A' }}>bonkiapp.com</a></p>
         </Section>
       </div>
