@@ -9,7 +9,6 @@ import {
   Head,
   Heading,
   Html,
-  Link,
   Preview,
   Text,
 } from 'npm:@react-email/components@0.0.22'
@@ -34,10 +33,7 @@ export const EmailChangeEmail = ({
       <Container style={container}>
         <Heading style={h1}>Bekräfta din e-poständring</Heading>
         <Text style={text}>
-          Du begärde att ändra din e-postadress för Bonki från{' '}
-          <Link href={`mailto:${email}`} style={link}>{email}</Link>{' '}
-          till{' '}
-          <Link href={`mailto:${newEmail}`} style={link}>{newEmail}</Link>.
+          Du har begärt att ändra din e-postadress för Bonki från {email} till {newEmail}.
         </Text>
         <Text style={text}>
           Klicka på knappen nedan för att bekräfta ändringen:
@@ -46,7 +42,7 @@ export const EmailChangeEmail = ({
           Bekräfta e-poständring
         </Button>
         <Text style={footer}>
-          Om du inte begärde den här ändringen bör du säkra ditt konto omedelbart.
+          Om du inte begärde den här ändringen, vänligen säkra ditt konto omedelbart.
         </Text>
       </Container>
     </Body>
@@ -69,14 +65,13 @@ const text = {
   lineHeight: '1.6',
   margin: '0 0 28px',
 }
-const link = { color: '#1A1A2E', textDecoration: 'underline' }
 const button = {
   backgroundColor: '#E85D2C',
   color: '#ffffff',
   fontSize: '15px',
-  fontWeight: 'bold' as const,
-  borderRadius: '12px',
+  borderRadius: '8px',
   padding: '14px 24px',
   textDecoration: 'none',
+  fontWeight: 'bold' as const,
 }
 const footer = { fontSize: '12px', color: '#999999', margin: '32px 0 0' }

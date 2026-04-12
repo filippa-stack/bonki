@@ -19,14 +19,14 @@ interface ReauthenticationEmailProps {
 export const ReauthenticationEmail = ({ token }: ReauthenticationEmailProps) => (
   <Html lang="sv" dir="ltr">
     <Head />
-    <Preview>Din verifieringskod för Bonki</Preview>
+    <Preview>Din verifieringskod för Bonki: {token}</Preview>
     <Body style={main}>
       <Container style={container}>
-        <Heading style={h1}>Bekräfta din identitet</Heading>
-        <Text style={text}>Använd koden nedan för att verifiera dig:</Text>
-        <Text style={codeStyle}>{token}</Text>
+        <Heading style={h1}>Din verifieringskod</Heading>
+        <Text style={text}>Ange koden nedan för att bekräfta din identitet:</Text>
+        <Text style={code}>{token}</Text>
         <Text style={footer}>
-          Koden upphör att gälla inom kort. Om du inte begärde den kan du ignorera det här mejlet.
+          Om du inte begärde den här koden kan du ignorera det här mejlet.
         </Text>
       </Container>
     </Body>
@@ -49,11 +49,15 @@ const text = {
   lineHeight: '1.6',
   margin: '0 0 28px',
 }
-const codeStyle = {
-  fontFamily: 'Courier, monospace',
-  fontSize: '24px',
+const code = {
+  fontSize: '36px',
   fontWeight: 'bold' as const,
-  color: '#E85D2C',
-  margin: '0 0 32px',
+  color: '#1A1A2E',
+  letterSpacing: '8px',
+  textAlign: 'center' as const,
+  padding: '20px 0',
+  margin: '0 0 28px',
+  backgroundColor: '#F5F0E8',
+  borderRadius: '12px',
 }
 const footer = { fontSize: '12px', color: '#999999', margin: '32px 0 0' }

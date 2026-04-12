@@ -31,13 +31,13 @@ export const InviteEmail = ({
       <Container style={container}>
         <Heading style={h1}>Du har blivit inbjuden</Heading>
         <Text style={text}>
-          Du har blivit inbjuden att gå med i Bonki. Klicka på knappen nedan för att acceptera inbjudan och skapa ditt konto.
+          Du har blivit inbjuden till Bonki. Klicka på knappen nedan för att acceptera inbjudan och skapa ditt konto.
         </Text>
         <Button style={button} href={confirmationUrl}>
           Acceptera inbjudan
         </Button>
         <Text style={footer}>
-          Om du inte förväntade dig den här inbjudan kan du ignorera det här mejlet.
+          Om du inte väntade dig den här inbjudan kan du ignorera det här mejlet.
         </Text>
       </Container>
     </Body>
@@ -64,9 +64,9 @@ const button = {
   backgroundColor: '#E85D2C',
   color: '#ffffff',
   fontSize: '15px',
-  fontWeight: 'bold' as const,
-  borderRadius: '12px',
+  borderRadius: '8px',
   padding: '14px 24px',
   textDecoration: 'none',
+  fontWeight: 'bold' as const,
 }
 const footer = { fontSize: '12px', color: '#999999', margin: '32px 0 0' }
