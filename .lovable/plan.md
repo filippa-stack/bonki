@@ -1,24 +1,18 @@
 
 
-## Update signup email template to show OTP code instead of link
+## Fix: Activate auth-email-hook in production
 
 ### Problem
-The `signup.tsx` email template renders a clickable "Bekräfta e-post" button with `confirmationUrl`. Since the app uses OTP-based auth (`signInWithOtp` + `verifyOtp`), new users receive both a 6-digit code (in the token field) and a clickable link, which is confusing. The magic-link template already correctly shows only the code.
+The `auth-email-hook` edge function exists and is deployed, but Supabase's auth system isn't routing emails through it. The default English templates are being used instead. This happens because the hook reconciliation hasn't completed on the Live environment.
 
-### Change
+### Solution (no code changes needed)
 
-**`supabase/functions/_shared/email-templates/signup.tsx`** — Replace the confirmation URL button with a token code display, matching the magic-link template style:
+1. **Re-deploy `auth-email-hook`** using the deploy tool — this triggers the automatic reconciliation process that registers the function as the active email hook with Supabase Auth
+2. **Re-publish the project** — the publish flow's OnPublish hook provisions the `process-email-queue` cron job and vault secret on the production Supabase instance (these are runtime operations that don't transfer via schema migrations)
+3. **Verify** by checking edge function logs after a test signup to confirm the hook receives invocations
 
-- Change the interface to accept `token: string` instead of `confirmationUrl: string`
-- Remove the `Button` import and the `<Button>` element
-- Add a prominent code display (`<Text style={code}>{token}</Text>`) like the magic-link template
-- Update the copy from "klicka på knappen nedan" to "ange koden nedan i appen"
-- Remove the `button` style constant, add a `code` style constant matching the magic-link template
-
-**`supabase/functions/auth-email-hook/index.ts`** — No changes needed. The hook already passes `token: payload.data.token` to all templates.
-
-After editing, redeploy the `auth-email-hook` edge function so the updated template takes effect.
-
-### No other files affected
-The magic-link, recovery, invite, email-change, and reauthentication templates are unaffected.
+### Why this works
+- Deploying the function triggers Lovable's internal reconcile flow that sets the function as the `send_email` hook in Supabase Auth config
+- Publishing ensures the production cron job (`process-email-queue`) exists so enqueued emails are actually dispatched
+- No dashboard toggle or manual hook configuration is needed — Lovable handles it automatically
 
