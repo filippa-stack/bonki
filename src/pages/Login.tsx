@@ -115,6 +115,7 @@ export default function Login() {
     try {
       const { error } = await supabase.auth.signInWithOtp({
         email: email.trim(),
+        options: { shouldCreateUser: true },
       });
 
       if (error) {
@@ -164,6 +165,7 @@ export default function Login() {
     try {
       const { error } = await supabase.auth.signInWithOtp({
         email: email.trim(),
+        options: { shouldCreateUser: true },
       });
       if (error) {
         setError(error.message || t('login.error_generic'));
