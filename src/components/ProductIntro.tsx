@@ -7,6 +7,7 @@ import { allProducts } from '@/data/products';
 import { useCardImage } from '@/hooks/useCardImage';
 import { supabase } from '@/integrations/supabase/client';
 import { LANTERN_GLOW, DRIFTWOOD, MIDNIGHT_INK, BONKI_ORANGE, DEEP_SAFFRON, productTileColors } from '@/lib/palette';
+import { isProductFreeForUser } from '@/lib/freeCardPolicy';
 import { usePageBackground } from '@/hooks/usePageBackground';
 
 // ── Illustration imports (same as product homes) ──
@@ -108,6 +109,7 @@ export default function ProductIntro({
   const [initiating, setInitiating] = useState(false);
   const freeCardImageUrl = useCardImage(freeCardId);
   const isStillUs = productId === 'still_us';
+  const hasFreeCard = isProductFreeForUser(productId);
 
   const product = useMemo(() => allProducts.find((p) => p.id === productId), [productId]);
 
@@ -162,11 +164,9 @@ export default function ProductIntro({
   const freeCardLabel = isStillUs ? STILL_US_FREE_CARD_LABEL : 'Ert första samtal';
 
   // CTA label
-  const ctaLabel = isStillUs
-    ? STILL_US_CTA
-    : resolvedFreeCardTitle
-      ? `Börja med ${resolvedFreeCardTitle}`
-      : introData.ctaLabel;
+  const ctaLabel = hasFreeCard
+    ? (isStillUs ? STILL_US_CTA : resolvedFreeCardTitle ? `Börja med ${resolvedFreeCardTitle}` : introData.ctaLabel)
+    : introData.ctaLabel;
 
   return (
     <div
@@ -379,18 +379,20 @@ export default function ProductIntro({
             {ctaLabel}
           </button>
 
-          <p style={{
-            fontFamily: 'var(--font-sans)',
-            fontStyle: 'italic',
-            fontSize: '14px',
-            color: LANTERN_GLOW,
-            opacity: 0.6,
-            textAlign: 'center',
-            marginTop: '12px',
-            lineHeight: 1.5,
-          }}>
-            Ert första samtal är gratis — ingen betalning krävs.
-          </p>
+          {hasFreeCard && (
+            <p style={{
+              fontFamily: 'var(--font-sans)',
+              fontStyle: 'italic',
+              fontSize: '14px',
+              color: LANTERN_GLOW,
+              opacity: 0.6,
+              textAlign: 'center',
+              marginTop: '12px',
+              lineHeight: 1.5,
+            }}>
+              Ert första samtal är gratis — ingen betalning krävs.
+            </p>
+          )}
 
           {/* Skip link — goes to product home without starting free card */}
           <button
