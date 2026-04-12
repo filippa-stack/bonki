@@ -153,7 +153,7 @@ export default function Index() {
     const audience = localStorage.getItem('bonki-onboarding-audience');
     if (audience && !localStorage.getItem('bonki-first-session-done')) {
       audienceRouteConsumed = true;
-      localStorage.removeItem('bonki-onboarding-audience');
+      
       localStorage.setItem('bonki-first-session-done', '1');
       const routes: Record<string, string> = {
         young: '/product/jag-i-mig',
