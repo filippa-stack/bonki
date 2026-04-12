@@ -17,12 +17,12 @@ const corsHeaders = {
 }
 
 const EMAIL_SUBJECTS: Record<string, string> = {
-  signup: 'Bekräfta din e-post',
-  invite: 'Du har blivit inbjuden',
-  magiclink: 'Din inloggningskod',
-  recovery: 'Återställ ditt lösenord',
-  email_change: 'Bekräfta din e-poständring',
-  reauthentication: 'Din verifieringskod',
+  signup: 'Confirm your email',
+  invite: "You've been invited",
+  magiclink: 'Your login link',
+  recovery: 'Reset your password',
+  email_change: 'Confirm your new email',
+  reauthentication: 'Your verification code',
 }
 
 // Template mapping
@@ -53,11 +53,11 @@ const SAMPLE_DATA: Record<string, object> = {
     siteName: SITE_NAME,
     siteUrl: SAMPLE_PROJECT_URL,
     recipient: SAMPLE_EMAIL,
-    token: '123456',
+    confirmationUrl: SAMPLE_PROJECT_URL,
   },
   magiclink: {
     siteName: SITE_NAME,
-    token: '123456',
+    confirmationUrl: SAMPLE_PROJECT_URL,
   },
   recovery: {
     siteName: SITE_NAME,
