@@ -19,14 +19,14 @@ interface ReauthenticationEmailProps {
 export const ReauthenticationEmail = ({ token }: ReauthenticationEmailProps) => (
   <Html lang="sv" dir="ltr">
     <Head />
-    <Preview>Din verifieringskod för Bonki: {token}</Preview>
+    <Preview>Din verifieringskod: {token}</Preview>
     <Body style={main}>
       <Container style={container}>
-        <Heading style={h1}>Bekräfta din identitet</Heading>
+        <Heading style={h1}>Din verifieringskod</Heading>
         <Text style={text}>Ange koden nedan för att bekräfta din identitet:</Text>
         <Text style={code}>{token}</Text>
         <Text style={footer}>
-          Koden gäller en kort stund. Om du inte begärde den kan du ignorera det här mejlet.
+          Koden gäller en kort stund. Om du inte begärde detta kan du ignorera det här mejlet.
         </Text>
       </Container>
     </Body>

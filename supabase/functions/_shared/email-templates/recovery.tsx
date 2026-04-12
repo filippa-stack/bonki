@@ -29,13 +29,15 @@ export const RecoveryEmail = ({
       <Container style={container}>
         <Heading style={h1}>Återställ ditt lösenord</Heading>
         <Text style={text}>
-          Vi fick en begäran om att återställa ditt lösenord för Bonki. Klicka på knappen nedan för att välja ett nytt lösenord.
+          Vi fick en förfrågan om att återställa ditt lösenord för Bonki.
+          Klicka på knappen nedan för att välja ett nytt lösenord.
         </Text>
         <Button style={button} href={confirmationUrl}>
           Återställ lösenord
         </Button>
         <Text style={footer}>
-          Om du inte begärde en lösenordsåterställning kan du ignorera det här mejlet.
+          Om du inte begärde detta kan du ignorera det här mejlet.
+          Ditt lösenord ändras inte.
         </Text>
       </Container>
     </Body>
@@ -62,9 +64,8 @@ const button = {
   backgroundColor: '#E85D2C',
   color: '#ffffff',
   fontSize: '15px',
-  borderRadius: '8px',
+  borderRadius: '12px',
   padding: '14px 24px',
   textDecoration: 'none',
-  fontWeight: 'bold' as const,
 }
 const footer = { fontSize: '12px', color: '#999999', margin: '32px 0 0' }
