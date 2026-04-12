@@ -1,79 +1,44 @@
 
 
-## Prompt 3: Update library tile badges with free card eligibility
+## Prompt 4: Update ProductIntro copy for free card eligibility
 
-### Summary
-Add `isProductFreeForUser` check to `ProductLibrary.tsx` so badge text reflects whether the user is eligible for a free card on each product. Introduces a new `showFreeLabel` prop on `PastelTile` to cleanly handle the four badge states.
+### Changes (single file: `src/components/ProductIntro.tsx`)
 
-### Changes (single file: `src/components/ProductLibrary.tsx`)
-
-**1. Add import (top of file)**
+**1. Add import (line 9 area)**
 ```typescript
 import { isProductFreeForUser } from '@/lib/freeCardPolicy';
 ```
 
-**2. PastelTile props — add `showFreeLabel` prop (~line 230-244)**
-- Add `showFreeLabel?: boolean;` to the props type
-- Add `showFreeLabel = false` to destructuring
-- Remove `hideFreeBadge` from props (replaced by `showFreeLabel` + `freeCardCompleted` logic below)
-
-Actually, keep `hideFreeBadge` for backward compat but add `showFreeLabel`. The badge text (~line 447-453) changes to:
-
+**2. Add `hasFreeCard` variable (after line 110)**
 ```typescript
-{isPurchased
-  ? (completedCount ?? 0) > 0
-    ? `✦ ${completedCount} samtal`
-    : '✦ Börja er resa'
-  : showFreeLabel
-    ? `✦ ${totalCards || 0} samtal · Prova först`
-    : hideFreeBadge
-      ? '✦ Ert första samtal ✓'
-      : `✦ ${totalCards || 0} samtal`}
+const hasFreeCard = isProductFreeForUser(productId);
 ```
 
-Badge background tint (~line 428-431): use `hideFreeBadge` (free completed) for the warm Lantern Glow tint (existing behavior preserved).
-
-**3. Still Us tile (~line 1042-1076)**
-After `suFreeCompleted` computation, add:
+**3. Update CTA label logic (lines 164-169)**
+Replace:
 ```typescript
-const suFreeEligible = isProductFreeForUser('still_us');
-const suShowFreeLabel = suFreeEligible && !suFreeCompleted;
+const ctaLabel = isStillUs
+  ? STILL_US_CTA
+  : resolvedFreeCardTitle
+    ? `Börja med ${resolvedFreeCardTitle}`
+    : introData.ctaLabel;
+```
+With:
+```typescript
+const ctaLabel = hasFreeCard
+  ? (isStillUs ? STILL_US_CTA : resolvedFreeCardTitle ? `Börja med ${resolvedFreeCardTitle}` : introData.ctaLabel)
+  : introData.ctaLabel;
 ```
 
-Update the inline badge text (~line 1070-1076) to match the same 4-state logic:
-```typescript
-{purchased.has('still_us')
-  ? suCount > 0
-    ? `✦ ${suCount} samtal`
-    : '✦ Börja er resa'
-  : suShowFreeLabel
-    ? `✦ ${totalCards} samtal · Prova först`
-    : suFreeCompleted
-      ? '✦ Ert första samtal ✓'
-      : `✦ ${totalCards} samtal`}
+**4. Conditionally render "gratis" reassurance text**
+Wrap the "Ert första samtal är gratis" paragraph so it only renders when `hasFreeCard` is true:
+```tsx
+{hasFreeCard && (
+  <p style={...}>
+    Ert första samtal är gratis — ingen betalning krävs.
+  </p>
+)}
 ```
 
-Update the background/border tint conditions accordingly (keep warm tint for `suFreeCompleted`).
-
-**4. Kids product tiles (~line 1134-1164)**
-After `freeCardCompleted` computation, add:
-```typescript
-const freeEligible = isProductFreeForUser(product.id);
-const showFreeLabel = freeEligible && !freeCardCompleted;
-```
-
-Pass to PastelTile:
-```typescript
-hideFreeBadge={freeCardCompleted}
-showFreeLabel={showFreeLabel}
-```
-
-### Badge states (all tiles)
-| State | Badge text |
-|-------|-----------|
-| Purchased, has progress | `✦ 6 samtal` |
-| Purchased, no progress | `✦ Börja er resa` |
-| Free eligible, not tried | `✦ 21 samtal · Prova först` |
-| Free card completed | `✦ Ert första samtal ✓` |
-| Not eligible, not purchased | `✦ 21 samtal` |
+No other changes. All protected patterns, paywall logic, session handling, and product data remain untouched.
 
