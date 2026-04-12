@@ -1,29 +1,25 @@
 
 
-## Plan: Hardcode PostHog API Key
+## Prompt 1: Utility function + stop deleting audience key
 
-**One file, one change.**
+### Changes
 
-In `src/lib/posthog.ts`, replace the `import.meta.env.VITE_POSTHOG_KEY` reference with the hardcoded key string `'phc_w5wABbJBgmrRGDGsZX4GaGYovzvt2qW6is7CXo5Jrxcp'`. Remove the env-var guard since the key is now always present.
-
-### Change
-
-**`src/lib/posthog.ts`** — Replace lines 4–7:
+**1. Create `src/lib/freeCardPolicy.ts`**
 ```typescript
-// Before
-const key = import.meta.env.VITE_POSTHOG_KEY;
-if (!key) {
-  console.warn('[PostHog] VITE_POSTHOG_KEY not set — analytics disabled');
-  return;
+const AUDIENCE_PRODUCT_MAP: Record<string, string> = {
+  young: 'jag_i_mig',
+  middle: 'jag_med_andra',
+  teen: 'jag_i_varlden',
+  couple: 'still_us',
+};
+
+export function isProductFreeForUser(productId: string): boolean {
+  const audience = localStorage.getItem('bonki-onboarding-audience');
+  if (!audience) return true;
+  return AUDIENCE_PRODUCT_MAP[audience] === productId;
 }
-
-posthog.init(key, {
 ```
 
-```typescript
-// After
-posthog.init('phc_w5wABbJBgmrRGDGsZX4GaGYovzvt2qW6is7CXo5Jrxcp', {
-```
-
-No other files touched.
+**2. Edit `src/pages/Index.tsx`**
+Remove line 156 (`localStorage.removeItem('bonki-onboarding-audience');`) so the audience key persists permanently after onboarding.
 
