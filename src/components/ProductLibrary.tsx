@@ -280,10 +280,13 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
         border: light
           ? '1px solid rgba(0, 0, 0, 0.08)'
           : '1px solid rgba(255, 255, 255, 0.15)',
-        boxShadow: [
-          `0 4px 28px ${hexToRgba(bg, 0.20)}`,
-          `0 2px 8px rgba(0, 0, 0, 0.08)`,
-        ].join(', '),
+        transform: showFreeLabel ? 'scale(1.02)' : undefined,
+        boxShadow: showFreeLabel
+          ? '0 4px 24px rgba(0,0,0,0.35), 0 0 0 2px rgba(255,255,255,0.12)'
+          : [
+              `0 4px 28px ${hexToRgba(bg, 0.20)}`,
+              `0 2px 8px rgba(0, 0, 0, 0.08)`,
+            ].join(', '),
       }}
     >
       {/* Illustration — right-aligned, bleeds off edge dramatically */}
@@ -427,16 +430,20 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
               borderRadius: '20px',
               background: isPurchased
                 ? 'hsla(0, 0%, 100%, 0.15)'
-                : hideFreeBadge
-                  ? 'hsla(45, 80%, 92%, 0.15)'
-                  : 'hsla(0, 0%, 100%, 0.15)',
+                : showFreeLabel
+                  ? 'rgba(255, 255, 255, 0.25)'
+                  : hideFreeBadge
+                    ? 'hsla(45, 80%, 92%, 0.15)'
+                    : 'hsla(0, 0%, 100%, 0.15)',
               backdropFilter: 'blur(8px)',
               WebkitBackdropFilter: 'blur(8px)',
               border: isPurchased
                 ? '1px solid hsla(0, 0%, 100%, 0.25)'
-                : hideFreeBadge
-                  ? '1px solid hsla(45, 70%, 85%, 0.30)'
-                  : '1px solid hsla(0, 0%, 100%, 0.25)',
+                : showFreeLabel
+                  ? '1px solid rgba(255, 255, 255, 0.35)'
+                  : hideFreeBadge
+                    ? '1px solid hsla(45, 70%, 85%, 0.30)'
+                    : '1px solid hsla(0, 0%, 100%, 0.25)',
               boxShadow: '0 0 12px hsla(0, 0%, 100%, 0.08), inset 0 1px 0 hsla(0, 0%, 100%, 0.15)',
               fontFamily: "var(--font-body)",
               fontSize: '11px',
@@ -450,10 +457,10 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
                 ? `✦ ${completedCount} samtal`
                 : '✦ Börja er resa'
               : showFreeLabel
-                ? `✦ ${totalCards || 0} samtal · Prova först`
+                ? <><span style={{ fontSize: '12px', color: 'white' }}>✦</span> Första gratis · {totalCards || 0} samtal</>
                 : hideFreeBadge
-                  ? '✦ Ert första samtal ✓'
-                  : `✦ ${totalCards || 0} samtal`}
+                  ? <><svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ filter: 'drop-shadow(0 0 3px rgba(212,245,192,0.7)) drop-shadow(0 0 6px rgba(212,245,192,0.4))' }}><rect x="2" y="6.5" width="10" height="6.5" rx="1.5" fill="rgba(212,245,192,0.5)" stroke="#D4F5C0" strokeWidth="0.75" /><path d="M4.5 6.5V4.5C4.5 3.12 5.62 2 7 2C8.38 2 9.5 3.12 9.5 4.5V6.5" stroke="#D4F5C0" strokeWidth="1.5" strokeLinecap="round" /></svg> {totalCards || 0} samtal</>
+                  : <><svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ filter: 'drop-shadow(0 0 3px rgba(212,245,192,0.7)) drop-shadow(0 0 6px rgba(212,245,192,0.4))' }}><rect x="2" y="6.5" width="10" height="6.5" rx="1.5" fill="rgba(212,245,192,0.5)" stroke="#D4F5C0" strokeWidth="0.75" /><path d="M4.5 6.5V4.5C4.5 3.12 5.62 2 7 2C8.38 2 9.5 3.12 9.5 4.5V6.5" stroke="#D4F5C0" strokeWidth="1.5" strokeLinecap="round" /></svg> {totalCards || 0} samtal</>}
           </span>
         </div>
     </motion.div>
