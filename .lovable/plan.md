@@ -1,27 +1,32 @@
 
 
-## Change 3 — Replace sparkle with Ghost Glow lock on locked kids tiles
+## Change 4c — Still Us pill content: replace sparkle with Ghost Glow lock
 
 **Single file**: `src/components/ProductLibrary.tsx`
 
-### 4 sub-changes
+### Change
 
-**3a/3b. Pill content** (lines 448–456)
-Replace the three non-purchased branches of the pill content ternary:
-- `showFreeLabel`: `✦ X samtal · Prova först` → `<><span style={white ✦}>✦</span> Första gratis · X samtal</>`
-- `hideFreeBadge`: `✦ Ert första samtal ✓` → `<>🔒SVG X samtal</>`  (Ghost Glow lock SVG inline)
-- default: `✦ X samtal` → `<>🔒SVG X samtal</>` (same lock SVG)
+Replace lines 1136–1140 (the three non-purchased branches of the Still Us pill content ternary):
 
-The lock SVG uses Ghost Glow palette: fill `rgba(212,245,192,0.5)`, stroke `#D4F5C0`, dual drop-shadow glow.
+**From:**
+```tsx
+: suShowFreeLabel
+  ? `✦ ${totalCards} samtal · Prova först`
+  : suFreeCompleted
+    ? '✦ Ert första samtal ✓'
+    : `✦ ${totalCards} samtal`}
+```
 
-**3c. Pill background/border** (lines 428–439)
-Add a `showFreeLabel` branch before `hideFreeBadge` in both the `background` and `border` ternaries, giving the free-eligible tile a brighter pill (`rgba(255,255,255,0.25)` bg, `0.35` border).
+**To:**
+```tsx
+: suShowFreeLabel
+  ? <><span style={{ fontSize: '12px', color: 'white' }}>✦</span> Första gratis · {totalCards} samtal</>
+  : suFreeCompleted
+    ? <><svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ filter: 'drop-shadow(0 0 3px rgba(212,245,192,0.7)) drop-shadow(0 0 6px rgba(212,245,192,0.4))' }}><rect x="2" y="6.5" width="10" height="6.5" rx="1.5" fill="rgba(212,245,192,0.5)" stroke="#D4F5C0" strokeWidth="0.75" /><path d="M4.5 6.5V4.5C4.5 3.12 5.62 2 7 2C8.38 2 9.5 3.12 9.5 4.5V6.5" stroke="#D4F5C0" strokeWidth="1.5" strokeLinecap="round" /></svg> {totalCards} samtal</>
+    : <><svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ filter: 'drop-shadow(0 0 3px rgba(212,245,192,0.7)) drop-shadow(0 0 6px rgba(212,245,192,0.4))' }}><rect x="2" y="6.5" width="10" height="6.5" rx="1.5" fill="rgba(212,245,192,0.5)" stroke="#D4F5C0" strokeWidth="0.75" /><path d="M4.5 6.5V4.5C4.5 3.12 5.62 2 7 2C8.38 2 9.5 3.12 9.5 4.5V6.5" stroke="#D4F5C0" strokeWidth="1.5" strokeLinecap="round" /></svg> {totalCards} samtal</>}
+```
 
-**3d. Free card elevation** (lines 283–286)
-In the PastelTile root `<motion.div>` style, add conditional `transform: 'scale(1.02)'` and swap `boxShadow` to a stronger shadow+ring when `showFreeLabel` is true.
+Uses the **Ghost Glow green** lock SVG (same as Change 3 kids tiles): `fill="rgba(212,245,192,0.5)"`, `stroke="#D4F5C0"`, dual drop-shadow glow `rgba(212,245,192, 0.7/0.4)`.
 
-### What stays unchanged
-- `isPurchased` pill branches (sparkle pills for subscribers)
-- Tile backgrounds, illustrations, tap targets, navigation
-- All other files
+The `isPurchased` branches (lines 1132–1135) remain untouched.
 
