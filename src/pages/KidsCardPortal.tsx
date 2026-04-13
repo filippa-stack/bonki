@@ -618,7 +618,7 @@ export default function KidsCardPortal() {
             )}
             {/* ── Start session button ── */}
             {(() => {
-              const isLocked = product && card.id !== product.freeCardId && !productIsPurchased && !bypassPaywall;
+              const isLocked = product && !isFreeCard && !productIsPurchased && !bypassPaywall;
               return (
                 <button
                   onClick={startSession}
