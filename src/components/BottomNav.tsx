@@ -104,6 +104,7 @@ export default function BottomNav() {
                 key={item.id}
                 onClick={() => {
                   if (item.id === 'library') {
+                    sessionStorage.setItem('bonki-navigating-to-library', '1');
                     navigate('/');
                     return;
                   }
