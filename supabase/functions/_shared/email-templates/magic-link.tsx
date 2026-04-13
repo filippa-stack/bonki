@@ -4,7 +4,6 @@ import * as React from 'npm:react@18.3.1'
 
 import {
   Body,
-  Button,
   Container,
   Head,
   Heading,
@@ -16,27 +15,25 @@ import {
 interface MagicLinkEmailProps {
   siteName: string
   confirmationUrl: string
+  token?: string
 }
 
 export const MagicLinkEmail = ({
   siteName,
-  confirmationUrl,
+  token,
 }: MagicLinkEmailProps) => (
-  <Html lang="en" dir="ltr">
+  <Html lang="sv" dir="ltr">
     <Head />
-    <Preview>Your login link for {siteName}</Preview>
+    <Preview>Din inloggningskod för {siteName}</Preview>
     <Body style={main}>
       <Container style={container}>
-        <Heading style={h1}>Your login link</Heading>
+        <Heading style={h1}>Din inloggningskod</Heading>
         <Text style={text}>
-          Click the button below to log in to {siteName}. This link will expire
-          shortly.
+          Använd koden nedan för att logga in på {siteName}. Koden är giltig en kort stund.
         </Text>
-        <Button style={button} href={confirmationUrl}>
-          Log In
-        </Button>
+        {token && <Text style={codeStyle}>{token}</Text>}
         <Text style={footer}>
-          If you didn't request this link, you can safely ignore this email.
+          Om du inte begärde den här koden kan du ignorera det här mejlet.
         </Text>
       </Container>
     </Body>
@@ -45,12 +42,12 @@ export const MagicLinkEmail = ({
 
 export default MagicLinkEmail
 
-const main = { backgroundColor: '#ffffff', fontFamily: 'Arial, sans-serif' }
+const main = { backgroundColor: '#ffffff', fontFamily: "Georgia, 'Times New Roman', serif" }
 const container = { padding: '20px 25px' }
 const h1 = {
   fontSize: '22px',
   fontWeight: 'bold' as const,
-  color: '#000000',
+  color: '#1A1A2E',
   margin: '0 0 20px',
 }
 const text = {
@@ -59,12 +56,16 @@ const text = {
   lineHeight: '1.5',
   margin: '0 0 25px',
 }
-const button = {
-  backgroundColor: '#000000',
-  color: '#ffffff',
-  fontSize: '14px',
-  borderRadius: '8px',
+const codeStyle = {
+  fontFamily: 'Courier, monospace',
+  fontSize: '28px',
+  fontWeight: 'bold' as const,
+  color: '#1A1A2E',
+  backgroundColor: '#F5F0E8',
   padding: '12px 20px',
-  textDecoration: 'none',
+  borderRadius: '8px',
+  textAlign: 'center' as const,
+  letterSpacing: '4px',
+  margin: '0 0 30px',
 }
 const footer = { fontSize: '12px', color: '#999999', margin: '30px 0 0' }

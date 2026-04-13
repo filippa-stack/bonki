@@ -27,32 +27,31 @@ export const EmailChangeEmail = ({
   newEmail,
   confirmationUrl,
 }: EmailChangeEmailProps) => (
-  <Html lang="en" dir="ltr">
+  <Html lang="sv" dir="ltr">
     <Head />
-    <Preview>Confirm your email change for {siteName}</Preview>
+    <Preview>Bekräfta din e-poständring för {siteName}</Preview>
     <Body style={main}>
       <Container style={container}>
-        <Heading style={h1}>Confirm your email change</Heading>
+        <Heading style={h1}>Bekräfta din e-poständring</Heading>
         <Text style={text}>
-          You requested to change your email address for {siteName} from{' '}
+          Du begärde att ändra din e-postadress för {siteName} från{' '}
           <Link href={`mailto:${email}`} style={link}>
             {email}
           </Link>{' '}
-          to{' '}
+          till{' '}
           <Link href={`mailto:${newEmail}`} style={link}>
             {newEmail}
           </Link>
           .
         </Text>
         <Text style={text}>
-          Click the button below to confirm this change:
+          Klicka på knappen nedan för att bekräfta ändringen:
         </Text>
         <Button style={button} href={confirmationUrl}>
-          Confirm Email Change
+          Bekräfta e-poständring
         </Button>
         <Text style={footer}>
-          If you didn't request this change, please secure your account
-          immediately.
+          Om du inte begärde den här ändringen, säkra ditt konto omedelbart.
         </Text>
       </Container>
     </Body>
@@ -61,12 +60,12 @@ export const EmailChangeEmail = ({
 
 export default EmailChangeEmail
 
-const main = { backgroundColor: '#ffffff', fontFamily: 'Arial, sans-serif' }
+const main = { backgroundColor: '#ffffff', fontFamily: "Georgia, 'Times New Roman', serif" }
 const container = { padding: '20px 25px' }
 const h1 = {
   fontSize: '22px',
   fontWeight: 'bold' as const,
-  color: '#000000',
+  color: '#1A1A2E',
   margin: '0 0 20px',
 }
 const text = {
@@ -77,7 +76,7 @@ const text = {
 }
 const link = { color: 'inherit', textDecoration: 'underline' }
 const button = {
-  backgroundColor: '#000000',
+  backgroundColor: '#E85D2C',
   color: '#ffffff',
   fontSize: '14px',
   borderRadius: '8px',
