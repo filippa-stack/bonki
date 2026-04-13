@@ -747,7 +747,16 @@ export default function ProductLibrary() {
         {/* Free session banner — only when user has an unused free session */}
         {showFreeBanner && (
           <div className="px-5" style={{ marginBottom: '12px' }}>
-            <button onClick={() => { if (freeProduct) navigate(`/product/${freeProduct.slug}`); }} style={{
+            <button onClick={() => {
+              if (!freeProduct || !freeProduct.freeCardId) return;
+              const freeCard = freeProduct.cards.find(c => c.id === freeProduct.freeCardId);
+              const categoryId = freeCard?.categoryId;
+              if (categoryId) {
+                navigate(`/product/${freeProduct.slug}/portal/${categoryId}`);
+              } else {
+                navigate(`/product/${freeProduct.slug}`);
+              }
+            }} style={{
               display: 'flex',
               alignItems: 'center',
               gap: '14px',
