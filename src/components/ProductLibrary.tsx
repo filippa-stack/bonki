@@ -583,6 +583,14 @@ export default function ProductLibrary() {
     return [...active, ...inactive];
   }, [activeProductIds]);
 
+  // Derived: should we show the free-session banner?
+  const freeProduct = allProducts.find(p => isProductFreeForUser(p.id));
+  const freeCardUsed = freeProduct?.freeCardId
+    ? (completedCardSets[freeProduct.id]?.has(freeProduct.freeCardId) ?? false)
+    : false;
+  const freeProductPurchased = freeProduct ? purchased.has(freeProduct.id) : false;
+  const showFreeBanner = !!freeProduct && !freeCardUsed && !freeProductPurchased;
+
   const isDark = true; // Both tabs now use Midnight Ink
 
   const libraryBg = '#0B1026';
