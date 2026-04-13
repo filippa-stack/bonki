@@ -188,12 +188,15 @@ export default function Index() {
     return <Navigate to="/product/still-us" replace />;
   }
 
+  const libraryNavFlag = sessionStorage.getItem('bonki-navigating-to-library');
+  if (libraryNavFlag) sessionStorage.removeItem('bonki-navigating-to-library');
+
   // Skip-to-product: returning users land on their last active product (cold start only)
   const skipToProductKey = 'bonki-skip-to-product-done';
   const lastProductSlug = localStorage.getItem('bonki-last-active-product');
   if (!sessionStorage.getItem(skipToProductKey)) {
     sessionStorage.setItem(skipToProductKey, '1');
-    if (lastProductSlug) {
+    if (lastProductSlug && !libraryNavFlag) {
       return <Navigate to={`/product/${lastProductSlug}`} replace />;
     }
   }
