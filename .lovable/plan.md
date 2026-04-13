@@ -1,18 +1,36 @@
 
 
-## Update Login Page — Google-only auth
+## Update Login Page — Dual auth with improved labels
 
-**Single file change**: `src/pages/Login.tsx`
+**Single file**: `src/pages/Login.tsx`
+
+The current page is Google-only (email flow was removed in the last edit). This restores the email option alongside Google.
 
 ### Changes
 
-1. **Remove email flow state and handlers** — Delete `showEmailForm`, `email`, `otpSent`, `otpCode`, `resendCooldown`, `cooldownRef`, `verifying`, `startCooldown`, `handleEmailSignIn`, `handleVerifyOtp`, `handleResend`, and related imports (`InputOTP`, `InputOTPGroup`, `InputOTPSlot`, `Mail`, `ArrowLeft`).
+1. **Re-add email flow state and imports**
+   - Add back: `email`, `showEmailForm`, `otpSent`, `otpCode`, `resendCooldown`, `cooldownRef`, `verifying` state variables
+   - Import `Mail`, `ArrowLeft` from lucide-react
+   - Import `InputOTP`, `InputOTPGroup`, `InputOTPSlot` from `@/components/ui/input-otp`
+   - Import `supabase` from `@/integrations/supabase/client` for `signInWithOtp` / `verifyOtp`
 
-2. **Simplify the button area** — Remove the `AnimatePresence` with three branches (otp/email/main). Replace with a single Google sign-in button styled with the existing `ORANGE_GRADIENT` and `ORANGE_SHADOW`.
+2. **Re-add email handlers**
+   - `handleEmailSignIn`: calls `supabase.auth.signInWithOtp({ email, options: { shouldCreateUser: true } })`
+   - `handleVerifyOtp`: calls `supabase.auth.verifyOtp({ email, token: otpCode, type: 'email' })`
+   - `handleResend` with cooldown timer
+   - `startCooldown` helper
 
-3. **Update button label** — Change to "Fortsätt med Google".
+3. **Button layout** (inside the `flex flex-col gap-3`)
+   - Google button stays at top with `ORANGE_GRADIENT` — label: **"Fortsätt med Google"** (already correct)
+   - Helper text below Google button stays (already present)
+   - Add email button below helper text: **"Fortsätt med e-post"** — secondary glassmorphic style with `Mail` icon
 
-4. **Add helper text** — Below the Google button: "Fungerar med alla e-postadresser — inte bara Gmail." with the specified muted style.
+4. **OTP view** — When `otpSent` is true, show the 6-digit OTP input with resend button (same as the previous implementation)
 
-5. **Keep intact** — Terms consent, demo mode button, error display, brand layout, `handleGoogleSignIn`, `saveConsent`, `checkTerms`.
+5. **No other changes** — Terms consent, demo mode, brand layout, error display all stay as-is
+
+### Technical detail
+- The email flow uses `supabase.auth.signInWithOtp` directly (not through `lovable.auth`), same as the previous working implementation
+- Google continues through `lovable.auth.signInWithOAuth`
+- Both paths check terms consent before proceeding
 
