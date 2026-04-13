@@ -1,16 +1,17 @@
 
 
-## Fix: Purchased tile pills show progress, not just count
+## Fix: Free card CTA shows "Lås upp" for ineligible users
 
-**File**: `src/components/ProductLibrary.tsx`
+**File**: `src/pages/KidsCardPortal.tsx` (line 621)
 
-### Change 1: PastelTile progress pill (line 457)
+Replace `card.id !== product.freeCardId` with `!isFreeCard` (which is already defined at line 311 and includes the `isProductFreeForUser()` check).
 
-Change `✦ ${completedCount} samtal` to `✦ ${completedCount} av ${totalCards || 0} utforskade`.
+```typescript
+// From:
+const isLocked = product && card.id !== product.freeCardId && !productIsPurchased && !bypassPaywall;
+// To:
+const isLocked = product && !isFreeCard && !productIsPurchased && !bypassPaywall;
+```
 
-### Change 2: Still Us tile badge (line 1151)
-
-Change `✦ ${suCount} samtal` to `✦ ${suCount} av ${totalCards} utforskade`.
-
-Both zero-completion ("Börja er resa") and unpurchased states remain untouched. No other files or protected patterns modified.
+No other changes.
 
