@@ -747,10 +747,14 @@ export default function ProductLibrary() {
         {/* Free session banner — only when user has an unused free session */}
         {showFreeBanner && (
           <div className="px-5" style={{ marginBottom: '12px' }}>
-            <div style={{
+            <button onClick={() => { if (freeProduct) navigate(`/product/${freeProduct.slug}`); }} style={{
               display: 'flex',
               alignItems: 'center',
               gap: '14px',
+              cursor: 'pointer',
+              width: '100%',
+              textAlign: 'left' as const,
+              WebkitTapHighlightColor: 'transparent',
               padding: '14px 18px',
               borderRadius: '16px',
               background: 'rgba(15, 15, 15, 0.7)',
@@ -782,7 +786,7 @@ export default function ProductLibrary() {
                 <strong>Du har 1 gratis samtal</strong>
                 <span style={{ opacity: 0.6 }}> — valt utifrån den ålder du angav</span>
               </p>
-            </div>
+            </button>
           </div>
         )}
 
@@ -1108,6 +1112,10 @@ export default function ProductLibrary() {
                     return (
                       <>
                         <span style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          alignSelf: 'flex-start',
+                          gap: '4px',
                           fontFamily: "var(--font-body)",
                           fontSize: '11px',
                           fontWeight: 600,
