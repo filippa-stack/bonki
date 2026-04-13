@@ -596,7 +596,7 @@ export default function ProductLibrary() {
     ? (completedCardSets[freeProduct.id]?.has(freeProduct.freeCardId) ?? false)
     : false;
   const freeProductPurchased = freeProduct ? purchased.has(freeProduct.id) : false;
-  const showFreeBanner = !!freeProduct && !freeCardUsed && !freeProductPurchased;
+  const showFreeBanner = !!freeProduct && !freeCardUsed && !freeProductPurchased && activeProductIds.size === 0;
 
   const isDark = true; // Both tabs now use Midnight Ink
 
