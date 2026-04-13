@@ -735,8 +735,50 @@ export default function ProductLibrary() {
             margin: '24px auto 32px',
           }}
         />
-
         
+
+        {/* Free session banner — only when user has an unused free session */}
+        {showFreeBanner && (
+          <div className="px-5" style={{ marginBottom: '12px' }}>
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '14px',
+              padding: '14px 18px',
+              borderRadius: '16px',
+              background: 'rgba(15, 15, 15, 0.7)',
+              backdropFilter: 'blur(22px)',
+              WebkitBackdropFilter: 'blur(22px)',
+              border: '1px solid rgba(255, 255, 255, 0.12)',
+              backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.08) 100%)',
+              boxShadow: '0 12px 36px rgba(0, 0, 0, 0.40), 0 4px 12px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.12), inset 0 -2px 6px rgba(0, 0, 0, 0.12)',
+            }}>
+              <div style={{
+                width: '36px',
+                height: '36px',
+                borderRadius: '10px',
+                background: 'linear-gradient(135deg, rgba(167,139,250,0.25) 0%, rgba(167,139,250,0.12) 100%)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0,
+              }}>
+                <span style={{ fontSize: '18px', color: '#FFFFFF' }}>✦</span>
+              </div>
+              <p style={{
+                fontFamily: 'var(--font-body)',
+                fontSize: '14px',
+                color: '#FDF6E3',
+                lineHeight: 1.4,
+                margin: 0,
+              }}>
+                <strong>Du har 1 gratis samtal</strong>
+                <span style={{ opacity: 0.6 }}> — valt utifrån den ålder du angav</span>
+              </p>
+            </div>
+          </div>
+        )}
+
 
         {/* Resume card — product-colored, above Föräldrar */}
         <div className="px-5" style={{ marginBottom: '8px' }}>
