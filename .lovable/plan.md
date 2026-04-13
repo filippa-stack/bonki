@@ -1,24 +1,12 @@
 
 
-## Revised Fix 2: Use template literal, drop `as any` cast
+## Fix: Free-session banner navigates to free card portal
 
-**File**: `src/components/ProductLibrary.tsx`
+**File**: `src/components/ProductLibrary.tsx` (~line 750)
 
-### Fix 1: Still Us badge pill alignment (~line 1110)
+Update the `<button>` onClick handler to navigate directly to the portal page for the free card's category, instead of just the product home.
 
-Add four CSS properties to the badge `<span>`'s style object: `display: 'inline-flex'`, `alignItems: 'center'`, `alignSelf: 'flex-start'`, `gap: '4px'`. No other changes to badge logic.
+**Change**: Replace the current `onClick` with logic that finds the free card's category and navigates to `/product/{slug}/portal/{categoryId}`. Falls back to product home if category lookup fails.
 
-### Fix 2: Free-session banner tappable (~line 750)
-
-Change inner `<div>` to `<button>` with:
-
-```tsx
-onClick={() => { if (freeProduct) navigate(`/product/${freeProduct.slug}`); }}
-```
-
-Using a template literal directly — no `as any` cast since `freeProduct` is already typed as `ProductManifest | undefined` and `.slug` is a required property on `ProductManifest`.
-
-Add to existing style: `cursor: 'pointer'`, `width: '100%'`, `textAlign: 'left' as const`, `WebkitTapHighlightColor: 'transparent'`. Change closing `</div>` to `</button>`.
-
-No other files, logic, or protected ref patterns are touched.
+No other files, logic, or protected patterns touched.
 
