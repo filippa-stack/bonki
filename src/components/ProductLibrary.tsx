@@ -454,7 +454,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
           >
             {isPurchased
               ? (completedCount ?? 0) > 0
-                ? `✦ ${completedCount} samtal`
+                ? `✦ ${completedCount} av ${totalCards || 0} utforskade`
                 : '✦ Börja er resa'
               : showFreeLabel
                 ? <><span style={{ fontSize: '12px', color: 'white' }}>✦</span> Första gratis · {totalCards || 0} samtal</>
@@ -1148,7 +1148,7 @@ export default function ProductLibrary() {
                         }}>
                           {purchased.has('still_us')
                             ? suCount > 0
-                              ? `✦ ${suCount} samtal`
+                              ? `✦ ${suCount} av ${totalCards} utforskade`
                               : '✦ Börja er resa'
                             : suShowFreeLabel
                               ? <><span style={{ fontSize: '12px', color: 'white' }}>✦</span> Första gratis · {totalCards} samtal</>
