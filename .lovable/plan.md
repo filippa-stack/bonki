@@ -1,12 +1,16 @@
 
 
-## Fix: Free-session banner navigates to free card portal
+## Fix: Purchased tile pills show progress, not just count
 
-**File**: `src/components/ProductLibrary.tsx` (~line 750)
+**File**: `src/components/ProductLibrary.tsx`
 
-Update the `<button>` onClick handler to navigate directly to the portal page for the free card's category, instead of just the product home.
+### Change 1: PastelTile progress pill (line 457)
 
-**Change**: Replace the current `onClick` with logic that finds the free card's category and navigates to `/product/{slug}/portal/{categoryId}`. Falls back to product home if category lookup fails.
+Change `✦ ${completedCount} samtal` to `✦ ${completedCount} av ${totalCards || 0} utforskade`.
 
-No other files, logic, or protected patterns touched.
+### Change 2: Still Us tile badge (line 1151)
+
+Change `✦ ${suCount} samtal` to `✦ ${suCount} av ${totalCards} utforskade`.
+
+Both zero-completion ("Börja er resa") and unpurchased states remain untouched. No other files or protected patterns modified.
 
