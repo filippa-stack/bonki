@@ -1,23 +1,24 @@
 
 
-## Fix: Library tab bypasses skip-to-product redirect
+## Revised Fix 2: Use template literal, drop `as any` cast
 
-### Problem
-Tapping "Biblioteket" navigates to `/`, but Index.tsx immediately redirects back to the last active product.
+**File**: `src/components/ProductLibrary.tsx`
 
-### Changes
+### Fix 1: Still Us badge pill alignment (~line 1110)
 
-**1. `src/components/BottomNav.tsx`** (~line 99)
-Add `sessionStorage.setItem('bonki-navigating-to-library', '1');` before `navigate('/')` in the `if (item.id === 'library')` block.
+Add four CSS properties to the badge `<span>`'s style object: `display: 'inline-flex'`, `alignItems: 'center'`, `alignSelf: 'flex-start'`, `gap: '4px'`. No other changes to badge logic.
 
-**2. `src/pages/Index.tsx`** (before the skip-to-product block)
-Add two lines before the `// Skip-to-product` comment:
-```typescript
-const libraryNavFlag = sessionStorage.getItem('bonki-navigating-to-library');
-if (libraryNavFlag) sessionStorage.removeItem('bonki-navigating-to-library');
+### Fix 2: Free-session banner tappable (~line 750)
+
+Change inner `<div>` to `<button>` with:
+
+```tsx
+onClick={() => { if (freeProduct) navigate(`/product/${freeProduct.slug}`); }}
 ```
 
-Then guard the redirect: change `if (lastProductSlug)` to `if (lastProductSlug && !libraryNavFlag)`.
+Using a template literal directly — no `as any` cast since `freeProduct` is already typed as `ProductManifest | undefined` and `.slug` is a required property on `ProductManifest`.
 
-No other files, blocks, or ref patterns are touched.
+Add to existing style: `cursor: 'pointer'`, `width: '100%'`, `textAlign: 'left' as const`, `WebkitTapHighlightColor: 'transparent'`. Change closing `</div>` to `</button>`.
+
+No other files, logic, or protected ref patterns are touched.
 
