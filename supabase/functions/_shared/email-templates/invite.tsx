@@ -9,7 +9,6 @@ import {
   Head,
   Heading,
   Html,
-  Link,
   Preview,
   Text,
 } from 'npm:@react-email/components@0.0.22'
@@ -22,7 +21,6 @@ interface InviteEmailProps {
 
 export const InviteEmail = ({
   siteName,
-  siteUrl,
   confirmationUrl,
 }: InviteEmailProps) => (
   <Html lang="sv" dir="ltr">
@@ -32,17 +30,13 @@ export const InviteEmail = ({
       <Container style={container}>
         <Heading style={h1}>Du har blivit inbjuden</Heading>
         <Text style={text}>
-          Du har blivit inbjuden att gå med i{' '}
-          <Link href={siteUrl} style={link}>
-            <strong>{siteName}</strong>
-          </Link>
-          . Klicka på knappen nedan för att acceptera inbjudan och skapa ditt konto.
+          Du har blivit inbjuden till <strong>{siteName}</strong>. Klicka på knappen nedan för att acceptera inbjudan.
         </Text>
         <Button style={button} href={confirmationUrl}>
           Acceptera inbjudan
         </Button>
         <Text style={footer}>
-          Om du inte förväntade dig den här inbjudan kan du ignorera det här mejlet.
+          Om du inte förväntade dig den här inbjudan kan du ignorera det här mailet.
         </Text>
       </Container>
     </Body>
@@ -51,7 +45,7 @@ export const InviteEmail = ({
 
 export default InviteEmail
 
-const main = { backgroundColor: '#ffffff', fontFamily: "Georgia, 'Times New Roman', serif" }
+const main = { backgroundColor: '#ffffff', fontFamily: 'Georgia, serif' }
 const container = { padding: '20px 25px' }
 const h1 = {
   fontSize: '22px',
@@ -65,7 +59,6 @@ const text = {
   lineHeight: '1.5',
   margin: '0 0 25px',
 }
-const link = { color: 'inherit', textDecoration: 'underline' }
 const button = {
   backgroundColor: '#E85D2C',
   color: '#ffffff',

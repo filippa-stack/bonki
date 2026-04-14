@@ -34,24 +34,16 @@ export const EmailChangeEmail = ({
       <Container style={container}>
         <Heading style={h1}>Bekräfta din e-poständring</Heading>
         <Text style={text}>
-          Du begärde att ändra din e-postadress för {siteName} från{' '}
-          <Link href={`mailto:${email}`} style={link}>
-            {email}
-          </Link>{' '}
+          Du har begärt att ändra din e-postadress för {siteName} från{' '}
+          <Link href={`mailto:${email}`} style={link}>{email}</Link>{' '}
           till{' '}
-          <Link href={`mailto:${newEmail}`} style={link}>
-            {newEmail}
-          </Link>
-          .
-        </Text>
-        <Text style={text}>
-          Klicka på knappen nedan för att bekräfta ändringen:
+          <Link href={`mailto:${newEmail}`} style={link}>{newEmail}</Link>.
         </Text>
         <Button style={button} href={confirmationUrl}>
-          Bekräfta e-poständring
+          Bekräfta ändring
         </Button>
         <Text style={footer}>
-          Om du inte begärde den här ändringen, säkra ditt konto omedelbart.
+          Om du inte begärde den här ändringen, vänligen säkra ditt konto omedelbart.
         </Text>
       </Container>
     </Body>
@@ -60,7 +52,7 @@ export const EmailChangeEmail = ({
 
 export default EmailChangeEmail
 
-const main = { backgroundColor: '#ffffff', fontFamily: "Georgia, 'Times New Roman', serif" }
+const main = { backgroundColor: '#ffffff', fontFamily: 'Georgia, serif' }
 const container = { padding: '20px 25px' }
 const h1 = {
   fontSize: '22px',

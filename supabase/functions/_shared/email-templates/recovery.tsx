@@ -35,7 +35,7 @@ export const RecoveryEmail = ({
           Återställ lösenord
         </Button>
         <Text style={footer}>
-          Om du inte begärde en lösenordsåterställning kan du ignorera det här mejlet.
+          Om du inte begärde detta kan du ignorera det här mailet. Ditt lösenord ändras inte.
         </Text>
       </Container>
     </Body>
@@ -44,7 +44,7 @@ export const RecoveryEmail = ({
 
 export default RecoveryEmail
 
-const main = { backgroundColor: '#ffffff', fontFamily: "Georgia, 'Times New Roman', serif" }
+const main = { backgroundColor: '#ffffff', fontFamily: 'Georgia, serif' }
 const container = { padding: '20px 25px' }
 const h1 = {
   fontSize: '22px',

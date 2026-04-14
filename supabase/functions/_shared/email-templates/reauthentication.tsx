@@ -22,11 +22,11 @@ export const ReauthenticationEmail = ({ token }: ReauthenticationEmailProps) => 
     <Preview>Din verifieringskod</Preview>
     <Body style={main}>
       <Container style={container}>
-        <Heading style={h1}>Bekräfta din identitet</Heading>
-        <Text style={text}>Använd koden nedan för att bekräfta din identitet:</Text>
+        <Heading style={h1}>Din verifieringskod</Heading>
+        <Text style={text}>Ange koden nedan för att bekräfta din identitet:</Text>
         <Text style={codeStyle}>{token}</Text>
         <Text style={footer}>
-          Koden är giltig en kort stund. Om du inte begärde den här koden kan du ignorera det här mejlet.
+          Koden är giltig i en kort stund. Om du inte begärde den kan du ignorera det här mailet.
         </Text>
       </Container>
     </Body>
@@ -35,7 +35,7 @@ export const ReauthenticationEmail = ({ token }: ReauthenticationEmailProps) => 
 
 export default ReauthenticationEmail
 
-const main = { backgroundColor: '#ffffff', fontFamily: "Georgia, 'Times New Roman', serif" }
+const main = { backgroundColor: '#ffffff', fontFamily: 'Georgia, serif' }
 const container = { padding: '20px 25px' }
 const h1 = {
   fontSize: '22px',
@@ -57,8 +57,8 @@ const codeStyle = {
   backgroundColor: '#F5F0E8',
   padding: '12px 20px',
   borderRadius: '8px',
-  textAlign: 'center' as const,
+  display: 'inline-block' as const,
+  margin: '0 0 25px',
   letterSpacing: '4px',
-  margin: '0 0 30px',
 }
 const footer = { fontSize: '12px', color: '#999999', margin: '30px 0 0' }

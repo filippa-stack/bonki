@@ -17,7 +17,7 @@ interface SignupEmailProps {
   siteUrl: string
   recipient: string
   confirmationUrl: string
-  token?: string
+  token: string
 }
 
 export const SignupEmail = ({
@@ -31,11 +31,12 @@ export const SignupEmail = ({
       <Container style={container}>
         <Heading style={h1}>Bekräfta din e-post</Heading>
         <Text style={text}>
-          Tack för att du registrerade dig på {siteName}! Ange koden nedan för att verifiera din e-postadress:
+          Välkommen till <strong>{siteName}</strong>! Ange koden nedan för att verifiera din e-postadress:
         </Text>
-        {token && <Text style={codeStyle}>{token}</Text>}
+        <Text style={codeStyle}>{token}</Text>
+        <Text style={text}>Koden är giltig i 15 minuter.</Text>
         <Text style={footer}>
-          Om du inte skapade ett konto kan du ignorera det här mejlet.
+          Om du inte skapade ett konto kan du ignorera det här mailet.
         </Text>
       </Container>
     </Body>
@@ -44,7 +45,7 @@ export const SignupEmail = ({
 
 export default SignupEmail
 
-const main = { backgroundColor: '#ffffff', fontFamily: "Georgia, 'Times New Roman', serif" }
+const main = { backgroundColor: '#ffffff', fontFamily: 'Georgia, serif' }
 const container = { padding: '20px 25px' }
 const h1 = {
   fontSize: '22px',
@@ -66,8 +67,8 @@ const codeStyle = {
   backgroundColor: '#F5F0E8',
   padding: '12px 20px',
   borderRadius: '8px',
-  textAlign: 'center' as const,
+  display: 'inline-block' as const,
+  margin: '0 0 25px',
   letterSpacing: '4px',
-  margin: '0 0 30px',
 }
 const footer = { fontSize: '12px', color: '#999999', margin: '30px 0 0' }

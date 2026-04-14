@@ -15,7 +15,7 @@ import {
 interface MagicLinkEmailProps {
   siteName: string
   confirmationUrl: string
-  token?: string
+  token: string
 }
 
 export const MagicLinkEmail = ({
@@ -29,11 +29,12 @@ export const MagicLinkEmail = ({
       <Container style={container}>
         <Heading style={h1}>Din inloggningskod</Heading>
         <Text style={text}>
-          Använd koden nedan för att logga in på {siteName}. Koden är giltig en kort stund.
+          Ange koden nedan för att logga in på {siteName}:
         </Text>
-        {token && <Text style={codeStyle}>{token}</Text>}
+        <Text style={codeStyle}>{token}</Text>
+        <Text style={text}>Koden är giltig i 15 minuter.</Text>
         <Text style={footer}>
-          Om du inte begärde den här koden kan du ignorera det här mejlet.
+          Om du inte begärde den här koden kan du ignorera det här mailet.
         </Text>
       </Container>
     </Body>
@@ -42,7 +43,7 @@ export const MagicLinkEmail = ({
 
 export default MagicLinkEmail
 
-const main = { backgroundColor: '#ffffff', fontFamily: "Georgia, 'Times New Roman', serif" }
+const main = { backgroundColor: '#ffffff', fontFamily: 'Georgia, serif' }
 const container = { padding: '20px 25px' }
 const h1 = {
   fontSize: '22px',
@@ -64,8 +65,8 @@ const codeStyle = {
   backgroundColor: '#F5F0E8',
   padding: '12px 20px',
   borderRadius: '8px',
-  textAlign: 'center' as const,
+  display: 'inline-block' as const,
+  margin: '0 0 25px',
   letterSpacing: '4px',
-  margin: '0 0 30px',
 }
 const footer = { fontSize: '12px', color: '#999999', margin: '30px 0 0' }
