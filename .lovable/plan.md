@@ -1,42 +1,43 @@
 
 
-## Fix A — ProductHome paywall gate
+## Fix B — Completion page paywall (Kids + Still Us)
 
-Four changes in `src/pages/ProductHome.tsx`, no other files touched.
+Single file: `src/pages/CardView.tsx`
 
-### 1. Add imports (after line 13)
+### 1. Add state variables (after line 203, near existing paywall state)
+
 ```typescript
-import { useProductAccess } from '@/hooks/useProductAccess';
-import ProductPaywall from '@/components/ProductPaywall';
-import { isDemoMode } from '@/lib/demoMode';
+const [completionPurchaseLoading, setCompletionPurchaseLoading] = useState(false);
+const [completionPurchaseError, setCompletionPurchaseError] = useState<string | null>(null);
+const [completionPriceSek, setCompletionPriceSek] = useState<number | null>(null);
 ```
 
-### 2. Add hooks (after line 69, before `if (showIntro === true)`)
-```typescript
-const isFreeProduct = product ? isProductFreeForUser(product.id) : false;
-const { hasAccess: hasProductAccess, loading: paywallAccessLoading } = useProductAccess(product?.id ?? '');
-```
+### 2. Add price-fetch useEffect (near line 227, after other useEffects)
 
-### 3. Add paywall gate (after the `showIntro === null` loading gate at line 108, before the `if (!product)` check at line 110)
-```typescript
-if (paywallAccessLoading && product) {
-  return (
-    <div style={{
-      minHeight: '100vh',
-      backgroundColor: product.backgroundColor ?? 'var(--surface-base)',
-    }} />
-  );
-}
+Fetches `price_sek` from `products` table by `product.id`, with fallback defaults (249 for still_us, 195 otherwise).
 
-if (product && !isFreeProduct && !hasProductAccess && !isDemoMode()) {
-  return (
-    <ProductPaywall
-      product={product}
-      onAccessGranted={() => window.location.reload()}
-    />
-  );
-}
-```
+### 3. Add `handleCompletionPurchase` function
 
-No other logic, files, or protected patterns modified.
+Calls `create-checkout` edge function. Includes auth guard with `setCompletionPurchaseError`, handles `already_purchased` (reload), 503 (not configured), and general errors. Uses `completionPurchaseLoading` state.
+
+### 4. Kids completion block (~lines 1480–1568): wrap in conditional
+
+The existing navigation (comment `{/* 4. Primary CTA med Föregående */}` through the secondary "Till" link at ~line 1568) gets wrapped:
+
+- **If `isFreeCard && !hasProductAccess`**: Render inline purchase CTA — product name, price, "Lås upp" button, error display, trust line, and fallback "Till [product]" link.
+- **Else**: Existing navigation code unchanged, wrapped in `<>...</>`.
+
+### 5. Still Us completion block (~lines 1772–1843): wrap in conditional
+
+The `cardId === 'su-mock-0'` branch's inner content (ghost "Nästa samtal" + "Till Vårt Vi") gets the same treatment:
+
+- **If `!hasProductAccess`**: Show purchase CTA with Still Us naming.
+- **Else**: Existing code unchanged.
+
+### What is NOT touched
+
+- No hooks, refs, effects, or session logic above the completion blocks
+- No protected patterns (`suppressUntilRef`, `prevServerStepRef`, `pendingSave`, `kidsNoteSyncedRef`, `userDismissedCompletion`, `hasRenderedContent`)
+- No rendering chain order changes
+- No other files
 
