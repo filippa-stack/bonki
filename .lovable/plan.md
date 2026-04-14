@@ -1,61 +1,37 @@
 
 
-## Jag med Andra — Prompt 1: Structure + Category Update
+## Fix: "Prova Jag i Mig — Ert första samtal är gratis" shown after free card is already used
 
-Single file: `src/data/products/jag-med-andra.ts`
+### Problem
 
-### 1. Category metadata updates (lines 5-10)
+After completing the free "Vänskap" card in Jag med Andra, the library shows a suggestion banner saying "Prova Jag i Mig — Ert första samtal är gratis". This is incorrect: the user's one free card (tied to their onboarding audience "middle" = Jag med Andra) has already been used. Jag i Mig is not free for this user.
 
-| Category ID | Field | New value |
-|---|---|---|
-| `jma-vem-ar-jag` | description | `'Olikhet, utseende, jämlikhet, utanförskap och skam'` |
-| `jma-jag-och-andra` | description | `'Kontakt, vänskap, respekt, sanning och tävling'` |
-| `jma-varlden-omkring-mig` | title | `'När vi kämpar'` |
-| `jma-varlden-omkring-mig` | description | `'Konflikt, kritik, gränser, skuld, misslyckande och avundsjuka'` |
-| `jma-varlden-omkring-mig` | cardCount | `6` |
-| `jma-vad-tror-jag-pa` | description | `'Prestation, mod, acceptans, integritet och tankeexperiment'` |
-| `jma-vad-tror-jag-pa` | cardCount | `5` |
+The bug is in `ProductLibrary.tsx` lines 809-881. The "next step suggestion" banner always displays "Ert första samtal är gratis" as subtitle text, without checking whether the suggested product actually has a free card for this user.
 
-### 2. Cards array — rewrite with new categoryIds and exact physical order
+### Fix
 
-Card sequence (exact array order):
+In `src/components/ProductLibrary.tsx`, update the suggestion banner (around line 865) to conditionally show the "gratis" subtitle only when `isProductFreeForUser(untriedProduct.id)` is true AND the free card for that product has not been completed.
 
-```text
- 1. jma-annorlunda     (jma-vem-ar-jag)
- 2. jma-utseende       (jma-vem-ar-jag)
- 3. jma-lika-varde     (jma-vem-ar-jag)
- 4. jma-utanfor        (jma-vem-ar-jag)
- 5. jma-skam           (jma-vem-ar-jag)
- 6. jma-kontakt        (jma-jag-och-andra)
- 7. jma-vanskap        (jma-jag-och-andra)
- 8. jma-respekt        (jma-jag-och-andra)
- 9. jma-sanning        (jma-jag-och-andra)
-10. jma-tavla          (jma-jag-och-andra)
-11. jma-konflikt       (jma-varlden-omkring-mig)
-12. jma-kritik         (jma-varlden-omkring-mig)
-13. jma-stopp          (jma-varlden-omkring-mig)
-14. jma-skuld          (jma-varlden-omkring-mig)
-15. jma-misslyckas     (jma-varlden-omkring-mig)
-16. jma-avund          (jma-varlden-omkring-mig)
-17. jma-duktig         (jma-vad-tror-jag-pa)
-18. jma-modig          (jma-vad-tror-jag-pa)
-19. jma-acceptans      (jma-vad-tror-jag-pa)
-20. jma-integritet     (jma-vad-tror-jag-pa)
-21. jma-kluringen      (jma-vad-tror-jag-pa)
+When the product is NOT free for the user, show a neutral subtitle instead, e.g. "Utforska {count} samtal" or hide the subtitle entirely.
+
+### Change detail
+
+**File:** `src/components/ProductLibrary.tsx`
+
+1. Around line 810, after resolving `untriedProduct`, compute whether it's actually free:
+```typescript
+const isUntriedFree = isProductFreeForUser(untriedProduct.id) 
+  && untriedProduct.freeCardId 
+  && !completedCardSets[untriedProduct.id]?.has(untriedProduct.freeCardId);
 ```
 
-6 cards change categoryId: `jma-skam` → `jma-vem-ar-jag`, `jma-tavla` → `jma-jag-och-andra`, `jma-misslyckas` → `jma-varlden-omkring-mig`, `jma-avund` → `jma-varlden-omkring-mig`, `jma-acceptans` → `jma-vad-tror-jag-pa`, `jma-integritet` → `jma-vad-tror-jag-pa`. No subtitle or prompt text changes.
-
-### 3. Verification — output after applying
-
-```text
-ARRAY: list all 21 card IDs in order, with their categoryId
-COUNTS: jma-vem-ar-jag=5, jma-jag-och-andra=5, jma-varlden-omkring-mig=6, jma-vad-tror-jag-pa=5
+2. Line 865 — change the subtitle from hardcoded "Ert första samtal är gratis" to:
+```typescript
+{isUntriedFree ? 'Ert första samtal är gratis' : `${untriedProduct.cards.length} samtal`}
 ```
 
 ### Not touched
-- No card titles, subtitles, or prompts
-- No card IDs or section IDs
-- Product metadata, colors, imports, exports unchanged
+- `freeCardPolicy.ts` — logic is correct
+- Free session banner (lines 748-800) — already has proper guards
 - No other files
 
