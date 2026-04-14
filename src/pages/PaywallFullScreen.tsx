@@ -70,7 +70,10 @@ export default function PaywallFullScreen() {
   const valueLine = VALUE_LINES[product.id] ?? '';
 
   const handlePurchase = async () => {
-    if (!user) return;
+    if (!user) {
+      setError('Du behöver vara inloggad. Försök ladda om sidan.');
+      return;
+    }
     setLoading(true);
     setError(null);
 

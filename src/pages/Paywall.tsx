@@ -41,7 +41,10 @@ export default function Paywall() {
   }, [user?.id]);
 
   const handlePurchase = useCallback(async () => {
-    if (!user?.id) return;
+    if (!user?.id) {
+      setError('Du behöver vara inloggad. Försök ladda om sidan.');
+      return;
+    }
     setProcessing(true);
     setError(null);
 

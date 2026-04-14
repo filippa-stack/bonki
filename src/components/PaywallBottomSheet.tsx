@@ -81,7 +81,10 @@ export default function PaywallBottomSheet({
   const isKids = KIDS_PRODUCT_IDS.includes(product.id);
 
   const handlePurchase = async () => {
-    if (!user) return;
+    if (!user) {
+      setError('Du behöver vara inloggad. Försök ladda om sidan.');
+      return;
+    }
     setLoading(true);
     setError(null);
 
