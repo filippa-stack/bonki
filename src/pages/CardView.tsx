@@ -1535,6 +1535,101 @@ export default function CardView() {
             </motion.div>
           )}
 
+          {isFreeCard && !hasProductAccess ? (
+            /* ── Free card completion: inline purchase CTA ── */
+            <motion.div
+              initial={{ opacity: 1 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3, duration: 0.3 }}
+              style={{ width: '100%', textAlign: 'center' }}
+            >
+              <p style={{
+                fontFamily: 'var(--font-sans)',
+                fontSize: '16px',
+                color: LANTERN_GLOW,
+                opacity: 0.8,
+                lineHeight: 1.5,
+                marginBottom: '16px',
+              }}>
+                Lås upp alla {product?.cards.length ?? ''} samtal i {product?.name ?? 'denna produkt'}.
+              </p>
+              <p style={{
+                fontFamily: 'var(--font-sans)',
+                fontSize: '14px',
+                color: LANTERN_GLOW,
+                opacity: 0.5,
+                marginBottom: '24px',
+              }}>
+                {completionPriceSek ?? '...'} kr · Engångsköp · Tillgång för alltid
+              </p>
+              <button
+                onClick={handleCompletionPurchase}
+                disabled={completionPurchaseLoading}
+                style={{
+                  width: '100%',
+                  maxWidth: '320px',
+                  height: '56px',
+                  borderRadius: '14px',
+                  backgroundColor: '#E85D2C',
+                  border: 'none',
+                  cursor: completionPurchaseLoading ? 'wait' : 'pointer',
+                  fontFamily: 'var(--font-display)',
+                  fontVariationSettings: "'opsz' 17",
+                  fontSize: '17px',
+                  fontWeight: 600,
+                  color: '#1A1A2E',
+                  opacity: completionPurchaseLoading ? 0.7 : 1,
+                  transition: 'opacity 150ms ease',
+                  margin: '0 auto',
+                  display: 'block',
+                }}
+              >
+                {completionPurchaseLoading ? 'Förbereder...' : `Lås upp ${product?.name ?? 'produkt'}`}
+              </button>
+              {completionPurchaseError && (
+                <p style={{
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '13px',
+                  color: '#E85D2C',
+                  textAlign: 'center',
+                  marginTop: '12px',
+                }}>
+                  {completionPurchaseError}
+                </p>
+              )}
+              <p style={{
+                fontFamily: 'var(--font-sans)',
+                fontSize: '12px',
+                color: LANTERN_GLOW,
+                opacity: 0.35,
+                textAlign: 'center',
+                marginTop: '12px',
+              }}>
+                Säker betalning · Ingen prenumeration
+              </p>
+              <button
+                onClick={() => navigateWithFeedback(product ? `/product/${product.slug}` : '/')}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '14px',
+                  color: LANTERN_GLOW,
+                  opacity: 0.45,
+                  textAlign: 'center',
+                  marginTop: '20px',
+                  padding: '4px 0',
+                  display: 'block',
+                  width: '100%',
+                }}
+              >
+                Till {product?.name ?? 'produkten'}
+              </button>
+            </motion.div>
+          ) : (
+            /* ── Normal completion navigation ── */
+            <>
           {/* 4. Primary CTA with Föregående */}
           <motion.div
             initial={{ opacity: 1 }}
@@ -1625,6 +1720,8 @@ export default function CardView() {
               </button>
             )}
           </motion.div>
+            </>
+          )}
         </div>
 
         {/* Bottom spacer for nav bar */}
