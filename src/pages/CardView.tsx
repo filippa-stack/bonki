@@ -201,6 +201,9 @@ export default function CardView() {
   const paywallProductId = product?.id ?? (isStillUsCard ? 'still_us' : '');
   const { hasAccess: hasProductAccess, loading: accessLoading } = useProductAccess(paywallProductId);
   const [demoBypassed, setDemoBypassed] = useState(false);
+  const [completionPurchaseLoading, setCompletionPurchaseLoading] = useState(false);
+  const [completionPurchaseError, setCompletionPurchaseError] = useState<string | null>(null);
+  const [completionPriceSek, setCompletionPriceSek] = useState<number | null>(null);
   const isLocalPreviewMode = isDemoMode() || !!devState;
   const needsPaywall = !isFreeCard && !hasProductAccess && !accessLoading && (!!product || isStillUsCard) && !devState && !demoBypassed && !isDemoMode();
 
@@ -225,6 +228,61 @@ export default function CardView() {
   useEffect(() => {
     if (cardId) recordVisit(cardId);
   }, [cardId, recordVisit]);
+
+  useEffect(() => {
+    if (!product?.id) return;
+    supabase
+      .from('products')
+      .select('price_sek')
+      .eq('id', product.id)
+      .single()
+      .then(({ data }) => {
+        setCompletionPriceSek(data?.price_sek ?? (product.id === 'still_us' ? 249 : 195));
+      });
+  }, [product?.id]);
+
+  const handleCompletionPurchase = async () => {
+    if (!user) {
+      setCompletionPurchaseError('Du behöver vara inloggad. Försök ladda om sidan.');
+      return;
+    }
+    setCompletionPurchaseLoading(true);
+    setCompletionPurchaseError(null);
+    try {
+      const projectId = import.meta.env.VITE_SUPABASE_PROJECT_ID;
+      const { data: { session } } = await supabase.auth.getSession();
+      const res = await fetch(
+        `https://${projectId}.supabase.co/functions/v1/create-checkout`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${session?.access_token}`,
+          },
+          body: JSON.stringify({
+            productId: product!.id,
+            successUrl: `${window.location.origin}/?purchase=success&product=${product!.id}&returnCard=${cardId}`,
+            cancelUrl: window.location.href,
+          }),
+        },
+      );
+      const json = await res.json();
+      if (json.error === 'already_purchased') {
+        window.location.reload();
+        return;
+      }
+      if (!res.ok) {
+        setCompletionPurchaseError(res.status === 503 ? 'Betalning är inte konfigurerad ännu. Kontakta oss!' : (json.error || 'Något gick fel'));
+        return;
+      }
+      if (json.url) window.location.href = json.url;
+    } catch (err) {
+      console.error('Purchase error:', err);
+      setCompletionPurchaseError('Kunde inte starta betalningen');
+    } finally {
+      setCompletionPurchaseLoading(false);
+    }
+  };
 
   const [activeSessionId, setActiveSessionId] = useState<string | null>(
     devState ? 'dev-session' : null
