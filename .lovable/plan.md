@@ -1,22 +1,22 @@
 
 
-## Skip Install Step — Default to Audience Selection
+## Add InApp Redirect script to index.html
 
-Single-line change in `src/components/Onboarding.tsx` to bypass the install step and default directly to audience selection.
+Single change in `index.html`.
 
 ### Change
 
-**Line 240-244**: Replace the conditional `useState` initializer with a simple string literal:
+Insert the InApp Redirect script tag before the closing `</head>` (after line 44):
 
-```typescript
-const [step, setStep] = useState<'install' | 'audience'>('audience');
+```html
+<script
+  id="iar"
+  src="https://rum.auditzy.com/teUjBCLn-bonkiapp.com-iar.js"
+  async
+></script>
 ```
 
-This removes the localStorage check and standalone detection, ensuring all users land directly on the audience selection screen.
+### Location
 
-### Preserved
-
-- `InstallStepView` component (lines 71-174) — kept as unused code
-- `handleSkipInstall` function (lines 247-250) — kept as unused code
-- No other files modified
+Between the Twitter image meta tag (line 44) and the closing `</head>` tag (line 45).
 
