@@ -201,6 +201,9 @@ export default function CardView() {
   const paywallProductId = product?.id ?? (isStillUsCard ? 'still_us' : '');
   const { hasAccess: hasProductAccess, loading: accessLoading } = useProductAccess(paywallProductId);
   const [demoBypassed, setDemoBypassed] = useState(false);
+  const [completionPurchaseLoading, setCompletionPurchaseLoading] = useState(false);
+  const [completionPurchaseError, setCompletionPurchaseError] = useState<string | null>(null);
+  const [completionPriceSek, setCompletionPriceSek] = useState<number | null>(null);
   const isLocalPreviewMode = isDemoMode() || !!devState;
   const needsPaywall = !isFreeCard && !hasProductAccess && !accessLoading && (!!product || isStillUsCard) && !devState && !demoBypassed && !isDemoMode();
 
@@ -225,6 +228,61 @@ export default function CardView() {
   useEffect(() => {
     if (cardId) recordVisit(cardId);
   }, [cardId, recordVisit]);
+
+  useEffect(() => {
+    if (!product?.id) return;
+    supabase
+      .from('products')
+      .select('price_sek')
+      .eq('id', product.id)
+      .single()
+      .then(({ data }) => {
+        setCompletionPriceSek(data?.price_sek ?? (product.id === 'still_us' ? 249 : 195));
+      });
+  }, [product?.id]);
+
+  const handleCompletionPurchase = async () => {
+    if (!user) {
+      setCompletionPurchaseError('Du behöver vara inloggad. Försök ladda om sidan.');
+      return;
+    }
+    setCompletionPurchaseLoading(true);
+    setCompletionPurchaseError(null);
+    try {
+      const projectId = import.meta.env.VITE_SUPABASE_PROJECT_ID;
+      const { data: { session } } = await supabase.auth.getSession();
+      const res = await fetch(
+        `https://${projectId}.supabase.co/functions/v1/create-checkout`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${session?.access_token}`,
+          },
+          body: JSON.stringify({
+            productId: product!.id,
+            successUrl: `${window.location.origin}/?purchase=success&product=${product!.id}&returnCard=${cardId}`,
+            cancelUrl: window.location.href,
+          }),
+        },
+      );
+      const json = await res.json();
+      if (json.error === 'already_purchased') {
+        window.location.reload();
+        return;
+      }
+      if (!res.ok) {
+        setCompletionPurchaseError(res.status === 503 ? 'Betalning är inte konfigurerad ännu. Kontakta oss!' : (json.error || 'Något gick fel'));
+        return;
+      }
+      if (json.url) window.location.href = json.url;
+    } catch (err) {
+      console.error('Purchase error:', err);
+      setCompletionPurchaseError('Kunde inte starta betalningen');
+    } finally {
+      setCompletionPurchaseLoading(false);
+    }
+  };
 
   const [activeSessionId, setActiveSessionId] = useState<string | null>(
     devState ? 'dev-session' : null
@@ -1477,6 +1535,101 @@ export default function CardView() {
             </motion.div>
           )}
 
+          {isFreeCard && !hasProductAccess ? (
+            /* ── Free card completion: inline purchase CTA ── */
+            <motion.div
+              initial={{ opacity: 1 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3, duration: 0.3 }}
+              style={{ width: '100%', textAlign: 'center' }}
+            >
+              <p style={{
+                fontFamily: 'var(--font-sans)',
+                fontSize: '16px',
+                color: LANTERN_GLOW,
+                opacity: 0.8,
+                lineHeight: 1.5,
+                marginBottom: '16px',
+              }}>
+                Lås upp alla {product?.cards.length ?? ''} samtal i {product?.name ?? 'denna produkt'}.
+              </p>
+              <p style={{
+                fontFamily: 'var(--font-sans)',
+                fontSize: '14px',
+                color: LANTERN_GLOW,
+                opacity: 0.5,
+                marginBottom: '24px',
+              }}>
+                {completionPriceSek ?? '...'} kr · Engångsköp · Tillgång för alltid
+              </p>
+              <button
+                onClick={handleCompletionPurchase}
+                disabled={completionPurchaseLoading}
+                style={{
+                  width: '100%',
+                  maxWidth: '320px',
+                  height: '56px',
+                  borderRadius: '14px',
+                  backgroundColor: '#E85D2C',
+                  border: 'none',
+                  cursor: completionPurchaseLoading ? 'wait' : 'pointer',
+                  fontFamily: 'var(--font-display)',
+                  fontVariationSettings: "'opsz' 17",
+                  fontSize: '17px',
+                  fontWeight: 600,
+                  color: '#1A1A2E',
+                  opacity: completionPurchaseLoading ? 0.7 : 1,
+                  transition: 'opacity 150ms ease',
+                  margin: '0 auto',
+                  display: 'block',
+                }}
+              >
+                {completionPurchaseLoading ? 'Förbereder...' : `Lås upp ${product?.name ?? 'produkt'}`}
+              </button>
+              {completionPurchaseError && (
+                <p style={{
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '13px',
+                  color: '#E85D2C',
+                  textAlign: 'center',
+                  marginTop: '12px',
+                }}>
+                  {completionPurchaseError}
+                </p>
+              )}
+              <p style={{
+                fontFamily: 'var(--font-sans)',
+                fontSize: '12px',
+                color: LANTERN_GLOW,
+                opacity: 0.35,
+                textAlign: 'center',
+                marginTop: '12px',
+              }}>
+                Säker betalning · Ingen prenumeration
+              </p>
+              <button
+                onClick={() => navigateWithFeedback(product ? `/product/${product.slug}` : '/')}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '14px',
+                  color: LANTERN_GLOW,
+                  opacity: 0.45,
+                  textAlign: 'center',
+                  marginTop: '20px',
+                  padding: '4px 0',
+                  display: 'block',
+                  width: '100%',
+                }}
+              >
+                Till {product?.name ?? 'produkten'}
+              </button>
+            </motion.div>
+          ) : (
+            /* ── Normal completion navigation ── */
+            <>
           {/* 4. Primary CTA with Föregående */}
           <motion.div
             initial={{ opacity: 1 }}
@@ -1567,6 +1720,8 @@ export default function CardView() {
               </button>
             )}
           </motion.div>
+            </>
+          )}
         </div>
 
         {/* Bottom spacer for nav bar */}
@@ -1770,7 +1925,97 @@ export default function CardView() {
             style={{ paddingBottom: 'calc(72px + env(safe-area-inset-bottom, 0px))', marginTop: '48px' }}
           >
             {cardId === 'su-mock-0' ? (
-              /* su-mock-0: unique CTA → next card */
+              !hasProductAccess ? (
+                /* ── Free card completion: inline purchase CTA (Still Us) ── */
+                <>
+                  <p style={{
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: '16px',
+                    color: DRIFTWOOD,
+                    opacity: 0.8,
+                    lineHeight: 1.5,
+                    marginBottom: '16px',
+                    textAlign: 'center',
+                  }}>
+                    Lås upp hela resan genom 21 samtal i Vårt Vi.
+                  </p>
+                  <p style={{
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: '14px',
+                    color: DRIFTWOOD,
+                    opacity: 0.5,
+                    marginBottom: '24px',
+                    textAlign: 'center',
+                  }}>
+                    {completionPriceSek ?? '...'} kr · Engångsköp · Tillgång för alltid
+                  </p>
+                  <button
+                    onClick={handleCompletionPurchase}
+                    disabled={completionPurchaseLoading}
+                    style={{
+                      width: '100%',
+                      maxWidth: '320px',
+                      height: '56px',
+                      borderRadius: '14px',
+                      backgroundColor: '#E85D2C',
+                      border: 'none',
+                      cursor: completionPurchaseLoading ? 'wait' : 'pointer',
+                      fontFamily: 'var(--font-display)',
+                      fontVariationSettings: "'opsz' 17",
+                      fontSize: '17px',
+                      fontWeight: 600,
+                      color: '#1A1A2E',
+                      opacity: completionPurchaseLoading ? 0.7 : 1,
+                      transition: 'opacity 150ms ease',
+                      margin: '0 auto',
+                      display: 'block',
+                    }}
+                  >
+                    {completionPurchaseLoading ? 'Förbereder...' : 'Lås upp Vårt Vi'}
+                  </button>
+                  {completionPurchaseError && (
+                    <p style={{
+                      fontFamily: 'var(--font-sans)',
+                      fontSize: '13px',
+                      color: '#E85D2C',
+                      textAlign: 'center',
+                      marginTop: '12px',
+                    }}>
+                      {completionPurchaseError}
+                    </p>
+                  )}
+                  <p style={{
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: '12px',
+                    color: DRIFTWOOD,
+                    opacity: 0.35,
+                    textAlign: 'center',
+                    marginTop: '12px',
+                  }}>
+                    Säker betalning · Ingen prenumeration
+                  </p>
+                  <button
+                    onClick={() => navigateWithFeedback('/product/still-us')}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      cursor: 'pointer',
+                      fontFamily: 'var(--font-sans)',
+                      fontSize: '14px',
+                      color: DRIFTWOOD,
+                      opacity: 0.45,
+                      textAlign: 'center',
+                      marginTop: '20px',
+                      padding: '4px 0',
+                      display: 'block',
+                      width: '100%',
+                    }}
+                  >
+                    Till Vårt Vi
+                  </button>
+                </>
+              ) : (
+              /* su-mock-0 purchased: unique CTA → next card */
               <>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', maxWidth: '520px', position: 'relative' }}>
                   <button
@@ -1842,6 +2087,7 @@ export default function CardView() {
                   Till Vårt Vi
                 </button>
               </>
+              )
             ) : postCompletionNav.type === 'all_complete' ? (
               /* All done — go home */
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', maxWidth: '520px', position: 'relative' }}>
