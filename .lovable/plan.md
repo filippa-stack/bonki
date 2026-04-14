@@ -1,14 +1,42 @@
 
 
-## Fix: Login page — replace OTP code input with magic link confirmation message
+## Fix C — Auth guard feedback
 
-Three targeted changes in `src/pages/Login.tsx`:
+Replace `if (!user) return;` with error-setting guard in four paywall files.
 
-1. **Replace OTP input section (lines ~243–280)** — Remove the `InputOTP` component, 6-digit code slots, and "Verifiera" button. Replace with the provided confirmation message UI (email sent notice, spam folder hint, resend button with "Skicka mejlet igen" label).
+### Changes
 
-2. **Change email submit button text (line ~323)** — `'Skicka kod'` → `'Skicka inloggningslänk'`
+**1. src/components/ProductPaywall.tsx (line 83)**
+```typescript
+if (!user) {
+  setError('Du behöver vara inloggad. Försök ladda om sidan.');
+  return;
+}
+```
 
-3. **Keep unused imports/functions** — `handleVerifyOtp`, `verifying`, `otpCode`, `InputOTP` imports remain untouched to avoid cascading changes.
+**2. src/components/PaywallBottomSheet.tsx (line 84)**
+```typescript
+if (!user) {
+  setError('Du behöver vara inloggad. Försök ladda om sidan.');
+  return;
+}
+```
 
-Single file edit: `src/pages/Login.tsx`
+**3. src/pages/PaywallFullScreen.tsx (line 73)**
+```typescript
+if (!user) {
+  setError('Du behöver vara inloggad. Försök ladda om sidan.');
+  return;
+}
+```
+
+**4. src/pages/Paywall.tsx (line 44)**
+```typescript
+if (!user?.id) {
+  setError('Du behöver vara inloggad. Försök ladda om sidan.');
+  return;
+}
+```
+
+All four files already have `error` state and UI, so the message will display immediately.
 
