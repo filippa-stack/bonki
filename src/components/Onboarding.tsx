@@ -237,11 +237,7 @@ function InstallStepView({ onSkip }: { onSkip: () => void }) {
 export default function Onboarding() {
   const { completeOnboarding, initializeCoupleSpace } = useApp();
   const [selectedAudience, setSelectedAudience] = useState<string | null>(null);
-  const [step, setStep] = useState<'install' | 'audience'>(() => {
-    if (localStorage.getItem('bonki-install-step-seen')) return 'audience';
-    if (isStandalone()) return 'audience';
-    return 'install';
-  });
+  const [step, setStep] = useState<'install' | 'audience'>('audience');
   usePageBackground('#1A1A2E');
 
   const handleSkipInstall = () => {
