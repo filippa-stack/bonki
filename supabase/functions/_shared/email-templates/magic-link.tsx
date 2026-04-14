@@ -4,7 +4,6 @@ import * as React from 'npm:react@18.3.1'
 
 import {
   Body,
-  Button,
   Container,
   Head,
   Heading,
@@ -16,27 +15,32 @@ import {
 interface MagicLinkEmailProps {
   siteName: string
   confirmationUrl: string
+  token?: string
 }
 
 export const MagicLinkEmail = ({
   siteName,
   confirmationUrl,
+  token,
 }: MagicLinkEmailProps) => (
-  <Html lang="en" dir="ltr">
+  <Html lang="sv" dir="ltr">
     <Head />
-    <Preview>Your login link for {siteName}</Preview>
+    <Preview>Din inloggningskod för {siteName}</Preview>
     <Body style={main}>
       <Container style={container}>
-        <Heading style={h1}>Your login link</Heading>
+        <Heading style={h1}>Logga in på BONKI</Heading>
         <Text style={text}>
-          Click the button below to log in to {siteName}. This link will expire
-          shortly.
+          Ange koden nedan för att logga in. Den är giltig en kort stund.
         </Text>
-        <Button style={button} href={confirmationUrl}>
-          Log In
-        </Button>
+        {token ? (
+          <Text style={codeStyle}>{token}</Text>
+        ) : (
+          <Text style={text}>
+            <a href={confirmationUrl} style={linkStyle}>Klicka här för att logga in</a>
+          </Text>
+        )}
         <Text style={footer}>
-          If you didn't request this link, you can safely ignore this email.
+          Om du inte begärde den här länken kan du ignorera det här mailet.
         </Text>
       </Container>
     </Body>
@@ -45,26 +49,36 @@ export const MagicLinkEmail = ({
 
 export default MagicLinkEmail
 
-const main = { backgroundColor: '#ffffff', fontFamily: 'Arial, sans-serif' }
-const container = { padding: '20px 25px' }
+const main = { backgroundColor: '#ffffff', fontFamily: 'Georgia, serif' }
+const container = { padding: '32px 28px' }
 const h1 = {
-  fontSize: '22px',
+  fontSize: '24px',
   fontWeight: 'bold' as const,
-  color: '#000000',
+  color: '#1A1A2E',
   margin: '0 0 20px',
+  fontFamily: 'Georgia, serif',
 }
 const text = {
-  fontSize: '14px',
-  color: '#55575d',
-  lineHeight: '1.5',
-  margin: '0 0 25px',
+  fontSize: '15px',
+  color: '#555555',
+  lineHeight: '1.6',
+  margin: '0 0 24px',
+  fontFamily: 'Georgia, serif',
 }
-const button = {
-  backgroundColor: '#000000',
-  color: '#ffffff',
-  fontSize: '14px',
+const codeStyle = {
+  fontFamily: 'Georgia, serif',
+  fontSize: '32px',
+  fontWeight: 'bold' as const,
+  color: '#1A1A2E',
+  backgroundColor: '#F5F0E8',
+  padding: '16px 24px',
   borderRadius: '8px',
-  padding: '12px 20px',
-  textDecoration: 'none',
+  textAlign: 'center' as const,
+  letterSpacing: '6px',
+  margin: '0 0 28px',
 }
-const footer = { fontSize: '12px', color: '#999999', margin: '30px 0 0' }
+const linkStyle = {
+  color: '#E85D2C',
+  textDecoration: 'underline',
+}
+const footer = { fontSize: '12px', color: '#999999', margin: '30px 0 0', fontFamily: 'Georgia, serif' }
