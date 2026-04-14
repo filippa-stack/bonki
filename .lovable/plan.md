@@ -1,18 +1,18 @@
 
 
-## Re-provision email infrastructure for updated domain
+## Fix: Clear "no default email domain" error
 
-The domain `notify.bonkiapp.com` is verified. The auth-email-hook already uses the queue-based pattern with branded Swedish templates. The fix is to re-run infrastructure provisioning to unstick the setup.
+The domain `notify.bonkiapp.com` is verified and the workspace has it assigned to this project, but the UI shows "no default email domain configured" — a stale state from the previous stuck provisioning.
 
 ### Steps
 
-1. **Run `setup_email_infra`** — Idempotent re-provisioning of pgmq queues, RPC wrappers, cron job, and vault secret.
+1. **Run `setup_email_infra`** — Idempotent re-provisioning that re-links the domain to the project and refreshes all queue infrastructure.
 
-2. **Re-scaffold auth email templates** (with `confirm_overwrite: true`) — Ensures the hook is properly registered with the platform. Will immediately re-apply branded Swedish styling (Midnight Ink + Bonki Orange, Georgia serif, OTP tokens for signup/magic-link) to the freshly scaffolded templates.
+2. **Re-scaffold auth email templates** (`confirm_overwrite: true`) — Forces the platform to reconcile the auth-email-hook registration, which triggers the domain linkage refresh.
 
-3. **Redeploy edge functions** — Deploy both `auth-email-hook` and `process-email-queue`.
+3. **Redeploy edge functions** — Deploy `auth-email-hook` and `process-email-queue`.
 
-4. **Verify domain status** — Confirm setup clears the stuck state.
+4. **Verify** — Check that the domain status clears and the "no default email domain" error disappears.
 
-No project code changes beyond the template re-branding after scaffold overwrites them.
+No project code changes. Branded Swedish templates will be re-applied immediately after scaffold overwrites them.
 
