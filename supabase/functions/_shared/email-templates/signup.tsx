@@ -17,7 +17,7 @@ interface SignupEmailProps {
   siteUrl: string
   recipient: string
   confirmationUrl: string
-  token: string
+  token?: string
 }
 
 export const SignupEmail = ({
@@ -29,15 +29,15 @@ export const SignupEmail = ({
     <Preview>Din verifieringskod för {siteName}</Preview>
     <Body style={main}>
       <Container style={container}>
-        <Heading style={h1}>Bekräfta din e-post</Heading>
+        <Heading style={h1}>Välkommen till BONKI</Heading>
         <Text style={text}>
-          Välkommen till <strong>{siteName}</strong>! Ange koden nedan för att verifiera din e-postadress:
+          Ange koden nedan för att verifiera din e-postadress:
         </Text>
         <Text style={codeStyle}>{token}</Text>
-        <Text style={text}>Koden är giltig i 15 minuter.</Text>
-        <Text style={footer}>
-          Om du inte skapade ett konto kan du ignorera det här mailet.
+        <Text style={text}>
+          Koden är giltig i några minuter. Om du inte skapade ett konto kan du ignorera detta meddelande.
         </Text>
+        <Text style={footer}>© BONKI</Text>
       </Container>
     </Body>
   </Html>
@@ -45,30 +45,31 @@ export const SignupEmail = ({
 
 export default SignupEmail
 
-const main = { backgroundColor: '#ffffff', fontFamily: 'Georgia, serif' }
-const container = { padding: '20px 25px' }
+const main = { backgroundColor: '#ffffff', fontFamily: 'Georgia, "Times New Roman", serif' }
+const container = { padding: '32px 28px' }
 const h1 = {
-  fontSize: '22px',
+  fontSize: '24px',
   fontWeight: 'bold' as const,
   color: '#1A1A2E',
-  margin: '0 0 20px',
+  margin: '0 0 24px',
+  fontFamily: 'Georgia, "Times New Roman", serif',
 }
 const text = {
-  fontSize: '14px',
+  fontSize: '15px',
   color: '#55575d',
-  lineHeight: '1.5',
-  margin: '0 0 25px',
+  lineHeight: '1.6',
+  margin: '0 0 20px',
 }
 const codeStyle = {
-  fontFamily: 'Courier, monospace',
-  fontSize: '28px',
+  fontFamily: 'Georgia, "Times New Roman", serif',
+  fontSize: '32px',
   fontWeight: 'bold' as const,
   color: '#1A1A2E',
+  letterSpacing: '6px',
+  margin: '8px 0 28px',
+  padding: '16px 24px',
   backgroundColor: '#F5F0E8',
-  padding: '12px 20px',
   borderRadius: '8px',
-  display: 'inline-block' as const,
-  margin: '0 0 25px',
-  letterSpacing: '4px',
+  textAlign: 'center' as const,
 }
 const footer = { fontSize: '12px', color: '#999999', margin: '30px 0 0' }

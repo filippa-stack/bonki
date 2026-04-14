@@ -20,24 +20,24 @@ interface InviteEmailProps {
 }
 
 export const InviteEmail = ({
-  siteName,
   confirmationUrl,
 }: InviteEmailProps) => (
   <Html lang="sv" dir="ltr">
     <Head />
-    <Preview>Du har blivit inbjuden till {siteName}</Preview>
+    <Preview>Du har blivit inbjuden till BONKI</Preview>
     <Body style={main}>
       <Container style={container}>
         <Heading style={h1}>Du har blivit inbjuden</Heading>
         <Text style={text}>
-          Du har blivit inbjuden till <strong>{siteName}</strong>. Klicka på knappen nedan för att acceptera inbjudan.
+          Du har blivit inbjuden att gå med i BONKI. Klicka på knappen nedan för att acceptera inbjudan.
         </Text>
         <Button style={button} href={confirmationUrl}>
           Acceptera inbjudan
         </Button>
-        <Text style={footer}>
-          Om du inte förväntade dig den här inbjudan kan du ignorera det här mailet.
+        <Text style={text}>
+          Om du inte förväntade dig denna inbjudan kan du ignorera meddelandet.
         </Text>
+        <Text style={footer}>© BONKI</Text>
       </Container>
     </Body>
   </Html>
@@ -45,26 +45,28 @@ export const InviteEmail = ({
 
 export default InviteEmail
 
-const main = { backgroundColor: '#ffffff', fontFamily: 'Georgia, serif' }
-const container = { padding: '20px 25px' }
+const main = { backgroundColor: '#ffffff', fontFamily: 'Georgia, "Times New Roman", serif' }
+const container = { padding: '32px 28px' }
 const h1 = {
-  fontSize: '22px',
+  fontSize: '24px',
   fontWeight: 'bold' as const,
   color: '#1A1A2E',
-  margin: '0 0 20px',
+  margin: '0 0 24px',
+  fontFamily: 'Georgia, "Times New Roman", serif',
 }
 const text = {
-  fontSize: '14px',
+  fontSize: '15px',
   color: '#55575d',
-  lineHeight: '1.5',
-  margin: '0 0 25px',
+  lineHeight: '1.6',
+  margin: '0 0 20px',
 }
 const button = {
   backgroundColor: '#E85D2C',
   color: '#ffffff',
-  fontSize: '14px',
+  fontSize: '15px',
+  fontFamily: 'Georgia, "Times New Roman", serif',
   borderRadius: '8px',
-  padding: '12px 20px',
+  padding: '14px 24px',
   textDecoration: 'none',
 }
 const footer = { fontSize: '12px', color: '#999999', margin: '30px 0 0' }
