@@ -1931,7 +1931,7 @@ export default function CardView() {
                   <p style={{
                     fontFamily: 'var(--font-sans)',
                     fontSize: '16px',
-                    color: LANTERN_GLOW,
+                    color: DRIFTWOOD,
                     opacity: 0.8,
                     lineHeight: 1.5,
                     marginBottom: '16px',
@@ -1942,7 +1942,7 @@ export default function CardView() {
                   <p style={{
                     fontFamily: 'var(--font-sans)',
                     fontSize: '14px',
-                    color: LANTERN_GLOW,
+                    color: DRIFTWOOD,
                     opacity: 0.5,
                     marginBottom: '24px',
                     textAlign: 'center',
@@ -1987,7 +1987,7 @@ export default function CardView() {
                   <p style={{
                     fontFamily: 'var(--font-sans)',
                     fontSize: '12px',
-                    color: LANTERN_GLOW,
+                    color: DRIFTWOOD,
                     opacity: 0.35,
                     textAlign: 'center',
                     marginTop: '12px',
@@ -2002,7 +2002,7 @@ export default function CardView() {
                       cursor: 'pointer',
                       fontFamily: 'var(--font-sans)',
                       fontSize: '14px',
-                      color: LANTERN_GLOW,
+                      color: DRIFTWOOD,
                       opacity: 0.45,
                       textAlign: 'center',
                       marginTop: '20px',
