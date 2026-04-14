@@ -11,6 +11,9 @@ import ProductIntro, { useProductIntroNeeded } from '@/components/ProductIntro';
 import KidsProductHome from '@/components/KidsProductHome';
 import { KIDS_PRODUCT_IDS } from '@/hooks/useKidsProductProgress';
 import { isProductFreeForUser } from '@/lib/freeCardPolicy';
+import { useProductAccess } from '@/hooks/useProductAccess';
+import ProductPaywall from '@/components/ProductPaywall';
+import { isDemoMode } from '@/lib/demoMode';
 
 /** Still Us free card ID */
 export default function ProductHome() {
@@ -68,6 +71,9 @@ export default function ProductHome() {
     }
   }, [product?.slug]);
 
+  const isFreeProduct = product ? isProductFreeForUser(product.id) : false;
+  const { hasAccess: hasProductAccess, loading: paywallAccessLoading } = useProductAccess(product?.id ?? '');
+
   if (showIntro === true && product) {
     return (
       <ProductIntro
@@ -104,6 +110,24 @@ export default function ProductHome() {
         minHeight: '100vh',
         backgroundColor: product?.backgroundColor ?? 'var(--surface-base)',
       }} />
+    );
+  }
+
+  if (paywallAccessLoading && product) {
+    return (
+      <div style={{
+        minHeight: '100vh',
+        backgroundColor: product.backgroundColor ?? 'var(--surface-base)',
+      }} />
+    );
+  }
+
+  if (product && !isFreeProduct && !hasProductAccess && !isDemoMode()) {
+    return (
+      <ProductPaywall
+        product={product}
+        onAccessGranted={() => window.location.reload()}
+      />
     );
   }
 
