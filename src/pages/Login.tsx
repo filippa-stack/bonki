@@ -240,35 +240,23 @@ export default function Login() {
                   Tillbaka
                 </button>
 
-                <p style={{ fontFamily: 'var(--font-sans)', fontSize: '14px', color: 'rgba(253, 246, 227, 0.75)', textAlign: 'center' }}>
-                  Ange koden vi skickade till<br />
-                  <span style={{ color: 'rgba(212, 245, 192, 0.9)', fontWeight: 500 }}>{email}</span>
-                </p>
-
-                <div className="[&_input]:!bg-[rgba(255,255,255,0.08)] [&_input]:!text-[#F5EFE6] [&_input]:!border-[rgba(253,246,227,0.2)]">
-                  <InputOTP maxLength={6} value={otpCode} onChange={setOtpCode}>
-                    <InputOTPGroup>
-                      <InputOTPSlot index={0} />
-                      <InputOTPSlot index={1} />
-                      <InputOTPSlot index={2} />
-                      <InputOTPSlot index={3} />
-                      <InputOTPSlot index={4} />
-                      <InputOTPSlot index={5} />
-                    </InputOTPGroup>
-                  </InputOTP>
+                <div style={{ 
+                  textAlign: 'center',
+                  padding: '8px 0',
+                }}>
+                  <p style={{ fontFamily: 'var(--font-sans)', fontSize: '15px', color: 'rgba(253, 246, 227, 0.85)', lineHeight: 1.6 }}>
+                    Vi har skickat ett mejl till
+                  </p>
+                  <p style={{ fontFamily: 'var(--font-sans)', fontSize: '15px', color: 'rgba(212, 245, 192, 0.9)', fontWeight: 500, marginTop: '4px' }}>
+                    {email}
+                  </p>
+                  <p style={{ fontFamily: 'var(--font-sans)', fontSize: '14px', color: 'rgba(253, 246, 227, 0.6)', marginTop: '16px', lineHeight: 1.5 }}>
+                    Tryck på knappen i mejlet för att verifiera och logga in.
+                  </p>
+                  <p style={{ fontFamily: 'var(--font-sans)', fontSize: '13px', color: 'rgba(253, 246, 227, 0.4)', marginTop: '12px', lineHeight: 1.5 }}>
+                    Hittar du inte mejlet? Kolla din skräppost.
+                  </p>
                 </div>
-
-                <button
-                  onClick={handleVerifyOtp}
-                  disabled={otpCode.length !== 6 || verifying}
-                  className="w-full h-14 text-base font-semibold rounded-xl flex items-center justify-center gap-2 border-0 text-white disabled:opacity-50"
-                  style={{
-                    background: ORANGE_GRADIENT,
-                    boxShadow: ORANGE_SHADOW,
-                  }}
-                >
-                  {verifying ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Verifiera'}
-                </button>
 
                 <button
                   onClick={handleResend}
@@ -276,7 +264,7 @@ export default function Login() {
                   className="text-sm disabled:opacity-40"
                   style={{ color: 'rgba(212, 245, 192, 0.7)', background: 'none', border: 'none', cursor: 'pointer' }}
                 >
-                  {resendCooldown > 0 ? `Skicka igen (${resendCooldown}s)` : 'Skicka koden igen'}
+                  {resendCooldown > 0 ? `Skicka igen (${resendCooldown}s)` : 'Skicka mejlet igen'}
                 </button>
               </motion.div>
             ) : showEmailForm ? (
@@ -320,7 +308,7 @@ export default function Login() {
                     boxShadow: ORANGE_SHADOW,
                   }}
                 >
-                  {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Skicka kod'}
+                  {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Skicka inloggningslänk'}
                 </button>
               </motion.div>
             ) : (
