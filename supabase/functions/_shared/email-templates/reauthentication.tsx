@@ -17,16 +17,17 @@ interface ReauthenticationEmailProps {
 }
 
 export const ReauthenticationEmail = ({ token }: ReauthenticationEmailProps) => (
-  <Html lang="sv" dir="ltr">
+  <Html lang="en" dir="ltr">
     <Head />
-    <Preview>Din verifieringskod</Preview>
+    <Preview>Your verification code</Preview>
     <Body style={main}>
       <Container style={container}>
-        <Heading style={h1}>Bekräfta din identitet</Heading>
-        <Text style={text}>Ange koden nedan för att bekräfta din identitet:</Text>
+        <Heading style={h1}>Confirm reauthentication</Heading>
+        <Text style={text}>Use the code below to confirm your identity:</Text>
         <Text style={codeStyle}>{token}</Text>
         <Text style={footer}>
-          Koden är giltig en kort stund. Om du inte begärde den kan du ignorera det här mailet.
+          This code will expire shortly. If you didn't request this, you can
+          safely ignore this email.
         </Text>
       </Container>
     </Body>
@@ -35,32 +36,25 @@ export const ReauthenticationEmail = ({ token }: ReauthenticationEmailProps) => 
 
 export default ReauthenticationEmail
 
-const main = { backgroundColor: '#ffffff', fontFamily: 'Georgia, serif' }
-const container = { padding: '32px 28px' }
+const main = { backgroundColor: '#ffffff', fontFamily: 'Arial, sans-serif' }
+const container = { padding: '20px 25px' }
 const h1 = {
-  fontSize: '24px',
+  fontSize: '22px',
   fontWeight: 'bold' as const,
-  color: '#1A1A2E',
+  color: '#000000',
   margin: '0 0 20px',
-  fontFamily: 'Georgia, serif',
 }
 const text = {
-  fontSize: '15px',
-  color: '#555555',
-  lineHeight: '1.6',
-  margin: '0 0 24px',
-  fontFamily: 'Georgia, serif',
+  fontSize: '14px',
+  color: '#55575d',
+  lineHeight: '1.5',
+  margin: '0 0 25px',
 }
 const codeStyle = {
-  fontFamily: 'Georgia, serif',
-  fontSize: '32px',
+  fontFamily: 'Courier, monospace',
+  fontSize: '22px',
   fontWeight: 'bold' as const,
-  color: '#1A1A2E',
-  backgroundColor: '#F5F0E8',
-  padding: '16px 24px',
-  borderRadius: '8px',
-  textAlign: 'center' as const,
-  letterSpacing: '6px',
-  margin: '0 0 28px',
+  color: '#000000',
+  margin: '0 0 30px',
 }
-const footer = { fontSize: '12px', color: '#999999', margin: '30px 0 0', fontFamily: 'Georgia, serif' }
+const footer = { fontSize: '12px', color: '#999999', margin: '30px 0 0' }
