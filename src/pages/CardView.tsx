@@ -1925,7 +1925,97 @@ export default function CardView() {
             style={{ paddingBottom: 'calc(72px + env(safe-area-inset-bottom, 0px))', marginTop: '48px' }}
           >
             {cardId === 'su-mock-0' ? (
-              /* su-mock-0: unique CTA → next card */
+              !hasProductAccess ? (
+                /* ── Free card completion: inline purchase CTA (Still Us) ── */
+                <>
+                  <p style={{
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: '16px',
+                    color: LANTERN_GLOW,
+                    opacity: 0.8,
+                    lineHeight: 1.5,
+                    marginBottom: '16px',
+                    textAlign: 'center',
+                  }}>
+                    Lås upp hela resan genom 21 samtal i Vårt Vi.
+                  </p>
+                  <p style={{
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: '14px',
+                    color: LANTERN_GLOW,
+                    opacity: 0.5,
+                    marginBottom: '24px',
+                    textAlign: 'center',
+                  }}>
+                    {completionPriceSek ?? '...'} kr · Engångsköp · Tillgång för alltid
+                  </p>
+                  <button
+                    onClick={handleCompletionPurchase}
+                    disabled={completionPurchaseLoading}
+                    style={{
+                      width: '100%',
+                      maxWidth: '320px',
+                      height: '56px',
+                      borderRadius: '14px',
+                      backgroundColor: '#E85D2C',
+                      border: 'none',
+                      cursor: completionPurchaseLoading ? 'wait' : 'pointer',
+                      fontFamily: 'var(--font-display)',
+                      fontVariationSettings: "'opsz' 17",
+                      fontSize: '17px',
+                      fontWeight: 600,
+                      color: '#1A1A2E',
+                      opacity: completionPurchaseLoading ? 0.7 : 1,
+                      transition: 'opacity 150ms ease',
+                      margin: '0 auto',
+                      display: 'block',
+                    }}
+                  >
+                    {completionPurchaseLoading ? 'Förbereder...' : 'Lås upp Vårt Vi'}
+                  </button>
+                  {completionPurchaseError && (
+                    <p style={{
+                      fontFamily: 'var(--font-sans)',
+                      fontSize: '13px',
+                      color: '#E85D2C',
+                      textAlign: 'center',
+                      marginTop: '12px',
+                    }}>
+                      {completionPurchaseError}
+                    </p>
+                  )}
+                  <p style={{
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: '12px',
+                    color: LANTERN_GLOW,
+                    opacity: 0.35,
+                    textAlign: 'center',
+                    marginTop: '12px',
+                  }}>
+                    Säker betalning · Ingen prenumeration
+                  </p>
+                  <button
+                    onClick={() => navigateWithFeedback('/product/still-us')}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      cursor: 'pointer',
+                      fontFamily: 'var(--font-sans)',
+                      fontSize: '14px',
+                      color: LANTERN_GLOW,
+                      opacity: 0.45,
+                      textAlign: 'center',
+                      marginTop: '20px',
+                      padding: '4px 0',
+                      display: 'block',
+                      width: '100%',
+                    }}
+                  >
+                    Till Vårt Vi
+                  </button>
+                </>
+              ) : (
+              /* su-mock-0 purchased: unique CTA → next card */
               <>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', maxWidth: '520px', position: 'relative' }}>
                   <button
@@ -1997,6 +2087,7 @@ export default function CardView() {
                   Till Vårt Vi
                 </button>
               </>
+              )
             ) : postCompletionNav.type === 'all_complete' ? (
               /* All done — go home */
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', maxWidth: '520px', position: 'relative' }}>
