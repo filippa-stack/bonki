@@ -4,12 +4,10 @@ import * as React from 'npm:react@18.3.1'
 
 import {
   Body,
-  Button,
   Container,
   Head,
   Heading,
   Html,
-  Link,
   Preview,
   Text,
 } from 'npm:@react-email/components@0.0.22'
@@ -19,68 +17,71 @@ interface SignupEmailProps {
   siteUrl: string
   recipient: string
   confirmationUrl: string
+  token?: string
 }
 
 export const SignupEmail = ({
   siteName,
-  siteUrl,
-  recipient,
+  token,
   confirmationUrl,
-}: SignupEmailProps) => (
-  <Html lang="en" dir="ltr">
-    <Head />
-    <Preview>Confirm your email for {siteName}</Preview>
-    <Body style={main}>
-      <Container style={container}>
-        <Heading style={h1}>Confirm your email</Heading>
-        <Text style={text}>
-          Thanks for signing up for{' '}
-          <Link href={siteUrl} style={link}>
-            <strong>{siteName}</strong>
-          </Link>
-          !
-        </Text>
-        <Text style={text}>
-          Please confirm your email address (
-          <Link href={`mailto:${recipient}`} style={link}>
-            {recipient}
-          </Link>
-          ) by clicking the button below:
-        </Text>
-        <Button style={button} href={confirmationUrl}>
-          Verify Email
-        </Button>
-        <Text style={footer}>
-          If you didn't create an account, you can safely ignore this email.
-        </Text>
-      </Container>
-    </Body>
-  </Html>
-)
+}: SignupEmailProps) => {
+  const displayToken = token || (() => { try { return new URL(confirmationUrl || '').searchParams.get('token') || '' } catch { return '' } })()
+  return (
+    <Html lang="sv" dir="ltr">
+      <Head />
+      <Preview>Din verifieringskod för {siteName}</Preview>
+      <Body style={main}>
+        <Container style={container}>
+          <Text style={brand}>BONKI</Text>
+          <Heading style={h1}>Bekräfta din e-post</Heading>
+          <Text style={text}>
+            Ange koden nedan för att verifiera din e-postadress:
+          </Text>
+          <Text style={codeStyle}>{displayToken}</Text>
+          <Text style={text}>
+            Koden är giltig i 10 minuter. Om du inte skapade ett konto kan du
+            ignorera det här mailet.
+          </Text>
+          <Text style={footer}>— {siteName}</Text>
+        </Container>
+      </Body>
+    </Html>
+  )
+}
 
 export default SignupEmail
 
-const main = { backgroundColor: '#ffffff', fontFamily: 'Arial, sans-serif' }
-const container = { padding: '20px 25px' }
+const main = { backgroundColor: '#ffffff', fontFamily: "Georgia, 'Times New Roman', serif" }
+const container = { padding: '32px 28px' }
+const brand = {
+  fontSize: '13px',
+  fontWeight: 'bold' as const,
+  letterSpacing: '3px',
+  color: '#E85D2C',
+  margin: '0 0 24px',
+}
 const h1 = {
   fontSize: '22px',
   fontWeight: 'bold' as const,
-  color: '#000000',
-  margin: '0 0 20px',
+  color: '#1A1A2E',
+  margin: '0 0 16px',
 }
 const text = {
-  fontSize: '14px',
-  color: '#55575d',
-  lineHeight: '1.5',
-  margin: '0 0 25px',
+  fontSize: '15px',
+  color: '#4A4A5A',
+  lineHeight: '1.6',
+  margin: '0 0 20px',
 }
-const link = { color: 'inherit', textDecoration: 'underline' }
-const button = {
-  backgroundColor: '#000000',
-  color: '#ffffff',
-  fontSize: '14px',
+const codeStyle = {
+  fontFamily: "Georgia, 'Times New Roman', serif",
+  fontSize: '32px',
+  fontWeight: 'bold' as const,
+  letterSpacing: '6px',
+  color: '#1A1A2E',
+  backgroundColor: '#F5F0E8',
+  padding: '16px 24px',
   borderRadius: '8px',
-  padding: '12px 20px',
-  textDecoration: 'none',
+  textAlign: 'center' as const,
+  margin: '8px 0 28px',
 }
-const footer = { fontSize: '12px', color: '#999999', margin: '30px 0 0' }
+const footer = { fontSize: '13px', color: '#999999', margin: '30px 0 0' }
