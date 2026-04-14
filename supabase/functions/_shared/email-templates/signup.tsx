@@ -4,10 +4,12 @@ import * as React from 'npm:react@18.3.1'
 
 import {
   Body,
+  Button,
   Container,
   Head,
   Heading,
   Html,
+  Link,
   Preview,
   Text,
 } from 'npm:@react-email/components@0.0.22'
@@ -17,26 +19,39 @@ interface SignupEmailProps {
   siteUrl: string
   recipient: string
   confirmationUrl: string
-  token: string
 }
 
 export const SignupEmail = ({
   siteName,
-  token,
+  siteUrl,
+  recipient,
+  confirmationUrl,
 }: SignupEmailProps) => (
-  <Html lang="sv" dir="ltr">
+  <Html lang="en" dir="ltr">
     <Head />
-    <Preview>Din verifieringskod för {siteName}</Preview>
+    <Preview>Confirm your email for {siteName}</Preview>
     <Body style={main}>
       <Container style={container}>
-        <Heading style={h1}>Bekräfta din e-post</Heading>
+        <Heading style={h1}>Confirm your email</Heading>
         <Text style={text}>
-          Välkommen till <strong>{siteName}</strong>! Ange koden nedan för att verifiera din e-postadress:
+          Thanks for signing up for{' '}
+          <Link href={siteUrl} style={link}>
+            <strong>{siteName}</strong>
+          </Link>
+          !
         </Text>
-        <Text style={codeStyle}>{token}</Text>
-        <Text style={text}>Koden är giltig i 15 minuter.</Text>
+        <Text style={text}>
+          Please confirm your email address (
+          <Link href={`mailto:${recipient}`} style={link}>
+            {recipient}
+          </Link>
+          ) by clicking the button below:
+        </Text>
+        <Button style={button} href={confirmationUrl}>
+          Verify Email
+        </Button>
         <Text style={footer}>
-          Om du inte skapade ett konto kan du ignorera det här mailet.
+          If you didn't create an account, you can safely ignore this email.
         </Text>
       </Container>
     </Body>
@@ -45,12 +60,12 @@ export const SignupEmail = ({
 
 export default SignupEmail
 
-const main = { backgroundColor: '#ffffff', fontFamily: 'Georgia, serif' }
+const main = { backgroundColor: '#ffffff', fontFamily: 'Arial, sans-serif' }
 const container = { padding: '20px 25px' }
 const h1 = {
   fontSize: '22px',
   fontWeight: 'bold' as const,
-  color: '#1A1A2E',
+  color: '#000000',
   margin: '0 0 20px',
 }
 const text = {
@@ -59,16 +74,13 @@ const text = {
   lineHeight: '1.5',
   margin: '0 0 25px',
 }
-const codeStyle = {
-  fontFamily: 'Courier, monospace',
-  fontSize: '28px',
-  fontWeight: 'bold' as const,
-  color: '#1A1A2E',
-  backgroundColor: '#F5F0E8',
-  padding: '12px 20px',
+const link = { color: 'inherit', textDecoration: 'underline' }
+const button = {
+  backgroundColor: '#000000',
+  color: '#ffffff',
+  fontSize: '14px',
   borderRadius: '8px',
-  display: 'inline-block' as const,
-  margin: '0 0 25px',
-  letterSpacing: '4px',
+  padding: '12px 20px',
+  textDecoration: 'none',
 }
 const footer = { fontSize: '12px', color: '#999999', margin: '30px 0 0' }
