@@ -9,7 +9,6 @@ import {
   Head,
   Heading,
   Html,
-  Link,
   Preview,
   Text,
 } from 'npm:@react-email/components@0.0.22'
@@ -28,23 +27,19 @@ export const EmailChangeEmail = ({
 }: EmailChangeEmailProps) => (
   <Html lang="sv" dir="ltr">
     <Head />
-    <Preview>Bekräfta din nya e-postadress för BONKI</Preview>
+    <Preview>Bekräfta din nya e-postadress</Preview>
     <Body style={main}>
       <Container style={container}>
-        <Heading style={h1}>Bekräfta e-postbyte</Heading>
+        <Heading style={h1}>Bekräfta din nya e-post</Heading>
         <Text style={text}>
-          Du begärde att byta e-postadress från{' '}
-          <Link href={`mailto:${email}`} style={link}>{email}</Link>
-          {' '}till{' '}
-          <Link href={`mailto:${newEmail}`} style={link}>{newEmail}</Link>.
+          Du har begärt att byta e-postadress från {email} till {newEmail}. Klicka nedan för att bekräfta ändringen.
         </Text>
         <Button style={button} href={confirmationUrl}>
-          Bekräfta ny e-post
+          Bekräfta e-postbyte
         </Button>
-        <Text style={text}>
-          Om du inte begärde detta, vänligen säkra ditt konto omedelbart.
+        <Text style={footer}>
+          Om du inte begärde den här ändringen bör du säkra ditt konto omedelbart.
         </Text>
-        <Text style={footer}>© BONKI</Text>
       </Container>
     </Body>
   </Html>
@@ -52,29 +47,30 @@ export const EmailChangeEmail = ({
 
 export default EmailChangeEmail
 
-const main = { backgroundColor: '#ffffff', fontFamily: 'Georgia, "Times New Roman", serif' }
+const main = { backgroundColor: '#ffffff', fontFamily: 'Georgia, serif' }
 const container = { padding: '32px 28px' }
 const h1 = {
   fontSize: '24px',
   fontWeight: 'bold' as const,
   color: '#1A1A2E',
-  margin: '0 0 24px',
-  fontFamily: 'Georgia, "Times New Roman", serif',
+  margin: '0 0 20px',
+  fontFamily: 'Georgia, serif',
 }
 const text = {
   fontSize: '15px',
-  color: '#55575d',
+  color: '#555555',
   lineHeight: '1.6',
-  margin: '0 0 20px',
+  margin: '0 0 24px',
+  fontFamily: 'Georgia, serif',
 }
-const link = { color: '#1A1A2E', textDecoration: 'underline' }
 const button = {
   backgroundColor: '#E85D2C',
   color: '#ffffff',
   fontSize: '15px',
-  fontFamily: 'Georgia, "Times New Roman", serif',
   borderRadius: '8px',
   padding: '14px 24px',
   textDecoration: 'none',
+  fontFamily: 'Georgia, serif',
+  fontWeight: 'bold' as const,
 }
-const footer = { fontSize: '12px', color: '#999999', margin: '30px 0 0' }
+const footer = { fontSize: '12px', color: '#999999', margin: '30px 0 0', fontFamily: 'Georgia, serif' }

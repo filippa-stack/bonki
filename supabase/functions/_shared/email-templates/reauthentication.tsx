@@ -23,12 +23,11 @@ export const ReauthenticationEmail = ({ token }: ReauthenticationEmailProps) => 
     <Body style={main}>
       <Container style={container}>
         <Heading style={h1}>Bekräfta din identitet</Heading>
-        <Text style={text}>Ange koden nedan för att verifiera:</Text>
+        <Text style={text}>Ange koden nedan för att bekräfta din identitet:</Text>
         <Text style={codeStyle}>{token}</Text>
-        <Text style={text}>
-          Koden är giltig i några minuter. Om du inte begärde detta kan du ignorera meddelandet.
+        <Text style={footer}>
+          Koden är giltig en kort stund. Om du inte begärde den kan du ignorera det här mailet.
         </Text>
-        <Text style={footer}>© BONKI</Text>
       </Container>
     </Body>
   </Html>
@@ -36,31 +35,32 @@ export const ReauthenticationEmail = ({ token }: ReauthenticationEmailProps) => 
 
 export default ReauthenticationEmail
 
-const main = { backgroundColor: '#ffffff', fontFamily: 'Georgia, "Times New Roman", serif' }
+const main = { backgroundColor: '#ffffff', fontFamily: 'Georgia, serif' }
 const container = { padding: '32px 28px' }
 const h1 = {
   fontSize: '24px',
   fontWeight: 'bold' as const,
   color: '#1A1A2E',
-  margin: '0 0 24px',
-  fontFamily: 'Georgia, "Times New Roman", serif',
+  margin: '0 0 20px',
+  fontFamily: 'Georgia, serif',
 }
 const text = {
   fontSize: '15px',
-  color: '#55575d',
+  color: '#555555',
   lineHeight: '1.6',
-  margin: '0 0 20px',
+  margin: '0 0 24px',
+  fontFamily: 'Georgia, serif',
 }
 const codeStyle = {
-  fontFamily: 'Georgia, "Times New Roman", serif',
+  fontFamily: 'Georgia, serif',
   fontSize: '32px',
   fontWeight: 'bold' as const,
   color: '#1A1A2E',
-  letterSpacing: '6px',
-  margin: '8px 0 28px',
-  padding: '16px 24px',
   backgroundColor: '#F5F0E8',
+  padding: '16px 24px',
   borderRadius: '8px',
   textAlign: 'center' as const,
+  letterSpacing: '6px',
+  margin: '0 0 28px',
 }
-const footer = { fontSize: '12px', color: '#999999', margin: '30px 0 0' }
+const footer = { fontSize: '12px', color: '#999999', margin: '30px 0 0', fontFamily: 'Georgia, serif' }

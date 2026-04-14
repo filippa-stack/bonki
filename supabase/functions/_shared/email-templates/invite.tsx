@@ -34,10 +34,9 @@ export const InviteEmail = ({
         <Button style={button} href={confirmationUrl}>
           Acceptera inbjudan
         </Button>
-        <Text style={text}>
-          Om du inte förväntade dig denna inbjudan kan du ignorera meddelandet.
+        <Text style={footer}>
+          Om du inte förväntade dig den här inbjudan kan du ignorera det här mailet.
         </Text>
-        <Text style={footer}>© BONKI</Text>
       </Container>
     </Body>
   </Html>
@@ -45,28 +44,30 @@ export const InviteEmail = ({
 
 export default InviteEmail
 
-const main = { backgroundColor: '#ffffff', fontFamily: 'Georgia, "Times New Roman", serif' }
+const main = { backgroundColor: '#ffffff', fontFamily: 'Georgia, serif' }
 const container = { padding: '32px 28px' }
 const h1 = {
   fontSize: '24px',
   fontWeight: 'bold' as const,
   color: '#1A1A2E',
-  margin: '0 0 24px',
-  fontFamily: 'Georgia, "Times New Roman", serif',
+  margin: '0 0 20px',
+  fontFamily: 'Georgia, serif',
 }
 const text = {
   fontSize: '15px',
-  color: '#55575d',
+  color: '#555555',
   lineHeight: '1.6',
-  margin: '0 0 20px',
+  margin: '0 0 24px',
+  fontFamily: 'Georgia, serif',
 }
 const button = {
   backgroundColor: '#E85D2C',
   color: '#ffffff',
   fontSize: '15px',
-  fontFamily: 'Georgia, "Times New Roman", serif',
   borderRadius: '8px',
   padding: '14px 24px',
   textDecoration: 'none',
+  fontFamily: 'Georgia, serif',
+  fontWeight: 'bold' as const,
 }
-const footer = { fontSize: '12px', color: '#999999', margin: '30px 0 0' }
+const footer = { fontSize: '12px', color: '#999999', margin: '30px 0 0', fontFamily: 'Georgia, serif' }

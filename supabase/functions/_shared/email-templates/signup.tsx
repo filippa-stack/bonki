@@ -23,6 +23,7 @@ interface SignupEmailProps {
 export const SignupEmail = ({
   siteName,
   token,
+  confirmationUrl,
 }: SignupEmailProps) => (
   <Html lang="sv" dir="ltr">
     <Head />
@@ -31,13 +32,18 @@ export const SignupEmail = ({
       <Container style={container}>
         <Heading style={h1}>Välkommen till BONKI</Heading>
         <Text style={text}>
-          Ange koden nedan för att verifiera din e-postadress:
+          Ange koden nedan för att verifiera din e-postadress och komma igång.
         </Text>
-        <Text style={codeStyle}>{token}</Text>
-        <Text style={text}>
-          Koden är giltig i några minuter. Om du inte skapade ett konto kan du ignorera detta meddelande.
+        {token ? (
+          <Text style={codeStyle}>{token}</Text>
+        ) : (
+          <Text style={text}>
+            <a href={confirmationUrl} style={linkStyle}>Klicka här för att verifiera</a>
+          </Text>
+        )}
+        <Text style={footer}>
+          Om du inte skapade ett konto kan du ignorera det här mailet.
         </Text>
-        <Text style={footer}>© BONKI</Text>
       </Container>
     </Body>
   </Html>
@@ -45,31 +51,36 @@ export const SignupEmail = ({
 
 export default SignupEmail
 
-const main = { backgroundColor: '#ffffff', fontFamily: 'Georgia, "Times New Roman", serif' }
+const main = { backgroundColor: '#ffffff', fontFamily: 'Georgia, serif' }
 const container = { padding: '32px 28px' }
 const h1 = {
   fontSize: '24px',
   fontWeight: 'bold' as const,
   color: '#1A1A2E',
-  margin: '0 0 24px',
-  fontFamily: 'Georgia, "Times New Roman", serif',
+  margin: '0 0 20px',
+  fontFamily: 'Georgia, serif',
 }
 const text = {
   fontSize: '15px',
-  color: '#55575d',
+  color: '#555555',
   lineHeight: '1.6',
-  margin: '0 0 20px',
+  margin: '0 0 24px',
+  fontFamily: 'Georgia, serif',
 }
 const codeStyle = {
-  fontFamily: 'Georgia, "Times New Roman", serif',
+  fontFamily: 'Georgia, serif',
   fontSize: '32px',
   fontWeight: 'bold' as const,
   color: '#1A1A2E',
-  letterSpacing: '6px',
-  margin: '8px 0 28px',
-  padding: '16px 24px',
   backgroundColor: '#F5F0E8',
+  padding: '16px 24px',
   borderRadius: '8px',
   textAlign: 'center' as const,
+  letterSpacing: '6px',
+  margin: '0 0 28px',
 }
-const footer = { fontSize: '12px', color: '#999999', margin: '30px 0 0' }
+const linkStyle = {
+  color: '#E85D2C',
+  textDecoration: 'underline',
+}
+const footer = { fontSize: '12px', color: '#999999', margin: '30px 0 0', fontFamily: 'Georgia, serif' }

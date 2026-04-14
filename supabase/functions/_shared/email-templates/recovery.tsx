@@ -26,17 +26,16 @@ export const RecoveryEmail = ({
     <Preview>Återställ ditt lösenord för BONKI</Preview>
     <Body style={main}>
       <Container style={container}>
-        <Heading style={h1}>Återställ lösenord</Heading>
+        <Heading style={h1}>Återställ ditt lösenord</Heading>
         <Text style={text}>
-          Vi fick en begäran om att återställa ditt lösenord. Klicka på knappen nedan för att välja ett nytt lösenord.
+          Vi fick en begäran om att återställa lösenordet för ditt BONKI-konto. Klicka på knappen nedan för att välja ett nytt lösenord.
         </Text>
         <Button style={button} href={confirmationUrl}>
           Återställ lösenord
         </Button>
-        <Text style={text}>
-          Om du inte begärde detta kan du ignorera meddelandet. Ditt lösenord ändras inte.
+        <Text style={footer}>
+          Om du inte begärde en lösenordsåterställning kan du ignorera det här mailet. Ditt lösenord ändras inte.
         </Text>
-        <Text style={footer}>© BONKI</Text>
       </Container>
     </Body>
   </Html>
@@ -44,28 +43,30 @@ export const RecoveryEmail = ({
 
 export default RecoveryEmail
 
-const main = { backgroundColor: '#ffffff', fontFamily: 'Georgia, "Times New Roman", serif' }
+const main = { backgroundColor: '#ffffff', fontFamily: 'Georgia, serif' }
 const container = { padding: '32px 28px' }
 const h1 = {
   fontSize: '24px',
   fontWeight: 'bold' as const,
   color: '#1A1A2E',
-  margin: '0 0 24px',
-  fontFamily: 'Georgia, "Times New Roman", serif',
+  margin: '0 0 20px',
+  fontFamily: 'Georgia, serif',
 }
 const text = {
   fontSize: '15px',
-  color: '#55575d',
+  color: '#555555',
   lineHeight: '1.6',
-  margin: '0 0 20px',
+  margin: '0 0 24px',
+  fontFamily: 'Georgia, serif',
 }
 const button = {
   backgroundColor: '#E85D2C',
   color: '#ffffff',
   fontSize: '15px',
-  fontFamily: 'Georgia, "Times New Roman", serif',
   borderRadius: '8px',
   padding: '14px 24px',
   textDecoration: 'none',
+  fontFamily: 'Georgia, serif',
+  fontWeight: 'bold' as const,
 }
-const footer = { fontSize: '12px', color: '#999999', margin: '30px 0 0' }
+const footer = { fontSize: '12px', color: '#999999', margin: '30px 0 0', fontFamily: 'Georgia, serif' }
