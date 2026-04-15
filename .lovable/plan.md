@@ -1,37 +1,128 @@
 
 
-## Fix: "Prova Jag i Mig — Ert första samtal är gratis" shown after free card is already used
+## Fix Login OTP UI: Show Code Input & Update Button Label
 
 ### Problem
+The email login flow sends a 6-digit OTP code, but the UI still references a "magic link" in two places:
+1. Lines 243-258: Instructions say "Tryck på knappen i mejlet" (click button in email)
+2. Line 311: Button says "Skicka inloggningslänk" (Send login link)
 
-After completing the free "Vänskap" card in Jag med Andra, the library shows a suggestion banner saying "Prova Jag i Mig — Ert första samtal är gratis". This is incorrect: the user's one free card (tied to their onboarding audience "middle" = Jag med Andra) has already been used. Jag i Mig is not free for this user.
+### Solution
+Replace magic link text with OTP code input UI and update button label.
 
-The bug is in `ProductLibrary.tsx` lines 809-881. The "next step suggestion" banner always displays "Ert första samtal är gratis" as subtitle text, without checking whether the suggested product actually has a free card for this user.
+---
 
-### Fix
+### Change 1: Replace Magic Link Instructions with OTP Code Input (lines 243-268)
 
-In `src/components/ProductLibrary.tsx`, update the suggestion banner (around line 865) to conditionally show the "gratis" subtitle only when `isProductFreeForUser(untriedProduct.id)` is true AND the free card for that product has not been completed.
+**Current (lines 243-268):**
+```tsx
+<div style={{ 
+  textAlign: 'center',
+  padding: '8px 0',
+}}>
+  <p style={{ fontFamily: 'var(--font-sans)', fontSize: '15px', color: 'rgba(253, 246, 227, 0.85)', lineHeight: 1.6 }}>
+    Vi har skickat ett mejl till
+  </p>
+  <p style={{ fontFamily: 'var(--font-sans)', fontSize: '15px', color: 'rgba(212, 245, 192, 0.9)', fontWeight: 500, marginTop: '4px' }}>
+    {email}
+  </p>
+  <p style={{ fontFamily: 'var(--font-sans)', fontSize: '14px', color: 'rgba(253, 246, 227, 0.6)', marginTop: '16px', lineHeight: 1.5 }}>
+    Tryck på knappen i mejlet för att verifiera och logga in.
+  </p>
+  <p style={{ fontFamily: 'var(--font-sans)', fontSize: '13px', color: 'rgba(253, 246, 227, 0.4)', marginTop: '12px', lineHeight: 1.5 }}>
+    Hittar du inte mejlet? Kolla din skräppost.
+  </p>
+</div>
 
-When the product is NOT free for the user, show a neutral subtitle instead, e.g. "Utforska {count} samtal" or hide the subtitle entirely.
-
-### Change detail
-
-**File:** `src/components/ProductLibrary.tsx`
-
-1. Around line 810, after resolving `untriedProduct`, compute whether it's actually free:
-```typescript
-const isUntriedFree = isProductFreeForUser(untriedProduct.id) 
-  && untriedProduct.freeCardId 
-  && !completedCardSets[untriedProduct.id]?.has(untriedProduct.freeCardId);
+<button
+  onClick={handleResend}
+  disabled={resendCooldown > 0 || loading}
+  className="text-sm disabled:opacity-40"
+  style={{ color: 'rgba(212, 245, 192, 0.7)', background: 'none', border: 'none', cursor: 'pointer' }}
+>
+  {resendCooldown > 0 ? `Skicka igen (${resendCooldown}s)` : 'Skicka mejlet igen'}
+</button>
 ```
 
-2. Line 865 — change the subtitle from hardcoded "Ert första samtal är gratis" to:
-```typescript
-{isUntriedFree ? 'Ert första samtal är gratis' : `${untriedProduct.cards.length} samtal`}
+**Replace with:**
+```tsx
+<div style={{ 
+  textAlign: 'center',
+  padding: '8px 0',
+}}>
+  <p style={{ fontFamily: 'var(--font-sans)', fontSize: '15px', color: 'rgba(253, 246, 227, 0.85)', lineHeight: 1.6 }}>
+    Vi har skickat en kod till
+  </p>
+  <p style={{ fontFamily: 'var(--font-sans)', fontSize: '15px', color: 'rgba(212, 245, 192, 0.9)', fontWeight: 500, marginTop: '4px' }}>
+    {email}
+  </p>
+  <p style={{ fontFamily: 'var(--font-sans)', fontSize: '14px', color: 'rgba(253, 246, 227, 0.6)', marginTop: '16px', lineHeight: 1.5 }}>
+    Ange den 6-siffriga koden nedan.
+  </p>
+</div>
+
+<div className="flex justify-center" style={{ marginTop: '8px' }}>
+  <InputOTP maxLength={6} value={otpCode} onChange={(val) => { setOtpCode(val); setError(null); }}>
+    <InputOTPGroup>
+      <InputOTPSlot index={0} />
+      <InputOTPSlot index={1} />
+      <InputOTPSlot index={2} />
+      <InputOTPSlot index={3} />
+      <InputOTPSlot index={4} />
+      <InputOTPSlot index={5} />
+    </InputOTPGroup>
+  </InputOTP>
+</div>
+
+<button
+  onClick={handleVerifyOtp}
+  disabled={verifying || otpCode.length !== 6}
+  className="w-full h-14 text-base font-semibold rounded-xl flex items-center justify-center gap-2 border-0 text-white disabled:opacity-50"
+  style={{
+    background: ORANGE_GRADIENT,
+    boxShadow: ORANGE_SHADOW,
+    marginTop: '8px',
+  }}
+>
+  {verifying ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Verifiera'}
+</button>
+
+<p style={{ fontFamily: 'var(--font-sans)', fontSize: '13px', color: 'rgba(253, 246, 227, 0.4)', marginTop: '12px', lineHeight: 1.5 }}>
+  Hittar du inte mejlet? Kolla din skräppost.
+</p>
+
+<button
+  onClick={handleResend}
+  disabled={resendCooldown > 0 || loading}
+  className="text-sm disabled:opacity-40"
+  style={{ color: 'rgba(212, 245, 192, 0.7)', background: 'none', border: 'none', cursor: 'pointer' }}
+>
+  {resendCooldown > 0 ? `Skicka igen (${resendCooldown}s)` : 'Skicka mejlet igen'}
+</button>
 ```
 
-### Not touched
-- `freeCardPolicy.ts` — logic is correct
-- Free session banner (lines 748-800) — already has proper guards
-- No other files
+---
+
+### Change 2: Fix Email Form Button Label (line 311)
+
+**Current:**
+```tsx
+{loading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Skicka inloggningslänk'}
+```
+
+**Replace with:**
+```tsx
+{loading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Skicka inloggningskod'}
+```
+
+---
+
+### Files Modified
+- `src/pages/Login.tsx` (2 changes)
+
+### Not Changed
+- Import statement (InputOTP already imported on line 13)
+- State variables `otpCode`, `verifying` (already defined)
+- Functions: `handleEmailSignIn`, `handleVerifyOtp`, `handleGoogleSignIn`, `handleResend`
+- Tillbaka button, terms consent, Google sign-in flow
 
