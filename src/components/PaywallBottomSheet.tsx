@@ -298,29 +298,6 @@ export default function PaywallBottomSheet({
                 {totalCards} samtal · {totalCategories} kategorier · Engångsköp
               </p>
 
-              {/* 7. Free card nudge (conditional) */}
-              {!freeCardCompleted && onNavigateToFreeCard && (
-                <button
-                  onClick={() => {
-                    onDismiss();
-                    onNavigateToFreeCard();
-                  }}
-                  style={{
-                    background: 'none',
-                    border: 'none',
-                    cursor: 'pointer',
-                    fontFamily: 'var(--font-sans)',
-                    fontSize: '14px',
-                    color: SAFFRON_FLAME,
-                    textAlign: 'left',
-                    margin: 0,
-                    marginTop: '16px',
-                    padding: 0,
-                  }}
-                >
-                  Prova ett gratis samtal först
-                </button>
-              )}
 
               {/* 8. Price */}
               <p

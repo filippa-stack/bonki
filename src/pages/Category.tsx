@@ -22,7 +22,7 @@ import FreeCardBadge from '@/components/FreeCardBadge';
 import PaywallBottomSheet from '@/components/PaywallBottomSheet';
 import { KIDS_PRODUCT_IDS } from '@/hooks/useKidsProductProgress';
 import type { ProductManifest } from '@/types/product';
-import { isProductFreeForUser } from '@/lib/freeCardPolicy';
+
 
 import mirrorJagIMig from '@/assets/mirror-jag-i-mig.png';
 import stillUsIllustration from '@/assets/illustration-still-us-home.png';
@@ -238,12 +238,9 @@ export default function Category() {
       <div className="px-5 pt-4 pb-24 flex flex-col relative z-[1]">
         {cards.map((card, index) => (
           <div key={card.id} style={{ marginBottom: index === cards.length - 1 ? 0 : '16px', position: 'relative' }}>
-            {product?.freeCardId === card.id && !allTimeCompletedCardIds.includes(card.id) && isProductFreeForUser(product.id) && (
-              <FreeCardBadge />
-            )}
             <button
               onClick={() => {
-                if (product && !(card.id === product.freeCardId && isProductFreeForUser(product.id)) && !productIsPurchased) {
+                if (product && !productIsPurchased) {
                   setPaywallCard({ id: card.id, title: card.title });
                 } else {
                   navigate(`/card/${card.id}`);
@@ -267,17 +264,8 @@ export default function Category() {
           tappedCardName={paywallCard.title}
           tappedCardId={paywallCard.id}
           priceSek={priceSek}
-          freeCardCompleted={isProductFreeForUser(product.id) ? (product.freeCardId ? completedCardIds.includes(product.freeCardId) : true) : true}
-          onNavigateToFreeCard={isProductFreeForUser(product.id) && product.freeCardId ? () => {
-            setPaywallCard(null);
-            const freeCard = product.cards.find(c => c.id === product.freeCardId);
-            const catId = freeCard?.categoryId;
-            if (catId) {
-              navigate(`/product/${product.slug}/portal/${catId}?card=${product.freeCardId}`);
-            } else {
-              navigate(`/card/${product.freeCardId}`);
-            }
-          } : undefined}
+          freeCardCompleted={true}
+          onNavigateToFreeCard={undefined}
         />
       )}
     </div>
@@ -709,7 +697,7 @@ function StillUsCategoryView({
               transition={{ delay: index * 0.06, duration: 0.5, ease: EASE }}
               whileTap={{ scale: 0.97 }}
               onClick={() => {
-                if (product && card.id !== freeCardId && !productIsPurchased) {
+                if (product && !productIsPurchased) {
                   setPaywallCard({ id: card.id, title: card.title });
                 } else {
                   navigate(isReturningUser ? `/card/${card.id}` : `/preview/${card.id}`);
@@ -740,10 +728,6 @@ function StillUsCategoryView({
                 ].join(', '),
               }}
             >
-              {/* GRATIS badge for free card */}
-              {freeCardId === card.id && !allTimeCompletedCardIds.includes(card.id) && (
-                <FreeCardBadge />
-              )}
 
               <div style={{ flex: 1, minWidth: 0 }}>
                 <span
