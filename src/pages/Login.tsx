@@ -255,7 +255,7 @@ export default function Login() {
                   </p>
                 </div>
 
-                <div className="flex justify-center" style={{ marginTop: '8px' }}>
+                <div className="flex justify-center [&_input]:!text-[#FDF6E3] [&_input]:!caret-[#FDF6E3] [&_div[data-slot]]:!text-[#FDF6E3] [&_div[data-slot]]:border-[rgba(253,246,227,0.3)]" style={{ marginTop: '8px' }}>
                   <InputOTP maxLength={6} value={otpCode} onChange={(val) => { setOtpCode(val); setError(null); }}>
                     <InputOTPGroup>
                       <InputOTPSlot index={0} />
