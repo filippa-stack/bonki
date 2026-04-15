@@ -1,20 +1,14 @@
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useSearchParams, Navigate } from 'react-router-dom';
 import { useApp } from '@/contexts/AppContext';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { usePartnerNotifications } from '@/hooks/usePartnerNotifications';
 import { useAuth } from '@/contexts/AuthContext';
-import { useDevState } from '@/contexts/DevStateContext';
 import { useThemeSwitcher } from '@/hooks/useThemeSwitcher';
 import { supabase } from '@/integrations/supabase/client';
-import { isDemoMode } from '@/lib/demoMode';
-import Onboarding from '@/components/Onboarding';
-import BonkiLoadingScreen from '@/components/BonkiLoadingScreen';
 import { trackPixelEvent } from '@/lib/metaPixel';
 
-import PurchaseScreen from '@/components/PurchaseScreen';
 import ProductLibrary from '@/components/ProductLibrary';
-import ProductIntro from '@/components/ProductIntro';
 import { allProducts } from '@/data/products';
 
 
@@ -57,36 +51,13 @@ async function migrateProductAccess(userId: string, paidAt: string) {
   }
 }
 
-/** Dev-only: preview product intros with ?product=slug selector */
-function DevProductIntroPreview() {
-  const [searchParams] = useSearchParams();
-  const productSlug = searchParams.get('product');
-  const product = allProducts.find((p) => p.slug === productSlug) ?? allProducts[0];
-
-  return (
-    <ProductIntro
-      productId={product.id}
-      accentColor={product.accentColor}
-      backgroundColor={product.backgroundColor}
-      freeCardId={product.freeCardId}
-      onComplete={() => {}}
-      onStartFreeCard={() => {}}
-    />
-  );
-}
-
-/** Module-level flag — survives StrictMode remount cycles */
-let audienceRouteConsumed = false;
-
 export default function Index() {
-  const { hasCompletedOnboarding, completeOnboarding } = useApp();
+  const { } = useApp();
   const { space } = useCoupleSpaceContext();
   const { user } = useAuth();
-  const devState = useDevState();
   useThemeSwitcher();
 
   const migrationRan = useRef(false);
-  const [dbOnboardingChecked, setDbOnboardingChecked] = useState(hasCompletedOnboarding);
 
   // One-time migration: paid_at → user_product_access
   useEffect(() => {
@@ -96,81 +67,7 @@ export default function Index() {
     migrateProductAccess(user.id, space.paid_at);
   }, [user?.id, space?.paid_at]);
 
-  // DB-backed onboarding bypass for returning users with cleared localStorage
-  useEffect(() => {
-    if (hasCompletedOnboarding || !user?.id) {
-      setDbOnboardingChecked(true);
-      return;
-    }
-
-    (async () => {
-      const { data } = await supabase
-        .from('couple_sessions')
-        .select('id')
-        .eq('status', 'completed')
-        .limit(1);
-
-      if ((data?.length ?? 0) > 0) {
-        completeOnboarding();
-      }
-      setDbOnboardingChecked(true);
-    })();
-  }, [user?.id, hasCompletedOnboarding]);
-
   usePartnerNotifications();
-
-  // devState=onboarding → show platform onboarding preview
-  if (devState === 'onboarding') {
-    return <Onboarding />;
-  }
-
-  // devState=productIntro → show product intro preview (uses ?product= param, defaults to first product)
-  if (devState === 'productIntro') {
-    return <DevProductIntroPreview />;
-  }
-
-  // devState=library → show product library lobby
-  if (devState === 'library') {
-    return <ProductLibrary />;
-  }
-
-  // devState=diary → navigate to diary preview (defaults to jag_i_mig, use ?product= to override)
-  if (devState === 'diary') {
-    const productSlug = new URLSearchParams(window.location.search).get('product') || 'jag_i_mig';
-    return <Navigate to={`/diary/${productSlug}?devState=diary`} replace />;
-  }
-
-  // Any other devState bypasses onboarding & purchase gates but does NOT
-  // force-redirect — let the normal flow decide what to render so that
-  // the "Biblioteket" (house) icon in BottomNav can reach the library.
-  const devBypassGates = !!devState;
-
-  // ── Demo mode: skip onboarding gate ──
-  const demoActive = isDemoMode();
-
-  // One-time audience routing after first onboarding (BEFORE onboarding gate)
-  if (!audienceRouteConsumed) {
-    const audience = localStorage.getItem('bonki-onboarding-audience');
-    if (audience && !localStorage.getItem('bonki-first-session-done')) {
-      audienceRouteConsumed = true;
-      
-      localStorage.setItem('bonki-first-session-done', '1');
-      const routes: Record<string, string> = {
-        young: '/product/jag-i-mig',
-        middle: '/product/jag-med-andra',
-        teen: '/product/jag-i-varlden',
-        couple: '/product/still-us',
-      };
-      const target = routes[audience] || '/';
-      return <Navigate to={target} replace />;
-    }
-  }
-
-  // ── Normal production flow ──
-  if (!hasCompletedOnboarding && !demoActive && !devBypassGates) {
-    if (!dbOnboardingChecked) return <BonkiLoadingScreen />;
-    return <Onboarding />;
-  }
 
   // Post-purchase redirect: return user to the card they were trying to open
   const searchParams = new URLSearchParams(window.location.search);

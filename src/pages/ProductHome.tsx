@@ -10,7 +10,7 @@ import { useThemeSwitcher } from '@/hooks/useThemeSwitcher';
 import ProductIntro, { useProductIntroNeeded } from '@/components/ProductIntro';
 import KidsProductHome from '@/components/KidsProductHome';
 import { KIDS_PRODUCT_IDS } from '@/hooks/useKidsProductProgress';
-import { isProductFreeForUser } from '@/lib/freeCardPolicy';
+
 import { useProductAccess } from '@/hooks/useProductAccess';
 import ProductPaywall from '@/components/ProductPaywall';
 import { isDemoMode } from '@/lib/demoMode';
@@ -71,7 +71,7 @@ export default function ProductHome() {
     }
   }, [product?.slug]);
 
-  const isFreeProduct = product ? isProductFreeForUser(product.id) : false;
+  
   const { hasAccess: hasProductAccess, loading: paywallAccessLoading } = useProductAccess(product?.id ?? '');
 
   if (showIntro === true && product) {
@@ -88,16 +88,6 @@ export default function ProductHome() {
         onStartFreeCard={() => {
           if (product.id) localStorage.setItem(`bonki-intro-seen-${product.id}`, '1');
           setShowIntro(false);
-          if (product.freeCardId && isProductFreeForUser(product.id)) {
-            localStorage.setItem('bonki-last-active-product', product.slug);
-            const freeCard = product.cards.find(c => c.id === product.freeCardId);
-            const catId = freeCard?.categoryId;
-            if (catId) {
-              navigate(`/product/${product.slug}/portal/${catId}?card=${product.freeCardId}`);
-            } else {
-              navigate(`/card/${product.freeCardId}`);
-            }
-          }
         }}
       />
     );
@@ -122,7 +112,7 @@ export default function ProductHome() {
     );
   }
 
-  if (product && !isFreeProduct && !hasProductAccess && !isDemoMode()) {
+  if (product && !hasProductAccess && !isDemoMode()) {
     return (
       <ProductPaywall
         product={product}
