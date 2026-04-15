@@ -1,71 +1,41 @@
 
 
-## Fix Email Subject + OTP Input Text Color
+## Fix Post-Purchase Redirect to Land on Product Page
 
-### Problem
-1. Magic link email subject is in English ("Your login link") instead of Swedish
-2. OTP input digits are invisible on dark background (black text on dark blue)
+### Change
+**File:** `src/pages/Index.tsx`, lines 177–184
 
-### Solution
-Three simple text/styling changes across three files.
-
----
-
-### Change 1: Email Subject (supabase/functions/auth-email-hook/index.ts)
-
-**Line 22** — Change subject from English to Swedish:
-
-**FROM:**
-```typescript
-magiclink: 'Your login link',
-```
-
-**TO:**
-```typescript
-magiclink: 'Din inloggningskod',
-```
-
----
-
-### Change 2: OTP Input Styling (src/pages/Login.tsx)
-
-**Line 258** — Add Tailwind utility classes to force light text color:
+Replace the current post-purchase block with one that also reads the `product` param, looks up the product manifest, uses the correct price for the pixel event, and redirects to the product page.
 
 **FROM:**
 ```tsx
-<div className="flex justify-center" style={{ marginTop: '8px' }}>
+if (searchParams.get('purchase') === 'success') {
+    const returnCard = searchParams.get('returnCard');
+    trackPixelEvent('Purchase', { value: 249, currency: 'SEK' });
+    window.history.replaceState({}, '', window.location.pathname);
+    if (returnCard) {
+      return <Navigate to={`/card/${returnCard}`} replace />;
+    }
+  }
 ```
 
 **TO:**
 ```tsx
-<div className="flex justify-center [&_input]:!text-[#FDF6E3] [&_input]:!caret-[#FDF6E3] [&_div[data-slot]]:!text-[#FDF6E3] [&_div[data-slot]]:border-[rgba(253,246,227,0.3)]" style={{ marginTop: '8px' }}>
+if (searchParams.get('purchase') === 'success') {
+    const returnCard = searchParams.get('returnCard');
+    const purchasedProductId = searchParams.get('product');
+    const purchasedProduct = purchasedProductId ? allProducts.find(p => p.id === purchasedProductId) : null;
+    const priceValue = purchasedProduct?.id === 'still_us' ? 249 : 195;
+    trackPixelEvent('Purchase', { value: priceValue, currency: 'SEK' });
+    window.history.replaceState({}, '', window.location.pathname);
+    if (returnCard) {
+      return <Navigate to={`/card/${returnCard}`} replace />;
+    }
+    if (purchasedProduct) {
+      return <Navigate to={`/product/${purchasedProduct.slug}`} replace />;
+    }
+  }
 ```
 
----
-
-### Change 3: OTP Input Styling (src/pages/BuyPage.tsx)
-
-**Line 295** — Same styling fix as Login.tsx:
-
-**FROM:**
-```tsx
-<div className="flex justify-center" style={{ marginTop: '8px' }}>
-```
-
-**TO:**
-```tsx
-<div className="flex justify-center [&_input]:!text-[#FDF6E3] [&_input]:!caret-[#FDF6E3] [&_div[data-slot]]:!text-[#FDF6E3] [&_div[data-slot]]:border-[rgba(253,246,227,0.3)]" style={{ marginTop: '8px' }}>
-```
-
----
-
-### Files Modified
-- `supabase/functions/auth-email-hook/index.ts` (1 line)
-- `src/pages/Login.tsx` (1 line)
-- `src/pages/BuyPage.tsx` (1 line)
-
-### Not Changed
-- OTP verification logic
-- Email templates
-- Any functions (handleVerifyOtp, handleEmailSignIn, handleResend)
+`allProducts` is already imported on line 18. No other files or logic changed.
 
