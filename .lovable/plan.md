@@ -1,37 +1,71 @@
 
 
-## Create /buy Route — Purchase Flow from External Website
+## Fix Email Subject + OTP Input Text Color
 
-### What This Does
-Adds a new `/buy` page that handles purchases from bonkistudio.com. Users land on `/buy?product=jag_i_mig`, log in via email OTP if needed, and are automatically redirected to Stripe checkout.
+### Problem
+1. Magic link email subject is in English ("Your login link") instead of Swedish
+2. OTP input digits are invisible on dark background (black text on dark blue)
 
-### Files Changed
+### Solution
+Three simple text/styling changes across three files.
 
-**1. New file: `src/pages/BuyPage.tsx`**
-- Shows product context (name, price, card count) at top
-- If not logged in: email input → OTP verification → auto-triggers Stripe checkout on success
-- If already logged in: auto-triggers Stripe checkout on mount
-- Invalid/missing product param → "Produkten hittades inte" with link to /login
-- Fetches price from `products` table (with sensible fallbacks)
-- Reuses existing patterns: `usePageBackground`, `InputOTP`, `TermsConsent`, `useAuth`, palette constants
-- Uses `checkoutTriggered` ref to prevent double Stripe calls
-- Calls `create-checkout` edge function (unchanged) with proper success/cancel URLs
+---
 
-**2. Modified: `src/App.tsx`**
-- Add import for `BuyPage`
-- Add route `<Route path="/buy" element={<BuyPage />} />` after `/privacy` and before the `/*` catch-all (line 182)
-- This route is public (outside `ProtectedRoutes`), so unauthenticated users can access it
+### Change 1: Email Subject (supabase/functions/auth-email-hook/index.ts)
 
-### Technical Notes
-- The `cooldownRef` type will be `useRef<ReturnType<typeof setInterval> | null>(null)` (matching Login.tsx pattern)
-- After OTP verification, `AuthContext` updates `user` state, which triggers a `useEffect` that calls `triggerCheckout`
-- The prompt's JSX had some rendering issues (stripped tags) — will reconstruct clean JSX matching the described behavior and Login.tsx styling patterns
-- Button text on verify: "Verifiera och köp" (distinct from Login page's "Verifiera")
-- No changes to Login.tsx, AuthContext, create-checkout, or ProtectedRoutes
+**Line 22** — Change subject from English to Swedish:
+
+**FROM:**
+```typescript
+magiclink: 'Your login link',
+```
+
+**TO:**
+```typescript
+magiclink: 'Din inloggningskod',
+```
+
+---
+
+### Change 2: OTP Input Styling (src/pages/Login.tsx)
+
+**Line 258** — Add Tailwind utility classes to force light text color:
+
+**FROM:**
+```tsx
+<div className="flex justify-center" style={{ marginTop: '8px' }}>
+```
+
+**TO:**
+```tsx
+<div className="flex justify-center [&_input]:!text-[#FDF6E3] [&_input]:!caret-[#FDF6E3] [&_div[data-slot]]:!text-[#FDF6E3] [&_div[data-slot]]:border-[rgba(253,246,227,0.3)]" style={{ marginTop: '8px' }}>
+```
+
+---
+
+### Change 3: OTP Input Styling (src/pages/BuyPage.tsx)
+
+**Line 295** — Same styling fix as Login.tsx:
+
+**FROM:**
+```tsx
+<div className="flex justify-center" style={{ marginTop: '8px' }}>
+```
+
+**TO:**
+```tsx
+<div className="flex justify-center [&_input]:!text-[#FDF6E3] [&_input]:!caret-[#FDF6E3] [&_div[data-slot]]:!text-[#FDF6E3] [&_div[data-slot]]:border-[rgba(253,246,227,0.3)]" style={{ marginTop: '8px' }}>
+```
+
+---
+
+### Files Modified
+- `supabase/functions/auth-email-hook/index.ts` (1 line)
+- `src/pages/Login.tsx` (1 line)
+- `src/pages/BuyPage.tsx` (1 line)
 
 ### Not Changed
-- `src/pages/Login.tsx`
-- `src/contexts/AuthContext.tsx`
-- `supabase/functions/create-checkout/index.ts`
-- Any existing routes or protected route logic
+- OTP verification logic
+- Email templates
+- Any functions (handleVerifyOtp, handleEmailSignIn, handleResend)
 
