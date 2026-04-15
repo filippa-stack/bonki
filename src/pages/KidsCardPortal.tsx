@@ -9,9 +9,9 @@
  */
 
 import { useState, useMemo, useCallback, useRef, useEffect } from 'react';
-import { isProductFreeForUser } from '@/lib/freeCardPolicy';
+
 import { usePageBackground } from '@/hooks/usePageBackground';
-import FreeCardBadge from '@/components/FreeCardBadge';
+
 import PaywallBottomSheet from '@/components/PaywallBottomSheet';
 import { useParams, useNavigate, useSearchParams, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence, type PanInfo } from 'framer-motion';
@@ -200,7 +200,7 @@ export default function KidsCardPortal() {
     if (!card || navigating.current || portalPhase !== 'idle') return;
 
     // Paywall intercept: non-free card + not purchased (skip in browse/demo mode)
-    if (product && card.id !== product.freeCardId && !productIsPurchased && !bypassPaywall) {
+    if (product && !productIsPurchased && !bypassPaywall) {
       setPaywallOpen(true);
       return;
     }
@@ -308,7 +308,7 @@ export default function KidsCardPortal() {
 
   hasRenderedContent.current = true;
 
-  const isFreeCard = card.id === product.freeCardId && isProductFreeForUser(product.id);
+  const isFreeCard = false;
 
   return (
     <div data-sensitive
@@ -511,10 +511,6 @@ export default function KidsCardPortal() {
                   >
                     <Check size={12} strokeWidth={2.5} color={LANTERN_GLOW} />
                   </div>
-                )}
-                {/* GRATIS badge for free card */}
-                {product?.freeCardId === card.id && !allTimeSet.has(card.id) && isProductFreeForUser(product.id) && (
-                  <FreeCardBadge />
                 )}
                 {!completedSet.has(card.id) && activeSet.has(card.id) && (
                   <div

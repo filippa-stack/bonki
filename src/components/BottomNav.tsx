@@ -2,8 +2,6 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { House, LayoutGrid, BookOpen } from 'lucide-react';
 import { BONKI_ORANGE } from '@/lib/palette';
-import { isDemoMode } from '@/lib/demoMode';
-import { useApp } from '@/contexts/AppContext';
 
 type NavItem = {
   id: string;
