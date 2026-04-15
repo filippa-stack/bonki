@@ -1,28 +1,16 @@
 
 
-## Temporarily Remove IAR Script to Test Buy Flow
+## Fix OTP Paste — Replace InputOTP with Single Input
 
-### Hypothesis
-The Auditzy in-app redirect script may be interfering with the `/buy` page flow (e.g., redirecting users away before they can complete login/checkout).
+### Change 1: `src/pages/Login.tsx`
+- **Line 13**: Remove `import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp';`
+- **Lines 258–269**: Replace the InputOTP block with a single `<input>` element with `type="tel"`, `inputMode="numeric"`, `autoComplete="one-time-code"`, digit-only filtering, letter-spaced styling, and `autoFocus`
 
-### Change
-**File:** `index.html`
+### Change 2: `src/pages/BuyPage.tsx`
+- **Line 9**: Remove `import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp';`
+- **Lines 295–306**: Same replacement as above
 
-Comment out the IAR script tag (lines ~46-50):
-
-```html
-<!-- IAR script temporarily disabled for /buy debugging
-<script
-  id="iar"
-  src="https://rum.auditzy.com/teUjBCLn-bonkiapp.com-iar.js"
-  async
-></script>
--->
-```
-
-### Files Modified
-- `index.html` (1 block commented out)
-
-### After Testing
-If `/buy?product=jag_i_mig` works without the script, we re-enable it with a path exclusion — either by conditionally loading it only on non-`/buy` routes, or by adding the script dynamically via JS with a path check.
+### Not Changed
+- `handleVerifyOtp`, `handleEmailSignIn`, `handleResend` functions
+- All other UI elements and files
 
