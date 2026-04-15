@@ -6,7 +6,7 @@ import { getProductById } from '@/data/products';
 import { Loader2, ArrowLeft } from 'lucide-react';
 import { MIDNIGHT_INK, LANTERN_GLOW } from '@/lib/palette';
 import { usePageBackground } from '@/hooks/usePageBackground';
-import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp';
+
 import TermsConsent from '@/components/TermsConsent';
 import { TERMS_VERSION, PRIVACY_VERSION } from '@/lib/legal';
 
@@ -292,18 +292,26 @@ export default function BuyPage() {
                 </p>
               </div>
 
-              <div className="flex justify-center [&_input]:!text-[#FDF6E3] [&_input]:!caret-[#FDF6E3] [&_div[data-slot]]:!text-[#FDF6E3] [&_div[data-slot]]:border-[rgba(253,246,227,0.3)]" style={{ marginTop: '8px' }}>
-                <InputOTP maxLength={6} value={otpCode} onChange={(val) => { setOtpCode(val); setError(null); }}>
-                  <InputOTPGroup>
-                    <InputOTPSlot index={0} />
-                    <InputOTPSlot index={1} />
-                    <InputOTPSlot index={2} />
-                    <InputOTPSlot index={3} />
-                    <InputOTPSlot index={4} />
-                    <InputOTPSlot index={5} />
-                  </InputOTPGroup>
-                </InputOTP>
-              </div>
+              <input
+                type="tel"
+                inputMode="numeric"
+                autoComplete="one-time-code"
+                maxLength={6}
+                value={otpCode}
+                onChange={(e) => { const v = e.target.value.replace(/\D/g, '').slice(0, 6); setOtpCode(v); setError(null); }}
+                placeholder="000000"
+                className="w-full h-14 text-center text-2xl tracking-[0.5em] rounded-xl border-0 outline-none"
+                style={{
+                  background: 'rgba(255, 255, 255, 0.08)',
+                  color: '#FDF6E3',
+                  caretColor: '#FDF6E3',
+                  fontFamily: 'var(--font-sans)',
+                  fontWeight: 600,
+                  border: '1px solid rgba(253, 246, 227, 0.2)',
+                  marginTop: '8px',
+                }}
+                autoFocus
+              />
 
               <button
                 onClick={handleVerifyOtp}
