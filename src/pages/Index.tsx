@@ -176,10 +176,16 @@ export default function Index() {
   const searchParams = new URLSearchParams(window.location.search);
   if (searchParams.get('purchase') === 'success') {
     const returnCard = searchParams.get('returnCard');
-    trackPixelEvent('Purchase', { value: 249, currency: 'SEK' });
+    const purchasedProductId = searchParams.get('product');
+    const purchasedProduct = purchasedProductId ? allProducts.find(p => p.id === purchasedProductId) : null;
+    const priceValue = purchasedProduct?.id === 'still_us' ? 249 : 195;
+    trackPixelEvent('Purchase', { value: priceValue, currency: 'SEK' });
     window.history.replaceState({}, '', window.location.pathname);
     if (returnCard) {
       return <Navigate to={`/card/${returnCard}`} replace />;
+    }
+    if (purchasedProduct) {
+      return <Navigate to={`/product/${purchasedProduct.slug}`} replace />;
     }
   }
 
