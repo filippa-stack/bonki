@@ -1,27 +1,28 @@
 
 
-## Fix Capacitor Config for Production Build
+## Temporarily Remove IAR Script to Test Buy Flow
+
+### Hypothesis
+The Auditzy in-app redirect script may be interfering with the `/buy` page flow (e.g., redirecting users away before they can complete login/checkout).
 
 ### Change
-**File:** `capacitor.config.ts`
+**File:** `index.html`
 
-Replace the `server` block that points to the Lovable preview URL with an empty object, so the native app loads from locally built files in `dist/`.
+Comment out the IAR script tag (lines ~46-50):
 
-**FROM:**
-```ts
-server: {
-  url: 'https://1604837d-627c-4368-a714-aa6b770c1b8c.lovableproject.com?forceHideBadge=true',
-  cleartext: true,
-},
+```html
+<!-- IAR script temporarily disabled for /buy debugging
+<script
+  id="iar"
+  src="https://rum.auditzy.com/teUjBCLn-bonkiapp.com-iar.js"
+  async
+></script>
+-->
 ```
-
-**TO:**
-```ts
-server: {},
-```
-
-Everything else (`appId`, `appName`, `webDir`) stays unchanged.
 
 ### Files Modified
-- `capacitor.config.ts` (1 line change)
+- `index.html` (1 block commented out)
+
+### After Testing
+If `/buy?product=jag_i_mig` works without the script, we re-enable it with a path exclusion — either by conditionally loading it only on non-`/buy` routes, or by adding the script dynamically via JS with a path check.
 
