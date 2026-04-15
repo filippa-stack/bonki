@@ -352,7 +352,7 @@ export default function BuyPage() {
           {/* Terms */}
           <div style={{ width: '100%', marginTop: '4px' }}>
             <div style={{ display: 'flex', justifyContent: 'center' }}>
-              <TermsConsent accepted={termsAccepted} onChange={(val) => { setTermsAccepted(val); if (val) setTermsError(false); }} />
+              <TermsConsent checked={termsAccepted} onCheckedChange={(val) => { setTermsAccepted(!!val); if (val) setTermsError(false); }} />
             </div>
             {termsError && <p style={{ fontFamily: 'var(--font-sans)', fontSize: '13px', color: '#f87171', textAlign: 'center', marginTop: '8px' }}>Du behöver godkänna villkoren för att fortsätta.</p>}
           </div>
