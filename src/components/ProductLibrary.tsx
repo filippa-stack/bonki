@@ -748,9 +748,7 @@ export default function ProductLibrary() {
         {activeProductIds.size === 0 && Object.keys(completedCountMap).length > 0 && (() => {
           const untriedProduct = defaultKidsOrder.find(p => !completedCountMap[p.id]);
           if (!untriedProduct) return null;
-          const isUntriedFree = isProductFreeForUser(untriedProduct.id)
-            && !!untriedProduct.freeCardId
-            && !completedCardSets[untriedProduct.id]?.has(untriedProduct.freeCardId);
+          const isUntriedFree = false;
           return (
             <div className="px-5" style={{ marginBottom: '8px' }}>
               <button

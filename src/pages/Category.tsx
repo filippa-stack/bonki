@@ -264,17 +264,8 @@ export default function Category() {
           tappedCardName={paywallCard.title}
           tappedCardId={paywallCard.id}
           priceSek={priceSek}
-          freeCardCompleted={isProductFreeForUser(product.id) ? (product.freeCardId ? completedCardIds.includes(product.freeCardId) : true) : true}
-          onNavigateToFreeCard={isProductFreeForUser(product.id) && product.freeCardId ? () => {
-            setPaywallCard(null);
-            const freeCard = product.cards.find(c => c.id === product.freeCardId);
-            const catId = freeCard?.categoryId;
-            if (catId) {
-              navigate(`/product/${product.slug}/portal/${catId}?card=${product.freeCardId}`);
-            } else {
-              navigate(`/card/${product.freeCardId}`);
-            }
-          } : undefined}
+          freeCardCompleted={true}
+          onNavigateToFreeCard={undefined}
         />
       )}
     </div>
