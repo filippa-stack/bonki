@@ -1,78 +1,40 @@
 
 
-## Prompt 4a — Remove Onboarding Gate + Fix Paywall Bypass
+## Prompt 5 — Remove Remaining Free-Card UI and Paywall Bypasses
 
 Four files, exact changes as specified.
 
 ---
 
-### File 1: `src/pages/Index.tsx`
+### Change 1: `src/pages/CardView.tsx`
+- **Remove import** `isProductFreeForUser` (line 7)
+- **Line 200** — change to `const isFreeCard = false;`
 
-**Remove imports** (lines 7, 10, 11, 12, 15, 17):
-- `useDevState`, `isDemoMode`, `Onboarding`, `BonkiLoadingScreen`, `PurchaseScreen`, `ProductIntro`
+### Change 2: `src/pages/Category.tsx`
+- **Remove import** `isProductFreeForUser` (line 25)
+- **Lines 241–243** — delete GRATIS badge block
+- **Line 246** — simplify paywall check to `if (product && !productIsPurchased)`
+- **Line 712** — simplify paywall check to `if (product && !productIsPurchased)`
+- **Lines 744–746** — delete second GRATIS badge block
 
-**Remove** `DevProductIntroPreview` function (lines 60–76).
+### Change 3: `src/components/ProductLibrary.tsx`
+- **Remove import** `isProductFreeForUser` (line 14)
+- **Lines 594–599** — delete all six free banner variables
+- **Lines 748–800** — delete entire free banner JSX block
+- **Line 1121–1122** — change to `const suShowFreeLabel = false;`
+- **Lines 1223–1224** — change to `const showFreeLabel = false;`
 
-**Remove** `let audienceRouteConsumed = false;` (line 79).
-
-**Line 82** — change to: `const { } = useApp();`
-
-**Remove** `const devState = useDevState();` (line 85).
-
-**Remove** `const [dbOnboardingChecked, ...]` state (line 89).
-
-**Remove** DB onboarding bypass useEffect (lines 99–118).
-
-**Remove** all four devState blocks (lines 122–141).
-
-**Remove** `const devBypassGates = !!devState;` (line 146).
-
-**Remove** `const demoActive = isDemoMode();` (line 149).
-
-**Remove** audience routing block (lines 151–167).
-
-**Remove** onboarding gate (lines 170–173).
-
-**Keep**: migration useEffect, usePartnerNotifications, post-purchase redirect, skip-to-product, par-first-visit, ProductLibrary return.
-
----
-
-### File 2: `src/components/BottomNav.tsx`
-
-**Remove imports** (lines 5–6): `isDemoMode`, `useApp`.
-
-**Remove lines 52–57**: `hasCompletedOnboarding` destructuring, `demoActive`, `devBypass`, and the early return.
-
----
-
-### File 3: `src/pages/ProductHome.tsx`
-
-**Remove import** `isProductFreeForUser` (line 14).
-
-**Remove** `const isFreeProduct = ...` (line 74).
-
-**Line 125** — change `!isFreeProduct && !hasProductAccess` to just `!hasProductAccess`.
-
----
-
-### File 4: `src/pages/KidsCardPortal.tsx`
-
-**Remove imports** `isProductFreeForUser` (line 12), `FreeCardBadge` (line 14).
-
-**Line 203** — remove `card.id !== product.freeCardId &&` from the condition.
-
-**Line 311** — change to `const isFreeCard = false;`.
-
-**Remove** GRATIS badge block (lines 515–518).
-
----
+### Change 4: `src/components/PaywallBottomSheet.tsx`
+- **Lines 301–323** — delete the "Prova ett gratis samtal först" button block
 
 ### Files Modified
-- `src/pages/Index.tsx`
-- `src/components/BottomNav.tsx`
-- `src/pages/ProductHome.tsx`
-- `src/pages/KidsCardPortal.tsx`
+- `src/pages/CardView.tsx`
+- `src/pages/Category.tsx`
+- `src/components/ProductLibrary.tsx`
+- `src/components/PaywallBottomSheet.tsx`
 
 ### Not Changed
-- CardView.tsx, AppContext.tsx, Onboarding.tsx, ProductIntro.tsx, AuthContext.tsx, freeCardPolicy.ts
+- CardView.tsx session/reflection logic, hooks, refs, effects
+- Index.tsx, ProductHome.tsx, KidsCardPortal.tsx, ProductIntro.tsx, BuyPage.tsx
+- freeCardPolicy.ts (left as inert file)
 
