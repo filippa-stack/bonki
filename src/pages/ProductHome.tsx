@@ -88,16 +88,6 @@ export default function ProductHome() {
         onStartFreeCard={() => {
           if (product.id) localStorage.setItem(`bonki-intro-seen-${product.id}`, '1');
           setShowIntro(false);
-          if (product.freeCardId && isProductFreeForUser(product.id)) {
-            localStorage.setItem('bonki-last-active-product', product.slug);
-            const freeCard = product.cards.find(c => c.id === product.freeCardId);
-            const catId = freeCard?.categoryId;
-            if (catId) {
-              navigate(`/product/${product.slug}/portal/${catId}?card=${product.freeCardId}`);
-            } else {
-              navigate(`/card/${product.freeCardId}`);
-            }
-          }
         }}
       />
     );
