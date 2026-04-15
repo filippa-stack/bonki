@@ -245,18 +245,45 @@ export default function Login() {
                   padding: '8px 0',
                 }}>
                   <p style={{ fontFamily: 'var(--font-sans)', fontSize: '15px', color: 'rgba(253, 246, 227, 0.85)', lineHeight: 1.6 }}>
-                    Vi har skickat ett mejl till
+                    Vi har skickat en kod till
                   </p>
                   <p style={{ fontFamily: 'var(--font-sans)', fontSize: '15px', color: 'rgba(212, 245, 192, 0.9)', fontWeight: 500, marginTop: '4px' }}>
                     {email}
                   </p>
                   <p style={{ fontFamily: 'var(--font-sans)', fontSize: '14px', color: 'rgba(253, 246, 227, 0.6)', marginTop: '16px', lineHeight: 1.5 }}>
-                    Tryck på knappen i mejlet för att verifiera och logga in.
-                  </p>
-                  <p style={{ fontFamily: 'var(--font-sans)', fontSize: '13px', color: 'rgba(253, 246, 227, 0.4)', marginTop: '12px', lineHeight: 1.5 }}>
-                    Hittar du inte mejlet? Kolla din skräppost.
+                    Ange den 6-siffriga koden nedan.
                   </p>
                 </div>
+
+                <div className="flex justify-center" style={{ marginTop: '8px' }}>
+                  <InputOTP maxLength={6} value={otpCode} onChange={(val) => { setOtpCode(val); setError(null); }}>
+                    <InputOTPGroup>
+                      <InputOTPSlot index={0} />
+                      <InputOTPSlot index={1} />
+                      <InputOTPSlot index={2} />
+                      <InputOTPSlot index={3} />
+                      <InputOTPSlot index={4} />
+                      <InputOTPSlot index={5} />
+                    </InputOTPGroup>
+                  </InputOTP>
+                </div>
+
+                <button
+                  onClick={handleVerifyOtp}
+                  disabled={verifying || otpCode.length !== 6}
+                  className="w-full h-14 text-base font-semibold rounded-xl flex items-center justify-center gap-2 border-0 text-white disabled:opacity-50"
+                  style={{
+                    background: ORANGE_GRADIENT,
+                    boxShadow: ORANGE_SHADOW,
+                    marginTop: '8px',
+                  }}
+                >
+                  {verifying ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Verifiera'}
+                </button>
+
+                <p style={{ fontFamily: 'var(--font-sans)', fontSize: '13px', color: 'rgba(253, 246, 227, 0.4)', marginTop: '12px', lineHeight: 1.5 }}>
+                  Hittar du inte mejlet? Kolla din skräppost.
+                </p>
 
                 <button
                   onClick={handleResend}
@@ -308,7 +335,7 @@ export default function Login() {
                     boxShadow: ORANGE_SHADOW,
                   }}
                 >
-                  {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Skicka inloggningslänk'}
+                  {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Skicka inloggningskod'}
                 </button>
               </motion.div>
             ) : (
