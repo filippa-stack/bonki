@@ -1,40 +1,27 @@
 
 
-## Prompt 5 — Remove Remaining Free-Card UI and Paywall Bypasses
+## Fix Capacitor Config for Production Build
 
-Four files, exact changes as specified.
+### Change
+**File:** `capacitor.config.ts`
 
----
+Replace the `server` block that points to the Lovable preview URL with an empty object, so the native app loads from locally built files in `dist/`.
 
-### Change 1: `src/pages/CardView.tsx`
-- **Remove import** `isProductFreeForUser` (line 7)
-- **Line 200** — change to `const isFreeCard = false;`
+**FROM:**
+```ts
+server: {
+  url: 'https://1604837d-627c-4368-a714-aa6b770c1b8c.lovableproject.com?forceHideBadge=true',
+  cleartext: true,
+},
+```
 
-### Change 2: `src/pages/Category.tsx`
-- **Remove import** `isProductFreeForUser` (line 25)
-- **Lines 241–243** — delete GRATIS badge block
-- **Line 246** — simplify paywall check to `if (product && !productIsPurchased)`
-- **Line 712** — simplify paywall check to `if (product && !productIsPurchased)`
-- **Lines 744–746** — delete second GRATIS badge block
+**TO:**
+```ts
+server: {},
+```
 
-### Change 3: `src/components/ProductLibrary.tsx`
-- **Remove import** `isProductFreeForUser` (line 14)
-- **Lines 594–599** — delete all six free banner variables
-- **Lines 748–800** — delete entire free banner JSX block
-- **Line 1121–1122** — change to `const suShowFreeLabel = false;`
-- **Lines 1223–1224** — change to `const showFreeLabel = false;`
-
-### Change 4: `src/components/PaywallBottomSheet.tsx`
-- **Lines 301–323** — delete the "Prova ett gratis samtal först" button block
+Everything else (`appId`, `appName`, `webDir`) stays unchanged.
 
 ### Files Modified
-- `src/pages/CardView.tsx`
-- `src/pages/Category.tsx`
-- `src/components/ProductLibrary.tsx`
-- `src/components/PaywallBottomSheet.tsx`
-
-### Not Changed
-- CardView.tsx session/reflection logic, hooks, refs, effects
-- Index.tsx, ProductHome.tsx, KidsCardPortal.tsx, ProductIntro.tsx, BuyPage.tsx
-- freeCardPolicy.ts (left as inert file)
+- `capacitor.config.ts` (1 line change)
 
