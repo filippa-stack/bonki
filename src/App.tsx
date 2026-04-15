@@ -180,6 +180,7 @@ function AppRoutes() {
       <Route path="/screenshot-export" element={<ScreenshotExport />} />
       <Route path="/analytics" element={<AnalyticsDashboard />} />
       <Route path="/privacy" element={<PrivacyPolicy />} />
+      <Route path="/buy" element={<BuyPage />} />
       <Route path="/*" element={<ProtectedRoutes />} />
     </Routes>
   );
