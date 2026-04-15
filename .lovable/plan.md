@@ -1,41 +1,14 @@
 
 
-## Fix Post-Purchase Redirect to Land on Product Page
+## Remove "gratis" Messaging from ProductIntro
 
 ### Change
-**File:** `src/pages/Index.tsx`, lines 177–184
+**File:** `src/components/ProductIntro.tsx`, lines 382–395
 
-Replace the current post-purchase block with one that also reads the `product` param, looks up the product manifest, uses the correct price for the pixel event, and redirects to the product page.
+Remove the `{hasFreeCard && (...)}` paragraph block that displays "Ert första samtal är gratis — ingen betalning krävs." below the CTA button.
 
-**FROM:**
-```tsx
-if (searchParams.get('purchase') === 'success') {
-    const returnCard = searchParams.get('returnCard');
-    trackPixelEvent('Purchase', { value: 249, currency: 'SEK' });
-    window.history.replaceState({}, '', window.location.pathname);
-    if (returnCard) {
-      return <Navigate to={`/card/${returnCard}`} replace />;
-    }
-  }
-```
+Everything else stays untouched: CTA button, `handleCta`, "Inte just nu" link, imports, `hasFreeCard` variable.
 
-**TO:**
-```tsx
-if (searchParams.get('purchase') === 'success') {
-    const returnCard = searchParams.get('returnCard');
-    const purchasedProductId = searchParams.get('product');
-    const purchasedProduct = purchasedProductId ? allProducts.find(p => p.id === purchasedProductId) : null;
-    const priceValue = purchasedProduct?.id === 'still_us' ? 249 : 195;
-    trackPixelEvent('Purchase', { value: priceValue, currency: 'SEK' });
-    window.history.replaceState({}, '', window.location.pathname);
-    if (returnCard) {
-      return <Navigate to={`/card/${returnCard}`} replace />;
-    }
-    if (purchasedProduct) {
-      return <Navigate to={`/product/${purchasedProduct.slug}`} replace />;
-    }
-  }
-```
-
-`allProducts` is already imported on line 18. No other files or logic changed.
+### Files Modified
+- `src/components/ProductIntro.tsx` (1 block removed)
 
