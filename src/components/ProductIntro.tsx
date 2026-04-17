@@ -145,14 +145,9 @@ export default function ProductIntro({
   const fullBodyText = introData.slides.map((s) => s.body).join('\n\n');
 
   const handleCta = async () => {
-    // Persist seen flag server-side (fire-and-forget)
     markProductIntroSeenServer(productId);
-
-    if (freeCardId && onStartFreeCard) {
-      onStartFreeCard();
-    } else {
-      onComplete();
-    }
+    localStorage.setItem(`bonki-intro-seen-${productId}`, '1');
+    navigate(`/buy?product=${productId}`);
   };
 
   // Sexualitet safety signoff
@@ -164,9 +159,7 @@ export default function ProductIntro({
   const freeCardLabel = isStillUs ? STILL_US_FREE_CARD_LABEL : 'Ert första samtal';
 
   // CTA label
-  const ctaLabel = hasFreeCard
-    ? (isStillUs ? STILL_US_CTA : resolvedFreeCardTitle ? `Börja med ${resolvedFreeCardTitle}` : introData.ctaLabel)
-    : introData.ctaLabel;
+  const ctaLabel = `Lås upp ${product?.name ?? 'produkt'}`;
 
   return (
     <div
@@ -384,7 +377,8 @@ export default function ProductIntro({
           <button
             onClick={() => {
               markProductIntroSeenServer(productId);
-              onComplete();
+              localStorage.setItem(`bonki-intro-seen-${productId}`, '1');
+              navigate('/');
             }}
             style={{
               display: 'block',
