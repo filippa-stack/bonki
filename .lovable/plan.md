@@ -1,33 +1,44 @@
 
+Straightforward 3-edit change in one file. No exploration needed — the prompt specifies exact line numbers and replacements, and I verified `navigate` is already imported.
 
-## Move Terms Above Email + Improve Visibility on BuyPage
+## ProductIntro: CTA → payment, skip → library
 
-**File:** `src/pages/BuyPage.tsx`
+**File:** `src/components/ProductIntro.tsx`
 
-### Change 1 — Move terms block
-Remove lines 360–366 (the terms block currently inside the OTP flow div) and insert it between the product context div (line 269) and the OTP flow div (line 271).
-
-### Change 2 — Improve text visibility
-Add className overrides to the terms wrapper div for cream-colored label text and orange links.
-
-### Result (lines 269–278 area after edit):
-
+### Change 1 — CTA label (line ~167)
+Replace the conditional `ctaLabel` with a unified unlock label:
 ```tsx
-        </div>
-
-        {/* Terms */}
-        <div style={{ width: '100%', marginTop: '4px' }}>
-          <div className="[&_label]:!text-[rgba(253,246,227,0.85)] [&_button]:!text-[#E85D2C] [&_a]:!text-[#E85D2C]" style={{ display: 'flex', justifyContent: 'center' }}>
-            <TermsConsent checked={termsAccepted} onCheckedChange={(val) => { setTermsAccepted(!!val); if (val) setTermsError(false); }} />
-          </div>
-          {termsError && <p style={{ fontFamily: 'var(--font-sans)', fontSize: '13px', color: '#f87171', textAlign: 'center', marginTop: '8px' }}>Du behöver godkänna villkoren för att fortsätta.</p>}
-        </div>
-
-        {/* OTP flow */}
+const ctaLabel = `Lås upp ${product?.name ?? 'produkt'}`;
 ```
 
-The old terms block (lines 360–366) is deleted from its current position.
+### Change 2 — `handleCta` (line ~147)
+Route the CTA to `/buy?product={productId}` and persist a localStorage flag so the intro is skipped on return:
+```tsx
+const handleCta = async () => {
+  markProductIntroSeenServer(productId);
+  localStorage.setItem(`bonki-intro-seen-${productId}`, '1');
+  navigate(`/buy?product=${productId}`);
+};
+```
 
-### Files Modified
-- `src/pages/BuyPage.tsx` (move + className addition, no logic changes)
+### Change 3 — "Inte just nu" skip link (line ~384)
+Send the user back to the library and persist the same localStorage flag:
+```tsx
+<button
+  onClick={() => {
+    markProductIntroSeenServer(productId);
+    localStorage.setItem(`bonki-intro-seen-${productId}`, '1');
+    navigate('/');
+  }}
+```
 
+### Not changed
+- `freeCardId` / `onStartFreeCard` props remain (callers untouched)
+- All other UI, styling, imports, and helper functions
+- No other files
+
+### Verification
+- Locked product → intro shows "Lås upp Jag i Mig"
+- CTA → `/buy?product=jag_i_mig`
+- "Inte just nu" → `/`
+- Revisit → intro skipped via localStorage flag
