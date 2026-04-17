@@ -268,6 +268,14 @@ export default function BuyPage() {
           </p>
         </div>
 
+        {/* Terms */}
+        <div style={{ width: '100%', marginTop: '4px' }}>
+          <div className="[&_label]:!text-[rgba(253,246,227,0.85)] [&_button]:!text-[#E85D2C] [&_a]:!text-[#E85D2C]" style={{ display: 'flex', justifyContent: 'center' }}>
+            <TermsConsent checked={termsAccepted} onCheckedChange={(val) => { setTermsAccepted(!!val); if (val) setTermsError(false); }} />
+          </div>
+          {termsError && <p style={{ fontFamily: 'var(--font-sans)', fontSize: '13px', color: '#f87171', textAlign: 'center', marginTop: '8px' }}>Du behöver godkänna villkoren för att fortsätta.</p>}
+        </div>
+
         {/* OTP flow */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', alignItems: 'center' }}>
           {otpSent ? (
@@ -356,14 +364,6 @@ export default function BuyPage() {
               </button>
             </div>
           )}
-
-          {/* Terms */}
-          <div style={{ width: '100%', marginTop: '4px' }}>
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
-              <TermsConsent checked={termsAccepted} onCheckedChange={(val) => { setTermsAccepted(!!val); if (val) setTermsError(false); }} />
-            </div>
-            {termsError && <p style={{ fontFamily: 'var(--font-sans)', fontSize: '13px', color: '#f87171', textAlign: 'center', marginTop: '8px' }}>Du behöver godkänna villkoren för att fortsätta.</p>}
-          </div>
 
           {error && <p style={{ fontFamily: 'var(--font-sans)', fontSize: '14px', color: '#f87171', textAlign: 'center', marginTop: '4px' }}>{error}</p>}
         </div>
