@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
+import { Capacitor } from '@capacitor/core';
 
 type Platform = 'ios' | 'android' | null;
 
