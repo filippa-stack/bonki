@@ -20,6 +20,10 @@ function isStandalone(): boolean {
 }
 
 export default function InstallGuideBanner() {
+  if (Capacitor.isNativePlatform()) {
+    return null;
+  }
+
   const [visible, setVisible] = useState(false);
   const [platform, setPlatform] = useState<Platform>(null);
   const [showSteps, setShowSteps] = useState(false);
