@@ -9,6 +9,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { LANTERN_GLOW, DRIFTWOOD, MIDNIGHT_INK, BONKI_ORANGE, DEEP_SAFFRON, productTileColors } from '@/lib/palette';
 import { isProductFreeForUser } from '@/lib/freeCardPolicy';
 import { usePageBackground } from '@/hooks/usePageBackground';
+import { trackPixelEvent } from '@/lib/metaPixel';
 
 // ── Illustration imports (same as product homes) ──
 import jimImage from '@/assets/illustration-jag-i-mig.png';
