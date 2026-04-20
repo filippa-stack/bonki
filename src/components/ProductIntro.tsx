@@ -122,6 +122,19 @@ export default function ProductIntro({
   const freeCardImageUrl = useCardImage(freeCardId);
   const isStillUs = productId === 'still_us';
   const hasFreeCard = isProductFreeForUser(productId);
+  const [priceSek, setPriceSek] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (!productId) return;
+    supabase
+      .from('products')
+      .select('price_sek')
+      .eq('id', productId)
+      .single()
+      .then(({ data }) => {
+        setPriceSek(data?.price_sek ?? (productId === 'still_us' ? 249 : 195));
+      });
+  }, [productId]);
 
   const product = useMemo(() => allProducts.find((p) => p.id === productId), [productId]);
 
