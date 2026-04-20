@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
+import { Capacitor } from '@capacitor/core';
 
 type Platform = 'ios' | 'android' | null;
 
@@ -24,6 +25,7 @@ export default function InstallGuideBanner() {
   const [showSteps, setShowSteps] = useState(false);
 
   useEffect(() => {
+    if (Capacitor.isNativePlatform()) return;
     if (isStandalone()) return;
     const dismissed = localStorage.getItem('install-guide-dismissed');
     if (dismissed) return;
@@ -35,6 +37,10 @@ export default function InstallGuideBanner() {
     const timer = setTimeout(() => setVisible(true), 1500);
     return () => clearTimeout(timer);
   }, []);
+
+  if (Capacitor.isNativePlatform()) {
+    return null;
+  }
 
   const dismiss = () => {
     setVisible(false);
