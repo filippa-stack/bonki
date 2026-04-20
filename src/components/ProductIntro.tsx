@@ -172,6 +172,22 @@ export default function ProductIntro({
   const handleCta = async () => {
     markProductIntroSeenServer(productId);
     localStorage.setItem(`bonki-intro-seen-${productId}`, '1');
+
+    // Track CTA tap so we can measure intro → checkout conversion
+    const value = priceSek ?? (productId === 'still_us' ? 249 : 195);
+    trackPixelEvent('InitiateCheckout', { value, currency: 'SEK' });
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        await supabase.from('onboarding_events').insert({
+          user_id: user.id,
+          event_type: `intro_cta_clicked_${productId}`,
+        });
+      }
+    } catch {
+      // Non-blocking — don't let telemetry failures stop checkout
+    }
+
     navigate(`/buy?product=${productId}`);
   };
 
