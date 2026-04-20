@@ -488,6 +488,20 @@ export default function ProductIntro({
             {ctaLabel}
           </button>
 
+          {/* Trust line — addresses "what am I committing to" friction */}
+          <p
+            style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: '12px',
+              color: LANTERN_GLOW,
+              opacity: 0.5,
+              textAlign: 'center',
+              marginTop: '12px',
+              margin: '12px 0 0',
+            }}
+          >
+            Säker betalning · Ingen prenumeration
+          </p>
 
           {/* Skip link — goes to product home without starting free card */}
           <button
