@@ -1,46 +1,48 @@
 
-## Convert ProductIntro into a Conversion Surface (v2 — approved)
+## Apply intro-style selling surface to BuyPage (v2 — approved with edits)
 
-**File:** `src/components/ProductIntro.tsx` (only file touched)
+**Files touched:**
+- `src/lib/productPreviewQuestions.ts` (new — shared constant)
+- `src/components/ProductIntro.tsx` (swap inline const for import)
+- `src/pages/BuyPage.tsx` (add selling surface to pre-OTP state)
 
 ### Why
-Since the April 17 purchase-first launch: 12 logged-in users → 19 product intros viewed → 0 purchases. The intro reads like a session opener, not a sales surface. No price, no scope, no credibility, no preview, no CTA telemetry.
+Visitors arriving from bonkistudio.com bypass the in-app `ProductIntro` and land directly on `/buy?product=X`. Today that page shows only "Du köper / {name} / {price · cards · Engångsköp}" before the email field — no tagline, no preview, no credibility, no trust line. We mirror the selling surface already shipped on `ProductIntro`, only in the pre-OTP state.
 
-### Changes (5 edits, all in `ProductIntro.tsx`)
+### Changes
 
-**1. Imports + price fetch + CTA telemetry**
-- Import `trackPixelEvent` from `@/lib/metaPixel`.
-- Add `priceSek` state + `useEffect` reading `price_sek` from the `products` table (matches `ProductPaywall.tsx` / `BuyPage.tsx`). Fallback: `249` for `still_us`, `195` otherwise.
-- In `handleCta`: fire `trackPixelEvent('InitiateCheckout', { value, currency: 'SEK' })` and insert an `onboarding_events` row with `event_type: intro_cta_clicked_<productId>`. Wrapped in try/catch — telemetry never blocks navigation.
+**1. New shared module — `src/lib/productPreviewQuestions.ts`**
+Extract the existing `PREVIEW_QUESTION` map (currently inline in `ProductIntro.tsx`) into a single source of truth so both surfaces always show the same question per product.
 
-**2. Price-explicit CTA label**
-- From: `Lås upp ${product.name}` (ambiguous)
-- To: `Köp ${product.name} · ${priceSek} kr` (falls back to `Köp ${product.name}` while loading)
+**2. `src/components/ProductIntro.tsx`**
+- Remove the inline `PREVIEW_QUESTION` constant.
+- Add `import { PREVIEW_QUESTION } from '@/lib/productPreviewQuestions';`
+- No other logic changes.
 
-**3. Per-product preview question constant**
-- Add `PREVIEW_QUESTION` record near `SHORT_INTROS`, with one handpicked question per product (jag_i_mig, jag_med_andra, jag_i_varlden, syskonkort, vardagskort, sexualitetskort, still_us). Chosen as proof-of-craft.
-
-**4. Insert preview-question + offer-details blocks between body and CTA**
-Two additive blocks placed after body paragraphs and before the CTA `motion.div`:
-- **Preview**: small uppercase label `En fråga ur samtalen` + the quoted question rendered in `var(--font-serif)` at 17px, weight 400 (no italic — clean serif voice on the dark bg).
-- **Offer details** (3 lines, reusing approved copy from `ProductPaywall.tsx` / `PaywallBottomSheet.tsx`):
-  - Scope: `{n} samtal · {k} kategorier`
-  - Price: `{price} kr · Engångsköp · Tillgång för alltid`
-  - Credibility: `Utvecklat tillsammans med psykolog · 25 års klinisk erfarenhet`
-
-Both blocks use existing typography tokens (LANTERN_GLOW, dimmed opacity), tightly stacked.
-
-**5. Trust line below CTA**
-- `Säker betalning · Ingen prenumeration` — placed between the CTA button and the existing `Inte just nu` skip link. Mirrors `ProductPaywall.tsx`.
+**3. `src/pages/BuyPage.tsx` — pre-OTP state only**
+- Add `import { PREVIEW_QUESTION } from '@/lib/productPreviewQuestions';`
+- Replace the minimal "Du köper / name / price · cards · Engångsköp" block with:
+  - **Hero**: `Du köper` eyebrow + product name + tagline (if present)
+  - **Preview question** block (only if mapping exists for productId): small uppercase label `En fråga ur samtalen` + the quoted question rendered in `var(--font-serif)` at 17px, weight 400 (no italic — matches ProductIntro)
+  - **Offer details** (4 lines, identical copy to ProductIntro plus trust line):
+    - `{n} samtal · {k} kategorier`
+    - `{price} kr · Engångsköp · Tillgång för alltid`
+    - `Utvecklat tillsammans med psykolog · 25 års klinisk erfarenhet`
+    - `Säker betalning · Ingen prenumeration` (same 13px dimmed styling, small top margin — sits inside the offer block so it survives any future email-form refactor)
+- CTA label `Fortsätt` left untouched (downstream refactor will replace this button).
 
 ### Explicitly NOT touched
-- `handleCta` navigation target → still `/buy?product=${productId}`
-- `useProductIntroNeeded` hook
-- `markProductIntroSeenServer` + `product_intro_seen_*` event type
-- `bonki-intro-seen-${productId}` localStorage key
-- `ProductHome.tsx` tri-state `showIntro` machine
-- Back button, illustration zone, Sexualitet `sexSafetyLine`, "Inte just nu" skip link
-- Order/placement of existing JSX — all new blocks are additive
+- CTA label on the email submit button (`Fortsätt`)
+- OTP-sent state (back arrow, code input, verify button, resend cooldown)
+- "Förbereder betalning…" / checkout-in-progress state
+- "Invalid product" state
+- `handleEmailSignIn`, `handleVerifyOtp`, `handleResend`, `triggerCheckout` bodies
+- Auto-trigger checkout `useEffect` for logged-in users
+- `TermsConsent` rendering and `saveConsent`
+- `ORANGE_GRADIENT` / `ORANGE_SHADOW`, page background, cooldown logic
+- All ProductIntro logic apart from the constant extraction
 
-### Measurement (post-ship)
-Intro→checkout conversion: count `onboarding_events` with `event_type LIKE 'intro_cta_clicked_%'` against `product_intro_seen_%` per product. Meta Pixel `InitiateCheckout` will surface the funnel in Ads Manager.
+### Risk / verification
+- Both surfaces import from the same module → no drift between in-app and website preview question.
+- The preview block is conditional on `PREVIEW_QUESTION[productId]` so unknown product IDs render nothing instead of breaking layout.
+- Trust line lives inside the offer-details block, not the form, so a future email-form refactor won't strip it.
