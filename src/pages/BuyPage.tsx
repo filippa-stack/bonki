@@ -9,6 +9,7 @@ import { usePageBackground } from '@/hooks/usePageBackground';
 
 import TermsConsent from '@/components/TermsConsent';
 import { TERMS_VERSION, PRIVACY_VERSION } from '@/lib/legal';
+import { PREVIEW_QUESTION } from '@/lib/productPreviewQuestions';
 
 const ORANGE_GRADIENT = 'linear-gradient(180deg, #E85D2C 0%, #C44D22 100%)';
 const ORANGE_SHADOW = [
@@ -255,7 +256,7 @@ export default function BuyPage() {
     <div style={{ minHeight: '100vh', background: MIDNIGHT_INK, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '24px' }}>
       <div style={{ width: '100%', maxWidth: '380px', display: 'flex', flexDirection: 'column', gap: '24px' }}>
 
-        {/* Product context */}
+        {/* Product hero — name + tagline */}
         <div style={{ textAlign: 'center', padding: '8px 0' }}>
           <p style={{ fontFamily: 'var(--font-sans)', fontSize: '13px', color: 'rgba(253, 246, 227, 0.5)', letterSpacing: '0.05em', textTransform: 'uppercase' }}>
             Du köper
@@ -263,8 +264,38 @@ export default function BuyPage() {
           <p style={{ fontFamily: 'var(--font-display)', fontSize: '22px', color: LANTERN_GLOW, fontWeight: 600, marginTop: '6px' }}>
             {product.name}
           </p>
-          <p style={{ fontFamily: 'var(--font-sans)', fontSize: '14px', color: 'rgba(253, 246, 227, 0.55)', marginTop: '6px' }}>
-            {priceSek !== null ? `${priceSek} kr` : '...'} · {product.cards.length} samtal · Engångsköp
+          {product.tagline && (
+            <p style={{ fontFamily: 'var(--font-sans)', fontSize: '14px', color: 'rgba(253, 246, 227, 0.6)', marginTop: '6px', lineHeight: 1.5 }}>
+              {product.tagline}
+            </p>
+          )}
+        </div>
+
+        {/* Preview question — taste of the product, proof of craft */}
+        {PREVIEW_QUESTION[productId] && (
+          <div style={{ textAlign: 'center' }}>
+            <p style={{ fontFamily: 'var(--font-sans)', fontSize: '12px', color: 'rgba(253, 246, 227, 0.45)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '10px' }}>
+              En fråga ur samtalen
+            </p>
+            <p style={{ fontFamily: 'var(--font-serif)', fontSize: '17px', fontWeight: 400, color: 'rgba(253, 246, 227, 0.88)', lineHeight: 1.5 }}>
+              &ldquo;{PREVIEW_QUESTION[productId]}&rdquo;
+            </p>
+          </div>
+        )}
+
+        {/* Offer details — scope, price, credibility, trust */}
+        <div style={{ textAlign: 'center' }}>
+          <p style={{ fontFamily: 'var(--font-sans)', fontSize: '14px', color: 'rgba(253, 246, 227, 0.7)' }}>
+            {product.cards.length} samtal · {product.categories.length} kategorier
+          </p>
+          <p style={{ fontFamily: 'var(--font-sans)', fontSize: '14px', color: 'rgba(253, 246, 227, 0.7)', marginTop: '4px' }}>
+            {priceSek !== null ? `${priceSek} kr` : '...'} · Engångsköp · Tillgång för alltid
+          </p>
+          <p style={{ fontFamily: 'var(--font-sans)', fontSize: '13px', color: 'rgba(253, 246, 227, 0.5)', marginTop: '8px' }}>
+            Utvecklat tillsammans med psykolog · 25 års klinisk erfarenhet
+          </p>
+          <p style={{ fontFamily: 'var(--font-sans)', fontSize: '13px', color: 'rgba(253, 246, 227, 0.5)', marginTop: '6px' }}>
+            Säker betalning · Ingen prenumeration
           </p>
         </div>
 
