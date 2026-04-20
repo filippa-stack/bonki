@@ -373,6 +373,79 @@ export default function ProductIntro({
           ))}
         </motion.div>
 
+        {/* 3b. Preview question — taste of the product, proof of craft */}
+        {PREVIEW_QUESTION[productId] && (
+          <div style={{ marginTop: '24px', textAlign: 'center' }}>
+            <div
+              style={{
+                fontFamily: 'var(--font-sans)',
+                fontSize: '11px',
+                fontWeight: 600,
+                letterSpacing: '0.12em',
+                textTransform: 'uppercase',
+                color: LANTERN_GLOW,
+                opacity: 0.5,
+                marginBottom: '10px',
+              }}
+            >
+              En fråga ur samtalen
+            </div>
+            <p
+              style={{
+                fontFamily: 'var(--font-serif)',
+                fontSize: '17px',
+                fontWeight: 400,
+                lineHeight: 1.45,
+                color: LANTERN_GLOW,
+                opacity: 0.92,
+                margin: 0,
+              }}
+            >
+              &ldquo;{PREVIEW_QUESTION[productId]}&rdquo;
+            </p>
+          </div>
+        )}
+
+        {/* 4. Offer details — scope, price, credibility */}
+        <div style={{ marginTop: '24px', textAlign: 'center' }}>
+          <p
+            style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: '14px',
+              color: LANTERN_GLOW,
+              opacity: 0.7,
+              margin: 0,
+              lineHeight: 1.5,
+            }}
+          >
+            {product?.cards.length ?? 0} samtal · {product?.categories.length ?? 0} kategorier
+          </p>
+          <p
+            style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: '14px',
+              fontWeight: 500,
+              color: LANTERN_GLOW,
+              opacity: 0.85,
+              margin: '6px 0 0',
+              lineHeight: 1.5,
+            }}
+          >
+            {priceSek !== null ? `${priceSek} kr` : '…'} · Engångsköp · Tillgång för alltid
+          </p>
+          <p
+            style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: '13px',
+              color: LANTERN_GLOW,
+              opacity: 0.55,
+              margin: '6px 0 0',
+              lineHeight: 1.5,
+            }}
+          >
+            Utvecklat tillsammans med psykolog · 25 års klinisk erfarenhet
+          </p>
+        </div>
 
         {/* 7. CTA Button */}
         <motion.div
