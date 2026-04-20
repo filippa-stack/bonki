@@ -20,15 +20,12 @@ function isStandalone(): boolean {
 }
 
 export default function InstallGuideBanner() {
-  if (Capacitor.isNativePlatform()) {
-    return null;
-  }
-
   const [visible, setVisible] = useState(false);
   const [platform, setPlatform] = useState<Platform>(null);
   const [showSteps, setShowSteps] = useState(false);
 
   useEffect(() => {
+    if (Capacitor.isNativePlatform()) return;
     if (isStandalone()) return;
     const dismissed = localStorage.getItem('install-guide-dismissed');
     if (dismissed) return;
@@ -40,6 +37,10 @@ export default function InstallGuideBanner() {
     const timer = setTimeout(() => setVisible(true), 1500);
     return () => clearTimeout(timer);
   }, []);
+
+  if (Capacitor.isNativePlatform()) {
+    return null;
+  }
 
   const dismiss = () => {
     setVisible(false);
