@@ -217,7 +217,7 @@ export default function Login() {
             textAlign: 'center',
             marginTop: '12px',
           }}>
-            Verktyg för samtalen som inte blir av.
+            Verktyg för samtalen som vill bli av
           </p>
         </motion.div>
 
