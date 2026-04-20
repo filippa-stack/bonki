@@ -1,14 +1,4 @@
 
-Single-line change in `capacitor.config.ts`.
+This is a research question, not an implementation task. The user wants to know which DB tables are actively used in the codebase.
 
-## Update Capacitor App ID
-
-**File:** `capacitor.config.ts`
-
-Change `appId` from `com.bonkistudio.bonki` to `com.bonkistudio.bonkiapp`. No other fields touched.
-
-### Note for user
-After this change, you'll need to:
-1. Pull the project from GitHub
-2. Run `npx cap sync` to propagate the new app ID to the native Android project
-3. Submit the new build to Google Play under the new package name
+Plan: search the codebase for references to each table name and report findings. Let me do this efficiently.
