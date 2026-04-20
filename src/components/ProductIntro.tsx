@@ -200,7 +200,9 @@ export default function ProductIntro({
   const freeCardLabel = isStillUs ? STILL_US_FREE_CARD_LABEL : 'Ert första samtal';
 
   // CTA label
-  const ctaLabel = `Lås upp ${product?.name ?? 'produkt'}`;
+  const ctaLabel = priceSek !== null
+    ? `Köp ${product?.name ?? 'produkt'} · ${priceSek} kr`
+    : `Köp ${product?.name ?? 'produkt'}`;
 
   return (
     <div
