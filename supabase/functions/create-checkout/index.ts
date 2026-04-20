@@ -21,27 +21,25 @@ serve(async (req) => {
       );
     }
 
-    // Auth
+    // Auth (optional — unauthenticated callers are allowed for website-direct purchase)
     const authHeader = req.headers.get("Authorization");
-    if (!authHeader) {
-      return new Response(JSON.stringify({ error: "Missing auth" }), {
-        status: 401,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
 
-    const supabase = createClient(
-      Deno.env.get("SUPABASE_URL")!,
-      Deno.env.get("SUPABASE_ANON_KEY")!,
-      { global: { headers: { Authorization: authHeader } } }
-    );
+    let authenticatedUser: { id: string; email?: string } | null = null;
 
-    const { data: { user }, error: authError } = await supabase.auth.getUser();
-    if (authError || !user) {
-      return new Response(JSON.stringify({ error: "Unauthorized" }), {
-        status: 401,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+    if (authHeader) {
+      const supabase = createClient(
+        Deno.env.get("SUPABASE_URL")!,
+        Deno.env.get("SUPABASE_ANON_KEY")!,
+        { global: { headers: { Authorization: authHeader } } }
+      );
+      const { data: { user }, error: authError } = await supabase.auth.getUser();
+      if (authError || !user) {
+        return new Response(JSON.stringify({ error: "Unauthorized" }), {
+          status: 401,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      authenticatedUser = { id: user.id, email: user.email ?? undefined };
     }
 
     const { productId, successUrl, cancelUrl } = await req.json();
@@ -52,20 +50,29 @@ serve(async (req) => {
       });
     }
 
-    // Check if user already has access
-    const { data: existing } = await supabase
-      .from("user_product_access")
-      .select("id")
-      .eq("user_id", user.id)
-      .eq("product_id", productId)
-      .maybeSingle();
-
-    if (existing) {
-      return new Response(
-        JSON.stringify({ error: "already_purchased" }),
-        { status: 409, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+    // If we have an authenticated user, check whether they already own this product
+    if (authenticatedUser) {
+      const supabaseWithAuth = createClient(
+        Deno.env.get("SUPABASE_URL")!,
+        Deno.env.get("SUPABASE_ANON_KEY")!,
+        { global: { headers: { Authorization: authHeader! } } }
       );
+      const { data: existing } = await supabaseWithAuth
+        .from("user_product_access")
+        .select("id")
+        .eq("user_id", authenticatedUser.id)
+        .eq("product_id", productId)
+        .maybeSingle();
+
+      if (existing) {
+        return new Response(
+          JSON.stringify({ error: "already_purchased" }),
+          { status: 409, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
     }
+    // Unauthenticated flow: we can't pre-check ownership. The webhook's upsert on
+    // user_product_access handles idempotency if the same email buys twice.
 
     // Get product info (use service role to read price)
     const adminSupabase = createClient(
@@ -102,9 +109,10 @@ serve(async (req) => {
         "line_items[0][quantity]": "1",
         success_url: successUrl || "https://bonkiapp.com/?purchase=success",
         cancel_url: cancelUrl || "https://bonkiapp.com/?purchase=cancel",
-        "metadata[user_id]": user.id,
         "metadata[product_id]": productId,
-        ...(user.email ? { customer_email: user.email } : {}),
+        // Authenticated flow — pre-fill email and attach user_id for webhook
+        ...(authenticatedUser?.id ? { "metadata[user_id]": authenticatedUser.id } : {}),
+        ...(authenticatedUser?.email ? { customer_email: authenticatedUser.email } : {}),
       }),
     });
 
