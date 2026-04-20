@@ -9,6 +9,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { LANTERN_GLOW, DRIFTWOOD, MIDNIGHT_INK, BONKI_ORANGE, DEEP_SAFFRON, productTileColors } from '@/lib/palette';
 import { isProductFreeForUser } from '@/lib/freeCardPolicy';
 import { usePageBackground } from '@/hooks/usePageBackground';
+import { trackPixelEvent } from '@/lib/metaPixel';
 
 // ── Illustration imports (same as product homes) ──
 import jimImage from '@/assets/illustration-jag-i-mig.png';
@@ -54,7 +55,18 @@ const SHORT_INTROS: Record<string, string> = {
   still_us: 'För par som fortfarande fungerar, men som märkt att något tystnat.',
 };
 
-/** Still Us–specific overrides */
+/** Handpicked preview question per product — proof-of-craft.
+ *  Chosen for the "parent doesn't know their child's answer and desperately wants to" frame:
+ *  questions that signal the deck goes where their own questions can't. */
+const PREVIEW_QUESTION: Record<string, string> = {
+  jag_i_mig: 'Har du någon gång låtsats vara glad fast du egentligen inte var det? Varför tror du att vi gör så?',
+  jag_med_andra: 'Har någon annan tyckt att du borde skämmas för något som du själv inte känner är fel?',
+  jag_i_varlden: 'Om en vän berättade att de ibland inte orkar eller att livet känns för tungt — vad skulle du göra? Vem skulle du kontakta?',
+  syskonkort: 'Vad tror du att ditt syskon tycker är det svåraste med att vara syskon till dig?',
+  vardagskort: 'Vad tänker du på precis innan du somnar eller när du precis vaknat?',
+  sexualitetskort: 'När kan det vara svårt att säga nej?',
+  still_us: 'Om något litet mellan er tyst försvann, vad tror du att du skulle märka först?',
+};
 const STILL_US_FREE_CARD_LABEL = 'Ert första samtal';
 const STILL_US_CTA = 'Börja med Ert första samtal';
 
@@ -110,6 +122,19 @@ export default function ProductIntro({
   const freeCardImageUrl = useCardImage(freeCardId);
   const isStillUs = productId === 'still_us';
   const hasFreeCard = isProductFreeForUser(productId);
+  const [priceSek, setPriceSek] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (!productId) return;
+    supabase
+      .from('products')
+      .select('price_sek')
+      .eq('id', productId)
+      .single()
+      .then(({ data }) => {
+        setPriceSek(data?.price_sek ?? (productId === 'still_us' ? 249 : 195));
+      });
+  }, [productId]);
 
   const product = useMemo(() => allProducts.find((p) => p.id === productId), [productId]);
 
@@ -147,6 +172,22 @@ export default function ProductIntro({
   const handleCta = async () => {
     markProductIntroSeenServer(productId);
     localStorage.setItem(`bonki-intro-seen-${productId}`, '1');
+
+    // Track CTA tap so we can measure intro → checkout conversion
+    const value = priceSek ?? (productId === 'still_us' ? 249 : 195);
+    trackPixelEvent('InitiateCheckout', { value, currency: 'SEK' });
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        await supabase.from('onboarding_events').insert({
+          user_id: user.id,
+          event_type: `intro_cta_clicked_${productId}`,
+        });
+      }
+    } catch {
+      // Non-blocking — don't let telemetry failures stop checkout
+    }
+
     navigate(`/buy?product=${productId}`);
   };
 
@@ -159,7 +200,9 @@ export default function ProductIntro({
   const freeCardLabel = isStillUs ? STILL_US_FREE_CARD_LABEL : 'Ert första samtal';
 
   // CTA label
-  const ctaLabel = `Lås upp ${product?.name ?? 'produkt'}`;
+  const ctaLabel = priceSek !== null
+    ? `Köp ${product?.name ?? 'produkt'} · ${priceSek} kr`
+    : `Köp ${product?.name ?? 'produkt'}`;
 
   return (
     <div
@@ -330,6 +373,79 @@ export default function ProductIntro({
           ))}
         </motion.div>
 
+        {/* 3b. Preview question — taste of the product, proof of craft */}
+        {PREVIEW_QUESTION[productId] && (
+          <div style={{ marginTop: '24px', textAlign: 'center' }}>
+            <div
+              style={{
+                fontFamily: 'var(--font-sans)',
+                fontSize: '11px',
+                fontWeight: 600,
+                letterSpacing: '0.12em',
+                textTransform: 'uppercase',
+                color: LANTERN_GLOW,
+                opacity: 0.5,
+                marginBottom: '10px',
+              }}
+            >
+              En fråga ur samtalen
+            </div>
+            <p
+              style={{
+                fontFamily: 'var(--font-serif)',
+                fontSize: '17px',
+                fontWeight: 400,
+                lineHeight: 1.45,
+                color: LANTERN_GLOW,
+                opacity: 0.92,
+                margin: 0,
+              }}
+            >
+              &ldquo;{PREVIEW_QUESTION[productId]}&rdquo;
+            </p>
+          </div>
+        )}
+
+        {/* 4. Offer details — scope, price, credibility */}
+        <div style={{ marginTop: '24px', textAlign: 'center' }}>
+          <p
+            style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: '14px',
+              color: LANTERN_GLOW,
+              opacity: 0.7,
+              margin: 0,
+              lineHeight: 1.5,
+            }}
+          >
+            {product?.cards.length ?? 0} samtal · {product?.categories.length ?? 0} kategorier
+          </p>
+          <p
+            style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: '14px',
+              fontWeight: 500,
+              color: LANTERN_GLOW,
+              opacity: 0.85,
+              margin: '6px 0 0',
+              lineHeight: 1.5,
+            }}
+          >
+            {priceSek !== null ? `${priceSek} kr` : '…'} · Engångsköp · Tillgång för alltid
+          </p>
+          <p
+            style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: '13px',
+              color: LANTERN_GLOW,
+              opacity: 0.55,
+              margin: '6px 0 0',
+              lineHeight: 1.5,
+            }}
+          >
+            Utvecklat tillsammans med psykolog · 25 års klinisk erfarenhet
+          </p>
+        </div>
 
         {/* 7. CTA Button */}
         <motion.div
@@ -372,6 +488,20 @@ export default function ProductIntro({
             {ctaLabel}
           </button>
 
+          {/* Trust line — addresses "what am I committing to" friction */}
+          <p
+            style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: '12px',
+              color: LANTERN_GLOW,
+              opacity: 0.5,
+              textAlign: 'center',
+              marginTop: '12px',
+              margin: '12px 0 0',
+            }}
+          >
+            Säker betalning · Ingen prenumeration
+          </p>
 
           {/* Skip link — goes to product home without starting free card */}
           <button
