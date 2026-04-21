@@ -1,81 +1,70 @@
 
 
-## Add `/claim` page for post-purchase OTP verification
+## Apply lantern design to the visible library banner with correct product colors
 
-A new public route that website-direct purchasers will land on after Stripe checkout (Prompt 3 will wire `success_url` to it). Page is unreachable from normal user flow after this deploy — verified manually with a real Live session ID.
+The lantern treatment was previously applied to `ResumeBanner.tsx`, but the banner you actually see on `/` is `LibraryResumeCard.tsx` — a different component. That's why the redesign appeared to "not take effect" and why the color stayed wrong: `LibraryResumeCard` always hardcoded saffron, and its product-color lookup table had Jag i Mig mapped to lilac instead of teal.
+
+This plan fixes both: ports the lantern to the visible banner, and makes the bloom always reflect the active product's true tile color.
 
 ### Files touched
-1. `src/pages/ClaimPage.tsx` — new file
-2. `src/App.tsx` — add public route + import
 
-### What gets built
+1. `src/components/LibraryResumeCard.tsx` — redesign + color fix (the only banner currently on the library home)
+2. `src/lib/palette.ts` — read-only confirmation that `productTileColors` is the canonical source
 
-**1. `src/pages/ClaimPage.tsx` (new)**
+### What changes
 
-A self-contained page with three states driven by a `lookup` state machine:
+**1. Replace the visual shell with the approved lantern design**
 
-- **Loading state**: shown while calling the existing `get-purchase-session` edge function. Centered `Loader2` spinner on `MIDNIGHT_INK` background.
-- **Error state**: shown if `session_id` is missing, lookup fails, or response is incomplete. Displays a Swedish error message + "Gå till inloggning →" link to `/login`.
-- **Ready state (main UI)**:
-  - "Tack för ditt köp!" pill with a `Check` icon at the top.
-  - Heading: "Ett steg kvar — bekräfta din e-post för att få tillgång till {productName}".
-  - Subtext: "Vi skickar en engångskod till {email}. Fyll i koden nedan för att logga in — ditt köp är redan sparat."
-  - Initial CTA: Bonki Orange pill button "Skicka engångskod" (uses the same `ORANGE_GRADIENT` + `ORANGE_SHADOW` system as `BuyPage`).
-  - After OTP sent: 6-digit OTP input (numeric only, large centered text, `0.5em` letter spacing) + "Logga in och öppna {productName}" submit button + "Skicka mejlet igen" resend link with 60s cooldown timer.
+Current `LibraryResumeCard` (lines 244–304) renders a full-bleed tinted gradient with a hardcoded saffron accent. Replace its outer container and content layout with the same lantern recipe used in `ResumeBanner`:
 
-Behaviors:
-- On mount: `usePageBackground(MIDNIGHT_INK)` to lock the shell color.
-- On mount: `fetch` POST to `${VITE_SUPABASE_PROJECT_ID}.supabase.co/functions/v1/get-purchase-session` with `{ sessionId }` to retrieve `email`, `productId`, `paid`.
-- If `paid === true`: fire `trackPixelEvent('Purchase', { value, currency: 'SEK' })` once per session via `purchaseTrackedRef`. Value: `249` for `still_us`, `195` otherwise.
-- Send OTP via `supabase.auth.signInWithOtp({ email, options: { shouldCreateUser: true } })`.
-- Verify OTP via `supabase.auth.verifyOtp({ email, token, type: 'email' })`.
-- On successful verification: `navigate(`/product/${product.slug}`, { replace: true })` if product resolved, else `navigate('/', { replace: true })`.
-- Resend cooldown: 60s countdown via `setInterval`, cleared on unmount.
-- Errors surface in a small error block under the form, in Swedish.
-- All copy in Swedish, follows `mem://style/ni-form-shift` and `mem://localization/language-and-localization`.
+- **Shell**: dark Midnight Ink (`#0B1026`) base, `border-radius: 22px` (preserve existing radius), no gradient fill.
+- **Bloom layer** (absolute, `inset: 0`, `pointer-events: none`): breathing radial gradient anchored left
+  `radial-gradient(ellipse 260px 120px at 22% 50%, ${accent}33 0%, ${accent}10 60%, transparent 100%)`
+  driven by the existing Framer Motion 6s ease-in-out opacity loop (`[0.85, 1, 0.85]`). Reduced-motion guard preserved.
+- **Foreground content** (`position: relative; z-index: 2`):
+  - Primary line "Fortsätt utforska {productName}": 14px, weight 500, `LANTERN_GLOW`. Preceded by a 6px accent dot with a 1.5px Midnight Ink halo (`box-shadow: 0 0 0 1.5px #0B1026`) so it punches through the bloom.
+  - Secondary line "{stepLabel} · {cardTitle}": 12px, `DRIFTWOOD` at opacity 0.55, aligned via flex gap (no padding hacks).
+  - Pill: keep the existing Bonki Orange "Fortsätt" pill exactly as it is (32px height, `#E85D2C`, white text, rounded). It already sits on the right — with the bloom anchored at 22%, the pill naturally emerges from the darker right half.
 
-Imports used:
-- `supabase` from `@/integrations/supabase/client`
-- `getProductById` from `@/data/products`
-- `MIDNIGHT_INK`, `LANTERN_GLOW` from `@/lib/palette`
-- `usePageBackground` from `@/hooks/usePageBackground`
-- `trackPixelEvent` from `@/lib/metaPixel`
-- `Loader2`, `Check` from `lucide-react`
+The result matches the lantern reference 1:1 — same shell, same bloom math, same dot, same hierarchy, same pill.
 
-**2. `src/App.tsx`**
+**2. Make the bloom always use the correct product tile color**
 
-Two additions:
-- Import: add `import ClaimPage from "./pages/ClaimPage";` next to the existing `import BuyPage from "./pages/BuyPage";`.
-- Route: add `<Route path="/claim" element={<ClaimPage />} />` inside `AppRoutes`, alongside `/buy` and `/privacy` (above the catch-all `<Route path="/*" element={<ProtectedRoutes />} />`).
+Two specific fixes inside `LibraryResumeCard.tsx`:
 
-This keeps `/claim` outside the `ProtectedRoutes` tree — it's a public route, since unauthenticated users are exactly who land here. It still inherits `MobileOnlyGate` from the wrapping tree.
+- **Delete** the local `PRODUCT_TILE_COLORS` map (lines 32–40). It is duplicated and contains the bug (`jag_i_mig: '#CB7AB2'` should be `#27A69C`).
+- **Import** `productTileColors` from `@/lib/palette` — the single source of truth — and resolve the bloom color via `productTileColors[productId]?.tileLight ?? LANTERN_GLOW`. This guarantees:
+  - Jag i Mig → teal `#27A69C`
+  - Jag med Andra → rose `#CB7AB2`
+  - Jag i Världen → chartreuse `#C6D423`
+  - Vårt Vi → cobalt `#94BCE1`
+  - Syskonkort → lilac `#CF8BDD`
+  - Sexualitetskort → coral `#DD958B`
+  - Vardagskort → mint `#8BDDB0`
+- **Delete** the hardcoded `accentColor: SAFFRON_FLAME / DEEP_SAFFRON` assignments at lines 71, 72, 153, and 183. The component no longer carries an `accentColor` field on `ResumeData` — color is derived at render time from `productId`. `SAFFRON_FLAME` and `DEEP_SAFFRON` imports are removed.
+- **Update the dev mock** so `devState=pairedActive` defaults to a real Jag i Mig session (`productId: 'jag_i_mig'`, `cardId: 'jim-glad'`, `cardTitle: 'Glad'`) — this gives you immediate visual confirmation that teal renders correctly. The `?devState=library` and Still Us/Jag-med-Andra mocks are preserved for switching colors during inspection.
+
+**3. Remove the dead lantern from `ResumeBanner.tsx` + `Categories.tsx`**
+
+`Categories.tsx` is dead code (`/categories` is redirected to `/` in `App.tsx`), so the lantern there is invisible. I will leave both files untouched — no risk of regression — but add a one-line JSDoc comment at the top of `Categories.tsx` noting it is unreachable, so no future agent wastes another iteration there.
 
 ### What is NOT touched
-- `BuyPage.tsx` — untouched.
-- `ProtectedRoutes`, `ProtectedContent`, any existing route — untouched.
-- `Index.tsx` purchase-success handler — still handles the in-app flow.
-- Any edge function — untouched (Prompt 1's `get-purchase-session`, `stripe-webhook`, etc. remain as-is).
-- `AuthProvider`, `SiteSettingsProvider`, `MobileOnlyGate` — untouched.
-- `useSessionReflections.ts`, `CardView.tsx` — regression guards preserved.
-- `AnimatePresence` mode, `key={location.pathname}` policy, `100dvh` rule — all preserved.
 
-### How to verify after deploy
-The page is not linked anywhere. Test with a real Live Stripe session ID:
+- `ResumeBanner.tsx` — unchanged. Lantern code stays as a reference.
+- `UnifiedResumeBanner.tsx`, `ContinueModule.tsx`, `NextActionBanner.tsx` — out of scope.
+- `ProductLibrary.tsx` — only consumes `<LibraryResumeCard global />`; no edits needed.
+- `palette.ts` — read-only.
+- Any session/data fetching logic in `LibraryResumeCard` — unchanged. Only the visual return JSX, the color resolution, and the dev-mock seed change.
+- Pill styling, pill copy ("Fortsätt"), navigation behavior — preserved.
 
-1. **Error path**: `/claim` (no `session_id`) → expect Swedish error message + login link.
-2. **Error path**: `/claim?session_id=cs_live_invalid` → expect "Kunde inte hitta ditt köp." error.
-3. **Happy-path UI verification (Live session, no OTP submission)**:
-   - On phone, visit:
-     `https://bonkiapp.com/claim?session_id=cs_live_a1q4FBZPcy42bVjgYeJxzYlFvzhvilxWF6FsHipK0gjF1Yh2aWAyaZAJsC&product=jag_i_varlden`
-     (Ida Welbourn's confirmed Live Jag i Världen purchase from Prompt 1 testing.)
-   - Expect: loading spinner briefly → "Tack för ditt köp!" pill → heading naming Jag i Världen → email shown → "Skicka engångskod" pill in Bonki Orange.
-   - Tap "Skicka engångskod" → expect transition to OTP-sent state: 6-digit input field, "Logga in och öppna Jag i Världen" submit button, "Skicka mejlet igen (60s)" cooldown link, "Hittar du inte mejlet? Kolla din skräppost." helper text.
-   - **Do NOT enter a code.** Goal is UI verification only — full OTP completion path is tested in Prompt 3 with a genuine new purchase.
-   - Verify Meta Pixel `Purchase` event fires once (Pixel Helper) since `paid: true` on this Live session.
+### How to verify after the change
+
+1. Open `/?devState=pairedActive` on iPhone preview. Expect: dark Midnight Ink banner, **teal bloom** anchored on the left, 6px teal dot, "Fortsätt utforska Jag i Mig" + step label, orange Fortsätt pill emerging from the dark right half.
+2. Open `/?devState=library`. Expect: Jag med Andra mock → **rose bloom**.
+3. Manually edit the dev mock locally (or trigger a real session in a different product) → bloom recolors to that product's tile.
+4. Confirm console (dev only) logs no warnings; the banner respects `prefers-reduced-motion`.
 
 ### Revert cost
-Two files. One revert click on each.
 
-### Memory updates
-None yet — Prompt 3 wires this into the live purchase flow. Wait until the full flow is end-to-end to capture a memory under `mem://payment/digital-integration-strategy` documenting the OTP-after-purchase claim flow.
+One file to revert (`LibraryResumeCard.tsx`). The dead-code comment in `Categories.tsx` is harmless if reverted or kept.
 
