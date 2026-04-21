@@ -1,46 +1,64 @@
 
 
-## Prompt 3.1 — Two BuyPage UX fixes
+## Prompt 3.1 (remaining) — Paywall link discoverability + "29 års" copy fix
 
-Both fixes contained to `src/pages/BuyPage.tsx`. No other files, no backend, no routes.
+Changes 1 and 2 already live in `BuyPage.tsx` (verified — lines 219–224 and 390). This plan covers only the unbuilt work.
 
-### Change 1: Route authenticated cancel-returns to the product intro
+### Files touched
 
-A logged-in user tapping Stripe's back arrow currently lands on the unauthenticated `/buy?cancelled=1` selling surface — which feels like a login page when you're already logged in. Detect "authenticated + cancel-return" and redirect them to `/product/:slug` instead, where they came from.
+- `src/components/ProductPaywall.tsx` — two button restyles (Still Us bottom-sheet variant + kids full-screen variant).
+- `src/pages/Paywall.tsx` — one button restyle + add `LANTERN_GLOW` import.
+- `src/pages/PaywallFullScreen.tsx` — one button restyle + copy fix.
+- `src/components/PaywallBottomSheet.tsx` — copy fix.
+- `src/components/ProductIntro.tsx` — copy fix.
+- `src/pages/BuyPage.tsx` — copy fix.
 
-In the existing auto-trigger `useEffect`, replace the single `if (isCancelReturn) return;` early-return with a two-branch guard:
-- **Authenticated + cancel-return** → `navigate(/product/${product.slug}, { replace: true })` and return. `replace` prevents the back button from looping them back into `/buy`.
-- **Unauthenticated + cancel-return** → return early (preserves the current correct behavior — cold visitors stay on the selling surface, which is their commit page).
-- **Otherwise** → existing auto-trigger logic unchanged.
+No backend, no routes, no edge functions.
 
-`navigate` is already imported and in scope from the unauthenticated render. Add it to the dep array alongside the existing deps.
+### Change 3 — "Utforska andra produkter" link visibility
 
-### Change 2: Make the Terms checkbox visible on dark navy
+Verified via grep: exactly 4 occurrences. All four currently use `color: DRIFTWOOD`, `fontWeight: 400`, no underline — they read as ambient grey, not as a tap target. Apply identical restyle to each:
 
-The shadcn `<Checkbox>` inside `TermsConsent` uses default borders that disappear against `MIDNIGHT_INK`. Edit only the wrapper `<div>` around `<TermsConsent>` in BuyPage's new unauthenticated render — don't touch the shared `TermsConsent` component (the Login page uses it on a different background).
+| Property | From | To |
+|---|---|---|
+| `color` | `DRIFTWOOD` | `LANTERN_GLOW` |
+| `opacity` | (none) | `0.75` |
+| `fontWeight` | `400` | `500` |
+| `textDecoration` | (none) | `'underline'` |
+| `textUnderlineOffset` | (none) | `'3px'` |
 
-Extend the existing arbitrary-variant `className` with four selectors targeting `[role=checkbox]`:
-- **Unchecked**: `border-[rgba(253,246,227,0.45)]` (cream at 45%) + `bg-[rgba(253,246,227,0.05)]` (cream at 5%) — visible without being loud.
-- **Checked** (`[data-state=checked]`): `bg-[#E85D2C]` + `border-[#E85D2C]` — Bonki Orange, matches the Köp CTA, gives clear tap confirmation.
+All other style properties (`background`, `border`, `cursor`, `fontFamily`, `fontSize`, `textAlign`, `marginTop`, `padding`) preserved unchanged.
 
-Existing label/link/button color overrides preserved as-is.
+For `Paywall.tsx`: add `import { LANTERN_GLOW } from '@/lib/palette';`. Background is `COLORS.emberNight` (`#0A1628`) — `LANTERN_GLOW` at 0.75 reads cleanly. The other three files already import `LANTERN_GLOW`.
+
+The orange "Lås upp" CTA stays unchanged — must remain visually dominant.
+
+### Change 4 — Copy fix "25 års" → "29 års"
+
+Verified via grep: exactly 4 occurrences of `25 års klinisk`. Replace `25 års` with `29 års` in:
+
+- `src/components/PaywallBottomSheet.tsx`
+- `src/components/ProductIntro.tsx`
+- `src/pages/BuyPage.tsx`
+- `src/pages/PaywallFullScreen.tsx`
+
+Preserve each file's existing `Utvecklat`/`Utvecklad` form — don't normalize. Pure text edit.
 
 ### What is NOT touched
 
-- `src/components/TermsConsent.tsx` — unchanged; other callers (Login) unaffected.
-- Authenticated auto-trigger when *not* a cancel-return — behaves identically.
-- Unauthenticated cancel-return — still renders the selling surface (correct: that's their commit page).
-- `triggerCheckout`, `handleDirectCheckout`, `handleEmailSignIn`, etc. — all untouched.
+- `TermsConsent.tsx` — unchanged; other callers (Login) unaffected.
+- `PaywallBottomSheet.tsx` "Tillbaka" button — correct for a modal dismiss.
+- Orange "Lås upp" CTA on every paywall — dominant CTA, stays loud.
 - `ClaimPage.tsx`, `App.tsx`, edge functions, regression guards.
+- Changes 1 + 2 — already live in source.
 
-### Verify
+### Verify after deploy
 
-1. **Authenticated cancel** — log in, tap a locked tile → Stripe → back arrow. Expect: land on `/product/:slug` (intro page), not `/buy?cancelled=1`. Back button doesn't loop into `/buy`.
-2. **Unauthenticated cancel** — incognito `/buy?product=jag_i_mig` → tap Köp → Stripe → back. Expect: land on `/buy?cancelled=1` showing the selling surface, no slingshot.
-3. **Checkbox visible** — incognito `/buy?product=X`. Expect: checkbox has a clearly visible cream-tinted border on the dark background, even when unchecked. Tapping it fills with Bonki Orange.
-4. **In-app authenticated purchase still works** — log in, tap locked tile → "Förbereder betalning…" loader → Stripe loads. Unchanged.
+1. **Link findability** — visit `/unlock` (Vårt Vi unlock surface), `/paywall-full?product=jag_i_mig`, the in-app paywall on a locked Still Us session, and the kids full-screen paywall. The "Utforska andra produkter" link should now read clearly as a cream, underlined link without competing with the orange CTA.
+2. **Copy fix** — open `/buy?product=jag_i_mig` (incognito), kids ProductIntro, the bottom-sheet paywall, `/paywall-full?product=X`. Each should read **"29 års klinisk erfarenhet"**.
+3. **Regression** — orange "Lås upp" CTAs visually unchanged. "Tillbaka" button on the bottom-sheet paywall unchanged.
 
 ### Rollback
 
-One file. Two small hunks. Either change can be reverted independently.
+Two pure-text edits + four isolated style-object edits across six files. Each change revertible independently.
 
