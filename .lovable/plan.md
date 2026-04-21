@@ -1,24 +1,53 @@
 
 
-## Lock KontoSheet to a fixed light surface
+## Wire Logga ut in KontoSheet — mirror Header.tsx exactly
 
-Pick option A: hardcode the sheet's background and text colors so it always looks the same regardless of which theme the host page is using. This is the predictable, low-risk fix — the sheet is a system menu (account/privacy/logout), not product content, so it shouldn't drift with theme tokens.
+Single-file change to `src/components/KontoSheet.tsx`. Header's existing handler is the source of truth.
+
+### Header.tsx's pattern (verified in current file)
+
+```ts
+const handleSignOut = async () => {
+  setShowLogoutSheet(false);  // close sheet (sync)
+  await signOut();             // sign out (async)
+  navigate('/login');          // navigate
+};
+```
+
+No try/catch. No error handling. Just three lines in order.
 
 ### Changes — `src/components/KontoSheet.tsx` only
 
-Replace token references with fixed values:
+1. **Destructure `signOut`** from the existing `useAuth()` call:
+   ```
+   const { user, signOut } = useAuth();
+   ```
 
-- **Sheet container** `backgroundColor`: `var(--surface-raised)` → `'#F7F2EB'` (cream)
-- **Title "Konto"** `color`: `var(--color-text-primary)` → `'#2C2420'` (Bark, dark)
-- **Email row** `color`: `var(--color-text-secondary)` → `'#6B5E52'` (Driftwood, muted dark)
-- **Integritetspolicy button** `color`: `var(--color-text-primary)` → `'#2C2420'`
-- **Dividers** `background`: `hsl(var(--divider))` → `'hsla(30, 15%, 20%, 0.10)'` (faint dark hairline that reads on cream)
+2. **Add handler** alongside the other hooks at the top of the component body — mirroring Header exactly:
+   ```
+   const handleSignOut = async () => {
+     onClose();
+     await signOut();
+     navigate('/login');
+   };
+   ```
 
-Logga ut (`#8B3A3A`) and Radera konto (`#8B3A3A` at 0.4 opacity) already use hardcoded burgundy — leave them as-is.
+3. **Wire the Logga ut button**: replace the stub `onClick` (and remove the `// TODO: wire in Prompt 2` comment) with `onClick={handleSignOut}`.
 
-Backdrop, layout, padding, font weights, font classes, button behavior, and all four host pages stay untouched.
+### Decisions on the two concerns
+
+- **Ordering**: matches Header. The redundant `navigate('/login')` after auth-state clear is the same belt-and-braces Header already ships with. Keep it.
+- **Error handling**: Header has none. Don't add any. Consistency with the proven live pattern wins over speculative defense.
+
+### Untouched
+
+- Header.tsx (its dead logout sheet stays for a future cleanup pass)
+- AuthContext (existing `signOut` is correct)
+- Routing / App.tsx
+- Radera konto button (stays inert at 0.4 opacity for Prompt 5)
+- All styling, layout, dividers, and the four host surfaces
 
 ### Result
 
-Sheet renders identically on every surface — Library, kids product homes, Vårt Vi home, and Era samtal — with strong contrast: dark Bark title, muted Driftwood email, dark Bark "Integritetspolicy", burgundy "Logga ut", faded burgundy "Radera konto". No more washout when a darker theme like `stilla` is active behind it.
+Tapping Logga ut closes the sheet, ends the session, and lands on `/login` — byte-for-byte the same sequence Header.tsx already uses, just triggered from the new account sheet.
 
