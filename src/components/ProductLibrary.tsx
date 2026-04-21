@@ -1,5 +1,7 @@
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import BonkiLoadingScreen from '@/components/BonkiLoadingScreen';
+import KontoIcon from '@/components/KontoIcon';
+import KontoSheet from '@/components/KontoSheet';
 import { usePageBackground } from '@/hooks/usePageBackground';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
@@ -480,6 +482,7 @@ export default function ProductLibrary() {
   // Still Fair interest tracking (kept for future use)
   const [notifySignedUp, setNotifySignedUp] = useState(false);
   const [notifyLoading, setNotifyLoading] = useState(false);
+  const [kontoOpen, setKontoOpen] = useState(false);
   const handleNotifyMe = async () => {};
    void notifySignedUp; void notifyLoading; void handleNotifyMe;
    const stillUsProduct = allProducts.find(p => p.id === 'still_us');
@@ -686,6 +689,8 @@ export default function ProductLibrary() {
 
       {/* Content */}
       <div style={{ position: 'relative', zIndex: 1 }}>
+        <KontoIcon onClick={() => setKontoOpen(true)} />
+        <KontoSheet open={kontoOpen} onClose={() => setKontoOpen(false)} />
         {/* Hero zone — compact cinematic */}
         <motion.div
           initial={{ opacity: 1 }}

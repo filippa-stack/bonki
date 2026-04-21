@@ -12,7 +12,7 @@
  *  4. Still Us only: intro session entry in hero zone
  */
 
-import { useMemo, useRef, useEffect } from 'react';
+import { useMemo, useRef, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import type { ProductManifest } from '@/types/product';
@@ -20,6 +20,8 @@ import { useKidsProductProgress, type KidsProductProgress } from '@/hooks/useKid
 import { useCardImage } from '@/hooks/useCardImage';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import ProductHomeBackButton from '@/components/ProductHomeBackButton';
+import KontoIcon from '@/components/KontoIcon';
+import KontoSheet from '@/components/KontoSheet';
 import NextActionBanner from '@/components/NextActionBanner';
 import { ChevronRight } from 'lucide-react';
 import {
@@ -381,6 +383,8 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
   return (
     <div className="min-h-screen relative overflow-x-hidden" style={{ backgroundColor: bg }}>
       <ProductHomeBackButton color={LANTERN_GLOW} />
+      <KontoIcon onClick={() => setKontoOpen(true)} />
+      <KontoSheet open={kontoOpen} onClose={() => setKontoOpen(false)} />
 
       {/* ── Atmospheric radial glow behind hero ── */}
       <div
