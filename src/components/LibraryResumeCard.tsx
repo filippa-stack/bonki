@@ -6,10 +6,12 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { supabase } from '@/integrations/supabase/client';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { getProductById } from '@/data/products';
 import { KIDS_PRODUCT_IDS } from '@/hooks/useKidsProductProgress';
+import { productTileColors } from '@/lib/palette';
 
 import { useDevState } from '@/contexts/DevStateContext';
 import { isDemoMode } from '@/lib/demoMode';
@@ -17,27 +19,8 @@ import { DEMO_SESSION_EVENT, getMostRecentDemoSession } from '@/lib/demoSession'
 
 const LANTERN_GLOW = '#FDF6E3';
 const DRIFTWOOD = '#6B5E52';
-const DEEP_SAFFRON = '#D4A03A';
-const SAFFRON_FLAME = '#E9B44C';
-const DEEP_DUSK = '#2A2D3A';
-
-function hexToRgba(hex: string, alpha: number): string {
-  const r = parseInt(hex.slice(1, 3), 16);
-  const g = parseInt(hex.slice(3, 5), 16);
-  const b = parseInt(hex.slice(5, 7), 16);
-  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-}
-
-/** Product-specific tile colors — must match ProductLibrary TILE_COLORS */
-const PRODUCT_TILE_COLORS: Record<string, string> = {
-  still_us: '#94BCE1',
-  jag_i_mig: '#CB7AB2',
-  jag_med_andra: '#CB7AB2',
-  jag_i_varlden: '#C6D423',
-  sexualitetskort: '#DD958B',
-  vardagskort: '#8BDDB0',
-  syskonkort: '#CF8BDD',
-};
+const MIDNIGHT_INK = '#0B1026';
+const BONKI_ORANGE = '#E85D2C';
 
 interface ResumeData {
   productId: string;
@@ -47,7 +30,6 @@ interface ResumeData {
   cardTitle: string;
   cardId: string;
   stepLabel: string;
-  accentColor: string;
 }
 
 interface LibraryResumeCardProps {
@@ -68,8 +50,8 @@ export default function LibraryResumeCard({ activeTab, global, forceMock }: Libr
   const showMock = forceMock || devState === 'library' || devState === 'pairedActive';
   const devMock: ResumeData | null = showMock
     ? (global || activeTab === 'barn')
-      ? { productId: 'jag_med_andra', productSlug: 'jag-med-andra', categoryId: 'jma-vem-ar-jag', productName: 'Jag med Andra', cardTitle: 'Att vara duktig', cardId: 'jma-duktig', stepLabel: 'Pausad vid FRÅGA 2 AV 5', accentColor: SAFFRON_FLAME }
-      : { productId: 'still_us', productSlug: 'still-us', categoryId: 'su-mock-vardagen', productName: 'Vårt Vi', cardTitle: 'Att lyssna på riktigt', cardId: 'su-kommunikation-1', stepLabel: 'Pausad vid VÄND · Fråga 1 av 3', accentColor: DEEP_SAFFRON }
+      ? { productId: 'jag_i_mig', productSlug: 'jag-i-mig', categoryId: 'jim-vem-ar-jag', productName: 'Jag i Mig', cardTitle: 'Glad', cardId: 'jim-glad', stepLabel: 'Pausad vid Fråga 2 av 5' }
+      : { productId: 'still_us', productSlug: 'still-us', categoryId: 'su-mock-vardagen', productName: 'Vårt Vi', cardTitle: 'Att lyssna på riktigt', cardId: 'su-kommunikation-1', stepLabel: 'Pausad vid VÄND · Fråga 1 av 3' }
     : null;
 
   const fetchRef = useRef(0);
@@ -150,7 +132,7 @@ export default function LibraryResumeCard({ activeTab, global, forceMock }: Libr
         cardTitle: card.title,
         cardId: session.card_id,
         stepLabel: stepLabel ? `Pausad vid ${stepLabel}` : 'Pausad',
-        accentColor: session.product_id === 'still_us' ? DEEP_SAFFRON : SAFFRON_FLAME,
+        
       });
     }
   }, [space?.id, activeTab, global]);
@@ -180,7 +162,7 @@ export default function LibraryResumeCard({ activeTab, global, forceMock }: Libr
               cardTitle: card.title,
               cardId: demoSession.cardId,
               stepLabel: `Pausad vid ${stepLabel}`,
-              accentColor: product.id === 'still_us' ? DEEP_SAFFRON : SAFFRON_FLAME,
+              
             });
             return;
           }
@@ -239,67 +221,102 @@ export default function LibraryResumeCard({ activeTab, global, forceMock }: Libr
   const display = devMock || resume;
   if (!display) return null;
 
-  const tileBg = PRODUCT_TILE_COLORS[display.productId] ?? DEEP_DUSK;
+  const accent = productTileColors[display.productId]?.tileLight ?? LANTERN_GLOW;
 
   return (
     <button
       onClick={() => navigate(`/card/${display.cardId}`)}
       style={{
         width: '100%',
-        padding: '18px 20px',
-        background: `linear-gradient(135deg, ${hexToRgba(tileBg, 0.55)} 0%, ${hexToRgba(tileBg, 0.30)} 100%)`,
-        border: `1px solid ${hexToRgba(tileBg, 0.7)}`,
+        padding: '14px 16px',
+        background: MIDNIGHT_INK,
+        border: 'none',
         borderRadius: '22px',
         cursor: 'pointer',
         textAlign: 'left',
-        display: 'flex',
-        alignItems: 'center',
-        boxShadow: `0 0 30px ${hexToRgba(tileBg, 0.25)}, 0 4px 20px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.15)`,
+        position: 'relative',
+        overflow: 'hidden',
         WebkitTapHighlightColor: 'transparent',
       }}
     >
-      <div style={{ flex: 1, minWidth: 0 }}>
-        <p style={{
-          fontFamily: "var(--font-display)",
-          fontVariationSettings: "'opsz' 17",
-          fontSize: '17px',
-          fontWeight: 600,
-          color: LANTERN_GLOW,
-          lineHeight: 1.3,
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-          whiteSpace: 'nowrap',
-          margin: 0,
-        }}>
-          Fortsätt utforska {display.productName}
-        </p>
-        <p style={{
-          fontFamily: "var(--font-body)",
-          fontSize: '13px',
-          fontWeight: 400,
-          color: 'rgba(253, 246, 227, 0.55)',
-          lineHeight: 1.3,
-          marginTop: '4px',
-          margin: '4px 0 0',
-        }}>
-          {display.stepLabel} · {display.cardTitle}
-        </p>
+      {/* Breathing radial bloom — anchored left so the right side stays in shadow */}
+      <motion.div
+        aria-hidden="true"
+        initial={{ opacity: 0.85 }}
+        animate={{ opacity: [0.85, 1, 0.85] }}
+        transition={{ duration: 6, ease: 'easeInOut', repeat: Infinity }}
+        style={{
+          position: 'absolute',
+          inset: 0,
+          background: `radial-gradient(ellipse 260px 120px at 22% 50%, ${accent}55 0%, ${accent}1A 60%, transparent 100%)`,
+          pointerEvents: 'none',
+        }}
+      />
+
+      {/* Foreground */}
+      <div style={{ position: 'relative', zIndex: 2, display: 'flex', alignItems: 'center', gap: '12px' }}>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <p
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              fontSize: '14px',
+              fontWeight: 500,
+              color: LANTERN_GLOW,
+              lineHeight: 1.3,
+              margin: 0,
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            <span
+              aria-hidden="true"
+              style={{
+                width: '6px',
+                height: '6px',
+                borderRadius: '50%',
+                backgroundColor: accent,
+                boxShadow: `0 0 0 1.5px ${MIDNIGHT_INK}`,
+                display: 'inline-block',
+                flexShrink: 0,
+              }}
+            />
+            Fortsätt utforska {display.productName}
+          </p>
+          <p
+            style={{
+              fontSize: '12px',
+              color: DRIFTWOOD,
+              opacity: 0.55,
+              lineHeight: 1.3,
+              margin: '2px 0 0 14px',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            {display.stepLabel} · {display.cardTitle}
+          </p>
+        </div>
+        <span
+          style={{
+            fontFamily: 'var(--font-sans)',
+            fontSize: '13px',
+            fontWeight: 700,
+            letterSpacing: '0.03em',
+            color: '#FFFFFF',
+            flexShrink: 0,
+            backgroundColor: BONKI_ORANGE,
+            padding: '8px 16px',
+            borderRadius: '24px',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.25)',
+          }}
+        >
+          Fortsätt
+        </span>
       </div>
-      <span style={{
-        fontFamily: "var(--font-sans)",
-        fontSize: '13px',
-        fontWeight: 700,
-        letterSpacing: '0.03em',
-        color: '#1A1A2E',
-        flexShrink: 0,
-        marginLeft: '12px',
-        backgroundColor: '#E85D2C',
-        padding: '8px 16px',
-        borderRadius: '24px',
-        boxShadow: '0 2px 8px rgba(0,0,0,0.25)',
-      }}>
-        Fortsätt
-      </span>
     </button>
   );
 }

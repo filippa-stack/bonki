@@ -1,3 +1,4 @@
+/** @deprecated /categories route is redirected to / in App.tsx — this page is unreachable. */
 import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
