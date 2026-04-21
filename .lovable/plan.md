@@ -1,27 +1,30 @@
 
 
-## Revert frosted pill, just brighten the icon
+## Fix KontoSheet readability
 
-Single-file edit to `src/components/KontoIcon.tsx`. Drop the circular background entirely — it clashes visually. Keep only the opacity bump that makes the icon read clearly.
+The text in the sheet is washing out because of three issues — not the color tokens themselves (Header.tsx uses the same tokens and reads fine).
 
-### Change
+### Root causes
 
-In the `motion.button` style object:
+1. **Title "Konto"** uses `font-serif` at weight 500 — the serif renders too thin at 18px on cream.
+2. **Email row** stacks `opacity: 0.7` on top of `--color-text-secondary` (already a muted Driftwood `#6B5E52`), pushing it near-invisible.
+3. **"Integritetspolicy" button** has no font class, so it inherits the surrounding serif and renders thin.
 
-- Remove `borderRadius: '999px'`
-- Remove `backgroundColor: 'hsla(0, 0%, 100%, 0.08)'`
-- Remove `backdropFilter: 'blur(8px)'`
-- Remove `WebkitBackdropFilter: 'blur(8px)'`
-- Revert `padding: '9px'` → `'8px'`
-- Keep `opacity: 0.9` (was 0.6 originally — this is the only visibility change that stays)
+### Changes — `src/components/KontoSheet.tsx` only
 
-Everything else (positioning, color prop, `CircleUser` size 22 / strokeWidth 1.5, motion props, aria-label, onClick) is unchanged.
+- **Title "Konto"**: bump `fontWeight` from `500` → `600`. Keep `font-serif`, keep size 18px, keep color.
+- **Email row**: remove `opacity: 0.7`. Color stays `var(--color-text-secondary)` (already the appropriate muted tone — no further dimming needed).
+- **Integritetspolicy button**: add `className="font-sans"` and `fontWeight: 500`. Color stays `var(--color-text-primary)`.
+- **Logga ut button**: add `className="font-sans"` and `fontWeight: 500` for consistency with the Integritetspolicy row (color `#8B3A3A` already reads).
+- **Radera konto button**: add `className="font-sans"` and `fontWeight: 500`. Keeps `opacity: 0.4` so it still reads as disabled.
+
+No changes to backdrop, layout, padding, dividers, sheet container, navigation behavior, or any other file. KontoIcon, Header.tsx, and the four host pages stay untouched.
 
 ### Result
 
-Plain icon, no background pill, just rendered at 0.9 opacity instead of the original 0.6 — visible without the frosted-glass artifact.
+Title sits with proper weight; email reads at full secondary-token tone instead of being doubly-faded; menu items render in the same crisp sans the rest of the app uses, matching the visual weight of "Logga ut" in the screenshot — which is the only line that currently reads.
 
-### Not touched
+### Note on faster iteration
 
-Any other file.
+Quick visual changes like font weight, opacity, and color on a static element can be done for free using **Visual Edits** (the Edit button at the bottom-left of the chat) — select the element on the canvas and tweak directly without spending a prompt.
 
