@@ -39,7 +39,7 @@ export default function KontoSheet({
           className="font-serif"
           style={{
             fontSize: '18px',
-            fontWeight: 500,
+            fontWeight: 600,
             color: 'var(--color-text-primary)',
             padding: '20px 24px 16px',
             textAlign: 'left',
@@ -53,7 +53,6 @@ export default function KontoSheet({
           style={{
             fontSize: '13px',
             color: 'var(--color-text-secondary)',
-            opacity: 0.7,
             padding: '0 24px 20px',
           }}
         >
