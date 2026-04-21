@@ -28,8 +28,12 @@ export default function KontoIcon({
         border: 'none',
         cursor: 'pointer',
         color: color ?? 'var(--color-text-primary)',
-        opacity: 0.6,
-        padding: '8px',
+        opacity: 0.9,
+        padding: '9px',
+        borderRadius: '999px',
+        backgroundColor: 'hsla(0, 0%, 100%, 0.08)',
+        backdropFilter: 'blur(8px)',
+        WebkitBackdropFilter: 'blur(8px)',
       }}
     >
       <CircleUser size={22} strokeWidth={1.5} />
