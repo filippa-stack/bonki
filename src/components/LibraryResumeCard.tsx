@@ -248,7 +248,7 @@ export default function LibraryResumeCard({ activeTab, global, forceMock }: Libr
         style={{
           position: 'absolute',
           inset: 0,
-          background: `radial-gradient(ellipse 260px 120px at 22% 50%, ${accent}55 0%, ${accent}1A 60%, transparent 100%)`,
+          background: `radial-gradient(ellipse 260px 120px at 22% 50%, ${accent}66 0%, ${accent}1F 60%, transparent 100%)`,
           pointerEvents: 'none',
         }}
       />
