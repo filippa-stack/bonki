@@ -221,67 +221,102 @@ export default function LibraryResumeCard({ activeTab, global, forceMock }: Libr
   const display = devMock || resume;
   if (!display) return null;
 
-  const tileBg = PRODUCT_TILE_COLORS[display.productId] ?? DEEP_DUSK;
+  const accent = productTileColors[display.productId]?.tileLight ?? LANTERN_GLOW;
 
   return (
     <button
       onClick={() => navigate(`/card/${display.cardId}`)}
       style={{
         width: '100%',
-        padding: '18px 20px',
-        background: `linear-gradient(135deg, ${hexToRgba(tileBg, 0.55)} 0%, ${hexToRgba(tileBg, 0.30)} 100%)`,
-        border: `1px solid ${hexToRgba(tileBg, 0.7)}`,
+        padding: '14px 16px',
+        background: MIDNIGHT_INK,
+        border: 'none',
         borderRadius: '22px',
         cursor: 'pointer',
         textAlign: 'left',
-        display: 'flex',
-        alignItems: 'center',
-        boxShadow: `0 0 30px ${hexToRgba(tileBg, 0.25)}, 0 4px 20px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.15)`,
+        position: 'relative',
+        overflow: 'hidden',
         WebkitTapHighlightColor: 'transparent',
       }}
     >
-      <div style={{ flex: 1, minWidth: 0 }}>
-        <p style={{
-          fontFamily: "var(--font-display)",
-          fontVariationSettings: "'opsz' 17",
-          fontSize: '17px',
-          fontWeight: 600,
-          color: LANTERN_GLOW,
-          lineHeight: 1.3,
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-          whiteSpace: 'nowrap',
-          margin: 0,
-        }}>
-          Fortsätt utforska {display.productName}
-        </p>
-        <p style={{
-          fontFamily: "var(--font-body)",
-          fontSize: '13px',
-          fontWeight: 400,
-          color: 'rgba(253, 246, 227, 0.55)',
-          lineHeight: 1.3,
-          marginTop: '4px',
-          margin: '4px 0 0',
-        }}>
-          {display.stepLabel} · {display.cardTitle}
-        </p>
+      {/* Breathing radial bloom — anchored left so the right side stays in shadow */}
+      <motion.div
+        aria-hidden="true"
+        initial={{ opacity: 0.85 }}
+        animate={{ opacity: [0.85, 1, 0.85] }}
+        transition={{ duration: 6, ease: 'easeInOut', repeat: Infinity }}
+        style={{
+          position: 'absolute',
+          inset: 0,
+          background: `radial-gradient(ellipse 260px 120px at 22% 50%, ${accent}55 0%, ${accent}1A 60%, transparent 100%)`,
+          pointerEvents: 'none',
+        }}
+      />
+
+      {/* Foreground */}
+      <div style={{ position: 'relative', zIndex: 2, display: 'flex', alignItems: 'center', gap: '12px' }}>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <p
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              fontSize: '14px',
+              fontWeight: 500,
+              color: LANTERN_GLOW,
+              lineHeight: 1.3,
+              margin: 0,
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            <span
+              aria-hidden="true"
+              style={{
+                width: '6px',
+                height: '6px',
+                borderRadius: '50%',
+                backgroundColor: accent,
+                boxShadow: `0 0 0 1.5px ${MIDNIGHT_INK}`,
+                display: 'inline-block',
+                flexShrink: 0,
+              }}
+            />
+            Fortsätt utforska {display.productName}
+          </p>
+          <p
+            style={{
+              fontSize: '12px',
+              color: DRIFTWOOD,
+              opacity: 0.55,
+              lineHeight: 1.3,
+              margin: '2px 0 0 14px',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            {display.stepLabel} · {display.cardTitle}
+          </p>
+        </div>
+        <span
+          style={{
+            fontFamily: 'var(--font-sans)',
+            fontSize: '13px',
+            fontWeight: 700,
+            letterSpacing: '0.03em',
+            color: '#FFFFFF',
+            flexShrink: 0,
+            backgroundColor: BONKI_ORANGE,
+            padding: '8px 16px',
+            borderRadius: '24px',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.25)',
+          }}
+        >
+          Fortsätt
+        </span>
       </div>
-      <span style={{
-        fontFamily: "var(--font-sans)",
-        fontSize: '13px',
-        fontWeight: 700,
-        letterSpacing: '0.03em',
-        color: '#1A1A2E',
-        flexShrink: 0,
-        marginLeft: '12px',
-        backgroundColor: '#E85D2C',
-        padding: '8px 16px',
-        borderRadius: '24px',
-        boxShadow: '0 2px 8px rgba(0,0,0,0.25)',
-      }}>
-        Fortsätt
-      </span>
     </button>
   );
 }
