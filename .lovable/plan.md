@@ -1,27 +1,108 @@
 
 
-## Three small refinements to push the lantern banner to 10/10
+## Prompt 3 of 3: Flip BuyPage unauthenticated flow to Stripe-first
 
-The current banner is good — the teal bloom resolves correctly, the dot reads, the pill is anchored right. But three details against the screenshot keep it from a 10:
+This is the final prompt that activates the website-direct Stripe-first architecture. After this ships, visitors arriving from bonkistudio.com pay Stripe before logging in, then verify via OTP on `/claim` (built in Prompt 2).
 
-1. **The secondary line is too dim.** "Pausad vid Fråga 3 av 6 · Ärlad" is set to `DRIFTWOOD #6B5E52` at `opacity: 0.55` — on Midnight Ink that computes to roughly 30% effective luminance. Per `mem://style/typography-and-readability-standards`, secondary text on dark backgrounds should be `LANTERN_GLOW` at 0.55–0.65 opacity, never a brown mid-tone at low opacity (the brown reads as muddy, not soft). Fix: switch the secondary line to `LANTERN_GLOW` at `opacity: 0.6`.
+### Risk profile
 
-2. **The bloom is slightly under-saturated for the eye.** Current alpha stops are `${accent}55` → `${accent}1A` (33% → 10%). Against pure Midnight Ink the teal reads as a faint wash rather than a confident lantern glow. Bump to `${accent}66` → `${accent}1F` (40% → 12%) — same shape, same anchor, just a touch more presence. Still well within the "lit from within" standard (`mem://ux/visual-standards/luminosity-and-glow`), still subtle enough not to compete with product tiles below.
-
-3. **The dot's halo currently uses Midnight Ink, but it sits on top of the teal bloom — so the halo blends into the bloom instead of separating the dot from it.** Swap the halo from `MIDNIGHT_INK` to a 1.5px ring at `rgba(11, 16, 38, 0.85)` so it stays dark but with a hair of softness, AND add a 4px outer accent glow (`box-shadow: 0 0 0 1.5px rgba(11,16,38,0.85), 0 0 6px ${accent}80`). This makes the dot punch *and* feel lit, matching the lantern metaphor.
+Highest risk of the three prompts — touches a live, revenue-critical flow. The authenticated branch (in-app users tapping tiles) must remain byte-identical in behavior. Only the unauthenticated render branch is rewritten.
 
 ### Files touched
-- `src/components/LibraryResumeCard.tsx` — three contained edits to the existing render block (lines 251, 280–283, 290–298). No structural changes, no new imports, no new logic.
+
+1. `src/pages/BuyPage.tsx` — four contained edits, all inside the existing component.
+
+No other files. No backend changes. No new routes. No edge function deploys.
+
+### What changes (all in `BuyPage.tsx`)
+
+**1. New state + cancel-return detection** (after the existing checkout state block)
+
+Add three pieces of state without touching any existing declarations:
+- `directCheckoutLoading` / `directCheckoutError` — drive the new "Köp" button's loader and error display.
+- `isCancelReturn = searchParams.get('cancelled') === '1'` — true when Stripe redirected the user back via the cancel URL. Used to break the auto-trigger loop.
+
+The existing `email`, `otpSent`, `otpCode`, `loading`, `verifying`, `error`, `resendCooldown`, `cooldownRef`, `termsAccepted`, `termsError`, `checkoutLoading`, `checkoutError`, `checkoutTriggered`, `priceSek` all remain. `handleEmailSignIn`, `handleVerifyOtp`, `handleResend`, `saveConsent` remain defined but unreferenced by the new render — kept to avoid collateral damage and because removing them risks accidental side effects.
+
+**2. Guard the authenticated auto-trigger against cancel return**
+
+The existing `useEffect` that auto-triggers `triggerCheckout()` for logged-in users currently re-fires the moment a user taps Stripe's back arrow — slingshotting them straight back to Stripe. Add one early-return:
+
+```ts
+if (isCancelReturn) return; // User tapped back from Stripe — don't slingshot them
+```
+
+Add `isCancelReturn` to the dependency array. No other change to this effect.
+
+**3. Add `handleDirectCheckout` callback** (placed right after `triggerCheckout`)
+
+A new unauthenticated-flow checkout handler:
+- Enforces `termsAccepted` first (sets `termsError` if missing, no redirect).
+- Persists legal consent to `localStorage` under `pending-legal-consent` (same key/format `handleEmailSignIn` used) so `Index.tsx`'s post-auth migration picks it up after the user verifies on `/claim`.
+- POSTs to `create-checkout` **with no Authorization header** — Prompt 1's edge function already supports this branch.
+- Sends `successUrl: ${origin}/claim?session_id={CHECKOUT_SESSION_ID}&product=${productId}` — Stripe substitutes `{CHECKOUT_SESSION_ID}` server-side; do not URL-encode the braces.
+- Sends `cancelUrl: ${origin}/buy?product=${productId}&cancelled=1` — the flag the new useEffect guard listens for.
+- On `!res.ok` → set `directCheckoutError` (503 → "Betalning är inte konfigurerad ännu. Kontakta oss!", otherwise `json.error` or generic), clear `pending-legal-consent`, stop the loader.
+- On success → `window.location.href = json.url`.
+- Wrapped in try/catch for network failures.
+
+Dependencies: `[productId, directCheckoutLoading, termsAccepted]`.
+
+**4. Sync `triggerCheckout`'s cancel URL** (one-line change)
+
+Update the authenticated flow's `cancelUrl` from `${origin}/buy?product=${productId}` to `${origin}/buy?product=${productId}&cancelled=1` so the cancel-loop fix protects in-app users too.
+
+**5. Rewrite the unauthenticated render branch**
+
+Replace the entire current "Login form" branch (selling surface + email form + OTP input + resend, ~140 lines) with a lean website-direct surface:
+
+- **Product hero** — `Du köper` eyebrow → product name (24px display, was 22px) → tagline. Same content, slightly larger headline for direct-to-purchase prominence.
+- **Preview question** — wrapped in a soft card (`bg rgba(253, 246, 227, 0.06)`, `border rgba(253, 246, 227, 0.10)`, `radius 14px`) instead of bare centered text. Eyebrow + serif quote inside. Brings it closer to ProductIntro styling.
+- **Offer details** — divider above (`border-top: 1px solid rgba(253, 246, 227, 0.12)`), four lines: scope, price + scope, psychologist credibility, payment trust. Identical copy to current.
+- **TermsConsent** — same component, same Bonki Orange link styling override, same error message.
+- **Köp CTA** — single full-width Bonki Orange pill (`ORANGE_GRADIENT` + `ORANGE_SHADOW`). Label: `Köp ${product.name} · ${priceSek} kr` (or just `Köp ${product.name}` until price loads). Spinner state during redirect.
+- **Recovery link** — small text button `Har du redan köpt? Logga in →` → `/login`. Critical safety net for purchasers whose state cleared.
+- **Error display** — `directCheckoutError` shown below the recovery link in coral red.
+
+The OTP-sent state, OTP input, verify button, resend cooldown UI, "Tillbaka" button, and email input are all removed from the render — they belong to the deprecated pre-purchase OTP flow.
 
 ### What is NOT touched
-- The shell, the bloom geometry/anchor/animation, the pill, the navigation, the data layer, the dev mocks, the color resolver. All preserved.
-- `ResumeBanner.tsx`, `palette.ts`, `Categories.tsx` — untouched.
 
-### How to verify
-1. `/?devState=pairedActive` (Jag i Mig): teal bloom reads more confidently; secondary line is legible cream at 60% instead of muddy brown; dot has a subtle teal halo that separates it from the bloom.
-2. `/?devState=library` (Jag med Andra): same improvements with rose accent.
-3. Reduced-motion users: bloom still renders static at `opacity: 0.85` (the breathing animation is the only thing motion-guarded, unchanged).
+- The authenticated "Förbereder betalning…" loader branch (user is logged in) — identical behavior, identical look.
+- The "Invalid product" branch.
+- `priceSek` fetch from `products`.
+- Body of `triggerCheckout` other than the one URL change.
+- `handleEmailSignIn`, `handleVerifyOtp`, `handleResend`, `saveConsent`, `cooldownRef`, `startCooldown` — left defined as dead code. Safer than deleting.
+- `TermsConsent`, `TERMS_VERSION`, `PRIVACY_VERSION` imports — `TermsConsent` is now used by the new render; the version constants are used by `handleDirectCheckout`'s consent persistence.
+- `ClaimPage.tsx`, `App.tsx`, all edge functions, `LibraryResumeCard.tsx`, regression guards.
 
-### Revert cost
-One file, three small hunks.
+### Deployment guidance
+
+Do not publish on a Friday afternoon. Pick a window when support is alert — Monday or Tuesday morning ideal. After publish:
+
+1. **In-app authenticated flow (must be byte-identical)** — log in, tap any locked product tile → `/buy?product=X` → confirm "Förbereder betalning…" loader appears within ~200ms and Stripe loads. This is the existing-customer regression test.
+
+2. **Stripe cancel loop fix (authenticated)** — on the Stripe page, tap the back arrow. Confirm you land on `/buy?product=X&cancelled=1` and **stay there** with the new selling surface visible — no slingshot back to Stripe.
+
+3. **Website-direct unauthenticated flow** — open `/buy?product=jag_i_mig` in an incognito window. Confirm:
+   - New selling surface renders (hero, preview question card, offer block, TermsConsent, single orange "Köp Jag i Mig · 195 kr" button, recovery link).
+   - Tapping "Köp" without checking terms → red error message under the checkbox; no redirect.
+   - Checking terms + tapping "Köp" → button shows spinner, redirects to Stripe within ~1s.
+   - On Stripe, tap back arrow → land on `/buy?product=jag_i_mig&cancelled=1` with selling surface intact, no slingshot.
+
+4. **Full Stripe-first purchase** — complete a real Live purchase end-to-end with a fresh email. After payment: land on `/claim?session_id=cs_live_...&product=jag_i_mig`, ClaimPage renders, OTP arrives, verify, product unlocks, Meta Pixel `Purchase` event fires once.
+
+5. **Recovery link** — from the new selling surface, tap "Har du redan köpt? Logga in →" → confirm `/login` loads cleanly.
+
+### Rollback
+
+One file. Single revert. The authenticated flow's cancel URL change is benign on its own, so even a partial revert is safe.
+
+### Memory updates after verification
+
+Once Prompt 3 is verified end-to-end on Live, update `mem://payment/digital-integration-strategy` to document the Stripe-first flow:
+- Website-direct: `/buy` → Stripe (no auth) → `/claim` → OTP → unlock.
+- In-app: tile tap → `/buy` (authenticated) → auto-trigger Stripe → success URL → unlock.
+- Cancel-loop guard: `?cancelled=1` query param suppresses authenticated auto-trigger.
+- Consent persistence: `pending-legal-consent` localStorage key bridges pre-Stripe checkbox to post-OTP user creation via `Index.tsx` migration.
 
