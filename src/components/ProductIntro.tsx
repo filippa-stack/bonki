@@ -432,7 +432,7 @@ export default function ProductIntro({
               lineHeight: 1.5,
             }}
           >
-            Utvecklat tillsammans med psykolog · 25 års klinisk erfarenhet
+            Utvecklat tillsammans med psykolog · 29 års klinisk erfarenhet
           </p>
         </div>
 

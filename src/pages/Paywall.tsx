@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { supabase } from '@/integrations/supabase/client';
 import { COLORS, slugFromCardIndex } from '@/lib/stillUsTokens';
+import { LANTERN_GLOW } from '@/lib/palette';
 import { usePageBackground } from '@/hooks/usePageBackground';
 import { useAuth } from '@/contexts/AuthContext';
 import { isDemoMode } from '@/lib/demoMode';
@@ -245,10 +246,15 @@ export default function Paywall() {
         <div
           onClick={() => navigate('/', { replace: true })}
           style={{
-            color: COLORS.driftwood,
+            color: LANTERN_GLOW,
+            opacity: 0.75,
             fontSize: '14px',
+            fontWeight: 500,
+            textDecoration: 'underline',
+            textUnderlineOffset: '3px',
             cursor: 'pointer',
             marginTop: '16px',
+            textAlign: 'center',
           }}
         >
           Utforska andra produkter

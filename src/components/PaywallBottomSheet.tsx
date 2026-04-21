@@ -264,7 +264,7 @@ export default function PaywallBottomSheet({
                   marginTop: '10px',
                 }}
               >
-                Utvecklad tillsammans med psykolog · 25 års klinisk erfarenhet
+                Utvecklad tillsammans med psykolog · 29 års klinisk erfarenhet
               </p>
 
               {/* 5. Journal hook (kids only) */}
