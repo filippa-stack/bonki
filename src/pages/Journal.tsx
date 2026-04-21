@@ -630,6 +630,7 @@ export default function Journal() {
   
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
   const [activeFilters, setActiveFilters] = useState<Set<FilterChip>>(new Set(['barn', 'par']));
+  const [kontoOpen, setKontoOpen] = useState(false);
   
 
   // Fetch data
@@ -1004,7 +1005,9 @@ export default function Journal() {
   const bothActive = activeFilters.has('barn') && activeFilters.has('par');
 
   return (
-    <div data-sensitive style={{ minHeight: '100vh', backgroundColor: MIDNIGHT_INK, display: 'flex', flexDirection: 'column' }}>
+    <div data-sensitive style={{ minHeight: '100vh', backgroundColor: MIDNIGHT_INK, display: 'flex', flexDirection: 'column', position: 'relative' }}>
+      <KontoIcon onClick={() => setKontoOpen(true)} />
+      <KontoSheet open={kontoOpen} onClose={() => setKontoOpen(false)} />
       {/* Header */}
       {/* Hero */}
       <div style={{
