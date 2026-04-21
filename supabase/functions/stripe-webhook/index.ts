@@ -1,6 +1,42 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
+// Paginated lookup — auth.admin.listUsers() defaults to perPage=50 which silently
+// misses any account beyond page 1. This walks all pages until found or exhausted.
+async function findUserByEmail(
+  supabase: ReturnType<typeof createClient>,
+  email: string,
+): Promise<{ id: string } | null> {
+  const normalizedEmail = email.trim().toLowerCase();
+  const perPage = 1000;
+  let page = 1;
+  const maxPages = 20; // safety cap: supports up to 20,000 users
+
+  while (page <= maxPages) {
+    const { data, error } = await supabase.auth.admin.listUsers({ page, perPage });
+    if (error) {
+      console.error(`listUsers page ${page} failed:`, error);
+      return null;
+    }
+    if (!data?.users || data.users.length === 0) {
+      return null;
+    }
+    const found = data.users.find(
+      (u: any) => (u.email ?? "").trim().toLowerCase() === normalizedEmail,
+    );
+    if (found) {
+      return { id: found.id };
+    }
+    if (data.users.length < perPage) {
+      // Last page returned fewer than perPage — exhausted
+      return null;
+    }
+    page++;
+  }
+  console.error(`findUserByEmail: exceeded ${maxPages} pages without finding ${normalizedEmail}`);
+  return null;
+}
+
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers":
@@ -101,13 +137,8 @@ serve(async (req) => {
         const email = rawEmail.trim().toLowerCase();
         console.log(`Website flow: resolving user for email ${email}`);
 
-        // Try to find existing user by email
-        const { data: listData, error: listErr } = await supabase.auth.admin.listUsers();
-        if (listErr) {
-          console.error("Failed to list users:", listErr);
-          return new Response("Auth list error", { status: 500 });
-        }
-        const existing = listData.users.find((u: any) => (u.email ?? "").toLowerCase() === email);
+        // Try to find existing user by email (paginated — handles user count beyond default perPage=50)
+        const existing = await findUserByEmail(supabase, email);
 
         if (existing) {
           userId = existing.id;
@@ -119,9 +150,8 @@ serve(async (req) => {
           });
           if (createErr || !created?.user) {
             // Race: another webhook retry may have created the user between list and create
-            if (createErr?.message?.toLowerCase().includes("already")) {
-              const { data: retryList } = await supabase.auth.admin.listUsers();
-              const retryFound = retryList?.users.find((u: any) => (u.email ?? "").toLowerCase() === email);
+            if (createErr?.message?.toLowerCase().includes("already") || (createErr as any)?.code === "email_exists") {
+              const retryFound = await findUserByEmail(supabase, email);
               if (retryFound) {
                 userId = retryFound.id;
                 console.log(`Race-recovered user ${userId} for ${email}`);
