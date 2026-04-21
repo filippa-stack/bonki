@@ -28,7 +28,7 @@ export default function KontoSheet({
       <div
         className="absolute bottom-0 left-0 right-0"
         style={{
-          backgroundColor: 'var(--surface-raised)',
+          backgroundColor: '#F7F2EB',
           borderRadius: '16px 16px 0 0',
           paddingBottom: 'max(env(safe-area-inset-bottom, 0px), 16px)',
         }}
@@ -40,7 +40,7 @@ export default function KontoSheet({
           style={{
             fontSize: '18px',
             fontWeight: 600,
-            color: 'var(--color-text-primary)',
+            color: '#2C2420',
             padding: '20px 24px 16px',
             textAlign: 'left',
           }}
@@ -52,7 +52,7 @@ export default function KontoSheet({
         <div
           style={{
             fontSize: '13px',
-            color: 'var(--color-text-secondary)',
+            color: '#6B5E52',
             padding: '0 24px 20px',
           }}
         >
@@ -60,7 +60,7 @@ export default function KontoSheet({
         </div>
 
         {/* Divider */}
-        <div style={{ height: '1px', background: 'hsl(var(--divider))' }} />
+        <div style={{ height: '1px', background: 'hsla(30, 15%, 20%, 0.10)' }} />
 
         {/* Integritetspolicy */}
         <button
@@ -72,7 +72,7 @@ export default function KontoSheet({
           style={{
             fontSize: '15px',
             fontWeight: 500,
-            color: 'var(--color-text-primary)',
+            color: '#2C2420',
             padding: '16px 24px',
             background: 'none',
             border: 'none',
@@ -85,7 +85,7 @@ export default function KontoSheet({
         </button>
 
         {/* Divider */}
-        <div style={{ height: '1px', background: 'hsl(var(--divider))' }} />
+        <div style={{ height: '1px', background: 'hsla(30, 15%, 20%, 0.10)' }} />
 
         {/* Logga ut */}
         <button
