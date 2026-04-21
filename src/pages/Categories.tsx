@@ -13,6 +13,8 @@ import ResumeBanner from '@/components/ResumeBanner';
 import { useNormalizedSessionContext } from '@/contexts/NormalizedSessionContext';
 import { useDevState } from '@/contexts/DevStateContext';
 import { useVerdigrisTheme } from '@/components/VerdigrisAtmosphere';
+import { getProductForCard } from '@/data/products';
+import { productTileColors } from '@/lib/palette';
 
 import { RECOMMENDED_CATEGORY_ORDER } from '@/lib/recommendedOrder';
 
@@ -57,11 +59,15 @@ export default function Categories() {
       <Header showBack backTo="/" />
 
       <div className="px-6 pt-8 pb-24">
-        {effectiveCardId && (
-          <div className="mb-6">
-            <ResumeBanner cardId={effectiveCardId} />
-          </div>
-        )}
+        {effectiveCardId && (() => {
+          const activeProduct = getProductForCard(effectiveCardId);
+          const accent = activeProduct ? productTileColors[activeProduct.id]?.tileLight : undefined;
+          return (
+            <div className="mb-6">
+              <ResumeBanner cardId={effectiveCardId} accentColor={accent} />
+            </div>
+          );
+        })()}
         <h1
           className="type-h1"
           style={{ color: 'var(--color-text-primary)' }}
