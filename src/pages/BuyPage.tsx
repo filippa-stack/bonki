@@ -41,13 +41,20 @@ export default function BuyPage() {
   const [resendCooldown, setResendCooldown] = useState(0);
   const cooldownRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  // Checkout state
+  // Checkout state (authenticated flow auto-trigger)
   const [checkoutLoading, setCheckoutLoading] = useState(false);
   const [checkoutError, setCheckoutError] = useState<string | null>(null);
   const checkoutTriggered = useRef(false);
 
+  // Website-direct checkout state (unauthenticated flow)
+  const [directCheckoutLoading, setDirectCheckoutLoading] = useState(false);
+  const [directCheckoutError, setDirectCheckoutError] = useState<string | null>(null);
+
   // Price from DB
   const [priceSek, setPriceSek] = useState<number | null>(null);
+
+  // Detect return from Stripe cancel — prevents auto-retrigger loop
+  const isCancelReturn = searchParams.get('cancelled') === '1';
 
   useEffect(() => {
     return () => { if (cooldownRef.current) clearInterval(cooldownRef.current); };
@@ -113,7 +120,7 @@ export default function BuyPage() {
           body: JSON.stringify({
             productId,
             successUrl: `${window.location.origin}/?purchase=success&product=${productId}`,
-            cancelUrl: `${window.location.origin}/buy?product=${productId}`,
+            cancelUrl: `${window.location.origin}/buy?product=${productId}&cancelled=1`,
           }),
         },
       );
@@ -145,13 +152,75 @@ export default function BuyPage() {
     }
   }, [productId, product?.slug, navigate]);
 
-  // Auto-trigger checkout when user is logged in
+  // Direct-to-Stripe for unauthenticated website-direct visitors.
+  // No auth, no email form beforehand — Stripe collects email on its hosted form.
+  // Post-payment: redirects to /claim for OTP-based login.
+  const handleDirectCheckout = useCallback(async () => {
+    if (directCheckoutLoading) return;
+
+    if (!termsAccepted) {
+      setTermsError(true);
+      return;
+    }
+
+    setDirectCheckoutLoading(true);
+    setDirectCheckoutError(null);
+
+    try {
+      const projectId = import.meta.env.VITE_SUPABASE_PROJECT_ID;
+
+      const consentTimestamp = new Date().toISOString();
+      localStorage.setItem('pending-legal-consent', JSON.stringify({
+        terms: { acceptedAt: consentTimestamp, version: TERMS_VERSION },
+        privacy: { acceptedAt: consentTimestamp, version: PRIVACY_VERSION },
+      }));
+
+      const res = await fetch(
+        `https://${projectId}.supabase.co/functions/v1/create-checkout`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            productId,
+            successUrl: `${window.location.origin}/claim?session_id={CHECKOUT_SESSION_ID}&product=${productId}`,
+            cancelUrl: `${window.location.origin}/buy?product=${productId}&cancelled=1`,
+          }),
+        },
+      );
+      const json = await res.json();
+
+      if (!res.ok) {
+        setDirectCheckoutError(res.status === 503
+          ? 'Betalning är inte konfigurerad ännu. Kontakta oss!'
+          : json.error || 'Något gick fel');
+        setDirectCheckoutLoading(false);
+        localStorage.removeItem('pending-legal-consent');
+        return;
+      }
+
+      if (json.url) {
+        window.location.href = json.url;
+      } else {
+        setDirectCheckoutError('Kunde inte starta betalningen');
+        setDirectCheckoutLoading(false);
+        localStorage.removeItem('pending-legal-consent');
+      }
+    } catch (err) {
+      console.error('Direct checkout error:', err);
+      setDirectCheckoutError('Kunde inte starta betalningen');
+      setDirectCheckoutLoading(false);
+      localStorage.removeItem('pending-legal-consent');
+    }
+  }, [productId, directCheckoutLoading, termsAccepted]);
+
+  // Auto-trigger checkout when user is logged in — unless they just tapped back from Stripe
   useEffect(() => {
     if (authLoading) return;
+    if (isCancelReturn) return; // User tapped back from Stripe — don't slingshot them
     if (user && product && !checkoutTriggered.current) {
       triggerCheckout();
     }
-  }, [user, authLoading, product, triggerCheckout]);
+  }, [user, authLoading, product, triggerCheckout, isCancelReturn]);
 
   // Email login
   const handleEmailSignIn = async () => {
@@ -251,153 +320,100 @@ export default function BuyPage() {
     );
   }
 
-  // ── Login form (user is NOT logged in) ──
+  // ── Unauthenticated website-direct flow ──
+  // Selling surface + single direct-to-Stripe button. OTP happens post-purchase
+  // on /claim, not here.
   return (
     <div style={{ minHeight: '100vh', background: MIDNIGHT_INK, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '24px' }}>
       <div style={{ width: '100%', maxWidth: '380px', display: 'flex', flexDirection: 'column', gap: '24px' }}>
 
-        {/* Product hero — name + tagline */}
+        {/* Product hero */}
         <div style={{ textAlign: 'center', padding: '8px 0' }}>
           <p style={{ fontFamily: 'var(--font-sans)', fontSize: '13px', color: 'rgba(253, 246, 227, 0.5)', letterSpacing: '0.05em', textTransform: 'uppercase' }}>
             Du köper
           </p>
-          <p style={{ fontFamily: 'var(--font-display)', fontSize: '22px', color: LANTERN_GLOW, fontWeight: 600, marginTop: '6px' }}>
+          <p style={{ fontFamily: 'var(--font-display)', fontSize: '24px', color: LANTERN_GLOW, fontWeight: 600, marginTop: '6px', lineHeight: 1.2 }}>
             {product.name}
           </p>
           {product.tagline && (
-            <p style={{ fontFamily: 'var(--font-sans)', fontSize: '14px', color: 'rgba(253, 246, 227, 0.6)', marginTop: '6px', lineHeight: 1.5 }}>
+            <p style={{ fontFamily: 'var(--font-sans)', fontSize: '14px', color: 'rgba(253, 246, 227, 0.6)', marginTop: '8px', lineHeight: 1.5 }}>
               {product.tagline}
             </p>
           )}
         </div>
 
-        {/* Preview question — taste of the product, proof of craft */}
+        {/* Preview question */}
         {PREVIEW_QUESTION[productId] && (
-          <div style={{ textAlign: 'center' }}>
-            <p style={{ fontFamily: 'var(--font-sans)', fontSize: '12px', color: 'rgba(253, 246, 227, 0.45)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '10px' }}>
+          <div
+            style={{
+              padding: '18px 20px',
+              borderRadius: '14px',
+              backgroundColor: 'rgba(253, 246, 227, 0.06)',
+              border: '1px solid rgba(253, 246, 227, 0.10)',
+            }}
+          >
+            <p style={{ fontFamily: 'var(--font-sans)', fontSize: '11px', fontWeight: 600, letterSpacing: '0.10em', textTransform: 'uppercase', color: LANTERN_GLOW, opacity: 0.45, margin: 0, textAlign: 'center' }}>
               En fråga ur samtalen
             </p>
-            <p style={{ fontFamily: 'var(--font-serif)', fontSize: '17px', fontWeight: 400, color: 'rgba(253, 246, 227, 0.88)', lineHeight: 1.5 }}>
+            <p style={{ fontFamily: 'var(--font-serif)', fontSize: '17px', fontWeight: 400, color: LANTERN_GLOW, opacity: 0.92, lineHeight: 1.45, margin: '10px 0 0', textAlign: 'center' }}>
               &ldquo;{PREVIEW_QUESTION[productId]}&rdquo;
             </p>
           </div>
         )}
 
-        {/* Offer details — scope, price, credibility, trust */}
-        <div style={{ textAlign: 'center' }}>
-          <p style={{ fontFamily: 'var(--font-sans)', fontSize: '14px', color: 'rgba(253, 246, 227, 0.7)' }}>
+        {/* Offer details */}
+        <div style={{ paddingTop: '20px', borderTop: '1px solid rgba(253, 246, 227, 0.12)', textAlign: 'center' }}>
+          <p style={{ fontFamily: 'var(--font-sans)', fontSize: '14px', color: LANTERN_GLOW, opacity: 0.7, margin: 0, lineHeight: 1.5 }}>
             {product.cards.length} samtal · {product.categories.length} kategorier
           </p>
-          <p style={{ fontFamily: 'var(--font-sans)', fontSize: '14px', color: 'rgba(253, 246, 227, 0.7)', marginTop: '4px' }}>
+          <p style={{ fontFamily: 'var(--font-sans)', fontSize: '14px', color: LANTERN_GLOW, opacity: 0.7, margin: '6px 0 0', lineHeight: 1.5 }}>
             {priceSek !== null ? `${priceSek} kr` : '...'} · Engångsköp · Tillgång för alltid
           </p>
-          <p style={{ fontFamily: 'var(--font-sans)', fontSize: '13px', color: 'rgba(253, 246, 227, 0.5)', marginTop: '8px' }}>
+          <p style={{ fontFamily: 'var(--font-sans)', fontSize: '13px', color: LANTERN_GLOW, opacity: 0.55, margin: '12px 0 0', lineHeight: 1.5 }}>
             Utvecklat tillsammans med psykolog · 25 års klinisk erfarenhet
           </p>
-          <p style={{ fontFamily: 'var(--font-sans)', fontSize: '13px', color: 'rgba(253, 246, 227, 0.5)', marginTop: '6px' }}>
+          <p style={{ fontFamily: 'var(--font-sans)', fontSize: '13px', color: LANTERN_GLOW, opacity: 0.55, margin: '8px 0 0', lineHeight: 1.5 }}>
             Säker betalning · Ingen prenumeration
           </p>
         </div>
 
-        {/* Terms */}
-        <div style={{ width: '100%', marginTop: '4px' }}>
+        {/* Terms consent */}
+        <div style={{ width: '100%' }}>
           <div className="[&_label]:!text-[rgba(253,246,227,0.85)] [&_button]:!text-[#E85D2C] [&_a]:!text-[#E85D2C]" style={{ display: 'flex', justifyContent: 'center' }}>
             <TermsConsent checked={termsAccepted} onCheckedChange={(val) => { setTermsAccepted(!!val); if (val) setTermsError(false); }} />
           </div>
-          {termsError && <p style={{ fontFamily: 'var(--font-sans)', fontSize: '13px', color: '#f87171', textAlign: 'center', marginTop: '8px' }}>Du behöver godkänna villkoren för att fortsätta.</p>}
-        </div>
-
-        {/* OTP flow */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', alignItems: 'center' }}>
-          {otpSent ? (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', alignItems: 'center', width: '100%' }}>
-              <button
-                onClick={() => { setOtpSent(false); setOtpCode(''); setError(null); }}
-                className="flex items-center gap-1 text-sm mb-2"
-                style={{ color: 'rgba(253, 246, 227, 0.6)', background: 'none', border: 'none', cursor: 'pointer' }}
-              >
-                <ArrowLeft className="w-4 h-4" /> Tillbaka
-              </button>
-
-              <div style={{ textAlign: 'center', padding: '8px 0' }}>
-                <p style={{ fontFamily: 'var(--font-sans)', fontSize: '15px', color: 'rgba(253, 246, 227, 0.85)', lineHeight: 1.6 }}>
-                  Vi har skickat en kod till
-                </p>
-                <p style={{ fontFamily: 'var(--font-sans)', fontSize: '15px', color: 'rgba(212, 245, 192, 0.9)', fontWeight: 500, marginTop: '4px' }}>
-                  {email}
-                </p>
-                <p style={{ fontFamily: 'var(--font-sans)', fontSize: '14px', color: 'rgba(253, 246, 227, 0.6)', marginTop: '16px', lineHeight: 1.5 }}>
-                  Ange den 6-siffriga koden nedan.
-                </p>
-              </div>
-
-              <input
-                type="tel"
-                inputMode="numeric"
-                autoComplete="one-time-code"
-                maxLength={6}
-                value={otpCode}
-                onChange={(e) => { const v = e.target.value.replace(/\D/g, '').slice(0, 6); setOtpCode(v); setError(null); }}
-                placeholder="000000"
-                className="w-full h-14 text-center text-2xl tracking-[0.5em] rounded-xl border-0 outline-none"
-                style={{
-                  background: 'rgba(255, 255, 255, 0.08)',
-                  color: '#FDF6E3',
-                  caretColor: '#FDF6E3',
-                  fontFamily: 'var(--font-sans)',
-                  fontWeight: 600,
-                  border: '1px solid rgba(253, 246, 227, 0.2)',
-                  marginTop: '8px',
-                }}
-                autoFocus
-              />
-
-              <button
-                onClick={handleVerifyOtp}
-                disabled={verifying || otpCode.length !== 6}
-                className="w-full h-14 text-base font-semibold rounded-xl flex items-center justify-center gap-2 border-0 text-white disabled:opacity-50"
-                style={{ background: ORANGE_GRADIENT, boxShadow: ORANGE_SHADOW, marginTop: '8px' }}
-              >
-                {verifying ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Verifiera och köp'}
-              </button>
-
-              <p style={{ fontFamily: 'var(--font-sans)', fontSize: '13px', color: 'rgba(253, 246, 227, 0.4)', marginTop: '12px', lineHeight: 1.5 }}>
-                Hittar du inte mejlet? Kolla din skräppost.
-              </p>
-
-              <button
-                onClick={handleResend}
-                disabled={resendCooldown > 0 || loading}
-                className="text-sm disabled:opacity-40"
-                style={{ color: 'rgba(212, 245, 192, 0.7)', background: 'none', border: 'none', cursor: 'pointer' }}
-              >
-                {resendCooldown > 0 ? `Skicka igen (${resendCooldown}s)` : 'Skicka mejlet igen'}
-              </button>
-            </div>
-          ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', width: '100%' }}>
-              <input
-                type="email"
-                placeholder="namn@epost.se"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && handleEmailSignIn()}
-                className="w-full h-14 px-4 text-base rounded-xl border-0 outline-none"
-                style={{ background: 'rgba(255, 255, 255, 0.08)', color: '#F5EFE6', fontFamily: 'var(--font-sans)', border: '1px solid rgba(253, 246, 227, 0.15)' }}
-              />
-              <button
-                onClick={handleEmailSignIn}
-                disabled={loading || !email.trim()}
-                className="w-full h-14 text-base font-semibold rounded-xl flex items-center justify-center gap-2 border-0 text-white disabled:opacity-50"
-                style={{ background: ORANGE_GRADIENT, boxShadow: ORANGE_SHADOW }}
-              >
-                {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Fortsätt'}
-              </button>
-            </div>
+          {termsError && (
+            <p style={{ fontFamily: 'var(--font-sans)', fontSize: '13px', color: '#f87171', textAlign: 'center', marginTop: '8px' }}>
+              Du behöver godkänna villkoren för att fortsätta.
+            </p>
           )}
-
-          {error && <p style={{ fontFamily: 'var(--font-sans)', fontSize: '14px', color: '#f87171', textAlign: 'center', marginTop: '4px' }}>{error}</p>}
         </div>
+
+        {/* Direct-to-Stripe CTA */}
+        <button
+          onClick={handleDirectCheckout}
+          disabled={directCheckoutLoading}
+          className="w-full h-14 text-base font-semibold rounded-xl flex items-center justify-center gap-2 border-0 text-white disabled:opacity-50"
+          style={{ background: ORANGE_GRADIENT, boxShadow: ORANGE_SHADOW }}
+        >
+          {directCheckoutLoading
+            ? <Loader2 className="w-5 h-5 animate-spin" />
+            : `Köp ${product.name}${priceSek !== null ? ` · ${priceSek} kr` : ''}`}
+        </button>
+
+        {/* Recovery link */}
+        <button
+          onClick={() => navigate('/login')}
+          style={{ fontFamily: 'var(--font-sans)', fontSize: '13px', color: 'rgba(253, 246, 227, 0.5)', background: 'none', border: 'none', cursor: 'pointer', textAlign: 'center', padding: '4px 0' }}
+        >
+          Har du redan köpt? Logga in →
+        </button>
+
+        {directCheckoutError && (
+          <p style={{ fontFamily: 'var(--font-sans)', fontSize: '14px', color: '#f87171', textAlign: 'center', marginTop: '4px' }}>
+            {directCheckoutError}
+          </p>
+        )}
       </div>
     </div>
   );
