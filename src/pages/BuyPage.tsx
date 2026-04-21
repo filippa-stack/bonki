@@ -216,11 +216,18 @@ export default function BuyPage() {
   // Auto-trigger checkout when user is logged in — unless they just tapped back from Stripe
   useEffect(() => {
     if (authLoading) return;
-    if (isCancelReturn) return; // User tapped back from Stripe — don't slingshot them
+    // Authenticated cancel-return: send them back to the intro page they came from.
+    // The unauthenticated /buy surface would feel like a login page and confuse them.
+    if (isCancelReturn && user && product) {
+      navigate(`/product/${product.slug}`, { replace: true });
+      return;
+    }
+    // Unauthenticated cancel-return: fall through to render the selling surface (stays).
+    if (isCancelReturn) return;
     if (user && product && !checkoutTriggered.current) {
       triggerCheckout();
     }
-  }, [user, authLoading, product, triggerCheckout, isCancelReturn]);
+  }, [user, authLoading, product, triggerCheckout, isCancelReturn, navigate]);
 
   // Email login
   const handleEmailSignIn = async () => {
@@ -379,7 +386,10 @@ export default function BuyPage() {
 
         {/* Terms consent */}
         <div style={{ width: '100%' }}>
-          <div className="[&_label]:!text-[rgba(253,246,227,0.85)] [&_button]:!text-[#E85D2C] [&_a]:!text-[#E85D2C]" style={{ display: 'flex', justifyContent: 'center' }}>
+          <div
+            className="[&_label]:!text-[rgba(253,246,227,0.85)] [&_button]:!text-[#E85D2C] [&_a]:!text-[#E85D2C] [&_[role=checkbox]]:!border-[rgba(253,246,227,0.45)] [&_[role=checkbox]]:!bg-[rgba(253,246,227,0.05)] [&_[role=checkbox][data-state=checked]]:!bg-[#E85D2C] [&_[role=checkbox][data-state=checked]]:!border-[#E85D2C]"
+            style={{ display: 'flex', justifyContent: 'center' }}
+          >
             <TermsConsent checked={termsAccepted} onCheckedChange={(val) => { setTermsAccepted(!!val); if (val) setTermsError(false); }} />
           </div>
           {termsError && (
