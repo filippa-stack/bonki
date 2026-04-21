@@ -278,7 +278,7 @@ export default function LibraryResumeCard({ activeTab, global, forceMock }: Libr
                 height: '6px',
                 borderRadius: '50%',
                 backgroundColor: accent,
-                boxShadow: `0 0 0 1.5px ${MIDNIGHT_INK}`,
+                boxShadow: `0 0 0 1.5px rgba(11, 16, 38, 0.85), 0 0 6px ${accent}80`,
                 display: 'inline-block',
                 flexShrink: 0,
               }}
