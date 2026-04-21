@@ -7,6 +7,8 @@ import { useNavigate } from 'react-router-dom';
 import { ChevronRight, ChevronDown, Check, Bookmark, Play } from 'lucide-react';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { supabase } from '@/integrations/supabase/client';
+import KontoIcon from '@/components/KontoIcon';
+import KontoSheet from '@/components/KontoSheet';
 import {
   MIDNIGHT_INK,
   LANTERN_GLOW,

@@ -337,6 +337,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
   const progress = useKidsProductProgress(product);
   const tileImages = useFirstCardImages(product, progress);
   const hasRenderedContent = useRef(false);
+  const [kontoOpen, setKontoOpen] = useState(false);
 
   useEffect(() => {
     hasRenderedContent.current = false;

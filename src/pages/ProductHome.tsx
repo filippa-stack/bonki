@@ -9,6 +9,8 @@ import { useThemeSwitcher } from '@/hooks/useThemeSwitcher';
 
 import ProductIntro, { useProductIntroNeeded } from '@/components/ProductIntro';
 import KidsProductHome from '@/components/KidsProductHome';
+import KontoIcon from '@/components/KontoIcon';
+import KontoSheet from '@/components/KontoSheet';
 import { KIDS_PRODUCT_IDS } from '@/hooks/useKidsProductProgress';
 
 import { useProductAccess } from '@/hooks/useProductAccess';
@@ -46,6 +48,7 @@ export default function ProductHome() {
     if (seen) return false;
     return null;
   });
+  const [kontoOpen, setKontoOpen] = useState(false);
 
   useEffect(() => {
     if (!introChecked) return;
@@ -144,7 +147,9 @@ onClick={() => navigate('/')}
   }
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ backgroundColor: 'var(--surface-base)' }}>
+    <div className="min-h-screen flex flex-col" style={{ backgroundColor: 'var(--surface-base)', position: 'relative' }}>
+      <KontoIcon onClick={() => setKontoOpen(true)} />
+      <KontoSheet open={kontoOpen} onClose={() => setKontoOpen(false)} />
       {/* Header bar */}
       <motion.div
         initial={{ opacity: 1 }}
