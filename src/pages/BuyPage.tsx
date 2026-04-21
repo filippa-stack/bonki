@@ -386,7 +386,10 @@ export default function BuyPage() {
 
         {/* Terms consent */}
         <div style={{ width: '100%' }}>
-          <div className="[&_label]:!text-[rgba(253,246,227,0.85)] [&_button]:!text-[#E85D2C] [&_a]:!text-[#E85D2C]" style={{ display: 'flex', justifyContent: 'center' }}>
+          <div
+            className="[&_label]:!text-[rgba(253,246,227,0.85)] [&_button]:!text-[#E85D2C] [&_a]:!text-[#E85D2C] [&_[role=checkbox]]:!border-[rgba(253,246,227,0.45)] [&_[role=checkbox]]:!bg-[rgba(253,246,227,0.05)] [&_[role=checkbox][data-state=checked]]:!bg-[#E85D2C] [&_[role=checkbox][data-state=checked]]:!border-[#E85D2C]"
+            style={{ display: 'flex', justifyContent: 'center' }}
+          >
             <TermsConsent checked={termsAccepted} onCheckedChange={(val) => { setTermsAccepted(!!val); if (val) setTermsError(false); }} />
           </div>
           {termsError && (
