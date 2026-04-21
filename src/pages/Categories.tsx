@@ -16,6 +16,32 @@ import { useVerdigrisTheme } from '@/components/VerdigrisAtmosphere';
 import { getProductForCard } from '@/data/products';
 import { productTileColors } from '@/lib/palette';
 
+/** Fallback: derive product ID from card ID prefix when manifest lookup fails. */
+const CARD_PREFIX_TO_PRODUCT: Record<string, string> = {
+  'jim-': 'jag_i_mig',
+  'jma-': 'jag_med_andra',
+  'jiv-': 'jag_i_varlden',
+  'vk-': 'vardagskort',
+  'sk-': 'syskonkort',
+  'sex-': 'sexualitetskort',
+  'su-': 'still_us',
+};
+
+function resolveAccentColor(cardId: string | null): string | undefined {
+  if (!cardId) return undefined;
+  const product = getProductForCard(cardId);
+  let tileLight = product ? productTileColors[product.id]?.tileLight : undefined;
+  if (!tileLight) {
+    const prefix = Object.keys(CARD_PREFIX_TO_PRODUCT).find(p => cardId.startsWith(p));
+    const productId = prefix ? CARD_PREFIX_TO_PRODUCT[prefix] : undefined;
+    tileLight = productId ? productTileColors[productId]?.tileLight : undefined;
+  }
+  if (import.meta.env.DEV) {
+    console.log('[ResumeBanner accent]', { cardId, productId: product?.id, tileLight });
+  }
+  return tileLight;
+}
+
 import { RECOMMENDED_CATEGORY_ORDER } from '@/lib/recommendedOrder';
 
 export default function Categories() {
@@ -30,8 +56,8 @@ export default function Categories() {
   const normalizedSession = useNormalizedSessionContext();
   const devState = useDevState();
 
-  // In devState=pairedActive, provide a mock cardId so the ResumeBanner renders
-  const effectiveCardId = normalizedSession.cardId ?? (devState === 'pairedActive' ? 'listening-presence' : null);
+  // In devState=pairedActive, provide a real Jag i Mig card ID so the ResumeBanner renders with correct accent
+  const effectiveCardId = normalizedSession.cardId ?? (devState === 'pairedActive' ? 'jim-mina-kanslor' : null);
 
   // Sort categories by recommended order; unlisted ones go at the end
   const sortedCategories = useMemo(() => {
@@ -59,15 +85,11 @@ export default function Categories() {
       <Header showBack backTo="/" />
 
       <div className="px-6 pt-8 pb-24">
-        {effectiveCardId && (() => {
-          const activeProduct = getProductForCard(effectiveCardId);
-          const accent = activeProduct ? productTileColors[activeProduct.id]?.tileLight : undefined;
-          return (
-            <div className="mb-6">
-              <ResumeBanner cardId={effectiveCardId} accentColor={accent} />
-            </div>
-          );
-        })()}
+        {effectiveCardId && (
+          <div className="mb-6">
+            <ResumeBanner cardId={effectiveCardId} accentColor={resolveAccentColor(effectiveCardId)} />
+          </div>
+        )}
         <h1
           className="type-h1"
           style={{ color: 'var(--color-text-primary)' }}

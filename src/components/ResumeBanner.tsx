@@ -9,7 +9,9 @@ interface ResumeBannerProps {
 }
 
 const LANTERN_GLOW = '#FDF6E3';
+const DRIFTWOOD = '#6B5E52';
 const BONKI_ORANGE = '#E85D2C';
+const MIDNIGHT_INK = '#0B1026';
 
 export default function ResumeBanner({ cardId, accentColor }: ResumeBannerProps) {
   const navigate = useNavigate();
@@ -37,7 +39,7 @@ export default function ResumeBanner({ cardId, accentColor }: ResumeBannerProps)
         background: 'transparent',
       }}
     >
-      {/* Breathing radial bloom — sits behind content */}
+      {/* Breathing radial bloom — anchored left so the right side stays in shadow */}
       <motion.div
         aria-hidden="true"
         initial={{ opacity: 0.85 }}
@@ -46,26 +48,33 @@ export default function ResumeBanner({ cardId, accentColor }: ResumeBannerProps)
         style={{
           position: 'absolute',
           inset: 0,
-          background: `radial-gradient(ellipse 320px 140px at 30% 50%, ${accent}33 0%, ${accent}10 60%, transparent 100%)`,
+          background: `radial-gradient(ellipse 260px 120px at 22% 50%, ${accent}33 0%, ${accent}10 60%, transparent 100%)`,
           pointerEvents: 'none',
         }}
       />
 
       {/* Foreground content */}
-      <div style={{ position: 'relative', zIndex: 1 }}>
+      <div style={{ position: 'relative', zIndex: 2 }}>
         <div className="flex items-start justify-between">
-          <div className="mb-3">
+          <div className="mb-3 flex-1 min-w-0">
             <p
-              className="text-xs flex items-center gap-2"
-              style={{ color: 'var(--color-text-secondary)' }}
+              className="flex items-center gap-2"
+              style={{
+                fontSize: '14px',
+                fontWeight: 500,
+                color: LANTERN_GLOW,
+                lineHeight: 1.3,
+                margin: 0,
+              }}
             >
               <span
                 aria-hidden="true"
                 style={{
-                  width: '4px',
-                  height: '4px',
+                  width: '6px',
+                  height: '6px',
                   borderRadius: '50%',
                   backgroundColor: accent,
+                  boxShadow: `0 0 0 1.5px ${MIDNIGHT_INK}`,
                   display: 'inline-block',
                   flexShrink: 0,
                 }}
@@ -73,8 +82,13 @@ export default function ResumeBanner({ cardId, accentColor }: ResumeBannerProps)
               Ert samtal väntar.
             </p>
             <p
-              className="text-xs mt-0.5"
-              style={{ color: 'var(--color-text-secondary)', opacity: 0.6, fontSize: '12px', paddingLeft: '12px' }}
+              style={{
+                fontSize: '12px',
+                color: DRIFTWOOD,
+                opacity: 0.55,
+                lineHeight: 1.3,
+                margin: '2px 0 0 14px',
+              }}
             >
               Där ni senast slutade.
             </p>
