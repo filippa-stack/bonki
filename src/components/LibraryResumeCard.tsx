@@ -50,8 +50,8 @@ export default function LibraryResumeCard({ activeTab, global, forceMock }: Libr
   const showMock = forceMock || devState === 'library' || devState === 'pairedActive';
   const devMock: ResumeData | null = showMock
     ? (global || activeTab === 'barn')
-      ? { productId: 'jag_med_andra', productSlug: 'jag-med-andra', categoryId: 'jma-vem-ar-jag', productName: 'Jag med Andra', cardTitle: 'Att vara duktig', cardId: 'jma-duktig', stepLabel: 'Pausad vid FRÅGA 2 AV 5', accentColor: SAFFRON_FLAME }
-      : { productId: 'still_us', productSlug: 'still-us', categoryId: 'su-mock-vardagen', productName: 'Vårt Vi', cardTitle: 'Att lyssna på riktigt', cardId: 'su-kommunikation-1', stepLabel: 'Pausad vid VÄND · Fråga 1 av 3', accentColor: DEEP_SAFFRON }
+      ? { productId: 'jag_i_mig', productSlug: 'jag-i-mig', categoryId: 'jim-vem-ar-jag', productName: 'Jag i Mig', cardTitle: 'Glad', cardId: 'jim-glad', stepLabel: 'Pausad vid Fråga 2 av 5' }
+      : { productId: 'still_us', productSlug: 'still-us', categoryId: 'su-mock-vardagen', productName: 'Vårt Vi', cardTitle: 'Att lyssna på riktigt', cardId: 'su-kommunikation-1', stepLabel: 'Pausad vid VÄND · Fråga 1 av 3' }
     : null;
 
   const fetchRef = useRef(0);
