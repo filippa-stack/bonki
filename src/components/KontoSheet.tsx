@@ -12,8 +12,14 @@ export default function KontoSheet({
   open: boolean;
   onClose: () => void;
 }) {
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
   const navigate = useNavigate();
+
+  const handleSignOut = async () => {
+    onClose();
+    await signOut();
+    navigate('/login');
+  };
 
   if (!open) return null;
 
