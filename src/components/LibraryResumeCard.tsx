@@ -248,7 +248,7 @@ export default function LibraryResumeCard({ activeTab, global, forceMock }: Libr
         style={{
           position: 'absolute',
           inset: 0,
-          background: `radial-gradient(ellipse 260px 120px at 22% 50%, ${accent}55 0%, ${accent}1A 60%, transparent 100%)`,
+          background: `radial-gradient(ellipse 260px 120px at 22% 50%, ${accent}66 0%, ${accent}1F 60%, transparent 100%)`,
           pointerEvents: 'none',
         }}
       />
@@ -278,7 +278,7 @@ export default function LibraryResumeCard({ activeTab, global, forceMock }: Libr
                 height: '6px',
                 borderRadius: '50%',
                 backgroundColor: accent,
-                boxShadow: `0 0 0 1.5px ${MIDNIGHT_INK}`,
+                boxShadow: `0 0 0 1.5px rgba(11, 16, 38, 0.85), 0 0 6px ${accent}80`,
                 display: 'inline-block',
                 flexShrink: 0,
               }}
@@ -288,8 +288,8 @@ export default function LibraryResumeCard({ activeTab, global, forceMock }: Libr
           <p
             style={{
               fontSize: '12px',
-              color: DRIFTWOOD,
-              opacity: 0.55,
+              color: LANTERN_GLOW,
+              opacity: 0.6,
               lineHeight: 1.3,
               margin: '2px 0 0 14px',
               overflow: 'hidden',
