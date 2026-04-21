@@ -1,27 +1,27 @@
 
 
-## Tweak KontoIcon to a frosted circular pill
+## Revert frosted pill, just brighten the icon
 
-Single-file visual update to `src/components/KontoIcon.tsx`. No other files touched.
+Single-file edit to `src/components/KontoIcon.tsx`. Drop the circular background entirely — it clashes visually. Keep only the opacity bump that makes the icon read clearly.
 
 ### Change
 
-Update the `style` object on the `motion.button`:
+In the `motion.button` style object:
 
-- `padding`: `'8px'` → `'9px'`
-- Add `borderRadius: '999px'`
-- Add `backgroundColor: 'hsla(0, 0%, 100%, 0.08)'`
-- Add `backdropFilter: 'blur(8px)'`
-- Add `WebkitBackdropFilter: 'blur(8px)'`
-- `opacity`: `0.6` → `0.9`
+- Remove `borderRadius: '999px'`
+- Remove `backgroundColor: 'hsla(0, 0%, 100%, 0.08)'`
+- Remove `backdropFilter: 'blur(8px)'`
+- Remove `WebkitBackdropFilter: 'blur(8px)'`
+- Revert `padding: '9px'` → `'8px'`
+- Keep `opacity: 0.9` (was 0.6 originally — this is the only visibility change that stays)
 
-Everything else (positioning, color prop, `CircleUser` size 22 / strokeWidth 1.5, motion props, aria-label, onClick) stays identical.
+Everything else (positioning, color prop, `CircleUser` size 22 / strokeWidth 1.5, motion props, aria-label, onClick) is unchanged.
 
 ### Result
 
-~40px circular frosted-glass pill behind the icon. Reads as tappable on both dark and vibrant backgrounds without changing layout — the host pages already reserve room around the absolutely-positioned button.
+Plain icon, no background pill, just rendered at 0.9 opacity instead of the original 0.6 — visible without the frosted-glass artifact.
 
 ### Not touched
 
-KontoSheet, ProductLibrary, KidsProductHome, ProductHome, Journal, Header — all unchanged.
+Any other file.
 
