@@ -1,52 +1,54 @@
 
 
-## Apply lantern design to the existing library resume banner
+## Refine the lantern banner to 10/10
 
-Skip the test page. Apply the lantern treatment directly to the current `ResumeBanner` so you can see it in context and revert if it's wrong.
+Three visual fixes plus the color bug — one file each, no scope creep.
 
-### File touched
-`src/components/ResumeBanner.tsx` (only file)
+### Files touched
+1. `src/components/ResumeBanner.tsx` — visual refinements
+2. `src/pages/Categories.tsx` — color resolution fix
 
 ### What changes
 
-**1. Accept a product accent color**
-- Add optional `accentColor?: string` prop (hex). Defaults to `#FDF6E3` (Lantern Glow cream) when no active product context is available.
-- Caller (`ProductLibrary.tsx`) will pass the active product's `tileLight` value. If the caller passes nothing, the cream fallback applies.
+**1. Make the accent dot actually visible (`ResumeBanner.tsx`)**
+- Current: 4px dot at full accent color, swallowed by the bloom behind it.
+- Fix: increase to **6px**, add a subtle dark halo (`box-shadow: 0 0 0 1.5px #0B1026`) so it punches through the glow as a crisp point of identity. Lift to `z-index: 2` (above the bloom, same layer as text).
 
-**2. Replace the flat muted background with a radial bloom**
-- Remove the current `linear-gradient` background using `--muted`.
-- New background: `radial-gradient(ellipse 320px 140px at 30% 50%, {accentColor}33 0%, {accentColor}10 60%, transparent 100%)` layered over the page's `#0B1026` shell (transparent container, the shell shows through).
-- No border. No left bar. The bloom *is* the container.
+**2. Tighten title hierarchy (`ResumeBanner.tsx`)**
+- Current: "Ert samtal väntar." and "Där ni senast slutade." read as siblings, both at 12px secondary.
+- Fix:
+  - Primary line ("Ert samtal väntar."): bump to **14px**, weight **500**, color `LANTERN_GLOW` (`#FDF6E3`) — this becomes the *what*.
+  - Secondary line ("Där ni senast slutade."): keep 12px, drop opacity to **0.55**, color `DRIFTWOOD` (`#6B5E52`) — this recedes as the *where*.
+  - Remove the awkward `paddingLeft: 12px` hack on the second line; align both lines to the dot's right edge via flex gap.
 
-**3. Keep restraint in the foreground**
-- Typography unchanged (same sizes, same `--color-text-secondary`).
-- Replace the text-only "Fortsätt" button with a Bonki Orange (`#E85D2C`) pill matching `mem://ux/banner/cta-pills-and-labels` — same height (32px), same `borderRadius: 20px`, white text.
-- Add a 4px solid accent-color dot before the "Ert samtal väntar." line — single point of product identity, replacing any need for a left bar.
-- Keep the existing dismiss "×" exactly as-is.
+**3. Nudge the bloom left so the pill emerges from shadow (`ResumeBanner.tsx`)**
+- Current: `radial-gradient(ellipse 320px 140px at 30% 50%, ...)` — visually reads more centered because the ellipse is wide.
+- Fix: tighten ellipse to `260px 120px` and shift center to `at 22% 50%`. The bloom now anchors firmly behind the text on the left half; the right half (where the orange pill sits) stays in the dark Midnight Ink shell. Pill reads as emerging from shadow, not floating in light.
+- **Color intensity stays at `33` (20%) peak and `10` (6%) midpoint as currently specified — no reduction.**
 
-**4. Add the breathing animation**
-- 6s `ease-in-out infinite` keyframe on the bloom layer's opacity: `0.85 → 1 → 0.85`.
-- Implemented as an inline `<style>` block scoped via a unique class, or via Framer Motion `animate` on a separate absolutely-positioned bloom div behind the content.
-- Wrapped in a `prefers-reduced-motion` guard so it stops for users who request reduced motion.
-
-**5. Update the caller**
-- `src/components/ProductLibrary.tsx`: where `<ResumeBanner cardId={...} />` is rendered, look up the active card's product via `getProductForCard(cardId)` and pass `accentColor={product?.tileLight}`. If lookup fails, omit the prop and the cream fallback kicks in.
+**4. Fix the wrong-color bug (`Categories.tsx`)**
+- Current symptom: Jag i Mig active → banner shows lilac/cream instead of teal (`#27A69C`).
+- Investigation: the `getProductForCard(effectiveCardId)` lookup is either returning `undefined` (falling through to cream default) or returning the wrong product (cards with overlapping/ambiguous IDs).
+- Fix:
+  - Verify `effectiveCardId` is the *resume* card, not a stale value.
+  - Add explicit logging during dev (`if (import.meta.env.DEV) console.log('[ResumeBanner accent]', { effectiveCardId, productId: product?.id, tileLight: product?.tileLight })`) so future regressions are immediately visible in console.
+  - If `getProductForCard` returns nothing, fall back by parsing the card ID prefix (`jim-` → jag_i_mig, `jma-` → jag_med_andra, etc.) using `productTileColors` from `src/lib/palette.ts`. This guarantees a correct color even if the manifest lookup fails.
+  - Pass the resolved `tileLight` to `<ResumeBanner accentColor={...} />` exactly as before.
 
 ### What is NOT touched
-- `UnifiedResumeBanner.tsx`, `ContinueModule.tsx`, `NextActionBanner.tsx` — other resume affordances stay as-is. If the lantern works here, we apply it elsewhere in a follow-up.
-- `palette.ts` — read-only import.
-- No memory updates yet — wait until the design is confirmed in context.
-- No new component, no new route, no test page.
+- `UnifiedResumeBanner.tsx`, `ContinueModule.tsx`, `NextActionBanner.tsx` — still untouched. Lantern stays scoped to library resume until confirmed at 10/10.
+- Bloom opacity, breathing animation timing, pill style, dismiss button — all preserved.
+- `palette.ts`, product manifests, memory files — read-only.
 
 ### How to judge it
-Open the library home (`/` after login). The resume banner now glows softly in the active product's color. Specifically:
-- Jag i Mig active → teal bloom
-- Syskonkort active → lilac bloom
-- Vårt Vi active → cobalt bloom
-- No active product context → cream Lantern Glow bloom (neutral fallback)
-
-If it's right, we extend the same treatment to `UnifiedResumeBanner` on product home screens. If it's wrong, you revert this single file and nothing else is affected.
+Open `/?devState=pairedActive` on the library home. Expect:
+- Bloom is teal (`#27A69C` at low opacity), clearly Jag i Mig.
+- A crisp 6px teal dot with a thin dark halo sits left of the primary line — visible and sharp against the glow.
+- "Ert samtal väntar." is the dominant line; "Där ni senast slutade." recedes.
+- The Bonki Orange pill sits in the darker right half of the banner, reading as emerging from shadow.
+- Switch `devState` or active card to a different product → bloom and dot color change correctly (rose for Jag med Andra, lilac for Syskonkort, cobalt for Vårt Vi).
+- Console (dev only) logs the resolved product + tileLight on render — confirms no fallback misfire.
 
 ### Revert cost
-One file. One revert click on the message below the change.
+Two files. One click per file.
 
