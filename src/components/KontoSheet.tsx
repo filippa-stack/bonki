@@ -95,9 +95,7 @@ export default function KontoSheet({
 
         {/* Logga ut */}
         <button
-          onClick={() => {
-            // TODO: wire in Prompt 2
-          }}
+          onClick={handleSignOut}
           className="font-sans"
           style={{
             fontSize: '15px',
