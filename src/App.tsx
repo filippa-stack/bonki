@@ -182,6 +182,7 @@ function AppRoutes() {
       <Route path="/analytics" element={<AnalyticsDashboard />} />
       <Route path="/privacy" element={<PrivacyPolicy />} />
       <Route path="/buy" element={<BuyPage />} />
+      <Route path="/claim" element={<ClaimPage />} />
       <Route path="/*" element={<ProtectedRoutes />} />
     </Routes>
   );
