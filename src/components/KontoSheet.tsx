@@ -12,8 +12,14 @@ export default function KontoSheet({
   open: boolean;
   onClose: () => void;
 }) {
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
   const navigate = useNavigate();
+
+  const handleSignOut = async () => {
+    onClose();
+    await signOut();
+    navigate('/login');
+  };
 
   if (!open) return null;
 
@@ -89,9 +95,7 @@ export default function KontoSheet({
 
         {/* Logga ut */}
         <button
-          onClick={() => {
-            // TODO: wire in Prompt 2
-          }}
+          onClick={handleSignOut}
           className="font-sans"
           style={{
             fontSize: '15px',
