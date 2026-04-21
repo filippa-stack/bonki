@@ -132,7 +132,7 @@ export default function LibraryResumeCard({ activeTab, global, forceMock }: Libr
         cardTitle: card.title,
         cardId: session.card_id,
         stepLabel: stepLabel ? `Pausad vid ${stepLabel}` : 'Pausad',
-        accentColor: session.product_id === 'still_us' ? DEEP_SAFFRON : SAFFRON_FLAME,
+        
       });
     }
   }, [space?.id, activeTab, global]);
@@ -162,7 +162,7 @@ export default function LibraryResumeCard({ activeTab, global, forceMock }: Libr
               cardTitle: card.title,
               cardId: demoSession.cardId,
               stepLabel: `Pausad vid ${stepLabel}`,
-              accentColor: product.id === 'still_us' ? DEEP_SAFFRON : SAFFRON_FLAME,
+              
             });
             return;
           }
