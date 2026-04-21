@@ -6,10 +6,12 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { supabase } from '@/integrations/supabase/client';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { getProductById } from '@/data/products';
 import { KIDS_PRODUCT_IDS } from '@/hooks/useKidsProductProgress';
+import { productTileColors } from '@/lib/palette';
 
 import { useDevState } from '@/contexts/DevStateContext';
 import { isDemoMode } from '@/lib/demoMode';
@@ -17,27 +19,8 @@ import { DEMO_SESSION_EVENT, getMostRecentDemoSession } from '@/lib/demoSession'
 
 const LANTERN_GLOW = '#FDF6E3';
 const DRIFTWOOD = '#6B5E52';
-const DEEP_SAFFRON = '#D4A03A';
-const SAFFRON_FLAME = '#E9B44C';
-const DEEP_DUSK = '#2A2D3A';
-
-function hexToRgba(hex: string, alpha: number): string {
-  const r = parseInt(hex.slice(1, 3), 16);
-  const g = parseInt(hex.slice(3, 5), 16);
-  const b = parseInt(hex.slice(5, 7), 16);
-  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-}
-
-/** Product-specific tile colors — must match ProductLibrary TILE_COLORS */
-const PRODUCT_TILE_COLORS: Record<string, string> = {
-  still_us: '#94BCE1',
-  jag_i_mig: '#CB7AB2',
-  jag_med_andra: '#CB7AB2',
-  jag_i_varlden: '#C6D423',
-  sexualitetskort: '#DD958B',
-  vardagskort: '#8BDDB0',
-  syskonkort: '#CF8BDD',
-};
+const MIDNIGHT_INK = '#0B1026';
+const BONKI_ORANGE = '#E85D2C';
 
 interface ResumeData {
   productId: string;
@@ -47,7 +30,6 @@ interface ResumeData {
   cardTitle: string;
   cardId: string;
   stepLabel: string;
-  accentColor: string;
 }
 
 interface LibraryResumeCardProps {
