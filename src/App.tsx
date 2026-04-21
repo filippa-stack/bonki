@@ -60,6 +60,7 @@ import JourneyPreview from "./pages/JourneyPreview";
 import DissolutionSettings from "./pages/DissolutionSettings";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import BuyPage from "./pages/BuyPage";
+import ClaimPage from "./pages/ClaimPage";
 
 const queryClient = new QueryClient();
 
