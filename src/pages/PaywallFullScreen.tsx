@@ -206,7 +206,7 @@ export default function PaywallFullScreen() {
         <div style={{ marginTop: '32px', paddingLeft: '8px', paddingRight: '8px' }}>
           {[
             { text: valueLine, color: LANTERN_GLOW, opacity: 1 },
-            { text: 'Utvecklad tillsammans med psykolog · 25 års klinisk erfarenhet', color: LANTERN_GLOW, opacity: 0.55 },
+            { text: 'Utvecklad tillsammans med psykolog · 29 års klinisk erfarenhet', color: LANTERN_GLOW, opacity: 0.55 },
             ...(product.id !== 'still_us' ? [{ text: 'Spara ditt barns svar. Se dem växa — samtal för samtal.', color: LANTERN_GLOW, opacity: 0.55 }] : []),
           ].map((row, i) => (
             <div
@@ -302,8 +302,11 @@ export default function PaywallFullScreen() {
             cursor: 'pointer',
             fontFamily: 'var(--font-sans)',
             fontSize: '14px',
+            fontWeight: 500,
             color: LANTERN_GLOW,
-            opacity: 0.45,
+            opacity: 0.75,
+            textDecoration: 'underline',
+            textUnderlineOffset: '3px',
             textAlign: 'center',
             marginTop: '16px',
             padding: '4px 0',
