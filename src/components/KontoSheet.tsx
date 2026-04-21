@@ -68,8 +68,10 @@ export default function KontoSheet({
             onClose();
             navigate('/privacy');
           }}
+          className="font-sans"
           style={{
             fontSize: '15px',
+            fontWeight: 500,
             color: 'var(--color-text-primary)',
             padding: '16px 24px',
             background: 'none',
@@ -90,8 +92,10 @@ export default function KontoSheet({
           onClick={() => {
             // TODO: wire in Prompt 2
           }}
+          className="font-sans"
           style={{
             fontSize: '15px',
+            fontWeight: 500,
             color: '#8B3A3A',
             padding: '16px 24px',
             background: 'none',
@@ -109,8 +113,10 @@ export default function KontoSheet({
           onClick={() => {
             // TODO: wire in Prompt 5
           }}
+          className="font-sans"
           style={{
             fontSize: '15px',
+            fontWeight: 500,
             color: '#8B3A3A',
             opacity: 0.4,
             padding: '16px 24px',
