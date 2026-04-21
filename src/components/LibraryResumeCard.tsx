@@ -288,8 +288,8 @@ export default function LibraryResumeCard({ activeTab, global, forceMock }: Libr
           <p
             style={{
               fontSize: '12px',
-              color: DRIFTWOOD,
-              opacity: 0.55,
+              color: LANTERN_GLOW,
+              opacity: 0.6,
               lineHeight: 1.3,
               margin: '2px 0 0 14px',
               overflow: 'hidden',
