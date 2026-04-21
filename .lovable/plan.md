@@ -1,103 +1,69 @@
 
 
-## Prompt 3.3 (final) — Re-run audit against Live with explicit email list
+## Add "Konto" sheet to four surfaces (additive only)
 
-### What changed from prior plan
+Adds a top-right account icon and a bottom-sheet across Library, kids product homes, Still Us product home, and Era samtal. No existing behavior is modified. Logout / Radera konto are visible but inert (wired in later prompts).
 
-Pass 1 SQL had `…` placeholders that Postgres rejects. Replaced with the five concrete emails confirmed from this conversation's evidence trail. Everything else stands.
+### Files to CREATE (2)
 
-### Part A: Fix status
+**1. `src/components/KontoIcon.tsx`** — pure presentational button.
 
-`stripe-webhook/index.ts` paginated-lookup fix already deployed. No code edits in this round.
+- Default export `KontoIcon({ color, onClick })`.
+- Mirrors `ProductHomeBackButton.tsx` structure (motion.button, same animation defaults) but anchored top-right.
+- Renders Lucide `CircleUser` size 22, strokeWidth 1.5.
+- Style: `position: 'absolute'`, `top: 'calc(env(safe-area-inset-top, 0px) + 16px)'`, `right: '16px'`, `zIndex: 10`, `opacity: 0.6`, `padding: '8px'`, no background/border.
+- `aria-label="Konto"`. `color` defaults to `var(--color-text-primary)`.
+- Owns no state. Calls `onClick` prop on tap. No `KontoSheet` import.
 
-### Part B: Live re-audit (read-only, all queries with `environment: "production"`)
+**2. `src/components/KontoSheet.tsx`** — bottom sheet modeled exactly on the `{showLogoutSheet && …}` block in `Header.tsx` (lines 222–277). Header.tsx is NOT touched.
 
-**Pass 1 — Live scope + known-account confirmation**
+- Default export `KontoSheet({ open, onClose })`. Returns `null` when `open` is false.
+- Uses `useAuth()` from `@/contexts/AuthContext` for the email and `useNavigate()` for routing.
+- Backdrop: `hsla(0, 0%, 0%, 0.25)`, click-outside closes (matches Header pattern with `e.stopPropagation()` on the sheet).
+- Sheet container: `var(--surface-raised)`, `borderRadius: '16px 16px 0 0'`, `paddingBottom: 'max(env(safe-area-inset-bottom, 0px), 16px)'`.
+- Content order:
+  1. Title "Konto" — font-serif, 18px, weight 500, `var(--color-text-primary)`, padding `20px 24px 16px`, left-aligned.
+  2. Email row — 13px, `var(--color-text-secondary)`, opacity 0.7, padding `0 24px 20px`. Text: `Inloggad som {user.email}` or `Inloggad` if email missing.
+  3. 1px divider, `hsl(var(--divider))`, full width.
+  4. "Integritetspolicy" button — 15px, `var(--color-text-primary)`, padding `16px 24px`, left-aligned, full width. Calls `onClose()` then `navigate('/privacy')`.
+  5. Divider.
+  6. "Logga ut" button — same layout, color `#8B3A3A`. No-op. Inline comment `// TODO: wire in Prompt 2`.
+  7. "Radera konto" button — same as Logga ut but `opacity: 0.4`. No-op. Inline comment `// TODO: wire in Prompt 5`.
+- No footer; container's `paddingBottom` provides bottom space.
 
-```sql
-SELECT count(*) FROM auth.users
-```
+### Files to MODIFY (4) — each page hoists its own state
 
-Then:
+For all four: add the two imports (`KontoIcon`, `KontoSheet`), add `const [kontoOpen, setKontoOpen] = useState(false);` near existing `useState` calls, mount `<KontoIcon onClick={() => setKontoOpen(true)} />` and `<KontoSheet open={kontoOpen} onClose={() => setKontoOpen(false)} />` per the locations below. Sheet state is intentionally per-page (no context provider).
 
-```sql
-SELECT id, email, created_at FROM auth.users
-WHERE lower(email) IN (
-  'filippa@bonkistudio.com',
-  'ida@bonkistudio.com',
-  'sara.axberg@gmail.com',
-  'cekanderryan@yahoo.com',
-  'sara.wigen@gmail.com'
-)
-ORDER BY email
-```
+**3. `src/components/ProductLibrary.tsx`** — `useState` already imported. Insert `<KontoIcon>` + `<KontoSheet>` as the FIRST children of the Content `<div style={{ position: 'relative', zIndex: 1 }}>` at line 688, before the hero `motion.div`. That wrapper is already a positioning context.
 
-Any of these five missing from Live → flag as additional anomaly in the report.
+**4. `src/components/KidsProductHome.tsx`** — add `useState` to the existing `react` import. Insert `<KontoIcon>` + `<KontoSheet>` immediately after the existing `<ProductHomeBackButton color={LANTERN_GLOW} />` (line 383). Outer wrapper at line 382 already has `relative`.
 
-**Pass 2 — Live edge function logs**
+**5. `src/pages/ProductHome.tsx`** — only the non-kids return block (line 147). Update the outer div's style to `{ backgroundColor: 'var(--surface-base)', position: 'relative' }` (className unchanged — `min-h-screen flex flex-col` stays). Insert `<KontoIcon>` + `<KontoSheet>` as FIRST children before the existing header bar `motion.div`.
 
-`supabase--edge_function_logs` against `stripe-webhook` with `environment: "production"`. Run separate searches for: `User creation failed`, `email_exists`, `Auth list error`, `retry list did not find user`, `Cannot resolve user`, `userId resolution ended null`, `filippa@bonkistudio.com`. Time-anchor on `1776774274` and `1776774292` (~14:24 UTC) — those two events MUST be visible. If they aren't in Live logs, the environment routing itself is broken and reported before going further.
+**6. `src/pages/Journal.tsx`** — `useState` already imported. Update the outer wrapper style at line 1005 to add `position: 'relative'` (keep `data-sensitive`, `minHeight`, `backgroundColor`, `display`, `flexDirection`). Insert `<KontoIcon>` + `<KontoSheet>` as FIRST children before the `{/* Header */}` comment.
 
-**Pass 3 — Stripe Live ↔ Live DB diff**
+### Technical details
 
-a. Verify `STRIPE_SECRET_KEY` via `secrets--fetch_secrets` and inspect prefix only (never log the value). If it begins `sk_test_`, stop and request the Live key. Once confirmed `sk_live_…`, write `/tmp/stripe-audit.ts` (Deno) to call `GET https://api.stripe.com/v1/events?type=checkout.session.completed&created[gte]={now-72h}` with `starting_after` pagination. Filter to `livemode: true`. Capture per event: `event.id`, `created`, `data.object.id`, `customer_details.email`, `metadata.product_id`, `metadata.user_id`.
+- Spec dictates `var(--color-text-primary)` / `--color-text-secondary` / `--color-text-tertiary` / `--surface-raised` / `--divider` — all already defined in `src/index.css` and used by `Header.tsx`. Will follow the spec exactly.
+- KontoIcon's default `var(--color-text-primary)` differs from ProductHomeBackButton's `var(--text-primary)` — that's per spec; both tokens exist.
+- The Library hero zone's outer Content `<div style={{ position: 'relative', zIndex: 1 }}>` (line 688) is already a positioning context, so no style change needed there.
+- KidsProductHome's outer `<div className="min-h-screen relative overflow-x-hidden">` already has `relative` via Tailwind.
+- ProductHome (non-kids) and Journal need `position: 'relative'` added to their style objects so the absolute-positioned KontoIcon anchors to them, not the body.
+- iOS PWA: `top: 'calc(env(safe-area-inset-top, 0px) + 16px)'` matches `ProductHomeBackButton`'s safe-area pattern — consistent with `mem://design/layout/ios-pwa-fixed-positioning`.
+- No new routes, no BottomNav changes, no analytics, no new context, no edits to Header.tsx / CardView.tsx / useSessionReflections / useNormalizedSessionState / SessionStepReflection.
 
-b. Pull Live grants in same window:
+### Verification
 
-```sql
-SELECT upa.user_id, upa.product_id, upa.granted_at, u.email
-FROM user_product_access upa
-JOIN auth.users u ON u.id = upa.user_id
-WHERE upa.granted_via = 'stripe'
-  AND upa.granted_at >= now() - interval '72 hours'
-```
+1. App builds, no new TS warnings.
+2. Library: top-right `CircleUser` icon next to BONKI wordmark. Tap → sheet opens with title "Konto" and "Inloggad som <email>".
+3. "Integritetspolicy" closes the sheet and navigates to `/privacy`.
+4. "Logga ut" and "Radera konto" visible but inert.
+5. Backdrop tap dismisses.
+6. Same icon+sheet on every kids product home (Jag i Mig etc.), Vårt Vi product home, and Era samtal (Journal).
+7. All existing navigation, layout, hero zones, and session flows unchanged.
 
-c. Diff: for each Stripe event, look up `user_product_access` by email→user_id + product_id within ±10 min of event `created`. No match → paid customer who didn't get access.
+### Rollback
 
-**Pass 4 — Classify each anomaly**
-
-For every email surfaced in passes 2 + 3, look up Live `auth.users` and assign `failure_class`:
-
-- `pagination_bug` — auth row exists, no grant (Filippa belongs here)
-- `unknown_silent_failure` — Stripe event present, no grant, no log error
-- `account_not_created` — no auth row
-- `clean` — grant exists (control)
-
-### Deliverable
-
-`/mnt/documents/webhook-audit-LIVE-2026-04-21.csv` with columns:
-
-`stripe_event_id | event_timestamp | session_id | email | auth_user_id | product_id | webhook_log_error | grant_exists | needs_replay | failure_class`
-
-The prior Test-data CSV is deleted to prevent confusion.
-
-### Reconciliation report (alongside CSV)
-
-Plain-text summary stating explicitly:
-
-1. Live `auth.users` count
-2. `STRIPE_SECRET_KEY` prefix confirmation (`sk_live_` only, never the value)
-3. Which of the 5 known emails resolved in Live `auth.users`
-4. Whether events `1776774274` and `1776774292` appear in Live `stripe-webhook` logs
-5. Filippa's row from the audit, verbatim
-6. Count of `needs_replay = true` rows
-
-### Acceptance gate
-
-Filippa's 14:24 UTC event MUST appear with `failure_class = pagination_bug` and `needs_replay = true`. If she doesn't appear, audit is wrong and rerun before delivery — no "no action needed" verdict accepted.
-
-### Replay guidance (manual, no automatic action)
-
-For each `needs_replay = true` row: Stripe Dashboard (Live) → Developers → Events → find by `stripe_event_id` → Resend. The deployed fix will now succeed. All replay decisions stay with the user.
-
-### What is NOT touched
-
-- `stripe-webhook/index.ts` — fix already shipped, untouched.
-- Test environment — not queried.
-- Production data — read-only audit only.
-- Code, routes, edge functions, RLS, RPCs, config.toml.
-
-### If Live audit still shows zero affected
-
-Dump raw evidence side-by-side: Stripe event payload for `1776774274`, the `auth.users` row for `filippa@bonkistudio.com`, all `user_product_access` rows for that user_id, and the raw `stripe-webhook` log lines around 14:24 UTC — walked through line by line. No "no action needed" without that reconciliation.
+Two new files + four small additive edits. Each modification is independently revertible by deleting the imports, the `kontoOpen` useState, the two JSX nodes, and removing `position: 'relative'` from the two style objects (ProductHome, Journal).
 
