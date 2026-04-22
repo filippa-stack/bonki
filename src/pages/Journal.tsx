@@ -828,7 +828,8 @@ export default function Journal() {
     return [...demoTimelineItems, ...items].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
   }, [loading, takeaways, reflections, sessions, sessionMap, demoTimelineItems]);
 
-  const isEmpty = !loading && allTimelineItems.length === 0 && bookmarks.length === 0;
+  const hasWrittenContent = allTimelineItems.some(i => i.type === 'note');
+  const isEmpty = !loading && !hasWrittenContent && bookmarks.length === 0;
 
   // Separate Still Us empty-session markers for collapsible section
   const [emptySessionsOpen, setEmptySessionsOpen] = useState(false);
