@@ -70,7 +70,7 @@ export default function ProductPaywall({ product, onAccessGranted, cardId, curre
   // Card illustration (kids only)
   const illustrationUrl = useCardImage(cardId ?? null);
 
-  const cardTitle = currentCardTitle ?? 'Detta kort';
+  const cardTitle = currentCardTitle ?? product.name;
   const totalCards = product.cards.length;
   const valueDescription = isStillUs
     ? 'Lås upp alla samtal om det som håller ihop er — och det som ibland inte gör det.'
