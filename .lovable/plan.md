@@ -1,48 +1,47 @@
 
 
-## Regenerate IAP icons using the actual library tile colors
+## Install and initialize RevenueCat (Capacitor) — infrastructure only
 
-You're right to push back. The previous output used `manifest.backgroundColor` (the deepest tile variant), which doesn't match what users see anywhere. The library tile is the canonical "this is the product" surface — it's where users decide to buy. The IAP icon should mirror that.
+Pure additive change. No purchase logic, no UI, no edits to Stripe, `/buy`, or protected session files. App behaves identically on web; on native iOS, RevenueCat boots silently after login.
 
-### Confirmed library tile backgrounds (from `ProductLibrary.tsx`)
+### Changes (4 total)
 
-| Product | Library tile color | Source |
-|---|---|---|
-| Jag i Mig | `#27A69C` (teal) | `TILE_COLORS.jag_i_mig`, line 54 |
-| Jag med Andra | `#CB7AB2` (rose) | `TILE_COLORS.jag_med_andra`, line 55 |
-| Jag i Världen | `#C6D423` (chartreuse) | `TILE_COLORS.jag_i_varlden`, line 56 |
-| Vardag | `#8BDDB0` (mint) | `TILE_COLORS.vardagskort`, line 58 |
-| Syskon | `#CF8BDD` (lilac) | `TILE_COLORS.syskonkort`, line 59 |
-| Närhet & Intimitet | `#DD958B` (terracotta-pink) | `TILE_COLORS.sexualitetskort`, line 57 |
-| Vårt Vi | `#94BCE1` (cobalt-light) | hardcoded on the Still Us tile, line 934 |
+**1. Add dependency**
+- `@revenuecat/purchases-capacitor` (latest 9.x). Compatible with the project's Capacitor 8.x core.
 
-### What changes
+**2. New file — `src/lib/revenueCat.ts`**
+Exports `initRevenueCat(userId)` and `logOutRevenueCat()` exactly as specified in the prompt:
+- Web / non-native → no-op (Stripe path unchanged).
+- iOS → `Purchases.setLogLevel(INFO)` then `Purchases.configure({ apiKey: 'appl_nPPbYisknZGlswxGmwZZzMUjgWl', appUserID: userId })`.
+- Re-entry safe via `initialized` flag; subsequent calls with a different user → `Purchases.logIn({ appUserID })`.
+- Android branch intentionally left for a later prompt.
+- All errors caught and logged, never thrown (cannot break auth).
 
-Same composition recipe as before — 1024×1024 RGB PNG, no alpha, illustration centered at ~70% scale, subtle vignette, no text — only the canvas background changes to the library tile color. The illustration files stay the same (`src/assets/illustration-*.png`, plus `illustration-still-us-tile.png` for Vårt Vi to match what the library tile actually shows).
+**3. Wire into `src/contexts/AuthContext.tsx`** — the only place that owns Supabase auth state. Two surgical edits:
 
-### Two small refinements while we're rerendering
+- **Init on authenticated session.** Inside the existing `onAuthStateChange` handler, in the `SIGNED_IN` branch (right next to the existing `trackPixelEvent('CompleteRegistration')` and `savePendingLegalConsent` calls), add `initRevenueCat(session.user.id)`. Also call it from the `getSession()` `.then(...)` resolver when a session already exists (covers cold-start where the user is already logged in and `SIGNED_IN` won't fire). Both calls are fire-and-forget (no `await` needed inside the listener; errors are swallowed inside `initRevenueCat`).
 
-1. **Vårt Vi**: switch source from `illustration-still-us.png` → `illustration-still-us-tile.png`. That's the asset the library tile uses, so the IAP icon will match the tile exactly.
-2. **Vignette**: drop from 12% to 6% opacity. On these brighter pastel canvases, a heavier vignette muddies the color; a lighter one keeps the brand color pure while still adding subtle depth.
+- **Log out before Supabase.** In the existing `signOut` method, call `await logOutRevenueCat()` **before** `await supabase.auth.signOut()`. Because both `KontoSheet.handleSignOut` and `Header.handleSignOut` go through this single context method, this one edit covers every logout entry point in the app — no edits needed in those components.
 
-### Output
+**4. Do not touch**
+- `/buy`, `BuyPage.tsx`, `ClaimPage.tsx`, `create-checkout` edge function, `stripe-webhook`, `Paywall.tsx`, `PaywallFullScreen.tsx`, `PaywallBottomSheet.tsx`, `ProductPaywall.tsx`.
+- `CardView.tsx`, `useSessionReflections.ts`, `useNormalizedSessionState.ts`.
+- `KontoSheet.tsx`, `Header.tsx` (already covered transitively via `AuthContext.signOut`).
+- `capacitor.config.ts`, `package.json` scripts.
 
-Overwrite the seven files in `/mnt/documents/app-store-iap/`:
-- `jag-i-mig-1024.png` (now teal `#27A69C`)
-- `jag-med-andra-1024.png` (now rose `#CB7AB2`)
-- `jag-i-varlden-1024.png` (now chartreuse `#C6D423`)
-- `vardag-1024.png` (now mint `#8BDDB0`)
-- `syskon-1024.png` (now lilac `#CF8BDD`)
-- `narhet-intimitet-1024.png` (now terracotta-pink `#DD958B`)
-- `vart-vi-1024.png` (now cobalt-light `#94BCE1`, illustration swapped to tile asset)
+### Verification
 
-Plus update `README.txt` with the new background hex per product.
+- **Web (bonkiapp.com)** — `Capacitor.isNativePlatform()` returns `false`; `initRevenueCat` early-returns. Stripe checkout flow unchanged. No console noise.
+- **iOS native** (after `git pull` → `npm install` → `npx cap sync ios` → run in Xcode):
+  - App launches normally.
+  - After login (Google or magic-link), Xcode console shows `[Purchases]` INFO logs confirming SDK configuration with the Supabase user ID as `appUserID`.
+  - Logout → `[Purchases]` log for the logOut call, then Supabase signs out, navigation to `/login` works.
+  - Cold start with existing session → `[Purchases]` configures via the `getSession()` path.
+- **No UI changes anywhere.**
 
-### QA before delivery
+### Notes on scope
 
-For each PNG: verify (a) exact 1024×1024, (b) RGB no alpha, (c) hex of canvas pixel at `(50, 50)` matches the library tile color exactly, (d) illustration centered and not clipped, (e) downscale-test to 60×60 to confirm legibility in the App Store IAP list.
-
-### Result
-
-The seven IAP icons will visually match what users see on the library page — the same surface where they're already deciding to buy. Cohesive, on-brand, and honest to the in-app experience.
+- Bundle impact on web is ~0 — the plugin's web layer is tiny and never invoked because of the `isNativePlatform()` guard.
+- The Apple API key (`appl_…`) is a publishable RevenueCat client key, safe to commit (same pattern as the Supabase publishable key already in `client.ts`).
+- The next three prompts (offerings fetch, purchase flow, restore + entitlement sync) will build on this foundation without further touching `AuthContext`.
 
