@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo, useRef, useLayoutEffect } from 'react';
-import BonkiButton from '@/components/BonkiButton';
+
 import { usePageBackground } from '@/hooks/usePageBackground';
 
 import { motion, AnimatePresence } from 'framer-motion';
@@ -1112,22 +1112,40 @@ export default function Journal() {
           <div style={{ width: '32px', height: '32px', borderRadius: '50%', backgroundColor: 'rgba(253,246,227,0.13)' }} className="animate-pulse" />
         </div>
       ) : (isEmpty && !hasRenderedContent.current) ? (
-        <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', textAlign: 'center', padding: '0 40px' }}>
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" style={{ opacity: 0.3 }}>
-              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" stroke="#D4F5C0" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" stroke="#D4F5C0" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '20px', color: '#FDF6E3', margin: 0, fontWeight: 400 }}>
-              Inga samtal ännu
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '0 28px' }}>
+          {/* Act 1 — hero line + sub */}
+          <div style={{ maxWidth: '520px', margin: '0 auto', textAlign: 'left', width: '100%' }}>
+            <h2
+              style={{
+                fontFamily: 'var(--font-display)',
+                fontSize: '28px',
+                fontWeight: 300,
+                lineHeight: 1.22,
+                letterSpacing: '-0.022em',
+                color: LANTERN_GLOW,
+                margin: 0,
+              }}
+            >
+              Det första de säger.
+              <br />
+              Och <em style={{ fontStyle: 'italic', fontWeight: 400, color: DEEP_SAFFRON }}>allt</em> de säger sen.
             </h2>
-            <p style={{ fontFamily: 'var(--font-body)', fontSize: '14px', color: '#FDF6E3', opacity: 0.5, margin: 0, lineHeight: 1.5 }}>
-              Era tankar och reflektioner samlas här efter varje samtal.
+            <p
+              style={{
+                fontFamily: 'var(--font-display)',
+                fontStyle: 'italic',
+                fontSize: '14px',
+                fontWeight: 300,
+                lineHeight: 1.6,
+                color: 'rgba(253, 246, 227, 0.55)',
+                margin: '16px 0 0',
+              }}
+            >
+              Varje svar sparas här. Om tre månader eller tre år kan du bläddra tillbaka och se ditt barn växa.
             </p>
-            <BonkiButton variant="secondary" fullWidth={false} onClick={() => navigate('/')}>
-              Utforska samtalen
-            </BonkiButton>
           </div>
+          {/* Bottom spacer — Act 2 is added in Prompt 2 */}
+          <div style={{ height: '120px' }} aria-hidden />
         </div>
       ) : (
         <div style={{ flex: 1, overflowY: 'auto', paddingBottom: 'calc(72px + env(safe-area-inset-bottom, 0px))' }}>
