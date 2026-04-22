@@ -1,81 +1,71 @@
 
 
-## Sign in with Apple — native iOS flow
+## App Store gallery — vibrant-only, premium pass
 
-Apple Guideline 4.8 requires Sign in with Apple as a peer option to Google on native iOS. Prompt 5 asks for the **native Capacitor** flow (ASAuthorization via `@capacitor-community/apple-sign-in` → `supabase.auth.signInWithIdToken`), which is the right choice for App Store submission: web OAuth popups inside a native app get rejected.
+Locking the brief: **every framed shot must be a vibrant, color-saturated surface**. No dark library hero, no Midnight Ink shells, no muted onboarding screens. The Bonki shell is dark by design — but the *product surfaces* are flat-color and luminous, and that's all the App Store should see.
 
-### Important: reconciling with the previous turn
+### Revised 10-frame lineup
 
-The previous message already added a **web Apple OAuth button** via `lovable.auth.signInWithOAuth('apple')`. That flow is correct for the browser but **wrong on native iOS** (Apple requires the native sheet, not a web redirect). This plan keeps both, gated by platform:
+Each row tells you the dominant color and what fills the frame. Anything dark is gone.
 
-- **Web browsers** (including mobile Safari on bonkiapp.com): the existing Lovable-managed Apple OAuth button stays as-is.
-- **Native iOS (Capacitor)**: a new button using the native Apple plugin replaces the web one. The platform gate (`Capacitor.isNativePlatform()`) decides which renders — only one is ever visible.
+| # | Surface | Dominant palette | Visual content |
+|---|---|---|---|
+| 1 | **Vårt Vi product home** | Cobalt Blue `#4B759B` → deep navy gradient | Hero illustration `su-mock-3` huge, "Vårt Vi" wordmark, "21 samtal", value-line in Lantern Glow |
+| 2 | **Jag i Mig portal grid** | Teal `#27A69C` field | 4 vibrant emotion cards visible: `jim-glad`, `jim-trygg`, `jim-arg`, `jim-radd` — flat-color illustrations, white pill labels |
+| 3 | **Jag med Andra portal grid** | Pink/Berry `#CB7AB2` field | `jma-modig`, `jma-acceptans`, `jma-skam`, `jma-vanskap` — rich figurative illustrations |
+| 4 | **Vardagskort portal grid** | Mint `#8BDDB0` field | `vk-morgon`, `vk-mat`, `vk-helg`, `vk-kvall` — warm everyday illustrations |
+| 5 | **Active session — opening prompt (Vårt Vi)** | Cobalt Blue full-bleed | `su-mock-7` illustration at 0.7 opacity, large serif Swedish prompt centered, 4px progress bar at top |
+| 6 | **Active session — Jag i Mig card** | Teal full-bleed | `jim-karlek` illustration full-bleed, prompt text overlay, BonkiButton pill at bottom |
+| 7 | **Reflection step (couple)** | Cobalt Blue + Lantern Glow textarea card | Writing surface with "✓ Sparat" indicator, partner avatar dots, soft glow |
+| 8 | **Card complete / takeaway** | Saffron `#E9B44C` glow on Cobalt | Celebration screen, the saved reflection rendered editorial-style with serif display |
+| 9 | **Syskonkort portal grid** | Lavender `#CF8BDD` field | `sk-syskonminnen`, `sk-rattvisa`, `sk-unik`, `sk-konflikt` — sibling-themed illustrations |
+| 10 | **Jag i Världen portal grid** | Lime/Olive `#C6D423` field | `jiv-vanskap`, `jiv-identitet`, `jiv-frihet`, `jiv-sjalvkansla` — bold teen-facing illustrations |
 
-This matches how RevenueCat vs Stripe are split in this codebase (native uses IAP, web uses Stripe Checkout).
+**Removed from previous list**: Library/Bibliotek (dark shell — fails brief), Journal/Arkiv (dark editorial — fails brief), Onboarding (dark + sparse — fails brief), generic "hero cover" (would have been dark Midnight Ink). All replaced with vibrant product surfaces.
 
-### Supabase Auth config (manual, done by you before deploy)
+**Result**: 6 different product palettes represented + 4 in-session moments. Every frame is saturated, illustration-dense, and reads at thumbnail size in App Store search — which is the actual conversion battleground.
 
-In **Live** project `spgknasuinxmvyrlpztx` → Authentication → Providers → Apple:
-- Services ID: `com.bonkistudio.bonkiapp.signin`
-- Team ID: `459423SKW4`
-- Key ID: `Y37T9LJYAL`
-- Private key: paste `.p8` contents — Supabase generates the client secret JWT.
-- **Additional allowed client IDs**: add `com.bonkistudio.bonkiapp` (the App Bundle ID — required because the native plugin sends the bundle ID as the audience, not the Services ID).
-- Enable provider.
+### "10/10 only" production standards
 
-Repeat the same for **Test** project `wcienwozdurwhswaarjy` if you want to test the native flow against preview before publishing.
+- **Source illustrations**: real WebP files from `/public/card-images/` (128 hand-drawn assets) — not regenerated, not stylized. These are your actual product art.
+- **Tile fidelity**: each portal grid composed at native 2× resolution using the real `TILE_COLORS` tokens (`#27A69C`, `#CB7AB2`, etc.) from `ProductLibrary.tsx`, the real `TAGLINES` strings, and the real card titles from each product manifest. Not mockups — pixel-accurate reconstructions of what ships in the app.
+- **Device frame**: realistic iPhone 16 Pro silhouette with Dynamic Island, 60px corner radius, 6° tilt, 80px ambient shadow at 12% opacity. Frame is rendered as crisp vector geometry, not a photo overlay.
+- **Backdrop strategy**: each frame's backdrop is a **darker tonal cousin** of the screen's dominant color (e.g. Teal frame → `#0F4540` backdrop). This makes the device pop without competing. No Midnight Ink backdrops anywhere.
+- **Caption typography**: serif display, Lantern Glow (`#FDF6E3`), 88pt, max 2 lines, 320px top margin. Drafts from your value-lines in Pass 1 — you finalize in Pass 2.
+- **No compromises**: any frame that doesn't feel like a 10/10 in the QA contact sheet gets reshot before delivery, not delivered with caveats.
 
-### Changes (3 total)
+### Production method (revised)
 
-**1. Add dependency** — `@capacitor-community/apple-sign-in` to `package.json`. Lovable will install; `npx cap sync` happens locally after pull.
+Pure SVG composition driven by the real design tokens, real WebP assets, and real Swedish strings — rendered to PNG via Python + `cairosvg` at native resolution for each device size. This guarantees:
 
-**2. Create `src/lib/appleSignIn.ts`**
-- Exports `signInWithApple(): Promise<{ success: boolean; cancelled?: boolean; error?: string }>`.
-- Web guard: `if (!Capacitor.isNativePlatform()) return { success: false, error: 'Not a native platform' }`.
-- Generates random `state` and `nonce` (crypto.randomUUID or a short random helper). Stores original nonce locally so it can be passed to Supabase.
-- Calls `SignInWithApple.authorize({ clientId: 'com.bonkistudio.bonkiapp', redirectURI: 'https://spgknasuinxmvyrlpztx.supabase.co/auth/v1/callback', scopes: 'email name', state, nonce })`.
-  - `redirectURI` is required by the plugin's API but **not actually used** on native (Apple returns the identityToken directly to the app). We point it at Live's callback so the value is a valid registered return URL regardless.
-- On response, extracts `identityToken` from `result.response`. If missing → returns `{ success: false, error: 'No identity token' }`.
-- Calls `supabase.auth.signInWithIdToken({ provider: 'apple', token: identityToken, nonce })`. Supabase verifies the JWT against Apple's JWKS and the `nonce` claim; because we added `com.bonkistudio.bonkiapp` to "Additional allowed client IDs", the audience check passes.
-- Error mapping: if the plugin throws with a code/message containing `1001` or `canceled` / `cancelled` → `{ success: false, cancelled: true }`; otherwise `{ success: false, error: message }`. Never throws.
+- Pixel-perfect color (exact hex from `palette.ts` and `ProductLibrary.tsx`)
+- Pixel-perfect type (your serif display + Inter, embedded as fonts)
+- No html2canvas color-resolution bugs, no scaling artifacts, no live-app capture limitations
+- Sub-minute regeneration when you swap captions in Pass 2
 
-**3. Update `src/pages/Login.tsx`**
-- New imports: `Capacitor` from `@capacitor/core`, `signInWithApple` from `@/lib/appleSignIn`, `toast` from `sonner`.
-- New local state: `const [appleLoading, setAppleLoading] = useState(false)`.
-- New handler `handleNativeAppleSignIn`:
-  - Early-return if `appleLoading`.
-  - `setAppleLoading(true)`, call `saveConsent()` (same posture as Google/email), call `signInWithApple()`.
-  - `cancelled` → silent reset (no toast, no error), remove pending consent.
-  - `!success` → `toast.error('Kunde inte logga in med Apple. Försök igen.')`, remove pending consent.
-  - `success` → do nothing; existing `AuthContext` `onAuthStateChange` listener handles the `SIGNED_IN` event and navigation (identical to how Google OAuth return is handled).
-  - `finally` resets `appleLoading`.
-- Render logic in the "main" motion.div (line 348), around the existing Apple button at lines 377–391:
-  - **If `Capacitor.isNativePlatform()`**: render a **new black native Apple button** (Apple HIG: black background `#000`, white text, Apple glyph left-aligned, same 56px height / `rounded-xl` / full width as the Google button). Placed **above** the Google button (Apple requires Sign in with Apple at least as prominent; placing it first is the safest reading). While `appleLoading` → `<Loader2 className="animate-spin" /> Loggar in...`. Uses `handleNativeAppleSignIn`.
-  - **If web**: render the existing Apple button (the one currently at 377–391 calling `handleAppleSignIn` → `lovable.auth.signInWithOAuth('apple')`), unchanged.
-- The web Google button and the "Fortsätt med e-post" button stay exactly as they are.
+### Deliverable
 
-Ordering in the main view on **native iOS**: Apple (black) → Google (orange) → e-post.
-Ordering on **web**: Google (orange) → Apple (existing muted style) → e-post (unchanged).
+`/mnt/documents/app-store-gallery-v1.zip` containing:
 
-### Not touching
+- `6.9-inch/01-vart-vi-home.png … 10-jag-i-varlden-portal.png` (1290×2796)
+- `6.7-inch/…` (1290×2796 — same canvas, App Store Connect 6.7" slot)
+- `6.5-inch/…` (1242×2688)
+- `_contact-sheet.png` — all 10 frames at thumbnail size for at-a-glance vibrance check
 
-- `CardView.tsx`, `useSessionReflections.ts`, `useNormalizedSessionState.ts`
-- `--surface-base`
-- `AuthContext.tsx` — `onAuthStateChange` already handles post-sign-in routing
-- Existing OTP flow, existing Google handler
-- `BuyPage.tsx`, paywalls, `revenueCat.ts`, webhook functions
-- `capacitor.config.ts` — Bundle ID already matches
-- Android: guideline 4.8 is iOS-only; native Android Apple Sign In is not in scope
+### QA gate before delivery
 
-### Verification
+I render the contact sheet first and inspect every frame for:
 
-- **Web (bonkiapp.com and preview)**: Login page renders exactly as today. Apple button is the existing muted one, calling Lovable OAuth; Google and email unchanged.
-- **Native iOS (post `npx cap sync` + TestFlight build)**: A black Apple button appears above Google. Tap → Apple's native ASAuthorization sheet. Complete → Supabase session lands via `signInWithIdToken` → `onAuthStateChange` fires `SIGNED_IN` → user enters app. Cancel → no toast, button re-enables. Supabase Auth → Users shows a new row with `provider: apple` and email.
-- **Supabase logs**: Successful token exchange visible in auth logs on Live.
+1. Dominant color reads as vibrant at thumbnail size (App Store browse view)
+2. Device frame geometry is crisp, no aliasing on the rounded corners
+3. Illustration inside the frame is sharp, not pixelated by downscaling
+4. Caption type has correct kerning and doesn't break at awkward points
+5. Backdrop tonal contrast against frame is balanced — not flat, not garish
+6. No frame feels darker or more muted than the others (consistency check)
 
-### Deferred
+Any frame that fails any criterion gets re-composed before the ZIP is sealed. You receive a delivery message that lists what was checked, not just "done."
 
-- Apple's "Hide my email" relay — works out-of-the-box with Supabase, no extra code.
-- Android (guideline 4.8 is iOS-specific).
-- Apple account deletion / revocation webhook — only required if Bonki later adds full Apple account deletion integration; current delete-account flow already works for Apple users because Supabase deletes the auth user.
+### Pass 2
+
+You review the contact sheet, mark up captions per frame, I regenerate the ZIP as `v2`. No re-layout — text-only swaps.
 
