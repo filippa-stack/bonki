@@ -1,71 +1,81 @@
 
 
-## App Store gallery — vibrant-only, premium pass
+## Real-app App Store gallery — captured from the live preview
 
-Locking the brief: **every framed shot must be a vibrant, color-saturated surface**. No dark library hero, no Midnight Ink shells, no muted onboarding screens. The Bonki shell is dark by design — but the *product surfaces* are flat-color and luminous, and that's all the App Store should see.
+You're right. The previous gallery was SVG mockups — gorgeous, but Apple's review guideline 2.3.3 ("Accurate Screenshots") rejects illustrations that don't match the shipping app. Throwing those out and rebuilding from real UI.
 
-### Revised 10-frame lineup
+### The new approach in one line
 
-Each row tells you the dominant color and what fills the frame. Anything dark is gone.
+Drive the **actual running app** in a browser sized to **1290×2796** (iPhone 16 Pro Max), navigate to each chosen state via your existing `?devState=` parameters, screenshot, then composite each capture into the framed-hero layout you already approved.
 
-| # | Surface | Dominant palette | Visual content |
+### Why this passes review and the previous pass didn't
+
+- **Real DOM, real fonts, real illustrations, real colors** — no reconstruction.
+- **Native target resolution** — captured at exactly 1290×2796, not upscaled from a 360px viewport.
+- **Real product surfaces** — every pixel inside the device frame is your live UI.
+- **Frame and caption are clearly marketing chrome** — Apple permits decorative framing and headline text around a real screenshot; what they reject is fabricated *content*. The app pixels themselves are unmodified.
+
+### How the capture works
+
+The browser tool can hold a 1290×2796 viewport (snaps to closest supported size — I'll verify the exact snap and document it), navigate to your existing dev-state routes, wait for animations to settle, and screenshot. I do this per frame, one at a time, with explicit waits for illustrations to load. This sidesteps the in-app `useCaptureController` (which has known html2canvas color-resolution issues and runs at the user's viewport, not 1290px).
+
+### The 10 frames — mapped to real routes
+
+Same vibrant lineup you approved, now bound to actual URLs in your app:
+
+| # | Surface | Route | Dev state |
 |---|---|---|---|
-| 1 | **Vårt Vi product home** | Cobalt Blue `#4B759B` → deep navy gradient | Hero illustration `su-mock-3` huge, "Vårt Vi" wordmark, "21 samtal", value-line in Lantern Glow |
-| 2 | **Jag i Mig portal grid** | Teal `#27A69C` field | 4 vibrant emotion cards visible: `jim-glad`, `jim-trygg`, `jim-arg`, `jim-radd` — flat-color illustrations, white pill labels |
-| 3 | **Jag med Andra portal grid** | Pink/Berry `#CB7AB2` field | `jma-modig`, `jma-acceptans`, `jma-skam`, `jma-vanskap` — rich figurative illustrations |
-| 4 | **Vardagskort portal grid** | Mint `#8BDDB0` field | `vk-morgon`, `vk-mat`, `vk-helg`, `vk-kvall` — warm everyday illustrations |
-| 5 | **Active session — opening prompt (Vårt Vi)** | Cobalt Blue full-bleed | `su-mock-7` illustration at 0.7 opacity, large serif Swedish prompt centered, 4px progress bar at top |
-| 6 | **Active session — Jag i Mig card** | Teal full-bleed | `jim-karlek` illustration full-bleed, prompt text overlay, BonkiButton pill at bottom |
-| 7 | **Reflection step (couple)** | Cobalt Blue + Lantern Glow textarea card | Writing surface with "✓ Sparat" indicator, partner avatar dots, soft glow |
-| 8 | **Card complete / takeaway** | Saffron `#E9B44C` glow on Cobalt | Celebration screen, the saved reflection rendered editorial-style with serif display |
-| 9 | **Syskonkort portal grid** | Lavender `#CF8BDD` field | `sk-syskonminnen`, `sk-rattvisa`, `sk-unik`, `sk-konflikt` — sibling-themed illustrations |
-| 10 | **Jag i Världen portal grid** | Lime/Olive `#C6D423` field | `jiv-vanskap`, `jiv-identitet`, `jiv-frihet`, `jiv-sjalvkansla` — bold teen-facing illustrations |
+| 1 | Vårt Vi product home | `/product/still-us` | `solo` |
+| 2 | Jag i Mig portal | `/product/jag-i-mig` | `browse` |
+| 3 | Jag med Andra portal | `/product/jag-med-andra` | `browse` |
+| 4 | Vardagskort portal | `/product/vardagskort` | `browse` |
+| 5 | Active session — Vårt Vi opening | `/card/<su-card-id>` | `pairedActive` |
+| 6 | Active session — Jag i Mig | `/card/<jim-card-id>` | `browse` |
+| 7 | Reflection step (couple) | same Vårt Vi card, step 2 via `__sc_dev_step=1` | `pairedActive` |
+| 8 | Card complete / takeaway | `/card/<id>` | `completed` |
+| 9 | Syskonkort portal | `/product/syskonkort` | `browse` |
+| 10 | Jag i Världen portal | `/product/jag-i-varlden` | `browse` |
 
-**Removed from previous list**: Library/Bibliotek (dark shell — fails brief), Journal/Arkiv (dark editorial — fails brief), Onboarding (dark + sparse — fails brief), generic "hero cover" (would have been dark Midnight Ink). All replaced with vibrant product surfaces.
+Before capturing I'll verify each route exists by checking `App.tsx` routes + valid card IDs from the product manifests. If any state can't be reached cleanly, I'll either pick the nearest equivalent and tell you, or ask before deviating.
 
-**Result**: 6 different product palettes represented + 4 in-session moments. Every frame is saturated, illustration-dense, and reads at thumbnail size in App Store search — which is the actual conversion battleground.
+### Frame composition (unchanged from approved plan)
 
-### "10/10 only" production standards
+After capture, each real screenshot is composited via Pillow into:
 
-- **Source illustrations**: real WebP files from `/public/card-images/` (128 hand-drawn assets) — not regenerated, not stylized. These are your actual product art.
-- **Tile fidelity**: each portal grid composed at native 2× resolution using the real `TILE_COLORS` tokens (`#27A69C`, `#CB7AB2`, etc.) from `ProductLibrary.tsx`, the real `TAGLINES` strings, and the real card titles from each product manifest. Not mockups — pixel-accurate reconstructions of what ships in the app.
-- **Device frame**: realistic iPhone 16 Pro silhouette with Dynamic Island, 60px corner radius, 6° tilt, 80px ambient shadow at 12% opacity. Frame is rendered as crisp vector geometry, not a photo overlay.
-- **Backdrop strategy**: each frame's backdrop is a **darker tonal cousin** of the screen's dominant color (e.g. Teal frame → `#0F4540` backdrop). This makes the device pop without competing. No Midnight Ink backdrops anywhere.
-- **Caption typography**: serif display, Lantern Glow (`#FDF6E3`), 88pt, max 2 lines, 320px top margin. Drafts from your value-lines in Pass 1 — you finalize in Pass 2.
-- **No compromises**: any frame that doesn't feel like a 10/10 in the QA contact sheet gets reshot before delivery, not delivered with caveats.
+- Tonal vibrant backdrop matched to the screen's dominant product color
+- Realistic iPhone 16 Pro silhouette (Dynamic Island, 60px corner radius, **6° tilt**, 80px ambient shadow at 12% opacity)
+- Lantern Glow serif display caption above (**placeholder strings in v2 — you finalize**)
+- Output at 1290×2796 (6.9"), 1290×2796 (6.7"), 1242×2688 (6.5")
 
-### Production method (revised)
+### What I need to handle carefully
 
-Pure SVG composition driven by the real design tokens, real WebP assets, and real Swedish strings — rendered to PNG via Python + `cairosvg` at native resolution for each device size. This guarantees:
+- **Viewport snap**: the browser tool snaps to a supported size (likely 414×896 or similar). I'll capture at the snapped portrait size and then **upscale only the device-frame composition**, not the screenshot itself — the screenshot will be captured at the highest portrait size the tool supports and downscaled if needed (downscaling preserves quality, upscaling doesn't). If the snap forces a quality compromise, I'll tell you in the QA report rather than ship blurry frames.
+- **Illustration loading**: I'll wait long enough for WebPs to decode before each capture (your `usePreloadCardImages` hook gives reasonable bounds).
+- **No status bar artifacts**: I'll mask out any browser chrome / dev badges if they appear in the capture.
+- **Failed frames don't ship**: any frame that doesn't QA at 10/10 either gets re-captured or excluded with a clear note — never silently shipped.
 
-- Pixel-perfect color (exact hex from `palette.ts` and `ProductLibrary.tsx`)
-- Pixel-perfect type (your serif display + Inter, embedded as fonts)
-- No html2canvas color-resolution bugs, no scaling artifacts, no live-app capture limitations
-- Sub-minute regeneration when you swap captions in Pass 2
+### Deliverable (v2)
 
-### Deliverable
+`/mnt/documents/app-store-gallery-v2.zip` containing:
 
-`/mnt/documents/app-store-gallery-v1.zip` containing:
-
-- `6.9-inch/01-vart-vi-home.png … 10-jag-i-varlden-portal.png` (1290×2796)
-- `6.7-inch/…` (1290×2796 — same canvas, App Store Connect 6.7" slot)
-- `6.5-inch/…` (1242×2688)
-- `_contact-sheet.png` — all 10 frames at thumbnail size for at-a-glance vibrance check
+- `6.9-inch/01…10.png` (1290×2796) — composites of real app captures
+- `6.7-inch/01…10.png`
+- `6.5-inch/01…10.png` (1242×2688)
+- `_contact-sheet.png`
+- `_capture-log.md` — for each frame: route used, dev state, viewport snap, capture timestamp, any caveats. Gives you an audit trail if Apple ever queries authenticity.
 
 ### QA gate before delivery
 
-I render the contact sheet first and inspect every frame for:
+Same 6 checks as before, plus two new ones specific to this approach:
 
-1. Dominant color reads as vibrant at thumbnail size (App Store browse view)
-2. Device frame geometry is crisp, no aliasing on the rounded corners
-3. Illustration inside the frame is sharp, not pixelated by downscaling
-4. Caption type has correct kerning and doesn't break at awkward points
-5. Backdrop tonal contrast against frame is balanced — not flat, not garish
-6. No frame feels darker or more muted than the others (consistency check)
+7. **Authenticity**: every pixel inside the device frame originated from a live `bonki.lovable.app` capture — confirmed via the capture log.
+8. **No mockup artifacts**: no SVG-rendered text, no fake icons, no fabricated illustrations inside the frame.
 
-Any frame that fails any criterion gets re-composed before the ZIP is sealed. You receive a delivery message that lists what was checked, not just "done."
+### Pass 3 (after you approve v2)
 
-### Pass 2
+You review and finalize the 10 Swedish captions. I regenerate the ZIP as `v3` with text-only swaps. Same captures, same composites, just real headlines.
 
-You review the contact sheet, mark up captions per frame, I regenerate the ZIP as `v2`. No re-layout — text-only swaps.
+### Honest scope note
+
+This is significantly more work than the SVG pass — sequential live captures with stabilization waits, then composition for 30 outputs. The result is gallery assets that survive App Store review, which the previous pass would not.
 
