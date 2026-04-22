@@ -1,81 +1,79 @@
 
 
-## Real-app App Store gallery — captured from the live preview
+## v3 — Real session captures + finalized 10-frame gallery
 
-You're right. The previous gallery was SVG mockups — gorgeous, but Apple's review guideline 2.3.3 ("Accurate Screenshots") rejects illustrations that don't match the shipping app. Throwing those out and rebuilding from real UI.
+Locking in the gallery with **4 new live-app session captures** plus the 6 vibrant product portals you already approved. Total: 10 frames × 3 device sizes = 30 PNGs.
 
-### The new approach in one line
+### Final 10-frame lineup
 
-Drive the **actual running app** in a browser sized to **1290×2796** (iPhone 16 Pro Max), navigate to each chosen state via your existing `?devState=` parameters, screenshot, then composite each capture into the framed-hero layout you already approved.
-
-### Why this passes review and the previous pass didn't
-
-- **Real DOM, real fonts, real illustrations, real colors** — no reconstruction.
-- **Native target resolution** — captured at exactly 1290×2796, not upscaled from a 360px viewport.
-- **Real product surfaces** — every pixel inside the device frame is your live UI.
-- **Frame and caption are clearly marketing chrome** — Apple permits decorative framing and headline text around a real screenshot; what they reject is fabricated *content*. The app pixels themselves are unmodified.
-
-### How the capture works
-
-The browser tool can hold a 1290×2796 viewport (snaps to closest supported size — I'll verify the exact snap and document it), navigate to your existing dev-state routes, wait for animations to settle, and screenshot. I do this per frame, one at a time, with explicit waits for illustrations to load. This sidesteps the in-app `useCaptureController` (which has known html2canvas color-resolution issues and runs at the user's viewport, not 1290px).
-
-### The 10 frames — mapped to real routes
-
-Same vibrant lineup you approved, now bound to actual URLs in your app:
-
-| # | Surface | Route | Dev state |
+| # | Surface | Source | Why it sells |
 |---|---|---|---|
-| 1 | Vårt Vi product home | `/product/still-us` | `solo` |
-| 2 | Jag i Mig portal | `/product/jag-i-mig` | `browse` |
-| 3 | Jag med Andra portal | `/product/jag-med-andra` | `browse` |
-| 4 | Vardagskort portal | `/product/vardagskort` | `browse` |
-| 5 | Active session — Vårt Vi opening | `/card/<su-card-id>` | `pairedActive` |
-| 6 | Active session — Jag i Mig | `/card/<jim-card-id>` | `browse` |
-| 7 | Reflection step (couple) | same Vårt Vi card, step 2 via `__sc_dev_step=1` | `pairedActive` |
-| 8 | Card complete / takeaway | `/card/<id>` | `completed` |
-| 9 | Syskonkort portal | `/product/syskonkort` | `browse` |
-| 10 | Jag i Världen portal | `/product/jag-i-varlden` | `browse` |
+| 1 | Vårt Vi product home | `/product/still-us?demo=1` (already captured) | Flagship product hero |
+| 2 | Jag i Mig portal | already captured | Vibrant emotion grid |
+| 3 | Jag med Andra portal | already captured | Pink palette, harder topics |
+| 4 | Vardagskort portal | already captured | Mint everyday warmth |
+| 5 | Syskonkort portal | already captured | Lavender, niche differentiator |
+| 6 | Jag i Världen portal | already captured | Lime, teen-facing |
+| 7 | **Vårt Vi opening prompt (couple session)** | `/card/su-card-1?demo=1` | Sells the monumental, calm flagship moment |
+| 8 | **Reflection step with "✓ Sparat"** | same card, step=1 | Proves writing depth — not a quiz |
+| 9 | **Jag i Mig session — "Hur känns det i kroppen att vara trygg?"** | `/card/jim-trygg?demo=1` | Strongest kids hook: Teal full-bleed + body-aware question lands instantly with parents |
+| 10 | **Era samtal / Journal archive** | `/journal?demo=1` with seeded mock entries | Retention story: "your relationship has a record" |
 
-Before capturing I'll verify each route exists by checking `App.tsx` routes + valid card IDs from the product manifests. If any state can't be reached cleanly, I'll either pick the nearest equivalent and tell you, or ask before deviating.
+### Why these 4 new frames work
 
-### Frame composition (unchanged from approved plan)
+- **Frames 7+8** (Vårt Vi session + reflection): Buyers see the actual session UX they're paying 249 kr for.
+- **Frame 9** (Jim-trygg): Picked because "Hur känns det i kroppen att vara trygg?" is the single most universally moving prompt across the kids manifests — body-aware, non-clinical, instantly recognizable to any parent. Teal full-bleed is also the most vibrant possible frame in the gallery.
+- **Frame 10** (Era samtal): Without this, no one understands they're building something lasting. With it, the 249 kr feels like an investment, not a fee.
 
-After capture, each real screenshot is composited via Pillow into:
+### Technical approach
 
-- Tonal vibrant backdrop matched to the screen's dominant product color
-- Realistic iPhone 16 Pro silhouette (Dynamic Island, 60px corner radius, **6° tilt**, 80px ambient shadow at 12% opacity)
-- Lantern Glow serif display caption above (**placeholder strings in v2 — you finalize**)
+**1. Extend demo-mode bypass to 3 more route gates**
+
+The product-home capture worked because v2 added a demo-mode short-circuit in `useProductIntroNeeded`. Same pattern needs to extend to:
+
+- `CardView.tsx` — currently requires authenticated session. Add demo-mode branch that mounts the card with seeded prompt data + a fake "active session" state, no Supabase calls.
+- `Journal.tsx` — currently requires authenticated user to query reflections. Add demo-mode branch that renders the editorial timeline with 4-5 hardcoded mock entries (Vårt Vi + Jag i Mig + Vardag samples).
+- Reflection step: existing `?__sc_dev_step=1` URL param already works inside CardView once the card mounts.
+
+All bypasses gated on `isDemoMode()` which only activates with `?demo=1` — zero impact on real users, no security surface.
+
+**2. Capture pass**
+
+Drive the browser tool to each of the 4 new routes in sequence at the largest portrait viewport the tool supports (likely 414×896, snap-confirmed during run). Wait for illustration WebPs to decode before each screenshot. Mask any browser chrome / dev badges.
+
+**3. Composite**
+
+Each capture flows through the same Pillow pipeline used for v2:
+- Tonal vibrant backdrop matched to product palette (Cobalt for Vårt Vi shots, Teal for jim-trygg, Saffron-on-Cobalt for journal)
+- Headline space above (placeholder Swedish strings — you finalize captions in next pass)
 - Output at 1290×2796 (6.9"), 1290×2796 (6.7"), 1242×2688 (6.5")
 
-### What I need to handle carefully
+**4. Re-bundle**
 
-- **Viewport snap**: the browser tool snaps to a supported size (likely 414×896 or similar). I'll capture at the snapped portrait size and then **upscale only the device-frame composition**, not the screenshot itself — the screenshot will be captured at the highest portrait size the tool supports and downscaled if needed (downscaling preserves quality, upscaling doesn't). If the snap forces a quality compromise, I'll tell you in the QA report rather than ship blurry frames.
-- **Illustration loading**: I'll wait long enough for WebPs to decode before each capture (your `usePreloadCardImages` hook gives reasonable bounds).
-- **No status bar artifacts**: I'll mask out any browser chrome / dev badges if they appear in the capture.
-- **Failed frames don't ship**: any frame that doesn't QA at 10/10 either gets re-captured or excluded with a clear note — never silently shipped.
-
-### Deliverable (v2)
-
-`/mnt/documents/app-store-gallery-v2.zip` containing:
-
-- `6.9-inch/01…10.png` (1290×2796) — composites of real app captures
+Replace the 6-frame v2 with the full 10-frame `app-store-gallery-v3.zip`:
+- `6.9-inch/01…10.png`
 - `6.7-inch/01…10.png`
-- `6.5-inch/01…10.png` (1242×2688)
+- `6.5-inch/01…10.png`
 - `_contact-sheet.png`
-- `_capture-log.md` — for each frame: route used, dev state, viewport snap, capture timestamp, any caveats. Gives you an audit trail if Apple ever queries authenticity.
+- `_capture-log.md` documenting route + dev state per frame
 
-### QA gate before delivery
+### QA gate
 
-Same 6 checks as before, plus two new ones specific to this approach:
+Same 8-point checklist used for v2:
+1–6: Vibrance, frame geometry, illustration sharpness, type quality, backdrop balance, consistency
+7. Authenticity: every frame inside the device area is a real bonki.lovable.app capture (logged)
+8. No mockup artifacts inside the frame
 
-7. **Authenticity**: every pixel inside the device frame originated from a live `bonki.lovable.app` capture — confirmed via the capture log.
-8. **No mockup artifacts**: no SVG-rendered text, no fake icons, no fabricated illustrations inside the frame.
+Plus one new check specific to this pass:
+9. Mock journal entries read as plausible real reflections — not lorem, not too on-the-nose marketing copy. Drafted in your editorial voice.
 
-### Pass 3 (after you approve v2)
+### Honest scope notes
 
-You review and finalize the 10 Swedish captions. I regenerate the ZIP as `v3` with text-only swaps. Same captures, same composites, just real headlines.
+- The journal mock entries are *fabricated content*, but they live inside the real Journal UI. Apple permits placeholder user-generated content in screenshots provided the UI itself is authentic — same standard Notion, Things, Bear use for their gallery shots. I'll keep the entries short, neutral, and clearly written in Bonki's voice.
+- The kids session frame uses a card you do ship (`jim-trygg`) — no fabrication in the prompt itself.
+- Demo-mode bypass code is gated behind `?demo=1` and `isDemoMode()` — invisible to all real users, safe to keep in the codebase or remove after capture (your call after v3 ships).
 
-### Honest scope note
+### Pass after v3
 
-This is significantly more work than the SVG pass — sequential live captures with stabilization waits, then composition for 30 outputs. The result is gallery assets that survive App Store review, which the previous pass would not.
+You review the contact sheet, send me the 10 final Swedish captions (or approve drafts), I regenerate as `v4` with text-only swaps. No re-capture, no re-layout.
 
