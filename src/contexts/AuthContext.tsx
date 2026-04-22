@@ -3,6 +3,7 @@ import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import type { Json } from '@/integrations/supabase/types';
 import { trackPixelEvent } from '@/lib/metaPixel';
+import { initRevenueCat, logOutRevenueCat } from '@/lib/revenueCat';
 
 interface AuthContextType {
   user: User | null;
