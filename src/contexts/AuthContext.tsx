@@ -121,6 +121,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const signOut = async () => {
+    await logOutRevenueCat();
     await supabase.auth.signOut();
     setUser(null);
     setSession(null);
