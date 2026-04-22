@@ -70,13 +70,13 @@ export default function Login() {
     }));
   };
 
-  const handleGoogleSignIn = async () => {
+  const handleOAuthSignIn = async (provider: 'google' | 'apple') => {
     setLoading(true);
     setError(null);
     saveConsent();
 
     try {
-      const { error } = await lovable.auth.signInWithOAuth('google', {
+      const { error } = await lovable.auth.signInWithOAuth(provider, {
         redirect_uri: window.location.origin,
       });
 
@@ -91,6 +91,9 @@ export default function Login() {
       setLoading(false);
     }
   };
+
+  const handleGoogleSignIn = () => handleOAuthSignIn('google');
+  const handleAppleSignIn = () => handleOAuthSignIn('apple');
 
   const handleEmailSignIn = async () => {
     if (!email.trim()) return;
