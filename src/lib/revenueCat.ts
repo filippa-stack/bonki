@@ -87,3 +87,38 @@ export async function purchaseProduct(productId: string): Promise<PurchaseResult
     return { success: false, cancelled: false, error: error.message ?? 'Purchase failed' };
   }
 }
+
+export interface RestoreResult {
+  success: boolean;
+  restoredCount: number;
+  error?: string;
+}
+
+/**
+ * Restore previous non-consumable purchases via RevenueCat.
+ * Web returns a safe no-op. Native calls Purchases.restorePurchases().
+ * The RevenueCat webhook handles writing user_product_access rows server-side;
+ * restoredCount here is purely for UX feedback.
+ */
+export async function restorePurchases(): Promise<RestoreResult> {
+  if (!Capacitor.isNativePlatform()) {
+    return { success: false, restoredCount: 0, error: 'Not a native platform' };
+  }
+
+  try {
+    const { customerInfo } = await Purchases.restorePurchases();
+    const activeEntitlements = Object.keys(customerInfo.entitlements?.active ?? {});
+    return {
+      success: true,
+      restoredCount: activeEntitlements.length,
+    };
+  } catch (err: unknown) {
+    const error = err as { message?: string };
+    console.error('[RevenueCat] restorePurchases failed:', err);
+    return {
+      success: false,
+      restoredCount: 0,
+      error: error.message ?? 'Unknown error',
+    };
+  }
+}
