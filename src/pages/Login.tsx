@@ -100,6 +100,29 @@ export default function Login() {
   const handleGoogleSignIn = () => handleOAuthSignIn('google');
   const handleAppleSignIn = () => handleOAuthSignIn('apple');
 
+  const handleNativeAppleSignIn = async () => {
+    if (appleLoading) return;
+    setAppleLoading(true);
+    setError(null);
+    saveConsent();
+
+    try {
+      const result = await nativeSignInWithApple();
+      if (result.cancelled) {
+        localStorage.removeItem('pending-legal-consent');
+        return;
+      }
+      if (!result.success) {
+        localStorage.removeItem('pending-legal-consent');
+        toast.error('Kunde inte logga in med Apple. Försök igen.');
+        return;
+      }
+      // Success: AuthContext's onAuthStateChange handles navigation.
+    } finally {
+      setAppleLoading(false);
+    }
+  };
+
   const handleEmailSignIn = async () => {
     if (!email.trim()) return;
     setLoading(true);
