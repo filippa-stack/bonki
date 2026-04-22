@@ -1,56 +1,48 @@
 
 
-## Generate 1024×1024 App Store IAP icons for all 7 products
+## Regenerate IAP icons using the actual library tile colors
 
-Apple requires one square 1024×1024 PNG per in-app purchase. Spec: PNG, no alpha, no rounded corners (Apple masks), flat composition, immediately recognizable at small sizes (the icon shows up at ~60×60 in App Store IAP listings).
+You're right to push back. The previous output used `manifest.backgroundColor` (the deepest tile variant), which doesn't match what users see anywhere. The library tile is the canonical "this is the product" surface — it's where users decide to buy. The IAP icon should mirror that.
 
-### Approach
+### Confirmed library tile backgrounds (from `ProductLibrary.tsx`)
 
-Composite each product's existing hero illustration (`src/assets/illustration-*.png`) centered on its brand `backgroundColor`. Same recipe across all seven so they read as a coherent family in the IAP list. No text on the icons (Apple recommends against it — the IAP title is shown beside the icon, and text becomes illegible at thumbnail size).
-
-### Mapping (product → illustration → background)
-
-| Product | Illustration asset | Background |
+| Product | Library tile color | Source |
 |---|---|---|
-| Jag i Mig | `illustration-jag-i-mig.png` | `#115D57` |
-| Jag med Andra | `illustration-jag-med-andra.png` | `#721B3A` |
-| Jag i Världen | `illustration-jag-i-varlden.png` | `#606613` |
-| Vardag | `illustration-vardag.png` | `#48A873` |
-| Syskon | `illustration-syskon.png` | `#8E459D` |
-| Närhet & Intimitet | `illustration-sexualitet.png` | `#AF685E` |
-| Vårt Vi | `illustration-still-us.png` | `#4B759B` |
+| Jag i Mig | `#27A69C` (teal) | `TILE_COLORS.jag_i_mig`, line 54 |
+| Jag med Andra | `#CB7AB2` (rose) | `TILE_COLORS.jag_med_andra`, line 55 |
+| Jag i Världen | `#C6D423` (chartreuse) | `TILE_COLORS.jag_i_varlden`, line 56 |
+| Vardag | `#8BDDB0` (mint) | `TILE_COLORS.vardagskort`, line 58 |
+| Syskon | `#CF8BDD` (lilac) | `TILE_COLORS.syskonkort`, line 59 |
+| Närhet & Intimitet | `#DD958B` (terracotta-pink) | `TILE_COLORS.sexualitetskort`, line 57 |
+| Vårt Vi | `#94BCE1` (cobalt-light) | hardcoded on the Still Us tile, line 934 |
 
-### Composition recipe (identical for all 7)
+### What changes
 
-- Canvas: 1024×1024, RGB (no alpha), filled with the product `backgroundColor`
-- Illustration: scaled to fit within ~70% of the canvas (≈ 720px box), centered, preserving aspect ratio
-- Subtle radial vignette (multiply blend, ~12% strength) to add depth without breaking the flat aesthetic
-- No text, no logo, no border, no shadow — Apple masks corners and the illustration must carry the recognition
+Same composition recipe as before — 1024×1024 RGB PNG, no alpha, illustration centered at ~70% scale, subtle vignette, no text — only the canvas background changes to the library tile color. The illustration files stay the same (`src/assets/illustration-*.png`, plus `illustration-still-us-tile.png` for Vårt Vi to match what the library tile actually shows).
+
+### Two small refinements while we're rerendering
+
+1. **Vårt Vi**: switch source from `illustration-still-us.png` → `illustration-still-us-tile.png`. That's the asset the library tile uses, so the IAP icon will match the tile exactly.
+2. **Vignette**: drop from 12% to 6% opacity. On these brighter pastel canvases, a heavier vignette muddies the color; a lighter one keeps the brand color pure while still adding subtle depth.
 
 ### Output
 
-Seven files in `/mnt/documents/app-store-iap/`:
-- `jag-i-mig-1024.png`
-- `jag-med-andra-1024.png`
-- `jag-i-varlden-1024.png`
-- `vardag-1024.png`
-- `syskon-1024.png`
-- `narhet-intimitet-1024.png`
-- `vart-vi-1024.png`
+Overwrite the seven files in `/mnt/documents/app-store-iap/`:
+- `jag-i-mig-1024.png` (now teal `#27A69C`)
+- `jag-med-andra-1024.png` (now rose `#CB7AB2`)
+- `jag-i-varlden-1024.png` (now chartreuse `#C6D423`)
+- `vardag-1024.png` (now mint `#8BDDB0`)
+- `syskon-1024.png` (now lilac `#CF8BDD`)
+- `narhet-intimitet-1024.png` (now terracotta-pink `#DD958B`)
+- `vart-vi-1024.png` (now cobalt-light `#94BCE1`, illustration swapped to tile asset)
 
-Plus a `README.txt` mapping each file to its IAP product name and product ID for the App Store Connect upload step.
+Plus update `README.txt` with the new background hex per product.
 
-### Build steps (when approved)
+### QA before delivery
 
-1. Python script using Pillow: read each illustration from `src/assets/`, composite onto the brand-colored canvas at the recipe above, save as 1024×1024 RGB PNG (no alpha, sRGB).
-2. QA: open each PNG, verify (a) exact 1024×1024, (b) no alpha channel, (c) illustration centered and not clipped, (d) brand color matches the manifest hex exactly.
-3. If any illustration looks weak at thumbnail size (downscale to 60×60 mentally), adjust scale up to ~80% for that single product and re-render.
-4. Deliver the seven PNGs + README as `<lov-artifact>` tags.
+For each PNG: verify (a) exact 1024×1024, (b) RGB no alpha, (c) hex of canvas pixel at `(50, 50)` matches the library tile color exactly, (d) illustration centered and not clipped, (e) downscale-test to 60×60 to confirm legibility in the App Store IAP list.
 
-### Not doing
+### Result
 
-- No new in-app screens, components, or routes.
-- No edits to product manifests or assets.
-- No marketing 1024 app icon (that's a separate Apple requirement — these are IAP icons only, per the request).
-- No text overlays — App Store Connect shows the IAP display name next to the icon already.
+The seven IAP icons will visually match what users see on the library page — the same surface where they're already deciding to buy. Cohesive, on-brand, and honest to the in-app experience.
 
