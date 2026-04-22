@@ -1111,7 +1111,139 @@ export default function Journal() {
         <div className="loading-skeleton" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <div style={{ width: '32px', height: '32px', borderRadius: '50%', backgroundColor: 'rgba(253,246,227,0.13)' }} className="animate-pulse" />
         </div>
-      ) : (isEmpty && !hasRenderedContent.current) ? (
+      ) : (isEmpty && !hasRenderedContent.current) ? (() => {
+        const emptyVariant: 'barn' | 'par' =
+          activeFilters.size === 1 && activeFilters.has('par') ? 'par' : 'barn';
+
+        const copy = emptyVariant === 'par'
+          ? {
+              heroLine: (
+                <>
+                  Ni pratar varje dag.
+                  <br />
+                  Men ni{' '}
+                  <em style={{ fontStyle: 'italic', fontWeight: 400, color: DEEP_SAFFRON }}>
+                    skriver
+                  </em>{' '}
+                  aldrig ner det.
+                </>
+              ),
+              heroSub:
+                'Det ni tänker under ett samtal eller känner efteråt. Det ni annars glömmer till nästa morgon. Här blir det kvar.',
+              act2Lead: (
+                <>
+                  Versionen av er{' '}
+                  <em style={{ fontStyle: 'italic', fontWeight: 400, color: DEEP_SAFFRON }}>
+                    innan
+                  </em>{' '}
+                  det blev självklart.
+                </>
+              ),
+              act2Sub: 'Dagen ni skrev ner det är dagen ni väljer varandra på nytt.',
+              productId: 'still_us',
+              productName: 'Vårt Vi',
+              closingSub: 'Ett samtal i taget. Bara ni två, här.',
+              rows: [
+                {
+                  year: 'i år',
+                  dateLabel: 'nu',
+                  cardName: 'Att bli sedd',
+                  question: '— När kände du dig sedd av mig senast?',
+                  answer: 'När du frågade innan du antog. Jag tänkte på det hela kvällen och det gjorde något med mig.',
+                  opacity: 1,
+                },
+                {
+                  year: 'om ett år',
+                  dateLabel: 'om ett år',
+                  cardName: 'Vardagen',
+                  question: '— Vad saknar du från oss just nu?',
+                  answer: 'Söndagsfrukostarna innan barnen vaknade. Vi hade inget att säga men det var ändå det jag minns mest.',
+                  opacity: 0.85,
+                },
+                {
+                  year: 'om två år',
+                  dateLabel: 'om två år',
+                  cardName: 'Grunden',
+                  question: '— När visste du att du ville stanna?',
+                  answer: 'Den kvällen du kom hem trött och la dig på golvet bredvid mig utan att säga något. Jag tänkte "så här ska det vara".',
+                  opacity: 0.7,
+                },
+                {
+                  year: 'om tre år',
+                  dateLabel: 'om tre år',
+                  cardName: 'Riktningen',
+                  question: '— Vad bar du med dig från den här tiden?',
+                  answer: 'Att vi var så rädda då. Jag hade glömt det helt. Tur att jag skrev ner det, för nu vet jag hur långt vi har kommit.',
+                  opacity: 0.55,
+                },
+              ],
+            }
+          : {
+              heroLine: (
+                <>
+                  Det första de säger.
+                  <br />
+                  Och{' '}
+                  <em style={{ fontStyle: 'italic', fontWeight: 400, color: DEEP_SAFFRON }}>
+                    allt
+                  </em>{' '}
+                  de säger sen.
+                </>
+              ),
+              heroSub:
+                'Varje svar sparas här. Om tre månader eller tre år kan du bläddra tillbaka och se ditt barn växa.',
+              act2Lead: (
+                <>
+                  En röst som{' '}
+                  <em style={{ fontStyle: 'italic', fontWeight: 400, color: DEEP_SAFFRON }}>
+                    växer
+                  </em>
+                  .
+                </>
+              ),
+              act2Sub: 'Olika frågor, olika år. Ett barn som blir sig själv framför dig.',
+              productId: 'jag_i_mig',
+              productName: 'Jag i Mig',
+              closingSub: 'Ett samtal i taget. Ingen bakgrund att ta igen.',
+              rows: [
+                {
+                  year: 'i år',
+                  dateLabel: 'nu',
+                  cardName: 'Trygghet',
+                  question: '— När känner du dig som tryggast?',
+                  answer: 'När vi läser sagan och mamma glömmer bort klockan och läser en till.',
+                  opacity: 1,
+                },
+                {
+                  year: 'om ett år',
+                  dateLabel: 'om ett år',
+                  cardName: 'Att vara stor',
+                  question: '— Vad tycker du om att göra som känns viktigt?',
+                  answer: 'När jag får hjälpa pappa laga mat på riktigt, inte bara låtsas. Och när han frågar mig vad vi ska ha.',
+                  opacity: 0.85,
+                },
+                {
+                  year: 'om två år',
+                  dateLabel: 'om två år',
+                  cardName: 'Rädsla',
+                  question: '— Finns det något du är rädd för som du inte vill att någon ska veta?',
+                  answer: 'Att du ska bli trött på mig när jag är arg. Jag vet att du inte blir det men ibland tänker jag det ändå.',
+                  opacity: 0.7,
+                },
+                {
+                  year: 'om tre år',
+                  dateLabel: 'om tre år',
+                  cardName: 'Att bli sedd',
+                  question: '— När känner du att någon verkligen lyssnar på dig?',
+                  answer: "När du inte försöker fixa det direkt. När du bara säger 'det låter jobbigt' och så sitter vi en stund.",
+                  opacity: 0.55,
+                },
+              ],
+            };
+
+        const accent = getProductAccent(copy.productId);
+
+        return (
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '0 28px' }}>
           {/* Act 1 — hero line + sub */}
           <div style={{ maxWidth: '520px', margin: '0 auto', textAlign: 'left', width: '100%' }}>
@@ -1126,9 +1258,7 @@ export default function Journal() {
                 margin: 0,
               }}
             >
-              Det första de säger.
-              <br />
-              Och <em style={{ fontStyle: 'italic', fontWeight: 400, color: DEEP_SAFFRON }}>allt</em> de säger sen.
+              {copy.heroLine}
             </h2>
             <p
               style={{
@@ -1141,7 +1271,7 @@ export default function Journal() {
                 margin: '16px 0 0',
               }}
             >
-              Varje svar sparas här. Om tre månader eller tre år kan du bläddra tillbaka och se ditt barn växa.
+              {copy.heroSub}
             </p>
           </div>
           {/* Act 2 — preview timeline using real card structure */}
@@ -1157,7 +1287,7 @@ export default function Journal() {
                 marginBottom: '6px',
                 letterSpacing: '-0.015em',
               }}>
-                En röst som <em style={{ fontStyle: 'italic', fontWeight: 400, color: DEEP_SAFFRON }}>växer</em>.
+                {copy.act2Lead}
               </div>
               <div style={{
                 fontFamily: 'var(--font-display)',
@@ -1169,35 +1299,30 @@ export default function Journal() {
                 maxWidth: '280px',
                 margin: '0 auto',
               }}>
-                Olika frågor, olika år. Ett barn som blir sig själv framför dig.
+                {copy.act2Sub}
               </div>
             </div>
 
             {/* Preview frame with "Exempel" pill */}
             <div style={{ position: 'relative', marginTop: '20px', padding: '18px 0 6px' }}>
-              {(() => {
-                const jimAccent = getProductAccent('jag_i_mig');
-                return (
-                  <div style={{
-                    position: 'absolute',
-                    top: 0,
-                    right: '12px',
-                    padding: '4px 10px',
-                    borderRadius: '999px',
-                    background: `${jimAccent.light}1F`,
-                    border: `0.5px solid ${jimAccent.light}59`,
-                    color: jimAccent.light,
-                    fontFamily: 'var(--font-sans)',
-                    fontSize: '9px',
-                    fontWeight: 600,
-                    letterSpacing: '0.12em',
-                    textTransform: 'uppercase',
-                    zIndex: 3,
-                  }}>
-                    Exempel
-                  </div>
-                );
-              })()}
+              <div style={{
+                position: 'absolute',
+                top: 0,
+                right: '12px',
+                padding: '4px 10px',
+                borderRadius: '999px',
+                background: `${accent.light}1F`,
+                border: `0.5px solid ${accent.light}59`,
+                color: accent.light,
+                fontFamily: 'var(--font-sans)',
+                fontSize: '9px',
+                fontWeight: 600,
+                letterSpacing: '0.12em',
+                textTransform: 'uppercase',
+                zIndex: 3,
+              }}>
+                Exempel
+              </div>
 
               {/* Spine + rows */}
               <div style={{ position: 'relative', paddingTop: '12px' }}>
@@ -1211,45 +1336,7 @@ export default function Journal() {
                   pointerEvents: 'none',
                 }} />
 
-                {[
-                  {
-                    year: 'i år',
-                    dateLabel: 'nu',
-                    cardName: 'Trygghet',
-                    question: '— När känner du dig som tryggast?',
-                    answer: 'När vi läser sagan och mamma glömmer bort klockan och läser en till.',
-                    opacity: 1,
-                    dotOpacity: 1,
-                  },
-                  {
-                    year: 'om ett år',
-                    dateLabel: 'om ett år',
-                    cardName: 'Att vara stor',
-                    question: '— Vad tycker du om att göra som känns viktigt?',
-                    answer: 'När jag får hjälpa pappa laga mat på riktigt, inte bara låtsas. Och när han frågar mig vad vi ska ha.',
-                    opacity: 0.85,
-                    dotOpacity: 0.85,
-                  },
-                  {
-                    year: 'om två år',
-                    dateLabel: 'om två år',
-                    cardName: 'Rädsla',
-                    question: '— Finns det något du är rädd för som du inte vill att någon ska veta?',
-                    answer: 'Att du ska bli trött på mig när jag är arg. Jag vet att du inte blir det men ibland tänker jag det ändå.',
-                    opacity: 0.70,
-                    dotOpacity: 0.70,
-                  },
-                  {
-                    year: 'om tre år',
-                    dateLabel: 'om tre år',
-                    cardName: 'Att bli sedd',
-                    question: '— När känner du att någon verkligen lyssnar på dig?',
-                    answer: "När du inte försöker fixa det direkt. När du bara säger 'det låter jobbigt' och så sitter vi en stund.",
-                    opacity: 0.55,
-                    dotOpacity: 0.55,
-                  },
-                ].map((row, idx) => {
-                  const accent = getProductAccent('jag_i_mig');
+                {copy.rows.map((row, idx) => {
                   return (
                     <div key={idx}>
                       {/* Year header (replaces month header in preview) */}
@@ -1272,7 +1359,7 @@ export default function Journal() {
                           height: '7px',
                           borderRadius: '50%',
                           backgroundColor: '#E9C890',
-                          opacity: row.dotOpacity,
+                          opacity: row.opacity,
                         }} />
                         <span style={{
                           fontSize: '13px',
@@ -1281,7 +1368,7 @@ export default function Journal() {
                           fontFamily: 'var(--font-display)',
                           fontWeight: 500,
                           lineHeight: 1,
-                          opacity: row.dotOpacity,
+                          opacity: row.opacity,
                         }}>
                           {row.year}
                         </span>
@@ -1316,9 +1403,9 @@ export default function Journal() {
                           opacity: row.opacity,
                         }}>
                           {/* Product illustration — same pattern as NoteEntryCard */}
-                          {PRODUCT_ILLUSTRATION['jag_i_mig'] && (
+                          {PRODUCT_ILLUSTRATION[copy.productId] && (
                             <img
-                              src={PRODUCT_ILLUSTRATION['jag_i_mig']}
+                              src={PRODUCT_ILLUSTRATION[copy.productId]}
                               alt=""
                               aria-hidden="true"
                               style={{
@@ -1343,7 +1430,7 @@ export default function Journal() {
                               alignItems: 'baseline',
                             }}>
                               <span style={{ fontSize: '13px', fontWeight: 600, color: accent.light }}>
-                                Jag i Mig
+                                {copy.productName}
                               </span>
                               <span style={{ fontSize: '11px', color: `${LANTERN_GLOW}77`, marginRight: '52px' }}>
                                 {row.dateLabel}
@@ -1403,7 +1490,7 @@ export default function Journal() {
                 maxWidth: '260px',
                 margin: '0 auto 28px',
               }}>
-                Ett samtal i taget. Ingen bakgrund att ta igen.
+                {copy.closingSub}
               </div>
 
               <button
@@ -1430,7 +1517,8 @@ export default function Journal() {
             <div style={{ height: '100px' }} />
           </div>
         </div>
-      ) : (
+        );
+      })() : (
         <div style={{ flex: 1, overflowY: 'auto', paddingBottom: 'calc(72px + env(safe-area-inset-bottom, 0px))' }}>
           {(() => { hasRenderedContent.current = true; return null; })()}
           {/* (Stats moved to hero section above) */}
