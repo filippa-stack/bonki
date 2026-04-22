@@ -87,6 +87,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             trackPixelEvent('CompleteRegistration');
           }
           savePendingLegalConsent(session.user.id);
+          // Initialize RevenueCat (no-op on web; iOS-only for now)
+          initRevenueCat(session.user.id);
         }
       }
     );
