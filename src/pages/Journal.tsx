@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo, useRef, useLayoutEffect } from 'react';
-import BonkiButton from '@/components/BonkiButton';
+
 import { usePageBackground } from '@/hooks/usePageBackground';
 
 import { motion, AnimatePresence } from 'framer-motion';
