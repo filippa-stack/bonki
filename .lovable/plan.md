@@ -1,32 +1,56 @@
 
 
-## Replace "Detta Kort" with product name on all paywalls
+## Generate 1024×1024 App Store IAP icons for all 7 products
 
-Single, surgical fix. The string `'Detta kort'` lives in exactly one place: the heading fallback in `ProductPaywall.tsx`. It fires whenever the paywall is rendered without a specific `currentCardTitle` — which is what happens on every product home (Jag i Mig, Syskon, Vardagskort, Jag med Andra, Jag i Världen, Sexualitet) when a locked user lands there.
+Apple requires one square 1024×1024 PNG per in-app purchase. Spec: PNG, no alpha, no rounded corners (Apple masks), flat composition, immediately recognizable at small sizes (the icon shows up at ~60×60 in App Store IAP listings).
 
-### The change — `src/components/ProductPaywall.tsx` only
+### Approach
 
-**Heading fallback (line 73):**
-- Before: `const headingText = currentCardTitle || 'Detta kort';`
-- After: `const headingText = currentCardTitle || product.name;`
+Composite each product's existing hero illustration (`src/assets/illustration-*.png`) centered on its brand `backgroundColor`. Same recipe across all seven so they read as a coherent family in the IAP list. No text on the icons (Apple recommends against it — the IAP title is shown beside the icon, and text becomes illegible at thumbnail size).
 
-That's it. One line. The component already receives `product` as a prop, so `product.name` ("Jag i Mig", "Syskonkort", "Vardagskort", "Jag med Andra", "Jag i Världen", "Sexualitetskort") is available everywhere the fallback fires.
+### Mapping (product → illustration → background)
 
-### What this does
+| Product | Illustration asset | Background |
+|---|---|---|
+| Jag i Mig | `illustration-jag-i-mig.png` | `#115D57` |
+| Jag med Andra | `illustration-jag-med-andra.png` | `#721B3A` |
+| Jag i Världen | `illustration-jag-i-varlden.png` | `#606613` |
+| Vardag | `illustration-vardag.png` | `#48A873` |
+| Syskon | `illustration-syskon.png` | `#8E459D` |
+| Närhet & Intimitet | `illustration-sexualitet.png` | `#AF685E` |
+| Vårt Vi | `illustration-still-us.png` | `#4B759B` |
 
-- Locked user opens **Jag i Mig** product home → heading reads **"Jag i Mig"** (not "Detta kort")
-- Locked user opens **Syskonkort** → heading reads **"Syskonkort"**
-- Locked user clicks a **specific locked card** → heading still reads the card title (unchanged behavior — `currentCardTitle` is passed)
+### Composition recipe (identical for all 7)
 
-### Untouched
+- Canvas: 1024×1024, RGB (no alpha), filled with the product `backgroundColor`
+- Illustration: scaled to fit within ~70% of the canvas (≈ 720px box), centered, preserving aspect ratio
+- Subtle radial vignette (multiply blend, ~12% strength) to add depth without breaking the flat aesthetic
+- No text, no logo, no border, no shadow — Apple masks corners and the illustration must carry the recognition
 
-- `currentCardTitle` path (still used when a specific card is tapped — that framing is correct there)
-- Subtitle line ("Ingår i {product} · N samtalsämnen") — separate concern, leave as-is
-- All other "kort" copy across the app — separate concern, leave as-is
-- CTA, pricing, value lines, layout, styling — all unchanged
-- `PaywallFullScreen.tsx`, `PaywallBottomSheet.tsx` — neither uses the "Detta kort" string
+### Output
 
-### Verification
+Seven files in `/mnt/documents/app-store-iap/`:
+- `jag-i-mig-1024.png`
+- `jag-med-andra-1024.png`
+- `jag-i-varlden-1024.png`
+- `vardag-1024.png`
+- `syskon-1024.png`
+- `narhet-intimitet-1024.png`
+- `vart-vi-1024.png`
 
-Open `/?devState=solo` (or any product home as a locked user) → heading shows the product name, not "Detta kort". OTP/Google/payment logic untouched.
+Plus a `README.txt` mapping each file to its IAP product name and product ID for the App Store Connect upload step.
+
+### Build steps (when approved)
+
+1. Python script using Pillow: read each illustration from `src/assets/`, composite onto the brand-colored canvas at the recipe above, save as 1024×1024 RGB PNG (no alpha, sRGB).
+2. QA: open each PNG, verify (a) exact 1024×1024, (b) no alpha channel, (c) illustration centered and not clipped, (d) brand color matches the manifest hex exactly.
+3. If any illustration looks weak at thumbnail size (downscale to 60×60 mentally), adjust scale up to ~80% for that single product and re-render.
+4. Deliver the seven PNGs + README as `<lov-artifact>` tags.
+
+### Not doing
+
+- No new in-app screens, components, or routes.
+- No edits to product manifests or assets.
+- No marketing 1024 app icon (that's a separate Apple requirement — these are IAP icons only, per the request).
+- No text overlays — App Store Connect shows the IAP display name next to the icon already.
 
