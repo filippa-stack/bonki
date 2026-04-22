@@ -553,6 +553,14 @@ export function useProductIntroNeeded(productId: string): { needed: boolean; che
       const { data: { user } } = await supabase.auth.getUser();
       if (cancelled) return;
       if (!user) {
+        // Demo mode: no user, but skip intro so screenshots/dev exploration can render
+        if (typeof window !== 'undefined' &&
+            (window.location.search.includes('demo=1') ||
+             sessionStorage.getItem('bonki-demo-mode') === '1')) {
+          setNeeded(false);
+          setChecked(true);
+          return;
+        }
         // Auth not settled — don't mark checked, keep ProductHome in loading state
         return;
       }
