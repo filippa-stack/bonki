@@ -100,6 +100,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setSession(session);
         setUser(session?.user ?? null);
         setLoading(false);
+        // Cold-start init for already-authenticated users (SIGNED_IN won't fire)
+        if (session?.user) {
+          initRevenueCat(session.user.id);
+        }
       })
       .catch((err) => {
         console.error("[AuthContext] getSession failed:", err);
