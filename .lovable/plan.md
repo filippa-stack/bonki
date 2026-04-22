@@ -1,83 +1,53 @@
 
 
-## Act 1 empty state — corrected markup locked in
+## Act 2 — Preview timeline in Journal empty state
 
-Using your corrected markup verbatim. Single edit to `src/pages/Journal.tsx`, plus removing the now-orphan `BonkiButton` import.
+Single edit to `src/pages/Journal.tsx`. Pure JSX, no new imports, no new hooks. Teal `jag_i_mig` accent confirmed intentional.
 
-### Edit 1 — Replace empty-state JSX
+### Edit — Replace the bottom spacer with Act 2
 
-In `src/pages/Journal.tsx`, inside the `(isEmpty && !hasRenderedContent.current) ? (` branch (around line 1112), replace the existing empty-state markup (the `Inga samtal ännu` block with svg, h2, p, BonkiButton) with:
+In `src/pages/Journal.tsx`, find the spacer added in Prompt 1:
 
 ```tsx
-<div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '0 28px' }}>
-  {/* Act 1 — hero line + sub */}
-  <div style={{ maxWidth: '520px', margin: '0 auto', textAlign: 'left', width: '100%' }}>
-    <h2
-      style={{
-        fontFamily: 'var(--font-display)',
-        fontSize: '28px',
-        fontWeight: 300,
-        lineHeight: 1.22,
-        letterSpacing: '-0.022em',
-        color: LANTERN_GLOW,
-        margin: 0,
-      }}
-    >
-      Det första de säger.
-      <br />
-      Och <em style={{ fontStyle: 'italic', fontWeight: 400, color: DEEP_SAFFRON }}>allt</em> de säger sen.
-    </h2>
-    <p
-      style={{
-        fontFamily: 'var(--font-display)',
-        fontStyle: 'italic',
-        fontSize: '14px',
-        fontWeight: 300,
-        lineHeight: 1.6,
-        color: 'rgba(253, 246, 227, 0.55)',
-        margin: '16px 0 0',
-      }}
-    >
-      Varje svar sparas här. Om tre månader eller tre år kan du bläddra tillbaka och se ditt barn växa.
-    </p>
-  </div>
-  {/* Bottom spacer — Act 2 is added in Prompt 2 */}
-  <div style={{ height: '120px' }} aria-hidden />
-</div>
+{/* Bottom spacer — Act 2 is added in Prompt 2 */}
+<div style={{ height: '120px' }} aria-hidden />
 ```
 
-The condition `(isEmpty && !hasRenderedContent.current)` and the closing `) : (` boundary stay exactly as written.
+Replace it with the Act 2 block from your prompt verbatim:
 
-### Edit 2 — Remove orphan `BonkiButton` import
+- **Heading:** `En röst som växer.` (display, Lantern Glow, italic saffron `växer`) + sub `Olika frågor, olika år. Ett barn som blir sig själv framför dig.` (italic Lantern at 55%).
+- **`Exempel` pill:** top-right, uses `getProductAccent('jag_i_mig').light` for tint/border/text (renders teal — intentional).
+- **Spine:** 1px Lantern-at-12% vertical line at `left: 2.05rem`.
+- **Four preview rows** (`i år`, `om ett år`, `om två år`, `om tre år`) with year-dot in `#E9C890`, `1 samtal` meta-label, and a reflection card matching `NoteEntryCard` 1:1: `${accent.light}22` background, 22px radius, 56×56 illustration top-right at 22% opacity, `Jag i Mig` name in `accent.light`, date label, card-name sub, italicized question prefix, serif answer in `#E9C890` 16px Fraunces.
+- **Opacity fade:** card + dot + year-label step `1.0 → 0.85 → 0.70 → 0.55`.
+- **Closing:** `Börja nu så finns det sen.` (display, italic saffron `sen`) + italic sub `Ett samtal i taget. Ingen bakgrund att ta igen.` + underlined `Så börjar det →` button wired to `navigate('/')`.
+- **Tail:** 100px spacer.
 
-After Edit 1, `BonkiButton` has zero remaining references in `Journal.tsx`. Remove the line:
+The wrapping `</div>` of the empty-state flex container and the `) : (` boundary stay exactly as they are.
 
-```ts
-import BonkiButton from '@/components/BonkiButton';
-```
+### Preconditions verified (no import changes)
 
-### Imports verified
-
-`LANTERN_GLOW` and `DEEP_SAFFRON` are already in the existing `@/lib/palette` import block. No import additions needed.
+- `getProductAccent` defined in-file (line ~229), returns `{ light: '#27A69C', mid, deep }` for `jag_i_mig` — confirmed teal, intentional.
+- `PRODUCT_ILLUSTRATION['jag_i_mig']` resolves to `jimImage` (line ~35).
+- `LANTERN_GLOW`, `DEEP_SAFFRON`, `navigate` already in scope.
+- `NoteEntryCard` (lines 263–393) structure matches the preview cards 1:1 — same background formula, border, radius, shadow, illustration positioning, metadata row, question prefix, serif answer typography.
 
 ### Untouched (protected patterns)
 
-- `(isEmpty && !hasRenderedContent.current)` condition — unchanged
-- `hasRenderedContent.current` ref pattern — unchanged, still appears exactly twice
-- Hero header (`Era samtal` + italic subtitle) lines ~1013–1038 — unchanged
-- Stats narrative + filter pills lines ~1041–1107 — unchanged
-- Data-fetching `useEffect` lines ~637–694 — unchanged
-- All `useMemo` blocks (`allTimelineItems`, `visibleItems`, `groupedItems`, `monthGroups`) — unchanged
-- Populated-state branch starting at the `) : (` after the empty branch — unchanged
-- `AnimatePresence mode="wait"` — unchanged
-- No `key={location.pathname}` added
-- No `100dvh` introduced
+- `(isEmpty && !hasRenderedContent.current)` condition + ref pattern (still appears exactly twice)
+- Loading branch, populated branch, hero header, stats narrative, filter pills
+- Data-fetching `useEffect`, all `useMemo` blocks, `AnimatePresence mode="wait"`
+- `getProductAccent` and `PRODUCT_ILLUSTRATION` definitions
+- No new imports, no `motion.*`, no new `useState`/`useEffect`/`useMemo`
+- No `100dvh`, no `key={location.pathname}`
 - No changes to `useSessionReflections.ts`, `CardView.tsx`, `useNormalizedSessionState.ts`, `SessionStepReflection.tsx`
 
 ### Post-edit verification
 
-1. `hasRenderedContent.current` appears exactly twice in `Journal.tsx`.
-2. TypeScript compiles cleanly, no orphan import warning.
-3. Empty state renders: hero `Era samtal` at top, then the new headline (Lantern Glow display, `allt` italic in Deep Saffron), then the italic Lantern-at-55% sub line, with a 120px bottom spacer reserving room for Prompt 2's Act 2.
-4. Completing one reflection brings the populated timeline back — the new empty state does not flash.
+1. TypeScript compiles cleanly.
+2. `getProductAccent` appears multiple times in `Journal.tsx` (definition + existing `NoteEntryCard` usage + new Act 2 usages for pill and four card rows).
+3. `hasRenderedContent.current` still appears exactly twice.
+4. Empty state for a fresh user: Act 1 hero → Act 2 heading → teal `Exempel` pill → four teal Jag i Mig cards with faded illustration top-right and serif `#E9C890` answers, fading 1.0 → 0.55 → closing line + `Så börjar det →` link.
+5. Tapping `Så börjar det →` navigates to `/`.
+6. Completing one real reflection swaps the empty state for the populated timeline; preview cards' visual structure is identical to real ones.
 
