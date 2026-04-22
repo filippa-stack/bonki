@@ -42,7 +42,9 @@ export default function Login() {
   const [otpCode, setOtpCode] = useState('');
   const [verifying, setVerifying] = useState(false);
   const [resendCooldown, setResendCooldown] = useState(0);
+  const [appleLoading, setAppleLoading] = useState(false);
   const cooldownRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const isNative = Capacitor.isNativePlatform();
 
   useEffect(() => {
     return () => {
