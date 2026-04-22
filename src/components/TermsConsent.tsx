@@ -10,32 +10,43 @@ import {
 } from '@/components/ui/dialog';
 
 interface TermsConsentProps {
-  checked: boolean;
-  onCheckedChange: (checked: boolean) => void;
+  checked?: boolean;
+  onCheckedChange?: (checked: boolean) => void;
+  /** When true, renders just the inline links + dialogs (no checkbox). */
+  linksOnly?: boolean;
+  /** Custom className for the inline-links wrapper text. */
+  className?: string;
+  /** Override link styles in linksOnly mode. */
+  linkClassName?: string;
 }
 
-export default function TermsConsent({ checked, onCheckedChange }: TermsConsentProps) {
+export default function TermsConsent({
+  checked = false,
+  onCheckedChange,
+  linksOnly = false,
+  className,
+  linkClassName,
+}: TermsConsentProps) {
   const { t } = useTranslation();
   const [termsOpen, setTermsOpen] = useState(false);
   const [privacyOpen, setPrivacyOpen] = useState(false);
 
+  const linkBase =
+    linkClassName ??
+    'underline underline-offset-2 text-foreground hover:text-primary transition-colors';
+
   return (
     <>
-      <div className="flex items-start gap-3">
-        <Checkbox
-          id="terms"
-          checked={checked}
-          onCheckedChange={(val) => onCheckedChange(val === true)}
-          className="mt-0.5"
-        />
-        <label htmlFor="terms" className="text-sm text-muted-foreground leading-relaxed cursor-pointer">
+      {linksOnly ? (
+        <p className={className ?? 'text-xs text-muted-foreground leading-relaxed'}>
           <Trans
-            i18nKey="login.terms_checkbox"
+            i18nKey="login.terms_inline"
+            defaults="Genom att fortsätta godkänner du våra <termsLink>Villkor</termsLink> och <privacyLink>Integritetspolicy</privacyLink>."
             components={{
               termsLink: (
                 <button
                   type="button"
-                  className="underline text-foreground hover:text-primary transition-colors"
+                  className={linkBase}
                   onClick={(e) => {
                     e.preventDefault();
                     setTermsOpen(true);
@@ -45,7 +56,7 @@ export default function TermsConsent({ checked, onCheckedChange }: TermsConsentP
               privacyLink: (
                 <button
                   type="button"
-                  className="underline text-foreground hover:text-primary transition-colors"
+                  className={linkBase}
                   onClick={(e) => {
                     e.preventDefault();
                     setPrivacyOpen(true);
@@ -54,8 +65,44 @@ export default function TermsConsent({ checked, onCheckedChange }: TermsConsentP
               ),
             }}
           />
-        </label>
-      </div>
+        </p>
+      ) : (
+        <div className="flex items-start gap-3">
+          <Checkbox
+            id="terms"
+            checked={checked}
+            onCheckedChange={(val) => onCheckedChange?.(val === true)}
+            className="mt-0.5"
+          />
+          <label htmlFor="terms" className="text-sm text-muted-foreground leading-relaxed cursor-pointer">
+            <Trans
+              i18nKey="login.terms_checkbox"
+              components={{
+                termsLink: (
+                  <button
+                    type="button"
+                    className="underline text-foreground hover:text-primary transition-colors"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setTermsOpen(true);
+                    }}
+                  />
+                ),
+                privacyLink: (
+                  <button
+                    type="button"
+                    className="underline text-foreground hover:text-primary transition-colors"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setPrivacyOpen(true);
+                    }}
+                  />
+                ),
+              }}
+            />
+          </label>
+        </div>
+      )}
 
       <Dialog open={termsOpen} onOpenChange={setTermsOpen}>
         <DialogContent className="max-w-lg max-h-[80vh] flex flex-col">
