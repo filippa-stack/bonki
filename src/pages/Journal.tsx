@@ -22,6 +22,7 @@ import { allProducts } from '@/data/products';
 import { isDemoMode } from '@/lib/demoMode';
 import { useDevState } from '@/contexts/DevStateContext';
 import { DEMO_DIARY_EVENT } from '@/lib/demoDiary';
+import { maybeSeedDemoJournal } from '@/lib/demoJournalSeed';
 
 import jimImage from '@/assets/illustration-jag-i-mig.png';
 import jmaImage from '@/assets/illustration-jag-med-andra.png';
@@ -616,6 +617,7 @@ export default function Journal() {
   useLayoutEffect(() => {
     document.documentElement.classList.remove('theme-verdigris');
     document.body.classList.remove('verdigris-grain', 'verdigris-lightleak');
+    maybeSeedDemoJournal();
   }, []);
   usePageBackground(MIDNIGHT_INK);
   const navigate = useNavigate();
