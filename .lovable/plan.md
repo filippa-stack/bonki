@@ -1,79 +1,86 @@
 
 
-## v3 — Real session captures + finalized 10-frame gallery
+## v4 — Final captions, reorder, and refined typography (revised)
 
-Locking in the gallery with **4 new live-app session captures** plus the 6 vibrant product portals you already approved. Total: 10 frames × 3 device sizes = 30 PNGs.
+Two corrections incorporated from your review. Plan otherwise unchanged.
 
-### Final 10-frame lineup
+### Correction 1 — Remove the `\n` on screen 10's headline
 
-| # | Surface | Source | Why it sells |
-|---|---|---|---|
-| 1 | Vårt Vi product home | `/product/still-us?demo=1` (already captured) | Flagship product hero |
-| 2 | Jag i Mig portal | already captured | Vibrant emotion grid |
-| 3 | Jag med Andra portal | already captured | Pink palette, harder topics |
-| 4 | Vardagskort portal | already captured | Mint everyday warmth |
-| 5 | Syskonkort portal | already captured | Lavender, niche differentiator |
-| 6 | Jag i Världen portal | already captured | Lime, teen-facing |
-| 7 | **Vårt Vi opening prompt (couple session)** | `/card/su-card-1?demo=1` | Sells the monumental, calm flagship moment |
-| 8 | **Reflection step with "✓ Sparat"** | same card, step=1 | Proves writing depth — not a quiz |
-| 9 | **Jag i Mig session — "Hur känns det i kroppen att vara trygg?"** | `/card/jim-trygg?demo=1` | Strongest kids hook: Teal full-bleed + body-aware question lands instantly with parents |
-| 10 | **Era samtal / Journal archive** | `/journal?demo=1` with seeded mock entries | Retention story: "your relationship has a record" |
+You're right. *"Köp en gång. Behåll för alltid."* is a call-and-response couplet, not a setup-and-payoff line. Breaking it dilutes the rhythm and leaves the closer feeling unresolved. It renders as **one line, no manual break**.
 
-### Why these 4 new frames work
+If the binary-search size doesn't fit it on one line at 1098px column width, the answer is to lower the locked size until it does — not to force a break. At 31 characters in Noto Serif Display, this will fit comfortably anywhere in the 60–72pt range we're targeting; in practice it won't be the binding constraint.
 
-- **Frames 7+8** (Vårt Vi session + reflection): Buyers see the actual session UX they're paying 249 kr for.
-- **Frame 9** (Jim-trygg): Picked because "Hur känns det i kroppen att vara trygg?" is the single most universally moving prompt across the kids manifests — body-aware, non-clinical, instantly recognizable to any parent. Teal full-bleed is also the most vibrant possible frame in the gallery.
-- **Frame 10** (Era samtal): Without this, no one understands they're building something lasting. With it, the 249 kr feels like an investment, not a fee.
+### Correction 2 — Scope the em-dash spacing assertion conditionally
 
-### Technical approach
+The em-dash guard becomes:
 
-**1. Extend demo-mode bypass to 3 more route gates**
+```python
+for s in all_caption_strings:
+    if "\u2014" in s:
+        assert " \u2014 " in s, f"em-dash without surrounding spaces: {s!r}"
+```
 
-The product-home capture worked because v2 added a demo-mode short-circuit in `useProductIntroNeeded`. Same pattern needs to extend to:
+So it only fires on strings that actually contain `—`. Strings without em-dashes pass through silently. The earlier global assertion was wrong and would have aborted the build on false positives.
 
-- `CardView.tsx` — currently requires authenticated session. Add demo-mode branch that mounts the card with seeded prompt data + a fake "active session" state, no Supabase calls.
-- `Journal.tsx` — currently requires authenticated user to query reflections. Add demo-mode branch that renders the editorial timeline with 4-5 hardcoded mock entries (Vårt Vi + Jag i Mig + Vardag samples).
-- Reflection step: existing `?__sc_dev_step=1` URL param already works inside CardView once the card mounts.
+The byte-diff against `EXPECTED` remains the primary correctness gate — it catches any drift in any character, em-dashes or otherwise. The conditional check is a secondary guard specifically for the Swedish typographic convention.
 
-All bypasses gated on `isDemoMode()` which only activates with `?demo=1` — zero impact on real users, no security surface.
+### Updated headline manual-break map (locked, editorial)
 
-**2. Capture pass**
+| Pos | Headline | Break |
+|---|---|---|
+| 1 | Guidade samtal som för er närmare. | none |
+| 2 | För relationerna som betyder mest. | none |
+| 3 | För det som är svårt att säga högt. | none |
+| 4 | Hjälper barn sätta ord på det de känner. | none (fits at locked size) |
+| 5 | Ett eget språk för syskonen. | none |
+| 6 | Små samtal mitt i vardagen. | none |
+| 7 | När världen blir större — ord för att förstå den. | `\n` after `större —` |
+| 8 | Barnen får sin egen röst. | none |
+| 9 | Vem ditt barn var — inte bara bilderna av dem. | `\n` after `var —` |
+| 10 | **Köp en gång. Behåll för alltid.** | **none — single-line couplet** |
 
-Drive the browser tool to each of the 4 new routes in sequence at the largest portrait viewport the tool supports (likely 414×896, snap-confirmed during run). Wait for illustration WebPs to decode before each screenshot. Mask any browser chrome / dev badges.
+### Updated subline manual-break map (unchanged from prior pass)
 
-**3. Composite**
+| Pos | Subline | Break |
+|---|---|---|
+| 9 | Era samtal sparas. Det de sa, det ni delade, det ni annars hade glömt. | `\n` after `sparas.` |
+| all others | — | none |
 
-Each capture flows through the same Pillow pipeline used for v2:
-- Tonal vibrant backdrop matched to product palette (Cobalt for Vårt Vi shots, Teal for jim-trygg, Saffron-on-Cobalt for journal)
-- Headline space above (placeholder Swedish strings — you finalize captions in next pass)
-- Output at 1290×2796 (6.9"), 1290×2796 (6.7"), 1242×2688 (6.5")
+### Everything else — locked from prior plan
 
-**4. Re-bundle**
+- One global headline pt size, binary-searched against the longest post-wrap line. Expected landing 64–72pt. No per-frame auto-fit.
+- Subline at 34pt Inter, Lantern Glow at 78% opacity, 2-line max.
+- Byte-diff against `EXPECTED` constant aborts the build on any character drift.
+- Em-dash conditional guard (corrected per above).
+- Reorder map old→new exactly as previously approved (positions 1–10 mapped to source captures).
+- Same v3 captures reused — no recapture, no relayout, no app-code changes.
+- Composite for all 3 device sizes (1290×2796 ×2, 1242×2688).
+- `_contact-sheet.png` regenerated in 1→10 order.
+- `_capture-log.md` documents reorder map, locked headline pt size, manual-break decisions, byte-diff confirmation.
 
-Replace the 6-frame v2 with the full 10-frame `app-store-gallery-v3.zip`:
-- `6.9-inch/01…10.png`
-- `6.7-inch/01…10.png`
-- `6.5-inch/01…10.png`
+### Deliverable
+
+`/mnt/documents/app-store-gallery-v4.zip`:
+- `6.9-inch/01-vart-vi-opening.png … 10-journal.png` (1290×2796)
+- `6.7-inch/01…10.png` (1290×2796)
+- `6.5-inch/01…10.png` (1242×2688)
 - `_contact-sheet.png`
-- `_capture-log.md` documenting route + dev state per frame
+- `_capture-log.md`
 
 ### QA gate
 
-Same 8-point checklist used for v2:
-1–6: Vibrance, frame geometry, illustration sharpness, type quality, backdrop balance, consistency
-7. Authenticity: every frame inside the device area is a real bonki.lovable.app capture (logged)
-8. No mockup artifacts inside the frame
+1. Order matches positions 1–10 (filename + visual)
+2. All 10 headlines byte-exact (diff vs `EXPECTED`)
+3. All 10 sublines byte-exact (same diff)
+4. No "Bonki" in caption layer
+5. No emoji, !, #
+6. Headline + subline render as two distinct visual elements
+7. All Swedish
+8. All ten headlines render at one locked pt size (logged)
+9. Em-dashes are U+2014 with surrounding spaces preserved (conditional check + byte diff)
+10. Manual breaks present only on screens 7, 9 headlines and screen 9 subline. Screen 10 headline renders as a single line.
 
-Plus one new check specific to this pass:
-9. Mock journal entries read as plausible real reflections — not lorem, not too on-the-nose marketing copy. Drafted in your editorial voice.
+### Out-of-scope confirmation
 
-### Honest scope notes
-
-- The journal mock entries are *fabricated content*, but they live inside the real Journal UI. Apple permits placeholder user-generated content in screenshots provided the UI itself is authentic — same standard Notion, Things, Bear use for their gallery shots. I'll keep the entries short, neutral, and clearly written in Bonki's voice.
-- The kids session frame uses a card you do ship (`jim-trygg`) — no fabrication in the prompt itself.
-- Demo-mode bypass code is gated behind `?demo=1` and `isDemoMode()` — invisible to all real users, safe to keep in the codebase or remove after capture (your call after v3 ships).
-
-### Pass after v3
-
-You review the contact sheet, send me the 10 final Swedish captions (or approve drafts), I regenerate as `v4` with text-only swaps. No re-capture, no re-layout.
+No app code, no in-app strings, no recapture, no relayout. Composite script and ZIP only.
 
