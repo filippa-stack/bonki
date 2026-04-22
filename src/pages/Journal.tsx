@@ -617,6 +617,7 @@ export default function Journal() {
   useLayoutEffect(() => {
     document.documentElement.classList.remove('theme-verdigris');
     document.body.classList.remove('verdigris-grain', 'verdigris-lightleak');
+    maybeSeedDemoJournal();
   }, []);
   usePageBackground(MIDNIGHT_INK);
   const navigate = useNavigate();
