@@ -4,13 +4,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { lovable } from '@/integrations/lovable/index';
 import { supabase } from '@/integrations/supabase/client';
-import { useSiteSettings } from '@/contexts/SiteSettingsContext';
 import { Loader2, Eye, Mail, ArrowLeft } from 'lucide-react';
 import { isDemoParam, enterDemoMode } from '@/lib/demoMode';
 import { MIDNIGHT_INK, LANTERN_GLOW } from '@/lib/palette';
 import bonkiLogo from '@/assets/bonki-logo-transparent.png';
 import bonkiWordmark from '@/assets/bonki-wordmark.png';
-
 
 import TermsConsent from '@/components/TermsConsent';
 import { TERMS_VERSION, PRIVACY_VERSION } from '@/lib/legal';
@@ -24,14 +22,15 @@ const ORANGE_SHADOW = [
   'inset 0 -2px 6px rgba(0, 0, 0, 0.12)',
 ].join(', ');
 
+// Focus ring using LANTERN_GLOW token — applied via style on focus events
+const FOCUS_RING = `0 0 0 2px ${LANTERN_GLOW}`;
+const SOFT_BORDER = '1px solid rgba(253, 246, 227, 0.15)';
+
 export default function Login() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [termsAccepted, setTermsAccepted] = useState(false);
-  const [termsError, setTermsError] = useState(false);
-  const { settings } = useSiteSettings();
 
   // Email flow state
   const [showEmailForm, setShowEmailForm] = useState(false);
@@ -62,15 +61,7 @@ export default function Login() {
     }, 1000);
   };
 
-  const checkTerms = () => {
-    if (!termsAccepted) {
-      setTermsError(true);
-      return false;
-    }
-    setTermsError(false);
-    return true;
-  };
-
+  // Implicit consent on action — same legal posture Apple/Linear use.
   const saveConsent = () => {
     const consentTimestamp = new Date().toISOString();
     localStorage.setItem('pending-legal-consent', JSON.stringify({
@@ -80,7 +71,6 @@ export default function Login() {
   };
 
   const handleGoogleSignIn = async () => {
-    if (!checkTerms()) return;
     setLoading(true);
     setError(null);
     saveConsent();
@@ -103,7 +93,6 @@ export default function Login() {
   };
 
   const handleEmailSignIn = async () => {
-    if (!checkTerms()) return;
     if (!email.trim()) return;
     setLoading(true);
     setError(null);
@@ -175,53 +164,58 @@ export default function Login() {
     }
   };
 
+  const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+    e.currentTarget.style.boxShadow = FOCUS_RING;
+    e.currentTarget.style.borderColor = 'rgba(253, 246, 227, 0.35)';
+  };
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    e.currentTarget.style.boxShadow = 'none';
+    e.currentTarget.style.borderColor = 'rgba(253, 246, 227, 0.15)';
+  };
+
   return (
     <div
-      className="min-h-screen flex flex-col items-center px-6"
+      className="min-h-screen flex flex-col items-center justify-center px-6"
       style={{
-        paddingTop: '28vh',
-        paddingBottom: '24px',
         backgroundColor: MIDNIGHT_INK,
+        paddingTop: 'max(env(safe-area-inset-top), 24px)',
+        paddingBottom: 'max(env(safe-area-inset-bottom), 24px)',
       }}
     >
-      <motion.div
-        initial={false}
-        animate={{ opacity: 1 }}
-        className="w-full max-w-xs text-center"
-        style={{ marginTop: '-80px' }}
-      >
-        <motion.img
+      <div className="w-full max-w-[320px] flex flex-col items-center text-center">
+        {/* Brand mark */}
+        <img
           src={bonkiLogo}
           alt="Bonki"
-          initial={false}
-          animate={{ opacity: 1, scale: 1 }}
-          style={{ width: 120, height: 120, margin: '0 auto 16px', objectFit: 'contain' }}
+          style={{ width: 112, height: 112, objectFit: 'contain' }}
         />
 
-        <motion.div initial={false} animate={{ opacity: 1 }}>
-          <img
-            src={bonkiWordmark}
-            alt="BONKI"
-            style={{ maxHeight: '60px', width: 'auto', objectFit: 'contain', margin: '0 auto', display: 'block' }}
-          />
-          <p
-            className="font-serif italic"
-            style={{ fontSize: '22px', color: 'rgba(212, 245, 192, 0.85)', textAlign: 'center', marginTop: '4px' }}
-          >
-            På riktigt.
-          </p>
-          <p style={{
+        {/* Wordmark + promise (two voices, not three) */}
+        <img
+          src={bonkiWordmark}
+          alt="BONKI"
+          style={{
+            maxHeight: 56,
+            width: 'auto',
+            objectFit: 'contain',
+            display: 'block',
+            marginTop: 16,
+          }}
+        />
+        <p
+          style={{
             fontFamily: 'var(--font-sans)',
-            fontSize: '14px',
-            color: 'rgba(253, 246, 227, 0.65)',
-            textAlign: 'center',
-            marginTop: '12px',
-          }}>
-            Verktyg för samtalen som vill bli av
-          </p>
-        </motion.div>
+            fontSize: 14,
+            color: 'rgba(253, 246, 227, 0.7)',
+            marginTop: 12,
+            lineHeight: 1.5,
+          }}
+        >
+          Verktyg för samtalen som vill bli av
+        </p>
 
-        <motion.div initial={false} animate={{ opacity: 1 }} style={{ marginTop: '40px' }}>
+        {/* CTA stack */}
+        <div className="w-full" style={{ marginTop: 40 }}>
           <AnimatePresence mode="wait">
             {otpSent ? (
               <motion.div
@@ -233,24 +227,21 @@ export default function Login() {
               >
                 <button
                   onClick={() => { setOtpSent(false); setOtpCode(''); setError(null); }}
-                  className="flex items-center gap-1 text-sm mb-2"
-                  style={{ color: 'rgba(253, 246, 227, 0.6)' }}
+                  className="flex items-center gap-1 text-sm self-start"
+                  style={{ color: 'rgba(253, 246, 227, 0.6)', background: 'none', border: 'none', cursor: 'pointer' }}
                 >
                   <ArrowLeft className="w-4 h-4" />
                   Tillbaka
                 </button>
 
-                <div style={{ 
-                  textAlign: 'center',
-                  padding: '8px 0',
-                }}>
-                  <p style={{ fontFamily: 'var(--font-sans)', fontSize: '15px', color: 'rgba(253, 246, 227, 0.85)', lineHeight: 1.6 }}>
+                <div style={{ textAlign: 'center' }}>
+                  <p style={{ fontFamily: 'var(--font-sans)', fontSize: 15, color: 'rgba(253, 246, 227, 0.85)', lineHeight: 1.6 }}>
                     Vi har skickat en kod till
                   </p>
-                  <p style={{ fontFamily: 'var(--font-sans)', fontSize: '15px', color: 'rgba(212, 245, 192, 0.9)', fontWeight: 500, marginTop: '4px' }}>
+                  <p style={{ fontFamily: 'var(--font-sans)', fontSize: 15, color: 'rgba(212, 245, 192, 0.9)', fontWeight: 500, marginTop: 4 }}>
                     {email}
                   </p>
-                  <p style={{ fontFamily: 'var(--font-sans)', fontSize: '14px', color: 'rgba(253, 246, 227, 0.6)', marginTop: '16px', lineHeight: 1.5 }}>
+                  <p style={{ fontFamily: 'var(--font-sans)', fontSize: 14, color: 'rgba(253, 246, 227, 0.6)', marginTop: 16, lineHeight: 1.5 }}>
                     Ange den 6-siffriga koden nedan.
                   </p>
                 </div>
@@ -262,16 +253,18 @@ export default function Login() {
                   maxLength={6}
                   value={otpCode}
                   onChange={(e) => { const v = e.target.value.replace(/\D/g, '').slice(0, 6); setOtpCode(v); setError(null); }}
+                  onFocus={handleFocus}
+                  onBlur={handleBlur}
                   placeholder="000000"
-                  className="w-full h-14 text-center text-2xl tracking-[0.5em] rounded-xl border-0 outline-none"
+                  className="w-full h-14 text-center text-2xl tracking-[0.5em] rounded-xl outline-none"
                   style={{
                     background: 'rgba(255, 255, 255, 0.08)',
                     color: '#FDF6E3',
                     caretColor: '#FDF6E3',
                     fontFamily: 'var(--font-sans)',
                     fontWeight: 600,
-                    border: '1px solid rgba(253, 246, 227, 0.2)',
-                    marginTop: '8px',
+                    border: SOFT_BORDER,
+                    transition: 'box-shadow 150ms ease, border-color 150ms ease',
                   }}
                   autoFocus
                 />
@@ -283,13 +276,12 @@ export default function Login() {
                   style={{
                     background: ORANGE_GRADIENT,
                     boxShadow: ORANGE_SHADOW,
-                    marginTop: '8px',
                   }}
                 >
                   {verifying ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Verifiera'}
                 </button>
 
-                <p style={{ fontFamily: 'var(--font-sans)', fontSize: '13px', color: 'rgba(253, 246, 227, 0.4)', marginTop: '12px', lineHeight: 1.5 }}>
+                <p style={{ fontFamily: 'var(--font-sans)', fontSize: 13, color: 'rgba(253, 246, 227, 0.4)', lineHeight: 1.5 }}>
                   Hittar du inte mejlet? Kolla din skräppost.
                 </p>
 
@@ -312,7 +304,7 @@ export default function Login() {
               >
                 <button
                   onClick={() => { setShowEmailForm(false); setError(null); }}
-                  className="flex items-center gap-1 text-sm mb-2 self-start"
+                  className="flex items-center gap-1 text-sm mb-1 self-start"
                   style={{ color: 'rgba(253, 246, 227, 0.6)', background: 'none', border: 'none', cursor: 'pointer' }}
                 >
                   <ArrowLeft className="w-4 h-4" />
@@ -325,12 +317,15 @@ export default function Login() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && handleEmailSignIn()}
-                  className="w-full h-14 px-4 text-base rounded-xl border-0 outline-none"
+                  onFocus={handleFocus}
+                  onBlur={handleBlur}
+                  className="w-full h-14 px-4 text-base rounded-xl outline-none"
                   style={{
                     background: 'rgba(255, 255, 255, 0.08)',
                     color: '#F5EFE6',
                     fontFamily: 'var(--font-sans)',
-                    border: '1px solid rgba(253, 246, 227, 0.15)',
+                    border: SOFT_BORDER,
+                    transition: 'box-shadow 150ms ease, border-color 150ms ease',
                   }}
                 />
 
@@ -376,24 +371,13 @@ export default function Login() {
                   Fortsätt med Google
                 </button>
 
-                <p style={{
-                  fontFamily: 'var(--font-sans)',
-                  fontSize: '13px',
-                  color: 'rgba(253, 246, 227, 0.5)',
-                  textAlign: 'center',
-                  marginTop: '8px',
-                }}>
-                  Fungerar med alla e-postadresser — inte bara Gmail.
-                </p>
-
                 <button
-                  onClick={() => { if (checkTerms()) setShowEmailForm(true); }}
+                  onClick={() => setShowEmailForm(true)}
                   className="w-full h-14 flex items-center justify-center gap-2 text-base font-medium rounded-xl"
                   style={{
                     color: 'rgba(245, 237, 210, 0.8)',
                     border: '1px solid rgba(255,255,255,0.15)',
                     background: 'rgba(255, 255, 255, 0.06)',
-                    marginTop: '4px',
                   }}
                 >
                   <Mail className="w-5 h-5" />
@@ -405,10 +389,9 @@ export default function Login() {
                     onClick={() => { enterDemoMode(); navigate('/', { replace: true }); }}
                     className="w-full h-14 flex items-center justify-center gap-2 text-base font-medium rounded-xl"
                     style={{
-                      color: 'rgba(245, 237, 210, 0.6)',
-                      border: '1px dashed rgba(255,255,255,0.15)',
-                      background: 'none',
-                      marginTop: '4px',
+                      color: 'rgba(245, 237, 210, 0.55)',
+                      border: '1px solid rgba(255,255,255,0.10)',
+                      background: 'rgba(255, 255, 255, 0.04)',
                     }}
                   >
                     <Eye className="w-5 h-5" />
@@ -419,24 +402,27 @@ export default function Login() {
             )}
           </AnimatePresence>
 
-          <div className={`text-center mt-5 transition-transform duration-200 ${termsError ? 'animate-[shake_0.3s_ease-in-out]' : ''}`}>
-            <div className="[&_label]:text-[rgba(245,237,210,0.6)] [&_button]:text-[rgba(212,245,192,0.7)] [&_button[role=checkbox]]:border-[rgba(253,246,227,0.3)] [&_button[role=checkbox]]:bg-[rgba(255,255,255,0.1)] [&_button[role=checkbox][data-state=checked]]:bg-[#E85D2C] [&_button[role=checkbox][data-state=checked]]:border-[#E85D2C] [&_button[role=checkbox]]:h-5 [&_button[role=checkbox]]:w-5">
-              <TermsConsent checked={termsAccepted} onCheckedChange={(val) => { setTermsAccepted(val); if (val) setTermsError(false); }} />
+          {/* Inline consent — only on main screen, not OTP/email sub-flows */}
+          {!otpSent && (
+            <div style={{ marginTop: 20 }}>
+              <TermsConsent
+                linksOnly
+                className="text-xs leading-relaxed"
+                linkClassName="underline underline-offset-2 transition-colors"
+              />
             </div>
-            {termsError && (
-              <p className="text-xs mt-2" style={{ color: '#E85D2C' }}>{t('login.terms_required')}</p>
-            )}
-          </div>
-
-          <p style={{ fontFamily: 'var(--font-sans)', fontSize: '13px', color: 'rgba(253, 246, 227, 0.35)', textAlign: 'center', marginTop: '20px' }}>
-            Logga in för att använda dina produkter.
-          </p>
+          )}
 
           {error && (
             <p className="text-sm mt-4" style={{ color: '#E85D2C' }}>{error}</p>
           )}
-        </motion.div>
-      </motion.div>
+        </div>
+      </div>
+
+      <style>{`
+        .text-xs.leading-relaxed { color: rgba(253, 246, 227, 0.45); }
+        .text-xs.leading-relaxed button { color: rgba(212, 245, 192, 0.75); }
+      `}</style>
     </div>
   );
 }
