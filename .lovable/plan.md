@@ -1,75 +1,47 @@
 
 
-## Add `delete_user_account(p_user_id uuid)` SQL function
+## Login page — lift from 7/10 to 10/10
 
-Single new migration. Defines a `SECURITY DEFINER` function that wipes every row owned by a user across the schema. Does not touch `auth.users` (Prompt 4's edge function handles that). Locked to `service_role` only.
+Tighten the hierarchy so the page reads as one calm gesture: brand → promise → one CTA → quiet alternative → invisible consent. Cut filler. Make spacing robust across viewports.
 
-### Ownership decision
+### Changes — `src/pages/Login.tsx` only
 
-Drop the explicit `ALTER FUNCTION ... OWNER TO postgres;` line. Supabase migrations run as `postgres`, so `CREATE FUNCTION` already produces a postgres-owned function — and every other `SECURITY DEFINER` function in this schema (`is_couple_member`, `advance_card`, `complete_couple_session_step`, etc.) was created the same way and is correctly owned. The explicit ALTER is a no-op in the common case and a potential deploy-blocker in less common environments. If ownership ever drifts (unlikely), a one-line follow-up migration fixes it.
+**1. Replace the consent checkbox with inline fine-print under the CTAs.**
+- Remove the `TermsConsent` checkbox block, the `termsAccepted` / `termsError` state, the shake animation, and the `checkTerms()` gate.
+- Below the email button, render one line: "Genom att fortsätta godkänner du våra [Villkor] och [Integritetspolicy]." Both links open the same dialogs `TermsConsent` already provides — extract those dialogs into a small inline component or reuse `TermsConsent` in a "links-only" mode.
+- `saveConsent()` still fires on Google/email tap (implicit consent on action, timestamped — same legal posture Apple/Linear use).
+- Result: no punishment state, no red errors, no shake. The page never tells the user they did something wrong.
 
-### Live schema verification
+**2. Cut the dead footer line.**
+- Delete "Logga in för att använda dina produkter." It adds nothing.
 
-All 32 tables in the delete order exist on Live (`spgknasuinxmvyrlpztx`). Function will compile cleanly. The legacy `couple_*` tables haven't been dropped — they're still actively read/written by existing RPCs (`advance_card`, `complete_slider_checkin`, `acquire_session_lock`). Including them in cleanup is correct, not precautionary.
+**3. Collapse the three-voice header to two voices.**
+- Keep: wordmark image + "Verktyg för samtalen som vill bli av" (the product promise).
+- Drop: "På riktigt." — it's brand mood that competes with the promise. The wordmark already carries the brand.
+- Rebalance spacing: 12px between wordmark and promise instead of the current 4px italic + 12px stack.
 
-### Schema corrections vs prompt pseudo-code
+**4. Move the Gmail reassurance, or cut it.**
+- Recommendation: cut. In 2026 it's noise. If kept, move it to sit *directly under* the email button as a 12px caption, not between the two CTAs.
 
-1. **`v_couple_id` is `varchar`, not `uuid`** — `couple_state.couple_id`, `initiator_id`, `partner_id` are all `character varying`.
-2. **Three tables key `user_id` as varchar** — `couple_state.initiator_id/partner_id`, `threshold_mood.user_id`, `user_card_state.user_id`. Function casts `p_user_id::text` against these.
-3. **`card_takeaways` (child of `card_sessions`) must be deleted before `card_sessions`** — wasn't in the prompt's list. Added via subquery on `card_sessions.couple_space_id = v_space_id`.
+**5. Fix vertical rhythm — robust across viewports.**
+- Replace `paddingTop: 28vh` + `marginTop: -80px` with a flex column: `justify-center`, `min-h-screen`, `safe-area-inset` padding top/bottom, max content width 320px. Logo sits naturally in the upper-middle on every device, CTAs in the lower-middle, fine print at the bottom.
 
-### File to CREATE
+**6. Strip dead motion code.**
+- Remove all `motion.div` / `motion.img` wrappers that have `initial={false}` and animate to their current state. Keep `AnimatePresence` only for the email-form / OTP-form swap (that one earns its weight).
+- Drop the `motion` and `AnimatePresence` imports if no longer used.
 
-`supabase/migrations/<timestamp>_delete_user_account_function.sql`
+**7. Add focus-visible rings to inputs.**
+- Email + OTP inputs get a 2px `LANTERN_GLOW` ring on `:focus-visible`. Matches the brand and meets accessibility standards.
 
-### Function shape
+**8. Demo button — match the rhythm.**
+- If shown, use the same solid-faint background as the email button (not dashed). Keep the lower opacity to signal secondary status.
 
-- `public.delete_user_account(p_user_id uuid) RETURNS void`
-- `LANGUAGE plpgsql`, `SECURITY DEFINER`, `SET search_path = public`
-- Declares `v_space_id uuid`, `v_couple_id varchar`
-- Resolves both via `SELECT INTO`; both may be null (idempotent on users with no data)
+### Untouched
+- `TermsConsent.tsx` dialog content (reused for the inline links).
+- `handleGoogleSignIn`, `handleEmailSignIn`, `handleVerifyOtp`, `handleResend` logic.
+- OTP screen layout (already strong — back arrow, masked email, resend cooldown).
+- Brand assets, color tokens, copy in Swedish.
 
-### Delete order (children → parents)
-
-1. Session/reflection children — `step_reflections`, `couple_takeaways`, `couple_session_completions`, `couple_session_steps`, `card_takeaways` (subquery), `couple_sessions`, `card_sessions`
-2. Per-user content — `couple_card_visits`, `couple_journey_meta`, `couple_progress`, `question_bookmarks`, `topic_proposals`, `reflection_responses`, `prompt_notes`, `onboarding_events`, `beta_feedback`, `system_events`
-3. Varchar-keyed (cast `p_user_id::text`) — `threshold_mood`, `user_card_state`
-4. Personal — `user_backups`, `notification_preferences`
-5. Couple-id-keyed (varchar) — `notification_queue`, `journey_insights_cache`, `session_state`, `ceremony_reflection_archive`
-6. Commerce — `product_interest`, `redundant_purchases`, `user_product_access`
-7. Settings — `user_settings`
-8. Containers last — `couple_members`, `couple_state`, `couple_spaces`
-
-All deletes execute unconditionally — null `v_space_id` / `v_couple_id` matches nothing, so the function is idempotent and safe on a user with no data.
-
-### Grants (security-critical)
-
-```sql
-REVOKE ALL ON FUNCTION public.delete_user_account(uuid) FROM PUBLIC;
-REVOKE ALL ON FUNCTION public.delete_user_account(uuid) FROM anon;
-REVOKE ALL ON FUNCTION public.delete_user_account(uuid) FROM authenticated;
-GRANT EXECUTE ON FUNCTION public.delete_user_account(uuid) TO service_role;
-```
-
-No explicit `ALTER FUNCTION ... OWNER TO postgres;` — let `CREATE FUNCTION` establish ownership implicitly.
-
-### Not touched
-
-- `auth.users` (Prompt 4's edge function)
-- Any existing table, RLS policy, trigger, RPC, edge function, migration
-- `anonymous_*` tables (no user reference, keyed by `link_token`)
-- `email_send_log` / `suppressed_emails` / `email_unsubscribe_tokens` (deliverability audit)
-- App code, types file
-
-### Verification (manual, Test project `wcienwozdurwhswaarjy` only — never Live)
-
-1. Create throwaway user in Test Auth dashboard
-2. Sign in once so `couple_members` / `couple_spaces` materialize
-3. Optionally seed reflections / a `user_product_access` row
-4. SQL Editor: `SELECT public.delete_user_account('<uuid>'::uuid);`
-5. Confirm 0 rows in `step_reflections`, `user_product_access`, `user_settings`, `couple_members` for that uuid
-6. Confirm `auth.users` row still exists (Prompt 4 will remove it)
-7. `SET ROLE authenticated; SELECT public.delete_user_account('<uuid>'::uuid);` → must fail with permission denied; `RESET ROLE;`
-
-Rollback: `DROP FUNCTION IF EXISTS public.delete_user_account(uuid);` — migration only defines a function, no data is touched by the migration itself.
+### Result
+Login page reads as one calm vertical gesture. Brand at top, promise underneath, one orange CTA, one quiet alternative, fine-print consent, done. No checkbox to forget, no error state to trigger, no filler line to skip. Robust on iPhone SE through iPad. That's the 10/10 version.
 
