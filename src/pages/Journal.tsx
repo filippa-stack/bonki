@@ -1428,6 +1428,7 @@ export default function Journal() {
             </div>
 
             <div style={{ height: '100px' }} />
+          </div>
         </div>
       ) : (
         <div style={{ flex: 1, overflowY: 'auto', paddingBottom: 'calc(72px + env(safe-area-inset-bottom, 0px))' }}>
