@@ -22,6 +22,7 @@ import { allProducts } from '@/data/products';
 import { isDemoMode } from '@/lib/demoMode';
 import { useDevState } from '@/contexts/DevStateContext';
 import { DEMO_DIARY_EVENT } from '@/lib/demoDiary';
+import { maybeSeedDemoJournal } from '@/lib/demoJournalSeed';
 
 import jimImage from '@/assets/illustration-jag-i-mig.png';
 import jmaImage from '@/assets/illustration-jag-med-andra.png';
