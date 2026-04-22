@@ -37,6 +37,8 @@ project_id = "wcienwozdurwhswaarjy"
     verify_jwt = false
   [functions.restart-program]
     verify_jwt = false
+  [functions.revenuecat-webhook]
+    verify_jwt = false
   [functions.send-notification-email]
     verify_jwt = false
   [functions.session-heartbeat]
