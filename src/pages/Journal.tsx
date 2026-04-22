@@ -1144,8 +1144,291 @@ export default function Journal() {
               Varje svar sparas här. Om tre månader eller tre år kan du bläddra tillbaka och se ditt barn växa.
             </p>
           </div>
-          {/* Bottom spacer — Act 2 is added in Prompt 2 */}
-          <div style={{ height: '120px' }} aria-hidden />
+          {/* Act 2 — preview timeline using real card structure */}
+          <div style={{ padding: '44px 16px 0' }}>
+            {/* Act 2 heading */}
+            <div style={{ padding: '0 8px 24px', textAlign: 'center' }}>
+              <div style={{
+                fontFamily: 'var(--font-display)',
+                fontWeight: 300,
+                fontSize: '20px',
+                lineHeight: 1.3,
+                color: LANTERN_GLOW,
+                marginBottom: '6px',
+                letterSpacing: '-0.015em',
+              }}>
+                En röst som <em style={{ fontStyle: 'italic', fontWeight: 400, color: DEEP_SAFFRON }}>växer</em>.
+              </div>
+              <div style={{
+                fontFamily: 'var(--font-display)',
+                fontWeight: 300,
+                fontStyle: 'italic',
+                fontSize: '12.5px',
+                lineHeight: 1.55,
+                color: 'rgba(253, 246, 227, 0.55)',
+                maxWidth: '280px',
+                margin: '0 auto',
+              }}>
+                Olika frågor, olika år. Ett barn som blir sig själv framför dig.
+              </div>
+            </div>
+
+            {/* Preview frame with "Exempel" pill */}
+            <div style={{ position: 'relative', marginTop: '20px', padding: '18px 0 6px' }}>
+              {(() => {
+                const jimAccent = getProductAccent('jag_i_mig');
+                return (
+                  <div style={{
+                    position: 'absolute',
+                    top: 0,
+                    right: '12px',
+                    padding: '4px 10px',
+                    borderRadius: '999px',
+                    background: `${jimAccent.light}1F`,
+                    border: `0.5px solid ${jimAccent.light}59`,
+                    color: jimAccent.light,
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: '9px',
+                    fontWeight: 600,
+                    letterSpacing: '0.12em',
+                    textTransform: 'uppercase',
+                    zIndex: 3,
+                  }}>
+                    Exempel
+                  </div>
+                );
+              })()}
+
+              {/* Spine + rows */}
+              <div style={{ position: 'relative', paddingTop: '12px' }}>
+                <div style={{
+                  position: 'absolute',
+                  left: '2.05rem',
+                  top: 0,
+                  bottom: 0,
+                  width: '1px',
+                  background: 'rgba(245, 240, 232, 0.12)',
+                  pointerEvents: 'none',
+                }} />
+
+                {[
+                  {
+                    year: 'i år',
+                    dateLabel: 'nu',
+                    cardName: 'Trygghet',
+                    question: '— När känner du dig som tryggast?',
+                    answer: 'När vi läser sagan och mamma glömmer bort klockan och läser en till.',
+                    opacity: 1,
+                    dotOpacity: 1,
+                  },
+                  {
+                    year: 'om ett år',
+                    dateLabel: 'om ett år',
+                    cardName: 'Att vara stor',
+                    question: '— Vad tycker du om att göra som känns viktigt?',
+                    answer: 'När jag får hjälpa pappa laga mat på riktigt, inte bara låtsas. Och när han frågar mig vad vi ska ha.',
+                    opacity: 0.85,
+                    dotOpacity: 0.85,
+                  },
+                  {
+                    year: 'om två år',
+                    dateLabel: 'om två år',
+                    cardName: 'Rädsla',
+                    question: '— Finns det något du är rädd för som du inte vill att någon ska veta?',
+                    answer: 'Att du ska bli trött på mig när jag är arg. Jag vet att du inte blir det men ibland tänker jag det ändå.',
+                    opacity: 0.70,
+                    dotOpacity: 0.70,
+                  },
+                  {
+                    year: 'om tre år',
+                    dateLabel: 'om tre år',
+                    cardName: 'Att bli sedd',
+                    question: '— När känner du att någon verkligen lyssnar på dig?',
+                    answer: "När du inte försöker fixa det direkt. När du bara säger 'det låter jobbigt' och så sitter vi en stund.",
+                    opacity: 0.55,
+                    dotOpacity: 0.55,
+                  },
+                ].map((row, idx) => {
+                  const accent = getProductAccent('jag_i_mig');
+                  return (
+                    <div key={idx}>
+                      {/* Year header (replaces month header in preview) */}
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '10px',
+                        marginLeft: '1.75rem',
+                        paddingLeft: '16px',
+                        marginBottom: '12px',
+                        marginTop: idx === 0 ? '8px' : '24px',
+                        position: 'relative',
+                      }}>
+                        <div style={{
+                          position: 'absolute',
+                          left: 'calc(-1.75rem + 2.05rem - 4px)',
+                          top: '50%',
+                          transform: 'translateY(-50%)',
+                          width: '7px',
+                          height: '7px',
+                          borderRadius: '50%',
+                          backgroundColor: '#E9C890',
+                          opacity: row.dotOpacity,
+                        }} />
+                        <span style={{
+                          fontSize: '13px',
+                          letterSpacing: '0.02em',
+                          color: '#E9C890',
+                          fontFamily: 'var(--font-display)',
+                          fontWeight: 500,
+                          lineHeight: 1,
+                          opacity: row.dotOpacity,
+                        }}>
+                          {row.year}
+                        </span>
+                        <span style={{
+                          marginLeft: 'auto',
+                          fontSize: '10px',
+                          fontStyle: 'italic',
+                          color: 'rgba(245, 240, 232, 0.35)',
+                          paddingRight: '16px',
+                          fontFamily: 'var(--font-sans)',
+                        }}>
+                          1 samtal
+                        </span>
+                      </div>
+
+                      {/* Reflection card — matches NoteEntryCard structure */}
+                      <div style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '12px',
+                        marginLeft: '1.75rem',
+                        padding: '0 16px',
+                      }}>
+                        <div style={{
+                          position: 'relative',
+                          backgroundColor: `${accent.light}22`,
+                          border: '1px solid rgba(255, 255, 255, 0.06)',
+                          borderRadius: '22px',
+                          padding: '16px 16px 14px',
+                          boxShadow: '0 4px 16px rgba(0,0,0,0.12), 0 1px 4px rgba(0,0,0,0.06)',
+                          overflow: 'hidden',
+                          opacity: row.opacity,
+                        }}>
+                          {/* Product illustration — same pattern as NoteEntryCard */}
+                          {PRODUCT_ILLUSTRATION['jag_i_mig'] && (
+                            <img
+                              src={PRODUCT_ILLUSTRATION['jag_i_mig']}
+                              alt=""
+                              aria-hidden="true"
+                              style={{
+                                position: 'absolute',
+                                top: '-6px',
+                                right: '-6px',
+                                width: '56px',
+                                height: '56px',
+                                borderRadius: '50%',
+                                objectFit: 'cover',
+                                objectPosition: 'center 30%',
+                                opacity: 0.22,
+                                pointerEvents: 'none',
+                              }}
+                            />
+                          )}
+
+                          <div style={{ lineHeight: 1.3, marginBottom: '10px' }}>
+                            <div style={{
+                              display: 'flex',
+                              justifyContent: 'space-between',
+                              alignItems: 'baseline',
+                            }}>
+                              <span style={{ fontSize: '13px', fontWeight: 600, color: accent.light }}>
+                                Jag i Mig
+                              </span>
+                              <span style={{ fontSize: '11px', color: `${LANTERN_GLOW}77`, marginRight: '52px' }}>
+                                {row.dateLabel}
+                              </span>
+                            </div>
+                            <p style={{ margin: '2px 0 0', fontSize: '12px', color: `${LANTERN_GLOW}55` }}>
+                              {row.cardName}
+                            </p>
+                          </div>
+
+                          <p style={{
+                            margin: '0 0 8px',
+                            fontSize: '13px',
+                            color: `${LANTERN_GLOW}bb`,
+                            lineHeight: 1.4,
+                          }}>
+                            {row.question}
+                          </p>
+
+                          <p style={{
+                            margin: 0,
+                            fontFamily: 'var(--font-serif)',
+                            fontSize: '16px',
+                            color: '#E9C890',
+                            lineHeight: 1.6,
+                          }}>
+                            {row.answer}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Closing */}
+            <div style={{ padding: '0 12px', marginTop: '44px', textAlign: 'center' }}>
+              <div style={{
+                fontFamily: 'var(--font-display)',
+                fontWeight: 300,
+                fontSize: '17px',
+                lineHeight: 1.45,
+                color: LANTERN_GLOW,
+                letterSpacing: '-0.01em',
+                marginBottom: '8px',
+              }}>
+                Börja nu så finns det <em style={{ fontStyle: 'italic', fontWeight: 400, color: DEEP_SAFFRON }}>sen</em>.
+              </div>
+              <div style={{
+                fontFamily: 'var(--font-display)',
+                fontWeight: 300,
+                fontStyle: 'italic',
+                fontSize: '13px',
+                lineHeight: 1.55,
+                color: 'rgba(253, 246, 227, 0.55)',
+                maxWidth: '260px',
+                margin: '0 auto 28px',
+              }}>
+                Ett samtal i taget. Ingen bakgrund att ta igen.
+              </div>
+
+              <button
+                onClick={() => navigate('/')}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  borderBottom: '0.5px solid rgba(233, 180, 76, 0.4)',
+                  padding: '10px 4px',
+                  cursor: 'pointer',
+                  fontFamily: 'var(--font-display)',
+                  fontWeight: 400,
+                  fontStyle: 'italic',
+                  fontSize: '14px',
+                  color: DEEP_SAFFRON,
+                  letterSpacing: '0.01em',
+                  WebkitTapHighlightColor: 'transparent',
+                }}
+              >
+                Så börjar det →
+              </button>
+            </div>
+
+            <div style={{ height: '100px' }} />
+          </div>
         </div>
       ) : (
         <div style={{ flex: 1, overflowY: 'auto', paddingBottom: 'calc(72px + env(safe-area-inset-bottom, 0px))' }}>
