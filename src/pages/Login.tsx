@@ -5,6 +5,9 @@ import { useTranslation } from 'react-i18next';
 import { lovable } from '@/integrations/lovable/index';
 import { supabase } from '@/integrations/supabase/client';
 import { Loader2, Eye, Mail, ArrowLeft } from 'lucide-react';
+import { Capacitor } from '@capacitor/core';
+import { toast } from 'sonner';
+import { signInWithApple as nativeSignInWithApple } from '@/lib/appleSignIn';
 import { isDemoParam, enterDemoMode } from '@/lib/demoMode';
 import { MIDNIGHT_INK, LANTERN_GLOW } from '@/lib/palette';
 import bonkiLogo from '@/assets/bonki-logo-transparent.png';
@@ -39,7 +42,9 @@ export default function Login() {
   const [otpCode, setOtpCode] = useState('');
   const [verifying, setVerifying] = useState(false);
   const [resendCooldown, setResendCooldown] = useState(0);
+  const [appleLoading, setAppleLoading] = useState(false);
   const cooldownRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const isNative = Capacitor.isNativePlatform();
 
   useEffect(() => {
     return () => {
@@ -94,6 +99,29 @@ export default function Login() {
 
   const handleGoogleSignIn = () => handleOAuthSignIn('google');
   const handleAppleSignIn = () => handleOAuthSignIn('apple');
+
+  const handleNativeAppleSignIn = async () => {
+    if (appleLoading) return;
+    setAppleLoading(true);
+    setError(null);
+    saveConsent();
+
+    try {
+      const result = await nativeSignInWithApple();
+      if (result.cancelled) {
+        localStorage.removeItem('pending-legal-consent');
+        return;
+      }
+      if (!result.success) {
+        localStorage.removeItem('pending-legal-consent');
+        toast.error('Kunde inte logga in med Apple. Försök igen.');
+        return;
+      }
+      // Success: AuthContext's onAuthStateChange handles navigation.
+    } finally {
+      setAppleLoading(false);
+    }
+  };
 
   const handleEmailSignIn = async () => {
     if (!email.trim()) return;
@@ -352,6 +380,32 @@ export default function Login() {
                 exit={{ opacity: 0, y: -10 }}
                 className="flex flex-col gap-3"
               >
+                {isNative && (
+                  <button
+                    onClick={handleNativeAppleSignIn}
+                    disabled={appleLoading || loading}
+                    className="w-full h-14 text-base font-semibold rounded-xl flex items-center justify-center gap-2 border-0 disabled:opacity-50"
+                    style={{
+                      background: '#000',
+                      color: '#FFFFFF',
+                    }}
+                  >
+                    {appleLoading ? (
+                      <>
+                        <Loader2 className="w-5 h-5 animate-spin" />
+                        Loggar in...
+                      </>
+                    ) : (
+                      <>
+                        <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                          <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09M12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25"/>
+                        </svg>
+                        Fortsätt med Apple
+                      </>
+                    )}
+                  </button>
+                )}
+
                 <button
                   onClick={handleGoogleSignIn}
                   disabled={loading}
@@ -374,21 +428,23 @@ export default function Login() {
                   Fortsätt med Google
                 </button>
 
-                <button
-                  onClick={handleAppleSignIn}
-                  disabled={loading}
-                  className="w-full h-14 flex items-center justify-center gap-2 text-base font-medium rounded-xl disabled:opacity-50"
-                  style={{
-                    color: '#FDF6E3',
-                    border: '1px solid rgba(255,255,255,0.15)',
-                    background: 'rgba(255, 255, 255, 0.06)',
-                  }}
-                >
-                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                    <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09M12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25"/>
-                  </svg>
-                  Fortsätt med Apple
-                </button>
+                {!isNative && (
+                  <button
+                    onClick={handleAppleSignIn}
+                    disabled={loading}
+                    className="w-full h-14 flex items-center justify-center gap-2 text-base font-medium rounded-xl disabled:opacity-50"
+                    style={{
+                      color: '#FDF6E3',
+                      border: '1px solid rgba(255,255,255,0.15)',
+                      background: 'rgba(255, 255, 255, 0.06)',
+                    }}
+                  >
+                    <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                      <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09M12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25"/>
+                    </svg>
+                    Fortsätt med Apple
+                  </button>
+                )}
 
                 <button
                   onClick={() => setShowEmailForm(true)}
