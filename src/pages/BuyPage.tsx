@@ -1,11 +1,14 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
+import { Capacitor } from '@capacitor/core';
+import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { getProductById } from '@/data/products';
 import { Loader2, ArrowLeft } from 'lucide-react';
 import { MIDNIGHT_INK, LANTERN_GLOW } from '@/lib/palette';
 import { usePageBackground } from '@/hooks/usePageBackground';
+import { purchaseProduct } from '@/lib/revenueCat';
 
 import TermsConsent from '@/components/TermsConsent';
 import { TERMS_VERSION, PRIVACY_VERSION } from '@/lib/legal';
@@ -106,6 +109,30 @@ export default function BuyPage() {
         setCheckoutError('Kunde inte verifiera din session. Försök ladda om sidan.');
         checkoutTriggered.current = false;
         setCheckoutLoading(false);
+        return;
+      }
+
+      // Native iOS: use RevenueCat / Apple StoreKit instead of Stripe Checkout.
+      if (Capacitor.isNativePlatform()) {
+        const result = await purchaseProduct(productId);
+
+        if (result.cancelled) {
+          checkoutTriggered.current = false;
+          setCheckoutLoading(false);
+          return;
+        }
+
+        if (!result.success) {
+          setCheckoutError('Köpet kunde inte genomföras. Försök igen.');
+          checkoutTriggered.current = false;
+          setCheckoutLoading(false);
+          return;
+        }
+
+        toast.success('Tack för ditt köp!');
+        // RevenueCat webhook (later prompt) syncs user_product_access server-side.
+        // Navigation remounts the destination so useProductAccess re-queries.
+        navigate(`/product/${product?.slug ?? productId}`, { replace: true });
         return;
       }
 

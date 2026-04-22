@@ -1,4 +1,5 @@
 import { Capacitor } from '@capacitor/core';
+import type { CustomerInfo } from '@revenuecat/purchases-capacitor';
 import { Purchases, LOG_LEVEL } from '@revenuecat/purchases-capacitor';
 
 const APPLE_API_KEY = 'appl_nPPbYisknZGlswxGmwZZzMUjgWl';
@@ -42,5 +43,47 @@ export async function logOutRevenueCat(): Promise<void> {
     await Purchases.logOut();
   } catch (error) {
     console.error('RevenueCat logOut failed:', error);
+  }
+}
+
+export interface PurchaseResult {
+  success: boolean;
+  cancelled: boolean;
+  customerInfo?: CustomerInfo;
+  error?: string;
+}
+
+/**
+ * Initiate native iOS purchase via RevenueCat.
+ * productId: the Supabase products.id value (e.g. 'jag_i_mig', 'still_us').
+ * The RevenueCat Offering's package identifiers must match these ids exactly.
+ * Returns a result indicating success, cancellation, or error. Never throws.
+ */
+export async function purchaseProduct(productId: string): Promise<PurchaseResult> {
+  if (!Capacitor.isNativePlatform()) {
+    return { success: false, cancelled: false, error: 'Not a native platform' };
+  }
+
+  try {
+    const offeringsResult = await Purchases.getOfferings();
+    const offering = offeringsResult.current;
+    if (!offering) {
+      return { success: false, cancelled: false, error: 'No current offering available' };
+    }
+
+    const pkg = offering.availablePackages.find((p) => p.identifier === productId);
+    if (!pkg) {
+      return { success: false, cancelled: false, error: `Package not found: ${productId}` };
+    }
+
+    const purchaseResult = await Purchases.purchasePackage({ aPackage: pkg });
+    return { success: true, cancelled: false, customerInfo: purchaseResult.customerInfo };
+  } catch (err: unknown) {
+    const error = err as { userCancelled?: boolean; message?: string };
+    if (error.userCancelled) {
+      return { success: false, cancelled: true };
+    }
+    console.error('RevenueCat purchase failed:', err);
+    return { success: false, cancelled: false, error: error.message ?? 'Purchase failed' };
   }
 }
