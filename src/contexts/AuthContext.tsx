@@ -3,6 +3,7 @@ import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import type { Json } from '@/integrations/supabase/types';
 import { trackPixelEvent } from '@/lib/metaPixel';
+import { initRevenueCat, logOutRevenueCat } from '@/lib/revenueCat';
 
 interface AuthContextType {
   user: User | null;
@@ -86,6 +87,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             trackPixelEvent('CompleteRegistration');
           }
           savePendingLegalConsent(session.user.id);
+          // Initialize RevenueCat (no-op on web; iOS-only for now)
+          initRevenueCat(session.user.id);
         }
       }
     );
@@ -97,6 +100,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setSession(session);
         setUser(session?.user ?? null);
         setLoading(false);
+        // Cold-start init for already-authenticated users (SIGNED_IN won't fire)
+        if (session?.user) {
+          initRevenueCat(session.user.id);
+        }
       })
       .catch((err) => {
         console.error("[AuthContext] getSession failed:", err);
@@ -114,6 +121,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const signOut = async () => {
+    await logOutRevenueCat();
     await supabase.auth.signOut();
     setUser(null);
     setSession(null);
