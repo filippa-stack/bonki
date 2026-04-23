@@ -231,7 +231,7 @@ export default function BuyPage() {
       setDirectCheckoutLoading(false);
       localStorage.removeItem('pending-legal-consent');
     }
-  }, [productId, directCheckoutLoading, termsAccepted]);
+  }, [productId, directCheckoutLoading]);
 
   // Auto-trigger checkout when user is logged in — unless they just tapped back from Stripe
   useEffect(() => {
@@ -251,7 +251,6 @@ export default function BuyPage() {
 
   // Email login
   const handleEmailSignIn = async () => {
-    if (!termsAccepted) { setTermsError(true); return; }
     if (!email.trim()) return;
     setLoading(true);
     setError(null);
@@ -404,19 +403,13 @@ export default function BuyPage() {
           </p>
         </div>
 
-        {/* Terms consent */}
-        <div style={{ width: '100%' }}>
-          <div
-            className="[&_label]:!text-[rgba(253,246,227,0.85)] [&_button]:!text-[#E85D2C] [&_a]:!text-[#E85D2C] [&_[role=checkbox]]:!border-[rgba(253,246,227,0.45)] [&_[role=checkbox]]:!bg-[rgba(253,246,227,0.05)] [&_[role=checkbox][data-state=checked]]:!bg-[#E85D2C] [&_[role=checkbox][data-state=checked]]:!border-[#E85D2C]"
-            style={{ display: 'flex', justifyContent: 'center' }}
-          >
-            <TermsConsent checked={termsAccepted} onCheckedChange={(val) => { setTermsAccepted(!!val); if (val) setTermsError(false); }} />
-          </div>
-          {termsError && (
-            <p style={{ fontFamily: 'var(--font-sans)', fontSize: '13px', color: '#f87171', textAlign: 'center', marginTop: '8px' }}>
-              Du behöver godkänna villkoren för att fortsätta.
-            </p>
-          )}
+        {/* Terms consent — implicit on CTA tap */}
+        <div style={{ width: '100%', marginTop: 4 }}>
+          <TermsConsent
+            linksOnly
+            className="text-xs leading-relaxed text-center"
+            linkClassName="underline underline-offset-2 transition-colors"
+          />
         </div>
 
         {/* Direct-to-Stripe CTA */}
