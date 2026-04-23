@@ -1,107 +1,83 @@
 
-## Fix the actual reviewer-login blocker: the stored password is wrong (or being entered differently), not the placement of the form
 
-The current evidence points to a credential mismatch, not a missing UI:
+## Apple Sign In config — answers + what to fix
 
-- the reviewer user exists
-- the account is confirmed
-- the account has a password set
-- there has still never been a successful sign-in
+### 1. Where the Key ID lives
 
-That means the blocker is almost certainly that the backend password for `apple.review@bonkistudio.com` is not the same password you expect reviewers to use, or iPhone input is subtly altering what gets submitted.
+The Key ID (`Y37T9LJYAL`) is **not a separate field on the main Apple provider screen**. It is asked **inside the "Generate secret" dialog** that appears when you click **Generate Secret** under the Client Secret JWT field.
 
-### What to change
+That dialog asks for, in this order:
+- Team ID
+- Key ID ← this is where `Y37T9LJYAL` goes
+- Services ID (Client ID)
+- Contents of the `.p8` private key (paste the full file including `-----BEGIN PRIVATE KEY-----` lines)
 
-#### 1. Reset the reviewer account password in both environments
-Update the existing reviewer user in both Preview/Test and Published/Live to a fresh, known password.
+It then signs a JWT with header `{ alg: "ES256", kid: "<Key ID>" }` and writes the result into the Client Secret field on the main provider screen. Without the Key ID inside that dialog, the JWT header would be wrong and Apple would reject token exchange.
 
-Use a simpler App Review password with no punctuation and no ambiguous characters, for example:
-- `BonkiReview2026`
+**Action**: Open Cloud → Authentication → Sign In Methods → Apple → Generate Secret, fill all four fields including Key ID `Y37T9LJYAL`, generate, and save.
 
-This removes the risk of:
-- a mistaken original password
-- issues around `!` or other symbols on iPhone keyboards
-- copy/paste or keyboard-substitution edge cases
+### 2. The Key ID is NOT auto-derived from the .p8 file
 
-#### 2. Keep the reviewer login at the top on native
-Do not undo the earlier UI change. The reviewer form should stay first on native iOS so Apple sees it immediately.
+The `.p8` file does not contain its own Key ID — the Key ID only exists in Apple's developer console next to that key. So Lovable cannot derive it for you. You must enter it manually inside the Generate Secret dialog.
 
-#### 3. Harden the reviewer inputs on iPhone
-Update `src/pages/Login.tsx` reviewer fields so the app submits exactly what the reviewer types:
+### 3. The aud claim and native iOS Bundle ID — this is the important issue
 
-- email:
-  - trim whitespace
-  - lowercase before submit
-  - `autoCapitalize="none"`
-  - `autoCorrect="off"`
-  - `spellCheck={false}`
-  - `inputMode="email"`
-- password:
-  - keep exact value except normalize accidental pasted non-breaking spaces if present
-  - `autoCapitalize="none"`
-  - `autoCorrect="off"`
-  - `spellCheck={false}`
+The current `apple.review` setup has a real mismatch you need to fix.
 
-#### 4. Surface the real auth error for reviewer login
-Right now the app always shows `Felaktig inloggning.`
+**Today on the main Apple provider screen**:
+- Client ID = `com.bonkistudio.bonkiapp.signin` (your **Services ID**, used for web OAuth)
 
-Change reviewer-mode error handling in `src/pages/Login.tsx` to:
-- log the real auth error to console
-- show the exact backend error text in reviewer mode only, or a clearer mapped message like:
-  - `Fel e-post eller lösenord`
-  - `Kontot är inte bekräftat`
-  - `Inloggning med lösenord är inte tillgänglig`
+**But your native iOS app sends**:
+- `appleSignIn.ts` line 13 → `APPLE_CLIENT_ID = 'com.bonkistudio.bonkiapp'` (your **Bundle ID**)
+- Apple issues an identity token with `aud = com.bonkistudio.bonkiapp`
+- Supabase receives it via `signInWithIdToken({ provider: 'apple', token })`
+- Supabase compares the token's `aud` to the configured Client ID → **mismatch → rejected**
 
-This makes future failures diagnosable instead of opaque.
+This is almost certainly why native Apple sign-in fails for the reviewer even after the entitlement is added.
 
-#### 5. Optional but recommended: add a native-only autofill shortcut for review
-Add a small secondary button under the reviewer header on native only:
+**Fix**: Add `com.bonkistudio.bonkiapp` to the **Additional allowed client IDs / Authorized Client IDs** field on the Apple provider screen. In Lovable Cloud the field appears directly under the Client ID input (sometimes labeled "Additional client IDs", comma-separated). After saving, the final config should be:
 
-- `Fyll i granskningsuppgifter`
+- **Client ID**: `com.bonkistudio.bonkiapp.signin`
+- **Additional allowed client IDs**: `com.bonkistudio.bonkiapp`
+- **Team ID**: `459423SKW4`
+- **Key ID** (inside Generate Secret): `Y37T9LJYAL`
+- **Client Secret**: JWT generated from the dialog using the four values above
 
-It should populate the reviewer email automatically and optionally the password too. This reduces typing mistakes during review without changing the main auth flow.
+If your Cloud UI does not expose an "Additional allowed client IDs" field, the alternative is to switch the main Client ID to the Bundle ID `com.bonkistudio.bonkiapp` — but that breaks any future web Apple OAuth using the Services ID. Adding it as an additional audience is the correct setup.
 
-### Files / systems involved
+### 4. Verifying the JWT payload is correct
 
-#### Code
-- `src/pages/Login.tsx`
-  - keep reviewer form at top on native
-  - harden reviewer input attributes
-  - normalize submitted values
-  - improve reviewer error handling
-  - optional autofill shortcut
+A correctly generated JWT for your config will, when decoded, contain:
+```
+header:  { alg: "ES256", kid: "Y37T9LJYAL", typ: "JWT" }
+payload: {
+  iss: "459423SKW4",
+  iat: <recent>,
+  exp: <iat + ~6 months>,
+  aud: "https://appleid.apple.com",
+  sub: "com.bonkistudio.bonkiapp.signin"
+}
+```
 
-#### Backend auth
-- existing reviewer user:
-  - `apple.review@bonkistudio.com`
-- reset password in:
-  - Preview/Test backend
-  - Published/Live backend
+Note that `sub` is the Services ID — this is the JWT's identity to Apple, **not** the audience for incoming user tokens. The user-token audience matching (Bundle ID vs Services ID) is what the "Additional allowed client IDs" field controls and is independent of this JWT.
 
-### What this does not change
-- product access grants for the reviewer account
-- Google login
-- regular user login flow
-- the Apple sign-in entitlement fix already identified for the iOS build
+You can paste the generated JWT into jwt.io to confirm `kid`, `iss`, and `sub` look like the above before saving.
 
-### Verification before resubmitting
+### 5. Apple Developer console — also required
 
-1. In Preview/Test:
-   - log in with `apple.review@bonkistudio.com`
-   - use the new reset password
-   - confirm successful sign-in
-   - confirm all 7 products are unlocked
+In `developer.apple.com` → Identifiers → your **Services ID** `com.bonkistudio.bonkiapp.signin` → "Sign In with Apple" → Configure:
+- **Primary App ID**: must be `com.bonkistudio.bonkiapp` (your iOS app)
+- **Domains**: `bonkiapp.com`, `www.bonkiapp.com`, `bonki.lovable.app`
+- **Return URLs**: `https://wcienwozdurwhswaarjy.supabase.co/auth/v1/callback`
 
-2. In Published/Live:
-   - repeat the same login
-   - confirm successful sign-in
-   - confirm all 7 products are unlocked
+The Primary App ID link is what makes the Bundle ID and Services ID share the same Apple-issued user identifier, so a user signing in natively (Bundle ID audience) and via web (Services ID audience) is the same account in your database.
 
-3. On a physical iPhone build:
-   - open login screen
-   - reviewer form is visible immediately
-   - enter or autofill reviewer credentials
-   - confirm successful sign-in without OTP/email access
+### 6. Summary checklist
 
-### Important note for App Store resubmission
-This fixes the reviewer-account blocker. The separate Apple sign-in issue still also needs the native entitlement/capability added in Xcode before resubmitting, otherwise Apple can still reject the build on the Sign in with Apple path.
+- [ ] Open Generate Secret dialog, enter Team ID, **Key ID `Y37T9LJYAL`**, Services ID, paste `.p8`, generate, save.
+- [ ] On the Apple provider screen, add `com.bonkistudio.bonkiapp` to **Additional allowed client IDs**.
+- [ ] In Apple Developer console, confirm the Services ID's Primary App ID is the Bundle ID, and the Return URL points to the Supabase callback.
+- [ ] Set a calendar reminder ~5 months out: the JWT expires at 6 months and must be regenerated.
+
+Once those three are done your native iOS Sign in with Apple flow will succeed end-to-end. No code changes are needed in `appleSignIn.ts` — it is already correct.
+
