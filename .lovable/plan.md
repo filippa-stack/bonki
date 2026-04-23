@@ -1,75 +1,76 @@
 
 
-## Intro page polish — single coherent design pass
+## Answer: Why the resume card has always been visible in Lovable preview
 
-Four targeted edits to `src/components/ProductIntro.tsx`. No other files touched.
+Short version: it wasn't showing your real DB session. It was showing a hardcoded mock, because you've been browsing with `?devState=…` in the URL.
 
-### Fix 1 — Strengthen the preview question card
+### What's actually happening in `LibraryResumeCard.tsx`
 
-In the `PREVIEW_QUESTION[productId]` block, replace the cream-tint container styles with a dark overlay so the card reads as a distinct object on every product background:
+Two separate code paths render the card. The mock path wins on most preview URLs:
 
-- `marginTop`: `28px` → `32px`
-- `padding`: `18px 20px` → `24px 24px`
-- `backgroundColor`: `rgba(253, 246, 227, 0.06)` → `rgba(11, 16, 38, 0.35)`
-- `border`: `1px solid rgba(253, 246, 227, 0.10)` → `1px solid rgba(253, 246, 227, 0.20)`
-- `borderRadius` stays `14px`.
+**Path A — Mock (no DB call):**
+```ts
+const showMock = forceMock || devState === 'library' || devState === 'pairedActive';
+const devMock: ResumeData | null = showMock
+  ? (global || activeTab === 'barn')
+    ? { productName: 'Jag i Mig', cardTitle: 'Glad', cardId: 'jim-glad', stepLabel: 'Pausad vid Fråga 2 av 5', … }
+    : { productName: 'Vårt Vi',   cardTitle: 'Att lyssna på riktigt', … }
+  : null;
+```
+If you load `/?devState=library` or `/?devState=pairedActive`, the card renders **immediately** with fake data ("Glad", "Att lyssna på riktigt"). No DB query runs.
 
-### Fix 2 — Product-specific preview kicker
+**Path B — Local preview (localStorage only, no DB call):**
+```ts
+const isLocalPreview = isDemoMode() || !!devState;   // ← any devState triggers this
+if (isLocalPreview) {
+  syncLocalPreview();  // reads getMostRecentDemoSession() from localStorage
+  return;              // never calls fetchFromDb()
+}
+```
+For **any other** devState (including `browse`), the effect short-circuits to localStorage demo sessions and never queries `couple_sessions`.
 
-Add a computed value alongside the existing `ctaLabel`:
+**Path C — Real DB:** only reached when `devState` is null AND `isDemoMode()` is false AND there's a `space.id`. That's the production path you almost never hit while testing.
+
+### So the visibility you've experienced maps to:
+
+| URL                         | What renders                                     | Source               |
+|-----------------------------|--------------------------------------------------|----------------------|
+| `/?devState=library`        | "Jag i Mig · Glad · Pausad vid Fråga 2 av 5"     | Hardcoded `devMock`  |
+| `/?devState=pairedActive`   | Same mock                                        | Hardcoded `devMock`  |
+| `/?devState=browse`         | Nothing (or a stale localStorage demo session)   | localStorage         |
+| `/?demo=1`                  | Whatever's in localStorage demo session          | localStorage         |
+| `/` (clean, logged in)      | Real session from `couple_sessions`              | DB query             |
+
+That's why the card "has always been visible" — you've been on `library` / `pairedActive` URLs, which hand you a guaranteed mock regardless of DB state. And on `browse` it disappears because `browse` isn't in the mock allow-list, but the effect still skips the DB query.
+
+### The actual bug (from your previous message)
+
+You have a real active session in `couple_sessions` (`product_id=jag_i_mig`, `card_id=jim-acklad`) and the card doesn't show on `/?devState=browse`. Cause: the `isLocalPreview` predicate is too broad — `!!devState` swallows `browse` along with the mock states.
+
+### Minimal fix (one file)
+
+`src/components/LibraryResumeCard.tsx` — narrow `isLocalPreview` to match the existing `showMock` allow-list, in both the data-fetch effect and the realtime-subscription effect:
 
 ```ts
-const previewLabel = `En fråga ur ${product?.name ?? 'samtalen'}`;
+const isLocalPreview =
+  isDemoMode() || devState === 'library' || devState === 'pairedActive';
 ```
 
-Replace the hardcoded `"En fråga ur samtalen"` inside the kicker `<div>` with `{previewLabel}`. Still Us renders as "EN FRÅGA UR VÅRT VI" because `product.name` already resolves to "Vårt Vi".
-
-### Fix 3 — Trim and correct the meta block
-
-In the meta block below the preview card:
-
-- **Remove** the `{cardCount} samtal · {categoryCount} kategorier` `<p>` (the first paragraph in that block).
-- **Update** the credibility line:
-  - From: `Utvecklat tillsammans med psykolog · 29 års klinisk erfarenhet`
-  - To:   `Utvecklat av psykologer · 29 års klinisk erfarenhet`
-
-(Note: current file already shows `29 års` — credibility copy still gets the "av psykologer" tightening regardless.)
-
-Result: two centered lines remain — price line, then the psychologist credibility line.
-
-### Fix 4 — Simplify CTA label
-
-Replace `ctaLabel`:
-
-```ts
-const ctaLabel = priceSek !== null
-  ? `Köp · ${priceSek} kr`
-  : 'Köp';
-```
-
-Product name lives in the heading and kicker; no need to repeat it in the button.
-
-### Untouched
-
-- `PREVIEW_QUESTION` map and all 7 questions
-- Headings, taglines, body text, "Inte just nu" skip link, back button
-- Illustration zone (creature image, position, opacity, fade)
-- Telemetry: `trackPixelEvent('InitiateCheckout', …)` and `intro_cta_clicked_${productId}` insert
-- Navigation target `/buy?product=${productId}`
-- `BuyPage.tsx`, `ProductHome.tsx`, protected session files, design tokens
+After this:
+- `library` / `pairedActive` → still show the hardcoded mock (unchanged).
+- `browse` and all other devStates → fall through to the real DB query and render your actual `jim-acklad` session.
+- Demo mode → still reads localStorage (unchanged).
+- Production (no devState) → unchanged.
 
 ### Verification
 
-For each of the 7 products (`/?devState=browse` then open each intro):
-
-1. Preview card visibly framed on every background (verify Vårt Vi navy + Syskon purple).
-2. Kicker reads "EN FRÅGA UR {PRODUCT NAME}" — including "EN FRÅGA UR VÅRT VI".
-3. Meta block has exactly two lines (price line, then `Utvecklat av psykologer · 29 års klinisk erfarenhet`); no `samtal · kategorier` line.
-4. CTA reads `Köp · 195 kr` (or `Köp · 249 kr` on Vårt Vi).
-5. Tapping CTA still navigates to `/buy?product=…` and fires both telemetry events.
-6. "Inte just nu" and back button still present and functional.
+1. `/?devState=browse`, logged in with active `jim-acklad` → card appears: "Fortsätt utforska Jag i Mig · Pausad vid Fråga X av Y · Ackland". Tap → `/card/jim-acklad`.
+2. `/?devState=library` → still shows "Jag i Mig · Glad" mock.
+3. `/?devState=pairedActive` → still shows mock.
+4. `/` clean → real DB session as today.
+5. Pause a card from another tab in scenario 1 → lobby card updates within ~500ms.
 
 ### Rollback
 
-Single-file revert of `src/components/ProductIntro.tsx`.
+Single-file revert of `src/components/LibraryResumeCard.tsx`.
 
