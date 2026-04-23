@@ -16,11 +16,11 @@
     "cap:open:ios": "npx cap open ios"
   },
   "dependencies": {
-    "@capacitor-community/apple-sign-in": "^7.1.0",
     "@capacitor/android": "^8.2.0",
     "@capacitor/cli": "^8.2.0",
     "@capacitor/core": "^8.2.0",
     "@capacitor/ios": "^8.2.0",
+    "@capgo/capacitor-social-login": "^8.3.17",
     "@hookform/resolvers": "^3.10.0",
     "@lovable.dev/cloud-auth-js": "^1.1.1",
     "@radix-ui/react-accordion": "^1.2.11",
