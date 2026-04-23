@@ -5,7 +5,9 @@ import { supabase } from '@/integrations/supabase/client';
 export interface AppleSignInResult {
   success: boolean;
   cancelled?: boolean;
+  notNative?: boolean;
   error?: string;
+  errorCode?: string | number;
 }
 
 const APPLE_CLIENT_ID = 'com.bonkistudio.bonkiapp';
@@ -35,7 +37,8 @@ function randomString(): string {
  */
 export async function signInWithApple(): Promise<AppleSignInResult> {
   if (!Capacitor.isNativePlatform()) {
-    return { success: false, error: 'Not a native platform' };
+    // Not an error — caller should fall back to web OAuth.
+    return { success: false, notNative: true };
   }
 
   const nonce = randomString();
@@ -58,7 +61,8 @@ export async function signInWithApple(): Promise<AppleSignInResult> {
     const identityToken = result?.idToken;
 
     if (!identityToken) {
-      return { success: false, error: 'No identity token' };
+      console.error('[AppleSignIn] No identity token returned from plugin', loginResult);
+      return { success: false, error: 'Ingen identitetstoken mottagen från Apple.' };
     }
 
     const { error } = await supabase.auth.signInWithIdToken({
@@ -68,7 +72,8 @@ export async function signInWithApple(): Promise<AppleSignInResult> {
     });
 
     if (error) {
-      return { success: false, error: error.message };
+      console.error('[AppleSignIn] Supabase signInWithIdToken failed', error);
+      return { success: false, error: `Supabase: ${error.message}` };
     }
 
     return { success: true };
@@ -76,9 +81,15 @@ export async function signInWithApple(): Promise<AppleSignInResult> {
     const message = err instanceof Error ? err.message : String(err);
     const code = (err as { code?: string | number })?.code;
     const haystack = `${code ?? ''} ${message}`.toLowerCase();
+
+    // Apple cancellation codes: 1001 (ASAuthorizationErrorCanceled)
     if (haystack.includes('1001') || haystack.includes('canceled') || haystack.includes('cancelled')) {
       return { success: false, cancelled: true };
     }
-    return { success: false, error: message || 'Unknown error' };
+
+    console.error('[AppleSignIn] Native error', { code, message, err });
+    // Surface the real native error so reviewers and devs can diagnose.
+    const detail = code ? `[${code}] ${message}` : message;
+    return { success: false, error: detail || 'Okänt fel från Apple.', errorCode: code };
   }
 }
