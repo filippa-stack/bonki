@@ -311,6 +311,10 @@ export default function Login() {
               <input
                 type="email"
                 autoComplete="email"
+                inputMode="email"
+                autoCapitalize="none"
+                autoCorrect="off"
+                spellCheck={false}
                 placeholder="apple.review@bonkistudio.com"
                 value={reviewerEmail}
                 onChange={(e) => setReviewerEmail(e.target.value)}
@@ -329,6 +333,9 @@ export default function Login() {
               <input
                 type="password"
                 autoComplete="current-password"
+                autoCapitalize="none"
+                autoCorrect="off"
+                spellCheck={false}
                 placeholder="Lösenord"
                 value={reviewerPassword}
                 onChange={(e) => setReviewerPassword(e.target.value)}
@@ -354,6 +361,19 @@ export default function Login() {
                 }}
               >
                 {reviewerLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Logga in'}
+              </button>
+              <button
+                onClick={handleAutofillReviewer}
+                type="button"
+                className="w-full h-11 text-sm rounded-xl border-0"
+                style={{
+                  background: 'rgba(255, 255, 255, 0.06)',
+                  color: 'rgba(253, 246, 227, 0.75)',
+                  fontFamily: 'var(--font-sans)',
+                  border: SOFT_BORDER,
+                }}
+              >
+                Fyll i granskningsuppgifter
               </button>
             </div>
             <div
