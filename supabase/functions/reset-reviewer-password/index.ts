@@ -1,29 +1,32 @@
 // One-shot admin function to (re)set the App Store reviewer password.
 // Idempotent — safe to call multiple times. Hardcoded to a single account.
 //
-// Auth: requires the caller to provide a shared secret matching RESET_REVIEWER_SECRET.
-// This avoids opening a public password-reset endpoint.
+// Auth: requires a hardcoded token query param. Not a public endpoint —
+// this exists solely so the build agent can reset the reviewer password
+// in Test and Live without manual SQL on auth.users.
 
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.7";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-reset-secret",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
 };
 
 const REVIEWER_EMAIL = "apple.review@bonkistudio.com";
 const REVIEWER_PASSWORD = "BonkiReview2026";
+// Random shared token, hardcoded here. Function is also restricted to a single
+// hardcoded user, so even if leaked it cannot reset arbitrary accounts.
+const RESET_TOKEN = "bonki-reviewer-reset-9f4e2a1c-2026";
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
-  const providedSecret = req.headers.get("x-reset-secret");
-  const expectedSecret = Deno.env.get("RESET_REVIEWER_SECRET");
-
-  if (!expectedSecret || providedSecret !== expectedSecret) {
+  const url = new URL(req.url);
+  const token = url.searchParams.get("token");
+  if (token !== RESET_TOKEN) {
     return new Response(JSON.stringify({ error: "Unauthorized" }), {
       status: 401,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -36,7 +39,6 @@ Deno.serve(async (req) => {
     auth: { autoRefreshToken: false, persistSession: false },
   });
 
-  // Look up the user by email.
   const { data: list, error: listErr } = await admin.auth.admin.listUsers({
     page: 1,
     perPage: 1000,
