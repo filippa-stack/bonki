@@ -204,20 +204,40 @@ export default function Login() {
   };
 
   const handleReviewerSignIn = async () => {
-    if (!reviewerEmail.trim() || !reviewerPassword) return;
+    // Normalize: trim + lowercase email; strip non-breaking spaces from password.
+    const normalizedEmail = reviewerEmail.trim().toLowerCase();
+    const normalizedPassword = reviewerPassword.replace(/\u00A0/g, ' ');
+    if (!normalizedEmail || !normalizedPassword) return;
     setReviewerLoading(true);
     try {
       const { error } = await supabase.auth.signInWithPassword({
-        email: reviewerEmail.trim(),
-        password: reviewerPassword,
+        email: normalizedEmail,
+        password: normalizedPassword,
       });
-      if (error) toast.error('Felaktig inloggning.');
+      if (error) {
+        // Surface the real backend error so reviewers/devs can diagnose.
+        console.error('[Reviewer login] Auth error:', error);
+        const msg = error.message || '';
+        if (/invalid.*credentials/i.test(msg)) {
+          toast.error('Fel e-post eller lösenord.');
+        } else if (/email.*not.*confirmed/i.test(msg)) {
+          toast.error('Kontot är inte bekräftat.');
+        } else {
+          toast.error(`Inloggning misslyckades: ${msg}`);
+        }
+      }
       // Success: AuthContext's onAuthStateChange handles navigation.
-    } catch {
-      toast.error('Felaktig inloggning.');
+    } catch (err) {
+      console.error('[Reviewer login] Unexpected error:', err);
+      toast.error('Något gick fel. Försök igen.');
     } finally {
       setReviewerLoading(false);
     }
+  };
+
+  const handleAutofillReviewer = () => {
+    setReviewerEmail('apple.review@bonkistudio.com');
+    setReviewerPassword('BonkiReview2026');
   };
 
   const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
@@ -291,6 +311,10 @@ export default function Login() {
               <input
                 type="email"
                 autoComplete="email"
+                inputMode="email"
+                autoCapitalize="none"
+                autoCorrect="off"
+                spellCheck={false}
                 placeholder="apple.review@bonkistudio.com"
                 value={reviewerEmail}
                 onChange={(e) => setReviewerEmail(e.target.value)}
@@ -309,6 +333,9 @@ export default function Login() {
               <input
                 type="password"
                 autoComplete="current-password"
+                autoCapitalize="none"
+                autoCorrect="off"
+                spellCheck={false}
                 placeholder="Lösenord"
                 value={reviewerPassword}
                 onChange={(e) => setReviewerPassword(e.target.value)}
@@ -334,6 +361,19 @@ export default function Login() {
                 }}
               >
                 {reviewerLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Logga in'}
+              </button>
+              <button
+                onClick={handleAutofillReviewer}
+                type="button"
+                className="w-full h-11 text-sm rounded-xl border-0"
+                style={{
+                  background: 'rgba(255, 255, 255, 0.06)',
+                  color: 'rgba(253, 246, 227, 0.75)',
+                  fontFamily: 'var(--font-sans)',
+                  border: SOFT_BORDER,
+                }}
+              >
+                Fyll i granskningsuppgifter
               </button>
             </div>
             <div
