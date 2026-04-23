@@ -1,46 +1,41 @@
 
 
-## Generate a new 1024×1024 Vårt Vi illustration
+## Generate App Store product image for Vårt Vi
 
-Create a fresh hero/tile illustration for Vårt Vi in the same style as the previous one (two figures, soft pastel flat-color, cobalt blue palette), then wire it into the existing asset slots.
+You're right — I generated raw character sketches yesterday, not the App Store product shots that match the other products. Let me create the proper one for Vårt Vi using the new illustration.
 
-### What I need from you first
+### What this is
 
-I want to make sure the new image actually improves on the current one rather than just being a variant. Two quick clarifications:
+The "App Store product image" is the marketing composition we made for each product yesterday: the character illustration placed against the product's themed background with the product wordmark/title, in a 1024×1024 square ready for App Store screenshots, marketing pages, and social.
 
-1. **Which slot is this for?**
-   - The **library tile** (`illustration-still-us-tile.png`) — the small 260px tile on `/`
-   - The **hero/home** (`illustration-still-us-home.png`) — used on ProductIntro, Journal, Category headers
-   - **Both** (generate one master image, save to both)
+### Plan
 
-2. **Any composition change, or pure re-roll?**
-   - Same composition (two figures, side-by-side, embracing) — just a fresh take
-   - Adjust composition (e.g. more headroom, different pose, single figure, etc.)
+1. **Find yesterday's reference**: Locate one of the existing App Store product images (e.g. Jag i Mig, Jag med Andra) in `src/assets/` to confirm the exact composition language — character placement, background gradient, typography, padding.
 
-### Plan once confirmed
+2. **Use the new Vårt Vi illustration as the source**: The two-figure illustration from `src/assets/illustration-still-us-tile.png` (the one we just dialed in placement for) is the character art.
 
-1. Use the AI gateway image skill (`google/gemini-3-pro-image-preview` for hero quality) with a prompt matching the established Vårt Vi visual language:
-   - Soft pastel flat-color illustration, no outlines
-   - Cobalt blue background (#94BCE1 family)
-   - Two adult figures, warm intimate posture
-   - Same brushy texture and palette as the kids illustrations (Jag i Mig girl, etc.)
-   - Square 1024×1024, centered composition with breathing room top + sides so it crops cleanly into both the square hero and the right-bleed tile
+3. **Compose the App Store shot**:
+   - **Canvas**: 1024×1024
+   - **Background**: Cobalt Blue gradient matching Vårt Vi theme (`#4A6FA5` → deeper cobalt, per the locked Still Us palette)
+   - **Character**: Two-figure illustration placed using the same composition rule as the other product shots (typically character anchored bottom/right with breathing room, or centered hero — match whatever the existing set uses)
+   - **Wordmark**: "Vårt Vi" in the same typeface and placement as the other product images
+   - **Optional tagline**: If the other shots include one (e.g. "21 samtal"), include the matching line for Vårt Vi
 
-2. Save the master to `/mnt/documents/vart-vi-v2.png` so you can preview it.
+4. **Save the master** to `/mnt/documents/vart-vi-appstore.png` for preview.
 
-3. After approval, replace the chosen asset(s) in `src/assets/`:
-   - `illustration-still-us-tile.png` and/or
-   - `illustration-still-us-home.png`
-
-4. No code changes needed — both files are already imported and wired to all surfaces (library tile, hero, ProductIntro, Journal, Category). Verification = visual check on `/`, `/product/still-us`, `/journal`.
+5. **After approval**: Save into `src/assets/` under the same naming convention used for the other product App Store images (I'll confirm the exact filename pattern from the existing set before writing).
 
 ### Untouched
 
-- Tile positioning logic (the `top/right/bottom/width` values we just dialed in stay).
-- All other product illustrations.
-- Asset filenames — overwritten in place so no imports change.
+- Library tile illustration and its placement (already locked in).
+- Hero/ProductIntro/Journal illustrations.
+- All other products' App Store images.
+
+### Verification
+
+Visual side-by-side check: the new Vårt Vi App Store image sits next to the other products' App Store images and reads as part of the same set — same canvas, same composition language, same typography treatment.
 
 ### Rollback
 
-Restore previous `illustration-still-us-tile.png` / `illustration-still-us-home.png` from version history.
+Delete the new file. No code wiring touched.
 
