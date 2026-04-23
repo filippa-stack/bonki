@@ -33,7 +33,7 @@ export default function Login() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const isReviewerMode = searchParams.get('review') === '1';
+  const isReviewerMode = searchParams.get('review') === '1' || Capacitor.isNativePlatform();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -119,7 +119,10 @@ export default function Login() {
       }
       if (!result.success) {
         localStorage.removeItem('pending-legal-consent');
-        toast.error('Kunde inte logga in med Apple. Försök igen.');
+        // Surface the real native error so reviewers/devs can diagnose.
+        const detail = result.error || 'Okänt fel.';
+        setError(`Kunde inte logga in med Apple: ${detail}`);
+        toast.error(`Apple: ${detail}`);
         return;
       }
       // Success: AuthContext's onAuthStateChange handles navigation.
