@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { lovable } from '@/integrations/lovable/index';
@@ -32,6 +32,8 @@ const SOFT_BORDER = '1px solid rgba(253, 246, 227, 0.15)';
 export default function Login() {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const isReviewerMode = searchParams.get('review') === '1';
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -43,6 +45,9 @@ export default function Login() {
   const [verifying, setVerifying] = useState(false);
   const [resendCooldown, setResendCooldown] = useState(0);
   const [appleLoading, setAppleLoading] = useState(false);
+  const [reviewerEmail, setReviewerEmail] = useState('');
+  const [reviewerPassword, setReviewerPassword] = useState('');
+  const [reviewerLoading, setReviewerLoading] = useState(false);
   const cooldownRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const isNative = Capacitor.isNativePlatform();
 
@@ -192,6 +197,23 @@ export default function Login() {
       setError(t('login.error_start'));
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleReviewerSignIn = async () => {
+    if (!reviewerEmail.trim() || !reviewerPassword) return;
+    setReviewerLoading(true);
+    try {
+      const { error } = await supabase.auth.signInWithPassword({
+        email: reviewerEmail.trim(),
+        password: reviewerPassword,
+      });
+      if (error) toast.error('Felaktig inloggning.');
+      // Success: AuthContext's onAuthStateChange handles navigation.
+    } catch {
+      toast.error('Felaktig inloggning.');
+    } finally {
+      setReviewerLoading(false);
     }
   };
 
@@ -485,6 +507,81 @@ export default function Login() {
                 className="text-xs leading-relaxed"
                 linkClassName="underline underline-offset-2 transition-colors"
               />
+            </div>
+          )}
+
+          {/* Reviewer email/password — hidden behind ?review=1 */}
+          {isReviewerMode && !otpSent && !showEmailForm && (
+            <div style={{ marginTop: 32 }}>
+              <div
+                style={{
+                  height: 1,
+                  background: 'rgba(253, 246, 227, 0.10)',
+                  marginBottom: 20,
+                }}
+              />
+              <p
+                style={{
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: 12,
+                  letterSpacing: '0.08em',
+                  textTransform: 'uppercase',
+                  color: 'rgba(253, 246, 227, 0.45)',
+                  marginBottom: 12,
+                  textAlign: 'left',
+                }}
+              >
+                Recensentinloggning
+              </p>
+              <div className="flex flex-col gap-3">
+                <input
+                  type="email"
+                  autoComplete="email"
+                  placeholder="E-post"
+                  value={reviewerEmail}
+                  onChange={(e) => setReviewerEmail(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && handleReviewerSignIn()}
+                  onFocus={handleFocus}
+                  onBlur={handleBlur}
+                  className="w-full h-14 px-4 text-base rounded-xl outline-none"
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.08)',
+                    color: '#F5EFE6',
+                    fontFamily: 'var(--font-sans)',
+                    border: SOFT_BORDER,
+                    transition: 'box-shadow 150ms ease, border-color 150ms ease',
+                  }}
+                />
+                <input
+                  type="password"
+                  autoComplete="current-password"
+                  placeholder="Lösenord"
+                  value={reviewerPassword}
+                  onChange={(e) => setReviewerPassword(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && handleReviewerSignIn()}
+                  onFocus={handleFocus}
+                  onBlur={handleBlur}
+                  className="w-full h-14 px-4 text-base rounded-xl outline-none"
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.08)',
+                    color: '#F5EFE6',
+                    fontFamily: 'var(--font-sans)',
+                    border: SOFT_BORDER,
+                    transition: 'box-shadow 150ms ease, border-color 150ms ease',
+                  }}
+                />
+                <button
+                  onClick={handleReviewerSignIn}
+                  disabled={reviewerLoading || !reviewerEmail.trim() || !reviewerPassword}
+                  className="w-full h-14 text-base font-semibold rounded-xl flex items-center justify-center gap-2 border-0 text-white disabled:opacity-50"
+                  style={{
+                    background: ORANGE_GRADIENT,
+                    boxShadow: ORANGE_SHADOW,
+                  }}
+                >
+                  {reviewerLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Logga in'}
+                </button>
+              </div>
             </div>
           )}
 
