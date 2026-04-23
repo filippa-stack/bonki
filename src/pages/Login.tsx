@@ -270,8 +270,97 @@ export default function Login() {
           Verktyg för samtalen som vill bli av
         </p>
 
+        {/* Reviewer login — pinned to top on native iOS so App Store reviewers cannot miss it */}
+        {isNative && !otpSent && !showEmailForm && (
+          <div className="w-full" style={{ marginTop: 32 }}>
+            <p
+              style={{
+                fontFamily: 'var(--font-sans)',
+                fontSize: 12,
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+                color: 'rgba(253, 246, 227, 0.55)',
+                marginBottom: 12,
+                textAlign: 'left',
+                fontWeight: 600,
+              }}
+            >
+              Recensentinloggning — App Store Review
+            </p>
+            <div className="flex flex-col gap-3">
+              <input
+                type="email"
+                autoComplete="email"
+                placeholder="apple.review@bonkistudio.com"
+                value={reviewerEmail}
+                onChange={(e) => setReviewerEmail(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && handleReviewerSignIn()}
+                onFocus={handleFocus}
+                onBlur={handleBlur}
+                className="w-full h-14 px-4 text-base rounded-xl outline-none"
+                style={{
+                  background: 'rgba(255, 255, 255, 0.08)',
+                  color: '#F5EFE6',
+                  fontFamily: 'var(--font-sans)',
+                  border: SOFT_BORDER,
+                  transition: 'box-shadow 150ms ease, border-color 150ms ease',
+                }}
+              />
+              <input
+                type="password"
+                autoComplete="current-password"
+                placeholder="Lösenord"
+                value={reviewerPassword}
+                onChange={(e) => setReviewerPassword(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && handleReviewerSignIn()}
+                onFocus={handleFocus}
+                onBlur={handleBlur}
+                className="w-full h-14 px-4 text-base rounded-xl outline-none"
+                style={{
+                  background: 'rgba(255, 255, 255, 0.08)',
+                  color: '#F5EFE6',
+                  fontFamily: 'var(--font-sans)',
+                  border: SOFT_BORDER,
+                  transition: 'box-shadow 150ms ease, border-color 150ms ease',
+                }}
+              />
+              <button
+                onClick={handleReviewerSignIn}
+                disabled={reviewerLoading || !reviewerEmail.trim() || !reviewerPassword}
+                className="w-full h-14 text-base font-semibold rounded-xl flex items-center justify-center gap-2 border-0 text-white disabled:opacity-50"
+                style={{
+                  background: ORANGE_GRADIENT,
+                  boxShadow: ORANGE_SHADOW,
+                }}
+              >
+                {reviewerLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Logga in'}
+              </button>
+            </div>
+            <div
+              style={{
+                height: 1,
+                background: 'rgba(253, 246, 227, 0.10)',
+                marginTop: 24,
+              }}
+            />
+            <p
+              style={{
+                fontFamily: 'var(--font-sans)',
+                fontSize: 11,
+                letterSpacing: '0.06em',
+                textTransform: 'uppercase',
+                color: 'rgba(253, 246, 227, 0.35)',
+                marginTop: 16,
+                textAlign: 'center',
+              }}
+            >
+              Eller logga in som vanlig användare
+            </p>
+          </div>
+        )}
+
         {/* CTA stack */}
-        <div className="w-full" style={{ marginTop: 40 }}>
+        <div className="w-full" style={{ marginTop: isNative ? 16 : 40 }}>
           <AnimatePresence mode="wait">
             {otpSent ? (
               <motion.div
@@ -513,8 +602,8 @@ export default function Login() {
             </div>
           )}
 
-          {/* Reviewer email/password — hidden behind ?review=1 */}
-          {isReviewerMode && !otpSent && !showEmailForm && (
+          {/* Reviewer email/password — web only, hidden behind ?review=1. Native iOS shows it at top of page. */}
+          {isReviewerMode && !isNative && !otpSent && !showEmailForm && (
             <div style={{ marginTop: 32 }}>
               <div
                 style={{
