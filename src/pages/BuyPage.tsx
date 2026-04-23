@@ -183,11 +183,6 @@ export default function BuyPage() {
   const handleDirectCheckout = useCallback(async () => {
     if (directCheckoutLoading) return;
 
-    if (!termsAccepted) {
-      setTermsError(true);
-      return;
-    }
-
     setDirectCheckoutLoading(true);
     setDirectCheckoutError(null);
 
