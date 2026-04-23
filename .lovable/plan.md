@@ -1,39 +1,46 @@
 
 
-## Nudge Vårt Vi tile illustration down to uncrop the brown-hair figure
+## Generate a new 1024×1024 Vårt Vi illustration
 
-The right figure's head is currently kissing the top frame. Pulling the illustration down ~6% gives it air without losing the "fills the frame" weight we just landed.
+Create a fresh hero/tile illustration for Vårt Vi in the same style as the previous one (two figures, soft pastel flat-color, cobalt blue palette), then wire it into the existing asset slots.
 
-### Change
+### What I need from you first
 
-In `src/components/ProductLibrary.tsx`, illustration block (the Vårt Vi inline `<img>` style):
+I want to make sure the new image actually improves on the current one rather than just being a variant. Two quick clarifications:
 
-| Property | Current | New | Effect |
-|---|---|---|---|
-| `top` | `-18%` | `-12%` | Drops the illustration ~6% so brown hair clears the top frame |
-| `bottom` | `-6%` | `-12%` | Compensates downward bleed so feet/torso stay tucked off-frame, not floating |
-| `right` | `-12%` | `-12%` | Unchanged |
-| `width` | `92%` | `92%` | Unchanged — same size |
-| `objectPosition` | `right bottom` | `right bottom` | Unchanged |
+1. **Which slot is this for?**
+   - The **library tile** (`illustration-still-us-tile.png`) — the small 260px tile on `/`
+   - The **hero/home** (`illustration-still-us-home.png`) — used on ProductIntro, Journal, Category headers
+   - **Both** (generate one master image, save to both)
 
-Net effect: same scale, same right anchor — figures just slide down a few pixels. Brown-hair head gains ~8–10px clearance from the top edge; green hair still bleeds confidently close to the frame.
+2. **Any composition change, or pure re-roll?**
+   - Same composition (two figures, side-by-side, embracing) — just a fresh take
+   - Adjust composition (e.g. more headroom, different pose, single figure, etc.)
 
-### Expected result
+### Plan once confirmed
 
-- Brown-hair figure no longer clipped at top.
-- Green-hair figure still reads as close to the frame (intentional bleed).
-- Text, badge, scrim, background untouched.
+1. Use the AI gateway image skill (`google/gemini-3-pro-image-preview` for hero quality) with a prompt matching the established Vårt Vi visual language:
+   - Soft pastel flat-color illustration, no outlines
+   - Cobalt blue background (#94BCE1 family)
+   - Two adult figures, warm intimate posture
+   - Same brushy texture and palette as the kids illustrations (Jag i Mig girl, etc.)
+   - Square 1024×1024, centered composition with breathing room top + sides so it crops cleanly into both the square hero and the right-bleed tile
+
+2. Save the master to `/mnt/documents/vart-vi-v2.png` so you can preview it.
+
+3. After approval, replace the chosen asset(s) in `src/assets/`:
+   - `illustration-still-us-tile.png` and/or
+   - `illustration-still-us-home.png`
+
+4. No code changes needed — both files are already imported and wired to all surfaces (library tile, hero, ProductIntro, Journal, Category). Verification = visual check on `/`, `/product/still-us`, `/journal`.
 
 ### Untouched
 
-- All other tiles, the asset itself, scale, right-bleed.
-- Hero / ProductIntro / Journal surfaces.
-
-### Verification
-
-- `/` → Vårt Vi tile: both heads fully visible with ~8px clearance above brown hair.
+- Tile positioning logic (the `top/right/bottom/width` values we just dialed in stay).
+- All other product illustrations.
+- Asset filenames — overwritten in place so no imports change.
 
 ### Rollback
 
-Revert top/bottom values on the illustration block in `src/components/ProductLibrary.tsx`.
+Restore previous `illustration-still-us-tile.png` / `illustration-still-us-home.png` from version history.
 
