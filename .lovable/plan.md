@@ -1,42 +1,39 @@
 
 
-## Enlarge the Vårt Vi tile illustration
+## Nudge Vårt Vi tile illustration down to uncrop the brown-hair figure
 
-You're right — the figures look ~15% smaller than the Jag i Mig girl and lack the confident "fills the frame" presence of the kids tiles. The fix is to grow the container by pulling the top-left corner up and out, while keeping the right-bottom anchor so the careful composition we just landed isn't disturbed.
+The right figure's head is currently kissing the top frame. Pulling the illustration down ~6% gives it air without losing the "fills the frame" weight we just landed.
 
 ### Change
 
-In `src/components/ProductLibrary.tsx`, illustration block at lines 986–1009:
+In `src/components/ProductLibrary.tsx`, illustration block (the Vårt Vi inline `<img>` style):
 
 | Property | Current | New | Effect |
 |---|---|---|---|
-| `top` | `-8%` | `-18%` | Pulls top edge up, gives green hair room to bleed close to frame |
-| `right` | `-10%` | `-12%` | Slightly more right-edge bleed, parity with kids tiles |
-| `bottom` | `-8%` | `-6%` | Tiny lift so feet/torso don't get clipped |
-| `width` | `78%` | `92%` | Container grows ~18% — figures scale up proportionally |
-| `objectPosition` | `right bottom` | `right bottom` | **Unchanged** — anchor stays in the safe corner |
-| `objectFit` | `contain` | `contain` | **Unchanged** — preserves aspect ratio, no distortion |
+| `top` | `-18%` | `-12%` | Drops the illustration ~6% so brown hair clears the top frame |
+| `bottom` | `-6%` | `-12%` | Compensates downward bleed so feet/torso stay tucked off-frame, not floating |
+| `right` | `-12%` | `-12%` | Unchanged |
+| `width` | `92%` | `92%` | Unchanged — same size |
+| `objectPosition` | `right bottom` | `right bottom` | Unchanged |
 
-Because `objectFit: contain` + `objectPosition: right bottom` is preserved, the illustration scales up from the right-bottom anchor. The figures grow upward and leftward — green hair moves toward the top edge, the wordmark area on the left stays clear.
+Net effect: same scale, same right anchor — figures just slide down a few pixels. Brown-hair head gains ~8–10px clearance from the top edge; green hair still bleeds confidently close to the frame.
 
 ### Expected result
 
-- Vårt Vi figures occupy roughly the same visual mass as the Jag i Mig girl.
-- Green hair sits ~10–14px from the top frame (matching the Jag i Mig girl's hair-to-frame ratio).
-- "Vårt Vi" wordmark + tagline still breathe in clean negative space on the left.
-- Right edge has a confident bleed, same compositional language as the rest of the library.
+- Brown-hair figure no longer clipped at top.
+- Green-hair figure still reads as close to the frame (intentional bleed).
+- Text, badge, scrim, background untouched.
 
 ### Untouched
 
-- Text scrim, badge, background color, drop-shadow filter.
-- All other tiles.
-- Hero / ProductIntro / Journal surfaces (separate asset).
+- All other tiles, the asset itself, scale, right-bleed.
+- Hero / ProductIntro / Journal surfaces.
 
 ### Verification
 
-- `/` → Vårt Vi tile figures fill frame with ~10px clearance from top, anchored right-bottom, text area on left unchanged.
+- `/` → Vårt Vi tile: both heads fully visible with ~8px clearance above brown hair.
 
 ### Rollback
 
-Single revert of `src/components/ProductLibrary.tsx` lines 986–992.
+Revert top/bottom values on the illustration block in `src/components/ProductLibrary.tsx`.
 
