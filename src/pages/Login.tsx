@@ -602,8 +602,8 @@ export default function Login() {
             </div>
           )}
 
-          {/* Reviewer email/password — hidden behind ?review=1 */}
-          {isReviewerMode && !otpSent && !showEmailForm && (
+          {/* Reviewer email/password — web only, hidden behind ?review=1. Native iOS shows it at top of page. */}
+          {isReviewerMode && !isNative && !otpSent && !showEmailForm && (
             <div style={{ marginTop: 32 }}>
               <div
                 style={{
