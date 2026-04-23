@@ -190,8 +190,10 @@ export default function ProductIntro({
 
   // CTA label
   const ctaLabel = priceSek !== null
-    ? `Köp ${product?.name ?? 'produkt'} · ${priceSek} kr`
-    : `Köp ${product?.name ?? 'produkt'}`;
+    ? `Köp · ${priceSek} kr`
+    : 'Köp';
+
+  const previewLabel = `En fråga ur ${product?.name ?? 'samtalen'}`;
 
   return (
     <div
@@ -364,7 +366,16 @@ export default function ProductIntro({
 
         {/* 3b. Preview question — taste of the product, proof of craft */}
         {PREVIEW_QUESTION[productId] && (
-          <div style={{ marginTop: '24px', textAlign: 'center' }}>
+          <div
+            style={{
+              marginTop: '32px',
+              padding: '24px 24px',
+              borderRadius: '14px',
+              backgroundColor: 'rgba(11, 16, 38, 0.35)',
+              border: '1px solid rgba(253, 246, 227, 0.20)',
+              textAlign: 'center',
+            }}
+          >
             <div
               style={{
                 fontFamily: 'var(--font-sans)',
@@ -377,7 +388,7 @@ export default function ProductIntro({
                 marginBottom: '10px',
               }}
             >
-              En fråga ur samtalen
+              {previewLabel}
             </div>
             <p
               style={{
@@ -395,20 +406,8 @@ export default function ProductIntro({
           </div>
         )}
 
-        {/* 4. Offer details — scope, price, credibility */}
+        {/* 4. Offer details — price, credibility */}
         <div style={{ marginTop: '24px', textAlign: 'center' }}>
-          <p
-            style={{
-              fontFamily: 'var(--font-sans)',
-              fontSize: '14px',
-              color: LANTERN_GLOW,
-              opacity: 0.7,
-              margin: 0,
-              lineHeight: 1.5,
-            }}
-          >
-            {product?.cards.length ?? 0} samtal · {product?.categories.length ?? 0} kategorier
-          </p>
           <p
             style={{
               fontFamily: 'var(--font-sans)',
@@ -416,7 +415,7 @@ export default function ProductIntro({
               fontWeight: 500,
               color: LANTERN_GLOW,
               opacity: 0.85,
-              margin: '6px 0 0',
+              margin: 0,
               lineHeight: 1.5,
             }}
           >
@@ -432,7 +431,7 @@ export default function ProductIntro({
               lineHeight: 1.5,
             }}
           >
-            Utvecklat tillsammans med psykolog · 29 års klinisk erfarenhet
+            Utvecklat av psykologer · 29 års klinisk erfarenhet
           </p>
         </div>
 
