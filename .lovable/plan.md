@@ -1,41 +1,47 @@
 
 
-## Generate App Store product image for Vårt Vi
+## Resolve Apple Sign In dependency conflict — swap to `@capgo/capacitor-social-login`
 
-You're right — I generated raw character sketches yesterday, not the App Store product shots that match the other products. Let me create the proper one for Vårt Vi using the new illustration.
+`@capacitor-community/apple-sign-in@7.1.0` is locked to `capacitor-swift-pm 7.x` and the maintainer has not shipped a Capacitor 8 release. The clean fix is to swap to `@capgo/capacitor-social-login@^8.3.17`, which officially supports Capacitor 8 (`v8.*` plugin = `v8.*` Capacitor per their compatibility matrix) and has Apple Sign In built in.
 
-### What this is
+### Changes
 
-The "App Store product image" is the marketing composition we made for each product yesterday: the character illustration placed against the product's themed background with the product wordmark/title, in a 1024×1024 square ready for App Store screenshots, marketing pages, and social.
+**1. `package.json`** — swap dependency
+- Remove: `"@capacitor-community/apple-sign-in": "^7.1.0"`
+- Add: `"@capgo/capacitor-social-login": "^8.3.17"`
 
-### Plan
+**2. `src/lib/appleSignIn.ts`** — adapt to new plugin API
+The wiring (nonce/state generation, `supabase.auth.signInWithIdToken`, error/cancel handling, return shape) stays identical. Only the plugin call changes:
 
-1. **Find yesterday's reference**: Locate one of the existing App Store product images (e.g. Jag i Mig, Jag med Andra) in `src/assets/` to confirm the exact composition language — character placement, background gradient, typography, padding.
+| Old (`@capacitor-community/apple-sign-in`) | New (`@capgo/capacitor-social-login`) |
+|---|---|
+| `import { SignInWithApple } from '@capacitor-community/apple-sign-in'` | `import { SocialLogin } from '@capgo/capacitor-social-login'` |
+| `SignInWithApple.authorize({ clientId, redirectURI, scopes: 'email name', state, nonce })` | `SocialLogin.initialize({ apple: { clientId: 'com.bonkistudio.bonkiapp' } })` (idempotent, called once per invocation) then `SocialLogin.login({ provider: 'apple', options: { scopes: ['email', 'name'], nonce, state } })` |
+| `result.response.identityToken` | `result.result.idToken` (per `AppleProviderResponse` typedef) |
 
-2. **Use the new Vårt Vi illustration as the source**: The two-figure illustration from `src/assets/illustration-still-us-tile.png` (the one we just dialed in placement for) is the character art.
+Cancel detection (`code 1001` / "cancelled") stays the same — Apple's native error codes are surfaced identically.
 
-3. **Compose the App Store shot**:
-   - **Canvas**: 1024×1024
-   - **Background**: Cobalt Blue gradient matching Vårt Vi theme (`#4A6FA5` → deeper cobalt, per the locked Still Us palette)
-   - **Character**: Two-figure illustration placed using the same composition rule as the other product shots (typically character anchored bottom/right with breathing room, or centered hero — match whatever the existing set uses)
-   - **Wordmark**: "Vårt Vi" in the same typeface and placement as the other product images
-   - **Optional tagline**: If the other shots include one (e.g. "21 samtal"), include the matching line for Vårt Vi
+**3. `Login.tsx`** — untouched. The exported `signInWithApple()` keeps the same signature and `AppleSignInResult` return shape, so the call site needs zero changes.
 
-4. **Save the master** to `/mnt/documents/vart-vi-appstore.png` for preview.
+**4. `capacitor.config.ts`** — untouched. Per Capgo docs, Apple uses system APIs on iOS and needs no extra config block (defaults to enabled). Adding an explicit `plugins.SocialLogin.providers.apple: true` is optional and not needed for the fix.
 
-5. **After approval**: Save into `src/assets/` under the same naming convention used for the other product App Store images (I'll confirm the exact filename pattern from the existing set before writing).
+### What stays exactly the same
 
-### Untouched
-
-- Library tile illustration and its placement (already locked in).
-- Hero/ProductIntro/Journal illustrations.
-- All other products' App Store images.
+- Prompt 5 UI in `Login.tsx`
+- `signInWithApple()` public API (`Promise<AppleSignInResult>`)
+- Nonce/state generation
+- Supabase ID-token exchange
+- Cancel/error detection logic
+- `clientId` (`com.bonkistudio.bonkiapp`)
+- `redirectURI` (handled by Supabase callback; not needed in the iOS init for the new plugin)
 
 ### Verification
 
-Visual side-by-side check: the new Vårt Vi App Store image sits next to the other products' App Store images and reads as part of the same set — same canvas, same composition language, same typography treatment.
+1. `npx cap sync ios` runs cleanly with no `capacitor-swift-pm` version warnings.
+2. Xcode → Product → Archive completes with no SwiftPM resolution errors.
+3. On a physical device: tapping "Fortsätt med Apple" opens the native Apple sheet, completes sign-in, and lands the user authenticated via Supabase — same UX as Prompt 5.
 
 ### Rollback
 
-Delete the new file. No code wiring touched.
+Revert `package.json` and `src/lib/appleSignIn.ts` to previous versions. No other files touched.
 
