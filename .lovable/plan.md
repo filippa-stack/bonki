@@ -1,49 +1,107 @@
 
+## Fix the actual reviewer-login blocker: the stored password is wrong (or being entered differently), not the placement of the form
 
-## Why Vårt Vi gets cropped on desktop — and the fix
+The current evidence points to a credential mismatch, not a missing UI:
 
-### Root cause
+- the reviewer user exists
+- the account is confirmed
+- the account has a password set
+- there has still never been a successful sign-in
 
-The Vårt Vi tile uses a custom illustration block (not the shared `PastelTile` used by the kids tiles). Two things in that block break on wide viewports:
+That means the blocker is almost certainly that the backend password for `apple.review@bonkistudio.com` is not the same password you expect reviewers to use, or iPhone input is subtly altering what gets submitted.
 
-1. **`width: '92%'`** on the illustration wrapper is a percentage of the **tile width**. On mobile (~350 px wide) that's ~322 px — fine. On desktop (~1400 px wide) it becomes ~1290 px, but the tile is only 260 px tall.
-2. The wrapper is anchored `right: -12%` and stretches the full height. Combined with `objectFit: contain`, the image scales to fit the wrapper's **height** (260 px), then `objectPosition: 'right bottom'` pins it to the wrapper's right edge — which sits ~170 px **outside** the tile. `overflow: hidden` on the tile then clips the character in half.
+### What to change
 
-The kids tiles don't have this problem because `PastelTile` sets a `max-width` constraint via the `ILLUSTRATION_SCALE` map per product, and the illustrations are designed to bleed only a bit past the right edge.
+#### 1. Reset the reviewer account password in both environments
+Update the existing reviewer user in both Preview/Test and Published/Live to a fresh, known password.
 
-### Fix
+Use a simpler App Review password with no punctuation and no ambiguous characters, for example:
+- `BonkiReview2026`
 
-Treat Vårt Vi the same way the kids tiles are treated — pin the illustration to a height-based size so it stays inside the tile regardless of viewport width.
+This removes the risk of:
+- a mistaken original password
+- issues around `!` or other symbols on iPhone keyboards
+- copy/paste or keyboard-substitution edge cases
 
-Change the wrapper in `ProductLibrary.tsx` (the Vårt Vi block, lines 986–1009):
+#### 2. Keep the reviewer login at the top on native
+Do not undo the earlier UI change. The reviewer form should stay first on native iOS so Apple sees it immediately.
 
-- Replace `width: '92%'` with a **height-anchored** sizing model:
-  - `height: '120%'` (slightly taller than the tile so it can bleed top/bottom),
-  - `width: 'auto'` on the wrapper,
-  - `aspectRatio` matched to the source PNG so `objectFit: contain` doesn't waste space.
-- Keep `right: -12%` but cap the visual bleed: change `right` to a fixed pixel value (e.g. `right: '-40px'`) so the character peeks consistently at any width instead of scaling its offset with the tile.
-- Optional: add `maxWidth: '320px'` to the wrapper so on ultra-wide screens the character stays the same size as on mobile rather than ballooning.
+#### 3. Harden the reviewer inputs on iPhone
+Update `src/pages/Login.tsx` reviewer fields so the app submits exactly what the reviewer types:
 
-Net effect on desktop: the character renders at its mobile size, anchored to the right edge of the tile with a consistent `~40 px` bleed — same composition as on phone.
+- email:
+  - trim whitespace
+  - lowercase before submit
+  - `autoCapitalize="none"`
+  - `autoCorrect="off"`
+  - `spellCheck={false}`
+  - `inputMode="email"`
+- password:
+  - keep exact value except normalize accidental pasted non-breaking spaces if present
+  - `autoCapitalize="none"`
+  - `autoCorrect="off"`
+  - `spellCheck={false}`
 
-### Files changed
+#### 4. Surface the real auth error for reviewer login
+Right now the app always shows `Felaktig inloggning.`
 
-- `src/components/ProductLibrary.tsx` — only the Vårt Vi illustration wrapper (lines 986–1009).
+Change reviewer-mode error handling in `src/pages/Login.tsx` to:
+- log the real auth error to console
+- show the exact backend error text in reviewer mode only, or a clearer mapped message like:
+  - `Fel e-post eller lösenord`
+  - `Kontot är inte bekräftat`
+  - `Inloggning med lösenord är inte tillgänglig`
 
-### Untouched
+This makes future failures diagnosable instead of opaque.
 
-- Kids tiles (already correct).
-- Vårt Vi text block, scrim, badge, resume indicator.
-- The illustration asset itself.
-- Any other product or layout.
+#### 5. Optional but recommended: add a native-only autofill shortcut for review
+Add a small secondary button under the reviewer header on native only:
 
-### Verification
+- `Fyll i granskningsuppgifter`
 
-- Mobile (390 px): character peeks from the right exactly as today.
-- Tablet / desktop (≥768 px): character stays anchored right with the same visual size, no clipping through the body.
-- Bibliotek scroll, badges, and "Fortsätt" indicator unchanged.
+It should populate the reviewer email automatically and optionally the password too. This reduces typing mistakes during review without changing the main auth flow.
 
-### Rollback
+### Files / systems involved
 
-Revert the wrapper style block in `ProductLibrary.tsx`.
+#### Code
+- `src/pages/Login.tsx`
+  - keep reviewer form at top on native
+  - harden reviewer input attributes
+  - normalize submitted values
+  - improve reviewer error handling
+  - optional autofill shortcut
 
+#### Backend auth
+- existing reviewer user:
+  - `apple.review@bonkistudio.com`
+- reset password in:
+  - Preview/Test backend
+  - Published/Live backend
+
+### What this does not change
+- product access grants for the reviewer account
+- Google login
+- regular user login flow
+- the Apple sign-in entitlement fix already identified for the iOS build
+
+### Verification before resubmitting
+
+1. In Preview/Test:
+   - log in with `apple.review@bonkistudio.com`
+   - use the new reset password
+   - confirm successful sign-in
+   - confirm all 7 products are unlocked
+
+2. In Published/Live:
+   - repeat the same login
+   - confirm successful sign-in
+   - confirm all 7 products are unlocked
+
+3. On a physical iPhone build:
+   - open login screen
+   - reviewer form is visible immediately
+   - enter or autofill reviewer credentials
+   - confirm successful sign-in without OTP/email access
+
+### Important note for App Store resubmission
+This fixes the reviewer-account blocker. The separate Apple sign-in issue still also needs the native entitlement/capability added in Xcode before resubmitting, otherwise Apple can still reject the build on the Sign in with Apple path.
