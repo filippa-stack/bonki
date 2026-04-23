@@ -32,6 +32,8 @@ const SOFT_BORDER = '1px solid rgba(253, 246, 227, 0.15)';
 export default function Login() {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const isReviewerMode = searchParams.get('review') === '1';
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -43,6 +45,9 @@ export default function Login() {
   const [verifying, setVerifying] = useState(false);
   const [resendCooldown, setResendCooldown] = useState(0);
   const [appleLoading, setAppleLoading] = useState(false);
+  const [reviewerEmail, setReviewerEmail] = useState('');
+  const [reviewerPassword, setReviewerPassword] = useState('');
+  const [reviewerLoading, setReviewerLoading] = useState(false);
   const cooldownRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const isNative = Capacitor.isNativePlatform();
 
