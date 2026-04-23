@@ -1,77 +1,38 @@
 
 
-## Reviewer email/password login (hidden behind `?review=1`)
+## Update app icon to new BONKI mark
 
-Single-file edit to `src/pages/Login.tsx`. Adds a subdued reviewer-only sign-in section that appears only when the URL contains `?review=1`. All existing OAuth + OTP flows stay untouched.
+Replace the favicon, Apple touch icon, PWA icons, and OG image with the uploaded BONKI artwork (1024×1024, dark navy background with off-white "BONKI" wordmark).
 
-### Edit — `src/pages/Login.tsx`
+### Files generated from the uploaded image
 
-1. **Imports**
-   - Add `useSearchParams` to the existing `react-router-dom` import (already imports `useNavigate`).
-   - `supabase`, `toast`, `Loader2` are already imported — reuse them.
+From `user-uploads://Add_a_heading_1.PNG` (1024×1024 source), generate and copy into `public/`:
 
-2. **State + query-param read** (top of `Login` component, alongside existing `useState` calls)
-   - `const [searchParams] = useSearchParams();`
-   - `const isReviewerMode = searchParams.get('review') === '1';`
-   - `const [reviewerEmail, setReviewerEmail] = useState('');`
-   - `const [reviewerPassword, setReviewerPassword] = useState('');`
-   - `const [reviewerLoading, setReviewerLoading] = useState(false);`
+| Path | Size | Purpose |
+|---|---|---|
+| `public/favicon.png` | 512×512 | Browser tab icon (`<link rel="icon">`) |
+| `public/apple-touch-icon-180x180.png` | 180×180 | iOS home-screen icon (also reused for the 152×152 link) |
+| `public/pwa-192x192.png` | 192×192 | PWA manifest icon (Android home screen) |
+| `public/pwa-512x512.png` | 512×512 | PWA manifest icon (large + maskable) |
 
-3. **Handler**
-   ```ts
-   const handleReviewerSignIn = async () => {
-     if (!reviewerEmail.trim() || !reviewerPassword) return;
-     setReviewerLoading(true);
-     try {
-       const { error } = await supabase.auth.signInWithPassword({
-         email: reviewerEmail.trim(),
-         password: reviewerPassword,
-       });
-       if (error) toast.error('Felaktig inloggning.');
-       // Success: AuthContext's onAuthStateChange handles navigation.
-     } catch {
-       toast.error('Felaktig inloggning.');
-     } finally {
-       setReviewerLoading(false);
-     }
-   };
-   ```
+All five are direct resamples of the uploaded square — no padding or recolor. The maskable PWA variant keeps the existing dark background, which already provides safe-area padding around the wordmark.
 
-4. **JSX — render only when `isReviewerMode && !otpSent && !showEmailForm`**
+### Cleanup
 
-   Placed after the `<TermsConsent>` block (still inside the `max-w-[320px]` column, with `marginTop: 32`). Subdued styling that matches the existing OTP form inputs and button — same `h-14`, same `rounded-xl`, same `SOFT_BORDER`, same `ORANGE_GRADIENT` button — but introduced by a small muted heading so it reads as a secondary/technical section.
-
-   - Divider: 1px line at `rgba(253, 246, 227, 0.10)` above the section.
-   - Heading: `Recensentinloggning` — `font-size: 12px`, `letter-spacing: 0.08em`, `text-transform: uppercase`, color `rgba(253, 246, 227, 0.45)`.
-   - Email `<input type="email" autoComplete="email">` reusing the OTP form's input style + `handleFocus`/`handleBlur`.
-   - Password `<input type="password" autoComplete="current-password">` same styling.
-   - Button: `Logga in` — same `ORANGE_GRADIENT` + `ORANGE_SHADOW` as `Verifiera`, disabled while `reviewerLoading` or fields empty, shows `<Loader2 className="animate-spin" />` while loading. Submits via `handleReviewerSignIn`. Enter key in either field triggers submit.
-
-### Visibility rules
-
-| Condition | Reviewer section visible? |
-|---|---|
-| No `?review=1` | No |
-| `?review=1`, main view | **Yes** (under OAuth + OTP buttons) |
-| `?review=1`, OTP code-entry view | No (hidden so it doesn't crowd code entry) |
-| `?review=1`, email-entry sub-view | No |
+- Delete the legacy `public/favicon.ico` if present (browsers request `/favicon.ico` by default and a stale one would override the new PNG). Currently only `favicon.png` exists, so likely a no-op — verified during execution.
 
 ### Untouched
 
-- All existing OAuth handlers (Apple native, Apple OAuth, Google) and JSX
-- OTP `signInWithOtp` + `verifyOtp` flow, resend cooldown
-- `saveConsent`, `TermsConsent`, demo-mode button
-- `AuthContext` (existing `onAuthStateChange` handles post-login navigation)
-- `MIDNIGHT_INK`, `LANTERN_GLOW`, `ORANGE_GRADIENT`, `SOFT_BORDER`, `FOCUS_RING` constants
-- No Supabase config changes — email/password is already enabled
-- No new dependencies, no new files, no route changes
+- `index.html` — all `<link>` tags already point at `/favicon.png`, `/apple-touch-icon-180x180.png`, and the manifest references the PWA icons by the same filenames; no markup changes needed.
+- `vite.config.ts` PWA manifest — same icon paths.
+- `public/bonki-og.png` (Open Graph) — kept as-is; OG image is wider/branded and not part of the app-icon system.
+- All app code, components, and routes.
 
 ### Verification
 
-1. `/login` (no param) → identical to current production: Apple/Google + e-post OTP + consent links. No reviewer section.
-2. `/login?review=1` → all existing buttons render unchanged; below the consent links, a small `RECENSENTINLOGGNING` section appears with email + password fields and a Bonki Orange `Logga in` button.
-3. Submit valid Supabase email/password → existing `onAuthStateChange` redirects into the app.
-4. Submit invalid credentials → Sonner toast `Felaktig inloggning.`; page state preserved; button re-enables.
-5. Tap `Fortsätt med e-post` while in reviewer mode → reviewer section hides during the email/OTP sub-flow, returns when user taps `Tillbaka`.
-6. TypeScript compiles cleanly; no console errors.
+1. New `/favicon.png` shows in browser tab.
+2. `/apple-touch-icon-180x180.png` shows when "Add to Home Screen" on iOS.
+3. PWA install prompt + installed home-screen icon use the new artwork (Android + iOS).
+4. No 404s for icon paths in network panel.
+5. Hard refresh may be needed to bust cached favicons.
 
