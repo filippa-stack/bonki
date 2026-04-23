@@ -1,35 +1,37 @@
 
 
-## Replace the Vårt Vi (Still Us) product illustration
+## Update the library tile illustration for Vårt Vi
 
-Swap the file behind `@/assets/illustration-still-us-home.png` with the uploaded image. Because every consumer imports from the same path, no code changes are needed — all surfaces update at once.
+The library lobby tile uses a separate asset (`illustration-still-us-tile.png`), which is why the previous swap of `illustration-still-us-home.png` didn't reach it.
 
-### Steps
+### Diagnosis
 
-1. Copy `user-uploads://identitetsskiftet-2.png` → `src/assets/illustration-still-us-home.png` (overwrite).
-2. No other edits.
+`src/components/ProductLibrary.tsx` (line 25):
+```ts
+import illustrationStillUs from '@/assets/illustration-still-us-tile.png';
+```
 
-### Surfaces that update automatically
+All other Vårt Vi surfaces (Home hero, ProductIntro, Journal, Category, manifest) read `illustration-still-us-home.png` — already updated. Only the library tile points at `-tile.png`, which is still the old "two characters embracing" image.
 
-- `src/pages/Home.tsx` — Vårt Vi home / return ritual hero.
-- `src/components/ProductIntro.tsx` — Vårt Vi welcome / intro page.
-- `src/data/products/still-us-mock.ts` — `heroImage` on the product manifest (library tile, etc.).
-- `src/pages/Category.tsx` — Vårt Vi category header.
-- `src/pages/Journal.tsx` — Vårt Vi entries in the journal illustration map.
+### Fix
 
-### Verification
+Overwrite `src/assets/illustration-still-us-tile.png` with the same uploaded `identitetsskiftet-2.png`. No code changes — single asset replacement.
 
-- `/?devState=browse` → Vårt Vi tile in the library shows the new illustration.
-- `/product/still-us` → home hero shows the new illustration.
-- Vårt Vi intro / category / journal entries all reflect the new image.
+### Surfaces that update
+
+- `src/components/ProductLibrary.tsx` → Vårt Vi tile on `/` (library lobby).
 
 ### Untouched
 
-- All other product illustrations.
-- Cropping/positioning logic (`object-position`, opacity, scale) per surface stays as configured — the new image will inherit those treatments.
-- Creature/atmosphere assets (`STILL_US_CREATURES`, `creature-*`) — separate system, unaffected.
+- All other product tiles and Vårt Vi surfaces (already on `-home.png`).
+- Tile cropping/`object-position` logic in `ProductLibrary.tsx` stays as configured.
+
+### Verification
+
+- `/` → Vårt Vi tile shows the new illustration.
+- Other surfaces unchanged from previous verification (Home, ProductIntro, Journal, Category).
 
 ### Rollback
 
-Restore the previous `src/assets/illustration-still-us-home.png` from version history.
+Restore previous `src/assets/illustration-still-us-tile.png` from version history.
 
