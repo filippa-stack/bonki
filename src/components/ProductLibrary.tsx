@@ -986,10 +986,12 @@ export default function ProductLibrary() {
               <div style={{
                 position: 'absolute',
                 top: '-12%',
-                left: 'auto',
-                right: '-12%',
                 bottom: '-12%',
-                width: '92%',
+                right: '-40px',
+                height: '124%',
+                width: 'auto',
+                aspectRatio: '1 / 1',
+                maxWidth: '320px',
                 pointerEvents: 'none',
                 zIndex: 1,
               }}>
