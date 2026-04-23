@@ -200,6 +200,23 @@ export default function Login() {
     }
   };
 
+  const handleReviewerSignIn = async () => {
+    if (!reviewerEmail.trim() || !reviewerPassword) return;
+    setReviewerLoading(true);
+    try {
+      const { error } = await supabase.auth.signInWithPassword({
+        email: reviewerEmail.trim(),
+        password: reviewerPassword,
+      });
+      if (error) toast.error('Felaktig inloggning.');
+      // Success: AuthContext's onAuthStateChange handles navigation.
+    } catch {
+      toast.error('Felaktig inloggning.');
+    } finally {
+      setReviewerLoading(false);
+    }
+  };
+
   const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
     e.currentTarget.style.boxShadow = FOCUS_RING;
     e.currentTarget.style.borderColor = 'rgba(253, 246, 227, 0.35)';
