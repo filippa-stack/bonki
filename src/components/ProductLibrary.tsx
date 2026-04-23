@@ -985,11 +985,11 @@ export default function ProductLibrary() {
               {/* Illustration */}
               <div style={{
                 position: 'absolute',
-                top: '-8%',
+                top: '-18%',
                 left: 'auto',
-                right: '-10%',
-                bottom: '-8%',
-                width: '78%',
+                right: '-12%',
+                bottom: '-6%',
+                width: '92%',
                 pointerEvents: 'none',
                 zIndex: 1,
               }}>
