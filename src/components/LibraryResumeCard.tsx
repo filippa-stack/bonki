@@ -140,7 +140,8 @@ export default function LibraryResumeCard({ activeTab, global, forceMock }: Libr
   useEffect(() => {
     if (devMock) return;
 
-    const isLocalPreview = isDemoMode() || !!devState;
+    const isLocalPreview =
+      isDemoMode() || devState === 'library' || devState === 'pairedActive';
     const syncLocalPreview = () => {
       const demoSession = getMostRecentDemoSession();
       if (demoSession) {
@@ -191,7 +192,12 @@ export default function LibraryResumeCard({ activeTab, global, forceMock }: Libr
 
   // Realtime: re-fetch when session status changes in this space
   useEffect(() => {
-    if (isDemoMode() || !!devState || !space?.id) return;
+    if (
+      isDemoMode() ||
+      devState === 'library' ||
+      devState === 'pairedActive' ||
+      !space?.id
+    ) return;
 
     let debounceTimer: ReturnType<typeof setTimeout> | undefined;
 
