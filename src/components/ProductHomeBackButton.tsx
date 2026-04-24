@@ -27,8 +27,8 @@ export default function ProductHomeBackButton({ color }: { color?: string }) {
         background: 'none',
         border: 'none',
         cursor: 'pointer',
-        color: color ?? 'var(--text-primary)',
-        opacity: 0.6,
+        color: color ?? '#FDF6E3',
+        opacity: 0.75,
         padding: '8px',
       }}
     >

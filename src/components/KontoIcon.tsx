@@ -27,7 +27,7 @@ export default function KontoIcon({
         background: 'none',
         border: 'none',
         cursor: 'pointer',
-        color: color ?? 'var(--color-text-primary)',
+        color: color ?? '#FDF6E3',
         opacity: 0.9,
         padding: '8px',
       }}
