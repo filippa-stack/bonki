@@ -1,83 +1,59 @@
 
 
-## Apple Sign In config — answers + what to fix
+## Unify paywall design — `ProductPaywall` matches `ProductIntro`
 
-### 1. Where the Key ID lives
+### Goal
 
-The Key ID (`Y37T9LJYAL`) is **not a separate field on the main Apple provider screen**. It is asked **inside the "Generate secret" dialog** that appears when you click **Generate Secret** under the Client Secret JWT field.
+Rewrite `src/components/ProductPaywall.tsx` so every product (including Vårt Vi) renders a single fullscreen paywall that visually mirrors `ProductIntro`. Delete the Still Us bottom-sheet branch. Drop card-level personalization props (the call site in CardView is unreachable dead code).
 
-That dialog asks for, in this order:
-- Team ID
-- Key ID ← this is where `Y37T9LJYAL` goes
-- Services ID (Client ID)
-- Contents of the `.p8` private key (paste the full file including `-----BEGIN PRIVATE KEY-----` lines)
+### Files
 
-It then signs a JWT with header `{ alg: "ES256", kid: "<Key ID>" }` and writes the result into the Client Secret field on the main provider screen. Without the Key ID inside that dialog, the JWT header would be wrong and Apple would reject token exchange.
+**Modify (single file):**
+- `src/components/ProductPaywall.tsx` — full rewrite to one fullscreen layout. Drop `cardId` and `currentCardTitle` from the props interface (loose typing — CardView's dead-code call site can keep passing them; they'll be ignored).
 
-**Action**: Open Cloud → Authentication → Sign In Methods → Apple → Generate Secret, fill all four fields including Key ID `Y37T9LJYAL`, generate, and save.
+**Untouched:** `ProductIntro.tsx`, `ProductHome.tsx`, `CardView.tsx`, `BuyPage.tsx`, `productIntros.ts`, `productPreviewQuestions.ts`.
 
-### 2. The Key ID is NOT auto-derived from the .p8 file
+### New layout (mirrors `ProductIntro` 1:1)
 
-The `.p8` file does not contain its own Key ID — the Key ID only exists in Apple's developer console next to that key. So Lovable cannot derive it for you. You must enter it manually inside the Generate Secret dialog.
+Fullscreen `position: fixed; inset: 0`, `backgroundColor = product.backgroundColor ?? MIDNIGHT_INK`:
 
-### 3. The aud claim and native iOS Bundle ID — this is the important issue
+1. **Atmospheric creature backdrop** — same `PRODUCT_ILLUSTRATION` map and focal points as `ProductIntro` (top 42%, opacity 0.5, `brightness(1.15) saturate(0.95)`, bottom fade-into-bg gradient).
+2. **Back arrow** top-left, safe-area aware → `navigate(-1)`.
+3. **Heading** `Välkommen till\n{product.name}` — `font-serif`, 28px, centered.
+4. **Tagline** `product.tagline` — cream, opacity 0.6.
+5. **Body paragraphs** — joined from `productIntros[productId].slides[*].body`, split on `\n\n`.
+6. **Framed preview-question card** — `marginTop:32`, `padding:24`, `borderRadius:14`, `bg:rgba(11,16,38,0.35)`, `border:1px solid rgba(253,246,227,0.20)`. Kicker: `En fråga ur {product.name}` (uppercased via CSS). Quote: `PREVIEW_QUESTION[productId]`.
+7. **Two-line meta** — `{priceSek} kr · Engångsköp · Tillgång för alltid` + `Utvecklat av psykologer · 29 års klinisk erfarenhet`.
+8. **CTA button** `Köp · {priceSek} kr` (or `Köp` while loading) — `productTileColors[productId].tileLight ?? BONKI_ORANGE` background, `MIDNIGHT_INK` text. Click runs the existing `create-checkout` flow (no `returnCard` param).
+9. **Trust line** `Säker betalning · Ingen prenumeration`.
+10. **Escape link** `Utforska andra produkter` — cream underlined text-link → `/`.
 
-The current `apple.review` setup has a real mismatch you need to fix.
+### Removed
 
-**Today on the main Apple provider screen**:
-- Client ID = `com.bonkistudio.bonkiapp.signin` (your **Services ID**, used for web OAuth)
+- Entire `if (isStillUs) { return <BottomSheet…> }` block (~150 lines: drag handle, swipe-to-dismiss, overlay).
+- `AnimatePresence` wrapper.
+- `cardId`, `currentCardTitle` props.
+- `useCardImage` import.
+- `returnCard` query parameter on `successUrl`.
 
-**But your native iOS app sends**:
-- `appleSignIn.ts` line 13 → `APPLE_CLIENT_ID = 'com.bonkistudio.bonkiapp'` (your **Bundle ID**)
-- Apple issues an identity token with `aud = com.bonkistudio.bonkiapp`
-- Supabase receives it via `signInWithIdToken({ provider: 'apple', token })`
-- Supabase compares the token's `aud` to the configured Client ID → **mismatch → rejected**
+### Preserved
 
-This is almost certainly why native Apple sign-in fails for the reviewer even after the entitlement is added.
+- `onAccessGranted` fires on `already_purchased`.
+- Demo/`isDemoParam` mount-effect bypass.
+- Hidden 3-second long-press dev bypass on the price line (demo mode only).
+- 503/error states + CTA loading state.
 
-**Fix**: Add `com.bonkistudio.bonkiapp` to the **Additional allowed client IDs / Authorized Client IDs** field on the Apple provider screen. In Lovable Cloud the field appears directly under the Client ID input (sometimes labeled "Additional client IDs", comma-separated). After saving, the final config should be:
+### Verification
 
-- **Client ID**: `com.bonkistudio.bonkiapp.signin`
-- **Additional allowed client IDs**: `com.bonkistudio.bonkiapp`
-- **Team ID**: `459423SKW4`
-- **Key ID** (inside Generate Secret): `Y37T9LJYAL`
-- **Client Secret**: JWT generated from the dialog using the four values above
+1. App builds, TS clean.
+2. Vårt Vi paywall (the broken case): fullscreen, not a bottom sheet — visually identical template to the kids paywalls.
+3. All 7 products render the same template (only copy/color/illustration vary).
+4. Owned-product tap → CardView still loads normally (confirms its dead-code ProductPaywall call doesn't crash even though props no longer exist).
+5. CTA → Stripe checkout (no `returnCard` query).
+6. Escape link → `/`; back arrow → previous screen.
+7. First-visit intro vs subsequent-visit paywall branch in `ProductHome` still works.
 
-If your Cloud UI does not expose an "Additional allowed client IDs" field, the alternative is to switch the main Client ID to the Bundle ID `com.bonkistudio.bonkiapp` — but that breaks any future web Apple OAuth using the Services ID. Adding it as an additional audience is the correct setup.
+### Rollback
 
-### 4. Verifying the JWT payload is correct
-
-A correctly generated JWT for your config will, when decoded, contain:
-```
-header:  { alg: "ES256", kid: "Y37T9LJYAL", typ: "JWT" }
-payload: {
-  iss: "459423SKW4",
-  iat: <recent>,
-  exp: <iat + ~6 months>,
-  aud: "https://appleid.apple.com",
-  sub: "com.bonkistudio.bonkiapp.signin"
-}
-```
-
-Note that `sub` is the Services ID — this is the JWT's identity to Apple, **not** the audience for incoming user tokens. The user-token audience matching (Bundle ID vs Services ID) is what the "Additional allowed client IDs" field controls and is independent of this JWT.
-
-You can paste the generated JWT into jwt.io to confirm `kid`, `iss`, and `sub` look like the above before saving.
-
-### 5. Apple Developer console — also required
-
-In `developer.apple.com` → Identifiers → your **Services ID** `com.bonkistudio.bonkiapp.signin` → "Sign In with Apple" → Configure:
-- **Primary App ID**: must be `com.bonkistudio.bonkiapp` (your iOS app)
-- **Domains**: `bonkiapp.com`, `www.bonkiapp.com`, `bonki.lovable.app`
-- **Return URLs**: `https://wcienwozdurwhswaarjy.supabase.co/auth/v1/callback`
-
-The Primary App ID link is what makes the Bundle ID and Services ID share the same Apple-issued user identifier, so a user signing in natively (Bundle ID audience) and via web (Services ID audience) is the same account in your database.
-
-### 6. Summary checklist
-
-- [ ] Open Generate Secret dialog, enter Team ID, **Key ID `Y37T9LJYAL`**, Services ID, paste `.p8`, generate, save.
-- [ ] On the Apple provider screen, add `com.bonkistudio.bonkiapp` to **Additional allowed client IDs**.
-- [ ] In Apple Developer console, confirm the Services ID's Primary App ID is the Bundle ID, and the Return URL points to the Supabase callback.
-- [ ] Set a calendar reminder ~5 months out: the JWT expires at 6 months and must be regenerated.
-
-Once those three are done your native iOS Sign in with Apple flow will succeed end-to-end. No code changes are needed in `appleSignIn.ts` — it is already correct.
+Single-file `git revert` of `src/components/ProductPaywall.tsx`. No DB, edge-function, or routing changes.
 
