@@ -1,37 +1,64 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { ArrowLeft } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
-import { useCardImage } from '@/hooks/useCardImage';
 import { isDemoMode, isDemoParam } from '@/lib/demoMode';
+import { productIntros } from '@/data/productIntros';
+import { PREVIEW_QUESTION } from '@/lib/productPreviewQuestions';
 import type { ProductManifest } from '@/types/product';
 import {
   MIDNIGHT_INK,
   LANTERN_GLOW,
-  DRIFTWOOD,
   BONKI_ORANGE,
   productTileColors,
 } from '@/lib/palette';
 
-/** Warm neutral for readable secondary text on dark backgrounds (4.7:1 on Midnight Ink) */
-const READABLE_SECONDARY = '#998F82';
+// ── Illustration imports (mirrors ProductIntro) ──
+import jimImage from '@/assets/illustration-jag-i-mig.png';
+import jmaImage from '@/assets/illustration-jag-med-andra.png';
+import jivImage from '@/assets/illustration-jag-i-varlden.png';
+import illustrationVardag from '@/assets/illustration-vardag.png';
+import illustrationSyskon from '@/assets/illustration-syskon.png';
+import illustrationSexualitet from '@/assets/illustration-sexualitet.png';
+import illustrationStillUs from '@/assets/illustration-still-us-home.png';
 
-const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
+const PRODUCT_ILLUSTRATION_POSITION: Record<string, string> = {
+  jag_i_mig: 'center 25%',
+  jag_med_andra: 'center 35%',
+  jag_i_varlden: 'center 30%',
+  vardagskort: 'center 20%',
+  syskonkort: 'center 15%',
+  sexualitetskort: 'center 20%',
+  still_us: 'center 30%',
+};
+
+const PRODUCT_ILLUSTRATION: Record<string, string> = {
+  jag_i_mig: jimImage,
+  jag_med_andra: jmaImage,
+  jag_i_varlden: jivImage,
+  vardagskort: illustrationVardag,
+  syskonkort: illustrationSyskon,
+  sexualitetskort: illustrationSexualitet,
+  still_us: illustrationStillUs,
+};
 
 interface ProductPaywallProps {
   product: ProductManifest;
   onAccessGranted?: () => void;
-  /** The card ID that triggered the paywall */
+  /** @deprecated Card-level trigger is unreachable; ignored. */
   cardId?: string;
-  /** Title of the card the user actually clicked */
+  /** @deprecated Card-level trigger is unreachable; ignored. */
   currentCardTitle?: string;
 }
 
 /**
- * Paywall — bottom-sheet for Still Us, full-screen for kids products.
+ * ProductPaywall — unified fullscreen paywall.
+ * Visually mirrors ProductIntro: atmospheric creature backdrop, framed
+ * preview-question card, two-line meta, accent CTA, escape link.
  */
-export default function ProductPaywall({ product, onAccessGranted, cardId, currentCardTitle }: ProductPaywallProps) {
+export default function ProductPaywall({ product, onAccessGranted }: ProductPaywallProps) {
   const navigate = useNavigate();
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
@@ -43,19 +70,21 @@ export default function ProductPaywall({ product, onAccessGranted, cardId, curre
     if (isDemoMode() || isDemoParam()) {
       onAccessGranted?.();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const isStillUs = product.id === 'still_us';
-
-  // CTA button is always Bonki Orange; product color goes on background
   const tileColors = productTileColors[product.id];
-  const ctaColor = tileColors?.tileLight ?? BONKI_ORANGE;
-  const pageBg = product.backgroundColor ?? MIDNIGHT_INK;
+  const productAccent = tileColors?.tileLight ?? BONKI_ORANGE;
+  const bgColor = product.backgroundColor ?? MIDNIGHT_INK;
+  const creatureImage = PRODUCT_ILLUSTRATION[product.id];
+  const introData = productIntros[product.id];
+  const fullBodyText = introData?.slides.map((s) => s.body).join('\n\n') ?? '';
+  const previewLabel = `En fråga ur ${product.name}`;
 
-  // Dev bypass via long-press on price line
+  // Hidden long-press dev bypass
   const longPressTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Fetch dynamic price from DB
+  // Fetch dynamic price
   useEffect(() => {
     supabase
       .from('products')
@@ -66,18 +95,6 @@ export default function ProductPaywall({ product, onAccessGranted, cardId, curre
         setPriceSek(data?.price_sek ?? (product.id === 'still_us' ? 249 : 195));
       });
   }, [product.id]);
-
-  // Card illustration (kids only)
-  const illustrationUrl = useCardImage(cardId ?? null);
-
-  const cardTitle = currentCardTitle ?? product.name;
-  const totalCards = product.cards.length;
-  const valueDescription = isStillUs
-    ? 'Lås upp alla samtal om det som håller ihop er — och det som ibland inte gör det.'
-    : (product.paywallDescription ?? `Lås upp alla ${totalCards} samtalsämnen i ${product.name}.`);
-
-  // Back navigation
-  const backTo = `/product/${product.slug}`;
 
   const handlePurchase = async () => {
     if (!user) {
@@ -101,9 +118,7 @@ export default function ProductPaywall({ product, onAccessGranted, cardId, curre
           },
           body: JSON.stringify({
             productId: product.id,
-            successUrl: cardId
-              ? `${window.location.origin}/?purchase=success&product=${product.id}&returnCard=${cardId}`
-              : `${window.location.origin}/?purchase=success&product=${product.id}`,
+            successUrl: `${window.location.origin}/?purchase=success&product=${product.id}`,
             cancelUrl: `${window.location.origin}/?purchase=cancel`,
           }),
         }
@@ -136,7 +151,7 @@ export default function ProductPaywall({ product, onAccessGranted, cardId, curre
     }
   };
 
-  // Hidden dev bypass: long-press on price line (3s)
+  // Hidden 3s long-press bypass (demo only)
   const handlePricePressStart = () => {
     if (isDemoMode() || isDemoParam()) {
       longPressTimer.current = setTimeout(() => {
@@ -151,432 +166,317 @@ export default function ProductPaywall({ product, onAccessGranted, cardId, curre
     }
   };
 
-  // Swipe-to-dismiss for bottom sheet
-  const sheetRef = useRef<HTMLDivElement>(null);
-  const dragStartY = useRef(0);
-  const handleDismiss = useCallback(() => navigate(backTo), [navigate, backTo]);
+  const ctaLabel = priceSek !== null ? `Köp · ${priceSek} kr` : 'Köp';
 
-  // ── Still Us: Bottom Sheet ──
-  if (isStillUs) {
-    return (
-      <AnimatePresence>
+  return (
+    <div
+      style={{
+        backgroundColor: bgColor,
+        height: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'auto',
+        position: 'fixed',
+        inset: 0,
+        zIndex: 50,
+      }}
+    >
+      {/* 1. Atmospheric creature backdrop */}
+      {creatureImage && (
         <div
           style={{
-            position: 'fixed',
-            inset: 0,
-            zIndex: 50,
+            position: 'absolute',
+            top: 0,
+            left: '-10%',
+            right: '-10%',
+            height: '42%',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'flex-start',
+            overflow: 'hidden',
+            pointerEvents: 'none',
+            zIndex: 0,
           }}
-          onClick={handleDismiss}
         >
-          {/* Overlay */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
+          <img
+            src={creatureImage}
+            alt=""
+            aria-hidden
             style={{
-              position: 'absolute',
-              inset: 0,
-              backgroundColor: 'rgba(0,0,0,0.5)',
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              objectPosition: PRODUCT_ILLUSTRATION_POSITION[product.id] ?? 'center 30%',
+              opacity: 0.5,
+              filter: 'brightness(1.15) saturate(0.95)',
             }}
           />
-
-          {/* Sheet */}
-          <motion.div
-            ref={sheetRef}
-            initial={{ y: '100%' }}
-            animate={{ y: 0 }}
-            exit={{ y: '100%' }}
-            transition={{ duration: 0.4, ease: EASE }}
-            drag="y"
-            dragConstraints={{ top: 0, bottom: 0 }}
-            dragElastic={0.2}
-            onDragEnd={(_, info) => {
-              if (info.offset.y > 100) handleDismiss();
-            }}
-            onClick={(e) => e.stopPropagation()}
+          <div
             style={{
               position: 'absolute',
               bottom: 0,
               left: 0,
               right: 0,
-              height: '80vh',
-              backgroundColor: pageBg,
-              borderTopLeftRadius: '20px',
-              borderTopRightRadius: '20px',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              padding: '32px 24px',
-              paddingBottom: 'max(32px, env(safe-area-inset-bottom))',
-              overflowY: 'auto',
+              height: '50%',
+              background: `linear-gradient(to top, ${bgColor} 0%, transparent 100%)`,
+              pointerEvents: 'none',
             }}
-          >
-            {/* Drag handle */}
-            <div
-              style={{
-                width: '40px',
-                height: '4px',
-                borderRadius: '2px',
-                backgroundColor: DRIFTWOOD,
-                marginBottom: '28px',
-                flexShrink: 0,
-              }}
-            />
-
-            {/* 1. Card name */}
-            <h2
-              style={{
-                fontFamily: "var(--font-display)",
-                fontVariationSettings: "'opsz' 24",
-                fontSize: '24px',
-                fontWeight: 600,
-                color: LANTERN_GLOW,
-                textAlign: 'center',
-                margin: 0,
-                lineHeight: 1.25,
-              }}
-            >
-              {cardTitle}
-            </h2>
-
-            {/* 2. Context */}
-            <p
-              style={{
-                fontFamily: 'var(--font-sans)',
-                fontSize: '13px',
-                fontWeight: 400,
-                color: READABLE_SECONDARY,
-                textAlign: 'center',
-                marginTop: '8px',
-              }}
-            >
-              Ingår i Vårt Vi · {totalCards || 'alla'} samtalsämnen
-            </p>
-
-            {/* 3. Value line */}
-            <p
-              style={{
-                fontFamily: 'var(--font-sans)',
-                fontSize: '16px',
-                fontWeight: 400,
-                color: LANTERN_GLOW,
-                textAlign: 'center',
-                marginTop: '24px',
-                lineHeight: 1.5,
-                maxWidth: '90%',
-              }}
-            >
-              {valueDescription}
-            </p>
-
-            {/* 4. Price line — long-press for dev bypass */}
-            <p
-              onPointerDown={handlePricePressStart}
-              onPointerUp={handlePricePressEnd}
-              onPointerLeave={handlePricePressEnd}
-              style={{
-                fontFamily: 'var(--font-sans)',
-                fontSize: '14px',
-                fontWeight: 400,
-                color: READABLE_SECONDARY,
-                textAlign: 'center',
-                marginTop: '16px',
-                userSelect: 'none',
-              }}
-            >
-              {priceSek ?? '...'} kr · Engångsköp · Tillgång för alltid
-            </p>
-
-            {/* 5. CTA */}
-            <button
-              onClick={handlePurchase}
-              disabled={loading}
-              style={{
-                width: '100%',
-                maxWidth: '320px',
-                height: '56px',
-                borderRadius: '14px',
-                backgroundColor: ctaColor,
-                border: 'none',
-                cursor: loading ? 'wait' : 'pointer',
-                marginTop: '32px',
-                fontFamily: 'var(--font-sans)',
-                fontSize: '17px',
-                fontWeight: 600,
-                color: MIDNIGHT_INK,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                opacity: loading ? 0.7 : 1,
-                transition: 'opacity 200ms ease, transform 150ms ease',
-              }}
-              onPointerDown={(e) => { if (!loading) e.currentTarget.style.transform = 'scale(0.97)'; }}
-              onPointerUp={(e) => { e.currentTarget.style.transform = ''; }}
-              onPointerLeave={(e) => { e.currentTarget.style.transform = ''; }}
-            >
-              {loading ? (
-                <span style={{ opacity: 0.8 }}>Förbereder...</span>
-              ) : (
-                'Lås upp Vårt Vi'
-              )}
-            </button>
-
-            {error && (
-              <p
-                style={{
-                  fontFamily: 'var(--font-sans)',
-                  fontSize: '13px',
-                  color: 'hsl(0, 60%, 60%)',
-                  textAlign: 'center',
-                  marginTop: '12px',
-                }}
-              >
-                {error}
-              </p>
-            )}
-
-            {/* 6. Trust */}
-            <p
-              style={{
-                fontFamily: 'var(--font-sans)',
-                fontSize: '12px',
-                fontWeight: 400,
-                color: READABLE_SECONDARY,
-                textAlign: 'center',
-                marginTop: '12px',
-              }}
-            >
-              Säker betalning · Ingen prenumeration
-            </p>
-
-            {/* 7. Dismiss */}
-            <button
-              onClick={() => navigate('/', { replace: true })}
-              style={{
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                fontFamily: 'var(--font-sans)',
-                fontSize: '14px',
-                fontWeight: 500,
-                color: LANTERN_GLOW,
-                opacity: 0.75,
-                textDecoration: 'underline',
-                textUnderlineOffset: '3px',
-                textAlign: 'center',
-                marginTop: '24px',
-                padding: '8px 16px',
-              }}
-            >
-              Utforska andra produkter
-            </button>
-          </motion.div>
+          />
         </div>
-      </AnimatePresence>
-    );
-  }
+      )}
 
-  // ── Kids products: Full-screen paywall ──
-  return (
-    <div
-      style={{
-        position: 'fixed',
-        inset: 0,
-        backgroundColor: pageBg,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '24px',
-        zIndex: 50,
-      }}
-    >
-      <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: EASE }}
+      {/* 2. Back arrow */}
+      <button
+        onClick={() => navigate(-1)}
         style={{
-          width: '100%',
-          maxWidth: '360px',
+          position: 'absolute',
+          top: 'max(12px, env(safe-area-inset-top, 12px))',
+          left: '16px',
+          zIndex: 10,
+          background: 'none',
+          border: 'none',
+          cursor: 'pointer',
+          padding: '8px',
+          color: LANTERN_GLOW,
+          opacity: 0.7,
+        }}
+        aria-label="Tillbaka"
+      >
+        <ArrowLeft size={24} />
+      </button>
+
+      {/* Content area */}
+      <div
+        style={{
+          position: 'relative',
+          zIndex: 1,
+          flex: 1,
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'center',
+          justifyContent: 'flex-end',
+          padding: '0 28px',
+          paddingTop: 'max(44px, env(safe-area-inset-top, 44px))',
         }}
       >
-        {/* Card Illustration */}
-        {illustrationUrl && (
-          <div
+        <div style={{ flex: '1 1 auto', minHeight: '15%' }} />
+
+        {/* 3. Heading */}
+        <motion.h1
+          initial={false}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0 }}
+          style={{
+            fontFamily: 'var(--font-serif)',
+            fontSize: '28px',
+            fontWeight: 600,
+            color: LANTERN_GLOW,
+            textAlign: 'center',
+            lineHeight: 1.2,
+            letterSpacing: '-0.02em',
+            margin: 0,
+          }}
+        >
+          Välkommen till{'\n'}
+          {product.name}
+        </motion.h1>
+
+        {/* 4. Tagline */}
+        {product.tagline && (
+          <p
             style={{
-              width: '100%',
-              maxHeight: '35vh',
-              borderRadius: '16px',
-              overflow: 'hidden',
-              marginBottom: '16px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
+              fontFamily: 'var(--font-sans)',
+              fontSize: '15px',
+              color: LANTERN_GLOW,
+              opacity: 0.6,
+              textAlign: 'center',
+              margin: '8px 0 0',
             }}
           >
-            <img
-              src={illustrationUrl}
-              alt={cardTitle}
-              style={{
-                width: '100%',
-                height: 'auto',
-                maxHeight: '35vh',
-                objectFit: 'contain',
-                display: 'block',
-              }}
-            />
+            {product.tagline}
+          </p>
+        )}
+
+        {/* 5. Body paragraphs */}
+        {fullBodyText && (
+          <div style={{ textAlign: 'center', marginTop: '20px' }}>
+            {fullBodyText.split('\n\n').map((para, i) => (
+              <p
+                key={i}
+                style={{
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '16px',
+                  color: LANTERN_GLOW,
+                  textAlign: 'center',
+                  lineHeight: 1.6,
+                  opacity: 0.88,
+                  margin: i === 0 ? '0' : '14px 0 0',
+                }}
+              >
+                {para}
+              </p>
+            ))}
           </div>
         )}
 
-        {/* Card Name + Context */}
-        <h2
-          style={{
-            fontFamily: "var(--font-display)",
-            fontVariationSettings: "'opsz' 24",
-            fontSize: '24px',
-            fontWeight: 700,
-            color: LANTERN_GLOW,
-            textAlign: 'center',
-            margin: 0,
-            lineHeight: 1.25,
-          }}
-        >
-          {cardTitle}
-        </h2>
-        <p
-          style={{
-            fontFamily: 'var(--font-sans)',
-            fontSize: '13px',
-            fontWeight: 400,
-            color: READABLE_SECONDARY,
-            textAlign: 'center',
-            marginTop: '8px',
-          }}
-        >
-          Ingår i {product.name} · {totalCards} samtalsämnen
-        </p>
+        {/* 6. Framed preview question */}
+        {PREVIEW_QUESTION[product.id] && (
+          <div
+            style={{
+              marginTop: '32px',
+              padding: '24px 24px',
+              borderRadius: '14px',
+              backgroundColor: 'rgba(11, 16, 38, 0.35)',
+              border: '1px solid rgba(253, 246, 227, 0.20)',
+              textAlign: 'center',
+            }}
+          >
+            <div
+              style={{
+                fontFamily: 'var(--font-sans)',
+                fontSize: '11px',
+                fontWeight: 600,
+                letterSpacing: '0.12em',
+                textTransform: 'uppercase',
+                color: LANTERN_GLOW,
+                opacity: 0.5,
+                marginBottom: '10px',
+              }}
+            >
+              {previewLabel}
+            </div>
+            <p
+              style={{
+                fontFamily: 'var(--font-serif)',
+                fontSize: '17px',
+                fontWeight: 400,
+                lineHeight: 1.45,
+                color: LANTERN_GLOW,
+                opacity: 0.92,
+                margin: 0,
+              }}
+            >
+              &ldquo;{PREVIEW_QUESTION[product.id]}&rdquo;
+            </p>
+          </div>
+        )}
 
-        {/* Value Line */}
-        <p
-          style={{
-            fontFamily: 'var(--font-sans)',
-            fontSize: '16px',
-            fontWeight: 400,
-            color: LANTERN_GLOW,
-            textAlign: 'center',
-            marginTop: '24px',
-            lineHeight: 1.5,
-            maxWidth: '90%',
-          }}
-        >
-          {valueDescription}
-        </p>
-
-        {/* Price Line — long-press for dev bypass */}
-        <p
+        {/* 7. Two-line meta — long-press for dev bypass */}
+        <div
+          style={{ marginTop: '24px', textAlign: 'center', userSelect: 'none' }}
           onPointerDown={handlePricePressStart}
           onPointerUp={handlePricePressEnd}
           onPointerLeave={handlePricePressEnd}
-          style={{
-            fontFamily: 'var(--font-sans)',
-            fontSize: '14px',
-            fontWeight: 400,
-            color: READABLE_SECONDARY,
-            textAlign: 'center',
-            marginTop: '16px',
-            userSelect: 'none',
-          }}
         >
-          {priceSek ?? '...'} kr · Engångsköp · Tillgång för alltid
-        </p>
-
-        {/* Primary CTA */}
-        <button
-          onClick={handlePurchase}
-          disabled={loading}
-          style={{
-            width: '100%',
-            height: '56px',
-            borderRadius: '14px',
-            backgroundColor: ctaColor,
-            border: 'none',
-            cursor: loading ? 'wait' : 'pointer',
-            marginTop: '32px',
-            fontFamily: 'var(--font-sans)',
-            fontSize: '17px',
-            fontWeight: 600,
-            color: MIDNIGHT_INK,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            opacity: loading ? 0.7 : 1,
-            transition: 'opacity 200ms ease, transform 150ms ease',
-          }}
-          onPointerDown={(e) => { if (!loading) e.currentTarget.style.transform = 'scale(0.97)'; }}
-          onPointerUp={(e) => { e.currentTarget.style.transform = ''; }}
-          onPointerLeave={(e) => { e.currentTarget.style.transform = ''; }}
-        >
-          {loading ? (
-            <span style={{ opacity: 0.8 }}>Förbereder...</span>
-          ) : (
-            `Lås upp ${product.name}`
-          )}
-        </button>
-
-        {error && (
+          <p
+            style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: '14px',
+              fontWeight: 500,
+              color: LANTERN_GLOW,
+              opacity: 0.85,
+              margin: 0,
+              lineHeight: 1.5,
+            }}
+          >
+            {priceSek !== null ? `${priceSek} kr` : '…'} · Engångsköp · Tillgång för alltid
+          </p>
           <p
             style={{
               fontFamily: 'var(--font-sans)',
               fontSize: '13px',
-              color: 'hsl(0, 60%, 60%)',
-              textAlign: 'center',
-              marginTop: '12px',
+              color: LANTERN_GLOW,
+              opacity: 0.55,
+              margin: '6px 0 0',
+              lineHeight: 1.5,
             }}
           >
-            {error}
+            Utvecklat av psykologer · 29 års klinisk erfarenhet
           </p>
-        )}
+        </div>
 
-        {/* Trust Line */}
-        <p
+        {/* 8. CTA + 9. trust + 10. escape */}
+        <div
           style={{
-            fontFamily: 'var(--font-sans)',
-            fontSize: '12px',
-            fontWeight: 400,
-            color: READABLE_SECONDARY,
-            textAlign: 'center',
-            marginTop: '12px',
-          }}
-        >
-          Säker betalning · Ingen prenumeration
-        </p>
-
-        {/* Dismiss */}
-        <button
-          onClick={() => navigate('/', { replace: true })}
-          style={{
-            background: 'none',
-            border: 'none',
-            cursor: 'pointer',
-            fontFamily: 'var(--font-sans)',
-            fontSize: '14px',
-            fontWeight: 500,
-            color: LANTERN_GLOW,
-            opacity: 0.75,
-            textDecoration: 'underline',
-            textUnderlineOffset: '3px',
-            textAlign: 'center',
             marginTop: '24px',
-            padding: '8px 16px',
+            paddingBottom: 'calc(24px + env(safe-area-inset-bottom, 0px))',
           }}
         >
-          Utforska andra produkter
-        </button>
-      </motion.div>
+          <button
+            onClick={handlePurchase}
+            disabled={loading}
+            style={{
+              width: '100%',
+              height: '56px',
+              backgroundColor: productAccent,
+              border: 'none',
+              borderRadius: '14px',
+              cursor: loading ? 'wait' : 'pointer',
+              fontFamily: 'var(--font-display)',
+              fontVariationSettings: "'opsz' 17",
+              fontSize: '17px',
+              fontWeight: 600,
+              color: MIDNIGHT_INK,
+              opacity: loading ? 0.7 : 1,
+              transition: 'opacity 150ms ease, transform 140ms cubic-bezier(0.4, 0, 0.2, 1)',
+            }}
+            onPointerDown={(e) => { if (!loading) e.currentTarget.style.transform = 'scale(0.97)'; }}
+            onPointerUp={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
+            onPointerLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
+          >
+            {loading ? 'Förbereder…' : ctaLabel}
+          </button>
+
+          {error && (
+            <p
+              style={{
+                fontFamily: 'var(--font-sans)',
+                fontSize: '13px',
+                color: 'hsl(0, 60%, 70%)',
+                textAlign: 'center',
+                margin: '12px 0 0',
+              }}
+            >
+              {error}
+            </p>
+          )}
+
+          {/* Trust line */}
+          <p
+            style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: '12px',
+              color: LANTERN_GLOW,
+              opacity: 0.5,
+              textAlign: 'center',
+              margin: '12px 0 0',
+            }}
+          >
+            Säker betalning · Ingen prenumeration
+          </p>
+
+          {/* Escape link */}
+          <button
+            onClick={() => navigate('/', { replace: true })}
+            style={{
+              display: 'block',
+              margin: '16px auto 0',
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              fontFamily: 'var(--font-sans)',
+              fontSize: '14px',
+              fontWeight: 500,
+              color: LANTERN_GLOW,
+              opacity: 0.75,
+              textDecoration: 'underline',
+              textUnderlineOffset: '3px',
+              padding: '8px 16px',
+            }}
+          >
+            Utforska andra produkter
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
