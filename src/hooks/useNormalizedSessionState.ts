@@ -15,13 +15,28 @@ export interface NormalizedSessionState {
   sessionId: string | null;
   cardId: string | null;
   categoryId: string | null;
+  productId: string | null;
   currentStepIndex: number;
   waiting: boolean;
   loading: boolean;
   refetch: () => Promise<void>;
 }
 
-export function useNormalizedSessionState(): NormalizedSessionState {
+/**
+ * Reads the active couple session.
+ *
+ * @param productId  Optional. When provided, only an active session whose
+ *                   `product_id` matches will be returned. When omitted/null,
+ *                   the legacy "any active session for this space" behavior
+ *                   is used (kept for app-shell consumers like the loading
+ *                   skeleton and global header indicator).
+ *
+ * Per-product scoping is essential because each product can now hold its own
+ * active session simultaneously (e.g. one in JIM and one in Still Us). Without
+ * the filter, switching between products would surface the other product's
+ * session and wipe the resume banner.
+ */
+export function useNormalizedSessionState(productId?: string | null): NormalizedSessionState {
   const { user } = useAuth();
   const { space } = useCoupleSpaceContext();
   const [state, setState] = useState<Omit<NormalizedSessionState, 'loading' | 'refetch'>>({
@@ -29,6 +44,7 @@ export function useNormalizedSessionState(): NormalizedSessionState {
     sessionId: null,
     cardId: null,
     categoryId: null,
+    productId: null,
     currentStepIndex: 0,
     waiting: false,
   });
@@ -39,6 +55,7 @@ export function useNormalizedSessionState(): NormalizedSessionState {
 
   const userId = user?.id;
   const spaceId = space?.id;
+  const effectiveProductId = productId ?? null;
 
   const fetchState = useCallback(async () => {
     // Cancel any pending debounced refetch so it doesn't overwrite our result
@@ -51,17 +68,19 @@ export function useNormalizedSessionState(): NormalizedSessionState {
     suppressUntilRef.current = Date.now() + 2000;
 
     if (!userId) {
-      setState({ appMode: null, sessionId: null, cardId: null, categoryId: null, currentStepIndex: 0, waiting: false });
+      setState({ appMode: null, sessionId: null, cardId: null, categoryId: null, productId: null, currentStepIndex: 0, waiting: false });
       setLoading(false);
       return;
     }
 
-    const { data, error } = await supabase.rpc('get_active_session_state');
+    const { data, error } = await supabase.rpc('get_active_session_state', {
+      p_product_id: effectiveProductId,
+    });
 
     if (!mountedRef.current) return;
 
     if (error || !data || (Array.isArray(data) && data.length === 0)) {
-      setState({ appMode: null, sessionId: null, cardId: null, categoryId: null, currentStepIndex: 0, waiting: false });
+      setState({ appMode: null, sessionId: null, cardId: null, categoryId: null, productId: null, currentStepIndex: 0, waiting: false });
     } else {
       const row = Array.isArray(data) ? data[0] : data;
       const mode = (row.mode as AppMode) || null;
@@ -70,14 +89,15 @@ export function useNormalizedSessionState(): NormalizedSessionState {
         sessionId: row.session_id ?? null,
         cardId: row.card_id ?? null,
         categoryId: row.category_id ?? null,
+        productId: row.product_id ?? null,
         currentStepIndex: row.current_step_index ?? 0,
         waiting: mode === 'SESSION_WAITING',
       });
     }
     setLoading(false);
-  }, [userId]);
+  }, [userId, effectiveProductId]);
 
-  // Initial fetch
+  // Initial fetch (also re-runs when productId scope changes)
   useEffect(() => {
     mountedRef.current = true;
     fetchState();
