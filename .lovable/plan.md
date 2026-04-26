@@ -1,36 +1,65 @@
-# Verify Live `reset-reviewer-password` response
+# Stop iOS build: verify actual Live backend and reviewer reset
 
-You asked for proof that Live has the new reviewer password seeded. The previous run was performed against production, but the response JSON wasn't pasted back. This plan re-runs the function against **Live** and pastes the full response.
+I will not proceed with the iOS build until the production backend mismatch is resolved.
 
-## What I'll do
+## Confirmed from read-only inspection
 
-1. **Call the Live edge function via curl** (no code changes):
-   ```
-   curl -X POST \
-     "https://<LIVE_PROJECT_REF>.supabase.co/functions/v1/reset-reviewer-password?token=bonki-reviewer-reset-9f4e2a1c-2026" \
-     -H "Content-Type: application/json"
-   ```
-   The Live project ref is the one bound to `bonkiapp.com` (separate from the Test ref `wcienwozdurwhswaarjy`). I'll resolve it from the project's environment config before issuing the call.
+- Project memory says the intended environment split is:
+  - Test/Preview: `wcienwozdurwhswaarjy`
+  - Live/Production: `spgknasuinxmvyrlpztx`
+- `supabase/config.toml` is currently bound to Test: `wcienwozdurwhswaarjy`.
+- The generated web client uses build-time env vars (`VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY`), so the actual backend used by `bonkiapp.com` depends on the Live deployment environment, not the checked-in Test config.
+- A read-only Live query confirms product access exists for UID `f05b6b17-d7b6-48f1-ae6d-77fe2ff28711`, and not for `931630a4-...` in the currently selected production environment.
+- No production logs were found for `reset-reviewer-password`, which supports your concern that the previous reset may not have hit `spgknasuinxmvyrlpztx`.
 
-2. **Paste the full JSON response** back into the chat, e.g.:
-   ```json
-   {
-     "ok": true,
-     "userId": "931630a4-e65a-4785-93ab-0d1b83443753",
-     "email": "apple.review@bonkistudio.com",
-     "passwordReset": true,
-     "products": ["jag_i_mig", "jag_i_varlden", "jag_med_andra", "sexualitetskort", "still_us", "syskonkort", "vardagskort"],
-     "productCount": 7,
-     "accessError": null
-   }
-   ```
+## What I will do in default mode
 
-3. **Confirm expected fields**: `ok: true`, `passwordReset: true`, `productCount: 7`. If any field is missing or `ok: false`, I'll surface the error and stop before you ship the next build to Apple.
+1. **Identify the backend that `bonkiapp.com` is actually using**
+   - Fetch the production JS bundle from `https://bonkiapp.com`.
+   - Search it for the embedded backend URL/project ref.
+   - Confirm whether the live app points to:
+     - `https://spgknasuinxmvyrlpztx.supabase.co`, or
+     - a different project, including the one that returned UID `931630a4-...`.
 
-## Why this needs default mode
+2. **Call the reset function against the correct production project explicitly**
+   - If `bonkiapp.com` points to `spgknasuinxmvyrlpztx`, call:
+     ```text
+     https://spgknasuinxmvyrlpztx.supabase.co/functions/v1/reset-reviewer-password?token=bonki-reviewer-reset-9f4e2a1c-2026
+     ```
+   - Paste the full response and include the exact URL called.
 
-The `supabase--curl_edge_functions` tool only targets the **Test** project. Hitting **Live** requires a plain `curl` via `code--exec`, which is disabled in plan mode.
+3. **Validate the UID requirement**
+   - The response must show:
+     ```json
+     {
+       "ok": true,
+       "userId": "f05b6b17-d7b6-48f1-ae6d-77fe2ff28711",
+       "email": "apple.review@bonkistudio.com",
+       "passwordReset": true,
+       "productCount": 7
+     }
+     ```
+   - If the response shows any other UID, I will stop and report that the reset is still targeting the wrong backend.
 
-## What I will NOT change
+4. **If the function is missing or stale on `spgknasuinxmvyrlpztx`**
+   - Deploy or publish the current `reset-reviewer-password` function to the actual Live backend.
+   - Re-run the explicit production URL.
+   - Paste the final successful response.
 
-No code, no migrations, no edits to `reset-reviewer-password`. This is a pure verification call. The function is idempotent (uses `ON CONFLICT DO NOTHING` for product access and just re-sets the same password), so re-running it is safe.
+5. **Report environment mapping clearly**
+   - I will give you a concise table:
+     ```text
+     bonkiapp.com backend: <project ref found in production bundle>
+     reset URL called:    <full function URL>
+     response UID:        <uid returned>
+     expected UID:        f05b6b17-d7b6-48f1-ae6d-77fe2ff28711
+     productCount:        7
+     safe for iOS build:  yes/no
+     ```
+
+## What I will not do
+
+- No iOS build.
+- No App Store submission.
+- No unrelated code changes.
+- No assumptions that `931630a4-...` is Live unless the production app bundle proves it.
