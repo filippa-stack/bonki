@@ -1,4 +1,5 @@
-// One-shot admin function to (re)set the App Store reviewer password.
+// One-shot admin function to (re)set the App Store reviewer password AND
+// seed product access for all 7 Bonki products.
 // Idempotent — safe to call multiple times. Hardcoded to a single account.
 //
 // Auth: requires a hardcoded token query param. Not a public endpoint —
@@ -18,6 +19,17 @@ const REVIEWER_PASSWORD = "BonkiReview2026";
 // Random shared token, hardcoded here. Function is also restricted to a single
 // hardcoded user, so even if leaked it cannot reset arbitrary accounts.
 const RESET_TOKEN = "bonki-reviewer-reset-9f4e2a1c-2026";
+
+// All 7 Bonki products — must match products.id in the public schema.
+const ALL_PRODUCT_IDS = [
+  "still_us",
+  "jag_i_mig",
+  "jag_i_varlden",
+  "jag_med_andra",
+  "sexualitetskort",
+  "syskonkort",
+  "vardagskort",
+] as const;
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -72,8 +84,49 @@ Deno.serve(async (req) => {
     });
   }
 
+  // Seed product access for all 7 products. Idempotent via UNIQUE(user_id, product_id).
+  const rows = ALL_PRODUCT_IDS.map((product_id) => ({
+    user_id: user.id,
+    product_id,
+    granted_via: "reviewer_grant",
+  }));
+
+  const { error: upsertErr } = await admin
+    .from("user_product_access")
+    .upsert(rows, { onConflict: "user_id,product_id", ignoreDuplicates: true });
+
+  if (upsertErr) {
+    return new Response(
+      JSON.stringify({
+        ok: false,
+        userId: user.id,
+        email: REVIEWER_EMAIL,
+        passwordReset: true,
+        productAccessError: upsertErr.message,
+      }),
+      {
+        status: 500,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      },
+    );
+  }
+
+  // Verify final state
+  const { data: access, error: accessErr } = await admin
+    .from("user_product_access")
+    .select("product_id")
+    .eq("user_id", user.id);
+
   return new Response(
-    JSON.stringify({ ok: true, userId: user.id, email: REVIEWER_EMAIL }),
+    JSON.stringify({
+      ok: true,
+      userId: user.id,
+      email: REVIEWER_EMAIL,
+      passwordReset: true,
+      products: access?.map((r) => r.product_id).sort() ?? [],
+      productCount: access?.length ?? 0,
+      accessError: accessErr?.message ?? null,
+    }),
     {
       status: 200,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
