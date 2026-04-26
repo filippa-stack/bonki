@@ -799,7 +799,7 @@ export default function CardView() {
     // ── Always fetch fresh session ID to avoid stale/abandoned references ──
     let sessionId: string | null = null;
     {
-      const { data: freshState } = await supabase.rpc('get_active_session_state');
+      const { data: freshState } = await supabase.rpc('get_active_session_state', { p_product_id: product?.id ?? null });
       const row = Array.isArray(freshState) ? freshState[0] : freshState;
       sessionId = row?.session_id ?? null;
     }
@@ -822,7 +822,7 @@ export default function CardView() {
           p_product_id: product?.id ?? 'still_us',
         });
         if (!actErr) {
-          const { data: freshState } = await supabase.rpc('get_active_session_state');
+          const { data: freshState } = await supabase.rpc('get_active_session_state', { p_product_id: product?.id ?? null });
           const row = Array.isArray(freshState) ? freshState[0] : freshState;
           sessionId = row?.session_id ?? null;
           normalizedSession.refetch();
@@ -835,7 +835,7 @@ export default function CardView() {
           // Try one more time to find and complete the session via RPC
           // (the eager session may have finished creating since the first check)
           try {
-            const { data: lastCheck } = await supabase.rpc('get_active_session_state');
+            const { data: lastCheck } = await supabase.rpc('get_active_session_state', { p_product_id: product?.id ?? null });
             const lastRow = Array.isArray(lastCheck) ? lastCheck[0] : lastCheck;
             if (lastRow?.session_id && lastRow?.card_id === cardId) {
               const { data: completeData } = await supabase.rpc('complete_couple_session_step', {
@@ -923,7 +923,7 @@ export default function CardView() {
     if (result === 'session_inactive') {
       // Session was abandoned/replaced — try to recover with the current active session
       console.log('[step-complete] session_inactive — attempting recovery');
-      const { data: freshState } = await supabase.rpc('get_active_session_state');
+      const { data: freshState } = await supabase.rpc('get_active_session_state', { p_product_id: product?.id ?? null });
       const row = Array.isArray(freshState) ? freshState[0] : freshState;
       const freshSessionId = row?.session_id ?? null;
 
