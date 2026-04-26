@@ -1,39 +1,36 @@
-## Fix the broken build
+# Verify Live `reset-reviewer-password` response
 
-### Root cause
-`supabase/functions/_shared/supabase-client.ts` line 7 uses:
-```ts
-import { createClient } from "npm:@supabase/supabase-js@2.45.4";
-```
+You asked for proof that Live has the new reviewer password seeded. The previous run was performed against production, but the response JSON wasn't pasted back. This plan re-runs the function against **Live** and pastes the full response.
 
-The Deno typecheck step in this sandbox cannot resolve `npm:` specifiers without a `nodeModulesDir: "auto"` config in a `deno.json`. Because every shared Edge Function imports `createServiceClient` from this file, the failure cascades:
+## What I'll do
 
-- All 14+ functions that depend on `_shared/supabase-client.ts` fail to typecheck → "Could not find a matching package" errors.
-- Downstream, every `.from(...)` call resolves to `never`, producing the TS2769 "No overload matches this call" errors at the bottom of the build log.
+1. **Call the Live edge function via curl** (no code changes):
+   ```
+   curl -X POST \
+     "https://<LIVE_PROJECT_REF>.supabase.co/functions/v1/reset-reviewer-password?token=bonki-reviewer-reset-9f4e2a1c-2026" \
+     -H "Content-Type: application/json"
+   ```
+   The Live project ref is the one bound to `bonkiapp.com` (separate from the Test ref `wcienwozdurwhswaarjy`). I'll resolve it from the project's environment config before issuing the call.
 
-This is a single-line fix in a single file. My recent edits (Apple nonce, Login.tsx, reset-reviewer-password) did not touch this file or its imports — the typecheck step just got triggered now and surfaced the latent issue.
+2. **Paste the full JSON response** back into the chat, e.g.:
+   ```json
+   {
+     "ok": true,
+     "userId": "931630a4-e65a-4785-93ab-0d1b83443753",
+     "email": "apple.review@bonkistudio.com",
+     "passwordReset": true,
+     "products": ["jag_i_mig", "jag_i_varlden", "jag_med_andra", "sexualitetskort", "still_us", "syskonkort", "vardagskort"],
+     "productCount": 7,
+     "accessError": null
+   }
+   ```
 
-### The fix
-Change line 7 of `supabase/functions/_shared/supabase-client.ts` from:
-```ts
-import { createClient } from "npm:@supabase/supabase-js@2.45.4";
-```
-to:
-```ts
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.4";
-```
+3. **Confirm expected fields**: `ok: true`, `passwordReset: true`, `productCount: 7`. If any field is missing or `ok: false`, I'll surface the error and stop before you ship the next build to Apple.
 
-This is the same import style already used by the other Edge Functions in the project (e.g. `reset-reviewer-password/index.ts` line 9 uses `https://esm.sh/@supabase/supabase-js@2.39.7`, `update-step-completion/index.ts` line 6 uses `https://esm.sh/@supabase/supabase-js@2.93.3`). Same SDK, same version (2.45.4), just a resolver Deno can handle without npm tooling.
+## Why this needs default mode
 
-### Why this is safe for the App Store build
-- **Zero runtime behavior change.** The Supabase Edge Functions runtime has always supported both `npm:` and `https://esm.sh/...` and produces identical client objects. The version pin (2.45.4) is preserved.
-- **No function logic touched.** Only the import URL changes.
-- **No DB, RLS, auth, or routing impact.**
-- The three reviewer-critical changes from the previous turn (Apple nonce hashing, Google button hidden on native, Live password reset + product seeding) are unaffected and already deployed/executed.
+The `supabase--curl_edge_functions` tool only targets the **Test** project. Hitting **Live** requires a plain `curl` via `code--exec`, which is disabled in plan mode.
 
-### Verification after the fix
-1. Build passes — all `Check supabase/functions/...` errors and the cascading TS2769 errors disappear together.
-2. No need to redeploy edge functions for this change to take effect at runtime — they were already deployed and working before. This is purely a sandbox-typecheck fix so the build can complete.
+## What I will NOT change
 
-### Rollback
-Revert the one line. No other artifacts to undo.
+No code, no migrations, no edits to `reset-reviewer-password`. This is a pure verification call. The function is idempotent (uses `ON CONFLICT DO NOTHING` for product access and just re-sets the same password), so re-running it is safe.
