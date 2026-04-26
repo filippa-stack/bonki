@@ -1,28 +1,61 @@
+# App Store Review Resubmission Fixes
 
-## Fix top-corner icon contrast on product home pages
+Three changes to ship together so the next TestFlight build clears Apple review.
 
-### Problem
-Both the back arrow (top-left) and the profile/account icon (top-right) on product home pages are nearly invisible. They default to dark text tokens (`var(--text-primary)` / `var(--color-text-primary)`) which resolve to dark ink — invisible against the dark teal/green/cobalt product backgrounds (Jag i Mig `#115D57`, Jag i Världen `#2B3D2B`, Vårt Vi cobalt, etc.).
+## 1. Apple Sign-In nonce fix
 
-The kids product homes (`JagIMigProductHome`, `JagIVarldenProductHome`, etc.) already pass an explicit cream color `#FDF6E3` to `ProductHomeBackButton` — but `KontoIcon` is rendered from the parent `ProductHome.tsx` shell with no color override, and the generic non-kids `ProductHome.tsx` branch also doesn't pass a color to its own back button.
+**File:** `src/lib/appleSignIn.ts`
 
-### Fix
-Change the **default fallback color** in both icon components from the dark text token to cream (`#FDF6E3` — the same Lantern Glow used elsewhere on dark surfaces) and bump opacity slightly for legibility.
+Add a `sha256Hex` helper using `crypto.subtle.digest('SHA-256', ...)`. In `signInWithApple`:
 
-### Files
+- Generate `rawNonce = randomString()` (UUID).
+- Compute `hashedNonce = await sha256Hex(rawNonce)`.
+- Pass `hashedNonce` as the `nonce` option to `SocialLogin.login(...)` (Capgo passes verbatim → Apple → embedded as `nonce` claim in id_token, hashed).
+- Pass `rawNonce` (unhashed) to `supabase.auth.signInWithIdToken({ provider: 'apple', token, nonce: rawNonce })` — Supabase re-hashes internally to compare against the id_token claim.
 
-**Modify:**
-- `src/components/KontoIcon.tsx` — change fallback `color` from `var(--color-text-primary)` to `#FDF6E3`. Keep the `color` prop override so future light-bg surfaces can still pass dark.
-- `src/components/ProductHomeBackButton.tsx` — change fallback `color` from `var(--text-primary)` to `#FDF6E3`. Bump opacity from `0.6` → `0.75` to match the cream text-link pattern used elsewhere on dark surfaces.
+This resolves the "Nonces mismatch" error the reviewer hit.
 
-**Untouched:**
-- `ProductHome.tsx` — kids variants already pass `color="#FDF6E3"` explicitly; that stays. Generic non-kids branch will now inherit the cream fallback automatically.
-- All kids product home wrappers (`JagIMigProductHome`, `JagIVarldenProductHome`, etc.) — they already pass `#FDF6E3` to the back button, so behavior is unchanged for them. The `KontoIcon` they render via the parent shell will pick up the new cream fallback.
+## 2. Hide Google on native iOS
 
-### Verification
-1. Navigate to `/product/jag-i-mig` — back arrow (left) and profile icon (right) both visible as cream-colored icons against the dark teal background.
-2. Repeat for `/product/jag-i-varlden`, `/product/vart-vi`, `/product/jag-med-andra` — both icons visible on every product home.
-3. Confirm no regression on any light-background surface that consumes either component (search confirms only product homes use them).
+**File:** `src/pages/Login.tsx`
 
-### Rollback
-Two-line revert in each component. No DB, routing, or layout changes.
+The Google "Fortsätt med Google" button (lines 563–583) currently shows on both web and native. On native iOS the OAuth web redirect never makes it back to the app, so the button does nothing visible to the reviewer.
+
+- Wrap the Google button in `{!isNative && (...)}`.
+- The "eller" / divider already only appears in the email sub-flow, so no additional divider work needed.
+- Web/PWA flow unchanged — Google stays visible there.
+- Apple + email + reviewer login remain on native. This is sufficient for review.
+
+## 3. Reset reviewer password (Live)
+
+The `reset-reviewer-password` edge function already exists and is hardcoded to `apple.review@bonkistudio.com` / `BonkiReview2026` with `email_confirm: true`.
+
+- Deploy the edge function to Live (in case it isn't already).
+- Invoke it on **Live** via curl with the hardcoded `?token=bonki-reviewer-reset-9f4e2a1c-2026`.
+- Paste the JSON response (`{ ok: true, userId: ..., email: ... }`) back to the user before they ship the next build.
+
+Reviewer access status (already verified):
+- All 7 products unlocked for UID `f05b6b17-d7b6-48f1-ae6d-77fe2ff28711` ✅
+- Account exists in Live ✅
+- Password just needs (re)setting to `BonkiReview2026` ✅
+
+## App Store Connect review-notes wording (for the user to paste)
+
+> Use the section labeled **"RECENSENTINLOGGNING — APP STORE REVIEW"** at the **top** of the login screen.
+> Email: `apple.review@bonkistudio.com`
+> Password: `BonkiReview2026`
+> Tap **"Fyll i granskningsuppgifter"** to autofill, then **"Logga in"**.
+
+## Verification after merge
+
+1. Edge function returns `{ ok: true, userId: "f05b6b17-...", email: "apple.review@bonkistudio.com" }` against Live — paste to user.
+2. Code review of `appleSignIn.ts` confirms hashed→Capgo, raw→Supabase.
+3. Code review of `Login.tsx` confirms Google button gated by `!isNative`.
+
+## Rollback
+
+- Apple: revert `appleSignIn.ts` (single file, ~25 lines changed).
+- Google: remove the `!isNative &&` wrapper.
+- Password: re-invoke the edge function with a new password if needed.
+
+No DB migrations, no schema changes, no routing changes.
