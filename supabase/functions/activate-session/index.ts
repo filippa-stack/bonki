@@ -50,9 +50,12 @@ Deno.serve(async (req) => {
       return json({ error: { message: "invalid_json_body", code: "BODY_PARSE" } }, 400);
     }
 
-    const { card_id, category_id, couple_space_id } = bodyJson;
+    const { card_id, category_id, couple_space_id, product_id } = bodyJson;
     if (!card_id || !category_id || !couple_space_id) {
       return json({ error: { message: "missing_required_fields", code: "VALIDATION" } }, 400);
+    }
+    if (!product_id || typeof product_id !== "string" || product_id.trim().length === 0) {
+      return json({ error: { message: "product_id_required", code: "VALIDATION" } }, 400);
     }
 
     const admin = createClient(
@@ -76,11 +79,12 @@ Deno.serve(async (req) => {
       return json({ error: { message: "not_a_member", code: "FORBIDDEN" } }, 403);
     }
 
-    // Return existing active session if already running for this card
+    // Return existing active session if already running for this card AND this product
     const { data: existingSession } = await admin
       .from("couple_sessions")
       .select("id, card_id, category_id")
       .eq("couple_space_id", couple_space_id)
+      .eq("product_id", product_id)
       .eq("status", "active")
       .limit(1)
       .maybeSingle();
@@ -106,6 +110,7 @@ Deno.serve(async (req) => {
         p_category_id: category_id,
         p_card_id: card_id,
         p_step_count: STEP_COUNT,
+        p_product_id: product_id,
       }
     );
 
