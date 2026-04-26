@@ -9,7 +9,7 @@
 // RULE 4: Every new card must have a session_state row.
 // All six code paths that create new cards MUST call this.
 
-import { SupabaseClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { SupabaseClient } from "https://esm.sh/@supabase/supabase-js@2.45.4";
 
 export async function createSessionStateForCard(
   supabase: SupabaseClient,

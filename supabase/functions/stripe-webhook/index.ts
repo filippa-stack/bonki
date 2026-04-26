@@ -1,10 +1,11 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.4";
 
 // Paginated lookup — auth.admin.listUsers() defaults to perPage=50 which silently
 // misses any account beyond page 1. This walks all pages until found or exhausted.
 async function findUserByEmail(
-  supabase: ReturnType<typeof createClient>,
+  // deno-lint-ignore no-explicit-any
+  supabase: any,
   email: string,
 ): Promise<{ id: string } | null> {
   const normalizedEmail = email.trim().toLowerCase();
