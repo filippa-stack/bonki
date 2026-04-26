@@ -32,6 +32,23 @@ function randomString(): string {
 }
 
 /**
+ * SHA-256 hex digest. Apple expects the nonce we send to the authorization
+ * request to match the SHA-256 it embeds in the id_token's `nonce` claim.
+ * We pass the hashed value to Capgo (→ Apple) and the RAW value to Supabase
+ * (which performs its own SHA-256 internally to compare against the claim).
+ */
+async function sha256Hex(input: string): Promise<string> {
+  const data = new TextEncoder().encode(input);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  const bytes = new Uint8Array(hashBuffer);
+  let hex = '';
+  for (let i = 0; i < bytes.length; i++) {
+    hex += bytes[i].toString(16).padStart(2, '0');
+  }
+  return hex;
+}
+
+/**
  * Native iOS Sign in with Apple via Capgo social-login plugin (Capacitor 8 compatible).
  * On web, returns a no-op — callers should use Lovable OAuth instead.
  */
@@ -41,17 +58,22 @@ export async function signInWithApple(): Promise<AppleSignInResult> {
     return { success: false, notNative: true };
   }
 
-  const nonce = randomString();
+  const rawNonce = randomString();
   const state = randomString();
 
   try {
     await ensureAppleInitialized();
 
+    // Send SHA-256(rawNonce) to Apple via Capgo; Apple embeds this hash in the
+    // id_token's `nonce` claim. Supabase re-hashes the raw nonce we pass to
+    // signInWithIdToken and compares it against that claim.
+    const hashedNonce = await sha256Hex(rawNonce);
+
     const loginResult = await SocialLogin.login({
       provider: 'apple',
       options: {
         scopes: ['email', 'name'],
-        nonce,
+        nonce: hashedNonce,
         state,
       },
     });
@@ -68,7 +90,7 @@ export async function signInWithApple(): Promise<AppleSignInResult> {
     const { error } = await supabase.auth.signInWithIdToken({
       provider: 'apple',
       token: identityToken,
-      nonce,
+      nonce: rawNonce,
     });
 
     if (error) {
