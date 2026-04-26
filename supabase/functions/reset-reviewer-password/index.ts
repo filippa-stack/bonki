@@ -91,8 +91,8 @@ Deno.serve(async (req) => {
     granted_via: "reviewer_grant",
   }));
 
-  const { error: upsertErr } = await admin
-    .from("user_product_access")
+  // deno-lint-ignore no-explicit-any
+  const { error: upsertErr } = await (admin.from("user_product_access") as any)
     .upsert(rows, { onConflict: "user_id,product_id", ignoreDuplicates: true });
 
   if (upsertErr) {
