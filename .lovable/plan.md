@@ -1,61 +1,39 @@
-# App Store Review Resubmission Fixes
+## Fix the broken build
 
-Three changes to ship together so the next TestFlight build clears Apple review.
+### Root cause
+`supabase/functions/_shared/supabase-client.ts` line 7 uses:
+```ts
+import { createClient } from "npm:@supabase/supabase-js@2.45.4";
+```
 
-## 1. Apple Sign-In nonce fix
+The Deno typecheck step in this sandbox cannot resolve `npm:` specifiers without a `nodeModulesDir: "auto"` config in a `deno.json`. Because every shared Edge Function imports `createServiceClient` from this file, the failure cascades:
 
-**File:** `src/lib/appleSignIn.ts`
+- All 14+ functions that depend on `_shared/supabase-client.ts` fail to typecheck → "Could not find a matching package" errors.
+- Downstream, every `.from(...)` call resolves to `never`, producing the TS2769 "No overload matches this call" errors at the bottom of the build log.
 
-Add a `sha256Hex` helper using `crypto.subtle.digest('SHA-256', ...)`. In `signInWithApple`:
+This is a single-line fix in a single file. My recent edits (Apple nonce, Login.tsx, reset-reviewer-password) did not touch this file or its imports — the typecheck step just got triggered now and surfaced the latent issue.
 
-- Generate `rawNonce = randomString()` (UUID).
-- Compute `hashedNonce = await sha256Hex(rawNonce)`.
-- Pass `hashedNonce` as the `nonce` option to `SocialLogin.login(...)` (Capgo passes verbatim → Apple → embedded as `nonce` claim in id_token, hashed).
-- Pass `rawNonce` (unhashed) to `supabase.auth.signInWithIdToken({ provider: 'apple', token, nonce: rawNonce })` — Supabase re-hashes internally to compare against the id_token claim.
+### The fix
+Change line 7 of `supabase/functions/_shared/supabase-client.ts` from:
+```ts
+import { createClient } from "npm:@supabase/supabase-js@2.45.4";
+```
+to:
+```ts
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.4";
+```
 
-This resolves the "Nonces mismatch" error the reviewer hit.
+This is the same import style already used by the other Edge Functions in the project (e.g. `reset-reviewer-password/index.ts` line 9 uses `https://esm.sh/@supabase/supabase-js@2.39.7`, `update-step-completion/index.ts` line 6 uses `https://esm.sh/@supabase/supabase-js@2.93.3`). Same SDK, same version (2.45.4), just a resolver Deno can handle without npm tooling.
 
-## 2. Hide Google on native iOS
+### Why this is safe for the App Store build
+- **Zero runtime behavior change.** The Supabase Edge Functions runtime has always supported both `npm:` and `https://esm.sh/...` and produces identical client objects. The version pin (2.45.4) is preserved.
+- **No function logic touched.** Only the import URL changes.
+- **No DB, RLS, auth, or routing impact.**
+- The three reviewer-critical changes from the previous turn (Apple nonce hashing, Google button hidden on native, Live password reset + product seeding) are unaffected and already deployed/executed.
 
-**File:** `src/pages/Login.tsx`
+### Verification after the fix
+1. Build passes — all `Check supabase/functions/...` errors and the cascading TS2769 errors disappear together.
+2. No need to redeploy edge functions for this change to take effect at runtime — they were already deployed and working before. This is purely a sandbox-typecheck fix so the build can complete.
 
-The Google "Fortsätt med Google" button (lines 563–583) currently shows on both web and native. On native iOS the OAuth web redirect never makes it back to the app, so the button does nothing visible to the reviewer.
-
-- Wrap the Google button in `{!isNative && (...)}`.
-- The "eller" / divider already only appears in the email sub-flow, so no additional divider work needed.
-- Web/PWA flow unchanged — Google stays visible there.
-- Apple + email + reviewer login remain on native. This is sufficient for review.
-
-## 3. Reset reviewer password (Live)
-
-The `reset-reviewer-password` edge function already exists and is hardcoded to `apple.review@bonkistudio.com` / `BonkiReview2026` with `email_confirm: true`.
-
-- Deploy the edge function to Live (in case it isn't already).
-- Invoke it on **Live** via curl with the hardcoded `?token=bonki-reviewer-reset-9f4e2a1c-2026`.
-- Paste the JSON response (`{ ok: true, userId: ..., email: ... }`) back to the user before they ship the next build.
-
-Reviewer access status (already verified):
-- All 7 products unlocked for UID `f05b6b17-d7b6-48f1-ae6d-77fe2ff28711` ✅
-- Account exists in Live ✅
-- Password just needs (re)setting to `BonkiReview2026` ✅
-
-## App Store Connect review-notes wording (for the user to paste)
-
-> Use the section labeled **"RECENSENTINLOGGNING — APP STORE REVIEW"** at the **top** of the login screen.
-> Email: `apple.review@bonkistudio.com`
-> Password: `BonkiReview2026`
-> Tap **"Fyll i granskningsuppgifter"** to autofill, then **"Logga in"**.
-
-## Verification after merge
-
-1. Edge function returns `{ ok: true, userId: "f05b6b17-...", email: "apple.review@bonkistudio.com" }` against Live — paste to user.
-2. Code review of `appleSignIn.ts` confirms hashed→Capgo, raw→Supabase.
-3. Code review of `Login.tsx` confirms Google button gated by `!isNative`.
-
-## Rollback
-
-- Apple: revert `appleSignIn.ts` (single file, ~25 lines changed).
-- Google: remove the `!isNative &&` wrapper.
-- Password: re-invoke the edge function with a new password if needed.
-
-No DB migrations, no schema changes, no routing changes.
+### Rollback
+Revert the one line. No other artifacts to undo.
