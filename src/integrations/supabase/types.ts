@@ -1628,26 +1628,16 @@ export type Database = {
         Args: { p_card_index: number; p_couple_space_id: string }
         Returns: Json
       }
-      activate_couple_session:
-        | {
-            Args: {
-              p_card_id: string
-              p_category_id: string
-              p_couple_space_id: string
-              p_step_count: number
-            }
-            Returns: string
-          }
-        | {
-            Args: {
-              p_card_id: string
-              p_category_id: string
-              p_couple_space_id: string
-              p_product_id?: string
-              p_step_count: number
-            }
-            Returns: string
-          }
+      activate_couple_session: {
+        Args: {
+          p_card_id: string
+          p_category_id: string
+          p_couple_space_id: string
+          p_product_id: string
+          p_step_count: number
+        }
+        Returns: string
+      }
       advance_card: {
         Args: {
           p_couple_space_id: string
@@ -1689,12 +1679,13 @@ export type Database = {
         Returns: number
       }
       get_active_session_state: {
-        Args: never
+        Args: { p_product_id?: string }
         Returns: {
           card_id: string
           category_id: string
           current_step_index: number
           mode: string
+          product_id: string
           session_id: string
           step_completions: Json
         }[]

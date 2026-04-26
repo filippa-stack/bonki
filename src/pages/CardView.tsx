@@ -470,56 +470,18 @@ export default function CardView() {
 
   // Volume 1: single-writer model, reflection surface always active
 
-  // ─── Auto-abandon stale session for DIFFERENT card on mount ───
-  // Session creation is LAZY for Still Us — only happens when user completes a step.
-  // For kids products, sessions are created EAGERLY so resume banners work.
-  const abandonCheckedRef = useRef(false);
-  useEffect(() => {
-    abandonCheckedRef.current = false;
-  }, [cardId]);
-  useEffect(() => {
-    if (devState || isFromArchive || showCompletion) return;
-    if (normalizedSession.loading) return;
-    if (abandonCheckedRef.current) return;
-    if (!space?.id || !cardId) return;
-
-    // If there's an active session for a DIFFERENT card, abandon it so it doesn't block
-    const hasOtherSession = !!(normalizedSession.sessionId && normalizedSession.cardId !== cardId);
-    if (!hasOtherSession) return;
-
-    abandonCheckedRef.current = true;
-
-    (async () => {
-      console.log('[lazy] abandon other session', normalizedSession.sessionId);
-      await supabase.rpc('abandon_active_session', {
-        p_session_id: normalizedSession.sessionId,
-      });
-      await normalizedSession.refetch();
-
-      // Create session for the new card now that the old one is abandoned
-      const needsEagerSession = isKidsProduct || product?.id === 'still_us';
-      if (needsEagerSession && space?.id && cardId && !eagerSessionRef.current) {
-        eagerSessionRef.current = true;
-        const cardData = getCardById(cardId);
-        if (cardData) {
-          console.log('[eager] creating session after abandon for', cardId);
-          const { error } = await supabase.rpc('activate_couple_session', {
-            p_couple_space_id: space.id,
-            p_category_id: cardData.categoryId,
-            p_card_id: cardId,
-            p_step_count: effectiveSteps.length,
-            p_product_id: product?.id ?? 'still_us',
-          });
-          if (!error) {
-            await normalizedSession.refetch();
-          } else {
-            console.error('[eager] session creation after abandon failed:', error);
-          }
-        }
-      }
-    })();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [devState, isFromArchive, showCompletion, normalizedSession.loading, normalizedSession.sessionId, space?.id, cardId]);
+  // ─── Auto-abandon REMOVED (Bug 2 fix) ───
+  // Previously this block abandoned any active session whose cardId didn't match
+  // the current route. With the new per-(space, product) active-session uniqueness
+  // (uniq_active_session_per_space_product), sessions in OTHER products no longer
+  // conflict with this card — they live in their own product slot. Abandoning them
+  // was the root cause of the cross-product session wipe (start JIM, then Still Us,
+  // return to JIM → JIM's "Fortsätt" banner gone).
+  //
+  // Same-product, different-card: handled implicitly because
+  // useNormalizedSessionContext is now product-scoped, so normalizedSession.cardId
+  // will only ever reference a card in THIS product. The eager-create block below
+  // races with no other writer for this product slot.
 
   // ─── Eager session creation for kids products ───
   // Kids products create sessions immediately so resume banners appear on home/library.
@@ -837,7 +799,7 @@ export default function CardView() {
     // ── Always fetch fresh session ID to avoid stale/abandoned references ──
     let sessionId: string | null = null;
     {
-      const { data: freshState } = await supabase.rpc('get_active_session_state');
+      const { data: freshState } = await supabase.rpc('get_active_session_state', { p_product_id: product?.id ?? null });
       const row = Array.isArray(freshState) ? freshState[0] : freshState;
       sessionId = row?.session_id ?? null;
     }
@@ -860,7 +822,7 @@ export default function CardView() {
           p_product_id: product?.id ?? 'still_us',
         });
         if (!actErr) {
-          const { data: freshState } = await supabase.rpc('get_active_session_state');
+          const { data: freshState } = await supabase.rpc('get_active_session_state', { p_product_id: product?.id ?? null });
           const row = Array.isArray(freshState) ? freshState[0] : freshState;
           sessionId = row?.session_id ?? null;
           normalizedSession.refetch();
@@ -873,7 +835,7 @@ export default function CardView() {
           // Try one more time to find and complete the session via RPC
           // (the eager session may have finished creating since the first check)
           try {
-            const { data: lastCheck } = await supabase.rpc('get_active_session_state');
+            const { data: lastCheck } = await supabase.rpc('get_active_session_state', { p_product_id: product?.id ?? null });
             const lastRow = Array.isArray(lastCheck) ? lastCheck[0] : lastCheck;
             if (lastRow?.session_id && lastRow?.card_id === cardId) {
               const { data: completeData } = await supabase.rpc('complete_couple_session_step', {
@@ -961,7 +923,7 @@ export default function CardView() {
     if (result === 'session_inactive') {
       // Session was abandoned/replaced — try to recover with the current active session
       console.log('[step-complete] session_inactive — attempting recovery');
-      const { data: freshState } = await supabase.rpc('get_active_session_state');
+      const { data: freshState } = await supabase.rpc('get_active_session_state', { p_product_id: product?.id ?? null });
       const row = Array.isArray(freshState) ? freshState[0] : freshState;
       const freshSessionId = row?.session_id ?? null;
 
