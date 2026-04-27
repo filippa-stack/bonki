@@ -291,7 +291,20 @@ export default function PaywallBottomSheet({
                   marginTop: '10px',
                 }}
               >
-                Utvecklad tillsammans med psykolog · 29 års klinisk erfarenhet
+                Utvecklad tillsammans med legitimerade psykologer · 29 års klinisk erfarenhet
+              </p>
+              <p
+                style={{
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '12px',
+                  fontStyle: 'italic',
+                  color: DRIFTWOOD,
+                  opacity: 0.6,
+                  margin: 0,
+                  marginTop: '4px',
+                }}
+              >
+                Bonki är ett samtalsverktyg, inte terapi eller medicinsk rådgivning
               </p>
 
               {/* 5. Journal hook (kids only) */}

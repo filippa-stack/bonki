@@ -232,7 +232,8 @@ export default function PaywallFullScreen() {
         <div style={{ marginTop: '32px', paddingLeft: '8px', paddingRight: '8px' }}>
           {[
             { text: valueLine, color: LANTERN_GLOW, opacity: 1 },
-            { text: 'Utvecklad tillsammans med psykolog · 29 års klinisk erfarenhet', color: LANTERN_GLOW, opacity: 0.55 },
+            { text: 'Utvecklad tillsammans med legitimerade psykologer · 29 års klinisk erfarenhet', color: LANTERN_GLOW, opacity: 0.55 },
+            { text: 'Bonki är ett samtalsverktyg, inte terapi eller medicinsk rådgivning', color: LANTERN_GLOW, opacity: 0.6 },
             ...(product.id !== 'still_us' ? [{ text: 'Spara ditt barns svar. Se dem växa — samtal för samtal.', color: LANTERN_GLOW, opacity: 0.55 }] : []),
           ].map((row, i) => (
             <div

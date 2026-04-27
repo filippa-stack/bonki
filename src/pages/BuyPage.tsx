@@ -429,7 +429,10 @@ export default function BuyPage() {
             {priceSek !== null ? `${priceSek} kr` : '...'} · Engångsköp · Tillgång för alltid
           </p>
           <p style={{ fontFamily: 'var(--font-sans)', fontSize: '13px', color: LANTERN_GLOW, opacity: 0.55, margin: '12px 0 0', lineHeight: 1.5 }}>
-            Utvecklat tillsammans med psykolog · 29 års klinisk erfarenhet
+            Utvecklat tillsammans med legitimerade psykologer · 29 års klinisk erfarenhet
+          </p>
+          <p style={{ fontFamily: 'var(--font-sans)', fontSize: '12px', color: LANTERN_GLOW, opacity: 0.6, margin: '4px 0 0', lineHeight: 1.5 }}>
+            Bonki är ett samtalsverktyg, inte terapi eller medicinsk rådgivning
           </p>
           <p style={{ fontFamily: 'var(--font-sans)', fontSize: '13px', color: LANTERN_GLOW, opacity: 0.55, margin: '8px 0 0', lineHeight: 1.5 }}>
             Säker betalning · Ingen prenumeration
