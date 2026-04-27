@@ -12,6 +12,7 @@ import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/sonner';
 import { isDemoMode } from '@/lib/demoMode';
+import { isIOSNative, isProductHiddenOnPlatform } from '@/lib/platform';
 
 
 import LibraryResumeCard from '@/components/LibraryResumeCard';
@@ -583,8 +584,9 @@ export default function ProductLibrary() {
   const vardag = allProducts.find(p => p.id === 'vardagskort')!;
   const syskon = allProducts.find(p => p.id === 'syskonkort')!;
 
-  // Default kids product order
-  const defaultKidsOrder = [jagIMig, jagMedAndra, jagIVarlden, vardag, syskon, sexualitet];
+  // Default kids product order (sexualitetskort hidden on iOS native for App Store 1.0)
+  const defaultKidsOrder = [jagIMig, jagMedAndra, jagIVarlden, vardag, syskon, sexualitet]
+    .filter(p => !isProductHiddenOnPlatform(p.id));
 
   // Smart ordering: products with active sessions first
   const sortedKidsProducts = useMemo(() => {
