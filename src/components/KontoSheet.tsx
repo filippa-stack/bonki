@@ -126,7 +126,17 @@ export default function KontoSheet({
             style={{
               backgroundColor: '#F7F2EB',
               borderRadius: '16px 16px 0 0',
-              paddingBottom: 'max(env(safe-area-inset-bottom, 0px), 16px)',
+              // Cap height so destructive actions (Radera konto) cannot hide
+              // behind safe-area or the BottomNav (56px + safe-area).
+              // Per mem://design/layout/ios-safari-stability use 100vh, never 100dvh.
+              maxHeight: 'calc(100vh - 32px)',
+              overflowY: 'auto',
+              WebkitOverflowScrolling: 'touch',
+              overscrollBehavior: 'contain',
+              // Reserve space for BottomNav (56px) + safe-area-inset-bottom,
+              // so the last row scrolls clear of the nav on Library/Journal.
+              paddingBottom:
+                'calc(56px + max(env(safe-area-inset-bottom, 0px), 16px))',
             }}
             onClick={(e) => e.stopPropagation()}
           >
