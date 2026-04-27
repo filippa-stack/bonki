@@ -97,7 +97,7 @@ async function attemptAppleRevoke(
   // Look up Apple identity for this user.
   const { data: userRes, error: userErr } = await admin.auth.admin.getUserById(userId);
   if (userErr || !userRes?.user) {
-    await logSystemEvent(admin, userId, "apple_revoke_skipped_no_identity", {
+    audit(userId, "apple_revoke_skipped_no_identity", {
       reason: userErr?.message ?? "user_not_found",
     });
     return;
@@ -105,7 +105,7 @@ async function attemptAppleRevoke(
 
   const appleIdentity = userRes.user.identities?.find((i) => i.provider === "apple");
   if (!appleIdentity) {
-    await logSystemEvent(admin, userId, "apple_revoke_skipped_not_apple_user", {});
+    audit(userId, "apple_revoke_skipped_not_apple_user", {});
     return;
   }
 
@@ -122,7 +122,7 @@ async function attemptAppleRevoke(
     : "access_token";
 
   if (!token) {
-    await logSystemEvent(admin, userId, "apple_revoke_skipped_no_token", {
+    audit(userId, "apple_revoke_skipped_no_token", {
       provider: "apple",
       note: "Native signInWithIdToken does not persist Apple OAuth tokens. User can manually revoke at appleid.apple.com.",
     });
@@ -132,7 +132,7 @@ async function attemptAppleRevoke(
   const clientSecret = await buildAppleClientSecret();
   const clientId = Deno.env.get("APPLE_CLIENT_ID");
   if (!clientSecret || !clientId) {
-    await logSystemEvent(admin, userId, "apple_revoke_failed_secret_build", {});
+    audit(userId, "apple_revoke_failed_secret_build", {});
     return;
   }
 
@@ -151,18 +151,18 @@ async function attemptAppleRevoke(
     });
 
     if (res.ok) {
-      await logSystemEvent(admin, userId, "apple_revoke_succeeded", {
+      audit(userId, "apple_revoke_succeeded", {
         token_type_hint: tokenTypeHint,
       });
     } else {
       const text = await res.text().catch(() => "");
-      await logSystemEvent(admin, userId, "apple_revoke_non_200", {
+      audit(userId, "apple_revoke_non_200", {
         status: res.status,
         body: text.slice(0, 500),
       });
     }
   } catch (err) {
-    await logSystemEvent(admin, userId, "apple_revoke_threw", {
+    audit(userId, "apple_revoke_threw", {
       error: err instanceof Error ? err.message : String(err),
     });
   }
@@ -216,7 +216,7 @@ Deno.serve(async (req) => {
   });
   if (rpcError) {
     console.error("[delete-account] delete_user_account RPC failed", rpcError);
-    await logSystemEvent(admin, userId, "delete_account_rpc_failed", {
+    audit(userId, "delete_account_rpc_failed", {
       error: rpcError.message,
     });
     return jsonResponse(
@@ -229,7 +229,7 @@ Deno.serve(async (req) => {
   const { error: authDelError } = await admin.auth.admin.deleteUser(userId);
   if (authDelError) {
     console.error("[delete-account] auth.admin.deleteUser failed", authDelError);
-    await logSystemEvent(admin, userId, "delete_account_auth_failed", {
+    audit(userId, "delete_account_auth_failed", {
       error: authDelError.message,
     });
     return jsonResponse(
@@ -238,7 +238,7 @@ Deno.serve(async (req) => {
     );
   }
 
-  await logSystemEvent(admin, userId, "delete_account_succeeded", {});
+  audit(userId, "delete_account_succeeded", {});
 
   return jsonResponse({ success: true });
 });
