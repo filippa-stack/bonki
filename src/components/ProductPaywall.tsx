@@ -8,6 +8,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { isDemoMode, isDemoParam } from '@/lib/demoMode';
 import { purchaseProduct } from '@/lib/revenueCat';
+import { isAndroidNative } from '@/lib/platform';
 import { productIntros } from '@/data/productIntros';
 import { PREVIEW_QUESTION } from '@/lib/productPreviewQuestions';
 import type { ProductManifest } from '@/types/product';
@@ -442,30 +443,48 @@ export default function ProductPaywall({ product, onAccessGranted }: ProductPayw
             paddingBottom: 'calc(24px + env(safe-area-inset-bottom, 0px))',
           }}
         >
-          <button
-            onClick={handlePurchase}
-            disabled={loading}
-            style={{
-              width: '100%',
-              height: '56px',
-              backgroundColor: productAccent,
-              border: 'none',
-              borderRadius: '14px',
-              cursor: loading ? 'wait' : 'pointer',
-              fontFamily: 'var(--font-display)',
-              fontVariationSettings: "'opsz' 17",
-              fontSize: '17px',
-              fontWeight: 600,
-              color: MIDNIGHT_INK,
-              opacity: loading ? 0.7 : 1,
-              transition: 'opacity 150ms ease, transform 140ms cubic-bezier(0.4, 0, 0.2, 1)',
-            }}
-            onPointerDown={(e) => { if (!loading) e.currentTarget.style.transform = 'scale(0.97)'; }}
-            onPointerUp={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
-            onPointerLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
-          >
-            {loading ? 'Förbereder…' : ctaLabel}
-          </button>
+          {isAndroidNative() ? (
+            <div
+              style={{
+                width: '100%',
+                padding: '16px 20px',
+                borderRadius: '14px',
+                background: 'rgba(255,255,255,0.06)',
+                color: 'rgba(253, 246, 227, 0.75)',
+                fontFamily: 'var(--font-sans)',
+                fontSize: 14,
+                lineHeight: 1.5,
+                textAlign: 'center',
+              }}
+            >
+              Köp är inte tillgängliga i Android-versionen just nu. Vi arbetar på det. Logga in med samma konto för att låsa upp produkter du redan äger.
+            </div>
+          ) : (
+            <button
+              onClick={handlePurchase}
+              disabled={loading}
+              style={{
+                width: '100%',
+                height: '56px',
+                backgroundColor: productAccent,
+                border: 'none',
+                borderRadius: '14px',
+                cursor: loading ? 'wait' : 'pointer',
+                fontFamily: 'var(--font-display)',
+                fontVariationSettings: "'opsz' 17",
+                fontSize: '17px',
+                fontWeight: 600,
+                color: MIDNIGHT_INK,
+                opacity: loading ? 0.7 : 1,
+                transition: 'opacity 150ms ease, transform 140ms cubic-bezier(0.4, 0, 0.2, 1)',
+              }}
+              onPointerDown={(e) => { if (!loading) e.currentTarget.style.transform = 'scale(0.97)'; }}
+              onPointerUp={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
+              onPointerLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
+            >
+              {loading ? 'Förbereder…' : ctaLabel}
+            </button>
+          )}
 
           {error && (
             <p

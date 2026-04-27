@@ -11,6 +11,7 @@ import { toast } from 'sonner';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { purchaseProduct } from '@/lib/revenueCat';
+import { isAndroidNative } from '@/lib/platform';
 import type { ProductManifest } from '@/types/product';
 import {
   MIDNIGHT_INK,
@@ -368,29 +369,49 @@ export default function PaywallBottomSheet({
               </p>
 
               {/* 10. CTA */}
-              <button
-                onClick={handlePurchase}
-                disabled={loading}
-                style={{
-                  width: '100%',
-                  height: '56px',
-                  backgroundColor: BONKI_ORANGE,
-                  border: 'none',
-                  borderRadius: '14px',
-                  cursor: loading ? 'default' : 'pointer',
-                  fontFamily: 'var(--font-display)',
-                  fontVariationSettings: "'opsz' 17",
-                  fontSize: '17px',
-                  fontWeight: 600,
-                  color: MIDNIGHT_INK,
-                  marginTop: '32px',
-                  opacity: loading ? 0.7 : 1,
-                  transition: 'opacity 150ms ease',
-                  flexShrink: 0,
-                }}
-              >
-                {loading ? '…' : `Lås upp ${product.name}`}
-              </button>
+              {isAndroidNative() ? (
+                <div
+                  style={{
+                    width: '100%',
+                    marginTop: '32px',
+                    padding: '16px 20px',
+                    borderRadius: '12px',
+                    background: 'rgba(255,255,255,0.06)',
+                    color: 'rgba(253, 246, 227, 0.75)',
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: 14,
+                    lineHeight: 1.5,
+                    textAlign: 'center',
+                    flexShrink: 0,
+                  }}
+                >
+                  Köp är inte tillgängliga i Android-versionen just nu. Vi arbetar på det. Logga in med samma konto för att låsa upp produkter du redan äger.
+                </div>
+              ) : (
+                <button
+                  onClick={handlePurchase}
+                  disabled={loading}
+                  style={{
+                    width: '100%',
+                    height: '56px',
+                    backgroundColor: BONKI_ORANGE,
+                    border: 'none',
+                    borderRadius: '14px',
+                    cursor: loading ? 'default' : 'pointer',
+                    fontFamily: 'var(--font-display)',
+                    fontVariationSettings: "'opsz' 17",
+                    fontSize: '17px',
+                    fontWeight: 600,
+                    color: MIDNIGHT_INK,
+                    marginTop: '32px',
+                    opacity: loading ? 0.7 : 1,
+                    transition: 'opacity 150ms ease',
+                    flexShrink: 0,
+                  }}
+                >
+                  {loading ? '…' : `Lås upp ${product.name}`}
+                </button>
+              )}
 
               {/* Error */}
               {error && (

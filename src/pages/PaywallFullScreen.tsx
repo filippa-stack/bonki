@@ -10,6 +10,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { allProducts, getProductById } from '@/data/products';
 import { isDemoMode, isDemoParam } from '@/lib/demoMode';
 import { purchaseProduct } from '@/lib/revenueCat';
+import { isAndroidNative } from '@/lib/platform';
 import {
   MIDNIGHT_INK,
   LANTERN_GLOW,
@@ -288,28 +289,47 @@ export default function PaywallFullScreen() {
         </p>
 
         {/* GROUP 4 — ACTION */}
-        <button
-          onClick={handlePurchase}
-          disabled={loading}
-          style={{
-            width: '100%',
-            height: '56px',
-            backgroundColor: BONKI_ORANGE,
-            border: 'none',
-            borderRadius: '14px',
-            cursor: loading ? 'default' : 'pointer',
-            fontFamily: 'var(--font-display)',
-            fontVariationSettings: "'opsz' 17",
-            fontSize: '17px',
-            fontWeight: 600,
-            color: MIDNIGHT_INK,
-            marginTop: '40px',
-            opacity: loading ? 0.7 : 1,
-            transition: 'opacity 150ms ease',
-          }}
-        >
-          {loading ? '…' : `Lås upp ${product.name}`}
-        </button>
+        {isAndroidNative() ? (
+          <div
+            style={{
+              width: '100%',
+              marginTop: '40px',
+              padding: '16px 20px',
+              borderRadius: '14px',
+              background: 'rgba(255,255,255,0.06)',
+              color: 'rgba(253, 246, 227, 0.75)',
+              fontFamily: 'var(--font-sans)',
+              fontSize: 14,
+              lineHeight: 1.5,
+              textAlign: 'center',
+            }}
+          >
+            Köp är inte tillgängliga i Android-versionen just nu. Vi arbetar på det. Logga in med samma konto för att låsa upp produkter du redan äger.
+          </div>
+        ) : (
+          <button
+            onClick={handlePurchase}
+            disabled={loading}
+            style={{
+              width: '100%',
+              height: '56px',
+              backgroundColor: BONKI_ORANGE,
+              border: 'none',
+              borderRadius: '14px',
+              cursor: loading ? 'default' : 'pointer',
+              fontFamily: 'var(--font-display)',
+              fontVariationSettings: "'opsz' 17",
+              fontSize: '17px',
+              fontWeight: 600,
+              color: MIDNIGHT_INK,
+              marginTop: '40px',
+              opacity: loading ? 0.7 : 1,
+              transition: 'opacity 150ms ease',
+            }}
+          >
+            {loading ? '…' : `Lås upp ${product.name}`}
+          </button>
+        )}
 
         {/* Error */}
         {error && (
