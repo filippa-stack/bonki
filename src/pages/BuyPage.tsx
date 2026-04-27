@@ -183,6 +183,14 @@ export default function BuyPage() {
   const handleDirectCheckout = useCallback(async () => {
     if (directCheckoutLoading) return;
 
+    // Native iOS: never invoke Stripe direct-buy. Apple Guideline 3.1.1 prohibits
+    // steering iOS users to external payment for digital content. Force login so
+    // authenticated checkout (RevenueCat / StoreKit) is the only available path.
+    if (Capacitor.isNativePlatform()) {
+      navigate('/login');
+      return;
+    }
+
     setDirectCheckoutLoading(true);
     setDirectCheckoutError(null);
 
