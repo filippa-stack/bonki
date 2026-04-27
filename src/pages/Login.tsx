@@ -305,7 +305,7 @@ export default function Login() {
                 fontWeight: 600,
               }}
             >
-              Recensentinloggning — App Store Review
+              Recensentinloggning — Store Review
             </p>
             <div className="flex flex-col gap-3">
               <input
@@ -315,7 +315,7 @@ export default function Login() {
                 autoCapitalize="none"
                 autoCorrect="off"
                 spellCheck={false}
-                placeholder="apple.review@bonkistudio.com"
+                placeholder="reviewer@bonkistudio.com"
                 value={reviewerEmail}
                 onChange={(e) => setReviewerEmail(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleReviewerSignIn()}
