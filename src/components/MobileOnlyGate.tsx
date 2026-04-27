@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { isDemoMode, isDemoParam, enterDemoMode } from '@/lib/demoMode';
 
-const DESKTOP_ALLOWED_ROUTES = ['/analytics', '/login', '/flowcharts.html', '/kids-family-journey-flowchart.html', '/user-journey-flowchart.html', '/color-palette.html'];
+const DESKTOP_ALLOWED_ROUTES = ['/analytics', '/login'];
 
 const ADMIN_USER_IDS = [
   'b29f4c84-0426-4b8f-9293-dccf9141a4b5',

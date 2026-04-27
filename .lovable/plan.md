@@ -1,111 +1,64 @@
-# Remove Meta Pixel + PostHog tracking + privacy policy edits
+# Cleanup: Remove build artifacts and wireframe exports
 
-Surgical removal of all third-party tracking (Meta Pixel browser + CAPI server, PostHog browser) and four text edits in `/privacy`. No refactors elsewhere.
+## Critical finding on `public/check-in/`
 
-## Inventory confirmed
+This directory is **NOT junk** — it must be kept. It contains a single file `index.html` (a standalone Still Us slider check-in page). It is referenced at runtime:
 
-**Meta Pixel** — call sites:
-- `src/App.tsx` (import + `RoutePageViewTracker` component + `<RoutePageViewTracker />` usage)
-- `src/contexts/AuthContext.tsx`, `src/components/Onboarding.tsx`, `src/components/ProductIntro.tsx`, `src/pages/Index.tsx`, `src/pages/ClaimPage.tsx`, `src/pages/Install.tsx` (one import + one call each)
-- `src/lib/metaPixel.ts` (helper — delete)
-- `index.html` (script block in `<head>` + `<noscript>` in `<body>`)
-- `supabase/functions/meta-capi/` (delete directory + deploy delete)
-- `supabase/config.toml` lines 30–31 (`[functions.meta-capi]` block)
+- `src/pages/still-us-routes/SharePage.tsx:39` builds the partner share URL as `${window.location.origin}/check-in/index.html?token=${partnerLinkToken}`
+- `src/App.tsx:99` redirects in-app `/check-in/*` routes to the product (so the standalone HTML at `/check-in/index.html` is served by the static handler, not React Router)
+- Notification deep-links and Home.tsx navigation also target `/check-in/...`
 
-**PostHog** — call sites:
-- `src/lib/posthog.ts` (delete)
-- `src/hooks/useAnalytics.ts` (delete — only consumer of posthog, not imported anywhere else)
-- `src/main.tsx` lines 7 + 9 (`import { initPostHog }` + `initPostHog()`)
-- `package.json` line 68 (`"posthog-js"`)
-- No `<PostHogProvider>` wrapper exists; no PostHog script in `index.html`.
+**Decision: keep `public/check-in/` untouched.**
 
-**Robots.txt** — `User-agent: facebookexternalhit` is kept (SEO crawler, not tracking).
+## Change 1 — Delete 8 ZIPs from public/
 
-## Changes
-
-### 1. `index.html`
-- Remove `<!-- Meta Pixel Code -->` … `<!-- End Meta Pixel Code -->` `<script>` block in `<head>`.
-- Remove the `<!-- Meta Pixel noscript fallback -->` comment + `<noscript><img …facebook.com/tr…/></noscript>` in `<body>`.
-
-### 2. Delete files
-- `src/lib/metaPixel.ts`
-- `src/lib/posthog.ts`
-- `src/hooks/useAnalytics.ts`
-- `supabase/functions/meta-capi/` (whole directory)
-
-After deleting the edge function code, also call `supabase--delete_edge_functions` with `["meta-capi"]` to remove the deployed function.
-
-### 3. Strip Meta Pixel imports + calls from call sites
-For each file: remove the `import { trackPixelEvent } from '@/lib/metaPixel';` line and the single `trackPixelEvent(...)` call line. No other code touched.
-
-- `src/contexts/AuthContext.tsx` (import L5, call L87)
-- `src/components/Onboarding.tsx` (import L6, call L388)
-- `src/components/ProductIntro.tsx` (import L13, call L168)
-- `src/pages/Index.tsx` (import L9, call L79)
-- `src/pages/ClaimPage.tsx` (import L8, call L90)
-- `src/pages/Install.tsx` (import L8, call L90)
-
-`src/App.tsx`:
-- Remove import L6 (`trackPixelEvent`).
-- Remove the entire `RoutePageViewTracker` function (~L154–160).
-- Remove `<RoutePageViewTracker />` JSX usage inside `<DevStateProvider>` (just before `<MobileOnlyGate>`).
-- Leave routes, providers, `MobileOnlyGate`, `BonkiErrorBoundary`, `ProtectedRoutes` untouched.
-
-### 4. Strip PostHog from `src/main.tsx`
-- Remove line 7: `import { initPostHog } from './lib/posthog';`
-- Remove line 9: `initPostHog();`
-- All other imports and `createRoot(...)` rendering untouched.
-
-### 5. Remove PostHog dependency
-- `package.json`: remove the `"posthog-js": "^1.367.0",` line.
-
-### 6. `supabase/config.toml`
-Remove the two-line block (L30–31):
 ```
-  [functions.meta-capi]
-    verify_jwt = false
+public/bulk-image-crop_2.zip
+public/card-images.zip
+public/jim-illustrations.zip
+public/jiv-card-images.zip
+public/jma-card-images.zip
+public/sex-card-images.zip
+public/sk-card-images.zip
+public/vk-card-images.zip
 ```
-Leave all other `[functions.*]` entries intact.
 
-### 7. Privacy policy edits — `src/pages/PrivacyPolicy.tsx`
+## Change 2 — Delete 11 wireframe/export files from public/
 
-**7a. Date (L15)** — change `Senast uppdaterad: 27 april 2026` to today's date in Swedish format. Today is 27 April 2026, so it stays `27 april 2026` (no change needed; will refresh in case stale).
+```
+public/color-palette.html
+public/flowcharts.html
+public/kids-family-journey-flowchart.html
+public/library-mood-comparison.html
+public/screenshot-export.html
+public/user-journey-flowchart.html
+public/wireframe-preview-2.html
+public/wireframes-export.html
+public/wireframes-pdf.html
+public/wireframes.html
+public/still-us-content-export.md
+```
 
-**7b. Section 1 (L26)** — replace the single `<p>` with:
-> Bonki & Friends AB, Adelgatan 2, 211 22 Malmö, Sverige, är personuppgiftsansvarig för behandlingen av dina personuppgifter inom Bonki-tjänsten. Organisationsnummer lämnas på begäran.
+## Change 3 — Update `src/components/MobileOnlyGate.tsx` allowlist
 
-**7c. Section 8 (after L100, before `<ul>` on L101)** — insert new `<p>`:
-> Utan app-tillgång kan du begära radering via [bonkiapp.com/delete-account](https://bonkiapp.com/delete-account) eller genom att mejla oss från den e-postadress som är kopplad till ditt konto. Vi raderar kontot inom 30 dagar.
+Line 7:
 
-The link uses `<a href="https://bonkiapp.com/delete-account" style={{ color: '#D4943A' }}>` (no `target="_blank"`, same-origin).
+```ts
+// before
+const DESKTOP_ALLOWED_ROUTES = ['/analytics', '/login', '/flowcharts.html', '/kids-family-journey-flowchart.html', '/user-journey-flowchart.html', '/color-palette.html'];
 
-**7d. Section 10 (L119)** — replace the bullet:
-> Vi samlar inte medvetet in personuppgifter direkt från barn under den åldersgräns som tillämpas i deras hemland enligt GDPR Art. 8 (13 år i Sverige; varierar mellan 13–16 år i andra EU-länder).
-
-## Not touched
-
-Supabase client/RLS, all other edge functions, Stripe, RevenueCat, Resend, Capacitor, `public/robots.txt`, reviewer block on `Login.tsx`, `isAndroidNative()` paywall hides, `HIDDEN_PRODUCT_IDS_NATIVE`/`HIDDEN_SLUGS_NATIVE`, `/delete-account` route + page, `KIDS_PRODUCT_IDS`, all sync guards (`suppressUntilRef`, `prevServerStepRef`, `clearTimeout(pendingSave.current)`, `hasSyncedRef`).
-
-## Memory updates
-
-After applying, update memory to reflect tracking removal:
-- Delete `mem://analytics/meta-tracking`
-- Delete `mem://analytics/posthog-infrastructure`
-- Update `mem://index.md` to remove both entries from the Memories list
+// after
+const DESKTOP_ALLOWED_ROUTES = ['/analytics', '/login'];
+```
 
 ## Verification
 
-```bash
-grep -rn -iE "facebook|fbq|fbevents|meta-pixel|metaPixel|meta-capi|posthog|ph_capture" src/ index.html public/ supabase/
-# Expected: only public/robots.txt:10 (facebookexternalhit)
+1. `ls public/ | grep -E "\.zip$|wireframes|flowchart|color-palette|library-mood|screenshot-export"` → expect 0 matches
+2. `grep -n "flowchart\|color-palette" src/components/MobileOnlyGate.tsx` → expect 0 matches
+3. `ls public/card-images/ | wc -l` → expect 128 (current count, unchanged)
+4. `ls public/check-in/` → expect `index.html` still present
+5. `bunx vite build` → expect 0 errors
 
-grep -n "Adelgatan" src/pages/PrivacyPolicy.tsx
-grep -n "/delete-account" src/pages/PrivacyPolicy.tsx
-grep -n "GDPR Art. 8" src/pages/PrivacyPolicy.tsx
-# Each: one match
+## Out of scope
 
-bunx vite build
-# Expected: 0 errors
-```
-
-Filippa will manually delete `META_PIXEL_ID` / `META_ACCESS_TOKEN` from Cloud secrets afterwards.
+No other files touched. No code changes beyond the single allowlist line in `MobileOnlyGate.tsx`.
