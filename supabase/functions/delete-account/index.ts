@@ -28,20 +28,24 @@ function jsonResponse(body: Record<string, unknown>, status = 200) {
   });
 }
 
-async function logSystemEvent(
-  admin: ReturnType<typeof createClient>,
+/**
+ * Audit log. Edge function logs are persistent and queryable via Supabase
+ * dashboard / edge_function_logs tool — sufficient for the Apple-revoke
+ * audit trail (we don't have a cross-cutting audit table).
+ */
+function audit(
   userId: string,
   eventType: string,
-  payload: Record<string, unknown>,
+  payload: Record<string, unknown> = {},
 ) {
-  try {
-    await admin.from("system_events").insert({
-      event_type: eventType,
-      payload: { user_id: userId, ...payload },
-    });
-  } catch (err) {
-    console.error("[delete-account] failed to log system event", err);
-  }
+  console.log(
+    JSON.stringify({
+      audit: "delete-account",
+      event: eventType,
+      user_id: userId,
+      ...payload,
+    }),
+  );
 }
 
 /**
