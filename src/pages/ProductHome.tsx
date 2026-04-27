@@ -16,6 +16,7 @@ import { KIDS_PRODUCT_IDS } from '@/hooks/useKidsProductProgress';
 import { useProductAccess } from '@/hooks/useProductAccess';
 import ProductPaywall from '@/components/ProductPaywall';
 import { isDemoMode } from '@/lib/demoMode';
+import { isProductHiddenOnPlatform } from '@/lib/platform';
 
 /** Still Us free card ID */
 export default function ProductHome() {
@@ -122,6 +123,11 @@ export default function ProductHome() {
         onAccessGranted={() => window.location.reload()}
       />
     );
+  }
+
+  // iOS native: redirect away from products hidden on this platform (deep-link guard)
+  if (product && isProductHiddenOnPlatform(product.id)) {
+    return <Navigate to="/" replace />;
   }
 
   if (!product) {
