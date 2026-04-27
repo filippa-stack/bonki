@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
+import { Capacitor } from '@capacitor/core';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
@@ -476,7 +477,8 @@ export default function ProductIntro({
             {ctaLabel}
           </button>
 
-          {/* Trust line — addresses "what am I committing to" friction */}
+          {/* Trust line — addresses "what am I committing to" friction.
+              On native iOS, signal App Store billing for Apple Guideline 3.1.1 clarity. */}
           <p
             style={{
               fontFamily: 'var(--font-sans)',
@@ -488,7 +490,7 @@ export default function ProductIntro({
               margin: '12px 0 0',
             }}
           >
-            Säker betalning · Ingen prenumeration
+            {Capacitor.isNativePlatform() ? 'Köp via App Store' : 'Säker betalning · Ingen prenumeration'}
           </p>
 
           {/* Skip link — goes to product home without starting free card */}
