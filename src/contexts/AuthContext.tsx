@@ -70,20 +70,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
-        console.info('[ACCESS-DIAG] AuthContext onAuthStateChange', {
-          event,
-          hasSession: !!session,
-          userId: session?.user?.id,
-          initialSessionResolved,
-          ts: Date.now(),
-        });
         setSession(session);
         setUser(session?.user ?? null);
 
         // Only release loading gate from here AFTER getSession has resolved,
         // so downstream hooks never see a premature null user.
         if (initialSessionResolved) {
-          console.info('[ACCESS-DIAG] AuthContext loading flip', { from: true, to: false, source: 'onAuthStateChange' });
           setLoading(false);
         }
 
@@ -103,16 +95,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     supabase.auth.getSession()
       .then(({ data: { session } }) => {
-        console.info('[ACCESS-DIAG] AuthContext getSession resolved', {
-          hasSession: !!session,
-          userId: session?.user?.id,
-          ts: Date.now(),
-        });
         initialSessionResolved = true;
         clearTimeout(authTimeout);
         setSession(session);
         setUser(session?.user ?? null);
-        console.info('[ACCESS-DIAG] AuthContext loading flip', { from: true, to: false, source: 'getSession' });
         setLoading(false);
         // Cold-start init for already-authenticated users (SIGNED_IN won't fire)
         if (session?.user) {
@@ -121,7 +107,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       })
       .catch((err) => {
         console.error("[AuthContext] getSession failed:", err);
-        console.info('[ACCESS-DIAG] AuthContext getSession FAILED', { error: String(err) });
         initialSessionResolved = true;
         clearTimeout(authTimeout);
         setSession(null);
