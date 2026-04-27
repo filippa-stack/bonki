@@ -5,7 +5,6 @@ import { getProductById } from '@/data/products';
 import { Loader2, Check } from 'lucide-react';
 import { MIDNIGHT_INK, LANTERN_GLOW } from '@/lib/palette';
 import { usePageBackground } from '@/hooks/usePageBackground';
-import { trackPixelEvent } from '@/lib/metaPixel';
 
 const ORANGE_GRADIENT = 'linear-gradient(180deg, #E85D2C 0%, #C44D22 100%)';
 const ORANGE_SHADOW = [
@@ -83,12 +82,6 @@ export default function ClaimPage() {
           paid: !!json.paid,
         });
 
-        // Fire Meta Pixel Purchase event once per session
-        if (!purchaseTrackedRef.current && json.paid) {
-          purchaseTrackedRef.current = true;
-          const priceValue = json.productId === 'still_us' ? 249 : 195;
-          trackPixelEvent('Purchase', { value: priceValue, currency: 'SEK' });
-        }
       } catch (err) {
         if (!cancelled) {
           console.error('get-purchase-session error:', err);

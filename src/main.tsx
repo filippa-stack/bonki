@@ -4,9 +4,6 @@ import App from "./App.tsx";
 import "./index.css";
 import "./styles/themes.css";
 import "./i18n";
-import { initPostHog } from './lib/posthog';
-
-initPostHog();
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

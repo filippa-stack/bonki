@@ -27,8 +27,6 @@ project_id = "wcienwozdurwhswaarjy"
     verify_jwt = false
   [functions.init-couple-state]
     verify_jwt = false
-  [functions.meta-capi]
-    verify_jwt = false
   [functions.migrate-anonymous-submissions]
     verify_jwt = false
   [functions.migrate-tier2-to-tier3]

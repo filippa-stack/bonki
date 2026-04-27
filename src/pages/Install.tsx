@@ -5,7 +5,6 @@ import { ShieldCheck } from 'lucide-react';
 
 import bonkiLogo from '@/assets/bonki-logo-transparent.png';
 import bonkiWordmark from '@/assets/bonki-wordmark.png';
-import { trackPixelEvent } from '@/lib/metaPixel';
 import { MIDNIGHT_INK, LANTERN_GLOW, BONKI_ORANGE } from '@/lib/palette';
 
 function isStandalone(): boolean {
@@ -85,10 +84,6 @@ export default function Install() {
   const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
   const isAndroid = /android/i.test(navigator.userAgent);
   const isIOSNonSafari = isIOS && !isSafari;
-
-  useEffect(() => {
-    trackPixelEvent('PageView');
-  }, []);
 
   useEffect(() => {
     const handler = (e: Event) => {

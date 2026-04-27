@@ -23,7 +23,7 @@ export default function PrivacyPolicy() {
         </p>
 
         <Section title="1. Personuppgiftsansvarig">
-          <p>Bonki & Friends AB är personuppgiftsansvarig för behandlingen av dina personuppgifter inom Bonki-tjänsten.</p>
+          <p>Bonki & Friends AB, Adelgatan 2, 211 22 Malmö, Sverige, är personuppgiftsansvarig för behandlingen av dina personuppgifter inom Bonki-tjänsten. Organisationsnummer lämnas på begäran.</p>
           <p>Kontakt: <a href="mailto:sofia@bonkistudio.com" style={{ color: '#D4943A' }}>sofia@bonkistudio.com</a></p>
         </Section>
 
@@ -98,6 +98,7 @@ export default function PrivacyPolicy() {
 
         <Section title="8. Radera ditt konto">
           <p>Du kan radera ditt konto direkt i appen via <strong>Konto → Radera konto</strong>. Detta tar permanent bort:</p>
+          <p>Utan app-tillgång kan du begära radering via <a href="https://bonkiapp.com/delete-account" style={{ color: '#D4943A' }}>bonkiapp.com/delete-account</a> eller genom att mejla oss från den e-postadress som är kopplad till ditt konto. Vi raderar kontot inom 30 dagar.</p>
           <ul>
             <li>Ditt användarkonto och e-postadress</li>
             <li>Alla dina reflektioner och journalanteckningar</li>
@@ -116,7 +117,7 @@ export default function PrivacyPolicy() {
           <p>Bonki innehåller produkter riktade till familjer med barn i åldrarna 3–12+. Appen är utformad för att användas tillsammans med en vuxen vårdnadshavare.</p>
           <ul>
             <li>Konton skapas alltid av vuxna. Vi tillåter inte registrering av barn.</li>
-            <li>Vi samlar inte medvetet in personuppgifter direkt från barn under 13 år (eller motsvarande lägre åldersgräns enligt lokala lagar).</li>
+            <li>Vi samlar inte medvetet in personuppgifter direkt från barn under den åldersgräns som tillämpas i deras hemland enligt GDPR Art. 8 (13 år i Sverige; varierar mellan 13–16 år i andra EU-länder).</li>
             <li>Vi visar ingen reklam i appen, varken till vuxna eller barn.</li>
             <li>Vi spårar inte barns aktivitet för annonseringsändamål.</li>
           </ul>

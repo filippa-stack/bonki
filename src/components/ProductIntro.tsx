@@ -10,7 +10,6 @@ import { supabase } from '@/integrations/supabase/client';
 import { LANTERN_GLOW, DRIFTWOOD, MIDNIGHT_INK, BONKI_ORANGE, DEEP_SAFFRON, productTileColors } from '@/lib/palette';
 import { isProductFreeForUser } from '@/lib/freeCardPolicy';
 import { usePageBackground } from '@/hooks/usePageBackground';
-import { trackPixelEvent } from '@/lib/metaPixel';
 import { PREVIEW_QUESTION } from '@/lib/productPreviewQuestions';
 
 // ── Illustration imports (same as product homes) ──
@@ -163,9 +162,6 @@ export default function ProductIntro({
     markProductIntroSeenServer(productId);
     localStorage.setItem(`bonki-intro-seen-${productId}`, '1');
 
-    // Track CTA tap so we can measure intro → checkout conversion
-    const value = priceSek ?? (productId === 'still_us' ? 249 : 195);
-    trackPixelEvent('InitiateCheckout', { value, currency: 'SEK' });
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (user) {

@@ -2,7 +2,6 @@ import React, { createContext, useContext, useState, useEffect, ReactNode } from
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import type { Json } from '@/integrations/supabase/types';
-import { trackPixelEvent } from '@/lib/metaPixel';
 import { initRevenueCat, logOutRevenueCat } from '@/lib/revenueCat';
 
 interface AuthContextType {
@@ -81,11 +80,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
         // After sign-in, save any pending legal consent
         if (event === 'SIGNED_IN' && session?.user) {
-          // Fire CompleteRegistration only for brand-new accounts (created < 60s ago)
-          const createdAt = new Date(session.user.created_at).getTime();
-          if (Date.now() - createdAt < 60_000) {
-            trackPixelEvent('CompleteRegistration');
-          }
           savePendingLegalConsent(session.user.id);
           // Initialize RevenueCat (no-op on web; iOS-only for now)
           initRevenueCat(session.user.id);
