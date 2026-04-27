@@ -88,3 +88,15 @@ Update memory `mem://ux/library/tagline-metadata-standards` after edit (current 
 
 - App Store Connect description / age questionnaire / screenshots / keywords (manual).
 - No changes to `allProducts`, manifest data, DB, RLS, or `getAgeGroup` tone logic.
+
+---
+
+## ✅ Shipped
+
+- Place 1: Trust line updated on 5 surfaces (ProductPaywall, ProductIntro, BuyPage, PaywallBottomSheet, PaywallFullScreen)
+- Place 2: Onboarding disclaimer added under Börja CTA
+- Place 5: `src/lib/platform.ts` created; `sexualitetskort` filtered from library + recommendations + route guards on iOS native
+- Place 6: Age badge rendering removed from `ProductLibrary.tsx` (manifest data preserved for internal tone logic)
+- `bunx tsc --noEmit`: clean
+
+App Store age rating stays at 9+ with Mature/Suggestive Themes: Mild/Infrequent.
