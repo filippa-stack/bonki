@@ -3,9 +3,12 @@ import { isSpacePaid } from '@/pages/Index';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { Check } from 'lucide-react';
+import { Capacitor } from '@capacitor/core';
+import { toast } from 'sonner';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
+import { purchaseProduct } from '@/lib/revenueCat';
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
@@ -62,6 +65,31 @@ export default function PurchaseScreen({ onPurchaseComplete }: PurchaseScreenPro
     if (!user) return;
     setProcessing(true);
     setError(null);
+
+    // Native iOS: route through Apple StoreKit via RevenueCat (Apple Guideline 3.1.1).
+    if (Capacitor.isNativePlatform()) {
+      try {
+        const result = await purchaseProduct('still_us');
+        if (result.cancelled) {
+          setProcessing(false);
+          return;
+        }
+        if (!result.success) {
+          setError('Köpet kunde inte genomföras. Försök igen.');
+          setProcessing(false);
+          return;
+        }
+        toast.success('Tack för ditt köp!');
+        setCompleted(true);
+        setTimeout(() => onPurchaseComplete(), 800);
+      } catch (err) {
+        console.error('RevenueCat purchase error:', err);
+        setError('Kunde inte starta betalningen');
+      } finally {
+        setProcessing(false);
+      }
+      return;
+    }
 
     try {
       const projectId = import.meta.env.VITE_SUPABASE_PROJECT_ID;

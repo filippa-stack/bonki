@@ -183,6 +183,14 @@ export default function BuyPage() {
   const handleDirectCheckout = useCallback(async () => {
     if (directCheckoutLoading) return;
 
+    // Native iOS: never invoke Stripe direct-buy. Apple Guideline 3.1.1 prohibits
+    // steering iOS users to external payment for digital content. Force login so
+    // authenticated checkout (RevenueCat / StoreKit) is the only available path.
+    if (Capacitor.isNativePlatform()) {
+      navigate('/login');
+      return;
+    }
+
     setDirectCheckoutLoading(true);
     setDirectCheckoutError(null);
 
@@ -231,7 +239,7 @@ export default function BuyPage() {
       setDirectCheckoutLoading(false);
       localStorage.removeItem('pending-legal-consent');
     }
-  }, [productId, directCheckoutLoading]);
+  }, [productId, directCheckoutLoading, navigate]);
 
   // Auto-trigger checkout when user is logged in — unless they just tapped back from Stripe
   useEffect(() => {
@@ -333,6 +341,12 @@ export default function BuyPage() {
             >
               Försök igen
             </button>
+            <button
+              onClick={() => navigate(`/product/${product.slug}`, { replace: true })}
+              style={{ fontFamily: 'var(--font-sans)', fontSize: '14px', color: LANTERN_GLOW, opacity: 0.6, background: 'none', border: 'none', cursor: 'pointer', padding: '8px 16px', textDecoration: 'underline', textUnderlineOffset: '3px' }}
+            >
+              Tillbaka
+            </button>
           </>
         ) : (
           <>
@@ -342,6 +356,25 @@ export default function BuyPage() {
             </p>
           </>
         )}
+      </div>
+    );
+  }
+
+  // ── Native iOS unauthenticated: never show Stripe-styled CTA. Force login so
+  // authenticated checkout via RevenueCat / StoreKit is the only available path
+  // (Apple Guideline 3.1.1). ──
+  if (Capacitor.isNativePlatform() && !user) {
+    return (
+      <div style={{ minHeight: '100vh', background: MIDNIGHT_INK, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '24px', gap: '20px' }}>
+        <p style={{ fontFamily: 'var(--font-sans)', fontSize: '16px', color: LANTERN_GLOW, opacity: 0.85, textAlign: 'center', maxWidth: '300px', lineHeight: 1.5 }}>
+          Logga in för att fortsätta
+        </p>
+        <button
+          onClick={() => navigate('/login')}
+          style={{ fontFamily: 'var(--font-sans)', fontSize: '15px', fontWeight: 600, color: '#fff', background: ORANGE_GRADIENT, boxShadow: ORANGE_SHADOW, border: 'none', borderRadius: '12px', padding: '14px 28px', cursor: 'pointer' }}
+        >
+          Till inloggning
+        </button>
       </div>
     );
   }

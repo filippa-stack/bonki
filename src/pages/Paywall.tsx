@@ -2,12 +2,15 @@ import { useCallback, useEffect, useState } from 'react';
 import { useDefaultTheme } from '@/hooks/useDefaultTheme';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { Capacitor } from '@capacitor/core';
+import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import { COLORS, slugFromCardIndex } from '@/lib/stillUsTokens';
 import { LANTERN_GLOW } from '@/lib/palette';
 import { usePageBackground } from '@/hooks/usePageBackground';
 import { useAuth } from '@/contexts/AuthContext';
 import { isDemoMode } from '@/lib/demoMode';
+import { purchaseProduct } from '@/lib/revenueCat';
 
 export default function Paywall() {
   useDefaultTheme();
@@ -48,6 +51,33 @@ export default function Paywall() {
     }
     setProcessing(true);
     setError(null);
+
+    // Native iOS: route through Apple StoreKit (Apple Guideline 3.1.1).
+    if (Capacitor.isNativePlatform()) {
+      try {
+        const result = await purchaseProduct('still_us');
+        if (result.cancelled) {
+          setProcessing(false);
+          return;
+        }
+        if (!result.success) {
+          setError('Köpet kunde inte genomföras. Försök igen.');
+          setProcessing(false);
+          return;
+        }
+        toast.success('Tack för ditt köp!');
+        if (slug) {
+          navigate(`/session/${slug}/session2-start`, { replace: true });
+        } else {
+          navigate('/', { replace: true });
+        }
+      } catch (err) {
+        console.error('RevenueCat purchase error:', err);
+        setError('Kunde inte starta betalningen');
+        setProcessing(false);
+      }
+      return;
+    }
 
     try {
       const projectId = import.meta.env.VITE_SUPABASE_PROJECT_ID;

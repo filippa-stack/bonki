@@ -2,9 +2,12 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
+import { Capacitor } from '@capacitor/core';
+import { toast } from 'sonner';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { isDemoMode, isDemoParam } from '@/lib/demoMode';
+import { purchaseProduct } from '@/lib/revenueCat';
 import { productIntros } from '@/data/productIntros';
 import { PREVIEW_QUESTION } from '@/lib/productPreviewQuestions';
 import type { ProductManifest } from '@/types/product';
@@ -103,6 +106,32 @@ export default function ProductPaywall({ product, onAccessGranted }: ProductPayw
     }
     setLoading(true);
     setError(null);
+
+    // Native iOS: route through Apple StoreKit via RevenueCat. Apple Guideline 3.1.1
+    // prohibits steering iOS users to external (Stripe) payment for digital content.
+    if (Capacitor.isNativePlatform()) {
+      try {
+        const result = await purchaseProduct(product.id);
+        if (result.cancelled) {
+          setLoading(false);
+          return;
+        }
+        if (!result.success) {
+          setError('Köpet kunde inte genomföras. Försök igen.');
+          setLoading(false);
+          return;
+        }
+        toast.success('Tack för ditt köp!');
+        // RevenueCat webhook syncs user_product_access server-side.
+        onAccessGranted?.();
+      } catch (err) {
+        console.error('RevenueCat purchase error:', err);
+        setError('Kunde inte starta betalningen');
+      } finally {
+        setLoading(false);
+      }
+      return;
+    }
 
     try {
       const projectId = import.meta.env.VITE_SUPABASE_PROJECT_ID;
