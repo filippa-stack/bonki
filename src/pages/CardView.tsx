@@ -248,6 +248,30 @@ export default function CardView() {
     }
     setCompletionPurchaseLoading(true);
     setCompletionPurchaseError(null);
+
+    // Native iOS: route through Apple StoreKit (Apple Guideline 3.1.1).
+    if (Capacitor.isNativePlatform()) {
+      try {
+        const result = await purchaseProduct(product!.id);
+        if (result.cancelled) {
+          setCompletionPurchaseLoading(false);
+          return;
+        }
+        if (!result.success) {
+          setCompletionPurchaseError('Köpet kunde inte genomföras. Försök igen.');
+          setCompletionPurchaseLoading(false);
+          return;
+        }
+        toast.success('Tack för ditt köp!');
+        window.location.reload();
+      } catch (err) {
+        console.error('RevenueCat purchase error:', err);
+        setCompletionPurchaseError('Kunde inte starta betalningen');
+        setCompletionPurchaseLoading(false);
+      }
+      return;
+    }
+
     try {
       const projectId = import.meta.env.VITE_SUPABASE_PROJECT_ID;
       const { data: { session } } = await supabase.auth.getSession();
