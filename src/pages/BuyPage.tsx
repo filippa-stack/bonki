@@ -9,6 +9,7 @@ import { Loader2, ArrowLeft } from 'lucide-react';
 import { MIDNIGHT_INK, LANTERN_GLOW } from '@/lib/palette';
 import { usePageBackground } from '@/hooks/usePageBackground';
 import { purchaseProduct } from '@/lib/revenueCat';
+import { isAndroidNative } from '@/lib/platform';
 
 import TermsConsent from '@/components/TermsConsent';
 import { TERMS_VERSION, PRIVACY_VERSION } from '@/lib/legal';
@@ -449,16 +450,34 @@ export default function BuyPage() {
         </div>
 
         {/* Direct-to-Stripe CTA */}
-        <button
-          onClick={handleDirectCheckout}
-          disabled={directCheckoutLoading}
-          className="w-full h-14 text-base font-semibold rounded-xl flex items-center justify-center gap-2 border-0 text-white disabled:opacity-50"
-          style={{ background: ORANGE_GRADIENT, boxShadow: ORANGE_SHADOW }}
-        >
-          {directCheckoutLoading
-            ? <Loader2 className="w-5 h-5 animate-spin" />
-            : `Köp ${product.name}${priceSek !== null ? ` · ${priceSek} kr` : ''}`}
-        </button>
+        {isAndroidNative() ? (
+          <div
+            style={{
+              width: '100%',
+              padding: '16px 20px',
+              borderRadius: '12px',
+              background: 'rgba(255,255,255,0.06)',
+              color: 'rgba(253, 246, 227, 0.75)',
+              fontFamily: 'var(--font-sans)',
+              fontSize: 14,
+              lineHeight: 1.5,
+              textAlign: 'center',
+            }}
+          >
+            Köp är inte tillgängliga i Android-versionen just nu. Vi arbetar på det. Logga in med samma konto för att låsa upp produkter du redan äger.
+          </div>
+        ) : (
+          <button
+            onClick={handleDirectCheckout}
+            disabled={directCheckoutLoading}
+            className="w-full h-14 text-base font-semibold rounded-xl flex items-center justify-center gap-2 border-0 text-white disabled:opacity-50"
+            style={{ background: ORANGE_GRADIENT, boxShadow: ORANGE_SHADOW }}
+          >
+            {directCheckoutLoading
+              ? <Loader2 className="w-5 h-5 animate-spin" />
+              : `Köp ${product.name}${priceSek !== null ? ` · ${priceSek} kr` : ''}`}
+          </button>
+        )}
 
         {/* Recovery link */}
         <button

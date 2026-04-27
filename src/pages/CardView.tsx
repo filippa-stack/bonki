@@ -28,6 +28,7 @@ import { toastOnce, toastErrorOnce } from '@/lib/toastOnce';
 import { getProductForCard } from '@/data/products';
 import { useProductAccess } from '@/hooks/useProductAccess';
 import ProductPaywall from '@/components/ProductPaywall';
+import { isAndroidNative } from '@/lib/platform';
 import { getCompletionMessages, getUIText, type PronounMode } from '@/lib/pronouns';
 import { useCardImage } from '@/hooks/useCardImage';
 import { isDemoMode, isDemoParam } from '@/lib/demoMode';
@@ -1558,30 +1559,50 @@ export default function CardView() {
               }}>
                 {completionPriceSek ?? '...'} kr · Engångsköp · Tillgång för alltid
               </p>
-              <button
-                onClick={handleCompletionPurchase}
-                disabled={completionPurchaseLoading}
-                style={{
-                  width: '100%',
-                  maxWidth: '320px',
-                  height: '56px',
-                  borderRadius: '14px',
-                  backgroundColor: '#E85D2C',
-                  border: 'none',
-                  cursor: completionPurchaseLoading ? 'wait' : 'pointer',
-                  fontFamily: 'var(--font-display)',
-                  fontVariationSettings: "'opsz' 17",
-                  fontSize: '17px',
-                  fontWeight: 600,
-                  color: '#1A1A2E',
-                  opacity: completionPurchaseLoading ? 0.7 : 1,
-                  transition: 'opacity 150ms ease',
-                  margin: '0 auto',
-                  display: 'block',
-                }}
-              >
-                {completionPurchaseLoading ? 'Förbereder...' : `Lås upp ${product?.name ?? 'produkt'}`}
-              </button>
+              {isAndroidNative() ? (
+                <div
+                  style={{
+                    width: '100%',
+                    maxWidth: '320px',
+                    margin: '0 auto',
+                    padding: '16px 20px',
+                    borderRadius: '14px',
+                    background: 'rgba(255,255,255,0.06)',
+                    color: 'rgba(253, 246, 227, 0.75)',
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: 14,
+                    lineHeight: 1.5,
+                    textAlign: 'center',
+                  }}
+                >
+                  Köp är inte tillgängliga i Android-versionen just nu. Vi arbetar på det. Logga in med samma konto för att låsa upp produkter du redan äger.
+                </div>
+              ) : (
+                <button
+                  onClick={handleCompletionPurchase}
+                  disabled={completionPurchaseLoading}
+                  style={{
+                    width: '100%',
+                    maxWidth: '320px',
+                    height: '56px',
+                    borderRadius: '14px',
+                    backgroundColor: '#E85D2C',
+                    border: 'none',
+                    cursor: completionPurchaseLoading ? 'wait' : 'pointer',
+                    fontFamily: 'var(--font-display)',
+                    fontVariationSettings: "'opsz' 17",
+                    fontSize: '17px',
+                    fontWeight: 600,
+                    color: '#1A1A2E',
+                    opacity: completionPurchaseLoading ? 0.7 : 1,
+                    transition: 'opacity 150ms ease',
+                    margin: '0 auto',
+                    display: 'block',
+                  }}
+                >
+                  {completionPurchaseLoading ? 'Förbereder...' : `Lås upp ${product?.name ?? 'produkt'}`}
+                </button>
+              )}
               {completionPurchaseError && (
                 <p style={{
                   fontFamily: 'var(--font-sans)',
@@ -1945,30 +1966,50 @@ export default function CardView() {
                   }}>
                     {completionPriceSek ?? '...'} kr · Engångsköp · Tillgång för alltid
                   </p>
-                  <button
-                    onClick={handleCompletionPurchase}
-                    disabled={completionPurchaseLoading}
-                    style={{
-                      width: '100%',
-                      maxWidth: '320px',
-                      height: '56px',
-                      borderRadius: '14px',
-                      backgroundColor: '#E85D2C',
-                      border: 'none',
-                      cursor: completionPurchaseLoading ? 'wait' : 'pointer',
-                      fontFamily: 'var(--font-display)',
-                      fontVariationSettings: "'opsz' 17",
-                      fontSize: '17px',
-                      fontWeight: 600,
-                      color: '#1A1A2E',
-                      opacity: completionPurchaseLoading ? 0.7 : 1,
-                      transition: 'opacity 150ms ease',
-                      margin: '0 auto',
-                      display: 'block',
-                    }}
-                  >
-                    {completionPurchaseLoading ? 'Förbereder...' : 'Lås upp Vårt Vi'}
-                  </button>
+                  {isAndroidNative() ? (
+                    <div
+                      style={{
+                        width: '100%',
+                        maxWidth: '320px',
+                        margin: '0 auto',
+                        padding: '16px 20px',
+                        borderRadius: '14px',
+                        background: 'rgba(255,255,255,0.06)',
+                        color: 'rgba(253, 246, 227, 0.75)',
+                        fontFamily: 'var(--font-sans)',
+                        fontSize: 14,
+                        lineHeight: 1.5,
+                        textAlign: 'center',
+                      }}
+                    >
+                      Köp är inte tillgängliga i Android-versionen just nu. Vi arbetar på det. Logga in med samma konto för att låsa upp produkter du redan äger.
+                    </div>
+                  ) : (
+                    <button
+                      onClick={handleCompletionPurchase}
+                      disabled={completionPurchaseLoading}
+                      style={{
+                        width: '100%',
+                        maxWidth: '320px',
+                        height: '56px',
+                        borderRadius: '14px',
+                        backgroundColor: '#E85D2C',
+                        border: 'none',
+                        cursor: completionPurchaseLoading ? 'wait' : 'pointer',
+                        fontFamily: 'var(--font-display)',
+                        fontVariationSettings: "'opsz' 17",
+                        fontSize: '17px',
+                        fontWeight: 600,
+                        color: '#1A1A2E',
+                        opacity: completionPurchaseLoading ? 0.7 : 1,
+                        transition: 'opacity 150ms ease',
+                        margin: '0 auto',
+                        display: 'block',
+                      }}
+                    >
+                      {completionPurchaseLoading ? 'Förbereder...' : 'Lås upp Vårt Vi'}
+                    </button>
+                  )}
                   {completionPurchaseError && (
                     <p style={{
                       fontFamily: 'var(--font-sans)',

@@ -11,6 +11,7 @@ import { usePageBackground } from '@/hooks/usePageBackground';
 import { useAuth } from '@/contexts/AuthContext';
 import { isDemoMode } from '@/lib/demoMode';
 import { purchaseProduct } from '@/lib/revenueCat';
+import { isAndroidNative } from '@/lib/platform';
 
 export default function Paywall() {
   useDefaultTheme();
@@ -242,25 +243,43 @@ export default function Paywall() {
           Ett beslut. Tillgång för alltid. Ingen prenumeration.
         </p>
 
-        <motion.button
-          whileTap={{ scale: 0.98 }}
-          onClick={handlePurchase}
-          disabled={processing}
-          style={{
-            width: '100%',
-            padding: '16px',
-            borderRadius: '12px',
-            border: 'none',
-            backgroundColor: processing ? `${COLORS.deepSaffron}99` : COLORS.deepSaffron,
-            color: COLORS.emberNight,
-            fontSize: '16px',
-            fontFamily: "'DM Serif Display', serif",
-            fontWeight: 600,
-            cursor: processing ? 'default' : 'pointer',
-          }}
-        >
-          {processing ? 'Behandlar...' : 'Fortsätt resan'}
-        </motion.button>
+        {isAndroidNative() ? (
+          <div
+            style={{
+              width: '100%',
+              padding: '16px 20px',
+              borderRadius: '12px',
+              background: 'rgba(255,255,255,0.08)',
+              color: LANTERN_GLOW,
+              fontFamily: "'DM Serif Display', serif",
+              fontSize: 15,
+              lineHeight: 1.5,
+              textAlign: 'center',
+            }}
+          >
+            Köp är inte tillgängliga i Android-versionen just nu. Vi arbetar på det. Logga in med samma konto för att låsa upp produkter du redan äger.
+          </div>
+        ) : (
+          <motion.button
+            whileTap={{ scale: 0.98 }}
+            onClick={handlePurchase}
+            disabled={processing}
+            style={{
+              width: '100%',
+              padding: '16px',
+              borderRadius: '12px',
+              border: 'none',
+              backgroundColor: processing ? `${COLORS.deepSaffron}99` : COLORS.deepSaffron,
+              color: COLORS.emberNight,
+              fontSize: '16px',
+              fontFamily: "'DM Serif Display', serif",
+              fontWeight: 600,
+              cursor: processing ? 'default' : 'pointer',
+            }}
+          >
+            {processing ? 'Behandlar...' : 'Fortsätt resan'}
+          </motion.button>
+        )}
 
         {error && (
           <p style={{
