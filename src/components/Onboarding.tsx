@@ -392,6 +392,17 @@ export default function Onboarding() {
             >
               Börja
             </BonkiButton>
+            <p style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: '12px',
+              color: '#FDF6E3',
+              opacity: 0.45,
+              lineHeight: 1.5,
+              textAlign: 'center',
+              margin: '4px 0 0',
+            }}>
+              Bonki är ett samtalsverktyg utvecklat med psykologer. Det ersätter inte professionell vård. Vid behov av stöd, kontakta vårdcentral eller 1177.
+            </p>
           </motion.div>
         </>
       )}
