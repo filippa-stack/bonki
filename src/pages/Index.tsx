@@ -6,7 +6,6 @@ import { usePartnerNotifications } from '@/hooks/usePartnerNotifications';
 import { useAuth } from '@/contexts/AuthContext';
 import { useThemeSwitcher } from '@/hooks/useThemeSwitcher';
 import { supabase } from '@/integrations/supabase/client';
-import { trackPixelEvent } from '@/lib/metaPixel';
 
 import ProductLibrary from '@/components/ProductLibrary';
 import { allProducts } from '@/data/products';
@@ -75,8 +74,6 @@ export default function Index() {
     const returnCard = searchParams.get('returnCard');
     const purchasedProductId = searchParams.get('product');
     const purchasedProduct = purchasedProductId ? allProducts.find(p => p.id === purchasedProductId) : null;
-    const priceValue = purchasedProduct?.id === 'still_us' ? 249 : 195;
-    trackPixelEvent('Purchase', { value: priceValue, currency: 'SEK' });
     window.history.replaceState({}, '', window.location.pathname);
     if (returnCard) {
       return <Navigate to={`/card/${returnCard}`} replace />;
