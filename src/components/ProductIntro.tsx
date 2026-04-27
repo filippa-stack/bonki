@@ -432,7 +432,19 @@ export default function ProductIntro({
               lineHeight: 1.5,
             }}
           >
-            Utvecklat av psykologer · 29 års klinisk erfarenhet
+            Utvecklat tillsammans med legitimerade psykologer · 29 års klinisk erfarenhet
+          </p>
+          <p
+            style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: '12px',
+              color: LANTERN_GLOW,
+              opacity: 0.6,
+              margin: '4px 0 0',
+              lineHeight: 1.5,
+            }}
+          >
+            Bonki är ett samtalsverktyg, inte terapi eller medicinsk rådgivning
           </p>
         </div>
 

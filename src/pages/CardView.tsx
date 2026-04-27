@@ -31,6 +31,7 @@ import ProductPaywall from '@/components/ProductPaywall';
 import { getCompletionMessages, getUIText, type PronounMode } from '@/lib/pronouns';
 import { useCardImage } from '@/hooks/useCardImage';
 import { isDemoMode, isDemoParam } from '@/lib/demoMode';
+import { isProductHiddenOnPlatform } from '@/lib/platform';
 import { upsertDemoDiaryEntry } from '@/lib/demoDiary';
 import { saveDemoSession, updateDemoSessionStep, completeDemoSession, isDemoCardCompleted, DEMO_SESSION_EVENT } from '@/lib/demoSession';
 import { Capacitor } from '@capacitor/core';
@@ -172,6 +173,13 @@ export default function CardView() {
       localStorage.setItem('bonki-last-active-product', product.slug);
     }
   }, [product?.slug]);
+
+  // iOS native: redirect away from products hidden on this platform (deep-link guard)
+  useEffect(() => {
+    if (product && isProductHiddenOnPlatform(product.id)) {
+      navigate('/', { replace: true });
+    }
+  }, [product, navigate]);
   const uiText = useMemo(() => getUIText(pronounMode), [pronounMode]);
   const isUnifiedSingleStepProduct = !!(product && product.id !== 'still_us');
   const effectiveSteps = useMemo(() => {

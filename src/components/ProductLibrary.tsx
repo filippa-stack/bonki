@@ -12,6 +12,7 @@ import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/sonner';
 import { isDemoMode } from '@/lib/demoMode';
+import { isIOSNative, isProductHiddenOnPlatform } from '@/lib/platform';
 
 
 import LibraryResumeCard from '@/components/LibraryResumeCard';
@@ -231,7 +232,7 @@ function AudienceLabel({ label, subtitle, delay = 0 }: { label: string; subtitle
 
 /** Portal tile — illustration bleeds right, text anchored left */
 const PastelTile = React.forwardRef<HTMLDivElement, {
-  name: string; bg: string; ageLabel?: string; tagline?: string;
+  name: string; bg: string; tagline?: string;
   onClick?: () => void; illustration?: string; productId?: string;
   accentColor?: string; taglineColor?: string; illustrationOpacity?: number;
   illustrationSize?: string; illustrationPosition?: string; wide?: boolean;
@@ -240,7 +241,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
   progressText?: string; lastActive?: string; hideFreeBadge?: boolean; showFreeLabel?: boolean; totalCards?: number; completedCount?: number;
   isPurchased?: boolean;
 }>(function PastelTile({
-  name, bg, ageLabel, tagline, onClick, illustration, productId, accentColor, taglineColor,
+  name, bg, tagline, onClick, illustration, productId, accentColor, taglineColor,
   illustrationOpacity = 0.90, wide = false,
   hasActiveSession = false, tileHeight = '240px',
   progressText, lastActive, hideFreeBadge = false, showFreeLabel = false, totalCards, completedCount,
@@ -327,7 +328,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
         <div
           style={{
             position: 'absolute',
-            top: ageLabel ? '50px' : '12px',
+            top: '12px',
             right: '14px',
             display: 'flex',
             flexDirection: 'column',
@@ -417,7 +418,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
               textShadow: '0 1px 3px rgba(0,0,0,0.5), 0 0 8px rgba(0,0,0,0.3)',
             }}
           >
-            {tagline}{ageLabel ? ` · ${ageLabel}` : ''}
+            {tagline}
           </p>
           )}
           {/* Progress pill */}
@@ -583,8 +584,9 @@ export default function ProductLibrary() {
   const vardag = allProducts.find(p => p.id === 'vardagskort')!;
   const syskon = allProducts.find(p => p.id === 'syskonkort')!;
 
-  // Default kids product order
-  const defaultKidsOrder = [jagIMig, jagMedAndra, jagIVarlden, vardag, syskon, sexualitet];
+  // Default kids product order (sexualitetskort hidden on iOS native for App Store 1.0)
+  const defaultKidsOrder = [jagIMig, jagMedAndra, jagIVarlden, vardag, syskon, sexualitet]
+    .filter(p => !isProductHiddenOnPlatform(p.id));
 
   // Smart ordering: products with active sessions first
   const sortedKidsProducts = useMemo(() => {
@@ -1175,7 +1177,7 @@ export default function ProductLibrary() {
                   bg={TILE_COLORS[product.id]!}
                   productId={product.id}
                   tagline={TAGLINES[product.id]}
-                  ageLabel={product.ageLabel}
+                  
                   accentColor={ACCENT_COLORS[product.id]}
                   taglineColor={TAGLINE_COLORS[product.id]}
                   illustration={ILLUSTRATIONS[product.id]}
