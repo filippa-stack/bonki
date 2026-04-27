@@ -360,6 +360,25 @@ export default function BuyPage() {
     );
   }
 
+  // ── Native iOS unauthenticated: never show Stripe-styled CTA. Force login so
+  // authenticated checkout via RevenueCat / StoreKit is the only available path
+  // (Apple Guideline 3.1.1). ──
+  if (Capacitor.isNativePlatform() && !user) {
+    return (
+      <div style={{ minHeight: '100vh', background: MIDNIGHT_INK, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '24px', gap: '20px' }}>
+        <p style={{ fontFamily: 'var(--font-sans)', fontSize: '16px', color: LANTERN_GLOW, opacity: 0.85, textAlign: 'center', maxWidth: '300px', lineHeight: 1.5 }}>
+          Logga in för att fortsätta
+        </p>
+        <button
+          onClick={() => navigate('/login')}
+          style={{ fontFamily: 'var(--font-sans)', fontSize: '15px', fontWeight: 600, color: '#fff', background: ORANGE_GRADIENT, boxShadow: ORANGE_SHADOW, border: 'none', borderRadius: '12px', padding: '14px 28px', cursor: 'pointer' }}
+        >
+          Till inloggning
+        </button>
+      </div>
+    );
+  }
+
   // ── Unauthenticated website-direct flow ──
   // Selling surface + single direct-to-Stripe button. OTP happens post-purchase
   // on /claim, not here.
