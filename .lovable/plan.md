@@ -1,105 +1,174 @@
-# Diagnostic logging for `useProductAccess` 0/7 failure on real device
+# Root cause: `ProductIntro` renders for purchased users who haven't completed a session yet
 
-## Context recap
+## What's actually happening
 
-- **Confirmed on Live DB (`spgknasuinxmvyrlpztx`)**: Reviewer `apple.review@bonkistudio.com` has all 7 `user_product_access` rows.
-- **RLS policy on `user_product_access`**: single SELECT policy `(auth.uid() = user_id)`. Symmetric — cannot allow "list all" and deny "select one" for the same authenticated request.
-- **Real-device behavior**: Library tile grid shows all 7 as purchased (`useAllProductAccess` returns the full Set). Tapping into ANY product page paywall-locks (`useProductAccess` returns `hasAccess: false`).
-- **Hook code**: Both hooks share the same Supabase client, same `useAuth()` source, same table, same `auth.uid() = user_id` predicate path. They diverge only in mount timing and filter shape.
+The "paywall" the reviewer sees on `jag_i_varlden`, `syskonkort`, and `sexualitetskort` is **`ProductIntro`**, not `ProductPaywall`. Visually they're nearly identical (same headline shape, same "Köp · 195 kr" CTA, same skip link), which is why we mis-identified it.
 
-Because the DB is symmetric and both hooks are functionally identical, the divergence has to be one of:
-1. The request from `useProductAccess` is sent without a valid Authorization header (RLS returns 0 rows silently → `data === null` → `hasAccess: false`).
-2. `user.id` passed to `.eq('user_id', …)` at query time doesn't match the JWT `sub` of that request (RLS denies → `data === null`).
-3. `authLoading` flips `false → true → false` across the route transition and the hook commits the `!user?.id` early-return branch on the wrong frame.
+`ProductIntro` renders before any access check in `ProductHome`:
 
-We can't tell which one without runtime evidence from the affected device. The simulator masked the real bug because of cached state — we need fresh data from the actual iPhone.
+```text
+ProductHome render order:
+  line 42  useProductIntroNeeded()   ← server check on couple_sessions
+  line 78  useProductAccess()         ← server check on user_product_access
+  line 88  if (showIntro === true) return <ProductIntro/>   ← STOPS HERE
+  line 117 paywallAccessLoading gate
+  line 126 if (!hasProductAccess) return <ProductPaywall/>
+```
 
-## Step 1 — Add diagnostic logging (TEMPORARY)
+If `showIntro === true`, the access-check branch is unreachable. Purchase status is irrelevant at that point.
 
-### `src/hooks/useProductAccess.ts`
+## Why `showIntro === true` for the reviewer
 
-Inside the effect, capture every relevant signal at the moment of the query and at the moment of the response. Use a stable tag prefix for easy filtering.
+`useProductIntroNeeded` (in `src/components/ProductIntro.tsx` lines 544–586) decides intro visibility based on **one signal only**:
 
-Log entries to add:
+```ts
+const { data } = await supabase
+  .from('couple_sessions')
+  .select('id')
+  .eq('product_id', productId)
+  .eq('status', 'completed')
+  .limit(1);
 
-- **On every effect run**: `[ACCESS-DIAG] useProductAccess effect`, with `{ productId, authLoading, userId: user?.id, hasSession: !!session, jwtSub }` where `jwtSub` is read from `supabase.auth.getSession()`'s session.user.id at the moment the effect fires.
-- **Just before the query**: `[ACCESS-DIAG] useProductAccess query`, with `{ productId, userId, jwtSub, ts }`.
-- **Right after the query**: `[ACCESS-DIAG] useProductAccess result`, with `{ productId, userId, jwtSub, data, error, status, statusText }` — use `.maybeSingle()` but destructure `error`, `status`, `statusText` from the response (they're all available on PostgrestSingleResponse).
-- **In the early-return branches**: `[ACCESS-DIAG] useProductAccess early-return`, with `{ reason: 'authLoading' | 'noUser' | 'noProductId', productId, userId }`.
+const hasCompleted = (data?.length ?? 0) > 0;
+setNeeded(!hasCompleted);
+```
 
-### `src/hooks/useAllProductAccess.ts`
+The reviewer purchased all 7 products via the backfill but hasn't completed a session in three of them. Result: `needsIntro = true` for those three.
 
-Mirror the same instrumentation with prefix `[ACCESS-DIAG] useAllProductAccess`. We want both side-by-side to see whether `user.id` and `jwtSub` differ across the two hooks at the same wall-clock moment.
+`ProductHome` does layer a localStorage shortcut on top:
 
-### `src/contexts/AuthContext.tsx`
+- Line 47: initial state reads `bonki-intro-seen-${productId}`. If present → `showIntro = false`.
+- Line 56: effect re-reads localStorage after `introChecked`. If present → `showIntro = false`.
 
-Add `[ACCESS-DIAG] AuthContext` entries on:
-- `onAuthStateChange` fire: `{ event, hasSession: !!session, userId: session?.user?.id }`
-- `getSession()` resolve: `{ hasSession: !!session, userId: session?.user?.id }`
-- Loading flag transitions: `{ from, to }`
+That shortcut works on subsequent visits on the same device — but **only after the user has already seen and dismissed the intro at least once**. On the reviewer's fresh install (no prior dismissal, no completed session, but yes purchased), localStorage is empty and `useProductIntroNeeded` says yes → intro renders → looks like a paywall.
 
-This lets us correlate session lifecycle with the hook's view of `user`.
+This also explains why the bug is **same-3-products deterministic**: the other four likely have an old `bonki-intro-seen-*` key from earlier QA on the simulator, or have a completed session row from prior testing. The 3 broken ones are simply the products no one has run a session in yet on that device.
 
-### `src/pages/ProductHome.tsx`
+It also explains why **the library tile shows "purchased"** (uses `useAllProductAccess`, no intro layer) while **the product page paywall-locks** (intro layer fires before paywall layer).
 
-Add one line at the top of the render: `[ACCESS-DIAG] ProductHome render`, with `{ productId: product?.id, slug, hasProductAccess, paywallAccessLoading }`. This tells us what the consumer actually saw at the frame the paywall was shown.
+## The fix
 
-All log lines stay behind `console.info(...)` (not `console.log`) so they're easy to filter and distinct from the noisy `console.warn/error` channels. No conditional gating — we need them to fire on every mount during reproduction.
+`useProductIntroNeeded` needs to short-circuit when the user already owns the product. A purchased user has no business seeing a "Köp · 195 kr" intro — it's a dead-end that drops them back to the library when they tap "Inte just nu".
 
-## Step 2 — Build & ship to TestFlight / preview
+### Change 1 — `useProductIntroNeeded` checks access first
 
-The build pipeline already auto-deploys on commit. No script changes needed. The user will rebuild the iOS simulator/TestFlight bundle from the new commit.
+In `src/components/ProductIntro.tsx`, modify the hook so that purchased products always return `needed: false`:
 
-## Step 3 — Capture instructions for the real iPhone
+```ts
+export function useProductIntroNeeded(productId: string): { needed: boolean; checked: boolean } {
+  const [needed, setNeeded] = useState(true);
+  const [checked, setChecked] = useState(false);
 
-Hand these to the colleague verbatim. Safari Web Inspector is the only reliable way to read iOS console output from a real device, and it requires a Mac.
+  useEffect(() => {
+    let cancelled = false;
 
-### Setup (one-time, on the iPhone)
+    (async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (cancelled) return;
 
-1. Open **Settings → Apps → Safari → Advanced** (on iOS 18; on older iOS it's **Settings → Safari → Advanced**).
-2. Toggle **Web Inspector** ON.
-3. Connect the iPhone to a Mac via USB-C/Lightning cable. **Trust the computer** when prompted on the phone.
+      if (!user) {
+        // Demo-mode bypass (unchanged)
+        if (typeof window !== 'undefined' &&
+            (window.location.search.includes('demo=1') ||
+             sessionStorage.getItem('bonki-demo-mode') === '1')) {
+          setNeeded(false);
+          setChecked(true);
+        }
+        return;
+      }
 
-### Setup (one-time, on the Mac)
+      // NEW: purchased users never see the intro/paywall hybrid
+      const { data: accessRow } = await supabase
+        .from('user_product_access')
+        .select('id')
+        .eq('user_id', user.id)
+        .eq('product_id', productId)
+        .maybeSingle();
+      if (cancelled) return;
 
-1. Open Safari.
-2. **Safari → Settings → Advanced** → tick **Show features for web developers** (older macOS: "Show Develop menu in menu bar").
-3. The **Develop** menu now appears in Safari's menu bar.
+      if (accessRow) {
+        setNeeded(false);
+        setChecked(true);
+        return;
+      }
 
-### Capture procedure (every time)
+      // Existing fallback: completed-session signal
+      const { data } = await supabase
+        .from('couple_sessions')
+        .select('id')
+        .eq('product_id', productId)
+        .eq('status', 'completed')
+        .limit(1);
 
-1. **Fully kill the app on the iPhone** (swipe up from app switcher) so we get a true cold start.
-2. Optionally, in iPhone Settings → Safari → Clear History and Website Data, to wipe any cached session. Then sign back into the app.
-3. Open the app on the iPhone — land on the library page.
-4. On the Mac, go to **Safari → Develop → [iPhone Name] → [App's web view]**. The web view will be named something like `id-preview--…lovable.app` or `bonkiapp.com`.
-5. The Web Inspector window opens. Click the **Console** tab.
-6. In the console filter box (top right of the Console tab), type `ACCESS-DIAG` to isolate our logs.
-7. **Clear the console** (the 🚫 icon) so the capture starts clean.
-8. On the iPhone, tap into one of the broken products (e.g. `jag_i_varlden`). Wait for the paywall to appear.
-9. On the Mac, **right-click anywhere in the console output → Save Selected** (or select all → ⌘C → paste into a text file).
-10. Repeat steps 7–9 for at least two more products to confirm the pattern.
+      if (!cancelled) {
+        setNeeded((data?.length ?? 0) === 0);
+        setChecked(true);
+      }
+    })();
 
-### What to send back
+    return () => { cancelled = true; };
+  }, [productId]);
 
-The full text of the console log from step 9, for at least 2 product taps. Specifically we want to see, per tap:
-- Did `[ACCESS-DIAG] AuthContext` show a session change between the lobby and the product page?
-- Did `useProductAccess effect` see a non-null `userId` and `jwtSub` at the moment of the query?
-- Did `useProductAccess result` come back with `data: null, error: null, status: 200` (RLS silent denial), `data: null, error: …` (real failure), or `data: {…}, hasAccess: true` (in which case the bug is in the consumer, not the hook)?
+  return { needed, checked };
+}
+```
 
-That set of three signals will conclusively identify which of the three hypotheses is correct, and we can write a targeted fix from there.
+This makes `ProductIntro` what it was always supposed to be: a **first-touch sales screen** that disappears the instant the user owns the product, regardless of session activity.
 
-## Step 4 — After capture: targeted fix + log removal
+### Change 2 — Belt-and-braces guard in `ProductHome`
 
-Once the log evidence is in, we will:
-1. Apply the minimal fix that addresses the actual root cause (not a guess).
-2. Remove every `[ACCESS-DIAG]` line — they're temporary instrumentation only.
-3. Re-test on the real device to confirm.
+Even with the hook fix, ProductHome's render order should not allow the intro to win over a known-paid state. Update the early-return on line 88 to also check access loaded:
 
-## Files modified in this plan
+```tsx
+// Before:
+if (showIntro === true && product) {
+  return <ProductIntro …/>;
+}
 
-- `src/hooks/useProductAccess.ts` — add logging, no logic change
-- `src/hooks/useAllProductAccess.ts` — add logging, no logic change
-- `src/contexts/AuthContext.tsx` — add logging, no logic change
-- `src/pages/ProductHome.tsx` — add one render-time log, no logic change
+// After:
+if (showIntro === true && product && !paywallAccessLoading && !hasProductAccess) {
+  return <ProductIntro …/>;
+}
+```
 
-Zero behavior changes. Pure observability. Safe to ship and revert in a follow-up commit.
+That way, if the access query resolves first and the user owns the product, the intro is suppressed even before `useProductIntroNeeded` finishes its own re-check. This costs nothing and prevents any future regressions where the intro layer could shadow a purchased state.
+
+### Change 3 — Cleanup
+
+Remove the temporary `[ACCESS-DIAG]` instrumentation from:
+- `src/hooks/useProductAccess.ts`
+- `src/hooks/useAllProductAccess.ts`
+- `src/contexts/AuthContext.tsx`
+- `src/pages/ProductHome.tsx`
+
+The diagnosis is complete; the logs are no longer useful and shouldn't ship to App Store review.
+
+## Verification path
+
+1. Apply the three changes above. Build 1.0 (6).
+2. On the reviewer's fresh device install, sign in as `apple.review@bonkistudio.com`.
+3. Tap into `jag_i_varlden`, `syskonkort`, `sexualitetskort` — each should now go directly to `KidsProductHome` (the category tile grid) with no intro.
+4. Tap into `jag_i_mig` (or any product where the reviewer has already completed a session) — same direct-to-home behavior, unchanged.
+5. As a sanity test, sign out and sign in as an unpurchased dev user — `ProductIntro` should still render exactly as before for products they don't own.
+
+## Why this matches every observation
+
+| Symptom | Explanation |
+|---|---|
+| Library tile shows purchased | `useAllProductAccess` correct, no intro layer |
+| ProductHome diag: `hasProductAccess: true` | `useProductAccess` correct |
+| Paywall-looking screen renders anyway | `ProductIntro`, gated only by `couple_sessions`, fired |
+| Same 3 products fail | Those 3 are products with no completed session on this device |
+| Other 4 products work | Have either localStorage `bonki-intro-seen-*` or a completed session |
+| Real device worse than simulator | Simulator had stale localStorage keys from prior dev builds |
+| Doesn't fail every product on real device for some users | Depends on which products have prior session activity |
+
+## Files modified
+
+- `src/components/ProductIntro.tsx` — extend `useProductIntroNeeded` with a `user_product_access` short-circuit before the `couple_sessions` check.
+- `src/pages/ProductHome.tsx` — belt-and-braces guard on the intro early-return so it never shadows a known-purchased state. Remove `[ACCESS-DIAG]` log.
+- `src/hooks/useProductAccess.ts` — remove `[ACCESS-DIAG]` instrumentation.
+- `src/hooks/useAllProductAccess.ts` — remove `[ACCESS-DIAG]` instrumentation.
+- `src/contexts/AuthContext.tsx` — remove `[ACCESS-DIAG]` instrumentation. Keep the `initialSessionResolved` race fix (that one is real and lands).
+
+No DB changes. No edge-function changes. No TestFlight build-flag changes.
