@@ -239,7 +239,7 @@ export default function BuyPage() {
       setDirectCheckoutLoading(false);
       localStorage.removeItem('pending-legal-consent');
     }
-  }, [productId, directCheckoutLoading]);
+  }, [productId, directCheckoutLoading, navigate]);
 
   // Auto-trigger checkout when user is logged in — unless they just tapped back from Stripe
   useEffect(() => {
@@ -340,6 +340,12 @@ export default function BuyPage() {
               style={{ fontFamily: 'var(--font-sans)', fontSize: '15px', fontWeight: 600, color: '#fff', background: ORANGE_GRADIENT, border: 'none', borderRadius: '12px', padding: '14px 28px', cursor: 'pointer' }}
             >
               Försök igen
+            </button>
+            <button
+              onClick={() => navigate(`/product/${product.slug}`, { replace: true })}
+              style={{ fontFamily: 'var(--font-sans)', fontSize: '14px', color: LANTERN_GLOW, opacity: 0.6, background: 'none', border: 'none', cursor: 'pointer', padding: '8px 16px', textDecoration: 'underline', textUnderlineOffset: '3px' }}
+            >
+              Tillbaka
             </button>
           </>
         ) : (
