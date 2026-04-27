@@ -1,72 +1,57 @@
-# Google Play rejection — final plan v4 (Prompt 2: 8-file CTA wrap)
+# Plan v6 — Prompt 1: three code changes (audited, scoped)
 
-**Status:** Prompt 1 already shipped (`isAndroidNative()` helper + Login.tsx header/placeholder rename). Re-issuing v4 to unlock the rest.
+Three surgical edits. No refactors. Nothing outside these files touched.
 
-## Reviewer block visibility note (no action needed)
+## Change 1 — `src/lib/platform.ts`
 
-The "Recensentinloggning — Store Review" section is gated by `isReviewerMode = searchParams.get('review') === '1' || Capacitor.isNativePlatform()` on `Login.tsx:36`. In the **web preview** neither condition is true, so the block is correctly hidden. The Play reviewer sees it on the **native Android build** because `Capacitor.isNativePlatform()` is true there. To eyeball the web preview, append `?review=1`. **Do not change this gate** — it's working as designed.
+Replace lines 13–16:
 
-## What this prompt does
+```ts
+export const HIDDEN_PRODUCT_IDS_NATIVE = ['sexualitetskort'] as const;
 
-Wrap the Buy CTA in **7 files** (8 CTAs — CardView has two) so when `isAndroidNative()` is true, a plain-text neutral message replaces the button. The `handlePurchase` / `handleDirectCheckout` / `handleCompletionPurchase` handlers are not touched. No links, no `bonkiapp.com`, no `<a>` tags anywhere.
-
-### Files & wrap points
-
-| # | File | CTA line | Wraps |
-|---|------|----------|-------|
-| 1 | `src/components/PurchaseScreen.tsx` | 293–313 | `<button onClick={handlePurchase}>` |
-| 2 | `src/components/PaywallBottomSheet.tsx` | 371–393 | `<button onClick={handlePurchase}>` |
-| 3 | `src/components/ProductPaywall.tsx` | 445–468 | `<button onClick={handlePurchase}>` |
-| 4 | `src/pages/Paywall.tsx` | 245–263 | `<motion.button onClick={handlePurchase}>` |
-| 5 | `src/pages/PaywallFullScreen.tsx` | 291–312 | `<button onClick={handlePurchase}>` |
-| 6 | `src/pages/BuyPage.tsx` | 452–461 | `<button onClick={handleDirectCheckout}>` |
-| 7 | `src/pages/CardView.tsx` | 1561–1584 | `<button onClick={handleCompletionPurchase}>` (kids completion) |
-| 8 | `src/pages/CardView.tsx` | 1948–1971 | `<button onClick={handleCompletionPurchase}>` (Still Us completion) |
-
-### Wrap pattern (verbatim)
-
-```tsx
-{isAndroidNative() ? (
-  <div
-    style={{
-      width: '100%',
-      padding: '16px 20px',
-      borderRadius: '12px',
-      background: 'rgba(255,255,255,0.06)',
-      color: 'rgba(253, 246, 227, 0.75)',
-      fontFamily: 'var(--font-sans)',
-      fontSize: 14,
-      lineHeight: 1.5,
-      textAlign: 'center',
-    }}
-  >
-    Köp är inte tillgängliga i Android-versionen just nu. Vi arbetar på det. Logga in med samma konto för att låsa upp produkter du redan äger.
-  </div>
-) : (
-  /* existing CTA — unchanged */
-)}
+export const isProductHiddenOnPlatform = (productId: string): boolean =>
+  Capacitor.isNativePlatform() &&
+  (HIDDEN_PRODUCT_IDS_NATIVE as readonly string[]).includes(productId);
 ```
 
-Each file also gets one new import line: `import { isAndroidNative } from '@/lib/platform';` next to the existing `purchaseProduct` import.
+`isIOSNative` and `isAndroidNative` exports stay unchanged (still used by other files).
 
-### Hard rules (verbatim, do NOT relax)
+## Change 2 — `src/lib/productRecommendations.ts`
 
-- Do **NOT** turn any text into an `<a>`, `<Link>`, button, or any other link, anywhere.
-- Do **NOT** add an "Open in browser" or "Köp på webben" button.
-- Do **NOT** mention `bonkiapp.com`, `bonki.lovable.app`, or any URL — that omission is intentional under Google Play's payments policy (no out-of-app steering for digital goods).
-- Do **NOT** modify `handlePurchase`, `handleDirectCheckout`, or `handleCompletionPurchase` — only wrap the rendered CTA element.
-- Do **NOT** change anything outside the 7 listed files.
-- Where the existing button has trailing siblings (error `<p>`, dismiss button, terms text), leave those siblings outside the ternary so they still render on Android.
+- Line 19: swap `import { isIOSNative } from '@/lib/platform';` → `import { Capacitor } from '@capacitor/core';`
+- Line 41: rename `HIDDEN_SLUGS_IOS` → `HIDDEN_SLUGS_NATIVE`
+- Lines 58–66: replace `iosHidden = isIOSNative()` → `nativeHidden = Capacitor.isNativePlatform()`, and the two `HIDDEN_SLUGS_IOS` references → `HIDDEN_SLUGS_NATIVE`
+- Comment on line 58 updated to "On native (iOS + Android)"
 
-## Manual steps still pending (unchanged from original v4)
+Existing `null`-return contract preserved → `NextActionBanner` already handles `null` gracefully.
 
-- **Section 4** — Provision `play.review@bonkistudio.com` / `BonkiPlay2026` in Lovable Cloud Users (Live), then run the 7-row `INSERT … manual_grant` for `user_product_access`.
-- **Section 5** — Paste the English-first App Access text into Play Console.
-- **Post-ship checklist** — `.env.local` Live grep, `npm run build`, bundle URL grep (must contain `spgknasuinxmvyrlpztx`, must NOT contain `wcienwozdurwhswaarjy`), `npx cap sync android`, `versionCode: 2 → 3`, signed AAB, upload.
-- **Smoke test in Android emulator** — reviewer login (full access), throwaway no-grant account (neutral message appears, no Buy button, no `bonkiapp.com`), KontoSheet "Radera konto" reachable, logout/re-login. `adb logcat *:E Capacitor:V` running to catch any `@capgo/capacitor-social-login` init errors.
+## Change 3 — New `/delete-account` route
 
-## Out of scope (logged)
+**`src/App.tsx`:**
+- Add import next to `PrivacyPolicy`: `import DeleteAccount from "./pages/DeleteAccount";`
+- Add route below `/privacy`: `<Route path="/delete-account" element={<DeleteAccount />} />`
 
-- Play Billing integration → 1.0.1.
-- Stripe-in-Android-WebView validation → only if/when re-enabled.
-- iOS resubmission → calendar note: next iOS archive will display the renamed "Store Review" header (improvement, not regression).
+**`src/pages/DeleteAccount.tsx` (new file):** mirrors `PrivacyPolicy.tsx` styling exactly — same `#0B1026` bg, `#D4943A` accent, `Section` helper, max-width 720, padding 40, "← Tillbaka" link to `/`. Swedish content:
+
+- H1 "Radera konto"
+- §1 **Radera direkt i appen (rekommenderat)** — Konto → Radera konto, instant, oåterkallelig
+- §2 **Utan app-tillgång** — email **`hello@bonkistudio.com`** from the account's email address, "Radera konto" subject, deletion within 30 days
+- §3 **Vad raderas** — profil, samtal, reflektioner, takeaways, bookmarks, notiser, betalningsåtkomst
+- §4 **Vad sparas av juridiska skäl** — kvittoreferenser, 7 år, samma formulering som /privacy §6
+- §5 **Mer information** — link back to `/privacy`
+
+## Hard constraints (do NOT touch)
+
+- Reviewer block on `Login.tsx` and autofill credentials
+- `isAndroidNative()` paywall hide ternaries (8 files from v4)
+- `suppressUntilRef`, `prevServerStepRef`, `clearTimeout(pendingSave.current)`, `hasSyncedRef` patterns anywhere
+- `KIDS_PRODUCT_IDS` set in `PaywallBottomSheet.tsx` — category check, must keep `sexualitetskort`
+- Anything in `src/lib/platform.ts` outside lines 13–16
+- Anything in `src/lib/productRecommendations.ts` outside the four spots listed
+- Anything in `src/App.tsx` outside the two listed insertions
+
+## Verification after apply
+
+- `rg -n "HIDDEN_PRODUCT_IDS|HIDDEN_SLUGS" src/` (or `grep -rn "HIDDEN_PRODUCT_IDS\|HIDDEN_SLUGS" src/` on a machine without ripgrep) → only `_NATIVE` variants remain
+- `rg -n "isIOSNative" src/lib/productRecommendations.ts` → no matches
+- `/delete-account` route renders in preview without console errors

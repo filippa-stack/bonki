@@ -16,7 +16,7 @@
  * get their own logic when the adult family expands).
  */
 
-import { isIOSNative } from '@/lib/platform';
+import { Capacitor } from '@capacitor/core';
 
 const RECOMMENDATION_CHAINS: Record<string, string[]> = {
   'jag-i-mig':        ['vardagskort', 'syskonkort', 'jag-med-andra', 'jag-i-varlden', 'sexualitetskort'],
@@ -38,7 +38,7 @@ const PRODUCT_DISPLAY_NAMES: Record<string, string> = {
 };
 
 /** Slugs that should never be recommended on the current platform. */
-const HIDDEN_SLUGS_IOS = new Set(['sexualitetskort']);
+const HIDDEN_SLUGS_NATIVE = new Set(['sexualitetskort']);
 
 export interface ProductRecommendation {
   slug: string;
@@ -55,15 +55,15 @@ export function getNextProductRecommendation(
   currentProductSlug: string,
   completedProductSlugs: Set<string>,
 ): ProductRecommendation | null {
-  // On iOS native, sexualitetskort is hidden — never use it as source or recommendation.
-  const iosHidden = isIOSNative();
-  if (iosHidden && HIDDEN_SLUGS_IOS.has(currentProductSlug)) return null;
+  // On native (iOS + Android), sexualitetskort is hidden — never use it as source or recommendation.
+  const nativeHidden = Capacitor.isNativePlatform();
+  if (nativeHidden && HIDDEN_SLUGS_NATIVE.has(currentProductSlug)) return null;
 
   const chain = RECOMMENDATION_CHAINS[currentProductSlug];
   if (!chain) return null; // Still Us or unknown product
 
   for (const slug of chain) {
-    if (iosHidden && HIDDEN_SLUGS_IOS.has(slug)) continue;
+    if (nativeHidden && HIDDEN_SLUGS_NATIVE.has(slug)) continue;
     if (!completedProductSlugs.has(slug)) {
       const displayName = PRODUCT_DISPLAY_NAMES[slug];
       if (displayName) return { slug, displayName };

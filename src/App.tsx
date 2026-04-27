@@ -59,6 +59,7 @@ import SoloReflect from "./pages/SoloReflect";
 import JourneyPreview from "./pages/JourneyPreview";
 import DissolutionSettings from "./pages/DissolutionSettings";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
+import DeleteAccount from "./pages/DeleteAccount";
 import BuyPage from "./pages/BuyPage";
 import ClaimPage from "./pages/ClaimPage";
 
@@ -181,6 +182,7 @@ function AppRoutes() {
       <Route path="/screenshot-export" element={<ScreenshotExport />} />
       <Route path="/analytics" element={<AnalyticsDashboard />} />
       <Route path="/privacy" element={<PrivacyPolicy />} />
+      <Route path="/delete-account" element={<DeleteAccount />} />
       <Route path="/buy" element={<BuyPage />} />
       <Route path="/claim" element={<ClaimPage />} />
       <Route path="/*" element={<ProtectedRoutes />} />

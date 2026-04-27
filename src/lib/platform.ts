@@ -10,7 +10,8 @@ export const isIOSNative = (): boolean =>
 export const isAndroidNative = (): boolean =>
   Capacitor.isNativePlatform() && Capacitor.getPlatform() === 'android';
 
-export const HIDDEN_PRODUCT_IDS_IOS = ['sexualitetskort'] as const;
+export const HIDDEN_PRODUCT_IDS_NATIVE = ['sexualitetskort'] as const;
 
 export const isProductHiddenOnPlatform = (productId: string): boolean =>
-  isIOSNative() && (HIDDEN_PRODUCT_IDS_IOS as readonly string[]).includes(productId);
+  Capacitor.isNativePlatform() &&
+  (HIDDEN_PRODUCT_IDS_NATIVE as readonly string[]).includes(productId);
