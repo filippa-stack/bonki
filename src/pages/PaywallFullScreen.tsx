@@ -3,10 +3,13 @@ import { useDefaultTheme } from '@/hooks/useDefaultTheme';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
+import { Capacitor } from '@capacitor/core';
+import { toast } from 'sonner';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { allProducts, getProductById } from '@/data/products';
 import { isDemoMode, isDemoParam } from '@/lib/demoMode';
+import { purchaseProduct } from '@/lib/revenueCat';
 import {
   MIDNIGHT_INK,
   LANTERN_GLOW,
@@ -76,6 +79,29 @@ export default function PaywallFullScreen() {
     }
     setLoading(true);
     setError(null);
+
+    // Native iOS: route through Apple StoreKit (Apple Guideline 3.1.1).
+    if (Capacitor.isNativePlatform()) {
+      try {
+        const result = await purchaseProduct(product.id);
+        if (result.cancelled) {
+          setLoading(false);
+          return;
+        }
+        if (!result.success) {
+          setError('Köpet kunde inte genomföras. Försök igen.');
+          setLoading(false);
+          return;
+        }
+        toast.success('Tack för ditt köp!');
+        navigate(`/product/${product.slug}`, { replace: true });
+      } catch (err) {
+        console.error('RevenueCat purchase error:', err);
+        setError('Kunde inte starta betalningen');
+        setLoading(false);
+      }
+      return;
+    }
 
     try {
       const projectId = import.meta.env.VITE_SUPABASE_PROJECT_ID;
