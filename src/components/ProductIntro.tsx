@@ -564,7 +564,22 @@ export function useProductIntroNeeded(productId: string): { needed: boolean; che
         return;
       }
 
-      // Check for any completed session in this product
+      // Purchased users never see the intro/paywall hybrid — short-circuit.
+      const { data: accessRow } = await supabase
+        .from('user_product_access')
+        .select('id')
+        .eq('user_id', user.id)
+        .eq('product_id', productId)
+        .maybeSingle();
+      if (cancelled) return;
+
+      if (accessRow) {
+        setNeeded(false);
+        setChecked(true);
+        return;
+      }
+
+      // Fallback: completed-session signal for non-purchased users
       const { data } = await supabase
         .from('couple_sessions')
         .select('id')
