@@ -77,6 +77,14 @@ export default function ProductHome() {
   
   const { hasAccess: hasProductAccess, loading: paywallAccessLoading } = useProductAccess(product?.id ?? '');
 
+  console.info('[ACCESS-DIAG] ProductHome render', {
+    slug,
+    productId: product?.id,
+    hasProductAccess,
+    paywallAccessLoading,
+    ts: Date.now(),
+  });
+
   if (showIntro === true && product) {
     return (
       <ProductIntro
