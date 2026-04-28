@@ -1,53 +1,53 @@
-# BONKI Brand Document — Print-ready PDF
+# Bonki Product Catalogue — PDF document
 
-A polished, designed PDF capturing the essentials of BONKI's design system, sourced directly from the codebase (palette, tokens, memory rules, components). Output saved to `/mnt/documents/bonki-brand-essentials.pdf`.
+A designed, print-ready PDF (`bonki-product-catalogue.pdf`, ~14 pages) that documents the **content and purpose of every product** in the Bonki app. Same visual system as the Brand Essentials PDF (Vera font, dark-shell + vibrant product palettes, BONKI logo).
 
-## Source material (already in the codebase)
+## What each product spread will contain
 
-- `src/lib/palette.ts` — master color palette + per-product tile colors
-- `src/lib/stillUsTokens.ts` — Vårt Vi (Still Us) tokens & layer colors
-- `src/lib/motion.ts` — motion durations, beats, easing
-- `src/components/BonkiButton.tsx` — signature CTA spec
-- `tailwind.config.ts` — typography (Cormorant / DM Sans / Bebas Neue), radii, spacing, shadows
-- `src/index.css` + `src/styles/themes.css` — CSS variables (dark shell)
-- `src/assets/bonki-logo.png` — logo
-- Memory rules (Core + brand voice, terminology, accessibility, iOS PWA)
+For each of the 7 products, one full spread (1–2 pages) covering:
 
-## Document structure (~12 pages)
+1. **Product name + tagline** (from manifest, e.g. "Jag i Mig — Känslor som får ord")
+2. **Audience** (internal age guidance, e.g. 3+, 6+, 12+, 13+, par/vuxna) — noted as internal-only since it is never rendered in-app
+3. **Purpose / value line** (the official emotional pitch, from `mem://product/content/value-lines`)
+4. **Welcome copy** — the full intro slide text shown to users on first visit (from `productIntros.ts`)
+5. **Structure** — the 4 categories (title + subtitle + card count) from each manifest
+6. **Free starter samtal** — which card a new user gets free
+7. **Color palette** — product's signature color triplet from `palette.ts`
 
-1. **Cover** — Logo on Midnight Ink (#0B1026), wordmark, "Brand Essentials 2026"
-2. **The brand at a glance** — Mission line, tone, dark-shell + vibrant-content principle
-3. **Logo** — Embedded logo, clear-space rule, do/don't (size, recoloring)
-4. **Color · Foundations** — Midnight Ink, Deep Dusk, Saffron Flame, Lantern Glow, Bonki Orange, Forest Teal — large rendered swatches with hex
-5. **Color · Product palettes** — 7 product tile triplets (light/mid/deep) as a grid: Jag i Mig, Jag med Andra, Jag i Världen, Vardagskort, Syskonkort, Sexualitetskort, Vårt Vi
-6. **Color · Vårt Vi (Cobalt theme)** — Ember Night, Ember Mid, Lantern Glow, layer colors (Grunden → Valet) with week ranges
-7. **Typography** — Cormorant (display/serif), DM Sans (body), Bebas Neue (brand wordmark) — type specimens at multiple sizes
-8. **Voice & language** — Swedish only, ni-språk for couples, du-språk for kids, "samtal" not "kort", "barnet" singular, no diagnostic/therapeutic language, calm professional tone
-9. **Components · BonkiButton** — Primary (saffron) + secondary (glassmorphic) specs: 24px radius, shadow stack, press feedback (scale 0.95, y +2)
-10. **Motion** — PRESS 120ms, PAGE 280ms, EMOTION 320ms, BEATs (60/120/180), easing curve, "no bounce / no spring" rule
-11. **Layout & accessibility** — Dark shell vs vibrant content, iOS Safari rules (100vh + calc, translateZ(0)), focus rings, reduced motion, design tokens via CSS vars only
-12. **Back cover** — © Bonki & Friends AB, bonkiapp.com
+## Products covered (in app order)
 
-## Design treatment
+```text
+1. Jag i Mig          — Känslor som får ord            (3+, 21 samtal, 4 lager)
+2. Jag med Andra      — Det trygga och det svåra       (6+, 21 samtal, 4 lager)
+3. Jag i Världen      — En värld som vidgas            (12+, 20 samtal, 4 lager)
+4. Vardag             — Det vanliga, på djupet         (6+, 15 samtal, 4 lager)
+5. Syskon             — Att vara syskon                (6+, 4 lager)
+6. Sexualitet         — Kropp, gränser och identitet   (13+, 14 samtal, 4 lager)
+7. Vårt Vi (Still Us) — Att förbli ett vi              (par, 21 samtal, 4 lager)
+```
 
-- Cover + back: Midnight Ink (#0B1026) background with Saffron Flame accent
-- Inner pages: Lantern Glow / off-white background, Midnight Ink text, swatches rendered as filled rectangles with hex labels
-- Type pairing in the doc itself: Helvetica/Arial fallbacks (PDF-safe) with sizing that mirrors the Cormorant/DM Sans hierarchy
-- Generous margins (0.75"), one accent color per section (drawn from product palette), no decorative lines under titles
+## Document outline
+
+```text
+Cover               — BONKI logo, "Produktkatalog 2026"
+Page 2  Innehåll    — TOC + 1-line summary of each product
+Page 3  Översikt    — Två produktfamiljer: Barn & familj / Par
+Pages 4–15          — One spread per product (see structure above)
+Closing page        — "Gemensamma principer": no diagnostics,
+                      Swedish-only, ni-/du-språk, free starter card policy
+```
 
 ## Technical approach
 
-- Generate with Python + ReportLab (Platypus) → `/mnt/documents/bonki-brand-essentials.pdf`
-- Embed `src/assets/bonki-logo.png` on cover via `Image` flowable
-- Render color swatches as `Table` cells with `BACKGROUND` styles + hex captions
-- US Letter, portrait
-- QA: convert each page to JPG with `pdftoppm`, inspect every page for overflow/contrast/alignment, fix and re-render until clean
-- Deliver via `<lov-artifact>` tag
+- Python + ReportLab (Platypus), same toolkit and Vera fonts as the Brand Essentials PDF
+- Reads directly from: `src/data/products/*.ts` (manifest metadata, categories), `src/data/productIntros.ts` (welcome copy), `src/lib/palette.ts` (colors), and the Value Lines memory
+- Each product spread uses that product's signature color as accent on a dark shell
+- BONKI logo embedded from `src/assets/bonki-logo-transparent.png`
+- Output: `/mnt/documents/bonki-product-catalogue.pdf`
+- Standard QA: render every page to JPEG, inspect for overflow / overlap / clipping, fix and re-export until clean
 
-## Out of scope (per your choices)
+## Out of scope
 
-- App screenshots
-- Per-page deep-dives on every memory rule (would require 50+ pages — that's the "Exhaustive" tier)
-- Editable .docx / .pptx versions
-
-Approve and I'll build it.
+- No per-card prompt listings (would balloon to 100+ pages — say so if you want a "full prompt appendix" version separately)
+- No screenshots
+- No editable Word/Slides version
