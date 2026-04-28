@@ -1,53 +1,73 @@
-# Bonki Product Catalogue — PDF document
+# Two New Bonki Reference PDFs
 
-A designed, print-ready PDF (`bonki-product-catalogue.pdf`, ~14 pages) that documents the **content and purpose of every product** in the Bonki app. Same visual system as the Brand Essentials PDF (Vera font, dark-shell + vibrant product palettes, BONKI logo).
+Generate two designed, print-ready PDFs in the same visual language as `bonki-brand-essentials.pdf` and `bonki-product-catalogue.pdf` (Vera fonts, Midnight Ink dark shell, Saffron accents, light spreads where helpful).
 
-## What each product spread will contain
+Both documents reflect **only the live, shipping app** — no test/demo flows, no removed routes (e.g. legacy `/check-in`, `/share`, `/format-preview`, `/tier2-setup`, `/session/.../session2-start`), no analytics that have been stripped out.
 
-For each of the 7 products, one full spread (1–2 pages) covering:
+---
 
-1. **Product name + tagline** (from manifest, e.g. "Jag i Mig — Känslor som får ord")
-2. **Audience** (internal age guidance, e.g. 3+, 6+, 12+, 13+, par/vuxna) — noted as internal-only since it is never rendered in-app
-3. **Purpose / value line** (the official emotional pitch, from `mem://product/content/value-lines`)
-4. **Welcome copy** — the full intro slide text shown to users on first visit (from `productIntros.ts`)
-5. **Structure** — the 4 categories (title + subtitle + card count) from each manifest
-6. **Free starter samtal** — which card a new user gets free
-7. **Color palette** — product's signature color triplet from `palette.ts`
+## Document 1 — `bonki-pricing-model.pdf`
 
-## Products covered (in app order)
+**Purpose:** A clear reference of how Bonki monetises and what the user actually pays for.
 
-```text
-1. Jag i Mig          — Känslor som får ord            (3+, 21 samtal, 4 lager)
-2. Jag med Andra      — Det trygga och det svåra       (6+, 21 samtal, 4 lager)
-3. Jag i Världen      — En värld som vidgas            (12+, 20 samtal, 4 lager)
-4. Vardag             — Det vanliga, på djupet         (6+, 15 samtal, 4 lager)
-5. Syskon             — Att vara syskon                (6+, 4 lager)
-6. Sexualitet         — Kropp, gränser och identitet   (13+, 14 samtal, 4 lager)
-7. Vårt Vi (Still Us) — Att förbli ett vi              (par, 21 samtal, 4 lager)
-```
+**Sources:** Live `products` table (verified via DB), `src/lib/freeCardPolicy.ts`, `src/pages/Paywall.tsx`, `src/pages/PaywallFullScreen.tsx`, `src/components/ProductPaywall.tsx`, `supabase/functions/create-checkout/`, `revenuecat-webhook/`, `stripe-webhook/`, `useProductAccess.ts`.
 
-## Document outline
+**Pages (~7–9):**
+1. Cover — "Pricing & Purchase Model 2026"
+2. Model overview — One-time purchase, no subscriptions, lifetime access per product
+3. Price list — All 7 products with live SEK prices:
+   - Jag i Mig, Jag med Andra, Jag i Världen, Vardag, Syskon, Sexualitet — **195 kr** each
+   - Vårt Vi (Still Us) — **249 kr**
+4. Free starter card policy — 1 free card based on onboarding audience (`young → jag_i_mig`, `middle → jag_med_andra`, `teen → jag_i_varlden`, `couple → still_us`); legacy users get all free starters
+5. Purchase flows — Web (Stripe Checkout via `create-checkout` edge function) vs iOS native (Apple StoreKit via RevenueCat) vs Android (currently disabled with explanatory message)
+6. Entitlement model — `user_product_access` table grants permanent access; checked via `useProductAccess` hook
+7. Paywall surfaces — Where users encounter paywalls (`/paywall-full?product=…` for kids products, `/unlock` for Still Us second session)
+8. What is NOT charged — Onboarding, journal, free starter card, account features
+9. Refunds & support — Brief note (engångsköp, no subscription to cancel)
 
-```text
-Cover               — BONKI logo, "Produktkatalog 2026"
-Page 2  Innehåll    — TOC + 1-line summary of each product
-Page 3  Översikt    — Två produktfamiljer: Barn & familj / Par
-Pages 4–15          — One spread per product (see structure above)
-Closing page        — "Gemensamma principer": no diagnostics,
-                      Swedish-only, ni-/du-språk, free starter card policy
-```
+---
+
+## Document 2 — `bonki-ux-architecture.pdf`
+
+**Purpose:** A reference map of the live user experience — flows, routes, screens, and the rules that govern navigation.
+
+**Sources:** Live `src/App.tsx` route table (verified above), `src/pages/Index.tsx`, `src/components/Onboarding.tsx`, `src/components/BottomNav.tsx`, `ProductHome.tsx`, `KidsCardPortal.tsx`, `CardView.tsx`, `Journal.tsx`, memory files for navigation/portal/session/paywall logic.
+
+**Pages (~12–15):**
+1. Cover — "UX Architecture 2026 (Live)"
+2. App shell — Auth gate → Couple/Session providers → Protected routes → BottomNav; loading screen behavior
+3. Entry & onboarding — `/login` → audience selection → home; free card eligibility set here
+4. Home (`/`) — Library tiles, guidance banner, install banner, resume card
+5. Bottom navigation — Hem / Bibliotek / Journal; library-tab redirect bypass logic
+6. Live route map (ASCII diagram) — only routes mounted in `App.tsx` today, grouped:
+   - Public: `/login`, `/privacy`, `/delete-account`, `/buy`, `/claim`, `/screenshot-export`, `/analytics`
+   - Core: `/`, `/product/:slug`, `/category/:id`, `/card/:id`, `/preview/:id`, `/journal`, `/diary/:productId`
+   - Kids portal: `/product/:slug/portal/:categoryId`
+   - Still Us: `/still-us/explore`, `/still-us/intro`, `/session/:cardId/complete`, `/session/:cardId/tillbaka`, `/session/:cardId/tillbaka-complete`, `/ceremony`, `/journey`, `/solo-reflect/:cardId`, `/journey-preview`, `/settings/dissolve`
+   - Paywalls: `/paywall-full`, `/unlock`
+7. Kids product flow — ProductHome → ProductIntro → KidsCardPortal → CardView → CardComplete → recommendation chain
+8. Still Us (Vårt Vi) flow — Intro Portal → Session Live → Tillbaka (reflection) → Card Complete → next samtal; Ceremony after final samtal
+9. Session lifecycle — Activation, heartbeat, pause/exit, conflict handling, sync stability
+10. Paywall logic — Functional gates: free card eligibility, `useProductAccess`, paywall routing
+11. Journal & Diary — Per-product reflection retrieval, archive status filtering, takeaways
+12. Couple space — Pairing, realtime progress sync, partner notifications
+13. Persistence & resilience — Loading gates, render persistence, iOS PWA stability rules
+14. Removed/legacy surfaces (explicit "not in live app" page) — Lists redirect-only routes (`/check-in`, `/share`, `/format-preview`, `/tier2-setup`, `/session/.../session2-start`, `/saved`, `/categories`, `/install`) so the doc is unambiguous about what is dead
+15. Closing — Architectural principles (Swedish only, no diagnostic language, RLS-secured, Test/Live env separation)
+
+---
 
 ## Technical approach
 
-- Python + ReportLab (Platypus), same toolkit and Vera fonts as the Brand Essentials PDF
-- Reads directly from: `src/data/products/*.ts` (manifest metadata, categories), `src/data/productIntros.ts` (welcome copy), `src/lib/palette.ts` (colors), and the Value Lines memory
-- Each product spread uses that product's signature color as accent on a dark shell
-- BONKI logo embedded from `src/assets/bonki-logo-transparent.png`
-- Output: `/mnt/documents/bonki-product-catalogue.pdf`
-- Standard QA: render every page to JPEG, inspect for overflow / overlap / clipping, fix and re-export until clean
+- Single Python script per doc using ReportLab + bundled Vera TTFs (proven from prior PDFs).
+- Reuse helpers from prior generators: `fill_bg` with alpha reset, `draw_titled_item`, NextPageTemplate before PageBreak.
+- Logo assets: `bonki-logo.png` (light pages), `bonki-logo-transparent.png` (dark pages).
+- Color tokens pulled from `src/lib/palette.ts` and `stillUsTokens.ts`.
+- Mandatory QA: convert each generated page to JPEG with `pdftoppm -r 150`, inspect every page for overflow/overlap/clipping/contrast, iterate until clean. Report QA findings in final response.
 
-## Out of scope
+## Deliverables
 
-- No per-card prompt listings (would balloon to 100+ pages — say so if you want a "full prompt appendix" version separately)
-- No screenshots
-- No editable Word/Slides version
+- `/mnt/documents/bonki-pricing-model.pdf`
+- `/mnt/documents/bonki-ux-architecture.pdf`
+
+Both surfaced via `<lov-artifact>` tags.
