@@ -1,64 +1,35 @@
-# Cleanup: Remove build artifacts and wireframe exports
+# Remove reviewer autofill button from Login.tsx
 
-## Critical finding on `public/check-in/`
+## Why
+The "Fyll i granskningsuppgifter" button hardcodes Apple reviewer credentials, which breaks for Google Play reviewers (different credentials). Removing the convenience button forces both sets of reviewers to paste credentials from store-supplied notes — eliminates the cross-store footgun.
 
-This directory is **NOT junk** — it must be kept. It contains a single file `index.html` (a standalone Still Us slider check-in page). It is referenced at runtime:
+## Changes (single file: `src/pages/Login.tsx`)
 
-- `src/pages/still-us-routes/SharePage.tsx:39` builds the partner share URL as `${window.location.origin}/check-in/index.html?token=${partnerLinkToken}`
-- `src/App.tsx:99` redirects in-app `/check-in/*` routes to the product (so the standalone HTML at `/check-in/index.html` is served by the static handler, not React Router)
-- Notification deep-links and Home.tsx navigation also target `/check-in/...`
+### 1. Remove the autofill button in Block A (lines 365–377)
+Delete the entire `<button onClick={handleAutofillReviewer}>…Fyll i granskningsuppgifter…</button>` element inside the native reviewer block. The preceding "Logga in" submit button (line 363) and the closing `</div>` (line 378) stay.
 
-**Decision: keep `public/check-in/` untouched.**
-
-## Change 1 — Delete 8 ZIPs from public/
-
-```
-public/bulk-image-crop_2.zip
-public/card-images.zip
-public/jim-illustrations.zip
-public/jiv-card-images.zip
-public/jma-card-images.zip
-public/sex-card-images.zip
-public/sk-card-images.zip
-public/vk-card-images.zip
-```
-
-## Change 2 — Delete 11 wireframe/export files from public/
-
-```
-public/color-palette.html
-public/flowcharts.html
-public/kids-family-journey-flowchart.html
-public/library-mood-comparison.html
-public/screenshot-export.html
-public/user-journey-flowchart.html
-public/wireframe-preview-2.html
-public/wireframes-export.html
-public/wireframes-pdf.html
-public/wireframes.html
-public/still-us-content-export.md
-```
-
-## Change 3 — Update `src/components/MobileOnlyGate.tsx` allowlist
-
-Line 7:
-
+### 2. Remove the now-dead `handleAutofillReviewer` helper (lines 238–241)
 ```ts
-// before
-const DESKTOP_ALLOWED_ROUTES = ['/analytics', '/login', '/flowcharts.html', '/kids-family-journey-flowchart.html', '/user-journey-flowchart.html', '/color-palette.html'];
-
-// after
-const DESKTOP_ALLOWED_ROUTES = ['/analytics', '/login'];
+const handleAutofillReviewer = () => {
+  setReviewerEmail('apple.review@bonkistudio.com');
+  setReviewerPassword('BonkiReview2026');
+};
 ```
+This is its only call site. Removing it also clears the hardcoded `apple.review@bonkistudio.com` / `BonkiReview2026` strings from the file (verification grep requires 0 matches).
 
-## Verification
+### 3. Block B (line 648 area)
+Inspected — Block B has email input, password input, and a single "Logga in" submit button only. No autofill button exists there. No change needed.
 
-1. `ls public/ | grep -E "\.zip$|wireframes|flowchart|color-palette|library-mood|screenshot-export"` → expect 0 matches
-2. `grep -n "flowchart\|color-palette" src/components/MobileOnlyGate.tsx` → expect 0 matches
-3. `ls public/card-images/ | wc -l` → expect 128 (current count, unchanged)
-4. `ls public/check-in/` → expect `index.html` still present
-5. `bunx vite build` → expect 0 errors
+## Untouched
+- `isNative` gate (Block A) and `isReviewerMode && !isNative` gate (Block B)
+- "RECENSENTINLOGGNING" header, email/password inputs, "Logga in" submit button
+- `handleReviewerSignIn`, OTP routing, password sign-in handlers
+- Apple Sign In, "Fortsätt med e-post"
+- Sync guards (`suppressUntilRef`, `prevServerStepRef`, `pendingSave`, `hasSyncedRef`)
 
-## Out of scope
-
-No other files touched. No code changes beyond the single allowlist line in `MobileOnlyGate.tsx`.
+## Verification (post-apply)
+- `grep -c "Fyll i granskningsuppgifter" src/pages/Login.tsx` → 0
+- `grep -c "apple.review" src/pages/Login.tsx` → 0
+- `grep -c "BonkiReview2026\|BonkiPlay2026" src/pages/Login.tsx` → 0
+- Preview `/login?review=1`: reviewer block still renders with email/password + "Logga in", no autofill button (belt-and-suspenders re-check on Block B in web preview)
+- Preview `/login` (no query param): regression — normal Apple/email login only, no reviewer block
