@@ -235,11 +235,6 @@ export default function Login() {
     }
   };
 
-  const handleAutofillReviewer = () => {
-    setReviewerEmail('apple.review@bonkistudio.com');
-    setReviewerPassword('BonkiReview2026');
-  };
-
   const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
     e.currentTarget.style.boxShadow = FOCUS_RING;
     e.currentTarget.style.borderColor = 'rgba(253, 246, 227, 0.35)';
