@@ -1,73 +1,63 @@
-# Two New Bonki Reference PDFs
+## Bonki — Mobile Funnel Walkthrough PDF
 
-Generate two designed, print-ready PDFs in the same visual language as `bonki-brand-essentials.pdf` and `bonki-product-catalogue.pdf` (Vera fonts, Midnight Ink dark shell, Saffron accents, light spreads where helpful).
+A print-ready PDF documenting the complete mobile user journey through the live Bonki app, from first login to paid product access. Captured at iPhone viewport (390×844), one screen per page with Swedish-context annotations describing what the user sees and does.
 
-Both documents reflect **only the live, shipping app** — no test/demo flows, no removed routes (e.g. legacy `/check-in`, `/share`, `/format-preview`, `/tier2-setup`, `/session/.../session2-start`), no analytics that have been stripped out.
+### Funnel steps to capture
 
----
+Routes captured against the **live preview** (`id-preview--…lovable.app`), using `?devState=` query params to reach gated states without real auth/payment.
 
-## Document 1 — `bonki-pricing-model.pdf`
+| # | Step | Route | State source |
+|---|------|-------|--------------|
+| 1 | Login screen | `/login` | logged-out |
+| 2 | Onboarding — audience select | `/?devState=solo` | onboarding entry |
+| 3 | Onboarding — second step | continued in flow | natural progression |
+| 4 | Product Library (Lobby) | `/` after onboarding | post-onboarding |
+| 5 | Product Home — Vårt Vi (couples) | `/product/still-us` | direct |
+| 6 | Product Intro — welcome flow | first visit | natural |
+| 7 | Kids Product Home — e.g. Jag i Mig | `/product/jag-i-mig` | direct |
+| 8 | Category / Portal view | `/product/jag-i-mig/portal/<cat>` | direct |
+| 9 | Session — first step (free card) | `/card/<freeCardId>` | direct |
+| 10 | Session — mid-session step | scroll/advance | natural |
+| 11 | Session complete screen | `/session/<id>/complete` (Still Us) or natural | natural |
+| 12 | Paywall (locked product) | `/product/<paid-slug>` without access | paywall trigger |
+| 13 | Full-screen paywall variant | `/paywall-full` or `/unlock` | direct |
+| 14 | Mocked "Paid" state — unlocked product home | `/?devState=browse` → `/product/...` | devState=browse |
+| 15 | Journal / Diary (post-session artifact) | `/journal` | direct |
 
-**Purpose:** A clear reference of how Bonki monetises and what the user actually pays for.
+Exact card IDs and product slugs will be read from `src/data/products/*.ts` and `src/lib/freeCardPolicy.ts` to ensure free-card routes are valid.
 
-**Sources:** Live `products` table (verified via DB), `src/lib/freeCardPolicy.ts`, `src/pages/Paywall.tsx`, `src/pages/PaywallFullScreen.tsx`, `src/components/ProductPaywall.tsx`, `supabase/functions/create-checkout/`, `revenuecat-webhook/`, `stripe-webhook/`, `useProductAccess.ts`.
+### PDF structure
 
-**Pages (~7–9):**
-1. Cover — "Pricing & Purchase Model 2026"
-2. Model overview — One-time purchase, no subscriptions, lifetime access per product
-3. Price list — All 7 products with live SEK prices:
-   - Jag i Mig, Jag med Andra, Jag i Världen, Vardag, Syskon, Sexualitet — **195 kr** each
-   - Vårt Vi (Still Us) — **249 kr**
-4. Free starter card policy — 1 free card based on onboarding audience (`young → jag_i_mig`, `middle → jag_med_andra`, `teen → jag_i_varlden`, `couple → still_us`); legacy users get all free starters
-5. Purchase flows — Web (Stripe Checkout via `create-checkout` edge function) vs iOS native (Apple StoreKit via RevenueCat) vs Android (currently disabled with explanatory message)
-6. Entitlement model — `user_product_access` table grants permanent access; checked via `useProductAccess` hook
-7. Paywall surfaces — Where users encounter paywalls (`/paywall-full?product=…` for kids products, `/unlock` for Still Us second session)
-8. What is NOT charged — Onboarding, journal, free starter card, account features
-9. Refunds & support — Brief note (engångsköp, no subscription to cancel)
+- **Cover** — dark Midnight Ink background, BONKI logo, title "Mobile Funnel Walkthrough", date, "Live preview capture".
+- **Funnel map page** — one-page ASCII/diagram overview of all 15 steps so a reader can orient.
+- **One screen per page** (15 pages):
+  - Top: step number + short title (e.g. "04 · Bibliotek (Lobby)")
+  - Centered iPhone-style frame containing the screenshot
+  - Below frame: 2–3 line caption — what the user sees, what action moves them forward, route path in mono
+- **Closing page** — notes on what was mocked vs live (paid state via devState=browse), and which routes are intentionally excluded (legacy routes redirected in `App.tsx`).
 
----
+### Capture approach
 
-## Document 2 — `bonki-ux-architecture.pdf`
+1. Use `browser--navigate_to_sandbox` with `width: 390, height: 844` to set iPhone viewport.
+2. Visit each route in sequence; for onboarding/session interactions use `browser--act` to advance steps where needed (tap "Fortsätt", select audience tile, etc.).
+3. `browser--screenshot` after each screen settles. Save raw PNGs to `/tmp/funnel/NN-name.png`.
+4. If the browser session fails to start, fall back to capturing as many states as possible and clearly annotate any missing pages in the PDF rather than retrying repeatedly.
 
-**Purpose:** A reference map of the live user experience — flows, routes, screens, and the rules that govern navigation.
+### PDF generation
 
-**Sources:** Live `src/App.tsx` route table (verified above), `src/pages/Index.tsx`, `src/components/Onboarding.tsx`, `src/components/BottomNav.tsx`, `ProductHome.tsx`, `KidsCardPortal.tsx`, `CardView.tsx`, `Journal.tsx`, memory files for navigation/portal/session/paywall logic.
+Python + `reportlab` (Platypus), reusing the font + style patterns from prior Bonki PDFs (DejaVuSans for Swedish chars, dark cover + light interior). The phone frame is a simple rounded-rectangle wrapper drawn around the screenshot (no chrome bezels — clean editorial look matching the existing catalogue PDF).
 
-**Pages (~12–15):**
-1. Cover — "UX Architecture 2026 (Live)"
-2. App shell — Auth gate → Couple/Session providers → Protected routes → BottomNav; loading screen behavior
-3. Entry & onboarding — `/login` → audience selection → home; free card eligibility set here
-4. Home (`/`) — Library tiles, guidance banner, install banner, resume card
-5. Bottom navigation — Hem / Bibliotek / Journal; library-tab redirect bypass logic
-6. Live route map (ASCII diagram) — only routes mounted in `App.tsx` today, grouped:
-   - Public: `/login`, `/privacy`, `/delete-account`, `/buy`, `/claim`, `/screenshot-export`, `/analytics`
-   - Core: `/`, `/product/:slug`, `/category/:id`, `/card/:id`, `/preview/:id`, `/journal`, `/diary/:productId`
-   - Kids portal: `/product/:slug/portal/:categoryId`
-   - Still Us: `/still-us/explore`, `/still-us/intro`, `/session/:cardId/complete`, `/session/:cardId/tillbaka`, `/session/:cardId/tillbaka-complete`, `/ceremony`, `/journey`, `/solo-reflect/:cardId`, `/journey-preview`, `/settings/dissolve`
-   - Paywalls: `/paywall-full`, `/unlock`
-7. Kids product flow — ProductHome → ProductIntro → KidsCardPortal → CardView → CardComplete → recommendation chain
-8. Still Us (Vårt Vi) flow — Intro Portal → Session Live → Tillbaka (reflection) → Card Complete → next samtal; Ceremony after final samtal
-9. Session lifecycle — Activation, heartbeat, pause/exit, conflict handling, sync stability
-10. Paywall logic — Functional gates: free card eligibility, `useProductAccess`, paywall routing
-11. Journal & Diary — Per-product reflection retrieval, archive status filtering, takeaways
-12. Couple space — Pairing, realtime progress sync, partner notifications
-13. Persistence & resilience — Loading gates, render persistence, iOS PWA stability rules
-14. Removed/legacy surfaces (explicit "not in live app" page) — Lists redirect-only routes (`/check-in`, `/share`, `/format-preview`, `/tier2-setup`, `/session/.../session2-start`, `/saved`, `/categories`, `/install`) so the doc is unambiguous about what is dead
-15. Closing — Architectural principles (Swedish only, no diagnostic language, RLS-secured, Test/Live env separation)
+### QA
 
----
+After generation, render every page via `pdftoppm -jpeg -r 150` and inspect each JPEG for: clipped captions, screenshots not centered, low-contrast text, missing Swedish glyphs, blank pages. Iterate until clean. QA images deleted after.
 
-## Technical approach
+### Deliverable
 
-- Single Python script per doc using ReportLab + bundled Vera TTFs (proven from prior PDFs).
-- Reuse helpers from prior generators: `fill_bg` with alpha reset, `draw_titled_item`, NextPageTemplate before PageBreak.
-- Logo assets: `bonki-logo.png` (light pages), `bonki-logo-transparent.png` (dark pages).
-- Color tokens pulled from `src/lib/palette.ts` and `stillUsTokens.ts`.
-- Mandatory QA: convert each generated page to JPEG with `pdftoppm -r 150`, inspect every page for overflow/overlap/clipping/contrast, iterate until clean. Report QA findings in final response.
+- `/mnt/documents/bonki-funnel-walkthrough.pdf` (~17 pages, print-ready A4)
+- Surfaced via `<lov-artifact>` tag in the final reply.
 
-## Deliverables
+### Out of scope
 
-- `/mnt/documents/bonki-pricing-model.pdf`
-- `/mnt/documents/bonki-ux-architecture.pdf`
-
-Both surfaced via `<lov-artifact>` tags.
+- bonkiapp.com marketing site (per your scope choice — app only).
+- Desktop viewport screenshots.
+- Real Stripe checkout / real paid-account capture (paid state is visually mocked via `devState=browse`).
