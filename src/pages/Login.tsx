@@ -362,19 +362,6 @@ export default function Login() {
               >
                 {reviewerLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Logga in'}
               </button>
-              <button
-                onClick={handleAutofillReviewer}
-                type="button"
-                className="w-full h-11 text-sm rounded-xl border-0"
-                style={{
-                  background: 'rgba(255, 255, 255, 0.06)',
-                  color: 'rgba(253, 246, 227, 0.75)',
-                  fontFamily: 'var(--font-sans)',
-                  border: SOFT_BORDER,
-                }}
-              >
-                Fyll i granskningsuppgifter
-              </button>
             </div>
             <div
               style={{
