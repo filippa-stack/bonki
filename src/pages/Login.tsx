@@ -1097,3 +1097,56 @@ export default function Login() {
     </div>
   );
 }
+
+/**
+ * PricingRow — label left, price right.
+ * `price === null` renders a skeleton bar (same row height, no layout shift).
+ */
+function PricingRow({ label, price }: { label: string; price: number | null }) {
+  return (
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        gap: 12,
+        minHeight: 22,
+      }}
+    >
+      <span
+        style={{
+          fontFamily: 'var(--font-sans)',
+          fontSize: 15,
+          color: 'rgba(253, 246, 227, 0.85)',
+          textAlign: 'left',
+        }}
+      >
+        {label}
+      </span>
+      {price === null ? (
+        <span
+          aria-hidden="true"
+          style={{
+            display: 'inline-block',
+            width: 56,
+            height: 12,
+            borderRadius: 4,
+            background: 'rgba(253, 246, 227, 0.10)',
+          }}
+        />
+      ) : (
+        <span
+          style={{
+            fontFamily: 'var(--font-sans)',
+            fontSize: 15,
+            fontWeight: 500,
+            color: '#FDF6E3',
+            fontVariantNumeric: 'tabular-nums',
+          }}
+        >
+          {price} kr
+        </span>
+      )}
+    </div>
+  );
+}
