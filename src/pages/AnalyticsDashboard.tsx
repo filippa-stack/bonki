@@ -26,7 +26,7 @@ interface Analytics {
   reflections: { byState: Record<string, number>; byProduct: Record<string, number>; totalReflections: number; uniqueUsers: number };
   notes: { byVisibility: Record<string, number>; totalNotes: number; uniqueUsers: number; highlights: number };
   bookmarks: { total: number; active: number };
-  monetization: { paidSpaces: number; newPaidInWindow: number; spacesCreatedInWindow: number; conversionPct: number };
+  monetization: { paidSpaces: number; newPaidInWindow: number; spacesCreatedInWindow: number; conversionPct: number; paidUsers?: number; betaUsers?: number; accessUsers?: number; accessBySource?: Record<string, number> };
   retention: { cohort: string; size: number; returnedW1: number; pct: number }[];
   topCards: { cardId: string; visits: number }[];
   feedback: { id: string; response_text: string | null; submitted_at: string; session_id: string | null }[];
