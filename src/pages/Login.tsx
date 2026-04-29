@@ -80,6 +80,61 @@ export default function Login() {
     };
   }, []);
 
+  // ── Pre-auth intro + dynamic pricing (web redesign branch only) ──
+  // Hooks declared BEFORE any early return so React hook order stays stable
+  // across mode switches (e.g. ?review=1 toggling on/off in dev).
+  const [prices, setPrices] = useState<{ couple: number; kids: number } | null>(null);
+  const [pricesReady, setPricesReady] = useState(false);
+  const [showSlide1, setShowSlide1] = useState(() => {
+    if (skipRedesign) return false;
+    try {
+      return localStorage.getItem(PREAUTH_SEEN_KEY) !== '1';
+    } catch {
+      return true;
+    }
+  });
+
+  useEffect(() => {
+    // Native + web reviewer pay zero network cost.
+    if (skipRedesign) return;
+    let cancelled = false;
+    const timeout = setTimeout(() => {
+      if (!cancelled) setPricesReady(true);
+    }, 1500);
+
+    supabase
+      .from('products')
+      .select('id, price_sek')
+      .in('id', ['still_us', 'jag_i_mig'])
+      .then(({ data, error }) => {
+        if (cancelled) return;
+        clearTimeout(timeout);
+        if (!error && data) {
+          const couple = data.find((p) => p.id === 'still_us')?.price_sek;
+          const kids = data.find((p) => p.id === 'jag_i_mig')?.price_sek;
+          if (typeof couple === 'number' && typeof kids === 'number') {
+            setPrices({ couple, kids });
+          }
+        }
+        setPricesReady(true);
+      });
+
+    return () => {
+      cancelled = true;
+      clearTimeout(timeout);
+    };
+  }, [skipRedesign]);
+
+  const handleSlide1Continue = () => {
+    try {
+      if (!skipRedesign) localStorage.setItem(PREAUTH_SEEN_KEY, '1');
+    } catch {
+      /* persistence is best-effort */
+    }
+    setShowSlide1(false);
+  };
+
+
   const startCooldown = () => {
     setResendCooldown(60);
     if (cooldownRef.current) clearInterval(cooldownRef.current);
