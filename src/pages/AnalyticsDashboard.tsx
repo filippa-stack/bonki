@@ -259,11 +259,23 @@ export default function AnalyticsDashboard() {
               <div className="text-foreground/70"><Sparkline data={data.engagement.dauTrend} /></div>
             </div>
 
-            <SectionTitle>Monetisering</SectionTitle>
+            <SectionTitle>Monetisering & tillgång</SectionTitle>
             <div className="grid grid-cols-2 gap-3 mb-3">
               <StatCard icon={CreditCard} label={`Nya köp (${windowDays}d)`} value={data.monetization.newPaidInWindow} />
               <StatCard icon={CreditCard} label="Konvertering" value={`${data.monetization.conversionPct}%`} sub={`av ${data.monetization.spacesCreatedInWindow} nya spaces`} />
+              <StatCard icon={CreditCard} label="Betalande användare" value={data.monetization.paidUsers ?? 0} sub="purchase + stripe" />
+              <StatCard icon={CreditCard} label="Beta-testare" value={data.monetization.betaUsers ?? 0} sub="beta + manual grant" />
             </div>
+            {data.monetization.accessBySource && Object.keys(data.monetization.accessBySource).length > 0 && (
+              <div className="rounded-xl bg-card border border-border/50 p-4 mb-3">
+                <div className="text-xs text-muted-foreground mb-2">Tillgång per källa (rader i user_product_access)</div>
+                {Object.entries(data.monetization.accessBySource)
+                  .sort((a, b) => b[1] - a[1])
+                  .map(([src, n]) => (
+                    <BreakdownRow key={src} label={src} value={n} />
+                  ))}
+              </div>
+            )}
 
             <SectionTitle>Retention (kohort → vecka +1)</SectionTitle>
             <div className="rounded-xl bg-card border border-border/50 p-4">
