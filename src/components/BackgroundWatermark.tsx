@@ -107,8 +107,8 @@ export default function BackgroundWatermark() {
           alt=""
           className="object-contain select-none"
           style={{
-            width: '32vw',
-            maxWidth: '200px',
+            width: '96vw',
+            maxWidth: '600px',
             opacity: 0.04,
             filter: 'saturate(0.3)',
           }}
