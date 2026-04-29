@@ -140,9 +140,18 @@ export default function AnalyticsDashboard() {
           </button>
           <div className="flex-1">
             <h1 className="text-base font-semibold text-foreground">Analytics</h1>
-            <p className="text-xs text-muted-foreground">
-              LIVE • interna konton exkluderade
-              {data && ` • ${data.meta.excludedUserCount} användare, ${data.meta.excludedSpaceCount} spaces filtrerade`}
+            <p className="text-xs text-muted-foreground flex items-center gap-2 flex-wrap">
+              {(() => {
+                const url = import.meta.env.VITE_SUPABASE_URL || '';
+                const isLive = url.includes('wcienwozdurwhswaarjy') === false; // test ref
+                return (
+                  <span className={`inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold ${isLive ? 'bg-emerald-500/20 text-emerald-300' : 'bg-amber-500/20 text-amber-300'}`}>
+                    {isLive ? 'LIVE' : 'TEST'}
+                  </span>
+                );
+              })()}
+              <span>interna konton exkluderade</span>
+              {data && <span>• {data.meta.excludedUserCount} användare, {data.meta.excludedSpaceCount} spaces filtrerade</span>}
             </p>
           </div>
         </div>
