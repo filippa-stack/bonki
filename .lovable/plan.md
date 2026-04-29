@@ -1,36 +1,25 @@
-## Changes
+## Boost contrast on `/analytics`
 
-### 1. Include real beta testers (currently missing)
+Replace muted/beige tokens (`text-muted-foreground`, `border-border/50`, `bg-card`, `bg-muted/30`, `bg-foreground/70`) with high-contrast slate/sky tones in `src/pages/AnalyticsDashboard.tsx` only. No driftwood, no beige, no warm neutrals.
 
-In LIVE `user_product_access` there are 5 access sources:
-- `purchase` (6) and `stripe` (9) — paying customers
-- `beta_grant` (8), `beta_migration` (38), `manual_grant` (14) — **real beta testers**
+### Palette (cool, high-contrast)
+- Page bg: stays dark (existing `page-bg`)
+- Card bg: `bg-slate-900/80` with `border-sky-400/30`
+- Primary text: `text-white`
+- Secondary text: `text-slate-300` (instead of muted-foreground)
+- Accents / labels: `text-sky-300`
+- Bars / fills: `bg-gradient-to-r from-sky-400 to-cyan-300`
+- Bar track: `bg-slate-800` ring `ring-slate-700/60`
 
-Currently the dashboard's funnel + monetization counts only `purchase`, ignoring 60 real beta users.
+### Component changes (same file)
+- **StatCard**: bigger value (`text-3xl font-bold text-white`), bold sky-300 uppercase label, slate-900 card with sky border.
+- **SectionTitle**: sky-300, bolder tracking, left sky border accent.
+- **BreakdownRow**: white bold values, slate-700 dividers, slate-300 sub text.
+- **FunnelBar**: white bold labels, sky→cyan gradient fill, taller (`h-2.5`) ringed track, sky-300 conversion %.
+- **Header subtitle row**: swap `text-muted-foreground` → `text-slate-300`; LIVE/TEST pills already vivid (kept).
+- **Filter bar**: `text-muted-foreground` → `text-slate-300` for "Allt sedan:" / window labels; selected window button uses `default` variant (already), unselected uses `outline` with `border-slate-600 text-slate-200`.
+- **Sparkline wrapper text**: trend captions to `text-slate-300`.
 
-**Fix in `supabase/functions/get-analytics/index.ts`:**
-- Treat `purchase` + `stripe` as "paying"
-- Treat `beta_grant` + `beta_migration` + `manual_grant` as "beta testers"
-- Add a combined "har tillgång" set = paying ∪ beta
-- Funnel last step changes from "Betalat" → "Betalat eller beta-tillgång" using the combined set
-- New section "Tillgång (källa)" listing each `granted_via` with counts
-- Overview gains `betaUsers` and clearer `paidUsers` counts
-
-### 2. Confirm LIVE-only data + clearer environment badge
-
-The dashboard already pulls from whichever Supabase project the running app is connected to. So:
-- Open on **bonkiapp.com/analytics** → LIVE data
-- Open on the lovable preview / id-preview URL → TEST data
-
-To remove ambiguity, make this explicit in the UI:
-- The header badge already says "LIVE • interna konton exkluderade" — but it lies if you happen to view it from the preview.
-- Replace with a **runtime detection** based on `VITE_SUPABASE_URL` host: if the host matches the known LIVE project ref, show a green "LIVE" pill; otherwise show a yellow "TEST" pill that says "Öppna bonkiapp.com/analytics för Live-data".
-
-### 3. Files touched
-
-```
-supabase/functions/get-analytics/index.ts   (beta inclusion + access-by-source breakdown)
-src/pages/AnalyticsDashboard.tsx            (env badge + new "Tillgång" section)
-```
-
-No DB migrations. No new dependencies.
+### Out of scope
+- No global token changes (won't touch `index.css` / Tailwind config — only this page).
+- No layout/structure changes. Same sections, same data, just readable.

@@ -46,29 +46,29 @@ const productLabels: Record<string, string> = {
 
 function StatCard({ icon: Icon, label, value, sub }: { icon: any; label: string; value: string | number; sub?: string }) {
   return (
-    <div className="rounded-xl bg-card border border-border/50 p-4 space-y-1">
-      <div className="flex items-center gap-2 text-muted-foreground">
+    <div className="rounded-xl bg-slate-900/80 border border-sky-400/30 p-4 space-y-1.5 shadow-[0_0_0_1px_rgba(56,189,248,0.08)]">
+      <div className="flex items-center gap-2 text-sky-300">
         <Icon className="w-4 h-4" />
-        <span className="text-xs font-medium uppercase tracking-wide">{label}</span>
+        <span className="text-[11px] font-bold uppercase tracking-wider">{label}</span>
       </div>
-      <p className="text-2xl font-semibold text-foreground">{value}</p>
-      {sub && <p className="text-xs text-muted-foreground">{sub}</p>}
+      <p className="text-3xl font-bold text-white tabular-nums leading-tight">{value}</p>
+      {sub && <p className="text-xs text-slate-300">{sub}</p>}
     </div>
   );
 }
 
 function SectionTitle({ children }: { children: React.ReactNode }) {
-  return <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground mt-8 mb-3">{children}</h2>;
+  return <h2 className="text-xs font-bold uppercase tracking-[0.18em] text-sky-300 mt-8 mb-3 border-l-2 border-sky-400 pl-2">{children}</h2>;
 }
 
 function BreakdownRow({ label, value, sub }: { label: string; value: number | string; sub?: string }) {
   return (
-    <div className="flex justify-between items-center py-2 border-b border-border/30 last:border-0">
+    <div className="flex justify-between items-center py-2.5 border-b border-slate-700/60 last:border-0">
       <div>
-        <span className="text-sm text-foreground">{label}</span>
-        {sub && <span className="text-xs text-muted-foreground ml-2">{sub}</span>}
+        <span className="text-sm text-white font-medium">{label}</span>
+        {sub && <span className="text-xs text-slate-300 ml-2">{sub}</span>}
       </div>
-      <span className="text-sm font-medium text-foreground tabular-nums">{value}</span>
+      <span className="text-sm font-bold text-white tabular-nums">{value}</span>
     </div>
   );
 }
@@ -79,14 +79,14 @@ function FunnelBar({ step, count, max, prevCount }: { step: string; count: numbe
   return (
     <div className="space-y-1.5">
       <div className="flex justify-between items-baseline text-sm">
-        <span className="text-foreground">{step}</span>
+        <span className="text-white font-medium">{step}</span>
         <span className="tabular-nums">
-          <span className="font-medium">{count}</span>
-          {conv !== null && <span className="text-muted-foreground text-xs ml-2">{conv}%</span>}
+          <span className="font-bold text-white">{count}</span>
+          {conv !== null && <span className="text-sky-300 text-xs font-semibold ml-2">{conv}%</span>}
         </span>
       </div>
-      <div className="h-2 rounded-full bg-muted/30 overflow-hidden">
-        <div className="h-full bg-foreground/70 rounded-full transition-all" style={{ width: `${pct}%` }} />
+      <div className="h-2.5 rounded-full bg-slate-800 overflow-hidden ring-1 ring-slate-700/60">
+        <div className="h-full bg-gradient-to-r from-sky-400 to-cyan-300 rounded-full transition-all" style={{ width: `${pct}%` }} />
       </div>
     </div>
   );
