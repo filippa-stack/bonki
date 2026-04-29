@@ -292,14 +292,23 @@ Deno.serve(async (req) => {
       allSessions.filter((s: any) => s.status === 'completed').map((s: any) => s.created_by).filter(Boolean)
     )
     const productAccess = (productAccessRes.data || []) as any[]
-    const paidUsers = new Set<string>(productAccess.filter(p => p.granted_via === 'purchase').map(p => p.user_id))
+    const PAID_VIA = new Set(['purchase', 'stripe'])
+    const BETA_VIA = new Set(['beta_grant', 'beta_migration', 'manual_grant'])
+    const paidUsers = new Set<string>(productAccess.filter(p => PAID_VIA.has(p.granted_via)).map(p => p.user_id))
+    const betaUsers = new Set<string>(productAccess.filter(p => BETA_VIA.has(p.granted_via)).map(p => p.user_id))
+    const accessUsers = new Set<string>([...paidUsers, ...betaUsers])
+
+    const accessBySource: Record<string, number> = {}
+    for (const p of productAccess) {
+      accessBySource[p.granted_via] = (accessBySource[p.granted_via] || 0) + 1
+    }
 
     const funnel = [
       { step: 'Sett bibliotek', count: lobbyViewers.size },
       { step: 'Onboarding klar', count: onboardingComplete.size },
       { step: 'Startat samtal', count: usersWithSession.size },
       { step: 'Avslutat samtal', count: usersWithCompletedSession.size },
-      { step: 'Betalat', count: paidUsers.size },
+      { step: 'Tillgång (köpt eller beta)', count: accessUsers.size },
     ]
 
     // ----- MONETIZATION -----
@@ -401,6 +410,10 @@ Deno.serve(async (req) => {
         newPaidInWindow,
         spacesCreatedInWindow,
         conversionPct,
+        paidUsers: paidUsers.size,
+        betaUsers: betaUsers.size,
+        accessUsers: accessUsers.size,
+        accessBySource,
       },
       retention: retentionCohorts,
       topCards,

@@ -26,7 +26,7 @@ interface Analytics {
   reflections: { byState: Record<string, number>; byProduct: Record<string, number>; totalReflections: number; uniqueUsers: number };
   notes: { byVisibility: Record<string, number>; totalNotes: number; uniqueUsers: number; highlights: number };
   bookmarks: { total: number; active: number };
-  monetization: { paidSpaces: number; newPaidInWindow: number; spacesCreatedInWindow: number; conversionPct: number };
+  monetization: { paidSpaces: number; newPaidInWindow: number; spacesCreatedInWindow: number; conversionPct: number; paidUsers?: number; betaUsers?: number; accessUsers?: number; accessBySource?: Record<string, number> };
   retention: { cohort: string; size: number; returnedW1: number; pct: number }[];
   topCards: { cardId: string; visits: number }[];
   feedback: { id: string; response_text: string | null; submitted_at: string; session_id: string | null }[];
@@ -140,9 +140,18 @@ export default function AnalyticsDashboard() {
           </button>
           <div className="flex-1">
             <h1 className="text-base font-semibold text-foreground">Analytics</h1>
-            <p className="text-xs text-muted-foreground">
-              LIVE • interna konton exkluderade
-              {data && ` • ${data.meta.excludedUserCount} användare, ${data.meta.excludedSpaceCount} spaces filtrerade`}
+            <p className="text-xs text-muted-foreground flex items-center gap-2 flex-wrap">
+              {(() => {
+                const url = import.meta.env.VITE_SUPABASE_URL || '';
+                const isLive = url.includes('wcienwozdurwhswaarjy') === false; // test ref
+                return (
+                  <span className={`inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold ${isLive ? 'bg-emerald-500/20 text-emerald-300' : 'bg-amber-500/20 text-amber-300'}`}>
+                    {isLive ? 'LIVE' : 'TEST'}
+                  </span>
+                );
+              })()}
+              <span>interna konton exkluderade</span>
+              {data && <span>• {data.meta.excludedUserCount} användare, {data.meta.excludedSpaceCount} spaces filtrerade</span>}
             </p>
           </div>
         </div>
@@ -250,11 +259,23 @@ export default function AnalyticsDashboard() {
               <div className="text-foreground/70"><Sparkline data={data.engagement.dauTrend} /></div>
             </div>
 
-            <SectionTitle>Monetisering</SectionTitle>
+            <SectionTitle>Monetisering & tillgång</SectionTitle>
             <div className="grid grid-cols-2 gap-3 mb-3">
               <StatCard icon={CreditCard} label={`Nya köp (${windowDays}d)`} value={data.monetization.newPaidInWindow} />
               <StatCard icon={CreditCard} label="Konvertering" value={`${data.monetization.conversionPct}%`} sub={`av ${data.monetization.spacesCreatedInWindow} nya spaces`} />
+              <StatCard icon={CreditCard} label="Betalande användare" value={data.monetization.paidUsers ?? 0} sub="purchase + stripe" />
+              <StatCard icon={CreditCard} label="Beta-testare" value={data.monetization.betaUsers ?? 0} sub="beta + manual grant" />
             </div>
+            {data.monetization.accessBySource && Object.keys(data.monetization.accessBySource).length > 0 && (
+              <div className="rounded-xl bg-card border border-border/50 p-4 mb-3">
+                <div className="text-xs text-muted-foreground mb-2">Tillgång per källa (rader i user_product_access)</div>
+                {Object.entries(data.monetization.accessBySource)
+                  .sort((a, b) => b[1] - a[1])
+                  .map(([src, n]) => (
+                    <BreakdownRow key={src} label={src} value={n} />
+                  ))}
+              </div>
+            )}
 
             <SectionTitle>Retention (kohort → vecka +1)</SectionTitle>
             <div className="rounded-xl bg-card border border-border/50 p-4">
