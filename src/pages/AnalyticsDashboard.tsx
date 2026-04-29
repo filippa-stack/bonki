@@ -133,14 +133,14 @@ export default function AnalyticsDashboard() {
 
   return (
     <div className="min-h-screen page-bg">
-      <header className="sticky top-0 z-20 bg-card/90 backdrop-blur border-b border-border/50">
+      <header className="sticky top-0 z-20 bg-slate-950/95 backdrop-blur border-b border-sky-400/30">
         <div className="flex items-center gap-3 px-4 h-14">
           <button onClick={() => navigate('/')} className="p-2 -ml-2 rounded-full hover:bg-accent">
             <ArrowLeft className="w-5 h-5" />
           </button>
           <div className="flex-1">
             <h1 className="text-base font-semibold text-foreground">Analytics</h1>
-            <p className="text-xs text-muted-foreground flex items-center gap-2 flex-wrap">
+            <p className="text-xs text-slate-300 flex items-center gap-2 flex-wrap">
               {(() => {
                 const url = import.meta.env.VITE_SUPABASE_URL || '';
                 const isLive = url.includes('wcienwozdurwhswaarjy') === false; // test ref
@@ -161,7 +161,7 @@ export default function AnalyticsDashboard() {
         {/* Filters */}
         <div className="mt-4 space-y-3">
           <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-xs text-muted-foreground">Allt sedan:</span>
+            <span className="text-xs text-slate-300">Allt sedan:</span>
             <Popover>
               <PopoverTrigger asChild>
                 <Button variant="outline" size="sm" className="justify-start text-left font-normal gap-2">
@@ -173,14 +173,14 @@ export default function AnalyticsDashboard() {
                 <Calendar mode="single" selected={fromDate} onSelect={(d) => d && setFromDate(d)} initialFocus className="p-3 pointer-events-auto" />
               </PopoverContent>
             </Popover>
-            <span className="text-xs text-muted-foreground ml-2">Fönster:</span>
+            <span className="text-xs text-slate-300 ml-2">Fönster:</span>
             {[7, 14, 30, 90].map(d => (
               <button
                 key={d}
                 onClick={() => setWindowDays(d)}
                 className={cn(
                   'px-2.5 py-1 rounded-full text-xs font-medium transition-colors',
-                  windowDays === d ? 'bg-foreground text-background' : 'bg-muted/50 text-muted-foreground hover:bg-muted'
+                  windowDays === d ? 'bg-sky-400 text-slate-950 font-semibold' : 'bg-slate-800 text-slate-200 hover:bg-slate-700'
                 )}
               >
                 {d}d
@@ -198,7 +198,7 @@ export default function AnalyticsDashboard() {
                 onClick={() => setProductFilter(opt.value)}
                 className={cn(
                   'px-3 py-1.5 rounded-full text-xs font-medium transition-colors',
-                  productFilter === opt.value ? 'bg-foreground text-background' : 'bg-muted/50 text-muted-foreground hover:bg-muted'
+                  productFilter === opt.value ? 'bg-sky-400 text-slate-950 font-semibold' : 'bg-slate-800 text-slate-200 hover:bg-slate-700'
                 )}
               >
                 {opt.label}
@@ -209,7 +209,7 @@ export default function AnalyticsDashboard() {
 
         {loading && (
           <div className="pt-8 space-y-4">
-            {[1, 2, 3].map(i => <div key={i} className="h-20 rounded-xl bg-muted/20 animate-pulse" />)}
+            {[1, 2, 3].map(i => <div key={i} className="h-20 rounded-xl bg-slate-800/60 animate-pulse" />)}
           </div>
         )}
 
@@ -232,13 +232,13 @@ export default function AnalyticsDashboard() {
               <StatCard icon={TrendingUp} label="Nya användare" value={data.acquisition.newUsersInWindow} />
               <StatCard icon={Users} label="Totalt riktiga" value={data.overview.totalRealUsers} />
             </div>
-            <div className="rounded-xl bg-card border border-border/50 p-4">
-              <div className="text-xs text-muted-foreground mb-2">Dagliga registreringar</div>
+            <div className="rounded-xl bg-slate-900/80 border border-sky-400/30 p-4">
+              <div className="text-xs text-slate-300 mb-2">Dagliga registreringar</div>
               <div className="text-foreground/70"><Sparkline data={data.acquisition.signupsTrend} /></div>
             </div>
 
             <SectionTitle>Aktivering – funnel</SectionTitle>
-            <div className="rounded-xl bg-card border border-border/50 p-4 space-y-4">
+            <div className="rounded-xl bg-slate-900/80 border border-sky-400/30 p-4 space-y-4">
               {data.funnel.map((f, i) => (
                 <FunnelBar key={f.step} step={f.step} count={f.count} max={funnelMax} prevCount={i > 0 ? data.funnel[i - 1].count : undefined} />
               ))}
@@ -254,8 +254,8 @@ export default function AnalyticsDashboard() {
               <StatCard icon={Repeat} label="Återkommande" value={data.engagement.returningUsers} sub="≥2 dagar med session" />
               <StatCard icon={MessageSquare} label="Reflektioner / session" value={data.engagement.avgReflectionsPerSession} />
             </div>
-            <div className="rounded-xl bg-card border border-border/50 p-4">
-              <div className="text-xs text-muted-foreground mb-2">DAU senaste {windowDays} dagar</div>
+            <div className="rounded-xl bg-slate-900/80 border border-sky-400/30 p-4">
+              <div className="text-xs text-slate-300 mb-2">DAU senaste {windowDays} dagar</div>
               <div className="text-foreground/70"><Sparkline data={data.engagement.dauTrend} /></div>
             </div>
 
@@ -267,8 +267,8 @@ export default function AnalyticsDashboard() {
               <StatCard icon={CreditCard} label="Beta-testare" value={data.monetization.betaUsers ?? 0} sub="beta + manual grant" />
             </div>
             {data.monetization.accessBySource && Object.keys(data.monetization.accessBySource).length > 0 && (
-              <div className="rounded-xl bg-card border border-border/50 p-4 mb-3">
-                <div className="text-xs text-muted-foreground mb-2">Tillgång per källa (rader i user_product_access)</div>
+              <div className="rounded-xl bg-slate-900/80 border border-sky-400/30 p-4 mb-3">
+                <div className="text-xs text-slate-300 mb-2">Tillgång per källa (rader i user_product_access)</div>
                 {Object.entries(data.monetization.accessBySource)
                   .sort((a, b) => b[1] - a[1])
                   .map(([src, n]) => (
@@ -278,23 +278,23 @@ export default function AnalyticsDashboard() {
             )}
 
             <SectionTitle>Retention (kohort → vecka +1)</SectionTitle>
-            <div className="rounded-xl bg-card border border-border/50 p-4">
-              {data.retention.length === 0 && <p className="text-sm text-muted-foreground">Ingen data ännu</p>}
+            <div className="rounded-xl bg-slate-900/80 border border-sky-400/30 p-4">
+              {data.retention.length === 0 && <p className="text-sm text-slate-300">Ingen data ännu</p>}
               {data.retention.map(r => (
                 <BreakdownRow key={r.cohort} label={r.cohort} sub={`${r.returnedW1} av ${r.size}`} value={`${r.pct}%`} />
               ))}
             </div>
 
             <SectionTitle>Sessioner per status</SectionTitle>
-            <div className="rounded-xl bg-card border border-border/50 p-4">
+            <div className="rounded-xl bg-slate-900/80 border border-sky-400/30 p-4">
               {Object.entries(data.sessions.byStatus).map(([s, c]) => (
                 <BreakdownRow key={s} label={statusLabels[s] || s} value={c} />
               ))}
-              {Object.keys(data.sessions.byStatus).length === 0 && <p className="text-sm text-muted-foreground">Ingen data ännu</p>}
+              {Object.keys(data.sessions.byStatus).length === 0 && <p className="text-sm text-slate-300">Ingen data ännu</p>}
             </div>
 
             <SectionTitle>Sessioner per produkt</SectionTitle>
-            <div className="rounded-xl bg-card border border-border/50 p-4">
+            <div className="rounded-xl bg-slate-900/80 border border-sky-400/30 p-4">
               {Object.entries(data.sessions.byProduct)
                 .sort((a, b) => b[1] - a[1])
                 .map(([p, c]) => (
@@ -307,7 +307,7 @@ export default function AnalyticsDashboard() {
               <StatCard icon={MessageSquare} label="Totalt" value={data.reflections.totalReflections} />
               <StatCard icon={Users} label="Unika skribenter" value={data.reflections.uniqueUsers} />
             </div>
-            <div className="rounded-xl bg-card border border-border/50 p-4">
+            <div className="rounded-xl bg-slate-900/80 border border-sky-400/30 p-4">
               {Object.entries(data.reflections.byState).map(([s, c]) => (
                 <BreakdownRow key={s} label={stateLabels[s] || s} value={c} />
               ))}
@@ -318,13 +318,13 @@ export default function AnalyticsDashboard() {
               <StatCard icon={FileText} label="Totalt" value={data.notes.totalNotes} />
               <StatCard icon={Users} label="Unika skribenter" value={data.notes.uniqueUsers} />
             </div>
-            <div className="rounded-xl bg-card border border-border/50 p-4">
+            <div className="rounded-xl bg-slate-900/80 border border-sky-400/30 p-4">
               {Object.entries(data.notes.byVisibility).map(([v, c]) => (
                 <BreakdownRow key={v} label={v === 'private' ? 'Privata' : v === 'shared' ? 'Delade' : v} value={c} />
               ))}
               <BreakdownRow label="Highlights" value={data.notes.highlights} />
             </div>
-            <p className="text-xs text-muted-foreground mt-2 italic">
+            <p className="text-xs text-slate-300 mt-2 italic">
               ⚠️ Textinnehåll i privata anteckningar visas aldrig här – bara antal.
             </p>
 
@@ -337,7 +337,7 @@ export default function AnalyticsDashboard() {
             {data.topCards.length > 0 && (
               <>
                 <SectionTitle>Populäraste kort (besök)</SectionTitle>
-                <div className="rounded-xl bg-card border border-border/50 p-4">
+                <div className="rounded-xl bg-slate-900/80 border border-sky-400/30 p-4">
                   {data.topCards.map(({ cardId, visits }) => (
                     <BreakdownRow key={cardId} label={cardId} value={visits} />
                   ))}
@@ -350,9 +350,9 @@ export default function AnalyticsDashboard() {
                 <SectionTitle>Beta-feedback (senaste)</SectionTitle>
                 <div className="space-y-3">
                   {data.feedback.map(fb => (
-                    <div key={fb.id} className="rounded-xl bg-card border border-border/50 p-4">
+                    <div key={fb.id} className="rounded-xl bg-slate-900/80 border border-sky-400/30 p-4">
                       <p className="text-sm text-foreground">{fb.response_text || '(tom)'}</p>
-                      <p className="text-xs text-muted-foreground mt-2">
+                      <p className="text-xs text-slate-300 mt-2">
                         {new Date(fb.submitted_at).toLocaleDateString('sv-SE')}
                       </p>
                     </div>
@@ -361,8 +361,8 @@ export default function AnalyticsDashboard() {
               </>
             )}
 
-            <div className="mt-8 p-4 rounded-xl bg-accent/30 border border-border/30">
-              <p className="text-xs text-muted-foreground leading-relaxed">
+            <div className="mt-8 p-4 rounded-xl bg-sky-500/10 border border-sky-400/30">
+              <p className="text-xs text-slate-300 leading-relaxed">
                 <strong>Integritetsnot:</strong> Detta dashboard visar enbart aggregerad, anonymiserad data.
                 Inga personliga anteckningar, reflektionstexter eller identifierbar användarinformation exponeras.
                 Beta-feedback visas då det skickas in explicit som feedback till oss.
