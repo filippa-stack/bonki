@@ -83,10 +83,9 @@ export default function BackgroundWatermark() {
   /*
    * ┌─────────────────────────────────────────────────────┐
    * │  🔒 LOCKED DESIGN — heroAlt watermark               │
-   * │  Re-approved 2026-04-29: shrunk to 1/3 size         │
-   * │  (32vw / max 200px). Do NOT change position,        │
-   * │  opacity or clip without explicit approval.         │
-   * │  To unlock: remove this comment block.              │
+   * │  Approved 2026-02-26. Do NOT change position,       │
+   * │  size, opacity or clip without explicit approval.    │
+   * │  To unlock: remove this comment block.               │
    * └─────────────────────────────────────────────────────┘
    */
   if (mode === 'heroAlt') {
@@ -108,8 +107,8 @@ export default function BackgroundWatermark() {
           alt=""
           className="object-contain select-none"
           style={{
-            width: '32vw',
-            maxWidth: '200px',
+            width: '96vw',
+            maxWidth: '600px',
             opacity: 0.04,
             filter: 'saturate(0.3)',
           }}

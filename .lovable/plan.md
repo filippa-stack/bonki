@@ -1,31 +1,31 @@
 ## Goal
 
-Shrink the faint "ghost glow" Bonki logo (the large watermark behind the page content) to one-third of its current size on every page that shows it.
+Shrink the giant "BONKI" wordmark at the top of the library page to one-third of its current size, and revert the earlier mistaken watermark change.
 
-## Where it lives
+## What I got wrong last round
 
-The watermark is rendered by `src/components/BackgroundWatermark.tsx` in `heroAlt` mode (the default). It currently displays at:
+I shrank the heroAlt watermark in `BackgroundWatermark.tsx`, but that watermark doesn't render on `/` at all. The actual "BONKI" you see on the library page is the wordmark image at the top — `bonki-wordmark.png`, rendered inside `ProductLibrary.tsx`.
 
-- `width: 96vw`
-- `maxWidth: 600px`
+## Changes
 
-It is shown on all routes **except** `/`, `/card/*`, `/product/*`, `/diary`, and when `?devState=library`. So it appears on pages like the kids product home, archive, journal entry views, etc.
+### 1. `src/components/ProductLibrary.tsx` (line 713)
 
-## Change
+Shrink the wordmark image to 1/3:
 
-In `src/components/BackgroundWatermark.tsx`, inside the `heroAlt` branch, divide the logo dimensions by 3:
+- `maxHeight: '60px'` → `maxHeight: '20px'`
 
-- `width: 96vw` → `width: 32vw`
-- `maxWidth: 600px` → `maxWidth: 200px`
+Everything else (drop-shadow glow, centering, margin) stays the same.
 
-The opacity (0.04), positioning (top of viewport, centered), saturation filter, and the gradient/clip-path mask all stay exactly as they are. Only the size changes.
+### 2. `src/components/BackgroundWatermark.tsx` (lines 111–112) — revert
 
-## Notes
+Restore the heroAlt watermark to its locked, approved size:
 
-- The `heroAlt` block is marked as a "LOCKED DESIGN" in a comment (approved 2026-02-26). You're explicitly overriding that lock with this request — I'll update the comment to reflect the new approved size.
-- The other watermark modes (`full`, `behind`, `hero`) are not used by default, so I'll leave them untouched. If you want those shrunk too, say so and I'll match them.
-- No other logo instances are affected (header wordmark, footer, loader, error boundary, 404, login, install, diary, onboarding, category-card tile mode all stay as-is).
+- `width: '32vw'` → `width: '96vw'`
+- `maxWidth: '200px'` → `maxWidth: '600px'`
+
+Also restore the original "Approved 2026-02-26" comment block above it.
 
 ## Files touched
 
-- `src/components/BackgroundWatermark.tsx` — two numeric values + comment update.
+- `src/components/ProductLibrary.tsx` — one numeric value
+- `src/components/BackgroundWatermark.tsx` — revert two values + comment
