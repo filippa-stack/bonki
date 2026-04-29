@@ -15,6 +15,24 @@ import bonkiWordmark from '@/assets/bonki-wordmark.png';
 
 import TermsConsent from '@/components/TermsConsent';
 import { TERMS_VERSION, PRIVACY_VERSION } from '@/lib/legal';
+import PreAuthIntroSlide1 from '@/components/PreAuthIntroSlide1';
+
+// Verbatim mockup copy — DO NOT paraphrase.
+const HEADLINE_LINES = [
+  'Det som bär en relation är inte',
+  'de stora samtalen — utan de små',
+  'som faktiskt blir av.',
+  'Det är där Bonki hör hemma.',
+];
+const SUBLINE_LINES = [
+  'Utvecklade av leg. psykolog',
+  'och psykoterapeut.',
+  'Ni bestämmer takten.',
+];
+// Verified Live 2026-04-29 against products.price_sek.
+const FALLBACK_PRICE_COUPLE = 249;
+const FALLBACK_PRICE_KIDS = 195;
+const PREAUTH_SEEN_KEY = 'bonki-preauth-seen';
 
 const ORANGE_GRADIENT = 'linear-gradient(180deg, #E85D2C 0%, #C44D22 100%)';
 const ORANGE_SHADOW = [
@@ -33,7 +51,12 @@ export default function Login() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  // Legacy flag (URL OR native) — preserved exactly for the unchanged legacy JSX branch.
   const isReviewerMode = searchParams.get('review') === '1' || Capacitor.isNativePlatform();
+  // New, narrowly-scoped flags for the web redesign branch.
+  const isReviewerWeb = searchParams.get('review') === '1';
+  const isNativePlatform = Capacitor.isNativePlatform();
+  const skipRedesign = isReviewerWeb || isNativePlatform;
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -56,6 +79,61 @@ export default function Login() {
       if (cooldownRef.current) clearInterval(cooldownRef.current);
     };
   }, []);
+
+  // ── Pre-auth intro + dynamic pricing (web redesign branch only) ──
+  // Hooks declared BEFORE any early return so React hook order stays stable
+  // across mode switches (e.g. ?review=1 toggling on/off in dev).
+  const [prices, setPrices] = useState<{ couple: number; kids: number } | null>(null);
+  const [pricesReady, setPricesReady] = useState(false);
+  const [showSlide1, setShowSlide1] = useState(() => {
+    if (skipRedesign) return false;
+    try {
+      return localStorage.getItem(PREAUTH_SEEN_KEY) !== '1';
+    } catch {
+      return true;
+    }
+  });
+
+  useEffect(() => {
+    // Native + web reviewer pay zero network cost.
+    if (skipRedesign) return;
+    let cancelled = false;
+    const timeout = setTimeout(() => {
+      if (!cancelled) setPricesReady(true);
+    }, 1500);
+
+    supabase
+      .from('products')
+      .select('id, price_sek')
+      .in('id', ['still_us', 'jag_i_mig'])
+      .then(({ data, error }) => {
+        if (cancelled) return;
+        clearTimeout(timeout);
+        if (!error && data) {
+          const couple = data.find((p) => p.id === 'still_us')?.price_sek;
+          const kids = data.find((p) => p.id === 'jag_i_mig')?.price_sek;
+          if (typeof couple === 'number' && typeof kids === 'number') {
+            setPrices({ couple, kids });
+          }
+        }
+        setPricesReady(true);
+      });
+
+    return () => {
+      cancelled = true;
+      clearTimeout(timeout);
+    };
+  }, [skipRedesign]);
+
+  const handleSlide1Continue = () => {
+    try {
+      if (!skipRedesign) localStorage.setItem(PREAUTH_SEEN_KEY, '1');
+    } catch {
+      /* persistence is best-effort */
+    }
+    setShowSlide1(false);
+  };
+
 
   const startCooldown = () => {
     setResendCooldown(60);
@@ -244,6 +322,311 @@ export default function Login() {
     e.currentTarget.style.borderColor = 'rgba(253, 246, 227, 0.15)';
   };
 
+  // ── Render branching ──
+  // 1. skipRedesign (web ?review=1 OR native) → fall through to legacy JSX (unchanged).
+  // 2. !skipRedesign && showSlide1 → static pre-auth gate.
+  // 3. !skipRedesign && !showSlide1 → new web redesign.
+  if (!skipRedesign && showSlide1) {
+    return <PreAuthIntroSlide1 onContinue={handleSlide1Continue} />;
+  }
+
+  if (!skipRedesign) {
+    return (
+      <div
+        className="min-h-screen flex flex-col items-center px-6"
+        style={{
+          background: 'var(--surface-base, #0B1026)',
+          paddingTop: 'max(env(safe-area-inset-top), 32px)',
+          paddingBottom: 'max(env(safe-area-inset-bottom), 24px)',
+          transform: 'translateZ(0)',
+        }}
+      >
+        <div className="w-full max-w-[340px] flex flex-col items-center text-center" style={{ flex: 1, justifyContent: 'center' }}>
+          {/* Brand mark */}
+          <img
+            src={bonkiLogo}
+            alt="Bonki"
+            style={{ width: 96, height: 96, objectFit: 'contain' }}
+          />
+          <img
+            src={bonkiWordmark}
+            alt="BONKI"
+            style={{
+              maxHeight: 44,
+              width: 'auto',
+              objectFit: 'contain',
+              display: 'block',
+              marginTop: 12,
+            }}
+          />
+
+          {/* Marketing block — hidden on email/OTP sub-flows */}
+          {!showEmailForm && !otpSent && (
+            <>
+              <div style={{ height: 1, width: '100%', background: 'rgba(253, 246, 227, 0.10)', marginTop: 28 }} />
+
+              {/* Locked-copy serif headline */}
+              <h1
+                style={{
+                  fontFamily: 'var(--font-display)',
+                  fontSize: 'clamp(24px, 6vw, 30px)',
+                  lineHeight: 1.3,
+                  color: '#FDF6E3',
+                  fontWeight: 500,
+                  margin: 0,
+                  marginTop: 24,
+                  letterSpacing: '-0.005em',
+                }}
+              >
+                {HEADLINE_LINES.map((line, i) => (
+                  <span key={i} style={{ display: 'block' }}>{line}</span>
+                ))}
+              </h1>
+
+              {/* Locked-copy sub-line */}
+              <p
+                style={{
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: 14,
+                  lineHeight: 1.5,
+                  color: 'rgba(253, 246, 227, 0.65)',
+                  margin: 0,
+                  marginTop: 16,
+                }}
+              >
+                {SUBLINE_LINES.map((line, i) => (
+                  <span key={i} style={{ display: 'block' }}>{line}</span>
+                ))}
+              </p>
+
+              <div style={{ height: 1, width: '100%', background: 'rgba(253, 246, 227, 0.10)', marginTop: 24 }} />
+
+              {/* Pricing rows — four-state render rule */}
+              <div style={{ width: '100%', marginTop: 18, display: 'flex', flexDirection: 'column', gap: 10 }}>
+                <PricingRow
+                  label="För dig och din partner"
+                  price={prices !== null ? prices.couple : pricesReady ? FALLBACK_PRICE_COUPLE : null}
+                />
+                <PricingRow
+                  label="För dig och ditt barn"
+                  price={prices !== null ? prices.kids : pricesReady ? FALLBACK_PRICE_KIDS : null}
+                />
+              </div>
+
+              <div style={{ height: 1, width: '100%', background: 'rgba(253, 246, 227, 0.10)', marginTop: 18 }} />
+            </>
+          )}
+
+          {/* CTA stack — same handlers/state machine as legacy. */}
+          <div className="w-full" style={{ marginTop: 24 }}>
+            <AnimatePresence mode="wait">
+              {otpSent ? (
+                <motion.div
+                  key="otp"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  className="flex flex-col items-center gap-4"
+                >
+                  <button
+                    onClick={() => { setOtpSent(false); setOtpCode(''); setError(null); }}
+                    className="flex items-center gap-1 text-sm self-start"
+                    style={{ color: 'rgba(253, 246, 227, 0.6)', background: 'none', border: 'none', cursor: 'pointer' }}
+                  >
+                    <ArrowLeft className="w-4 h-4" />
+                    Tillbaka
+                  </button>
+                  <div style={{ textAlign: 'center' }}>
+                    <p style={{ fontFamily: 'var(--font-sans)', fontSize: 15, color: 'rgba(253, 246, 227, 0.85)', lineHeight: 1.6 }}>
+                      Vi har skickat en kod till
+                    </p>
+                    <p style={{ fontFamily: 'var(--font-sans)', fontSize: 15, color: 'rgba(212, 245, 192, 0.9)', fontWeight: 500, marginTop: 4 }}>
+                      {email}
+                    </p>
+                    <p style={{ fontFamily: 'var(--font-sans)', fontSize: 14, color: 'rgba(253, 246, 227, 0.6)', marginTop: 16, lineHeight: 1.5 }}>
+                      Ange den 6-siffriga koden nedan.
+                    </p>
+                  </div>
+                  <input
+                    type="tel"
+                    inputMode="numeric"
+                    autoComplete="one-time-code"
+                    maxLength={6}
+                    value={otpCode}
+                    onChange={(e) => { const v = e.target.value.replace(/\D/g, '').slice(0, 6); setOtpCode(v); setError(null); }}
+                    onFocus={handleFocus}
+                    onBlur={handleBlur}
+                    placeholder="000000"
+                    className="w-full h-14 text-center text-2xl tracking-[0.5em] rounded-xl outline-none"
+                    style={{
+                      background: 'rgba(255, 255, 255, 0.08)',
+                      color: '#FDF6E3',
+                      caretColor: '#FDF6E3',
+                      fontFamily: 'var(--font-sans)',
+                      fontWeight: 600,
+                      border: SOFT_BORDER,
+                      transition: 'box-shadow 150ms ease, border-color 150ms ease',
+                    }}
+                    autoFocus
+                  />
+                  <button
+                    onClick={handleVerifyOtp}
+                    disabled={verifying || otpCode.length !== 6}
+                    className="w-full h-14 text-base font-semibold rounded-xl flex items-center justify-center gap-2 border-0 text-white disabled:opacity-50"
+                    style={{ background: ORANGE_GRADIENT, boxShadow: ORANGE_SHADOW }}
+                  >
+                    {verifying ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Verifiera'}
+                  </button>
+                  <p style={{ fontFamily: 'var(--font-sans)', fontSize: 13, color: 'rgba(253, 246, 227, 0.4)', lineHeight: 1.5 }}>
+                    Hittar du inte mejlet? Kolla din skräppost.
+                  </p>
+                  <button
+                    onClick={handleResend}
+                    disabled={resendCooldown > 0 || loading}
+                    className="text-sm disabled:opacity-40"
+                    style={{ color: 'rgba(212, 245, 192, 0.7)', background: 'none', border: 'none', cursor: 'pointer' }}
+                  >
+                    {resendCooldown > 0 ? `Skicka igen (${resendCooldown}s)` : 'Skicka mejlet igen'}
+                  </button>
+                </motion.div>
+              ) : showEmailForm ? (
+                <motion.div
+                  key="email"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  className="flex flex-col gap-3"
+                >
+                  <button
+                    onClick={() => { setShowEmailForm(false); setError(null); }}
+                    className="flex items-center gap-1 text-sm mb-1 self-start"
+                    style={{ color: 'rgba(253, 246, 227, 0.6)', background: 'none', border: 'none', cursor: 'pointer' }}
+                  >
+                    <ArrowLeft className="w-4 h-4" />
+                    Tillbaka
+                  </button>
+                  <input
+                    type="email"
+                    placeholder="din@epost.se"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    onKeyDown={(e) => e.key === 'Enter' && handleEmailSignIn()}
+                    onFocus={handleFocus}
+                    onBlur={handleBlur}
+                    className="w-full h-14 px-4 text-base rounded-xl outline-none"
+                    style={{
+                      background: 'rgba(255, 255, 255, 0.08)',
+                      color: '#F5EFE6',
+                      fontFamily: 'var(--font-sans)',
+                      border: SOFT_BORDER,
+                      transition: 'box-shadow 150ms ease, border-color 150ms ease',
+                    }}
+                  />
+                  <button
+                    onClick={handleEmailSignIn}
+                    disabled={loading || !email.trim()}
+                    className="w-full h-14 text-base font-semibold rounded-xl flex items-center justify-center gap-2 border-0 text-white disabled:opacity-50"
+                    style={{ background: ORANGE_GRADIENT, boxShadow: ORANGE_SHADOW }}
+                  >
+                    {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Skicka inloggningskod'}
+                  </button>
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="main"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  className="flex flex-col gap-3"
+                >
+                  <button
+                    onClick={handleGoogleSignIn}
+                    disabled={loading}
+                    className="w-full h-14 text-base font-semibold rounded-xl flex items-center justify-center gap-2 border-0 text-white disabled:opacity-50"
+                    style={{ background: ORANGE_GRADIENT, boxShadow: ORANGE_SHADOW }}
+                  >
+                    {loading ? (
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                    ) : (
+                      <svg className="w-5 h-5" viewBox="0 0 24 24">
+                        <path fill="#fff" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                        <path fill="#fff" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                        <path fill="#fff" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
+                        <path fill="#fff" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
+                      </svg>
+                    )}
+                    Fortsätt med Google
+                  </button>
+                  <button
+                    onClick={handleAppleSignIn}
+                    disabled={loading}
+                    className="w-full h-14 flex items-center justify-center gap-2 text-base font-medium rounded-xl disabled:opacity-50"
+                    style={{
+                      color: '#FDF6E3',
+                      border: '1px solid rgba(255,255,255,0.15)',
+                      background: 'rgba(255, 255, 255, 0.06)',
+                    }}
+                  >
+                    <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                      <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09M12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25"/>
+                    </svg>
+                    Fortsätt med Apple
+                  </button>
+                  <button
+                    onClick={() => setShowEmailForm(true)}
+                    className="w-full h-14 flex items-center justify-center gap-2 text-base font-medium rounded-xl"
+                    style={{
+                      color: 'rgba(245, 237, 210, 0.8)',
+                      border: '1px solid rgba(255,255,255,0.15)',
+                      background: 'rgba(255, 255, 255, 0.06)',
+                    }}
+                  >
+                    <Mail className="w-5 h-5" />
+                    Fortsätt med e-post
+                  </button>
+                  {isDemoParam() && (
+                    <button
+                      onClick={() => { enterDemoMode(); navigate('/', { replace: true }); }}
+                      className="w-full h-14 flex items-center justify-center gap-2 text-base font-medium rounded-xl"
+                      style={{
+                        color: 'rgba(245, 237, 210, 0.55)',
+                        border: '1px solid rgba(255,255,255,0.10)',
+                        background: 'rgba(255, 255, 255, 0.04)',
+                      }}
+                    >
+                      <Eye className="w-5 h-5" />
+                      Fortsätt utan konto (demo)
+                    </button>
+                  )}
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {!otpSent && (
+              <div style={{ marginTop: 20 }}>
+                <TermsConsent
+                  linksOnly
+                  className="text-xs leading-relaxed"
+                  linkClassName="underline underline-offset-2 transition-colors"
+                />
+              </div>
+            )}
+
+            {error && (
+              <p className="text-sm mt-4" style={{ color: '#E85D2C' }}>{error}</p>
+            )}
+          </div>
+        </div>
+
+        <style>{`
+          .text-xs.leading-relaxed { color: rgba(253, 246, 227, 0.45); }
+          .text-xs.leading-relaxed button { color: rgba(212, 245, 192, 0.75); }
+        `}</style>
+      </div>
+    );
+  }
+
+  // ── Legacy JSX (skipRedesign === true) — preserved byte-for-byte from before refactor ──
   return (
     <div
       className="min-h-screen flex flex-col items-center justify-center px-6"
@@ -711,6 +1094,59 @@ export default function Login() {
         .text-xs.leading-relaxed { color: rgba(253, 246, 227, 0.45); }
         .text-xs.leading-relaxed button { color: rgba(212, 245, 192, 0.75); }
       `}</style>
+    </div>
+  );
+}
+
+/**
+ * PricingRow — label left, price right.
+ * `price === null` renders a skeleton bar (same row height, no layout shift).
+ */
+function PricingRow({ label, price }: { label: string; price: number | null }) {
+  return (
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        gap: 12,
+        minHeight: 22,
+      }}
+    >
+      <span
+        style={{
+          fontFamily: 'var(--font-sans)',
+          fontSize: 15,
+          color: 'rgba(253, 246, 227, 0.85)',
+          textAlign: 'left',
+        }}
+      >
+        {label}
+      </span>
+      {price === null ? (
+        <span
+          aria-hidden="true"
+          style={{
+            display: 'inline-block',
+            width: 56,
+            height: 12,
+            borderRadius: 4,
+            background: 'rgba(253, 246, 227, 0.10)',
+          }}
+        />
+      ) : (
+        <span
+          style={{
+            fontFamily: 'var(--font-sans)',
+            fontSize: 15,
+            fontWeight: 500,
+            color: '#FDF6E3',
+            fontVariantNumeric: 'tabular-nums',
+          }}
+        >
+          {price} kr
+        </span>
+      )}
     </div>
   );
 }
