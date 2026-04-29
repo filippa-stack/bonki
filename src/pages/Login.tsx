@@ -15,6 +15,24 @@ import bonkiWordmark from '@/assets/bonki-wordmark.png';
 
 import TermsConsent from '@/components/TermsConsent';
 import { TERMS_VERSION, PRIVACY_VERSION } from '@/lib/legal';
+import PreAuthIntroSlide1 from '@/components/PreAuthIntroSlide1';
+
+// Verbatim mockup copy — DO NOT paraphrase.
+const HEADLINE_LINES = [
+  'Det som bär en relation är inte',
+  'de stora samtalen — utan de små',
+  'som faktiskt blir av.',
+  'Det är där Bonki hör hemma.',
+];
+const SUBLINE_LINES = [
+  'Utvecklade av leg. psykolog',
+  'och psykoterapeut.',
+  'Ni bestämmer takten.',
+];
+// Verified Live 2026-04-29 against products.price_sek.
+const FALLBACK_PRICE_COUPLE = 249;
+const FALLBACK_PRICE_KIDS = 195;
+const PREAUTH_SEEN_KEY = 'bonki-preauth-seen';
 
 const ORANGE_GRADIENT = 'linear-gradient(180deg, #E85D2C 0%, #C44D22 100%)';
 const ORANGE_SHADOW = [
