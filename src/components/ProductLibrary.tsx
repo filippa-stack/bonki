@@ -727,7 +727,7 @@ export default function ProductLibrary() {
               textShadow: '0 1px 16px hsla(230, 25%, 10%, 0.8)',
             }}
           >
-            För samtalen som vill bli av
+            Samtalen som bygger närhet.
           </motion.p>
         </motion.div>
 
