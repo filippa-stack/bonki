@@ -369,67 +369,71 @@ export default function Login() {
         }}
       >
         <div className="w-full max-w-[340px] flex flex-col items-center text-center" style={{ flex: 1, justifyContent: 'center' }}>
-          {/* Brand mark */}
+          {/* Brand mark — logomark only, scaled to 40% (38px) */}
           <img
             src={bonkiLogo}
             alt="Bonki"
-            style={{ width: 96, height: 96, objectFit: 'contain' }}
-          />
-          <img
-            src={bonkiWordmark}
-            alt="BONKI"
-            style={{
-              maxHeight: 44,
-              width: 'auto',
-              objectFit: 'contain',
-              display: 'block',
-              marginTop: 12,
-            }}
+            style={{ width: 38, height: 38, objectFit: 'contain' }}
           />
 
           {/* Marketing block — hidden on email/OTP sub-flows */}
           {!showEmailForm && !otpSent && (
             <>
-              <div style={{ height: 1, width: '100%', background: 'rgba(253, 246, 227, 0.10)', marginTop: 28 }} />
-
-              {/* Locked-copy serif headline */}
-              <h1
-                style={{
-                  fontFamily: 'var(--font-display)',
-                  fontSize: 'clamp(24px, 6vw, 30px)',
-                  lineHeight: 1.3,
-                  color: '#FDF6E3',
-                  fontWeight: 500,
-                  margin: 0,
-                  marginTop: 24,
-                  letterSpacing: '-0.005em',
-                }}
-              >
-                {HEADLINE_LINES.map((line, i) => (
-                  <span key={i} style={{ display: 'block' }}>{line}</span>
-                ))}
-              </h1>
-
-              {/* Locked-copy sub-line */}
+              {/* Manifesto — Cormorant Garamond italic 22px */}
               <p
                 style={{
-                  fontFamily: 'var(--font-sans)',
-                  fontSize: 14,
-                  lineHeight: 1.5,
-                  color: 'rgba(253, 246, 227, 0.65)',
+                  fontFamily: "'Cormorant Garamond', Georgia, serif",
+                  fontStyle: 'italic',
+                  fontSize: 22,
+                  lineHeight: 1.2,
+                  color: '#FDF6E3',
+                  fontWeight: 400,
                   margin: 0,
-                  marginTop: 16,
+                  marginTop: 32,
                 }}
               >
-                {SUBLINE_LINES.map((line, i) => (
-                  <span key={i} style={{ display: 'block' }}>{line}</span>
-                ))}
+                De små samtalen är de som bär. De som faktiskt blir av.
               </p>
 
-              <div style={{ height: 1, width: '100%', background: 'rgba(253, 246, 227, 0.10)', marginTop: 24 }} />
+              {/* Credential — Cormorant Garamond italic 13px */}
+              <p
+                style={{
+                  fontFamily: "'Cormorant Garamond', Georgia, serif",
+                  fontStyle: 'italic',
+                  fontSize: 13,
+                  lineHeight: 1.4,
+                  color: 'rgba(253, 246, 227, 0.75)',
+                  fontWeight: 400,
+                  margin: 0,
+                  marginTop: 24,
+                  maxWidth: 280,
+                }}
+              >
+                Utvecklat av leg. psykolog och psykoterapeut med 29 års klinisk erfarenhet.
+              </p>
 
-              {/* Pricing rows — four-state render rule */}
-              <div style={{ width: '100%', marginTop: 18, display: 'flex', flexDirection: 'column', gap: 10 }}>
+              {/* Pacing line */}
+              <p
+                style={{
+                  fontFamily: "'Cormorant Garamond', Georgia, serif",
+                  fontStyle: 'italic',
+                  fontSize: 13,
+                  lineHeight: 1.4,
+                  color: 'rgba(253, 246, 227, 0.75)',
+                  fontWeight: 400,
+                  margin: 0,
+                  marginTop: 12,
+                  maxWidth: 280,
+                }}
+              >
+                Ni bestämmer takten.
+              </p>
+
+              {/* Single hairline rule */}
+              <div style={{ height: 1, width: '60%', background: 'rgba(253, 246, 227, 0.50)', marginTop: 32 }} />
+
+              {/* Pricing rows — four-state render rule preserved */}
+              <div style={{ width: '100%', marginTop: 24, display: 'flex', flexDirection: 'column', gap: 16 }}>
                 <PricingRow
                   label="För dig och din partner"
                   price={prices !== null ? prices.couple : pricesReady ? FALLBACK_PRICE_COUPLE : null}
@@ -439,13 +443,11 @@ export default function Login() {
                   price={prices !== null ? prices.kids : pricesReady ? FALLBACK_PRICE_KIDS : null}
                 />
               </div>
-
-              <div style={{ height: 1, width: '100%', background: 'rgba(253, 246, 227, 0.10)', marginTop: 18 }} />
             </>
           )}
 
           {/* CTA stack — same handlers/state machine as legacy. */}
-          <div className="w-full" style={{ marginTop: 24 }}>
+          <div className="w-full" style={{ marginTop: 32 }}>
             <AnimatePresence mode="wait">
               {otpSent ? (
                 <motion.div
