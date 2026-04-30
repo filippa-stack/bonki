@@ -1,95 +1,95 @@
-# Pre-auth onboarding: copy + layout redesign (visual only)
+# Screen 1 (PreAuthIntroSlide1) — four-fix patch
 
-Re-issuing the previously-approved plan with the two confirmed modifications baked in. Approve this to switch to build mode so I can apply the edits.
+All changes are visual only. No handlers, navigation, or auth touched. Two files modified.
 
-## Scope confirmation
+## Root cause for issue #1 (font not loading)
 
-All changes are **visual + copy only**. Untouched:
+`index.html` requests Google Fonts with `display=optional`. With that strategy the browser is allowed to skip the webfont entirely on slower connections and stay on the fallback (Georgia) for the lifetime of the page — which matches what's rendering. The italic 400 cut IS in the URL (`Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500`), so the URL is fine; the swap behaviour is the problem.
 
-- All auth handlers (`handleGoogleSignIn`, `handleAppleSignIn`, `handleEmailSignIn`, `handleVerifyOtp`, `handleResend`, `handleNativeAppleSignIn`, `handleNativeGoogleSignIn`, `handleReviewerSignIn`)
-- All Supabase / `lovable.auth` calls, OAuth, OTP, magic-link logic
-- `AuthContext`, route protection, session handling, `supabase/functions/**`
-- All button `onClick`, `disabled`, state-machine wiring, validation, loading/error states, i18n keys
-- The legacy/native/reviewer JSX branch in `Login.tsx` (`skipRedesign === true`, lines ~656–end) — preserves App Store / Play / `?review=1` flows byte-for-byte
-- `src/lib/googleSignIn.ts`, `src/lib/appleSignIn.ts`, `src/contexts/AuthContext.tsx`, `src/integrations/**`
-- `Onboarding.tsx` (audience-picker, post-auth — out of scope)
-- `mem://` files
+Two-part fix so we don't risk regressing other surfaces that already rely on `display=optional`:
 
-## Files to change (3)
+1. Add a dedicated `<link>` for just `Cormorant Garamond` with `display=swap` to `index.html`. This guarantees the italic gets applied as soon as it arrives, on the one screen that needs it. The existing combined link stays exactly as is, so no other typography on the site changes behaviour.
+2. Preload the italic 400 woff2 so it's available before first paint of the recognition sentence.
 
-1. `index.html` — append `Cormorant Garamond` cuts to the existing Google Fonts `<link>`.
-2. `src/components/PreAuthIntroSlide1.tsx` — replace the `<h1>` copy and font.
-3. `src/pages/Login.tsx` — restructure only the `!skipRedesign` web redesign render branch (lines ~360–654). Hooks, handlers, sub-flows (`showEmailForm`, `otpSent`), and the legacy branch stay byte-identical.
+## Files to change (2)
 
-## Screen 1 — `PreAuthIntroSlide1.tsx`
+### 1. `index.html`
 
-Replace headline:
+Just below the existing Google Fonts `<link>`, add:
 
-- Copy: `Samtalet som dagen inte gav plats för.`
-- Font: `'Cormorant Garamond', Georgia, serif`, italic, 22px, weight 400
-- Color: `#FDF6E3` 100%, line-height 1.1, centered, `max-width: 320px`
-- Vertically centered between top wordmark cluster and bottom CTA cluster (existing `flex: 1` container handles this)
+```html
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet" />
+```
 
-Everything else on Screen 1 unchanged (bar indicator, "Fortsätt" pill, BONKI wordmark at bottom, `#0B1026` bg, safe-area paddings, `translateZ(0)`).
+Nothing else in `index.html` changes. The existing combined font link stays untouched so no other surface's typography behaviour shifts.
 
-## Screen 2 — `Login.tsx` web redesign branch
+### 2. `src/components/PreAuthIntroSlide1.tsx`
 
-BONKI wordmark image **removed** from this screen. Logomark scaled to 40% (96 → ~38px). **Only one hairline rule** remains, between the pacing line and the price model.
+Full rewrite of the JSX layout to match the spec. Handler (`onContinue`), import, and component signature stay byte-identical.
+
+New top-to-bottom structure:
 
 ```text
 [ safe-area-inset-top ]
   ↓ 48px
-[ Logomark, 38×38, centered ]
-  ↓ 32px
-[ Manifesto — Cormorant Garamond italic 22px, #FDF6E3, line-height 1.2, centered ]
-   "De små samtalen är de som bär. De som faktiskt blir av."
-  ↓ 24px
-[ Credential — Cormorant Garamond italic 13px, #FDF6E3 @ 75%, max-width 280px, line-height 1.4 ]
-   "Utvecklat av leg. psykolog och psykoterapeut med 29 års klinisk erfarenhet."
-  ↓ 12px
-[ Pacing — Cormorant Garamond italic 13px, #FDF6E3 @ 75%, max-width 280px ]
-   "Ni bestämmer takten."
-  ↓ 32px
-[ Hairline rule — 1px, rgba(253,246,227,0.50), 60% width, centered ]   ← only one
-  ↓ 24px
-[ Price rows — DM Sans 14px, #FDF6E3 @ 85%, label left / price right, 16px between rows ]
-   För dig och din partner ............ 249 kr
-   För dig och ditt barn .............. 195 kr
-  ↓ 32px
-[ Primary CTA — orange pill, 44px tall, radius 22px, DM Sans 14px/500, #FDF6E3 ]
-   Label: "Fortsätt med Google"  (existing onClick={handleGoogleSignIn})
+[ BONKI wordmark — Bebas Neue 14px / 3px tracking / 85% opacity / centered ]
+  ↓ flex: 1 (centers recognition sentence in remaining space)
+[ Recognition sentence — Cormorant Garamond italic 26px ]
+  ↓ flex: 1
+[ Bar indicator (orange + cream-25%) ]
   ↓ 16px
-[ Login link — DM Sans 11px, #FDF6E3 @ 60%, centered ]
-   Label: "Logga in med e-post"  (existing onClick={() => setShowEmailForm(true)})
+[ Fortsätt CTA — filled #E85D2C pill, 44px ]
   ↓ 24px + safe-area-inset-bottom
 ```
 
-### Behavioral preservation
+#### Wordmark (top)
 
-- Primary CTA reuses the existing Google button JSX node — same `onClick`, `disabled`, spinner. Only `style`/`className` change.
-- Login link reuses the existing email-trigger button — same `onClick`. Only restyled to a small text link.
-- Apple button hidden on this screen (per spec — Apple Sign-In not yet configured for Android web). The Apple handler still exists and is still used by the legacy iOS native branch.
-- Demo button (`isDemoParam()`), `<TermsConsent>`, error display all stay mounted below the login link.
-- `showEmailForm` and `otpSent` sub-flows render unchanged when active.
-- `prices` / `pricesReady` fetch logic and `PricingRow` four-state render rule preserved verbatim — only the row's visual style updates (DM Sans 14px, 85% opacity, 16px gap).
+Render as text (not image) so we can apply Bebas Neue / 14px / 3px tracking exactly per spec:
 
-### iPhone SE viewport check (375×667)
+- `fontFamily: "'Bebas Neue', sans-serif"`, weight 400, size 14, letter-spacing 3px
+- color `#FDF6E3`, opacity 0.85, centered
+- 48px below `safe-area-inset-top`
+- The existing `bonkiWordmark` import is removed (no longer used).
 
-With only one hairline rule (saving ~66px vs. three):
+#### Recognition sentence (vertically centered)
 
-`48 + 38 + 32 + ~50 manifesto + 24 + ~36 credential + 12 + ~18 pacing + 32 + 1 + 24 + ~70 price rows + 32 + 44 CTA + 16 + ~16 login link + 24 + safe-area`
-≈ **517px** content + safe areas → fits well under 667px on iPhone SE with comfortable margin.
+- Copy unchanged: "Samtalet som dagen inte gav plats för."
+- `fontFamily: "'Cormorant Garamond', Georgia, serif"`, italic, weight 400
+- size 26px, line-height 1.1, letter-spacing 0
+- color `#FDF6E3`, text-align center, max-width 320px
+- Wrapped in a `flex: 1` container with `align-items: center` so it sits in the visual middle of the remaining vertical space.
 
-On taller devices the cluster centers vertically via the existing `flex: 1; justify-content: center` container.
+#### Bar indicator (16px above CTA)
 
-## Typography setup (`index.html`)
+Unchanged shape: two 18×2 pills, gap 6px, active orange `#E85D2C`, inactive `rgba(253,246,227,0.25)`. Now sits in the bottom cluster directly above the CTA with a 16px gap.
 
-Append `Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500` to the existing Google Fonts `<link>`. `--font-display` global stays as `'Cormorant'` — Cormorant Garamond is applied inline only on the four new editorial elements (Screen 1 headline + Screen 2 manifesto / credential / pacing).
+#### Fortsätt CTA (filled orange)
+
+- Background `#E85D2C`, no border
+- Border-radius 22px, height 44px, width 100% within the 24px horizontal page padding
+- Text "Fortsätt", DM Sans 500 / 14px, color `#FDF6E3`
+- Same `onClick={onContinue}` — no behavioural change
+- Pointer feedback: subtle darken on press (background `#D8531E`) instead of the previous transparent hover
+
+#### Removed
+
+- Large bottom `<img src={bonkiWordmark} />` block — gone.
+- The `bonkiWordmark` import — gone.
+
+## Behavioural preservation
+
+- `onContinue` handler signature, props interface, and component name unchanged.
+- iOS PWA rules preserved: `min-height: calc(100vh)` (never `100dvh`), `transform: translateZ(0)`, both safe-area insets respected.
+- No changes to Login.tsx, the legacy native branch, auth logic, routes, or i18n keys.
+
+## iPhone SE viewport check (375×667)
+
+`safe-area + 48 + 14 wordmark + flex + 26 sentence (single or two-line ≈ 58) + flex + 2 indicator + 16 + 44 CTA + 24 + safe-area`
+≈ 230px of fixed content + two flex spacers fills the rest cleanly. Comfortable fit on 667px.
 
 ## Post-implementation verification
 
-1. Re-read modified files to confirm no handler signatures or state references changed.
-2. Confirm `Capacitor.isNativePlatform()` and `?review=1` still route to untouched legacy JSX.
-3. Confirm Google CTA still bound to `handleGoogleSignIn`, login link still bound to `setShowEmailForm(true)`.
-
-After applying I'll report back so you can publish and verify on bonkiapp.com.
+1. Open the deployed site, inspect the h1 in DevTools, confirm computed `font-family` resolves to `Cormorant Garamond` (not Georgia). If it still falls back, report back rather than work around.
+2. Confirm wordmark renders at top, CTA is filled orange, bar indicator sits 16px above CTA.
+3. Confirm `onContinue` still fires and routes to the redesigned Login screen.
