@@ -1,95 +1,64 @@
-# Screen 1 (PreAuthIntroSlide1) — four-fix patch
+# Surface 2 (Login) — three small refinements
 
-All changes are visual only. No handlers, navigation, or auth touched. Two files modified.
+Single file change. Visual only. No handler or auth logic touched.
 
-## Root cause for issue #1 (font not loading)
+## Audit results for the three items
 
-`index.html` requests Google Fonts with `display=optional`. With that strategy the browser is allowed to skip the webfont entirely on slower connections and stay on the fallback (Georgia) for the lifetime of the page — which matches what's rendering. The italic 400 cut IS in the URL (`Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500`), so the URL is fine; the swap behaviour is the problem.
+I read the current `src/pages/Login.tsx` to verify each item against what's actually deployed:
 
-Two-part fix so we don't risk regressing other surfaces that already rely on `display=optional`:
+### Item 1 — hairline rule (no change needed)
 
-1. Add a dedicated `<link>` for just `Cormorant Garamond` with `display=swap` to `index.html`. This guarantees the italic gets applied as soon as it arrives, on the one screen that needs it. The existing combined link stays exactly as is, so no other typography on the site changes behaviour.
-2. Preload the italic 400 woff2 so it's available before first paint of the recognition sentence.
+The hairline at line 433 is already exactly per spec:
 
-## Files to change (2)
-
-### 1. `index.html`
-
-Just below the existing Google Fonts `<link>`, add:
-
-```html
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet" />
+```tsx
+<div style={{ height: 1, width: '60%', background: 'rgba(253, 246, 227, 0.50)', marginTop: 32 }} />
 ```
 
-Nothing else in `index.html` changes. The existing combined font link stays untouched so no other surface's typography behaviour shifts.
+Color rgba(253,246,227,**0.50**), width **60%**, height **1px**. No 80–90% opacity in code. If it visually feels heavier than expected, that's the cream-on-dark contrast against #0B1026 — but the spec values are met. Leaving untouched.
 
-### 2. `src/components/PreAuthIntroSlide1.tsx`
+### Item 3 — Cormorant Garamond loading (no code change needed)
 
-Full rewrite of the JSX layout to match the spec. Handler (`onContinue`), import, and component signature stay byte-identical.
+All three editorial elements (manifesto, credential, pacing line — lines 385/401/418) already declare:
 
-New top-to-bottom structure:
-
-```text
-[ safe-area-inset-top ]
-  ↓ 48px
-[ BONKI wordmark — Bebas Neue 14px / 3px tracking / 85% opacity / centered ]
-  ↓ flex: 1 (centers recognition sentence in remaining space)
-[ Recognition sentence — Cormorant Garamond italic 26px ]
-  ↓ flex: 1
-[ Bar indicator (orange + cream-25%) ]
-  ↓ 16px
-[ Fortsätt CTA — filled #E85D2C pill, 44px ]
-  ↓ 24px + safe-area-inset-bottom
+```tsx
+fontFamily: "'Cormorant Garamond', Georgia, serif"
 ```
 
-#### Wordmark (top)
+Literally `Cormorant Garamond`, not `Cormorant`. Combined with the dedicated `display=swap` link added to `index.html` in the previous patch, the italic should resolve correctly. No code change here. Verification step at the end.
 
-Render as text (not image) so we can apply Bebas Neue / 14px / 3px tracking exactly per spec:
+### Item 2 — TermsConsent block (needs change)
 
-- `fontFamily: "'Bebas Neue', sans-serif"`, weight 400, size 14, letter-spacing 3px
-- color `#FDF6E3`, opacity 0.85, centered
-- 48px below `safe-area-inset-top`
-- The existing `bonkiWordmark` import is removed (no longer used).
+Current state at lines 628–647:
 
-#### Recognition sentence (vertically centered)
+```tsx
+<div style={{ marginTop: 20 }}>          // → 16
+  <TermsConsent
+    className="text-xs leading-relaxed"
+    linkClassName="underline underline-offset-2 transition-colors"
+  />
+</div>
+…
+<style>{`
+  .text-xs.leading-relaxed { color: rgba(253, 246, 227, 0.45); }              // → 0.50, force DM Sans 11/400
+  .text-xs.leading-relaxed button { color: rgba(212, 245, 192, 0.75); }       // sage → match parent 0.50
+`}</style>
+```
 
-- Copy unchanged: "Samtalet som dagen inte gav plats för."
-- `fontFamily: "'Cormorant Garamond', Georgia, serif"`, italic, weight 400
-- size 26px, line-height 1.1, letter-spacing 0
-- color `#FDF6E3`, text-align center, max-width 320px
-- Wrapped in a `flex: 1` container with `align-items: center` so it sits in the visual middle of the remaining vertical space.
+Three problems confirmed: gap is 20px not 16, text is 45% not 50%, and the links render in the sage `rgba(212, 245, 192, 0.75)` color from the leftover style block — not the surrounding cream.
 
-#### Bar indicator (16px above CTA)
+## Single change to apply
 
-Unchanged shape: two 18×2 pills, gap 6px, active orange `#E85D2C`, inactive `rgba(253,246,227,0.25)`. Now sits in the bottom cluster directly above the CTA with a 16px gap.
+Replace lines 628–647 of `src/pages/Login.tsx` with the same JSX but:
 
-#### Fortsätt CTA (filled orange)
+- Outer wrapper `marginTop: 20` → `marginTop: 16`
+- `.text-xs.leading-relaxed` → `color: rgba(253, 246, 227, 0.50)`, plus `font-family: 'DM Sans', sans-serif`, `font-size: 11px`, `font-weight: 400` (force-set so the surrounding cascade can't bump them)
+- `.text-xs.leading-relaxed button` → `color: rgba(253, 246, 227, 0.50)` (matches text), `text-decoration: underline`, `text-decoration-thickness: 1px`, `text-underline-offset: 2px`
 
-- Background `#E85D2C`, no border
-- Border-radius 22px, height 44px, width 100% within the 24px horizontal page padding
-- Text "Fortsätt", DM Sans 500 / 14px, color `#FDF6E3`
-- Same `onClick={onContinue}` — no behavioural change
-- Pointer feedback: subtle darken on press (background `#D8531E`) instead of the previous transparent hover
+Everything else (the `TermsConsent` component itself, its props, the error block below) stays byte-identical.
 
-#### Removed
+## Verification after deploy
 
-- Large bottom `<img src={bonkiWordmark} />` block — gone.
-- The `bonkiWordmark` import — gone.
-
-## Behavioural preservation
-
-- `onContinue` handler signature, props interface, and component name unchanged.
-- iOS PWA rules preserved: `min-height: calc(100vh)` (never `100dvh`), `transform: translateZ(0)`, both safe-area insets respected.
-- No changes to Login.tsx, the legacy native branch, auth logic, routes, or i18n keys.
-
-## iPhone SE viewport check (375×667)
-
-`safe-area + 48 + 14 wordmark + flex + 26 sentence (single or two-line ≈ 58) + flex + 2 indicator + 16 + 44 CTA + 24 + safe-area`
-≈ 230px of fixed content + two flex spacers fills the rest cleanly. Comfortable fit on 667px.
-
-## Post-implementation verification
-
-1. Open the deployed site, inspect the h1 in DevTools, confirm computed `font-family` resolves to `Cormorant Garamond` (not Georgia). If it still falls back, report back rather than work around.
-2. Confirm wordmark renders at top, CTA is filled orange, bar indicator sits 16px above CTA.
-3. Confirm `onContinue` still fires and routes to the redesigned Login screen.
+1. Open `bonkiapp.com` redesigned Login in DevTools.
+2. Inspect the manifesto `<p>` → computed `font-family` should resolve to `Cormorant Garamond`. If it falls back to `Georgia`, the swap link in `index.html` isn't loading and we'll need to debug network — report back, don't work around.
+3. Inspect "Villkor" / "Integritetspolicy" links → both should compute to `rgba(253, 246, 227, 0.5)` with a 1px underline, matching the surrounding sentence.
+4. Measure the gap between "Logga in med e-post" and the terms block — should be 16px (the email link already has `marginTop: 16` and the wrapper now `marginTop: 16` for total 16px below the link's bottom box, since they're stacked siblings).
