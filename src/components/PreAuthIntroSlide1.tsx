@@ -51,19 +51,18 @@ export default function PreAuthIntroSlide1({ onContinue }: PreAuthIntroSlide1Pro
       >
         <h1
           style={{
-            fontFamily: 'var(--font-display)',
-            fontSize: 'clamp(28px, 8vw, 36px)',
-            lineHeight: 1.25,
+            fontFamily: "'Cormorant Garamond', Georgia, serif",
+            fontStyle: 'italic',
+            fontSize: 22,
+            lineHeight: 1.1,
             color: CREAM,
             textAlign: 'center',
-            fontWeight: 500,
+            fontWeight: 400,
             margin: 0,
-            letterSpacing: '-0.005em',
+            maxWidth: 320,
           }}
         >
-          Det där samtalet
-          <br />
-          som vill bli av.
+          Samtalet som dagen inte gav plats för.
         </h1>
       </div>
 
