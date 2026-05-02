@@ -81,8 +81,9 @@ export default function Login() {
   // across mode switches (native vs. web).
   const [prices, setPrices] = useState<{ couple: number; kids: number } | null>(null);
   const [pricesReady, setPricesReady] = useState(false);
+  // Pre-auth slide is shown once per device on ALL platforms (web + native iOS/Android).
+  // `skipRedesign` only governs the post-slide branch (legacy native JSX vs. redesigned web login).
   const [showSlide1, setShowSlide1] = useState(() => {
-    if (skipRedesign) return false;
     try {
       return localStorage.getItem(PREAUTH_SEEN_KEY) !== '1';
     } catch {
@@ -123,7 +124,9 @@ export default function Login() {
 
   const handleSlide1Continue = () => {
     try {
-      if (!skipRedesign) localStorage.setItem(PREAUTH_SEEN_KEY, '1');
+      // Persist on all platforms — Capacitor WKWebView's localStorage is sandboxed
+      // and survives across app launches.
+      localStorage.setItem(PREAUTH_SEEN_KEY, '1');
     } catch {
       /* persistence is best-effort */
     }
@@ -313,10 +316,10 @@ export default function Login() {
   };
 
   // ── Render branching ──
-  // 1. skipRedesign (native) → fall through to legacy JSX (unchanged).
-  // 2. !skipRedesign && showSlide1 → static pre-auth gate.
-  // 3. !skipRedesign && !showSlide1 → new web redesign.
-  if (!skipRedesign && showSlide1) {
+  // 1. showSlide1 → static pre-auth gate (ALL platforms, once per device).
+  // 2. !skipRedesign && !showSlide1 → new web redesign branch.
+  // 3. skipRedesign && !showSlide1 → fall through to legacy native JSX (unchanged).
+  if (showSlide1) {
     return <PreAuthIntroSlide1 onContinue={handleSlide1Continue} />;
   }
 
