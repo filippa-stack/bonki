@@ -316,10 +316,10 @@ export default function Login() {
   };
 
   // ── Render branching ──
-  // 1. skipRedesign (native) → fall through to legacy JSX (unchanged).
-  // 2. !skipRedesign && showSlide1 → static pre-auth gate.
-  // 3. !skipRedesign && !showSlide1 → new web redesign.
-  if (!skipRedesign && showSlide1) {
+  // 1. showSlide1 → static pre-auth gate (ALL platforms, once per device).
+  // 2. !skipRedesign && !showSlide1 → new web redesign branch.
+  // 3. skipRedesign && !showSlide1 → fall through to legacy native JSX (unchanged).
+  if (showSlide1) {
     return <PreAuthIntroSlide1 onContinue={handleSlide1Continue} />;
   }
 
