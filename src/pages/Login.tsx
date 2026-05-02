@@ -67,9 +67,6 @@ export default function Login() {
   const [resendCooldown, setResendCooldown] = useState(0);
   const [appleLoading, setAppleLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
-  const [reviewerEmail, setReviewerEmail] = useState('');
-  const [reviewerPassword, setReviewerPassword] = useState('');
-  const [reviewerLoading, setReviewerLoading] = useState(false);
   const cooldownRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const isNative = Capacitor.isNativePlatform();
 
@@ -94,7 +91,7 @@ export default function Login() {
   });
 
   useEffect(() => {
-    // Native + web reviewer pay zero network cost.
+    // Native pays zero network cost.
     if (skipRedesign) return;
     let cancelled = false;
     const timeout = setTimeout(() => {
@@ -347,7 +344,7 @@ export default function Login() {
   };
 
   // ── Render branching ──
-  // 1. skipRedesign (web ?review=1 OR native) → fall through to legacy JSX (unchanged).
+  // 1. skipRedesign (native) → fall through to legacy JSX (unchanged).
   // 2. !skipRedesign && showSlide1 → static pre-auth gate.
   // 3. !skipRedesign && !showSlide1 → new web redesign.
   if (!skipRedesign && showSlide1) {
