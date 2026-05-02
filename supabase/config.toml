@@ -53,5 +53,7 @@ project_id = "wcienwozdurwhswaarjy"
     verify_jwt = true
   [functions.reset-reviewer-password]
     verify_jwt = false
+  [functions.revoke-reviewer-access]
+    verify_jwt = false
   [functions.delete-account]
     verify_jwt = false
