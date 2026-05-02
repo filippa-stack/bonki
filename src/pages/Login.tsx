@@ -78,7 +78,7 @@ export default function Login() {
 
   // ── Pre-auth intro + dynamic pricing (web redesign branch only) ──
   // Hooks declared BEFORE any early return so React hook order stays stable
-  // across mode switches (e.g. ?review=1 toggling on/off in dev).
+  // across mode switches (native vs. web).
   const [prices, setPrices] = useState<{ couple: number; kids: number } | null>(null);
   const [pricesReady, setPricesReady] = useState(false);
   const [showSlide1, setShowSlide1] = useState(() => {
