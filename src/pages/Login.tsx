@@ -52,12 +52,9 @@ export default function Login() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  // Legacy flag (URL OR native) — preserved exactly for the unchanged legacy JSX branch.
-  const isReviewerMode = searchParams.get('review') === '1' || Capacitor.isNativePlatform();
-  // New, narrowly-scoped flags for the web redesign branch.
-  const isReviewerWeb = searchParams.get('review') === '1';
   const isNativePlatform = Capacitor.isNativePlatform();
-  const skipRedesign = isReviewerWeb || isNativePlatform;
+  // Native renders the legacy JSX branch; web always renders the redesign branch.
+  const skipRedesign = isNativePlatform;
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
