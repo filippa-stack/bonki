@@ -124,7 +124,9 @@ export default function Login() {
 
   const handleSlide1Continue = () => {
     try {
-      if (!skipRedesign) localStorage.setItem(PREAUTH_SEEN_KEY, '1');
+      // Persist on all platforms — Capacitor WKWebView's localStorage is sandboxed
+      // and survives across app launches.
+      localStorage.setItem(PREAUTH_SEEN_KEY, '1');
     } catch {
       /* persistence is best-effort */
     }
