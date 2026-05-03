@@ -24,6 +24,7 @@ import MobileOnlyGate from "@/components/MobileOnlyGate";
 import BonkiErrorBoundary from "@/components/BonkiErrorBoundary";
 
 import Index from "./pages/Index";
+import LibraryMock from "./pages/LibraryMock";
 
 import Category from "./pages/Category";
 import CardView from "./pages/CardView";
@@ -81,6 +82,7 @@ function ProtectedContent() {
         <div style={{ minHeight: '100vh', background: 'var(--page-bg, #0B1026)' }}>
           <Routes>
             <Route path="/" element={<Index />} />
+            <Route path="/library-mock" element={<LibraryMock />} />
             <Route path="/categories" element={<Navigate to="/" replace />} />
             <Route path="/still-us/explore" element={<StillUsExplore />} />
             <Route path="/still-us/intro" element={<SuIntroPortal />} />
