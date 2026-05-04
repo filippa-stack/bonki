@@ -1,7 +1,7 @@
 import { useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { House, LayoutGrid, BookOpen } from 'lucide-react';
-import { BONKI_ORANGE } from '@/lib/palette';
+import { BONKI_ORANGE, DEEP_DUSK } from '@/lib/palette';
 
 type NavItem = {
   id: string;
@@ -76,9 +76,7 @@ export default function BottomNav() {
         left: '0px',
         right: '0px',
         paddingBottom: 'env(safe-area-inset-bottom, 0px)',
-        background: 'rgba(0, 0, 0, 0.85)',
-        backdropFilter: 'blur(12px)',
-        WebkitBackdropFilter: 'blur(12px)',
+        background: DEEP_DUSK,
         border: 'none',
         boxShadow: 'none',
         WebkitTransform: 'translateZ(0)',
@@ -90,7 +88,7 @@ export default function BottomNav() {
           {items.map((item) => {
             const active = item.match(pathname, search);
             const Icon = item.icon;
-            const color = active ? BONKI_ORANGE : '#FDF6E3';
+            const color = active ? BONKI_ORANGE : 'rgba(253, 246, 227, 0.55)';
 
             return (
               <motion.button
