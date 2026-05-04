@@ -19,6 +19,15 @@ import illustrationJagIVarlden from '@/assets/illustration-jag-i-varlden.png';
 import illustrationSyskon from '@/assets/illustration-syskon.png';
 import illustrationVardag from '@/assets/illustration-vardag.png';
 
+const PLACEHOLDER_POOL = [
+  illustrationJagIMig,
+  illustrationJagMedAndra,
+  illustrationJagIVarlden,
+  illustrationVardag,
+  illustrationSyskon,
+  illustrationStillUs,
+];
+
 const MIDNIGHT_INK = '#1A1A2E';
 const DEEP_DUSK = '#2A2D3A';
 const GHOST_GLOW = '#D4F5C0';
@@ -363,7 +372,7 @@ export default function ProductHomeMock() {
                 </div>
                 <div style={{ flex: 1, position: 'relative', overflow: 'hidden' }}>
                   <img
-                    src={spec.illustration}
+                    src={PLACEHOLDER_POOL[i % PLACEHOLDER_POOL.length]}
                     alt=""
                     style={{
                       position: 'absolute',
@@ -534,7 +543,7 @@ export default function ProductHomeMock() {
         style={{
           position: 'fixed',
           top: 'calc(env(safe-area-inset-top, 0px) + 50px)',
-          right: 12,
+          left: 12,
           zIndex: 9999,
           padding: '6px 10px',
           borderRadius: 999,
