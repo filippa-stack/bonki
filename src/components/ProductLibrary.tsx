@@ -159,177 +159,99 @@ function AudienceLabel({ label, subtitle, delay = 0 }: { label: string; subtitle
   );
 }
 
-/** Portal tile — illustration bleeds right, text anchored left */
+/** Library tile — full-bleed illustration, lower-left text, three-state pill */
 const PastelTile = React.forwardRef<HTMLDivElement, {
-  name: string; bg: string; tagline?: string;
-  onClick?: () => void; illustration?: string; productId?: string;
-  accentColor?: string; taglineColor?: string; illustrationOpacity?: number;
-  illustrationSize?: string; illustrationPosition?: string; wide?: boolean;
-  showFreeBadge?: boolean; badgeText?: string; ageCount?: number;
-  hasActiveSession?: boolean; tileHeight?: string;
-  progressText?: string; lastActive?: string; hideFreeBadge?: boolean; showFreeLabel?: boolean; totalCards?: number; completedCount?: number;
+  name: string;
+  productId: string;
+  tagline?: string;
+  onClick?: () => void;
+  illustration?: string;
+  totalCards?: number;
+  completedCount?: number;
   isPurchased?: boolean;
 }>(function PastelTile({
-  name, bg, tagline, onClick, illustration, productId, accentColor, taglineColor,
-  illustrationOpacity = 0.90, wide = false,
-  hasActiveSession = false, tileHeight = '240px',
-  progressText, lastActive, hideFreeBadge = false, showFreeLabel = false, totalCards, completedCount,
-  isPurchased = false,
+  name, productId, tagline, onClick, illustration,
+  totalCards = 0, completedCount = 0, isPurchased = false,
 }, ref) {
-  const toShadowColor = (hex: string, alpha: number) => {
-    const r = parseInt(hex.slice(1, 3), 16);
-    const g = parseInt(hex.slice(3, 5), 16);
-    const b = parseInt(hex.slice(5, 7), 16);
-    return `rgba(${Math.round(r * 0.5)}, ${Math.round(g * 0.5)}, ${Math.round(b * 0.5)}, ${alpha})`;
-  };
-
-  const bgR = parseInt(bg.slice(1, 3), 16);
-  const bgG = parseInt(bg.slice(3, 5), 16);
-  const bgB = parseInt(bg.slice(5, 7), 16);
-  const bgRgba = (a: number) => `rgba(${bgR}, ${bgG}, ${bgB}, ${a})`;
-
-  const scale = productId ? ILLUSTRATION_SCALE[productId] : undefined;
-  const offset = productId ? ILLUSTRATION_OFFSET[productId] : undefined;
-  const opacity = productId ? ILLUSTRATION_OPACITY[productId] ?? illustrationOpacity : illustrationOpacity;
-
-  const light = isLightTile(bg);
+  const fallbackBg = TILE_COLORS[productId] ?? '#1A2538';
+  const tasted = !isPurchased && completedCount > 0;
 
   return (
     <motion.div
+      ref={ref}
       variants={tileVariants}
       whileHover={{ scale: 1.025, y: -3 }}
-      whileTap={{ scale: 0.94, y: 3 }}
+      whileTap={{ scale: 0.96, y: 2 }}
       onClick={onClick}
       className="cursor-pointer"
       style={{
-        borderRadius: '22px',
-        backgroundColor: bg,
-        height: tileHeight,
-        display: 'flex',
+        borderRadius: 22,
+        background: tileBackground(productId, fallbackBg),
+        aspectRatio: '1 / 1.05',
+        width: '100%',
         position: 'relative',
         overflow: 'hidden',
-        backgroundImage: 'none',
-        border: light
-          ? '1px solid rgba(0, 0, 0, 0.08)'
-          : '1px solid rgba(255, 255, 255, 0.15)',
-        transform: showFreeLabel ? 'scale(1.02)' : undefined,
-        boxShadow: showFreeLabel
-          ? '0 4px 24px rgba(0,0,0,0.35), 0 0 0 2px rgba(255,255,255,0.12)'
-          : [
-              `0 4px 28px ${hexToRgba(bg, 0.20)}`,
-              `0 2px 8px rgba(0, 0, 0, 0.08)`,
-            ].join(', '),
+        border: '1px solid rgba(255, 255, 255, 0.10)',
+        boxShadow: `0 4px 28px ${hexToRgba(fallbackBg, 0.20)}, 0 2px 8px rgba(0, 0, 0, 0.18)`,
       }}
     >
-      {/* Illustration — right-aligned, bleeds off edge dramatically */}
       {illustration && (
-        <div
+        <img
+          src={illustration}
+          alt=""
+          draggable={false}
           style={{
             position: 'absolute',
-            top: offset?.top ?? '-15%',
-            right: offset?.right ?? '-12%',
-            bottom: offset?.bottom ?? '-10%',
-            width: scale?.width ?? '70%',
+            inset: 0,
+            width: '100%',
+            height: '100%',
+            objectFit: 'contain',
+            objectPosition: 'right bottom',
             pointerEvents: 'none',
             zIndex: 0,
+            filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.10))',
           }}
-        >
-          <img
-            src={illustration}
-            alt=""
-            draggable={false}
-            style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'contain',
-              objectPosition: 'center bottom',
-              opacity,
-              filter: productId ? (ILLUSTRATION_SHADOW[productId] ?? '') : '',
-            }}
-          />
-        </div>
+        />
       )}
 
+      {/* Bottom scrim */}
+      <div
+        aria-hidden
+        style={{
+          position: 'absolute',
+          left: 0, right: 0, bottom: 0,
+          height: '55%',
+          background:
+            'linear-gradient(to top, rgba(0,0,0,0.32) 0%, rgba(0,0,0,0.08) 50%, transparent 100%)',
+          pointerEvents: 'none',
+          zIndex: 1,
+          borderRadius: '0 0 22px 22px',
+        }}
+      />
 
-
-      {/* Resume indicator */}
-      {hasActiveSession && (
-        <div
-          style={{
-            position: 'absolute',
-            top: '12px',
-            right: '14px',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: '3px',
-            zIndex: 4,
-          }}
-        >
-          <div style={{
-            width: '8px',
-            height: '8px',
-            borderRadius: '50%',
-            backgroundColor: '#D4A03A',
-            boxShadow: '0 0 6px rgba(212, 160, 58, 0.5)',
-          }} />
-          <span style={{
-            fontFamily: "var(--font-body)",
-            fontSize: '11px',
-            fontWeight: 500,
-            color: '#FDF6E3',
-            opacity: 0.7,
-          }}>
-            Fortsätt
-          </span>
-          {lastActive && (
-            <span style={{
-              fontFamily: "var(--font-body)",
-              fontSize: '9px',
-              fontWeight: 400,
-              color: '#FDF6E3',
-              opacity: 0.35,
-            }}>
-              {formatRelativeTime(lastActive)}
-            </span>
-          )}
-        </div>
-      )}
-
-    {/* Bottom scrim for text readability */}
-      <div style={{
-        position: 'absolute',
-        left: 0, right: 0, bottom: 0,
-        height: '70%',
-        background: 'linear-gradient(to top, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.12) 40%, transparent 100%)',
-        pointerEvents: 'none',
-        zIndex: 1,
-        borderRadius: '0 0 22px 22px',
-      }} />
-
-    {/* Text — left-aligned, lower-third emphasis */}
-      <div style={{
-        position: 'absolute',
-        left: 0, bottom: 0, top: 0,
-        width: '55%',
-        zIndex: 2,
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-end',
-        padding: '20px',
-        paddingBottom: '24px',
-      }}>
+      {/* Text — lower-left */}
+      <div
+        style={{
+          position: 'absolute',
+          left: 14,
+          bottom: 14,
+          right: 14,
+          maxWidth: '75%',
+          zIndex: 2,
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
         <h3
           style={{
-            fontFamily: "var(--font-display)",
-            fontVariationSettings: "'opsz' 24",
-            fontSize: '28px',
-            fontWeight: 700,
-            whiteSpace: 'nowrap',
-            lineHeight: 1.15,
-            color: accentColor || '#FDF6E3',
-            letterSpacing: '-0.01em',
-            textShadow: '0 1px 3px rgba(0,0,0,0.5), 0 0 8px rgba(0,0,0,0.3)',
+            fontFamily: 'Fraunces, serif',
+            fontSize: 26,
+            fontWeight: 500,
+            lineHeight: 1.1,
+            color: '#FFFFFF',
+            letterSpacing: '-0.005em',
+            textShadow: '0 2px 14px rgba(0,0,0,0.45)',
+            margin: '0 0 5px',
           }}
         >
           {name}
@@ -337,67 +259,53 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
         {tagline && (
           <p
             style={{
-              fontFamily: "var(--font-body)",
-              fontSize: '15px',
-              fontWeight: 500,
-              color: taglineColor || '#FDF6E3',
-              opacity: 0.9,
-              marginTop: '4px',
-              lineHeight: 1.4,
-              textShadow: '0 1px 3px rgba(0,0,0,0.5), 0 0 8px rgba(0,0,0,0.3)',
+              fontFamily: 'Inter, system-ui, sans-serif',
+              fontSize: 12,
+              fontWeight: 400,
+              color: 'rgba(255, 255, 255, 0.92)',
+              lineHeight: 1.3,
+              textShadow: '0 1px 6px rgba(0,0,0,0.35)',
+              margin: '0 0 9px',
             }}
           >
             {tagline}
           </p>
+        )}
+        <span
+          style={{
+            display: 'inline-flex',
+            alignSelf: 'flex-start',
+            alignItems: 'center',
+            gap: 6,
+            padding: '5px 11px',
+            borderRadius: 999,
+            background: 'rgba(255, 255, 255, 0.18)',
+            backdropFilter: 'blur(8px)',
+            WebkitBackdropFilter: 'blur(8px)',
+            border: '0.5px solid rgba(255, 255, 255, 0.25)',
+            fontFamily: 'Inter, system-ui, sans-serif',
+            fontSize: 11.5,
+            fontWeight: 600,
+            letterSpacing: '0.02em',
+            color: LANTERN_GLOW,
+          }}
+        >
+          {isPurchased ? (
+            `${completedCount} av ${totalCards}`
+          ) : tasted ? (
+            <>
+              <BonkiLogoMark size={9} style={{ color: LANTERN_GLOW }} />
+              Du har provat
+            </>
+          ) : (
+            `${totalCards} samtal`
           )}
-          {/* Progress pill */}
-          <span
-            style={{
-              display: 'inline-flex',
-              alignSelf: 'flex-start',
-              alignItems: 'center',
-              gap: '4px',
-              marginTop: '8px',
-              padding: '4px 12px',
-              borderRadius: '20px',
-              background: isPurchased
-                ? 'hsla(0, 0%, 100%, 0.15)'
-                : showFreeLabel
-                  ? 'rgba(255, 255, 255, 0.25)'
-                  : hideFreeBadge
-                    ? 'hsla(45, 80%, 92%, 0.15)'
-                    : 'hsla(0, 0%, 100%, 0.15)',
-              backdropFilter: 'blur(8px)',
-              WebkitBackdropFilter: 'blur(8px)',
-              border: isPurchased
-                ? '1px solid hsla(0, 0%, 100%, 0.25)'
-                : showFreeLabel
-                  ? '1px solid rgba(255, 255, 255, 0.35)'
-                  : hideFreeBadge
-                    ? '1px solid hsla(45, 70%, 85%, 0.30)'
-                    : '1px solid hsla(0, 0%, 100%, 0.25)',
-              boxShadow: '0 0 12px hsla(0, 0%, 100%, 0.08), inset 0 1px 0 hsla(0, 0%, 100%, 0.15)',
-              fontFamily: "var(--font-body)",
-              fontSize: '11px',
-              fontWeight: 600,
-              letterSpacing: '0.03em',
-              color: 'hsla(0, 0%, 100%, 0.92)',
-            }}
-          >
-            {isPurchased
-              ? (completedCount ?? 0) > 0
-                ? `✦ ${completedCount} av ${totalCards || 0} utforskade`
-                : '✦ Börja er resa'
-              : showFreeLabel
-                ? <><span style={{ fontSize: '12px', color: 'white' }}>✦</span> Första gratis · {totalCards || 0} samtal</>
-                : hideFreeBadge
-                  ? <><svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ filter: 'drop-shadow(0 0 3px rgba(212,245,192,0.7)) drop-shadow(0 0 6px rgba(212,245,192,0.4))' }}><rect x="2" y="6.5" width="10" height="6.5" rx="1.5" fill="rgba(212,245,192,0.5)" stroke="#D4F5C0" strokeWidth="0.75" /><path d="M4.5 6.5V4.5C4.5 3.12 5.62 2 7 2C8.38 2 9.5 3.12 9.5 4.5V6.5" stroke="#D4F5C0" strokeWidth="1.5" strokeLinecap="round" /></svg> {totalCards || 0} samtal</>
-                  : <><svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ filter: 'drop-shadow(0 0 3px rgba(212,245,192,0.7)) drop-shadow(0 0 6px rgba(212,245,192,0.4))' }}><rect x="2" y="6.5" width="10" height="6.5" rx="1.5" fill="rgba(212,245,192,0.5)" stroke="#D4F5C0" strokeWidth="0.75" /><path d="M4.5 6.5V4.5C4.5 3.12 5.62 2 7 2C8.38 2 9.5 3.12 9.5 4.5V6.5" stroke="#D4F5C0" strokeWidth="1.5" strokeLinecap="round" /></svg> {totalCards || 0} samtal</>}
-          </span>
-        </div>
+        </span>
+      </div>
     </motion.div>
   );
 });
+
 export default function ProductLibrary() {
   useLayoutEffect(() => {
     document.documentElement.classList.remove('theme-verdigris');
