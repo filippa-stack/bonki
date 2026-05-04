@@ -251,7 +251,7 @@ function ScreenPromise({ onNext }: { onNext: () => void }) {
       <PriceRow label="För dig och ditt barn" price="195 kr" />
 
       {/* CTA block — pushed to bottom of available space */}
-      <div style={{ marginTop: 'auto', paddingTop: 18 }}>
+      <div style={{ marginTop: 28 }}>
         <button
           onClick={onNext}
           style={{
