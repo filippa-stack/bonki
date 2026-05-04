@@ -14,6 +14,7 @@ import KontoIcon from '@/components/KontoIcon';
 import KontoSheet from '@/components/KontoSheet';
 import { usePageBackground } from '@/hooks/usePageBackground';
 import { getProductById } from '@/data/products';
+import { hasCardImage } from '@/hooks/useCardImage';
 import type { Card } from '@/types';
 
 import illustrationStillUs from '@/assets/illustration-still-us-tile.png';
@@ -23,14 +24,23 @@ import illustrationJagIVarlden from '@/assets/illustration-jag-i-varlden.png';
 import illustrationSyskon from '@/assets/illustration-syskon.png';
 import illustrationVardag from '@/assets/illustration-vardag.png';
 
-const PLACEHOLDER_POOL = [
-  illustrationJagIMig,
-  illustrationJagMedAndra,
-  illustrationJagIVarlden,
-  illustrationVardag,
-  illustrationSyskon,
-  illustrationStillUs,
-];
+// Product-level hero illustrations — used as fallback only for cards whose
+// per-card illustration is not yet present in /card-images/. In practice all
+// current product cards have entries in CARD_IDS_WITH_IMAGES.
+const PRODUCT_HERO_FALLBACK: Record<string, string> = {
+  jag_i_mig: illustrationJagIMig,
+  jag_med_andra: illustrationJagMedAndra,
+  jag_i_varlden: illustrationJagIVarlden,
+  vardagskort: illustrationVardag,
+  syskonkort: illustrationSyskon,
+  sexualitetskort: illustrationJagIMig,
+  still_us: illustrationStillUs,
+};
+
+function cardIllustration(productId: string, cardId: string): string {
+  if (hasCardImage(cardId)) return `/card-images/${cardId}.webp`;
+  return PRODUCT_HERO_FALLBACK[productId] ?? illustrationJagIMig;
+}
 
 const MIDNIGHT_INK = '#1A1A2E';
 const DEEP_DUSK = '#2A2D3A';
