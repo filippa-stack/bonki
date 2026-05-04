@@ -17,9 +17,6 @@ import { isDemoMode } from '@/lib/demoMode';
 import { DEMO_SESSION_EVENT, getMostRecentDemoSession } from '@/lib/demoSession';
 
 const LANTERN_GLOW = '#FDF6E3';
-const DRIFTWOOD = '#6B5E52';
-const MIDNIGHT_INK = '#0B1026';
-const BONKI_ORANGE = '#E85D2C';
 
 interface ResumeData {
   productId: string;
