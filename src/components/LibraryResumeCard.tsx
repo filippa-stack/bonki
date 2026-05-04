@@ -226,102 +226,82 @@ export default function LibraryResumeCard({ activeTab, global, forceMock }: Libr
   const display = devMock || resume;
   if (!display) return null;
 
-  const accent = productTileColors[display.productId]?.tileLight ?? LANTERN_GLOW;
-
   return (
     <button
       onClick={() => navigate(`/card/${display.cardId}`)}
       style={{
         width: '100%',
-        padding: '14px 16px',
-        background: MIDNIGHT_INK,
-        border: 'none',
-        borderRadius: '22px',
+        padding: '12px 16px',
+        background: '#2A2D3A',
+        border: '0.5px solid rgba(255, 255, 255, 0.06)',
+        borderRadius: '14px',
         cursor: 'pointer',
         textAlign: 'left',
-        position: 'relative',
-        overflow: 'hidden',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '12px',
+        boxShadow: 'none',
         WebkitTapHighlightColor: 'transparent',
       }}
     >
-      {/* Breathing radial bloom — anchored left so the right side stays in shadow */}
-      <motion.div
+      {/* Ghost-glow dot — quiet active-session signal */}
+      <span
         aria-hidden="true"
-        initial={{ opacity: 0.85 }}
-        animate={{ opacity: [0.85, 1, 0.85] }}
-        transition={{ duration: 6, ease: 'easeInOut', repeat: Infinity }}
         style={{
-          position: 'absolute',
-          inset: 0,
-          background: `radial-gradient(ellipse 260px 120px at 22% 50%, ${accent}66 0%, ${accent}1F 60%, transparent 100%)`,
-          pointerEvents: 'none',
+          width: '8px',
+          height: '8px',
+          borderRadius: '50%',
+          background: '#D4F5C0',
+          boxShadow: '0 0 8px rgba(212, 245, 192, 0.5)',
+          flexShrink: 0,
+          display: 'inline-block',
         }}
       />
 
-      {/* Foreground */}
-      <div style={{ position: 'relative', zIndex: 2, display: 'flex', alignItems: 'center', gap: '12px' }}>
-        <div style={{ flex: 1, minWidth: 0 }}>
-          <p
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              fontSize: '14px',
-              fontWeight: 500,
-              color: LANTERN_GLOW,
-              lineHeight: 1.3,
-              margin: 0,
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              whiteSpace: 'nowrap',
-            }}
-          >
-            <span
-              aria-hidden="true"
-              style={{
-                width: '6px',
-                height: '6px',
-                borderRadius: '50%',
-                backgroundColor: accent,
-                boxShadow: `0 0 0 1.5px rgba(11, 16, 38, 0.85), 0 0 6px ${accent}80`,
-                display: 'inline-block',
-                flexShrink: 0,
-              }}
-            />
-            Fortsätt utforska {display.productName}
-          </p>
-          <p
-            style={{
-              fontSize: '12px',
-              color: LANTERN_GLOW,
-              opacity: 0.6,
-              lineHeight: 1.3,
-              margin: '2px 0 0 14px',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              whiteSpace: 'nowrap',
-            }}
-          >
-            {display.stepLabel} · {display.cardTitle}
-          </p>
-        </div>
-        <span
+      {/* Text block */}
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <p
           style={{
-            fontFamily: 'var(--font-sans)',
-            fontSize: '13px',
-            fontWeight: 700,
-            letterSpacing: '0.03em',
+            fontFamily: 'Fraunces, serif',
+            fontSize: '14.5px',
+            fontWeight: 500,
             color: '#FFFFFF',
-            flexShrink: 0,
-            backgroundColor: BONKI_ORANGE,
-            padding: '8px 16px',
-            borderRadius: '24px',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.25)',
+            lineHeight: 1.15,
+            margin: 0,
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
           }}
         >
-          Fortsätt
-        </span>
+          {display.productName}
+        </p>
+        <p
+          style={{
+            fontFamily: 'Inter, system-ui, sans-serif',
+            fontSize: '11px',
+            color: 'rgba(255, 255, 255, 0.55)',
+            lineHeight: 1.3,
+            margin: '2px 0 0',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+          }}
+        >
+          {display.stepLabel} · {display.cardTitle}
+        </p>
       </div>
+
+      {/* Chevron affordance */}
+      <ChevronRight
+        size={16}
+        style={{
+          color: LANTERN_GLOW,
+          opacity: 0.5,
+          flexShrink: 0,
+        }}
+        aria-hidden="true"
+      />
     </button>
   );
 }
+
