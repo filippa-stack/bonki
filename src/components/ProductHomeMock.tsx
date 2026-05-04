@@ -14,6 +14,7 @@ import KontoIcon from '@/components/KontoIcon';
 import KontoSheet from '@/components/KontoSheet';
 import { usePageBackground } from '@/hooks/usePageBackground';
 import { getProductById } from '@/data/products';
+import { hasCardImage } from '@/hooks/useCardImage';
 import type { Card } from '@/types';
 
 import illustrationStillUs from '@/assets/illustration-still-us-tile.png';
@@ -23,14 +24,23 @@ import illustrationJagIVarlden from '@/assets/illustration-jag-i-varlden.png';
 import illustrationSyskon from '@/assets/illustration-syskon.png';
 import illustrationVardag from '@/assets/illustration-vardag.png';
 
-const PLACEHOLDER_POOL = [
-  illustrationJagIMig,
-  illustrationJagMedAndra,
-  illustrationJagIVarlden,
-  illustrationVardag,
-  illustrationSyskon,
-  illustrationStillUs,
-];
+// Product-level hero illustrations — used as fallback only for cards whose
+// per-card illustration is not yet present in /card-images/. In practice all
+// current product cards have entries in CARD_IDS_WITH_IMAGES.
+const PRODUCT_HERO_FALLBACK: Record<string, string> = {
+  jag_i_mig: illustrationJagIMig,
+  jag_med_andra: illustrationJagMedAndra,
+  jag_i_varlden: illustrationJagIVarlden,
+  vardagskort: illustrationVardag,
+  syskonkort: illustrationSyskon,
+  sexualitetskort: illustrationJagIMig,
+  still_us: illustrationStillUs,
+};
+
+function cardIllustration(productId: string, cardId: string): string {
+  if (hasCardImage(cardId)) return `/card-images/${cardId}.webp`;
+  return PRODUCT_HERO_FALLBACK[productId] ?? illustrationJagIMig;
+}
 
 const MIDNIGHT_INK = '#1A1A2E';
 const DEEP_DUSK = '#2A2D3A';
@@ -323,9 +333,8 @@ export default function ProductHomeMock() {
                         key={card.id}
                         onClick={() => navigate('/library-mock')}
                         style={{
-                          display: 'flex',
-                          flexDirection: 'column',
-                          aspectRatio: '1 / 1.15',
+                          position: 'relative',
+                          aspectRatio: '1 / 1.05',
                           background: DEEP_DUSK,
                           border: '0.5px solid rgba(255,255,255,0.06)',
                           borderRadius: 14,
@@ -336,63 +345,52 @@ export default function ProductHomeMock() {
                           color: 'inherit',
                         }}
                       >
-                        <div style={{ padding: '12px 12px 8px', position: 'relative', zIndex: 2 }}>
-                          <h3
-                            style={{
-                              fontFamily: 'var(--font-serif)',
-                              fontSize: 18,
-                              fontWeight: 500,
-                              color: '#FFFFFF',
-                              margin: 0,
-                              lineHeight: 1.15,
-                            }}
-                          >
-                            {card.title}
-                          </h3>
-                        </div>
-                        <div style={{ flex: 1, position: 'relative', overflow: 'hidden' }}>
-                          <img
-                            src={PLACEHOLDER_POOL[globalIdx % PLACEHOLDER_POOL.length]}
-                            alt=""
-                            style={{
-                              position: 'absolute',
-                              inset: 0,
-                              width: '100%',
-                              height: '100%',
-                              objectFit: 'contain',
-                              objectPosition: 'center center',
-                            }}
-                          />
-                        </div>
-                        <div style={{ padding: '8px 12px 12px', background: DEEP_DUSK }}>
+                        <img
+                          src={cardIllustration(product.id, card.id)}
+                          alt=""
+                          style={{
+                            position: 'absolute',
+                            inset: 0,
+                            width: '100%',
+                            height: '100%',
+                            objectFit: 'contain',
+                            objectPosition: 'center',
+                          }}
+                        />
+                        <h3
+                          style={{
+                            position: 'absolute',
+                            bottom: 14,
+                            left: 14,
+                            maxWidth: '75%',
+                            fontFamily: 'var(--font-serif)',
+                            fontSize: 18,
+                            fontWeight: 500,
+                            color: '#FFFFFF',
+                            textShadow: '0 1px 10px rgba(0,0,0,0.7)',
+                            margin: 0,
+                            lineHeight: 1.15,
+                          }}
+                        >
+                          {card.title}
+                        </h3>
+                        <div
+                          style={{
+                            position: 'absolute',
+                            bottom: 0,
+                            left: 0,
+                            right: 0,
+                            height: 3,
+                            background: 'rgba(255,255,255,0.12)',
+                          }}
+                        >
                           <div
                             style={{
-                              width: '100%',
-                              height: 3,
-                              borderRadius: 2,
-                              background: 'rgba(255,255,255,0.08)',
-                              overflow: 'hidden',
+                              width: `${pct}%`,
+                              height: '100%',
+                              background: meta.progressColor,
                             }}
-                          >
-                            <div
-                              style={{
-                                width: `${pct}%`,
-                                height: '100%',
-                                background: meta.progressColor,
-                              }}
-                            />
-                          </div>
-                          <p
-                            style={{
-                              margin: '6px 0 0 0',
-                              fontFamily: 'var(--font-sans)',
-                              fontSize: 11,
-                              fontWeight: 500,
-                              color: 'rgba(255,255,255,0.65)',
-                            }}
-                          >
-                            {done}/{total} samtal
-                          </p>
+                          />
                         </div>
                       </button>
                     );
