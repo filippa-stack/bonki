@@ -454,24 +454,26 @@ export default function ProductIntroMock({ productId }: ProductIntroMockProps) {
                 </p>
               )}
 
-              <button
-                onClick={handleSoftDecline}
-                style={{
-                  display: 'block',
-                  width: '100%',
-                  marginTop: 14,
-                  background: 'none',
-                  border: 'none',
-                  cursor: 'pointer',
-                  fontFamily: 'Inter, system-ui, sans-serif',
-                  fontSize: 12.5,
-                  color: LANTERN_GLOW,
-                  opacity: 0.7,
-                  padding: '4px 0',
-                }}
-              >
-                Inte just nu
-              </button>
+              {resolved === 'locked' && (
+                <button
+                  onClick={handleSoftDecline}
+                  style={{
+                    display: 'block',
+                    width: '100%',
+                    marginTop: 14,
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    fontFamily: 'Inter, system-ui, sans-serif',
+                    fontSize: 12.5,
+                    color: LANTERN_GLOW,
+                    opacity: 0.7,
+                    padding: '4px 0',
+                  }}
+                >
+                  Inte just nu
+                </button>
+              )}
 
               {sexSafetyLine && (
                 <p
