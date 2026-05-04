@@ -172,9 +172,9 @@ function PastelTile({ product, onClick, completedCount, isPurchased }: PastelTil
         style={{
           position: 'absolute',
           left: 0, right: 0, bottom: 0,
-          height: '70%',
+          height: '55%',
           background:
-            'linear-gradient(to top, rgba(0,0,0,0.40) 0%, rgba(0,0,0,0.15) 40%, transparent 100%)',
+            'linear-gradient(to top, rgba(0,0,0,0.32) 0%, rgba(0,0,0,0.08) 50%, transparent 100%)',
           pointerEvents: 'none',
           zIndex: 1,
           borderRadius: '0 0 22px 22px',
