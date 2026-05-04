@@ -115,7 +115,7 @@ export default function PaywallMock({ productId }: PaywallMockProps) {
         fontFamily: 'Inter, system-ui, sans-serif',
       }}
     >
-      {/* Illustration backdrop */}
+      {/* Illustration backdrop — decorative crown, fully faded by ~30vh */}
       {creatureImage && (
         <div
           aria-hidden
@@ -124,7 +124,7 @@ export default function PaywallMock({ productId }: PaywallMockProps) {
             top: 0,
             left: '-10%',
             right: '-10%',
-            height: '42%',
+            height: '30vh',
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'flex-start',
@@ -148,11 +148,11 @@ export default function PaywallMock({ productId }: PaywallMockProps) {
           <div
             style={{
               position: 'absolute',
-              bottom: 0,
+              top: 0,
               left: 0,
               right: 0,
-              height: '50%',
-              background: `linear-gradient(to top, ${MIDNIGHT_INK} 0%, transparent 100%)`,
+              bottom: 0,
+              background: `linear-gradient(to top, ${MIDNIGHT_INK} 0%, ${MIDNIGHT_INK} 40%, transparent 100%)`,
               pointerEvents: 'none',
             }}
           />
