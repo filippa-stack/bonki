@@ -262,7 +262,7 @@ export default function ProductIntroMock({ productId }: ProductIntroMockProps) {
           boxSizing: 'border-box',
         }}
       >
-        <div style={{ flex: '0 0 auto', minHeight: '15%' }} />
+        <div style={{ flex: '0 0 auto', minHeight: '15%', paddingTop: 60 }} />
 
         {/* Headline — product name only */}
         <h1
