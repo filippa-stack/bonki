@@ -299,20 +299,27 @@ export default function ProductIntroMock({ productId }: ProductIntroMockProps) {
           </p>
         )}
 
-        {/* Credentials — anchors trust at top of editorial pitch */}
-        <p
-          style={{
-            fontFamily: 'Inter, system-ui, sans-serif',
-            fontSize: 12,
-            color: LANTERN_GLOW,
-            opacity: 0.65,
-            textAlign: 'center',
-            margin: '40px 0 0',
-            lineHeight: 1.5,
-          }}
-        >
-          Utvecklat av psykologer · 29 års klinisk erfarenhet
-        </p>
+        {/* Credentials — dark pill backing keeps contrast stable across illustration fade */}
+        <div style={{ marginTop: 24, display: 'flex', justifyContent: 'center' }}>
+          <p
+            style={{
+              fontFamily: 'Inter, system-ui, sans-serif',
+              fontSize: 12,
+              color: LANTERN_GLOW,
+              opacity: 0.85,
+              textAlign: 'center',
+              margin: 0,
+              lineHeight: 1.5,
+              background: 'rgba(15,23,39,0.85)',
+              padding: '6px 16px',
+              borderRadius: 999,
+              backdropFilter: 'blur(4px)',
+              WebkitBackdropFilter: 'blur(4px)',
+            }}
+          >
+            Utvecklat av psykologer · 29 års klinisk erfarenhet
+          </p>
+        </div>
 
         {/* Body copy */}
         <div style={{ marginTop: 24, textAlign: 'center' }}>
