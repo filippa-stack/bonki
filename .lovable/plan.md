@@ -1,73 +1,51 @@
-# Intro page mock — free + locked + redirect states
+# Intro mock — credentials pill + collapsible dev panel
 
-Add `/intro-mock/:productId` sandbox to evaluate the intro CTA state machine without touching live `ProductIntro.tsx`. Mirrors the `/library-mock` and `/onboarding-mock` pattern.
+Two adjustments to `src/components/ProductIntroMock.tsx`. No other files touched.
 
-## Files
+## 1. Credentials line — dark pill backing
 
-**New**
-- `src/components/ProductIntroMock.tsx` — full intro layout + state machine + dev panel.
-- `src/pages/ProductIntroMock.tsx` — page wrapper + top-right `MOCK` badge linking to `/library-mock`.
+The illustration backdrop is 42% viewport height with a 50% gradient fade, so the credentials line sits in the transition zone where contrast is uneven. Pushing it further down would compress body copy and the CTA region into the bottom nav. The pill approach is cleaner.
 
-**Modified**
-- `src/App.tsx` — register `<Route path="/intro-mock/:productId" element={<ProductIntroMockPage />} />` inside `ProtectedContent`, alongside `/library-mock` and `/onboarding-mock`.
+Replace the bare `<p>` with a centered `<p>` wrapped in a flex container so the pill hugs the text:
 
-## State machine
+- background: `rgba(15,23,39,0.85)` (midnight ink at 85%)
+- padding: `6px 16px`
+- border-radius: `999px`
+- backdropFilter: `blur(4px)` (and `-webkit-` variant) — softens any creature shapes peeking through
+- opacity bumped from `0.65` to `0.85` since the pill provides ground; copy can read at full strength
+- `marginTop: 24` on the wrapper (was `40` on the bare `<p>`)
 
-Driven by localStorage with a React-state dev-panel override:
-- `bonki-mock-welcome-spent` (`'1'` once any welcome session used)
-- `bonki-mock-welcome-product` (productId where it was spent)
-- `bonki-mock-purchased-{productId}` (per-product purchase flag)
+All other styling unchanged (Inter 12px, lantern-glow, centered, copy unchanged).
 
-Resolved states for current `:productId`:
-1. **purchased** → render-time `<Navigate to={`/product/${slug}`} replace />`.
-2. **alreadyUsedHere** (`spent && welcomeProduct === productId`) → placeholder block "Paywall would render here — coming next" + `Tillbaka till biblioteket`.
-3. **locked** (`spent && welcomeProduct !== productId`) → orange `Köp · 195 kr` CTA + `Du har redan använt ditt gratis-samtal i {otherProductName}.`
-4. **free** (default) → ghost-glow `Använd mitt gratis-samtal` CTA.
+## 2. Dev panel — collapsible toggle
 
-Dev panel buttons (`Free`, `Locked (i Jag i Mig)`, `Purchased`) clear localStorage flags then set a forced override so flips happen without seeding storage. "Locked" hardcodes the `otherProductName` display as `Jag i Mig`.
+The expanded panel covers the CTA region. Make it default-collapsed.
 
-## Layout (shared)
+Change `DevPanel` to track local `expanded` state (default `false`).
 
-- Full-bleed creature illustration backdrop (top 42%, fade into midnight-ink), back arrow top-left, content column with 28px horizontal padding.
-- **Headline**: just `product.name` (no `Välkommen till` prefix). Fraunces 34px wt 500, lantern-glow, text-shadow `0 2px 12px rgba(0,0,0,0.35)`.
-- **Subhead**: tagline from local `TAGLINES` map (`Jag i Världen → "En värld som vidgas"`, etc.). Fraunces italic 18px, lantern-glow @ 92%.
-- **Body**: `productIntros[productId].slides[*].body` joined with `\n\n`. Inter 16px, lantern-glow @ 92%, line-height 1.5. Unchanged.
-- **Sample question card**: eyebrow `EN FRÅGA UR {product.name}` + Fraunces italic quoted `PREVIEW_QUESTION[productId]`. Unchanged.
+**Collapsed state** — small pill at the same anchor:
+- `position: fixed; bottom: calc(env(safe-area-inset-bottom, 0px) + 76px); left: 12px; z-index: 9998;`
+- Single button labeled `Mock · {resolved} ▾` with caret
+- Compact: `padding: 6px 10px`, `borderRadius: 999px`, same dark glass styling (`rgba(0,0,0,0.55)` + 0.5px border + blur)
+- Tapping expands
 
-## CTA region — Free
+**Expanded state** — current full panel, plus:
+- Header row shows `Mock state · {resolved}` with a `▴` collapse affordance
+- Tapping the header (or the caret) collapses back
+- Three state buttons unchanged (Free / Locked (i Jag i Mig) / Purchased)
+- Selecting a state still calls `onSelect` and clears flags as today; panel can stay open or auto-collapse — keep it open so rapid state-switching still works
 
-1. `Resten av {productName} — 195 kr` (Inter 14px wt 500, lantern-glow @ 90%).
-2. `Utvecklat av psykologer · 29 års klinisk erfarenhet` (Inter 12px @ 65%).
-3. Full-width 56×14px CTA, bg `#D4F5C0`, text `#0F1727`, Inter 14px wt 600 — `Använd mitt gratis-samtal`.
-   - Mock click: sets `welcome-spent='1'`, `welcome-product=productId`, navigates to `/library-mock`.
-   - **Live migration note**: in production this should navigate to `/card/{firstCardId}` instead.
-4. Soft decline `Inte just nu` (text-only, lantern-glow @ 70%).
+Z-index stays `9998` (was `9999`); MOCK badge in top-right is untouched.
 
-## CTA region — Locked
+## What stays unchanged
 
-1. `{productName} — 195 kr` (no `Resten av` framing).
-2. Same credentials line.
-3. Full-width 56×14px CTA, bg `#E85D2C`, text lantern-glow — `Köp · 195 kr`. Click sets `bonki-mock-purchased-{productId}` and navigates to `/library-mock`.
-4. `Du har redan använt ditt gratis-samtal i {otherProductName}.` (Inter 11.5px @ 60%).
-5. Same soft decline.
-
-## Removed vs live intro (mock only)
-
-- `195 kr · Engångsköp · Tillgång för alltid` line.
-- `Säker betalning · Ingen prenumeration` defensive line.
-- Per-product CTA accent (replaced by ghost-glow / orange per state).
-- `Välkommen till\n` prefix in the headline.
+- Headline (40px), subhead, body copy, sample question card, CTA region, copy strings
+- State machine, localStorage flags, navigation handlers
+- MOCK badge top-right, back arrow, illustration backdrop
+- Live `ProductIntro.tsx`
 
 ## Verification
 
-- `/intro-mock/jag_i_varlden` (clean state) → ghost-glow CTA, `Resten av Jag i Världen — 195 kr`, headline reads only `Jag i Världen`.
-- Dev panel `Locked` → orange `Köp · 195 kr` + `Du har redan använt ditt gratis-samtal i Jag i Mig.`
-- Dev panel `Purchased` → immediate redirect to `/product/{slug}`.
-- Live `ProductIntro.tsx`, paywall, free-card policy, library/onboarding mocks untouched.
-
-## Out of scope
-
-- Paywall design after free session (next prompt).
-- Real `welcome_product_id` backend field.
-- Body copy edits.
-- Sexualitetskort intro mock variant.
+- `/intro-mock/jag_i_varlden` (free): credentials pill reads cleanly against any background; CTA region fully visible with no dev panel overlap.
+- Dev toggle "Mock · free ▾" sits at bottom-left as a small pill; tapping expands the panel; tapping the header collapses it again.
+- Switching to Locked state via the expanded panel updates label to "Mock · locked ▾" when collapsed.

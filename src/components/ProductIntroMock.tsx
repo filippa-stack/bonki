@@ -299,20 +299,27 @@ export default function ProductIntroMock({ productId }: ProductIntroMockProps) {
           </p>
         )}
 
-        {/* Credentials — anchors trust at top of editorial pitch */}
-        <p
-          style={{
-            fontFamily: 'Inter, system-ui, sans-serif',
-            fontSize: 12,
-            color: LANTERN_GLOW,
-            opacity: 0.65,
-            textAlign: 'center',
-            margin: '40px 0 0',
-            lineHeight: 1.5,
-          }}
-        >
-          Utvecklat av psykologer · 29 års klinisk erfarenhet
-        </p>
+        {/* Credentials — dark pill backing keeps contrast stable across illustration fade */}
+        <div style={{ marginTop: 24, display: 'flex', justifyContent: 'center' }}>
+          <p
+            style={{
+              fontFamily: 'Inter, system-ui, sans-serif',
+              fontSize: 12,
+              color: LANTERN_GLOW,
+              opacity: 0.85,
+              textAlign: 'center',
+              margin: 0,
+              lineHeight: 1.5,
+              background: 'rgba(15,23,39,0.85)',
+              padding: '6px 16px',
+              borderRadius: 999,
+              backdropFilter: 'blur(4px)',
+              WebkitBackdropFilter: 'blur(4px)',
+            }}
+          >
+            Utvecklat av psykologer · 29 års klinisk erfarenhet
+          </p>
+        </div>
 
         {/* Body copy */}
         <div style={{ marginTop: 24, textAlign: 'center' }}>
@@ -553,19 +560,50 @@ interface DevPanelProps {
 }
 
 function DevPanel({ resolved, forced, onSelect }: DevPanelProps) {
+  const [expanded, setExpanded] = useState(false);
+
   const buttons: Array<{ label: string; value: Exclude<ForcedState, null> }> = [
     { label: 'Free', value: 'free' },
     { label: 'Locked (i Jag i Mig)', value: 'locked' },
     { label: 'Purchased', value: 'purchased' },
   ];
 
+  const anchorStyle = {
+    position: 'fixed' as const,
+    bottom: 'calc(env(safe-area-inset-bottom, 0px) + 76px)',
+    left: 12,
+    zIndex: 9998,
+  };
+
+  if (!expanded) {
+    return (
+      <button
+        onClick={() => setExpanded(true)}
+        style={{
+          ...anchorStyle,
+          padding: '6px 10px',
+          borderRadius: 999,
+          background: 'rgba(0,0,0,0.55)',
+          border: '0.5px solid rgba(255,255,255,0.18)',
+          backdropFilter: 'blur(8px)',
+          WebkitBackdropFilter: 'blur(8px)',
+          color: '#FDF6E3',
+          fontFamily: 'Inter, system-ui, sans-serif',
+          fontSize: 11,
+          fontWeight: 600,
+          letterSpacing: '0.04em',
+          cursor: 'pointer',
+        }}
+      >
+        Mock · {resolved} ▾
+      </button>
+    );
+  }
+
   return (
     <div
       style={{
-        position: 'fixed',
-        bottom: 'calc(env(safe-area-inset-bottom, 0px) + 76px)',
-        left: 12,
-        zIndex: 9999,
+        ...anchorStyle,
         display: 'flex',
         flexDirection: 'column',
         gap: 4,
@@ -577,19 +615,29 @@ function DevPanel({ resolved, forced, onSelect }: DevPanelProps) {
         WebkitBackdropFilter: 'blur(8px)',
       }}
     >
-      <div
+      <button
+        onClick={() => setExpanded(false)}
         style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: 8,
           fontFamily: 'Inter, system-ui, sans-serif',
           fontSize: 9,
           fontWeight: 700,
           letterSpacing: '0.08em',
-          color: 'rgba(253,246,227,0.6)',
+          color: 'rgba(253,246,227,0.7)',
           textTransform: 'uppercase',
-          padding: '2px 6px 0',
+          padding: '2px 6px',
+          background: 'none',
+          border: 'none',
+          cursor: 'pointer',
+          textAlign: 'left',
         }}
       >
-        Mock state · {resolved}
-      </div>
+        <span>Mock state · {resolved}</span>
+        <span style={{ opacity: 0.7 }}>▴</span>
+      </button>
       {buttons.map(b => {
         const active = forced === b.value;
         return (
