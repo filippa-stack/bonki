@@ -1,77 +1,81 @@
 /**
- * BonkiLogoMark — structural placeholder for the hand-drawn Bonki logo.
+ * BonkiLogoMark — hand-drawn Bonki logo (two figures curled inside an oval).
  *
- * Two figures (parent + child) curled inside an enclosing oval form, with
- * four small eye dots. Verbatim SVG from the v4 mockup HTML — to be swapped
- * for the final hand-drawn artwork later.
+ * Renders the rasterized PNG asset from src/assets/bonki-logo.png.
+ * The ghost-glow line color (#D4F5C0) and transparent background are
+ * baked into the asset, so the logo composites cleanly on any dark
+ * surface without mix-blend tricks.
  *
- * Sized via the `size` prop (px). Uses currentColor so it inherits color
- * from its parent. Designed to render at sizes from 9px (favicons / inline)
- * up to 120px (welcome gift hero).
+ * Props:
+ *   - size: rendered px (square). Default 32.
+ *   - color: NO-OP. The line color is baked into the PNG. Kept in the
+ *     API so existing call sites compile, but does nothing. If a
+ *     non-ghost-glow logo is ever needed, export a separate asset
+ *     rather than try to recolor at runtime.
+ *   - className / style / aria-hidden: standard passthrough.
+ *
+ * Tiny-size fallback:
+ *   At sizes ≤ 12px (e.g. the 9px "Du har provat" pill in the library
+ *   mock) the rasterized linework doesn't read clearly. We render a
+ *   solid ghost-glow dot instead — the surrounding text carries the
+ *   meaning, the icon is purely decorative at that scale.
  */
 
 import React from 'react';
+import logoSrc from '@/assets/bonki-logo.png';
 
 interface BonkiLogoMarkProps {
   size?: number;
+  /** NO-OP — the PNG has #D4F5C0 baked in. Kept for API compatibility. */
   color?: string;
   className?: string;
   style?: React.CSSProperties;
   'aria-hidden'?: boolean;
 }
 
+const GHOST_GLOW = '#D4F5C0';
+
 export default function BonkiLogoMark({
   size = 32,
-  color,
+  color: _color,
   className,
   style,
   'aria-hidden': ariaHidden = true,
 }: BonkiLogoMarkProps) {
+  // Tiny-size fallback: a clean dot reads better than a blurred PNG.
+  if (size <= 12) {
+    const dot = Math.max(6, Math.round(size * 0.7));
+    return (
+      <span
+        className={className}
+        aria-hidden={ariaHidden}
+        style={{
+          display: 'inline-block',
+          width: dot,
+          height: dot,
+          borderRadius: '50%',
+          background: GHOST_GLOW,
+          ...style,
+        }}
+      />
+    );
+  }
+
   return (
-    <svg
+    <img
+      src={logoSrc}
       width={size}
       height={size}
-      viewBox="0 0 100 100"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className={className}
-      style={{ color: color ?? 'currentColor', display: 'block', ...style }}
+      alt=""
       aria-hidden={ariaHidden}
-      role={ariaHidden ? undefined : 'img'}
-    >
-      {/* Outer oval frame */}
-      <path
-        d="M 50 6 C 75 6, 92 24, 92 50 C 92 78, 76 94, 50 94 C 24 94, 8 76, 8 50 C 8 22, 26 6, 50 6 Z"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="3"
-        strokeLinejoin="round"
-        strokeLinecap="round"
-      />
-      {/* Parent figure */}
-      <path
-        d="M 42 22 C 52 20, 62 26, 64 36 C 66 46, 60 52, 52 50 C 44 48, 40 42, 42 22 Z"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2.5"
-        strokeLinejoin="round"
-        strokeLinecap="round"
-      />
-      {/* Child figure */}
-      <path
-        d="M 44 56 C 52 54, 60 60, 60 68 C 60 76, 54 80, 48 78 C 42 76, 40 70, 44 56 Z"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2.5"
-        strokeLinejoin="round"
-        strokeLinecap="round"
-      />
-      {/* Parent eyes */}
-      <line x1="48" y1="32" x2="50" y2="32" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-      <line x1="56" y1="32" x2="58" y2="32" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-      {/* Child eyes */}
-      <line x1="49" y1="64" x2="51" y2="64" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
-      <line x1="55" y1="64" x2="57" y2="64" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
-    </svg>
+      className={className}
+      style={{
+        display: 'block',
+        width: size,
+        height: size,
+        objectFit: 'contain',
+        ...style,
+      }}
+    />
   );
 }

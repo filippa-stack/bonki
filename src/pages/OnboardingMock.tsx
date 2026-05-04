@@ -17,7 +17,7 @@ export default function OnboardingMockPage() {
         aria-label="Gå till riktig app"
         style={{
           position: 'fixed',
-          bottom: 'calc(env(safe-area-inset-bottom, 0px) + 12px)',
+          top: 'calc(env(safe-area-inset-top, 0px) + 50px)',
           right: 12,
           zIndex: 9999,
           padding: '6px 10px',
