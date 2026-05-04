@@ -310,8 +310,9 @@ export default function ProductHomeMock() {
                     fontWeight: 600,
                     letterSpacing: '0.2em',
                     textTransform: 'uppercase',
-                    color: 'rgba(255,255,255,0.45)',
-                    padding: '24px 0 12px 4px',
+                    color: 'rgba(255,255,255,0.65)',
+                    borderTop: '0.5px solid rgba(255,255,255,0.10)',
+                    padding: '28px 0 12px 4px',
                   }}
                 >
                   {section.categoryTitle}
@@ -367,31 +368,33 @@ export default function ProductHomeMock() {
                             fontSize: 18,
                             fontWeight: 500,
                             color: '#FFFFFF',
-                            textShadow: '0 1px 10px rgba(0,0,0,0.7)',
+                            textShadow: '0 1px 14px rgba(0,0,0,0.85)',
                             margin: 0,
                             lineHeight: 1.15,
                           }}
                         >
                           {card.title}
                         </h3>
-                        <div
-                          style={{
-                            position: 'absolute',
-                            bottom: 0,
-                            left: 0,
-                            right: 0,
-                            height: 3,
-                            background: 'rgba(255,255,255,0.12)',
-                          }}
-                        >
+                        {pct > 0 && (
                           <div
                             style={{
-                              width: `${pct}%`,
-                              height: '100%',
-                              background: meta.progressColor,
+                              position: 'absolute',
+                              bottom: 0,
+                              left: 0,
+                              right: 0,
+                              height: 3,
+                              background: 'rgba(255,255,255,0.12)',
                             }}
-                          />
-                        </div>
+                          >
+                            <div
+                              style={{
+                                width: `${pct}%`,
+                                height: '100%',
+                                background: meta.progressColor,
+                              }}
+                            />
+                          </div>
+                        )}
                       </button>
                     );
                   })}
