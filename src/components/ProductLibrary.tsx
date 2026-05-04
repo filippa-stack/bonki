@@ -1000,36 +1000,17 @@ export default function ProductLibrary() {
           >
             {sortedKidsProducts.map((product) => {
               const count = completedCountMap[product.id] || 0;
-              const freeCardCompleted = product.freeCardId
-                ? (completedCardSets[product.id]?.has(product.freeCardId) ?? false)
-                : false;
-              const showFreeLabel = false;
-              const ptxt = count > 0
-                ? `${count} av ${product.cards.length} samtal`
-                : `${product.cards.length} samtal`;
               return (
                 <PastelTile
                   key={product.id}
                   name={product.name}
-                  bg={TILE_COLORS[product.id]!}
                   productId={product.id}
                   tagline={TAGLINES[product.id]}
-                  
-                  accentColor={ACCENT_COLORS[product.id]}
-                  taglineColor={TAGLINE_COLORS[product.id]}
                   illustration={ILLUSTRATIONS[product.id]}
-                  illustrationOpacity={ILLUSTRATION_OPACITY[product.id]}
                   onClick={() => navigate(`/product/${product.slug}`)}
-                  badgeText={buildBadgeText(product)}
-                  hasActiveSession={activeProductIds.has(product.id)}
-                  tileHeight={TILE_HEIGHTS[product.id] ?? '240px'}
                   completedCount={count}
                   isPurchased={purchased.has(product.id)}
-                  lastActive={lastActivityMap[product.id]}
-                  hideFreeBadge={freeCardCompleted}
-                  showFreeLabel={showFreeLabel}
                   totalCards={product.cards.length}
-                  wide
                 />
               );
             })}
