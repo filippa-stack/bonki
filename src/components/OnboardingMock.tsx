@@ -186,7 +186,7 @@ function ScreenPromise({ onNext }: { onNext: () => void }) {
       {/* Logo */}
       <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 18 }}>
         <BonkiLogoMark
-          size={32}
+          size={36}
           style={{ color: LANTERN_GLOW, opacity: 0.85 }}
         />
       </div>
@@ -251,7 +251,7 @@ function ScreenPromise({ onNext }: { onNext: () => void }) {
       <PriceRow label="För dig och ditt barn" price="195 kr" />
 
       {/* CTA block — pushed to bottom of available space */}
-      <div style={{ marginTop: 'auto', paddingTop: 22 }}>
+      <div style={{ marginTop: 'auto', paddingTop: 18 }}>
         <button
           onClick={onNext}
           style={{
@@ -290,7 +290,7 @@ function ScreenPromise({ onNext }: { onNext: () => void }) {
       {/* Legal */}
       <p
         style={{
-          marginTop: 16,
+          marginTop: 14,
           fontFamily: 'Inter, system-ui, sans-serif',
           fontSize: 10,
           lineHeight: 1.55,
@@ -306,7 +306,7 @@ function ScreenPromise({ onNext }: { onNext: () => void }) {
       </p>
 
       {/* Progress dots tucked at bottom for symmetry with screens 1 + 3 */}
-      <div style={{ marginTop: 16 }}>
+      <div style={{ marginTop: 12 }}>
         <DashProgress activeIndex={1} activeColor={BONKI_ORANGE} />
       </div>
     </div>

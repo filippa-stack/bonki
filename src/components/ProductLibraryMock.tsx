@@ -331,8 +331,8 @@ function MockResumeBanner() {
       style={{
         height: 64,
         borderRadius: 14,
-        background: `linear-gradient(90deg, ${accentRgba(0.30)} 0%, ${accentRgba(0.06)} 38%, rgba(26,37,56,0.95) 70%), #1A2538`,
-        border: '0.5px solid rgba(253,246,227,0.08)',
+        background: `linear-gradient(90deg, ${accentRgba(0.55)} 0%, ${accentRgba(0.18)} 38%, rgba(26,37,56,0.95) 70%), #1A2538`,
+        border: '0.5px solid rgba(253,246,227,0.14)',
         padding: '0 8px 0 14px',
         display: 'flex',
         alignItems: 'center',
@@ -342,11 +342,11 @@ function MockResumeBanner() {
       <span
         aria-hidden
         style={{
-          width: 8,
-          height: 8,
+          width: 10,
+          height: 10,
           borderRadius: '50%',
           background: accent,
-          boxShadow: `0 0 10px ${accentRgba(0.6)}`,
+          boxShadow: `0 0 12px ${accentRgba(0.6)}`,
           flexShrink: 0,
         }}
       />
