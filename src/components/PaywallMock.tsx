@@ -238,8 +238,10 @@ export default function PaywallMock({ productId }: PaywallMockProps) {
             marginTop: 32,
             padding: '24px 20px',
             borderRadius: 18,
-            background: 'rgba(255,255,255,0.04)',
-            border: '0.5px solid rgba(255,255,255,0.10)',
+            background: 'rgba(15,23,39,0.85)',
+            backdropFilter: 'blur(8px)',
+            WebkitBackdropFilter: 'blur(8px)',
+            border: '0.5px solid rgba(255,255,255,0.18)',
             textAlign: 'center',
           }}
         >
