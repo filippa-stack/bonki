@@ -1,34 +1,73 @@
-# Three small visual calibrations
+# Intro page mock — free + locked + redirect states
 
-## 1. Screen 2 — bottom-anchor the CTA cluster
+Add `/intro-mock/:productId` sandbox to evaluate the intro CTA state machine without touching live `ProductIntro.tsx`. Mirrors the `/library-mock` and `/onboarding-mock` pattern.
 
-**File:** `src/components/OnboardingMock.tsx` (`ScreenPromise`)
+## Files
 
-Tighten three values inside the bottom cluster so the dash row sits in the same visual band as Screens 1 and 3:
+**New**
+- `src/components/ProductIntroMock.tsx` — full intro layout + state machine + dev panel.
+- `src/pages/ProductIntroMock.tsx` — page wrapper + top-right `MOCK` badge linking to `/library-mock`.
 
-- Line 254: CTA block `paddingTop: 22` → `paddingTop: 18`
-- Line 293: legal `<p>` `marginTop: 16` → `marginTop: 14`
-- Line 309: dash wrapper `marginTop: 16` → `marginTop: 12`
+**Modified**
+- `src/App.tsx` — register `<Route path="/intro-mock/:productId" element={<ProductIntroMockPage />} />` inside `ProtectedContent`, alongside `/library-mock` and `/onboarding-mock`.
 
-Net ~8px tighter. If still off after one pass, next step is paddingTop 18→14 and marginTops to 12 and 8 — not a structural rework.
+## State machine
 
-## 2. Screen 2 — logo 32px → 36px
+Driven by localStorage with a React-state dev-panel override:
+- `bonki-mock-welcome-spent` (`'1'` once any welcome session used)
+- `bonki-mock-welcome-product` (productId where it was spent)
+- `bonki-mock-purchased-{productId}` (per-product purchase flag)
 
-**File:** `src/components/OnboardingMock.tsx`, line 189
+Resolved states for current `:productId`:
+1. **purchased** → render-time `<Navigate to={`/product/${slug}`} replace />`.
+2. **alreadyUsedHere** (`spent && welcomeProduct === productId`) → placeholder block "Paywall would render here — coming next" + `Tillbaka till biblioteket`.
+3. **locked** (`spent && welcomeProduct !== productId`) → orange `Köp · 195 kr` CTA + `Du har redan använt ditt gratis-samtal i {otherProductName}.`
+4. **free** (default) → ghost-glow `Använd mitt gratis-samtal` CTA.
 
-`<BonkiLogoMark size={32} ... />` → `<BonkiLogoMark size={36} ... />`. Color, opacity (0.85), centering, marginBottom (18) all unchanged. Screen 3's 120px logo untouched.
+Dev panel buttons (`Free`, `Locked (i Jag i Mig)`, `Purchased`) clear localStorage flags then set a forced override so flips happen without seeding storage. "Locked" hardcodes the `otherProductName` display as `Jag i Mig`.
 
-## 3. Library resume banner — visual presence
+## Layout (shared)
 
-**File:** `src/components/ProductLibraryMock.tsx` (`MockResumeBanner`)
+- Full-bleed creature illustration backdrop (top 42%, fade into midnight-ink), back arrow top-left, content column with 28px horizontal padding.
+- **Headline**: just `product.name` (no `Välkommen till` prefix). Fraunces 34px wt 500, lantern-glow, text-shadow `0 2px 12px rgba(0,0,0,0.35)`.
+- **Subhead**: tagline from local `TAGLINES` map (`Jag i Världen → "En värld som vidgas"`, etc.). Fraunces italic 18px, lantern-glow @ 92%.
+- **Body**: `productIntros[productId].slides[*].body` joined with `\n\n`. Inter 16px, lantern-glow @ 92%, line-height 1.5. Unchanged.
+- **Sample question card**: eyebrow `EN FRÅGA UR {product.name}` + Fraunces italic quoted `PREVIEW_QUESTION[productId]`. Unchanged.
 
-- Background gradient: `accentRgba(0.30) … accentRgba(0.06)` → `accentRgba(0.55) … accentRgba(0.18)` (left third now carries visible product color, fading to neutral by 70%).
-- Accent dot: `8×8` → `10×10`; glow blur `0 0 10px` → `0 0 12px` to match.
-- Border: `rgba(253,246,227,0.08)` → `rgba(253,246,227,0.14)`.
+## CTA region — Free
 
-## Files touched
+1. `Resten av {productName} — 195 kr` (Inter 14px wt 500, lantern-glow @ 90%).
+2. `Utvecklat av psykologer · 29 års klinisk erfarenhet` (Inter 12px @ 65%).
+3. Full-width 56×14px CTA, bg `#D4F5C0`, text `#0F1727`, Inter 14px wt 600 — `Använd mitt gratis-samtal`.
+   - Mock click: sets `welcome-spent='1'`, `welcome-product=productId`, navigates to `/library-mock`.
+   - **Live migration note**: in production this should navigate to `/card/{firstCardId}` instead.
+4. Soft decline `Inte just nu` (text-only, lantern-glow @ 70%).
 
-- `src/components/OnboardingMock.tsx`
-- `src/components/ProductLibraryMock.tsx`
+## CTA region — Locked
 
-No other files. Live `Onboarding.tsx`, `ProductLibrary.tsx`, paywall, free-card policy untouched.
+1. `{productName} — 195 kr` (no `Resten av` framing).
+2. Same credentials line.
+3. Full-width 56×14px CTA, bg `#E85D2C`, text lantern-glow — `Köp · 195 kr`. Click sets `bonki-mock-purchased-{productId}` and navigates to `/library-mock`.
+4. `Du har redan använt ditt gratis-samtal i {otherProductName}.` (Inter 11.5px @ 60%).
+5. Same soft decline.
+
+## Removed vs live intro (mock only)
+
+- `195 kr · Engångsköp · Tillgång för alltid` line.
+- `Säker betalning · Ingen prenumeration` defensive line.
+- Per-product CTA accent (replaced by ghost-glow / orange per state).
+- `Välkommen till\n` prefix in the headline.
+
+## Verification
+
+- `/intro-mock/jag_i_varlden` (clean state) → ghost-glow CTA, `Resten av Jag i Världen — 195 kr`, headline reads only `Jag i Världen`.
+- Dev panel `Locked` → orange `Köp · 195 kr` + `Du har redan använt ditt gratis-samtal i Jag i Mig.`
+- Dev panel `Purchased` → immediate redirect to `/product/{slug}`.
+- Live `ProductIntro.tsx`, paywall, free-card policy, library/onboarding mocks untouched.
+
+## Out of scope
+
+- Paywall design after free session (next prompt).
+- Real `welcome_product_id` backend field.
+- Body copy edits.
+- Sexualitetskort intro mock variant.
