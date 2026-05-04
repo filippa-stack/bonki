@@ -26,6 +26,7 @@ import BonkiErrorBoundary from "@/components/BonkiErrorBoundary";
 import Index from "./pages/Index";
 import LibraryMock from "./pages/LibraryMock";
 import OnboardingMockPage from "./pages/OnboardingMock";
+import ProductIntroMockPage from "./pages/ProductIntroMock";
 
 import Category from "./pages/Category";
 import CardView from "./pages/CardView";
@@ -85,6 +86,7 @@ function ProtectedContent() {
             <Route path="/" element={<Index />} />
             <Route path="/library-mock" element={<LibraryMock />} />
             <Route path="/onboarding-mock" element={<OnboardingMockPage />} />
+            <Route path="/intro-mock/:productId" element={<ProductIntroMockPage />} />
             <Route path="/categories" element={<Navigate to="/" replace />} />
             <Route path="/still-us/explore" element={<StillUsExplore />} />
             <Route path="/still-us/intro" element={<SuIntroPortal />} />
