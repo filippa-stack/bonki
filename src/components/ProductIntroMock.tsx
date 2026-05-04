@@ -299,8 +299,23 @@ export default function ProductIntroMock({ productId }: ProductIntroMockProps) {
           </p>
         )}
 
+        {/* Credentials — anchors trust at top of editorial pitch */}
+        <p
+          style={{
+            fontFamily: 'Inter, system-ui, sans-serif',
+            fontSize: 12,
+            color: LANTERN_GLOW,
+            opacity: 0.65,
+            textAlign: 'center',
+            margin: '12px 0 0',
+            lineHeight: 1.5,
+          }}
+        >
+          Utvecklat av psykologer · 29 års klinisk erfarenhet
+        </p>
+
         {/* Body copy */}
-        <div style={{ marginTop: 22, textAlign: 'center' }}>
+        <div style={{ marginTop: 24, textAlign: 'center' }}>
           {fullBodyText.split('\n\n').map((para, i) => (
             <p
               key={i}
