@@ -231,7 +231,7 @@ export default function PaywallMock({ productId }: PaywallMockProps) {
             textShadow: '0 2px 12px rgba(0,0,0,0.35)',
           }}
         >
-          Ni har börjat något.
+          Ni har börjat något
         </h1>
 
         {/* Next session card — subtle chrome, sits on stable midnight ink */}
@@ -277,10 +277,10 @@ export default function PaywallMock({ productId }: PaywallMockProps) {
         <p
           style={{
             fontFamily: 'Inter, system-ui, sans-serif',
-            fontSize: 13,
+            fontSize: 14,
             fontWeight: 500,
             color: LANTERN_GLOW,
-            opacity: 0.75,
+            opacity: 0.85,
             textAlign: 'center',
             margin: '24px 0 0',
             lineHeight: 1.5,
