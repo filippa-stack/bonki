@@ -1,28 +1,35 @@
+/**
+ * ProductLibraryMock — sandboxed v4 lobby at /library-mock.
+ *
+ * v4 corrections (vs the live ProductLibrary):
+ *  - Per-product saturated linear gradients as tile bg (not flat colors).
+ *  - Portrait 1 / 1.05 aspect (not landscape fixed-height).
+ *  - Pill state machine, three states, NO ✦ symbol, NO "utforskade" word:
+ *      untouched   → "{N} samtal"
+ *      tasted      → 9px BonkiLogoMark + " Du har provat"
+ *      purchased   → "{completed} av {total}"
+ *  - Tile-corner Resume overlay removed; resume affordance lives only in the
+ *    top MockResumeBanner with product-color wash + just the product name.
+ *
+ * The live ProductLibrary.tsx is untouched.
+ */
+
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import BonkiLoadingScreen from '@/components/BonkiLoadingScreen';
 import KontoIcon from '@/components/KontoIcon';
 import KontoSheet from '@/components/KontoSheet';
 import { usePageBackground } from '@/hooks/usePageBackground';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { allProducts } from '@/data/products';
+import { allProducts, getProductById } from '@/data/products';
 import { useAllProductAccess } from '@/hooks/useAllProductAccess';
-import { useAuth } from '@/contexts/AuthContext';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { supabase } from '@/integrations/supabase/client';
-import { toast } from '@/components/ui/sonner';
+import { isProductHiddenOnPlatform } from '@/lib/platform';
 import { isDemoMode } from '@/lib/demoMode';
-import { isIOSNative, isProductHiddenOnPlatform } from '@/lib/platform';
+import BonkiLogoMark from '@/components/BonkiLogoMark';
 
-
-import LibraryResumeCard from '@/components/LibraryResumeCard';
-import watermarkMamma from '@/assets/watermark-mamma.png';
-import creaturesTrio from '@/assets/creatures-trio.png';
-import creatureLionGirl from '@/assets/creature-lion-girl.png';
-import creatureGirl from '@/assets/creature-girl.png';
-import creatureLionSolo from '@/assets/creature-lion-solo.png';
 import bonkiWordmark from '@/assets/bonki-wordmark.png';
-
 import illustrationStillUs from '@/assets/illustration-still-us-tile.png';
 import illustrationJagIMig from '@/assets/illustration-jag-i-mig.png';
 import illustrationJagMedAndra from '@/assets/illustration-jag-med-andra.png';
@@ -30,9 +37,13 @@ import illustrationJagIVarlden from '@/assets/illustration-jag-i-varlden.png';
 import illustrationSexualitet from '@/assets/illustration-sexualitet.png';
 import illustrationSyskon from '@/assets/illustration-syskon.png';
 import illustrationVardag from '@/assets/illustration-vardag.png';
-// illustrationStillFair removed — Still Fair section moved to future release
+
+const LANTERN_GLOW = '#FDF6E3';
+const BONKI_ORANGE = '#E85D2C';
+const LIBRARY_BG = '#0B1026';
 
 const ILLUSTRATIONS: Record<string, string> = {
+  still_us: illustrationStillUs,
   jag_i_mig: illustrationJagIMig,
   jag_med_andra: illustrationJagMedAndra,
   jag_i_varlden: illustrationJagIVarlden,
@@ -42,6 +53,7 @@ const ILLUSTRATIONS: Record<string, string> = {
 };
 
 const TAGLINES: Record<string, string> = {
+  still_us: 'Förbli ett vi medan ni uppfostrar dem',
   jag_i_mig: 'När känslor får ord',
   jag_med_andra: 'Det trygga och det svåra',
   jag_i_varlden: 'Världen vidgas',
@@ -50,54 +62,47 @@ const TAGLINES: Record<string, string> = {
   sexualitetskort: 'Kropp, gränser och identitet',
 };
 
-/** Bright saturated tile backgrounds — vibrant flat-color aesthetic (legacy / fallback) */
-const TILE_COLORS: Record<string, string> = {
-  jag_i_mig: '#27A69C',
-  jag_med_andra: '#CB7AB2',
-  jag_i_varlden: '#C6D423',
-  sexualitetskort: '#DD958B',
-  vardagskort: '#8BDDB0',
-  syskonkort: '#CF8BDD',
-};
-
-/** v4 mock — saturated per-product gradient stops + slug map for CSS vars. */
+/** Map product id → CSS-var slug. Sexualitet keeps a flat fallback color. */
 const PRODUCT_SLUG: Record<string, string> = {
+  still_us: 'vartvi',
   jag_i_mig: 'jim',
   jag_med_andra: 'jma',
   jag_i_varlden: 'varlden',
   vardagskort: 'vardag',
   syskonkort: 'syskon',
-  still_us: 'vartvi',
 };
 
-/** Per-slug accent (bg-1) used by the resume banner dot + wash. */
+/** Per-product accent (gradient bg-1) used by resume banner dot + wash. */
 const PRODUCT_ACCENT: Record<string, string> = {
+  still_us: '#A8B5C9',
   jag_i_mig: '#2A6B65',
   jag_med_andra: '#B85A8A',
   jag_i_varlden: '#BAC03E',
   vardagskort: '#6FB498',
   syskonkort: '#C4A5D6',
-  still_us: '#A8B5C9',
+  sexualitetskort: '#DD958B',
 };
 
-/** Build the 165deg gradient for a product. Falls back to its flat tile color. */
-function tileGradient(productId: string): string {
+/** v4 gradient spec — injected once into the page so PastelTile bg can reference vars. */
+const GRADIENT_TOKENS_CSS = `
+  .v4-mock-root {
+    --vartvi-bg-1:#A8B5C9; --vartvi-bg-2:#7989A0;
+    --jim-bg-1:#2A6B65;    --jim-bg-2:#1F5550;
+    --jma-bg-1:#B85A8A;    --jma-bg-2:#8C3D69;
+    --varlden-bg-1:#BAC03E; --varlden-bg-2:#8E9425;
+    --vardag-bg-1:#6FB498;  --vardag-bg-2:#549478;
+    --syskon-bg-1:#C4A5D6;  --syskon-bg-2:#9D7FB8;
+  }
+`;
+
+function tileBackground(productId: string): string {
   const slug = PRODUCT_SLUG[productId];
-  if (!slug) return TILE_COLORS[productId] ?? '#1A2538';
-  return `linear-gradient(165deg, var(--${slug}-bg-1), var(--${slug}-bg-2))`;
+  if (slug) {
+    return `linear-gradient(165deg, var(--${slug}-bg-1), var(--${slug}-bg-2))`;
+  }
+  return PRODUCT_ACCENT[productId] ?? '#1A2538';
 }
 
-/** Luminance helper — determines if a tile needs light or dark treatment.
- *  Threshold 0.38 so only truly light tiles (amber, dusty rose) get dark borders. */
-function isLightTile(hex: string): boolean {
-  const r = parseInt(hex.slice(1, 3), 16) / 255;
-  const g = parseInt(hex.slice(3, 5), 16) / 255;
-  const b = parseInt(hex.slice(5, 7), 16) / 255;
-  const L = 0.2126 * r + 0.7152 * g + 0.0722 * b;
-  return L > 0.38;
-}
-
-/** Helper: hex → rgba */
 function hexToRgba(hex: string, alpha: number): string {
   const r = parseInt(hex.slice(1, 3), 16);
   const g = parseInt(hex.slice(3, 5), 16);
@@ -105,1089 +110,482 @@ function hexToRgba(hex: string, alpha: number): string {
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
-/** Per-product illustration scale — large enough for dramatic presence */
-const ILLUSTRATION_SCALE: Record<string, { width: string; height: string }> = {
-  jag_i_mig: { width: '75%', height: '105%' },
-  jag_med_andra: { width: '75%', height: '100%' },
-  jag_i_varlden: { width: '80%', height: '180%' },
-  sexualitetskort: { width: '75%', height: '175%' },
-  vardagskort: { width: '75%', height: '175%' },
-  syskonkort: { width: '75%', height: '175%' },
-};
+/* ─────────────────────────────────────────────────────────────────────────── */
+/* Tile                                                                       */
+/* ─────────────────────────────────────────────────────────────────────────── */
 
-/** Per-product offset — characters visible and dramatic, bleeding right */
-const ILLUSTRATION_OFFSET: Record<string, { top: string; right: string; bottom: string }> = {
-  jag_i_mig: { top: '-3%', right: '-5%', bottom: '-2%' },
-  jag_med_andra: { top: '-5%', right: '-8%', bottom: '-5%' },
-  jag_i_varlden: { top: '-42%', right: '0%', bottom: '-2%' },
-  sexualitetskort: { top: '-25%', right: '0%', bottom: '-20%' },
-  vardagskort: { top: '-25%', right: '0%', bottom: '-20%' },
-  syskonkort: { top: '-25%', right: '0%', bottom: '-20%' },
-};
-
-/** Illustration opacities — subtle presence on bright backgrounds */
-const ILLUSTRATION_OPACITY: Record<string, number> = {
-  jag_i_mig: 1,
-  jag_med_andra: 1,
-  jag_i_varlden: 1,
-  sexualitetskort: 1,
-  vardagskort: 1,
-  syskonkort: 1,
-};
-
-/** Per-tile radial glow — disabled for flat bright aesthetic */
-const ILLUSTRATION_GLOW: Record<string, string> = {};
-
-/** Per-tile drop-shadow — subtle grounding, no saturation/brightness boost */
-const ILLUSTRATION_SHADOW: Record<string, string> = {
-  jag_i_mig: 'drop-shadow(0 4px 12px rgba(0,0,0,0.10))',
-  jag_med_andra: 'drop-shadow(0 4px 12px rgba(0,0,0,0.10))',
-  jag_i_varlden: 'drop-shadow(0 4px 12px rgba(0,0,0,0.10))',
-  sexualitetskort: 'drop-shadow(0 4px 12px rgba(0,0,0,0.10))',
-  vardagskort: 'drop-shadow(0 4px 12px rgba(0,0,0,0.10))',
-  syskonkort: 'drop-shadow(0 4px 12px rgba(0,0,0,0.10))',
-};
-
-/** Title colors — white on all tiles for max readability */
-const ACCENT_COLORS: Record<string, string> = {
-  jag_i_mig: '#FFFFFF',
-  jag_med_andra: '#FFFFFF',
-  jag_i_varlden: '#FFFFFF',
-  sexualitetskort: '#FFFFFF',
-  vardagskort: '#FFFFFF',
-  syskonkort: '#FFFFFF',
-};
-
-/** Tagline colors — white with slight transparency */
-const TAGLINE_COLORS: Record<string, string> = {
-  jag_i_mig: 'hsla(0, 0%, 100%, 0.85)',
-  jag_med_andra: 'hsla(0, 0%, 100%, 0.85)',
-  jag_i_varlden: 'hsla(0, 0%, 100%, 0.85)',
-  sexualitetskort: 'hsla(0, 0%, 100%, 0.85)',
-  vardagskort: 'hsla(0, 0%, 100%, 0.85)',
-  syskonkort: 'hsla(0, 0%, 100%, 0.85)',
-};
-
-/** Tile height rhythm — alternating for visual breathing */
-const TILE_HEIGHTS: Record<string, string> = {
-  jag_i_mig: '260px',
-  jag_med_andra: '240px',
-  jag_i_varlden: '260px',
-  sexualitetskort: '220px',
-  vardagskort: '240px',
-  syskonkort: '220px',
-};
-
-/** Build badge text: "X ämnen" — no pricing on individual tiles */
-function buildBadgeText(product: { cards: unknown[]; id: string }): string {
-  const count = product.cards.length;
-  return `${count} ämnen`;
+interface PastelTileProps {
+  product: { id: string; name: string; cards: { id: string }[] };
+  onClick?: () => void;
+  completedCount: number;
+  isPurchased: boolean;
 }
 
-/** Relative time helper for recency labels */
-function formatRelativeTime(isoDate: string): string {
-  const diffMs = Date.now() - new Date(isoDate).getTime();
-  const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-  if (days === 0) return 'Idag';
-  if (days === 1) return 'Igår';
-  if (days < 7) return `${days} dagar sedan`;
-  if (days < 30) return `${Math.floor(days / 7)} veckor sedan`;
-  return `${Math.floor(days / 30)} mån sedan`;
-}
-
-/** Detect return visit for faster animations */
-const IS_RETURN_VISIT = (() => {
-  try {
-    const key = 'bonki_library_visited';
-    const visited = sessionStorage.getItem(key);
-    sessionStorage.setItem(key, '1');
-    return !!visited;
-  } catch { return false; }
-})();
-
-const ANIM_SPEED = IS_RETURN_VISIT ? 0.5 : 1;
-
-const containerVariants = {
-  hidden: {},
-  visible: {},
-};
-
-const tileVariants = {
-  hidden: { opacity: 1, y: 0, scale: 1 },
-  visible: { opacity: 1, y: 0, scale: 1 },
-};
-
-function AudienceLabel({ label, subtitle, delay = 0 }: { label: string; subtitle?: string; delay?: number }) {
-  return (
-    <div
-      style={{
-        textAlign: 'center',
-        marginBottom: '16px',
-        marginTop: '4px',
-      }}
-    >
-      <p
-        style={{
-          fontFamily: "var(--font-body)",
-          fontSize: '10px',
-          fontWeight: 600,
-          letterSpacing: '0.15em',
-          textTransform: 'uppercase',
-          color: 'rgba(253, 246, 227, 0.45)',
-          marginBottom: subtitle ? '10px' : '0',
-        }}
-      >
-        {label}
-      </p>
-      {subtitle && (
-        <p
-          style={{
-            fontFamily: "var(--font-display)",
-            fontSize: '14px',
-            fontWeight: 400,
-            color: 'var(--color-text-secondary)',
-            opacity: 0.55,
-            lineHeight: 1.5,
-          }}
-        >
-          {subtitle}
-        </p>
-      )}
-    </div>
-  );
-}
-
-/** Portal tile — illustration bleeds right, text anchored left */
-const PastelTile = React.forwardRef<HTMLDivElement, {
-  name: string; bg: string; tagline?: string;
-  onClick?: () => void; illustration?: string; productId?: string;
-  accentColor?: string; taglineColor?: string; illustrationOpacity?: number;
-  illustrationSize?: string; illustrationPosition?: string; wide?: boolean;
-  showFreeBadge?: boolean; badgeText?: string; ageCount?: number;
-  hasActiveSession?: boolean; tileHeight?: string;
-  progressText?: string; lastActive?: string; hideFreeBadge?: boolean; showFreeLabel?: boolean; totalCards?: number; completedCount?: number;
-  isPurchased?: boolean;
-}>(function PastelTile({
-  name, bg, tagline, onClick, illustration, productId, accentColor, taglineColor,
-  illustrationOpacity = 0.90, wide = false,
-  hasActiveSession = false, tileHeight = '240px',
-  progressText, lastActive, hideFreeBadge = false, showFreeLabel = false, totalCards, completedCount,
-  isPurchased = false,
-}, ref) {
-  const toShadowColor = (hex: string, alpha: number) => {
-    const r = parseInt(hex.slice(1, 3), 16);
-    const g = parseInt(hex.slice(3, 5), 16);
-    const b = parseInt(hex.slice(5, 7), 16);
-    return `rgba(${Math.round(r * 0.5)}, ${Math.round(g * 0.5)}, ${Math.round(b * 0.5)}, ${alpha})`;
-  };
-
-  const bgR = parseInt(bg.slice(1, 3), 16);
-  const bgG = parseInt(bg.slice(3, 5), 16);
-  const bgB = parseInt(bg.slice(5, 7), 16);
-  const bgRgba = (a: number) => `rgba(${bgR}, ${bgG}, ${bgB}, ${a})`;
-
-  const scale = productId ? ILLUSTRATION_SCALE[productId] : undefined;
-  const offset = productId ? ILLUSTRATION_OFFSET[productId] : undefined;
-  const opacity = productId ? ILLUSTRATION_OPACITY[productId] ?? illustrationOpacity : illustrationOpacity;
-
-  const light = isLightTile(bg);
+function PastelTile({ product, onClick, completedCount, isPurchased }: PastelTileProps) {
+  const tagline = TAGLINES[product.id];
+  const illustration = ILLUSTRATIONS[product.id];
+  const totalCards = product.cards.length;
+  const tasted = !isPurchased && completedCount > 0;
+  const accent = PRODUCT_ACCENT[product.id] ?? '#1A2538';
 
   return (
     <motion.div
-      variants={tileVariants}
       whileHover={{ scale: 1.025, y: -3 }}
-      whileTap={{ scale: 0.94, y: 3 }}
+      whileTap={{ scale: 0.96, y: 2 }}
       onClick={onClick}
       className="cursor-pointer"
       style={{
-        borderRadius: '22px',
-        backgroundColor: bg,
-        height: tileHeight,
-        display: 'flex',
+        borderRadius: 22,
+        background: tileBackground(product.id),
+        aspectRatio: '1 / 1.05',
+        width: '100%',
         position: 'relative',
         overflow: 'hidden',
-        backgroundImage: 'none',
-        border: light
-          ? '1px solid rgba(0, 0, 0, 0.08)'
-          : '1px solid rgba(255, 255, 255, 0.15)',
-        transform: showFreeLabel ? 'scale(1.02)' : undefined,
-        boxShadow: showFreeLabel
-          ? '0 4px 24px rgba(0,0,0,0.35), 0 0 0 2px rgba(255,255,255,0.12)'
-          : [
-              `0 4px 28px ${hexToRgba(bg, 0.20)}`,
-              `0 2px 8px rgba(0, 0, 0, 0.08)`,
-            ].join(', '),
+        border: '1px solid rgba(255, 255, 255, 0.10)',
+        boxShadow: `0 4px 28px ${hexToRgba(accent, 0.20)}, 0 2px 8px rgba(0, 0, 0, 0.18)`,
       }}
     >
-      {/* Illustration — right-aligned, bleeds off edge dramatically */}
+      {/* Illustration — full-bleed, bottom anchored */}
       {illustration && (
-        <div
+        <img
+          src={illustration}
+          alt=""
+          draggable={false}
           style={{
             position: 'absolute',
-            top: offset?.top ?? '-15%',
-            right: offset?.right ?? '-12%',
-            bottom: offset?.bottom ?? '-10%',
-            width: scale?.width ?? '70%',
+            inset: 0,
+            width: '100%',
+            height: '100%',
+            objectFit: 'contain',
+            objectPosition: 'right bottom',
+            opacity: 1,
             pointerEvents: 'none',
             zIndex: 0,
+            filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.10))',
           }}
-        >
-          <img
-            src={illustration}
-            alt=""
-            draggable={false}
-            style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'contain',
-              objectPosition: 'center bottom',
-              opacity,
-              filter: productId ? (ILLUSTRATION_SHADOW[productId] ?? '') : '',
-            }}
-          />
-        </div>
+        />
       )}
 
+      {/* Bottom scrim */}
+      <div
+        aria-hidden
+        style={{
+          position: 'absolute',
+          left: 0, right: 0, bottom: 0,
+          height: '70%',
+          background:
+            'linear-gradient(to top, rgba(0,0,0,0.40) 0%, rgba(0,0,0,0.15) 40%, transparent 100%)',
+          pointerEvents: 'none',
+          zIndex: 1,
+          borderRadius: '0 0 22px 22px',
+        }}
+      />
 
-
-      {/* hasActiveSession corner overlay removed in v4 — resume lives only in top banner */}
-
-    {/* Bottom scrim for text readability */}
-      <div style={{
-        position: 'absolute',
-        left: 0, right: 0, bottom: 0,
-        height: '70%',
-        background: 'linear-gradient(to top, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.12) 40%, transparent 100%)',
-        pointerEvents: 'none',
-        zIndex: 1,
-        borderRadius: '0 0 22px 22px',
-      }} />
-
-    {/* Text — left-aligned, lower-third emphasis */}
-      <div style={{
-        position: 'absolute',
-        left: 0, bottom: 0, top: 0,
-        width: '55%',
-        zIndex: 2,
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-end',
-        padding: '20px',
-        paddingBottom: '24px',
-      }}>
+      {/* Text — lower-left, max-width 75%, 14px from bottom */}
+      <div
+        style={{
+          position: 'absolute',
+          left: 16,
+          bottom: 14,
+          right: 16,
+          maxWidth: '75%',
+          zIndex: 2,
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
         <h3
           style={{
-            fontFamily: "var(--font-display)",
-            fontVariationSettings: "'opsz' 24",
-            fontSize: '28px',
-            fontWeight: 700,
-            whiteSpace: 'nowrap',
-            lineHeight: 1.15,
-            color: accentColor || '#FDF6E3',
-            letterSpacing: '-0.01em',
-            textShadow: '0 1px 3px rgba(0,0,0,0.5), 0 0 8px rgba(0,0,0,0.3)',
+            fontFamily: 'Fraunces, serif',
+            fontSize: 26,
+            fontWeight: 500,
+            lineHeight: 1.1,
+            color: LANTERN_GLOW,
+            letterSpacing: '-0.005em',
+            textShadow: '0 2px 12px rgba(0,0,0,0.35)',
+            margin: '0 0 5px',
           }}
         >
-          {name}
+          {product.name}
         </h3>
         {tagline && (
           <p
             style={{
-              fontFamily: "var(--font-body)",
-              fontSize: '15px',
-              fontWeight: 500,
-              color: taglineColor || '#FDF6E3',
-              opacity: 0.9,
-              marginTop: '4px',
-              lineHeight: 1.4,
-              textShadow: '0 1px 3px rgba(0,0,0,0.5), 0 0 8px rgba(0,0,0,0.3)',
+              fontFamily: 'Inter, system-ui, sans-serif',
+              fontSize: 12,
+              fontWeight: 400,
+              color: 'rgba(253, 246, 227, 0.92)',
+              lineHeight: 1.3,
+              textShadow: '0 1px 6px rgba(0,0,0,0.35)',
+              margin: '0 0 9px',
             }}
           >
             {tagline}
           </p>
+        )}
+        {/* Pill — three states only, no decorative symbols */}
+        <span
+          style={{
+            display: 'inline-flex',
+            alignSelf: 'flex-start',
+            alignItems: 'center',
+            gap: 6,
+            padding: '5px 11px',
+            borderRadius: 999,
+            background: 'rgba(255, 255, 255, 0.18)',
+            backdropFilter: 'blur(8px)',
+            WebkitBackdropFilter: 'blur(8px)',
+            border: '0.5px solid rgba(255, 255, 255, 0.25)',
+            fontFamily: 'Inter, system-ui, sans-serif',
+            fontSize: 11.5,
+            fontWeight: 600,
+            letterSpacing: '0.02em',
+            color: LANTERN_GLOW,
+          }}
+        >
+          {isPurchased ? (
+            `${completedCount} av ${totalCards}`
+          ) : tasted ? (
+            <>
+              <BonkiLogoMark size={9} style={{ color: LANTERN_GLOW }} />
+              Du har provat
+            </>
+          ) : (
+            `${totalCards} samtal`
           )}
-          {/* Progress pill */}
-          <span
-            style={{
-              display: 'inline-flex',
-              alignSelf: 'flex-start',
-              alignItems: 'center',
-              gap: '4px',
-              marginTop: '8px',
-              padding: '4px 12px',
-              borderRadius: '20px',
-              background: isPurchased
-                ? 'hsla(0, 0%, 100%, 0.15)'
-                : showFreeLabel
-                  ? 'rgba(255, 255, 255, 0.25)'
-                  : hideFreeBadge
-                    ? 'hsla(45, 80%, 92%, 0.15)'
-                    : 'hsla(0, 0%, 100%, 0.15)',
-              backdropFilter: 'blur(8px)',
-              WebkitBackdropFilter: 'blur(8px)',
-              border: isPurchased
-                ? '1px solid hsla(0, 0%, 100%, 0.25)'
-                : showFreeLabel
-                  ? '1px solid rgba(255, 255, 255, 0.35)'
-                  : hideFreeBadge
-                    ? '1px solid hsla(45, 70%, 85%, 0.30)'
-                    : '1px solid hsla(0, 0%, 100%, 0.25)',
-              boxShadow: '0 0 12px hsla(0, 0%, 100%, 0.08), inset 0 1px 0 hsla(0, 0%, 100%, 0.15)',
-              fontFamily: "var(--font-body)",
-              fontSize: '11px',
-              fontWeight: 600,
-              letterSpacing: '0.03em',
-              color: 'hsla(0, 0%, 100%, 0.92)',
-            }}
-          >
-            {isPurchased
-              ? (completedCount ?? 0) > 0
-                ? `✦ ${completedCount} av ${totalCards || 0} utforskade`
-                : '✦ Börja er resa'
-              : showFreeLabel
-                ? <><span style={{ fontSize: '12px', color: 'white' }}>✦</span> Första gratis · {totalCards || 0} samtal</>
-                : hideFreeBadge
-                  ? <><svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ filter: 'drop-shadow(0 0 3px rgba(212,245,192,0.7)) drop-shadow(0 0 6px rgba(212,245,192,0.4))' }}><rect x="2" y="6.5" width="10" height="6.5" rx="1.5" fill="rgba(212,245,192,0.5)" stroke="#D4F5C0" strokeWidth="0.75" /><path d="M4.5 6.5V4.5C4.5 3.12 5.62 2 7 2C8.38 2 9.5 3.12 9.5 4.5V6.5" stroke="#D4F5C0" strokeWidth="1.5" strokeLinecap="round" /></svg> {totalCards || 0} samtal</>
-                  : <><svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ filter: 'drop-shadow(0 0 3px rgba(212,245,192,0.7)) drop-shadow(0 0 6px rgba(212,245,192,0.4))' }}><rect x="2" y="6.5" width="10" height="6.5" rx="1.5" fill="rgba(212,245,192,0.5)" stroke="#D4F5C0" strokeWidth="0.75" /><path d="M4.5 6.5V4.5C4.5 3.12 5.62 2 7 2C8.38 2 9.5 3.12 9.5 4.5V6.5" stroke="#D4F5C0" strokeWidth="1.5" strokeLinecap="round" /></svg> {totalCards || 0} samtal</>}
-          </span>
-        </div>
+        </span>
+      </div>
     </motion.div>
   );
-});
-export default function ProductLibrary() {
+}
+
+/* ─────────────────────────────────────────────────────────────────────────── */
+/* MockResumeBanner — 64px, product-color wash, name only, "Fortsätt" pill    */
+/* ─────────────────────────────────────────────────────────────────────────── */
+
+interface ResumeData {
+  productId: string;
+  productName: string;
+  cardId: string;
+  cardTitle: string;
+  stepLabel: string; // e.g. "Pausad vid Fråga 2 av 5"
+}
+
+function MockResumeBanner() {
+  const navigate = useNavigate();
+  const { space } = useCoupleSpaceContext();
+  const [resume, setResume] = useState<ResumeData | null>(null);
+
+  useEffect(() => {
+    if (isDemoMode()) {
+      // Dev-friendly mock for /library-mock previews
+      setResume({
+        productId: 'still_us',
+        productName: 'Vårt Vi',
+        cardId: 'su-kommunikation-1',
+        cardTitle: 'Att lyssna på riktigt',
+        stepLabel: 'Pausad vid Fråga 2 av 5',
+      });
+      return;
+    }
+    if (!space?.id) return;
+    let cancelled = false;
+    (async () => {
+      const { data } = await supabase
+        .from('couple_sessions')
+        .select('id, card_id, product_id, last_activity_at')
+        .eq('couple_space_id', space.id)
+        .eq('status', 'active')
+        .order('last_activity_at', { ascending: false })
+        .limit(1);
+
+      if (cancelled || !data || data.length === 0) return;
+      const row = data[0];
+      const product = getProductById(row.product_id);
+      if (!product) return;
+      const card = product.cards.find(c => c.id === row.card_id);
+      const cardIdx = product.cards.findIndex(c => c.id === row.card_id);
+      setResume({
+        productId: row.product_id,
+        productName: product.name,
+        cardId: row.card_id,
+        cardTitle: card?.title ?? '',
+        stepLabel: `Pausad vid Fråga ${cardIdx + 1} av ${product.cards.length}`,
+      });
+    })();
+    return () => { cancelled = true; };
+  }, [space?.id]);
+
+  if (!resume) return null;
+
+  const accent = PRODUCT_ACCENT[resume.productId] ?? '#A8B5C9';
+  const accentRgba = (a: number) => {
+    const r = parseInt(accent.slice(1, 3), 16);
+    const g = parseInt(accent.slice(3, 5), 16);
+    const b = parseInt(accent.slice(5, 7), 16);
+    return `rgba(${r}, ${g}, ${b}, ${a})`;
+  };
+
+  return (
+    <div
+      style={{
+        height: 64,
+        borderRadius: 14,
+        background: `linear-gradient(90deg, ${accentRgba(0.30)} 0%, ${accentRgba(0.06)} 38%, rgba(26,37,56,0.95) 70%), #1A2538`,
+        border: '0.5px solid rgba(253,246,227,0.08)',
+        padding: '0 8px 0 14px',
+        display: 'flex',
+        alignItems: 'center',
+        gap: 10,
+      }}
+    >
+      <span
+        aria-hidden
+        style={{
+          width: 8,
+          height: 8,
+          borderRadius: '50%',
+          background: accent,
+          boxShadow: `0 0 10px ${accentRgba(0.6)}`,
+          flexShrink: 0,
+        }}
+      />
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div
+          style={{
+            fontFamily: 'Fraunces, serif',
+            fontSize: 14.5,
+            fontWeight: 500,
+            lineHeight: 1.15,
+            color: LANTERN_GLOW,
+          }}
+        >
+          {resume.productName}
+        </div>
+        <div
+          style={{
+            fontFamily: 'Inter, system-ui, sans-serif',
+            fontSize: 10.5,
+            lineHeight: 1.3,
+            color: 'rgba(253,246,227,0.65)',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+          }}
+        >
+          {resume.stepLabel} · {resume.cardTitle}
+        </div>
+      </div>
+      <button
+        onClick={() => navigate(`/card/${resume.cardId}`)}
+        style={{
+          background: BONKI_ORANGE,
+          color: LANTERN_GLOW,
+          padding: '9px 16px',
+          borderRadius: 999,
+          border: 'none',
+          fontFamily: 'Inter, system-ui, sans-serif',
+          fontSize: 12.5,
+          fontWeight: 600,
+          cursor: 'pointer',
+          flexShrink: 0,
+        }}
+      >
+        Fortsätt
+      </button>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────────────── */
+/* ProductLibraryMock                                                         */
+/* ─────────────────────────────────────────────────────────────────────────── */
+
+export default function ProductLibraryMock() {
   useLayoutEffect(() => {
     document.documentElement.classList.remove('theme-verdigris');
     document.body.classList.remove('verdigris-grain', 'verdigris-lightleak');
   }, []);
-  usePageBackground('#0B1026');
+  usePageBackground(LIBRARY_BG);
   const navigate = useNavigate();
   const tracked = useRef(false);
-  
-  const { purchased, loading: accessLoading } = useAllProductAccess();
-  const { user } = useAuth();
-  // Still Fair interest tracking (kept for future use)
-  const [notifySignedUp, setNotifySignedUp] = useState(false);
-  const [notifyLoading, setNotifyLoading] = useState(false);
-  const [kontoOpen, setKontoOpen] = useState(false);
-  const handleNotifyMe = async () => {};
-   void notifySignedUp; void notifyLoading; void handleNotifyMe;
-   const stillUsProduct = allProducts.find(p => p.id === 'still_us');
 
-   useEffect(() => {
+  const { purchased, loading: accessLoading } = useAllProductAccess();
+  const { space } = useCoupleSpaceContext();
+  const [kontoOpen, setKontoOpen] = useState(false);
+  const [completedCountMap, setCompletedCountMap] = useState<Record<string, number>>({});
+
+  useEffect(() => {
     if (!tracked.current) {
       tracked.current = true;
       import('@/lib/trackOnboarding').then(m => m.trackOnboardingEvent('lobby_view'));
     }
   }, []);
 
-  
-
-  // Fetch active sessions across all products for resume indicators
-  const { space } = useCoupleSpaceContext();
-  const [activeProductIds, setActiveProductIds] = useState<Set<string>>(new Set());
-  const [lastActivityMap, setLastActivityMap] = useState<Record<string, string>>({});
-  const [completedCountMap, setCompletedCountMap] = useState<Record<string, number>>({});
-  const [completedCardSets, setCompletedCardSets] = useState<Record<string, Set<string>>>({});
+  // Fetch completed-card counts per product (status = 'completed' — matches useKidsProductProgress)
   useEffect(() => {
-    const syncLocalPreview = () => {
-      if (!isDemoMode()) return;
-      import('@/lib/demoSession').then(({ getAllDemoSessions }) => {
-        setActiveProductIds(new Set(getAllDemoSessions().map(session => session.productId)));
-      });
-    };
-
-    if (isDemoMode()) {
-      syncLocalPreview();
-      window.addEventListener('bonki:demo-session-changed', syncLocalPreview);
-      window.addEventListener('storage', syncLocalPreview);
-      return () => {
-        window.removeEventListener('bonki:demo-session-changed', syncLocalPreview);
-        window.removeEventListener('storage', syncLocalPreview);
-      };
-    }
-
     if (!space?.id) return;
     let cancelled = false;
-
-    const fetchActive = supabase
-      .from('couple_sessions')
-      .select('product_id, last_activity_at')
-      .eq('couple_space_id', space.id)
-      .eq('status', 'active')
-      .order('last_activity_at', { ascending: false });
-
-    const fetchCompleted = supabase
-      .from('couple_sessions')
-      .select('product_id, card_id')
-      .eq('couple_space_id', space.id)
-      .eq('status', 'completed');
-
-    Promise.all([fetchActive, fetchCompleted]).then(([activeRes, completedRes]) => {
-      if (cancelled) return;
-
-      if (activeRes.data) {
-        setActiveProductIds(new Set(activeRes.data.map(s => s.product_id)));
-        const timestamps: Record<string, string> = {};
-        for (const s of activeRes.data) {
-          if (s.product_id && s.last_activity_at) {
-            timestamps[s.product_id] = s.last_activity_at;
-          }
-        }
-        setLastActivityMap(timestamps);
+    (async () => {
+      const { data } = await supabase
+        .from('couple_sessions')
+        .select('product_id, card_id')
+        .eq('couple_space_id', space.id)
+        .eq('status', 'completed');
+      if (cancelled || !data) return;
+      const sets: Record<string, Set<string>> = {};
+      for (const s of data) {
+        if (!s.product_id || !s.card_id) continue;
+        if (!sets[s.product_id]) sets[s.product_id] = new Set();
+        sets[s.product_id].add(s.card_id);
       }
-
-      if (completedRes.data) {
-        const sets: Record<string, Set<string>> = {};
-        const counts: Record<string, number> = {};
-        for (const s of completedRes.data) {
-          if (s.product_id && s.card_id) {
-            if (!sets[s.product_id]) sets[s.product_id] = new Set();
-            sets[s.product_id].add(s.card_id);
-          }
-        }
-        for (const [productId, cardIds] of Object.entries(sets)) {
-          const manifest = allProducts.find(p => p.id === productId);
-          if (manifest) {
-            counts[productId] = [...cardIds].filter(id => manifest.cards.some(c => c.id === id)).length;
-          } else {
-            counts[productId] = cardIds.size;
-          }
-        }
-        setCompletedCountMap(counts);
-        setCompletedCardSets(sets);
+      const counts: Record<string, number> = {};
+      for (const [pid, ids] of Object.entries(sets)) {
+        const manifest = allProducts.find(p => p.id === pid);
+        counts[pid] = manifest
+          ? [...ids].filter(id => manifest.cards.some(c => c.id === id)).length
+          : ids.size;
       }
-    });
-
+      setCompletedCountMap(counts);
+    })();
     return () => { cancelled = true; };
   }, [space?.id]);
 
-  // Split products for layout
-  const jagIMig = allProducts.find(p => p.id === 'jag_i_mig')!;
-  const jagMedAndra = allProducts.find(p => p.id === 'jag_med_andra')!;
-  const jagIVarlden = allProducts.find(p => p.id === 'jag_i_varlden')!;
-  const sexualitet = allProducts.find(p => p.id === 'sexualitetskort')!;
-  const vardag = allProducts.find(p => p.id === 'vardagskort')!;
-  const syskon = allProducts.find(p => p.id === 'syskonkort')!;
+  const couplesProducts = useMemo(
+    () => allProducts.filter(p => p.id === 'still_us' && !isProductHiddenOnPlatform(p.id)),
+    [],
+  );
+  const kidsProducts = useMemo(
+    () =>
+      ['jag_i_mig', 'jag_med_andra', 'jag_i_varlden', 'vardagskort', 'syskonkort', 'sexualitetskort']
+        .map(id => allProducts.find(p => p.id === id))
+        .filter((p): p is NonNullable<typeof p> => !!p && !isProductHiddenOnPlatform(p.id)),
+    [],
+  );
 
-  // Default kids product order (sexualitetskort hidden on iOS native for App Store 1.0)
-  const defaultKidsOrder = [jagIMig, jagMedAndra, jagIVarlden, vardag, syskon, sexualitet]
-    .filter(p => !isProductHiddenOnPlatform(p.id));
-
-  // Smart ordering: products with active sessions first
-  const sortedKidsProducts = useMemo(() => {
-    const active = defaultKidsOrder.filter(p => activeProductIds.has(p.id));
-    const inactive = defaultKidsOrder.filter(p => !activeProductIds.has(p.id));
-    return [...active, ...inactive];
-  }, [activeProductIds]);
-
-
-  const isDark = true; // Both tabs now use Midnight Ink
-
-  const libraryBg = '#0B1026';
-
-  // Loading gate — prevent flash of incomplete content
   if (accessLoading) {
     return <BonkiLoadingScreen />;
   }
 
   return (
     <div
-      className="min-h-screen flex flex-col relative"
+      className="v4-mock-root min-h-screen flex flex-col relative"
       style={{
-        background: libraryBg,
-        ['--surface-base' as string]: libraryBg,
-        fontFamily: "var(--font-body)",
-        transition: 'background 600ms ease',
+        background: LIBRARY_BG,
+        ['--surface-base' as string]: LIBRARY_BG,
+        fontFamily: 'Inter, system-ui, sans-serif',
       }}
     >
+      <style>{GRADIENT_TOKENS_CSS}</style>
 
-      {/* ── Atmospheric background layers ── */}
-      <div aria-hidden="true" style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none', zIndex: 0 }}>
-        {/* Radial ghost glow — atmospheric warmth behind title */}
-        <div style={{
-          position: 'absolute',
-          top: '-20px',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          width: '120vw',
-          height: '340px',
-          background: 'radial-gradient(ellipse 55% 60% at 50% 35%, hsla(100, 60%, 80%, 0.10) 0%, hsla(100, 60%, 80%, 0.04) 45%, transparent 100%)',
-          zIndex: 0,
-        }} />
-
-        {/* Twilight vignette — top corners, adds purple depth to night sky */}
-        <div style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '50%',
-          height: '400px',
-          background: 'radial-gradient(ellipse 80% 70% at 0% 0%, rgba(74, 58, 107, 0.06) 0%, transparent 70%)',
-          zIndex: 0,
-        }} />
-        <div style={{
-          position: 'absolute',
-          top: 0,
-          right: 0,
-          width: '50%',
-          height: '400px',
-          background: 'radial-gradient(ellipse 80% 70% at 100% 0%, rgba(74, 58, 107, 0.06) 0%, transparent 70%)',
-          zIndex: 0,
-        }} />
-
-        {/* Mid-zone warmth — Deep Navy bleed behind Föräldrar section */}
-        <div style={{
-          position: 'absolute',
-          top: '350px',
-          left: 0,
-          right: 0,
-          height: '600px',
-          background: 'linear-gradient(180deg, transparent 0%, rgba(26, 39, 68, 0.08) 30%, rgba(74, 58, 107, 0.05) 60%, transparent 100%)',
-          zIndex: 0,
-        }} />
-
-        {/* Forest floor emergence — Dark Forest tone behind Barn & Familj */}
-        <div style={{
-          position: 'absolute',
-          top: '900px',
-          left: 0,
-          right: 0,
-          bottom: 0,
-          background: 'linear-gradient(180deg, transparent 0%, rgba(28, 43, 26, 0.10) 25%, rgba(45, 69, 40, 0.08) 60%, rgba(28, 43, 26, 0.12) 100%)',
-          zIndex: 0,
-        }} />
-
-        {/* Hero gradient scrim — ensures title legibility */}
-        <div style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          height: '360px',
-          background: `linear-gradient(180deg, 
-            hsla(230, 25%, 10%, 0.0) 0%, 
-            hsla(230, 25%, 10%, 0.35) 30%,
-            hsla(230, 25%, 10%, 0.75) 55%,
-            ${libraryBg} 100%)`,
-          zIndex: 1,
-        }} />
-
-      </div>
-
-      {/* Content */}
       <div style={{ position: 'relative', zIndex: 1 }}>
         <KontoIcon onClick={() => setKontoOpen(true)} />
         <KontoSheet open={kontoOpen} onClose={() => setKontoOpen(false)} />
-        {/* Hero zone — compact cinematic */}
-        <motion.div
-          initial={{ opacity: 1 }}
-          animate={{ opacity: 1 }}
+
+        {/* Hero */}
+        <div
           style={{
             textAlign: 'center',
             padding: 'calc(env(safe-area-inset-top, 0px) + 56px) 32px 0',
           }}
         >
-          <motion.h1
-            initial={{ opacity: 1, y: 0 }}
-            animate={{ opacity: 1, y: 0 }}
-            style={{ marginBottom: '12px' }}
-          >
-            <img
-              src={bonkiWordmark}
-              alt="BONKI"
-              style={{ maxHeight: '20px', width: 'auto', objectFit: 'contain', margin: '0 auto', display: 'block', filter: 'drop-shadow(0 0 30px hsla(100, 60%, 80%, 0.2))' }}
-            />
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 1, y: 0 }}
-            animate={{ opacity: 1, y: 0 }}
+          <img
+            src={bonkiWordmark}
+            alt="BONKI"
             style={{
-              fontFamily: "var(--font-body)",
-              fontStyle: 'normal',
-              fontSize: '14px',
-              fontWeight: 400,
+              maxHeight: 20,
+              width: 'auto',
+              objectFit: 'contain',
+              margin: '0 auto',
+              display: 'block',
+              filter: 'drop-shadow(0 0 30px hsla(100, 60%, 80%, 0.2))',
+            }}
+          />
+          <p
+            style={{
+              fontFamily: 'Inter, system-ui, sans-serif',
+              fontSize: 14,
               color: 'hsla(100, 40%, 80%, 0.65)',
               lineHeight: 1.6,
-              transition: 'color 400ms ease',
-              textShadow: '0 1px 16px hsla(230, 25%, 10%, 0.8)',
+              margin: '12px 0 0',
             }}
           >
             Samtalen som bygger närhet.
-          </motion.p>
-        </motion.div>
+          </p>
+        </div>
 
-        {/* Ghost glow accent divider */}
-        <motion.div
-          initial={{ scaleX: 1, opacity: 1 }}
-          animate={{ scaleX: 1, opacity: 1 }}
+        {/* Resume banner */}
+        <div className="px-5" style={{ marginTop: 32, marginBottom: 24 }}>
+          <MockResumeBanner />
+        </div>
+
+        {/* Föräldrar */}
+        <SectionLabel label="Föräldrar" />
+        <div className="px-5" style={{ marginBottom: 28 }}>
+          {couplesProducts.map(product => (
+            <PastelTile
+              key={product.id}
+              product={product}
+              completedCount={completedCountMap[product.id] || 0}
+              isPurchased={purchased.has(product.id)}
+              onClick={() => navigate(`/product/${product.slug}`)}
+            />
+          ))}
+        </div>
+
+        {/* Barn & Familj */}
+        <SectionLabel label="Barn & Familj" />
+        <div
+          className="px-5"
+          style={{ display: 'flex', flexDirection: 'column', gap: 28 }}
+        >
+          {kidsProducts.map(product => (
+            <PastelTile
+              key={product.id}
+              product={product}
+              completedCount={completedCountMap[product.id] || 0}
+              isPurchased={purchased.has(product.id)}
+              onClick={() => navigate(`/product/${product.slug}`)}
+            />
+          ))}
+        </div>
+
+        <div style={{ paddingBottom: 'calc(72px + env(safe-area-inset-bottom, 0px))' }} />
+      </div>
+    </div>
+  );
+}
+
+function SectionLabel({ label }: { label: string }) {
+  return (
+    <div className="px-5" style={{ marginTop: 8 }}>
+      <div style={{ position: 'relative', paddingTop: 20 }}>
+        <div
+          aria-hidden
           style={{
-            width: '32px',
-            height: '1.5px',
-            backgroundColor: 'hsla(100, 50%, 75%, 0.45)',
-            margin: '24px auto 32px',
+            position: 'absolute',
+            top: 0,
+            left: '10%',
+            right: '10%',
+            height: 1,
+            background:
+              'linear-gradient(90deg, transparent 0%, rgba(110, 201, 184, 0.15) 30%, rgba(110, 201, 184, 0.20) 50%, rgba(110, 201, 184, 0.15) 70%, transparent 100%)',
           }}
         />
-        
-
-
-
-        {/* Resume card — product-colored, above Föräldrar */}
-        <div className="px-5" style={{ marginBottom: '8px' }}>
-          <LibraryResumeCard global />
-        </div>
-
-        {/* Next step suggestion — only for returning users with no active session */}
-        {activeProductIds.size === 0 && Object.keys(completedCountMap).length > 0 && (() => {
-          const untriedProduct = defaultKidsOrder.find(p => !completedCountMap[p.id]);
-          if (!untriedProduct) return null;
-          const isUntriedFree = false;
-          return (
-            <div className="px-5" style={{ marginBottom: '8px' }}>
-              <button
-                onClick={() => navigate(`/product/${untriedProduct.slug}`)}
-                style={{
-                  width: '100%',
-                  padding: '16px 20px',
-                  borderRadius: '16px',
-                  background: 'rgba(15, 15, 15, 0.7)',
-                  backdropFilter: 'blur(22px)',
-                  WebkitBackdropFilter: 'blur(22px)',
-                  border: '1px solid rgba(255, 255, 255, 0.12)',
-                  backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.08) 100%)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '14px',
-                  boxShadow: '0 12px 36px rgba(0, 0, 0, 0.40), 0 4px 12px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.12), inset 0 -2px 6px rgba(0, 0, 0, 0.12)',
-                  cursor: 'pointer',
-                  textAlign: 'left',
-                  WebkitTapHighlightColor: 'transparent',
-                }}
-              >
-                <div style={{
-                  width: '36px',
-                  height: '36px',
-                  borderRadius: '10px',
-                  backgroundColor: 'rgba(212, 160, 58, 0.15)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexShrink: 0,
-                }}>
-                  <span style={{ fontSize: '16px', color: '#D4A03A' }}>✦</span>
-                </div>
-                <div style={{ flex: 1 }}>
-                  <p style={{
-                    fontFamily: 'var(--font-display)',
-                    fontVariationSettings: "'opsz' 16",
-                    fontSize: '15px',
-                    fontWeight: 400,
-                    color: '#FDF6E3',
-                    lineHeight: 1.3,
-                    margin: 0,
-                  }}>
-                    Prova {untriedProduct.name}
-                  </p>
-                  <p style={{
-                    fontFamily: 'var(--font-body)',
-                    fontSize: '11px',
-                    color: 'hsla(100, 40%, 80%, 0.45)',
-                    marginTop: '2px',
-                    margin: '2px 0 0',
-                  }}>
-                    {isUntriedFree ? 'Ert första samtal är gratis' : `${untriedProduct.cards.length} samtal`}
-                  </p>
-                </div>
-                <span style={{
-                  fontFamily: 'var(--font-body)',
-                  fontSize: '10px',
-                  fontWeight: 600,
-                  letterSpacing: '0.06em',
-                  color: '#D4F5C0',
-                  opacity: 0.4,
-                }}>
-                  →
-                </span>
-              </button>
-            </div>
-          );
-        })()}
-
-        {/* Return user nudge — when no active session and all products tried */}
-        {activeProductIds.size === 0 &&
-         Object.keys(completedCountMap).length > 0 &&
-         !defaultKidsOrder.find(p => !completedCountMap[p.id]) && (() => {
-          const lastSlug = localStorage.getItem('bonki-last-active-product');
-          if (!lastSlug) return null;
-          const lastProduct = allProducts.find(p => p.slug === lastSlug);
-          if (!lastProduct) return null;
-          return (
-            <div className="px-5" style={{ marginBottom: '8px' }}>
-              <button
-                onClick={() => navigate(`/product/${lastSlug}`)}
-                style={{
-                  width: '100%',
-                  padding: '16px 20px',
-                  borderRadius: '16px',
-                  background: 'rgba(15, 15, 15, 0.7)',
-                  backdropFilter: 'blur(22px)',
-                  WebkitBackdropFilter: 'blur(22px)',
-                  border: '1px solid rgba(255, 255, 255, 0.12)',
-                  backgroundImage: 'linear-gradient(135deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0) 50%, rgba(0,0,0,0.08) 100%)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '14px',
-                  boxShadow: '0 12px 36px rgba(0, 0, 0, 0.40), 0 4px 12px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.12), inset 0 -2px 6px rgba(0, 0, 0, 0.12)',
-                  cursor: 'pointer',
-                  textAlign: 'left',
-                  WebkitTapHighlightColor: 'transparent',
-                }}
-              >
-                <div style={{ flex: 1 }}>
-                  <p style={{
-                    fontFamily: 'var(--font-display)',
-                    fontVariationSettings: "'opsz' 16",
-                    fontSize: '15px',
-                    fontWeight: 400,
-                    color: '#FDF6E3',
-                    lineHeight: 1.3,
-                    margin: 0,
-                  }}>
-                    Fortsätt utforska {lastProduct.name}
-                  </p>
-                  <p style={{
-                    fontFamily: 'var(--font-body)',
-                    fontSize: '11px',
-                    color: 'rgba(253, 246, 227, 0.4)',
-                    marginTop: '2px',
-                    margin: '2px 0 0',
-                  }}>
-                    {completedCountMap[lastProduct.id] || 0} av {lastProduct.cards.length} samtal
-                  </p>
-                </div>
-                <span style={{
-                  fontFamily: 'var(--font-body)',
-                  fontSize: '10px',
-                  fontWeight: 600,
-                  letterSpacing: '0.06em',
-                  color: '#D4F5C0',
-                  opacity: 0.4,
-                }}>
-                  →
-                </span>
-              </button>
-            </div>
-          );
-        })()}
-
-        <div>
-        {/* ── Still Us cross-discovery ── */}
-        <div className="px-5" style={{ marginTop: '0px' }}>
-          <div style={{
-            borderTop: 'none',
-            paddingTop: '20px',
-            position: 'relative',
-          }}>
-            {/* Mushroom-tinted section divider */}
-            <div style={{
-              position: 'absolute',
-              top: 0,
-              left: '10%',
-              right: '10%',
-              height: '1px',
-              background: 'linear-gradient(90deg, transparent 0%, rgba(110, 201, 184, 0.15) 30%, rgba(110, 201, 184, 0.20) 50%, rgba(110, 201, 184, 0.15) 70%, transparent 100%)',
-            }} />
-            <p style={{
-              fontFamily: "var(--font-body)",
-              fontSize: '13px',
-              fontWeight: 700,
-              letterSpacing: '2px',
-              textTransform: 'uppercase',
-              color: '#FDF6E3',
-              opacity: 0.55,
-              marginBottom: '20px',
-            }}>
-              Föräldrar
-            </p>
-            <motion.div
-              variants={tileVariants}
-              initial={false}
-              animate="visible"
-              whileHover={{ scale: 1.015, y: -2 }}
-              whileTap={{ scale: 0.97, y: 2 }}
-              onClick={() => navigate('/product/still-us')}
-              className="cursor-pointer"
-              style={{
-                borderRadius: '22px',
-                backgroundColor: '#94BCE1',
-                height: '260px',
-                display: 'flex',
-                flexDirection: 'column',
-                position: 'relative',
-                overflow: 'hidden',
-                border: '1px solid rgba(0, 0, 0, 0.08)',
-                boxShadow: '0 8px 24px rgba(0, 0, 0, 0.12), 0 2px 6px rgba(0, 0, 0, 0.06)',
-              }}
-            >
-              {/* Resume indicator for Still Us */}
-              {activeProductIds.has('still_us') && (
-                <div style={{
-                  position: 'absolute',
-                  top: '12px',
-                  right: '14px',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  gap: '3px',
-                  zIndex: 4,
-                }}>
-                  <div style={{
-                    width: '8px',
-                    height: '8px',
-                    borderRadius: '50%',
-                    backgroundColor: '#D4A03A',
-                    boxShadow: '0 0 6px rgba(212, 160, 58, 0.5)',
-                  }} />
-                  <span style={{
-                    fontFamily: 'var(--font-body)',
-                    fontSize: '11px',
-                    fontWeight: 500,
-                    color: '#FDF6E3',
-                    opacity: 0.7,
-                  }}>
-                    Fortsätt
-                  </span>
-                  {lastActivityMap['still_us'] && (
-                    <span style={{
-                      fontFamily: 'var(--font-body)',
-                      fontSize: '9px',
-                      fontWeight: 400,
-                      color: '#FDF6E3',
-                      opacity: 0.35,
-                    }}>
-                      {formatRelativeTime(lastActivityMap['still_us'])}
-                    </span>
-                  )}
-                </div>
-              )}
-              {/* Illustration */}
-              <div style={{
-                position: 'absolute',
-                top: '-12%',
-                bottom: '-12%',
-                right: '-40px',
-                height: '124%',
-                width: 'auto',
-                aspectRatio: '1 / 1',
-                maxWidth: '320px',
-                pointerEvents: 'none',
-                zIndex: 1,
-              }}>
-                <img
-                  src={illustrationStillUs}
-                  alt=""
-                  draggable={false}
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'contain',
-                    objectPosition: 'right bottom',
-                    opacity: 1,
-                    filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.10))',
-                  }}
-                />
-              </div>
-
-
-              {/* Bottom scrim for text readability */}
-              <div style={{
-                position: 'absolute',
-                left: 0, right: 0, bottom: 0,
-                height: '70%',
-                background: 'linear-gradient(to top, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.25) 40%, transparent 100%)',
-                pointerEvents: 'none',
-                zIndex: 2,
-                borderRadius: '0 0 22px 22px',
-              }} />
-
-              {/* Text */}
-              <div style={{
-                position: 'absolute',
-                left: 0, bottom: 0, right: 0,
-                zIndex: 3,
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'flex-end',
-                padding: '20px',
-                paddingBottom: '24px',
-              }}>
-                <h3 style={{
-                  fontFamily: "var(--font-display)",
-                  fontVariationSettings: "'opsz' 24",
-                  fontSize: '28px',
-                  fontWeight: 700,
-                  color: '#FFFFFF',
-                  lineHeight: 1.15,
-                  letterSpacing: '-0.01em',
-                  textShadow: '0 1px 3px rgba(0,0,0,0.9), 0 0 8px rgba(0,0,0,0.7), 0 0 20px rgba(0,0,0,0.5), 0 0 40px rgba(0,0,0,0.3)',
-                }}>
-                  Vårt Vi
-                </h3>
-                <p style={{
-                  fontFamily: "var(--font-body)",
-                  fontSize: '15px',
-                  fontWeight: 500,
-                  color: 'hsla(0, 0%, 100%, 0.85)',
-                  marginTop: '4px',
-                  lineHeight: 1.4,
-                  textShadow: '0 1px 3px rgba(0,0,0,0.8), 0 0 8px rgba(0,0,0,0.6), 0 0 20px rgba(0,0,0,0.4)',
-                }}>
-                  Förbli ett vi medan ni uppfostrar dem
-                </p>
-                {/* Badge + progress */}
-                <div style={{ marginTop: '8px' }}>
-                  {(() => {
-                    const suCount = completedCountMap['still_us'] || 0;
-                    const suFreeCompleted = stillUsProduct?.freeCardId
-                      ? (completedCardSets['still_us']?.has(stillUsProduct.freeCardId) ?? false)
-                      : false;
-                    const suShowFreeLabel = false;
-                    const totalCards = stillUsProduct?.cards.length ?? 22;
-                    return (
-                      <>
-                        <span style={{
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          alignSelf: 'flex-start',
-                          gap: '4px',
-                          fontFamily: "var(--font-body)",
-                          fontSize: '11px',
-                          fontWeight: 600,
-                          letterSpacing: '0.04em',
-                          color: 'hsla(0, 0%, 100%, 0.9)',
-                          background: purchased.has('still_us')
-                            ? 'hsla(0, 0%, 100%, 0.15)'
-                            : suFreeCompleted
-                              ? 'hsla(45, 80%, 92%, 0.15)'
-                              : 'hsla(0, 0%, 100%, 0.15)',
-                          backdropFilter: 'blur(8px)',
-                          WebkitBackdropFilter: 'blur(8px)',
-                          border: purchased.has('still_us')
-                            ? '1px solid hsla(0, 0%, 100%, 0.25)'
-                            : suFreeCompleted
-                              ? '1px solid hsla(45, 70%, 85%, 0.30)'
-                              : '1px solid hsla(0, 0%, 100%, 0.25)',
-                          borderRadius: '20px',
-                          padding: '4px 12px',
-                          boxShadow: '0 0 12px hsla(0, 0%, 100%, 0.08), inset 0 1px 0 hsla(0, 0%, 100%, 0.15)',
-                        }}>
-                          {purchased.has('still_us')
-                            ? suCount > 0
-                              ? `✦ ${suCount} av ${totalCards} utforskade`
-                              : '✦ Börja er resa'
-                            : suShowFreeLabel
-                              ? <><span style={{ fontSize: '12px', color: 'white' }}>✦</span> Första gratis · {totalCards} samtal</>
-                              : suFreeCompleted
-                                ? <><svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ filter: 'drop-shadow(0 0 3px rgba(212,245,192,0.7)) drop-shadow(0 0 6px rgba(212,245,192,0.4))' }}><rect x="2" y="6.5" width="10" height="6.5" rx="1.5" fill="rgba(212,245,192,0.5)" stroke="#D4F5C0" strokeWidth="0.75" /><path d="M4.5 6.5V4.5C4.5 3.12 5.62 2 7 2C8.38 2 9.5 3.12 9.5 4.5V6.5" stroke="#D4F5C0" strokeWidth="1.5" strokeLinecap="round" /></svg> {totalCards} samtal</>
-                                : <><svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ filter: 'drop-shadow(0 0 3px rgba(212,245,192,0.7)) drop-shadow(0 0 6px rgba(212,245,192,0.4))' }}><rect x="2" y="6.5" width="10" height="6.5" rx="1.5" fill="rgba(212,245,192,0.5)" stroke="#D4F5C0" strokeWidth="0.75" /><path d="M4.5 6.5V4.5C4.5 3.12 5.62 2 7 2C8.38 2 9.5 3.12 9.5 4.5V6.5" stroke="#D4F5C0" strokeWidth="1.5" strokeLinecap="round" /></svg> {totalCards} samtal</>}
-                        </span>
-                      </>
-                    );
-                  })()}
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-
-
-        {/* ── Barn & Familj section anchor ── */}
-        <div className="px-5" style={{ marginTop: '0px' }}>
-          <div style={{
-            borderTop: 'none',
-            paddingTop: '20px',
-            position: 'relative',
-          }}>
-            {/* Mushroom-tinted section divider */}
-            <div style={{
-              position: 'absolute',
-              top: 0,
-              left: '10%',
-              right: '10%',
-              height: '1px',
-              background: 'linear-gradient(90deg, transparent 0%, rgba(110, 201, 184, 0.15) 30%, rgba(110, 201, 184, 0.20) 50%, rgba(110, 201, 184, 0.15) 70%, transparent 100%)',
-            }} />
-            <p style={{
-              fontFamily: "var(--font-body)",
-              fontSize: '13px',
-              fontWeight: 700,
-              letterSpacing: '2px',
-              textTransform: 'uppercase',
-              color: '#FDF6E3',
-              opacity: 0.55,
-              marginBottom: '20px',
-            }}>
-              Barn & Familj
-            </p>
-          </div>
-        </div>
-
-
-        <div className="px-5" style={{ scrollMarginTop: '8px' }}>
-          {/* Free-trial mention removed — now shown per-tile */}
-          {/* Resume card moved above Föräldrar */}
-          <div style={{ height: '0px' }} />
-          <motion.div
-            variants={containerVariants}
-            initial={false}
-            animate="visible"
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '28px',
-            }}
-          >
-            {sortedKidsProducts.map((product) => {
-              const count = completedCountMap[product.id] || 0;
-              const freeCardCompleted = product.freeCardId
-                ? (completedCardSets[product.id]?.has(product.freeCardId) ?? false)
-                : false;
-              const showFreeLabel = false;
-              const ptxt = count > 0
-                ? `${count} av ${product.cards.length} samtal`
-                : `${product.cards.length} samtal`;
-              return (
-                <PastelTile
-                  key={product.id}
-                  name={product.name}
-                  bg={TILE_COLORS[product.id]!}
-                  productId={product.id}
-                  tagline={TAGLINES[product.id]}
-                  
-                  accentColor={ACCENT_COLORS[product.id]}
-                  taglineColor={TAGLINE_COLORS[product.id]}
-                  illustration={ILLUSTRATIONS[product.id]}
-                  illustrationOpacity={ILLUSTRATION_OPACITY[product.id]}
-                  onClick={() => navigate(`/product/${product.slug}`)}
-                  badgeText={buildBadgeText(product)}
-                  hasActiveSession={activeProductIds.has(product.id)}
-                  tileHeight={TILE_HEIGHTS[product.id] ?? '240px'}
-                  completedCount={count}
-                  isPurchased={purchased.has(product.id)}
-                  lastActive={lastActivityMap[product.id]}
-                  hideFreeBadge={freeCardCompleted}
-                  showFreeLabel={showFreeLabel}
-                  totalCards={product.cards.length}
-                  wide
-                />
-              );
-            })}
-          </motion.div>
-        </div>
-
-        </div>
-
-        {/* Bottom safe-area spacing */}
-        <div style={{ paddingBottom: 'calc(72px + env(safe-area-inset-bottom, 0px))' }} />
+        <p
+          style={{
+            fontFamily: 'Inter, system-ui, sans-serif',
+            fontSize: 13,
+            fontWeight: 700,
+            letterSpacing: '2px',
+            textTransform: 'uppercase',
+            color: LANTERN_GLOW,
+            opacity: 0.55,
+            marginBottom: 20,
+          }}
+        >
+          {label}
+        </p>
       </div>
     </div>
   );
