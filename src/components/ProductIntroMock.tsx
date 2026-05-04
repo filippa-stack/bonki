@@ -268,7 +268,7 @@ export default function ProductIntroMock({ productId }: ProductIntroMockProps) {
         <h1
           style={{
             fontFamily: 'Fraunces, serif',
-            fontSize: 34,
+            fontSize: 40,
             fontWeight: 500,
             color: LANTERN_GLOW,
             textAlign: 'center',
