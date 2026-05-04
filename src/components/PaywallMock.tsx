@@ -40,12 +40,12 @@ const PRODUCT_ILLUSTRATION: Record<string, string> = {
 };
 
 const PRODUCT_ILLUSTRATION_POSITION: Record<string, string> = {
-  jag_i_mig: 'center 85%',
-  jag_med_andra: 'center 90%',
-  jag_i_varlden: 'center 88%',
-  vardagskort: 'center 80%',
-  syskonkort: 'center 78%',
-  still_us: 'center 88%',
+  jag_i_mig: 'center 25%',
+  jag_med_andra: 'center 35%',
+  jag_i_varlden: 'center 30%',
+  vardagskort: 'center 20%',
+  syskonkort: 'center 15%',
+  still_us: 'center 30%',
 };
 
 /** Hardcoded card-2 title placeholders. Production will read from product card arrays. */
