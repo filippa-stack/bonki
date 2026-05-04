@@ -657,7 +657,7 @@ export default function ProductLibrary() {
                     lineHeight: 1.3,
                     margin: 0,
                   }}>
-                    Fortsätt utforska {lastProduct.name}
+                    {lastProduct.name}
                   </p>
                   <p style={{
                     fontFamily: 'var(--font-body)',
