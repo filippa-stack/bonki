@@ -83,15 +83,15 @@ const PRODUCT_ACCENT: Record<string, string> = {
   sexualitetskort: '#DD958B',
 };
 
-/** v4 gradient spec — injected once into the page so PastelTile bg can reference vars. */
+/** v4 gradient spec — saturated, high-chroma stops for vibrant tile bg. */
 const GRADIENT_TOKENS_CSS = `
   .v4-mock-root {
-    --vartvi-bg-1:#A8B5C9; --vartvi-bg-2:#7989A0;
-    --jim-bg-1:#2A6B65;    --jim-bg-2:#1F5550;
-    --jma-bg-1:#B85A8A;    --jma-bg-2:#8C3D69;
-    --varlden-bg-1:#BAC03E; --varlden-bg-2:#8E9425;
-    --vardag-bg-1:#6FB498;  --vardag-bg-2:#549478;
-    --syskon-bg-1:#C4A5D6;  --syskon-bg-2:#9D7FB8;
+    --vartvi-bg-1:#C5D0E2; --vartvi-bg-2:#647892;
+    --jim-bg-1:#3A9088;    --jim-bg-2:#175048;
+    --jma-bg-1:#D86BA0;    --jma-bg-2:#7A2E5A;
+    --varlden-bg-1:#D8E04A; --varlden-bg-2:#7A8019;
+    --vardag-bg-1:#7FCEAB;  --vardag-bg-2:#3E8868;
+    --syskon-bg-1:#D7B5EC;  --syskon-bg-2:#8868A8;
   }
 `;
 
@@ -172,9 +172,9 @@ function PastelTile({ product, onClick, completedCount, isPurchased }: PastelTil
         style={{
           position: 'absolute',
           left: 0, right: 0, bottom: 0,
-          height: '70%',
+          height: '55%',
           background:
-            'linear-gradient(to top, rgba(0,0,0,0.40) 0%, rgba(0,0,0,0.15) 40%, transparent 100%)',
+            'linear-gradient(to top, rgba(0,0,0,0.32) 0%, rgba(0,0,0,0.08) 50%, transparent 100%)',
           pointerEvents: 'none',
           zIndex: 1,
           borderRadius: '0 0 22px 22px',
