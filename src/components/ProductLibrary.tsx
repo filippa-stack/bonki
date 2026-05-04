@@ -134,7 +134,6 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
   name, productId, tagline, onClick, illustration,
   totalCards = 0, completedCount = 0, isPurchased = false,
 }, ref) {
-  const fallbackBg = TILE_COLORS[productId] ?? '#1A2538';
   const tasted = !isPurchased && completedCount > 0;
 
   return (
@@ -146,14 +145,14 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
       onClick={onClick}
       className="cursor-pointer"
       style={{
-        borderRadius: 22,
-        background: tileBackground(productId, fallbackBg),
+        borderRadius: 18,
+        background: 'rgba(255, 255, 255, 0.02)',
         aspectRatio: '1 / 1.05',
         width: '100%',
         position: 'relative',
         overflow: 'hidden',
-        border: '1px solid rgba(255, 255, 255, 0.10)',
-        boxShadow: `0 4px 28px ${hexToRgba(fallbackBg, 0.20)}, 0 2px 8px rgba(0, 0, 0, 0.18)`,
+        border: '0.5px solid rgba(255, 255, 255, 0.08)',
+        boxShadow: 'none',
       }}
     >
       {illustration && (
