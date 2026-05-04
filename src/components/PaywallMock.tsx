@@ -364,41 +364,6 @@ export default function PaywallMock({ productId }: PaywallMockProps) {
             Inte just nu
           </button>
         </div>
-
-        {useTwoLineCta && (
-          <p
-            style={{
-              fontFamily: 'Inter, system-ui, sans-serif',
-              fontSize: 12,
-              color: LANTERN_GLOW,
-              opacity: 0.7,
-              textAlign: 'center',
-              margin: '8px 0 0',
-            }}
-          >
-            {PRICE_SEK} kr · Engångsköp
-          </p>
-        )}
-
-        {/* Soft decline */}
-        <button
-          onClick={handleSoftDecline}
-          style={{
-            display: 'block',
-            width: '100%',
-            marginTop: 16,
-            background: 'none',
-            border: 'none',
-            cursor: 'pointer',
-            fontFamily: 'Inter, system-ui, sans-serif',
-            fontSize: 12.5,
-            color: LANTERN_GLOW,
-            opacity: 0.7,
-            padding: '4px 0',
-          }}
-        >
-          Inte just nu
-        </button>
       </div>
     </div>
   );
