@@ -54,47 +54,8 @@ const TAGLINES: Record<string, string> = {
   sexualitetskort: 'Kropp, gränser och identitet',
 };
 
-/** Sexualitetskort keeps a flat fallback color (no gradient palette yet). */
-const TILE_COLORS: Record<string, string> = {
-  sexualitetskort: '#DD958B',
-};
-
-/** Map product id → CSS-var slug for gradient tile background. */
-const PRODUCT_SLUG: Record<string, string> = {
-  still_us: 'vartvi',
-  jag_i_mig: 'jim',
-  jag_med_andra: 'jma',
-  jag_i_varlden: 'varlden',
-  vardagskort: 'vardag',
-  syskonkort: 'syskon',
-};
-
-/** v4 gradient tokens — saturated, high-chroma stops for vibrant tile bg. */
-const GRADIENT_TOKENS_CSS = `
-  .v4-library-root {
-    --vartvi-bg-1:#C5D0E2; --vartvi-bg-2:#647892;
-    --jim-bg-1:#3A9088;    --jim-bg-2:#175048;
-    --jma-bg-1:#D86BA0;    --jma-bg-2:#7A2E5A;
-    --varlden-bg-1:#D8E04A; --varlden-bg-2:#7A8019;
-    --vardag-bg-1:#7FCEAB;  --vardag-bg-2:#3E8868;
-    --syskon-bg-1:#D7B5EC;  --syskon-bg-2:#8868A8;
-  }
-`;
-
-function tileBackground(productId: string, fallback: string): string {
-  const slug = PRODUCT_SLUG[productId];
-  return slug
-    ? `linear-gradient(165deg, var(--${slug}-bg-1), var(--${slug}-bg-2))`
-    : fallback;
-}
-
-/** Helper: hex → rgba */
-function hexToRgba(hex: string, alpha: number): string {
-  const r = parseInt(hex.slice(1, 3), 16);
-  const g = parseInt(hex.slice(3, 5), 16);
-  const b = parseInt(hex.slice(5, 7), 16);
-  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-}
+// Tiles render as uniform dark elevated surfaces against the library bg.
+// Per-product color now lives entirely in the illustration.
 
 
 /** Detect return visit for faster animations */
@@ -173,7 +134,6 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
   name, productId, tagline, onClick, illustration,
   totalCards = 0, completedCount = 0, isPurchased = false,
 }, ref) {
-  const fallbackBg = TILE_COLORS[productId] ?? '#1A2538';
   const tasted = !isPurchased && completedCount > 0;
 
   return (
@@ -185,14 +145,14 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
       onClick={onClick}
       className="cursor-pointer"
       style={{
-        borderRadius: 22,
-        background: tileBackground(productId, fallbackBg),
+        borderRadius: 18,
+        background: 'rgba(255, 255, 255, 0.02)',
         aspectRatio: '1 / 1.05',
         width: '100%',
         position: 'relative',
         overflow: 'hidden',
-        border: '1px solid rgba(255, 255, 255, 0.10)',
-        boxShadow: `0 4px 28px ${hexToRgba(fallbackBg, 0.20)}, 0 2px 8px rgba(0, 0, 0, 0.18)`,
+        border: '0.5px solid rgba(255, 255, 255, 0.08)',
+        boxShadow: 'none',
       }}
     >
       {illustration && (
@@ -225,7 +185,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
             'linear-gradient(to top, rgba(0,0,0,0.32) 0%, rgba(0,0,0,0.08) 50%, transparent 100%)',
           pointerEvents: 'none',
           zIndex: 1,
-          borderRadius: '0 0 22px 22px',
+          borderRadius: '0 0 18px 18px',
         }}
       />
 
@@ -250,7 +210,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
             lineHeight: 1.1,
             color: '#FFFFFF',
             letterSpacing: '-0.005em',
-            textShadow: '0 2px 14px rgba(0,0,0,0.45)',
+            textShadow: '0 1px 8px rgba(0,0,0,0.5)',
             margin: '0 0 5px',
           }}
         >
@@ -262,7 +222,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
               fontFamily: 'Inter, system-ui, sans-serif',
               fontSize: 12,
               fontWeight: 400,
-              color: 'rgba(255, 255, 255, 0.92)',
+              color: 'rgba(255, 255, 255, 0.78)',
               lineHeight: 1.3,
               textShadow: '0 1px 6px rgba(0,0,0,0.35)',
               margin: '0 0 9px',
