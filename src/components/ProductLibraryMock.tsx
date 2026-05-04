@@ -214,7 +214,7 @@ function PastelTile({ product, onClick, completedCount, isPurchased }: PastelTil
               fontFamily: 'Inter, system-ui, sans-serif',
               fontSize: 12,
               fontWeight: 400,
-              color: 'rgba(253, 246, 227, 0.92)',
+              color: 'rgba(255, 255, 255, 0.92)',
               lineHeight: 1.3,
               textShadow: '0 1px 6px rgba(0,0,0,0.35)',
               margin: '0 0 9px',
