@@ -299,8 +299,23 @@ export default function ProductIntroMock({ productId }: ProductIntroMockProps) {
           </p>
         )}
 
+        {/* Credentials — anchors trust at top of editorial pitch */}
+        <p
+          style={{
+            fontFamily: 'Inter, system-ui, sans-serif',
+            fontSize: 12,
+            color: LANTERN_GLOW,
+            opacity: 0.65,
+            textAlign: 'center',
+            margin: '12px 0 0',
+            lineHeight: 1.5,
+          }}
+        >
+          Utvecklat av psykologer · 29 års klinisk erfarenhet
+        </p>
+
         {/* Body copy */}
-        <div style={{ marginTop: 22, textAlign: 'center' }}>
+        <div style={{ marginTop: 24, textAlign: 'center' }}>
           {fullBodyText.split('\n\n').map((para, i) => (
             <p
               key={i}
@@ -367,36 +382,38 @@ export default function ProductIntroMock({ productId }: ProductIntroMockProps) {
             <AlreadyUsedHerePlaceholder onBack={handleSoftDecline} />
           ) : (
             <>
-              <p
-                style={{
-                  fontFamily: 'Inter, system-ui, sans-serif',
-                  fontSize: 14,
-                  fontWeight: 500,
-                  color: LANTERN_GLOW,
-                  opacity: 0.9,
-                  textAlign: 'center',
-                  margin: 0,
-                  lineHeight: 1.5,
-                }}
-              >
-                {resolved === 'free'
-                  ? `Resten av ${product.name} — ${PRICE_SEK} kr`
-                  : `${product.name} — ${PRICE_SEK} kr`}
-              </p>
+              {resolved === 'free' && (
+                <p
+                  style={{
+                    fontFamily: 'Inter, system-ui, sans-serif',
+                    fontSize: 14,
+                    fontWeight: 500,
+                    color: LANTERN_GLOW,
+                    opacity: 0.9,
+                    textAlign: 'center',
+                    margin: 0,
+                    lineHeight: 1.5,
+                  }}
+                >
+                  Resten av {product.name} — {PRICE_SEK} kr
+                </p>
+              )}
 
-              <p
-                style={{
-                  fontFamily: 'Inter, system-ui, sans-serif',
-                  fontSize: 12,
-                  color: LANTERN_GLOW,
-                  opacity: 0.65,
-                  textAlign: 'center',
-                  margin: '6px 0 0',
-                  lineHeight: 1.5,
-                }}
-              >
-                Utvecklat av psykologer · 29 års klinisk erfarenhet
-              </p>
+              {resolved === 'locked' && (
+                <p
+                  style={{
+                    fontFamily: 'Inter, system-ui, sans-serif',
+                    fontSize: 11.5,
+                    color: LANTERN_GLOW,
+                    opacity: 0.6,
+                    textAlign: 'center',
+                    margin: '0 0 14px',
+                    lineHeight: 1.5,
+                  }}
+                >
+                  Du har redan använt ditt gratis-samtal i {otherProductName}.
+                </p>
+              )}
 
               {resolved === 'free' ? (
                 <button
@@ -423,7 +440,6 @@ export default function ProductIntroMock({ productId }: ProductIntroMockProps) {
                   style={{
                     width: '100%',
                     height: 56,
-                    marginTop: 18,
                     background: BONKI_ORANGE,
                     color: LANTERN_GLOW,
                     border: 'none',
@@ -436,22 +452,6 @@ export default function ProductIntroMock({ productId }: ProductIntroMockProps) {
                 >
                   Köp · {PRICE_SEK} kr
                 </button>
-              )}
-
-              {resolved === 'locked' && (
-                <p
-                  style={{
-                    fontFamily: 'Inter, system-ui, sans-serif',
-                    fontSize: 11.5,
-                    color: LANTERN_GLOW,
-                    opacity: 0.6,
-                    textAlign: 'center',
-                    margin: '10px 0 0',
-                    lineHeight: 1.5,
-                  }}
-                >
-                  Du har redan använt ditt gratis-samtal i {otherProductName}.
-                </p>
               )}
 
               {resolved === 'locked' && (
