@@ -55,8 +55,8 @@ const ILLUSTRATIONS: Record<string, string> = {
 const TAGLINES: Record<string, string> = {
   still_us: 'Förbli ett vi medan ni uppfostrar dem',
   jag_i_mig: 'När känslor får ord',
-  jag_med_andra: 'Det trygga och det svåra',
-  jag_i_varlden: 'Världen vidgas',
+  jag_med_andra: 'Att vara sig själv och samspela med andra',
+  jag_i_varlden: 'Att utveckla sig själv i en värld som vidgas',
   vardagskort: 'Det vanliga, på djupet',
   syskonkort: 'Band för livet',
   sexualitetskort: 'Kropp, gränser och identitet',
