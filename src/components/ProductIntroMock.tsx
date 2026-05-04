@@ -268,7 +268,7 @@ export default function ProductIntroMock({ productId }: ProductIntroMockProps) {
         <h1
           style={{
             fontFamily: 'Fraunces, serif',
-            fontSize: 34,
+            fontSize: 40,
             fontWeight: 500,
             color: LANTERN_GLOW,
             textAlign: 'center',
@@ -307,7 +307,7 @@ export default function ProductIntroMock({ productId }: ProductIntroMockProps) {
             color: LANTERN_GLOW,
             opacity: 0.65,
             textAlign: 'center',
-            margin: '12px 0 0',
+            margin: '40px 0 0',
             lineHeight: 1.5,
           }}
         >
@@ -386,8 +386,8 @@ export default function ProductIntroMock({ productId }: ProductIntroMockProps) {
                 <p
                   style={{
                     fontFamily: 'Inter, system-ui, sans-serif',
-                    fontSize: 14,
-                    fontWeight: 500,
+                    fontSize: 15,
+                    fontWeight: 600,
                     color: LANTERN_GLOW,
                     opacity: 0.9,
                     textAlign: 'center',
@@ -563,7 +563,7 @@ function DevPanel({ resolved, forced, onSelect }: DevPanelProps) {
     <div
       style={{
         position: 'fixed',
-        top: 'calc(env(safe-area-inset-top, 0px) + 50px)',
+        bottom: 'calc(env(safe-area-inset-bottom, 0px) + 76px)',
         left: 12,
         zIndex: 9999,
         display: 'flex',
