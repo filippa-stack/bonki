@@ -152,7 +152,7 @@ export default function PaywallMock({ productId }: PaywallMockProps) {
               left: 0,
               right: 0,
               bottom: 0,
-              background: `linear-gradient(to top, ${MIDNIGHT_INK} 0%, ${MIDNIGHT_INK} 40%, transparent 100%)`,
+              background: `linear-gradient(to top, ${MIDNIGHT_INK} 0%, transparent 100%)`,
               pointerEvents: 'none',
             }}
           />
