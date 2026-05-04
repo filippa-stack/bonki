@@ -200,9 +200,9 @@ function PastelTile({ product, onClick, completedCount, isPurchased }: PastelTil
             fontSize: 26,
             fontWeight: 500,
             lineHeight: 1.1,
-            color: LANTERN_GLOW,
+            color: '#FFFFFF',
             letterSpacing: '-0.005em',
-            textShadow: '0 2px 12px rgba(0,0,0,0.35)',
+            textShadow: '0 2px 14px rgba(0,0,0,0.45)',
             margin: '0 0 5px',
           }}
         >
