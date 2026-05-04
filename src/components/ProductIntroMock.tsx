@@ -386,8 +386,8 @@ export default function ProductIntroMock({ productId }: ProductIntroMockProps) {
                 <p
                   style={{
                     fontFamily: 'Inter, system-ui, sans-serif',
-                    fontSize: 14,
-                    fontWeight: 500,
+                    fontSize: 15,
+                    fontWeight: 600,
                     color: LANTERN_GLOW,
                     opacity: 0.9,
                     textAlign: 'center',
