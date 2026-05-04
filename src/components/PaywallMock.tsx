@@ -115,7 +115,7 @@ export default function PaywallMock({ productId }: PaywallMockProps) {
         fontFamily: 'Inter, system-ui, sans-serif',
       }}
     >
-      {/* Illustration backdrop */}
+      {/* Illustration backdrop — decorative crown, fully faded by ~30vh */}
       {creatureImage && (
         <div
           aria-hidden
@@ -124,7 +124,7 @@ export default function PaywallMock({ productId }: PaywallMockProps) {
             top: 0,
             left: '-10%',
             right: '-10%',
-            height: '42%',
+            height: '30vh',
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'flex-start',
@@ -148,11 +148,11 @@ export default function PaywallMock({ productId }: PaywallMockProps) {
           <div
             style={{
               position: 'absolute',
-              bottom: 0,
+              top: 0,
               left: 0,
               right: 0,
-              height: '50%',
-              background: `linear-gradient(to top, ${MIDNIGHT_INK} 0%, transparent 100%)`,
+              bottom: 0,
+              background: `linear-gradient(to top, ${MIDNIGHT_INK} 0%, ${MIDNIGHT_INK} 40%, transparent 100%)`,
               pointerEvents: 'none',
             }}
           />
@@ -191,13 +191,15 @@ export default function PaywallMock({ productId }: PaywallMockProps) {
           flexDirection: 'column',
           padding: '0 28px',
           paddingTop: 'max(44px, env(safe-area-inset-top, 44px))',
-          paddingBottom: 'calc(28px + env(safe-area-inset-bottom, 0px))',
+          paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 100px)',
           minHeight: '100vh',
           boxSizing: 'border-box',
         }}
       >
-        <div style={{ flex: '0 0 auto', minHeight: '15%', paddingTop: 60 }} />
+        {/* Top spacer — push editorial zone ~24px below illustration fade (30vh) */}
+        <div style={{ flex: '0 0 auto', height: 'calc(30vh + 24px)' }} />
 
+        {/* ── Editorial zone ── */}
         {/* Acknowledgment eyebrow */}
         <p
           style={{
@@ -232,16 +234,14 @@ export default function PaywallMock({ productId }: PaywallMockProps) {
           Ni har börjat något.
         </h1>
 
-        {/* Next session card */}
+        {/* Next session card — subtle chrome, sits on stable midnight ink */}
         <div
           style={{
             marginTop: 32,
             padding: '24px 20px',
             borderRadius: 18,
-            background: 'rgba(15,23,39,0.85)',
-            backdropFilter: 'blur(8px)',
-            WebkitBackdropFilter: 'blur(8px)',
-            border: '0.5px solid rgba(255,255,255,0.18)',
+            background: 'rgba(255,255,255,0.04)',
+            border: '0.5px solid rgba(255,255,255,0.10)',
             textAlign: 'center',
           }}
         >
@@ -289,81 +289,83 @@ export default function PaywallMock({ productId }: PaywallMockProps) {
           20 samtal kvar att utforska tillsammans.
         </p>
 
-        {/* Bottom cluster: pricing + CTA + soft decline */}
-        <div style={{ marginTop: 'auto', paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 100px)' }}>
-          {/* Pricing context */}
+        {/* ── Flexible spacer ── */}
+        <div style={{ flex: 1 }} />
+
+        {/* ── Commit zone ── */}
+        {/* Pricing context */}
+        <p
+          style={{
+            fontFamily: 'Inter, system-ui, sans-serif',
+            fontSize: 13,
+            fontWeight: 500,
+            color: LANTERN_GLOW,
+            opacity: 0.75,
+            textAlign: 'center',
+            margin: 0,
+            lineHeight: 1.5,
+          }}
+        >
+          {PRICE_SEK} kr · Engångsköp · Tillgång för alltid
+        </p>
+
+        {/* Primary CTA */}
+        <button
+          onClick={handlePurchase}
+          style={{
+            width: '100%',
+            height: 56,
+            marginTop: 20,
+            background: BONKI_ORANGE,
+            color: LANTERN_GLOW,
+            border: 'none',
+            borderRadius: 14,
+            cursor: 'pointer',
+            fontFamily: 'Inter, system-ui, sans-serif',
+            fontSize: 14,
+            fontWeight: 600,
+          }}
+        >
+          {useTwoLineCta
+            ? `Fortsätt med ${product.name}`
+            : `Fortsätt med ${product.name} — ${PRICE_SEK} kr`}
+        </button>
+
+        {useTwoLineCta && (
           <p
             style={{
               fontFamily: 'Inter, system-ui, sans-serif',
-              fontSize: 13,
-              fontWeight: 500,
-              color: LANTERN_GLOW,
-              opacity: 0.75,
-              textAlign: 'center',
-              margin: '0',
-              lineHeight: 1.5,
-            }}
-          >
-            {PRICE_SEK} kr · Engångsköp · Tillgång för alltid
-          </p>
-
-          {/* Primary CTA */}
-          <button
-            onClick={handlePurchase}
-            style={{
-              width: '100%',
-              height: 56,
-              marginTop: 20,
-              background: BONKI_ORANGE,
-              color: LANTERN_GLOW,
-              border: 'none',
-              borderRadius: 14,
-              cursor: 'pointer',
-              fontFamily: 'Inter, system-ui, sans-serif',
-              fontSize: 14,
-              fontWeight: 600,
-            }}
-          >
-            {useTwoLineCta
-              ? `Fortsätt med ${product.name}`
-              : `Fortsätt med ${product.name} — ${PRICE_SEK} kr`}
-          </button>
-
-          {useTwoLineCta && (
-            <p
-              style={{
-                fontFamily: 'Inter, system-ui, sans-serif',
-                fontSize: 12,
-                color: LANTERN_GLOW,
-                opacity: 0.7,
-                textAlign: 'center',
-                margin: '8px 0 0',
-              }}
-            >
-              {PRICE_SEK} kr · Engångsköp
-            </p>
-          )}
-
-          {/* Soft decline */}
-          <button
-            onClick={handleSoftDecline}
-            style={{
-              display: 'block',
-              width: '100%',
-              marginTop: 16,
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              fontFamily: 'Inter, system-ui, sans-serif',
-              fontSize: 12.5,
+              fontSize: 12,
               color: LANTERN_GLOW,
               opacity: 0.7,
-              padding: '4px 0',
+              textAlign: 'center',
+              margin: '8px 0 0',
             }}
           >
-            Inte just nu
-          </button>
-        </div>
+            {PRICE_SEK} kr · Engångsköp
+          </p>
+        )}
+
+        {/* Soft decline */}
+        <button
+          onClick={handleSoftDecline}
+          style={{
+            display: 'block',
+            width: '100%',
+            marginTop: 16,
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            fontFamily: 'Inter, system-ui, sans-serif',
+            fontSize: 12.5,
+            color: LANTERN_GLOW,
+            opacity: 0.7,
+            padding: '4px 0',
+          }}
+        >
+          Inte just nu
+        </button>
+
       </div>
     </div>
   );
