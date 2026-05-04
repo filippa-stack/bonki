@@ -210,7 +210,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
             lineHeight: 1.1,
             color: '#FFFFFF',
             letterSpacing: '-0.005em',
-            textShadow: '0 2px 14px rgba(0,0,0,0.45)',
+            textShadow: '0 1px 8px rgba(0,0,0,0.5)',
             margin: '0 0 5px',
           }}
         >
