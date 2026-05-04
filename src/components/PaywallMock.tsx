@@ -124,7 +124,7 @@ export default function PaywallMock({ productId }: PaywallMockProps) {
             top: 0,
             left: '-10%',
             right: '-10%',
-            height: '42vh',
+            height: '52vh',
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'flex-start',
