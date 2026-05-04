@@ -1,8 +1,10 @@
 /**
  * ProductHomeMock — sandboxed product home surface at /product-home-mock/:productId.
  *
+ * Iteration 2: solid midnight ink (no atmospheric tint), flat sequenced card list
+ * grouped by editorial category dividers, product-color progress bar fills.
+ *
  * Mirrors ProductLibraryMock pattern. Live ProductHome.tsx is untouched.
- * Hardcoded mock progress data switched via dev panel.
  */
 
 import { useMemo, useState } from 'react';
@@ -11,6 +13,8 @@ import { ArrowLeft, ChevronRight } from 'lucide-react';
 import KontoIcon from '@/components/KontoIcon';
 import KontoSheet from '@/components/KontoSheet';
 import { usePageBackground } from '@/hooks/usePageBackground';
+import { getProductById } from '@/data/products';
+import type { Card } from '@/types';
 
 import illustrationStillUs from '@/assets/illustration-still-us-tile.png';
 import illustrationJagIMig from '@/assets/illustration-jag-i-mig.png';
@@ -31,102 +35,52 @@ const PLACEHOLDER_POOL = [
 const MIDNIGHT_INK = '#1A1A2E';
 const DEEP_DUSK = '#2A2D3A';
 const GHOST_GLOW = '#D4F5C0';
-const LANTERN_GLOW = '#FDF6E3';
 const BONKI_ORANGE = '#E85D2C';
 
-type ProductId =
-  | 'jag_i_mig'
-  | 'jag_med_andra'
-  | 'jag_i_varlden'
-  | 'vardagskort'
-  | 'syskonkort'
-  | 'still_us';
-
-interface ProductSpec {
-  name: string;
-  tint: string;
+interface MockMeta {
   subtitle: string;
-  illustration: string;
-  cards: Array<{ title: string; total: number }>;
+  progressColor: string;
 }
 
-const SPECS: Record<ProductId, ProductSpec> = {
+const MOCK_META: Record<string, MockMeta> = {
   jag_i_mig: {
-    name: 'Jag i Mig',
-    tint: '#2A6B65',
     subtitle: '21 samtal om känslor som får ord.',
-    illustration: illustrationJagIMig,
-    cards: [
-      { title: 'Mina känslor', total: 5 },
-      { title: 'Starka känslor', total: 5 },
-      { title: 'Stora känslor', total: 5 },
-      { title: 'Att vara jag', total: 6 },
-    ],
+    progressColor: '#5BC9BC',
   },
   jag_med_andra: {
-    name: 'Jag med Andra',
-    tint: '#8C3D69',
     subtitle: '21 samtal om det trygga och det svåra.',
-    illustration: illustrationJagMedAndra,
-    cards: [
-      { title: 'Att vara nära', total: 5 },
-      { title: 'Att höra till', total: 5 },
-      { title: 'Bråk', total: 5 },
-      { title: 'Kompisar', total: 3 },
-      { title: 'Ensam', total: 3 },
-    ],
+    progressColor: '#E27BAC',
   },
   jag_i_varlden: {
-    name: 'Jag i Världen',
-    tint: '#7A8019',
     subtitle: '20 samtal om en värld som vidgas.',
-    illustration: illustrationJagIVarlden,
-    cards: [
-      { title: 'Omvärlden', total: 5 },
-      { title: 'Vem är jag', total: 5 },
-      { title: 'Jag & andra', total: 5 },
-      { title: 'Vad tror jag på', total: 5 },
-    ],
+    progressColor: '#D5DC4F',
   },
   vardagskort: {
-    name: 'Vardagskort',
-    tint: '#549478',
     subtitle: '15 samtal om det vanliga, på djupet.',
-    illustration: illustrationVardag,
-    cards: [
-      { title: 'Morgon', total: 5 },
-      { title: 'Skola', total: 5 },
-      { title: 'Kväll', total: 5 },
-    ],
+    progressColor: '#7FCEAB',
   },
   syskonkort: {
-    name: 'Syskonkort',
-    tint: '#9D7FB8',
     subtitle: '13 samtal om band för livet.',
-    illustration: illustrationSyskon,
-    cards: [
-      { title: 'Att vara syskon', total: 5 },
-      { title: 'När det skaver', total: 4 },
-      { title: 'Tillsammans', total: 4 },
-    ],
+    progressColor: '#C4A5D6',
+  },
+  sexualitetskort: {
+    subtitle: '',
+    progressColor: '#5BC9BC',
   },
   still_us: {
-    name: 'Vårt Vi',
-    tint: '#7989A0',
     subtitle: '21 samtal om att förbli ett vi.',
-    illustration: illustrationStillUs,
-    cards: [
-      { title: 'Vi som par', total: 7 },
-      { title: 'Vi som föräldrar', total: 7 },
-      { title: 'Vi i världen', total: 7 },
-    ],
+    progressColor: '#8898AE',
   },
 };
 
 type MockState = 'fresh' | 'progress' | 'mostly';
 
-function buildProgress(spec: ProductSpec, state: MockState): number[] {
-  const totals = spec.cards.map((c) => c.total);
+function cardTotal(card: Card): number {
+  const opening = card.sections.find((s) => s.type === 'opening');
+  return opening?.prompts?.length ?? 1;
+}
+
+function buildProgress(totals: number[], state: MockState): number[] {
   if (state === 'fresh') return totals.map(() => 0);
   if (state === 'progress') {
     return totals.map((t, i) => {
@@ -135,7 +89,6 @@ function buildProgress(spec: ProductSpec, state: MockState): number[] {
       return 0;
     });
   }
-  // mostly
   return totals.map((t, i) => (i === totals.length - 1 ? Math.max(1, Math.round(t * 0.6)) : t));
 }
 
@@ -148,11 +101,25 @@ export default function ProductHomeMock() {
 
   usePageBackground(MIDNIGHT_INK);
 
-  const spec = (productId && SPECS[productId as ProductId]) || null;
+  const product = productId ? getProductById(productId) : undefined;
+  const meta = productId ? MOCK_META[productId] : undefined;
 
-  const completed = useMemo(() => (spec ? buildProgress(spec, state) : []), [spec, state]);
+  // Build sequenced sections from manifest, preserving category order.
+  const sections = useMemo(() => {
+    if (!product) return [];
+    return product.categories.map((cat) => ({
+      categoryId: cat.id,
+      categoryTitle: cat.title,
+      cards: product.cards.filter((c) => c.categoryId === cat.id),
+    }));
+  }, [product]);
 
-  if (!spec) {
+  // Flat ordered list across categories
+  const flatCards = useMemo(() => sections.flatMap((s) => s.cards), [sections]);
+  const totals = useMemo(() => flatCards.map(cardTotal), [flatCards]);
+  const completed = useMemo(() => buildProgress(totals, state), [totals, state]);
+
+  if (!product || !meta) {
     return (
       <div
         style={{
@@ -185,29 +152,14 @@ export default function ProductHomeMock() {
     );
   }
 
-  const tint = spec.tint;
-  const tintGradient = `linear-gradient(to bottom, ${tint} 0%, ${tint}CC 6%, ${tint}66 14%, ${tint}1A 20%, ${MIDNIGHT_INK} 28%)`;
-
   // Resume vs start banner content
   const isResume = state === 'progress';
-  const resumeCard = isResume ? spec.cards[1] : spec.cards[0];
-  const resumeQuestion = isResume ? 3 : null;
+  const resumeCard = isResume ? flatCards[1] ?? flatCards[0] : flatCards[0];
+  const resumeTotal = resumeCard ? cardTotal(resumeCard) : 0;
+  const resumeQuestion = isResume ? Math.min(3, resumeTotal) : null;
 
   return (
     <div style={{ minHeight: '100vh', background: MIDNIGHT_INK, position: 'relative' }}>
-      {/* Atmospheric tint */}
-      <div
-        aria-hidden
-        style={{
-          position: 'absolute',
-          inset: '0 0 auto 0',
-          height: '40vh',
-          background: tintGradient,
-          pointerEvents: 'none',
-          zIndex: 0,
-        }}
-      />
-
       {/* KontoIcon (top-right) */}
       <KontoIcon onClick={() => setKontoOpen(true)} />
       <KontoSheet open={kontoOpen} onClose={() => setKontoOpen(false)} />
@@ -250,171 +202,203 @@ export default function ProductHomeMock() {
               lineHeight: 1.1,
             }}
           >
-            {spec.name}
+            {product.name}
           </h1>
-          <p
-            style={{
-              fontFamily: 'var(--font-serif)',
-              fontStyle: 'italic',
-              fontSize: 16,
-              color: 'rgba(255,255,255,0.85)',
-              lineHeight: 1.3,
-              margin: '10px 0 0 0',
-            }}
-          >
-            {spec.subtitle}
-          </p>
+          {meta.subtitle && (
+            <p
+              style={{
+                fontFamily: 'var(--font-serif)',
+                fontStyle: 'italic',
+                fontSize: 16,
+                color: 'rgba(255,255,255,0.85)',
+                lineHeight: 1.3,
+                margin: '10px 0 0 0',
+              }}
+            >
+              {meta.subtitle}
+            </p>
+          )}
         </div>
 
         {/* Resume / start banner */}
-        <div style={{ padding: '24px 20px 0 20px' }}>
-          <button
-            onClick={() => navigate('/library-mock')}
-            style={{
-              width: '100%',
-              display: 'flex',
-              alignItems: 'center',
-              gap: 12,
-              padding: '12px 16px',
-              background: DEEP_DUSK,
-              border: '0.5px solid rgba(255,255,255,0.06)',
-              borderRadius: 14,
-              color: 'inherit',
-              cursor: 'pointer',
-              textAlign: 'left',
-            }}
-          >
-            <span
-              aria-hidden
+        {resumeCard && (
+          <div style={{ padding: '24px 20px 0 20px' }}>
+            <button
+              onClick={() => navigate('/library-mock')}
               style={{
-                width: 8,
-                height: 8,
-                borderRadius: '50%',
-                background: GHOST_GLOW,
-                boxShadow: `0 0 10px ${GHOST_GLOW}`,
-                flex: '0 0 auto',
+                width: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 12,
+                padding: '12px 16px',
+                background: DEEP_DUSK,
+                border: '0.5px solid rgba(255,255,255,0.06)',
+                borderRadius: 14,
+                color: 'inherit',
+                cursor: 'pointer',
+                textAlign: 'left',
               }}
-            />
-            <span style={{ flex: 1, minWidth: 0 }}>
+            >
               <span
+                aria-hidden
                 style={{
-                  display: 'block',
-                  fontFamily: 'var(--font-serif)',
-                  fontSize: 15,
-                  fontWeight: 500,
-                  color: '#FFFFFF',
-                  lineHeight: 1.2,
+                  width: 8,
+                  height: 8,
+                  borderRadius: '50%',
+                  background: GHOST_GLOW,
+                  boxShadow: `0 0 10px ${GHOST_GLOW}`,
+                  flex: '0 0 auto',
                 }}
-              >
-                {resumeCard.title}
+              />
+              <span style={{ flex: 1, minWidth: 0 }}>
+                <span
+                  style={{
+                    display: 'block',
+                    fontFamily: 'var(--font-serif)',
+                    fontSize: 15,
+                    fontWeight: 500,
+                    color: '#FFFFFF',
+                    lineHeight: 1.2,
+                  }}
+                >
+                  {resumeCard.title}
+                </span>
+                <span
+                  style={{
+                    display: 'block',
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: 12,
+                    color: 'rgba(255,255,255,0.6)',
+                    marginTop: 2,
+                  }}
+                >
+                  {isResume
+                    ? `Pausad vid Fråga ${resumeQuestion} av ${resumeTotal}`
+                    : 'Börja här'}
+                </span>
               </span>
-              <span
-                style={{
-                  display: 'block',
-                  fontFamily: 'var(--font-sans)',
-                  fontSize: 12,
-                  color: 'rgba(255,255,255,0.6)',
-                  marginTop: 2,
-                }}
-              >
-                {isResume
-                  ? `Pausad vid Fråga ${resumeQuestion} av ${resumeCard.total}`
-                  : 'Börja här'}
-              </span>
-            </span>
-            <ChevronRight size={20} style={{ color: 'rgba(255,255,255,0.5)', flex: '0 0 auto' }} />
-          </button>
-        </div>
+              <ChevronRight size={20} style={{ color: 'rgba(255,255,255,0.5)', flex: '0 0 auto' }} />
+            </button>
+          </div>
+        )}
 
-        {/* Card thumbnails grid */}
+        {/* Sequenced category sections */}
         <div
           style={{
-            padding: '24px 20px calc(96px + env(safe-area-inset-bottom, 0px)) 20px',
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
-            gap: 12,
+            padding: '8px 20px calc(96px + env(safe-area-inset-bottom, 0px)) 20px',
           }}
         >
-          {spec.cards.map((card, i) => {
-            const done = completed[i] ?? 0;
-            const pct = card.total > 0 ? Math.round((done / card.total) * 100) : 0;
+          {sections.map((section) => {
+            // compute starting flat index for this section
+            const startIdx = flatCards.indexOf(section.cards[0]);
             return (
-              <button
-                key={card.title}
-                onClick={() => navigate('/library-mock')}
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  aspectRatio: '1 / 1.15',
-                  background: DEEP_DUSK,
-                  border: '0.5px solid rgba(255,255,255,0.06)',
-                  borderRadius: 14,
-                  overflow: 'hidden',
-                  padding: 0,
-                  cursor: 'pointer',
-                  textAlign: 'left',
-                  color: 'inherit',
-                }}
-              >
-                <div style={{ padding: '12px 12px 8px', position: 'relative', zIndex: 2 }}>
-                  <h3
-                    style={{
-                      fontFamily: 'var(--font-serif)',
-                      fontSize: 18,
-                      fontWeight: 500,
-                      color: '#FFFFFF',
-                      margin: 0,
-                      lineHeight: 1.15,
-                    }}
-                  >
-                    {card.title}
-                  </h3>
+              <div key={section.categoryId}>
+                <div
+                  style={{
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: 11,
+                    fontWeight: 600,
+                    letterSpacing: '0.2em',
+                    textTransform: 'uppercase',
+                    color: 'rgba(255,255,255,0.45)',
+                    padding: '24px 0 12px 4px',
+                  }}
+                >
+                  {section.categoryTitle}
                 </div>
-                <div style={{ flex: 1, position: 'relative', overflow: 'hidden' }}>
-                  <img
-                    src={PLACEHOLDER_POOL[i % PLACEHOLDER_POOL.length]}
-                    alt=""
-                    style={{
-                      position: 'absolute',
-                      inset: 0,
-                      width: '100%',
-                      height: '100%',
-                      objectFit: 'contain',
-                      objectPosition: 'center center',
-                    }}
-                  />
+                <div
+                  style={{
+                    display: 'grid',
+                    gridTemplateColumns: '1fr 1fr',
+                    gap: 12,
+                  }}
+                >
+                  {section.cards.map((card, localIdx) => {
+                    const globalIdx = startIdx + localIdx;
+                    const total = totals[globalIdx] ?? 1;
+                    const done = completed[globalIdx] ?? 0;
+                    const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+                    return (
+                      <button
+                        key={card.id}
+                        onClick={() => navigate('/library-mock')}
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          aspectRatio: '1 / 1.15',
+                          background: DEEP_DUSK,
+                          border: '0.5px solid rgba(255,255,255,0.06)',
+                          borderRadius: 14,
+                          overflow: 'hidden',
+                          padding: 0,
+                          cursor: 'pointer',
+                          textAlign: 'left',
+                          color: 'inherit',
+                        }}
+                      >
+                        <div style={{ padding: '12px 12px 8px', position: 'relative', zIndex: 2 }}>
+                          <h3
+                            style={{
+                              fontFamily: 'var(--font-serif)',
+                              fontSize: 18,
+                              fontWeight: 500,
+                              color: '#FFFFFF',
+                              margin: 0,
+                              lineHeight: 1.15,
+                            }}
+                          >
+                            {card.title}
+                          </h3>
+                        </div>
+                        <div style={{ flex: 1, position: 'relative', overflow: 'hidden' }}>
+                          <img
+                            src={PLACEHOLDER_POOL[globalIdx % PLACEHOLDER_POOL.length]}
+                            alt=""
+                            style={{
+                              position: 'absolute',
+                              inset: 0,
+                              width: '100%',
+                              height: '100%',
+                              objectFit: 'contain',
+                              objectPosition: 'center center',
+                            }}
+                          />
+                        </div>
+                        <div style={{ padding: '8px 12px 12px', background: DEEP_DUSK }}>
+                          <div
+                            style={{
+                              width: '100%',
+                              height: 3,
+                              borderRadius: 2,
+                              background: 'rgba(255,255,255,0.08)',
+                              overflow: 'hidden',
+                            }}
+                          >
+                            <div
+                              style={{
+                                width: `${pct}%`,
+                                height: '100%',
+                                background: meta.progressColor,
+                              }}
+                            />
+                          </div>
+                          <p
+                            style={{
+                              margin: '6px 0 0 0',
+                              fontFamily: 'var(--font-sans)',
+                              fontSize: 11,
+                              fontWeight: 500,
+                              color: 'rgba(255,255,255,0.65)',
+                            }}
+                          >
+                            {done}/{total} samtal
+                          </p>
+                        </div>
+                      </button>
+                    );
+                  })}
                 </div>
-                <div style={{ padding: '8px 12px 12px', background: DEEP_DUSK }}>
-                  <div
-                    style={{
-                      width: '100%',
-                      height: 3,
-                      borderRadius: 2,
-                      background: 'rgba(255,255,255,0.1)',
-                      overflow: 'hidden',
-                    }}
-                  >
-                    <div
-                      style={{
-                        width: `${pct}%`,
-                        height: '100%',
-                        background: `${LANTERN_GLOW}B3`,
-                      }}
-                    />
-                  </div>
-                  <p
-                    style={{
-                      margin: '6px 0 0 0',
-                      fontFamily: 'var(--font-sans)',
-                      fontSize: 11,
-                      fontWeight: 500,
-                      color: 'rgba(255,255,255,0.65)',
-                    }}
-                  >
-                    {done}/{card.total} samtal
-                  </p>
-                </div>
-              </button>
+              </div>
             );
           })}
         </div>
@@ -446,7 +430,7 @@ export default function ProductHomeMock() {
               cursor: 'pointer',
             }}
           >
-            Mock · {spec.name} ▾
+            Mock · {product.name} ▾
           </button>
         ) : (
           <div
@@ -475,7 +459,7 @@ export default function ProductHomeMock() {
                 cursor: 'pointer',
               }}
             >
-              Mock · {spec.name} ▴
+              Mock · {product.name} ▴
             </button>
             {(['fresh', 'progress', 'mostly'] as MockState[]).map((s) => {
               const label =
@@ -536,7 +520,7 @@ export default function ProductHomeMock() {
         )}
       </div>
 
-      {/* MOCK badge top-right */}
+      {/* MOCK badge top-left */}
       <button
         onClick={() => navigate('/library-mock')}
         aria-label="Mock badge"
