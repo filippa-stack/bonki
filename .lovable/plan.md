@@ -1,51 +1,42 @@
-# Intro mock — credentials pill + collapsible dev panel
+# Library mock — make tiles vibrant
 
-Two adjustments to `src/components/ProductIntroMock.tsx`. No other files touched.
+The tiles look dull because two layers mute the color: (1) the gradient stops are low-chroma desaturated tones, and (2) a heavy bottom scrim covers 70% of the tile and dims the lower half with up to 40% black.
 
-## 1. Credentials line — dark pill backing
+Two surgical changes to `src/components/ProductLibraryMock.tsx`. No other files.
 
-The illustration backdrop is 42% viewport height with a 50% gradient fade, so the credentials line sits in the transition zone where contrast is uneven. Pushing it further down would compress body copy and the CTA region into the bottom nav. The pill approach is cleaner.
+## 1. Boost gradient chroma
 
-Replace the bare `<p>` with a centered `<p>` wrapped in a flex container so the pill hugs the text:
+Replace the gradient token block with higher-chroma stops. Same hue family per product (so the brand mapping stays intact), but pulled toward saturated/punchier values and with a wider light-to-dark spread so the gradient itself reads as energy rather than a flat wash.
 
-- background: `rgba(15,23,39,0.85)` (midnight ink at 85%)
-- padding: `6px 16px`
-- border-radius: `999px`
-- backdropFilter: `blur(4px)` (and `-webkit-` variant) — softens any creature shapes peeking through
-- opacity bumped from `0.65` to `0.85` since the pill provides ground; copy can read at full strength
-- `marginTop: 24` on the wrapper (was `40` on the bare `<p>`)
+```css
+--vartvi-bg-1:#C5D0E2; --vartvi-bg-2:#647892;   /* slate cool — was #A8B5C9 → #7989A0 */
+--jim-bg-1:#3A9088;    --jim-bg-2:#175048;      /* teal — was #2A6B65 → #1F5550 */
+--jma-bg-1:#D86BA0;    --jma-bg-2:#7A2E5A;      /* magenta — was #B85A8A → #8C3D69 */
+--varlden-bg-1:#D8E04A; --varlden-bg-2:#7A8019; /* citron — was #BAC03E → #8E9425 */
+--vardag-bg-1:#7FCEAB;  --vardag-bg-2:#3E8868;  /* sage — was #6FB498 → #549478 */
+--syskon-bg-1:#D7B5EC;  --syskon-bg-2:#8868A8;  /* lilac — was #C4A5D6 → #9D7FB8 */
+```
 
-All other styling unchanged (Inter 12px, lantern-glow, centered, copy unchanged).
+`PRODUCT_ACCENT` (used for shadow tint and sexualitetskort fallback) stays unchanged — the brand-color mapping the rest of the app reads from is untouched.
 
-## 2. Dev panel — collapsible toggle
+## 2. Lighten the bottom scrim
 
-The expanded panel covers the CTA region. Make it default-collapsed.
+The current scrim is `linear-gradient(to top, rgba(0,0,0,0.40) 0%, rgba(0,0,0,0.15) 40%, transparent 100%)` over 70% of the tile height. That's what makes the lower half look dirty.
 
-Change `DevPanel` to track local `expanded` state (default `false`).
+Reduce to:
+- height `55%` (was 70%)
+- gradient `rgba(0,0,0,0.32) 0%, rgba(0,0,0,0.08) 50%, transparent 100%`
 
-**Collapsed state** — small pill at the same anchor:
-- `position: fixed; bottom: calc(env(safe-area-inset-bottom, 0px) + 76px); left: 12px; z-index: 9998;`
-- Single button labeled `Mock · {resolved} ▾` with caret
-- Compact: `padding: 6px 10px`, `borderRadius: 999px`, same dark glass styling (`rgba(0,0,0,0.55)` + 0.5px border + blur)
-- Tapping expands
-
-**Expanded state** — current full panel, plus:
-- Header row shows `Mock state · {resolved}` with a `▴` collapse affordance
-- Tapping the header (or the caret) collapses back
-- Three state buttons unchanged (Free / Locked (i Jag i Mig) / Purchased)
-- Selecting a state still calls `onSelect` and clears flags as today; panel can stay open or auto-collapse — keep it open so rapid state-switching still works
-
-Z-index stays `9998` (was `9999`); MOCK badge in top-right is untouched.
+Title and tagline still get their own `textShadow: 0 2px 12px rgba(0,0,0,0.35)` for legibility, so dropping scrim weight doesn't hurt readability.
 
 ## What stays unchanged
 
-- Headline (40px), subhead, body copy, sample question card, CTA region, copy strings
-- State machine, localStorage flags, navigation handlers
-- MOCK badge top-right, back arrow, illustration backdrop
-- Live `ProductIntro.tsx`
+- Tile structure, illustration positioning, text layout, badges, progress display
+- Hover/tap motion
+- `PRODUCT_ACCENT` map and shadow logic
+- All copy, taglines, navigation
+- Live `ProductLibrary.tsx` — completely untouched
 
 ## Verification
 
-- `/intro-mock/jag_i_varlden` (free): credentials pill reads cleanly against any background; CTA region fully visible with no dev panel overlap.
-- Dev toggle "Mock · free ▾" sits at bottom-left as a small pill; tapping expands the panel; tapping the header collapses it again.
-- Switching to Locked state via the expanded panel updates label to "Mock · locked ▾" when collapsed.
+Open `/library-mock` at 390×844: each tile reads as a saturated brand color with the illustration sitting cleanly on top, no greyish wash across the lower half. Title and tagline still legible against the lighter scrim thanks to text-shadow.
