@@ -289,43 +289,81 @@ export default function PaywallMock({ productId }: PaywallMockProps) {
           20 samtal kvar att utforska tillsammans.
         </p>
 
-        {/* Pricing context */}
-        <p
-          style={{
-            fontFamily: 'Inter, system-ui, sans-serif',
-            fontSize: 13,
-            fontWeight: 500,
-            color: LANTERN_GLOW,
-            opacity: 0.75,
-            textAlign: 'center',
-            margin: '32px 0 0',
-            lineHeight: 1.5,
-          }}
-        >
-          {PRICE_SEK} kr · Engångsköp · Tillgång för alltid
-        </p>
+        {/* Bottom cluster: pricing + CTA + soft decline */}
+        <div style={{ marginTop: 'auto', paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 100px)' }}>
+          {/* Pricing context */}
+          <p
+            style={{
+              fontFamily: 'Inter, system-ui, sans-serif',
+              fontSize: 13,
+              fontWeight: 500,
+              color: LANTERN_GLOW,
+              opacity: 0.75,
+              textAlign: 'center',
+              margin: '0',
+              lineHeight: 1.5,
+            }}
+          >
+            {PRICE_SEK} kr · Engångsköp · Tillgång för alltid
+          </p>
 
-        {/* Primary CTA */}
-        <button
-          onClick={handlePurchase}
-          style={{
-            width: '100%',
-            height: 56,
-            marginTop: 20,
-            background: BONKI_ORANGE,
-            color: LANTERN_GLOW,
-            border: 'none',
-            borderRadius: 14,
-            cursor: 'pointer',
-            fontFamily: 'Inter, system-ui, sans-serif',
-            fontSize: 14,
-            fontWeight: 600,
-          }}
-        >
-          {useTwoLineCta
-            ? `Fortsätt med ${product.name}`
-            : `Fortsätt med ${product.name} — ${PRICE_SEK} kr`}
-        </button>
+          {/* Primary CTA */}
+          <button
+            onClick={handlePurchase}
+            style={{
+              width: '100%',
+              height: 56,
+              marginTop: 20,
+              background: BONKI_ORANGE,
+              color: LANTERN_GLOW,
+              border: 'none',
+              borderRadius: 14,
+              cursor: 'pointer',
+              fontFamily: 'Inter, system-ui, sans-serif',
+              fontSize: 14,
+              fontWeight: 600,
+            }}
+          >
+            {useTwoLineCta
+              ? `Fortsätt med ${product.name}`
+              : `Fortsätt med ${product.name} — ${PRICE_SEK} kr`}
+          </button>
+
+          {useTwoLineCta && (
+            <p
+              style={{
+                fontFamily: 'Inter, system-ui, sans-serif',
+                fontSize: 12,
+                color: LANTERN_GLOW,
+                opacity: 0.7,
+                textAlign: 'center',
+                margin: '8px 0 0',
+              }}
+            >
+              {PRICE_SEK} kr · Engångsköp
+            </p>
+          )}
+
+          {/* Soft decline */}
+          <button
+            onClick={handleSoftDecline}
+            style={{
+              display: 'block',
+              width: '100%',
+              marginTop: 16,
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              fontFamily: 'Inter, system-ui, sans-serif',
+              fontSize: 12.5,
+              color: LANTERN_GLOW,
+              opacity: 0.7,
+              padding: '4px 0',
+            }}
+          >
+            Inte just nu
+          </button>
+        </div>
 
         {useTwoLineCta && (
           <p
