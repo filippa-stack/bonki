@@ -563,7 +563,7 @@ function DevPanel({ resolved, forced, onSelect }: DevPanelProps) {
     <div
       style={{
         position: 'fixed',
-        top: 'calc(env(safe-area-inset-top, 0px) + 50px)',
+        bottom: 'calc(env(safe-area-inset-bottom, 0px) + 76px)',
         left: 12,
         zIndex: 9999,
         display: 'flex',
