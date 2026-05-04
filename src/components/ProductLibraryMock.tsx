@@ -357,7 +357,7 @@ function MockResumeBanner() {
             fontSize: 14.5,
             fontWeight: 500,
             lineHeight: 1.15,
-            color: LANTERN_GLOW,
+            color: '#FFFFFF',
           }}
         >
           {resume.productName}

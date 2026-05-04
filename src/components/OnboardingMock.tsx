@@ -181,7 +181,7 @@ function ScreenPromise({ onNext }: { onNext: () => void }) {
       }}
     >
       {/* Flexible top spacer — breathes with viewport height */}
-      <div style={{ flex: 0.7 }} />
+      <div style={{ flex: 0.35 }} />
 
       {/* Logo */}
       <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 18 }}>
