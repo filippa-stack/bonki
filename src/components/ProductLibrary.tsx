@@ -16,6 +16,7 @@ import { isIOSNative, isProductHiddenOnPlatform } from '@/lib/platform';
 
 
 import LibraryResumeCard from '@/components/LibraryResumeCard';
+import BonkiLogoMark from '@/components/BonkiLogoMark';
 import watermarkMamma from '@/assets/watermark-mamma.png';
 import creaturesTrio from '@/assets/creatures-trio.png';
 import creatureLionGirl from '@/assets/creature-lion-girl.png';
