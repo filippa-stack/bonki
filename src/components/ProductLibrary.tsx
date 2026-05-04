@@ -33,6 +33,8 @@ import illustrationSyskon from '@/assets/illustration-syskon.png';
 import illustrationVardag from '@/assets/illustration-vardag.png';
 // illustrationStillFair removed — Still Fair section moved to future release
 
+const LANTERN_GLOW = '#FDF6E3';
+
 const ILLUSTRATIONS: Record<string, string> = {
   jag_i_mig: illustrationJagIMig,
   jag_med_andra: illustrationJagMedAndra,
@@ -43,32 +45,47 @@ const ILLUSTRATIONS: Record<string, string> = {
 };
 
 const TAGLINES: Record<string, string> = {
+  still_us: 'Förbli ett vi medan ni uppfostrar dem',
   jag_i_mig: 'När känslor får ord',
-  jag_med_andra: 'Det trygga och det svåra',
-  jag_i_varlden: 'Världen vidgas',
+  jag_med_andra: 'Att vara sig själv och samspela med andra',
+  jag_i_varlden: 'Att utveckla sig själv i en värld som vidgas',
   vardagskort: 'Det vanliga, på djupet',
   syskonkort: 'Band för livet',
   sexualitetskort: 'Kropp, gränser och identitet',
 };
 
-/** Bright saturated tile backgrounds — vibrant flat-color aesthetic */
+/** Sexualitetskort keeps a flat fallback color (no gradient palette yet). */
 const TILE_COLORS: Record<string, string> = {
-  jag_i_mig: '#27A69C',
-  jag_med_andra: '#CB7AB2',
-  jag_i_varlden: '#C6D423',
   sexualitetskort: '#DD958B',
-  vardagskort: '#8BDDB0',
-  syskonkort: '#CF8BDD',
 };
 
-/** Luminance helper — determines if a tile needs light or dark treatment.
- *  Threshold 0.38 so only truly light tiles (amber, dusty rose) get dark borders. */
-function isLightTile(hex: string): boolean {
-  const r = parseInt(hex.slice(1, 3), 16) / 255;
-  const g = parseInt(hex.slice(3, 5), 16) / 255;
-  const b = parseInt(hex.slice(5, 7), 16) / 255;
-  const L = 0.2126 * r + 0.7152 * g + 0.0722 * b;
-  return L > 0.38;
+/** Map product id → CSS-var slug for gradient tile background. */
+const PRODUCT_SLUG: Record<string, string> = {
+  still_us: 'vartvi',
+  jag_i_mig: 'jim',
+  jag_med_andra: 'jma',
+  jag_i_varlden: 'varlden',
+  vardagskort: 'vardag',
+  syskonkort: 'syskon',
+};
+
+/** v4 gradient tokens — saturated, high-chroma stops for vibrant tile bg. */
+const GRADIENT_TOKENS_CSS = `
+  .v4-library-root {
+    --vartvi-bg-1:#C5D0E2; --vartvi-bg-2:#647892;
+    --jim-bg-1:#3A9088;    --jim-bg-2:#175048;
+    --jma-bg-1:#D86BA0;    --jma-bg-2:#7A2E5A;
+    --varlden-bg-1:#D8E04A; --varlden-bg-2:#7A8019;
+    --vardag-bg-1:#7FCEAB;  --vardag-bg-2:#3E8868;
+    --syskon-bg-1:#D7B5EC;  --syskon-bg-2:#8868A8;
+  }
+`;
+
+function tileBackground(productId: string, fallback: string): string {
+  const slug = PRODUCT_SLUG[productId];
+  return slug
+    ? `linear-gradient(165deg, var(--${slug}-bg-1), var(--${slug}-bg-2))`
+    : fallback;
 }
 
 /** Helper: hex → rgba */
@@ -79,95 +96,6 @@ function hexToRgba(hex: string, alpha: number): string {
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
-/** Per-product illustration scale — large enough for dramatic presence */
-const ILLUSTRATION_SCALE: Record<string, { width: string; height: string }> = {
-  jag_i_mig: { width: '75%', height: '105%' },
-  jag_med_andra: { width: '75%', height: '100%' },
-  jag_i_varlden: { width: '80%', height: '180%' },
-  sexualitetskort: { width: '75%', height: '175%' },
-  vardagskort: { width: '75%', height: '175%' },
-  syskonkort: { width: '75%', height: '175%' },
-};
-
-/** Per-product offset — characters visible and dramatic, bleeding right */
-const ILLUSTRATION_OFFSET: Record<string, { top: string; right: string; bottom: string }> = {
-  jag_i_mig: { top: '-3%', right: '-5%', bottom: '-2%' },
-  jag_med_andra: { top: '-5%', right: '-8%', bottom: '-5%' },
-  jag_i_varlden: { top: '-42%', right: '0%', bottom: '-2%' },
-  sexualitetskort: { top: '-25%', right: '0%', bottom: '-20%' },
-  vardagskort: { top: '-25%', right: '0%', bottom: '-20%' },
-  syskonkort: { top: '-25%', right: '0%', bottom: '-20%' },
-};
-
-/** Illustration opacities — subtle presence on bright backgrounds */
-const ILLUSTRATION_OPACITY: Record<string, number> = {
-  jag_i_mig: 1,
-  jag_med_andra: 1,
-  jag_i_varlden: 1,
-  sexualitetskort: 1,
-  vardagskort: 1,
-  syskonkort: 1,
-};
-
-/** Per-tile radial glow — disabled for flat bright aesthetic */
-const ILLUSTRATION_GLOW: Record<string, string> = {};
-
-/** Per-tile drop-shadow — subtle grounding, no saturation/brightness boost */
-const ILLUSTRATION_SHADOW: Record<string, string> = {
-  jag_i_mig: 'drop-shadow(0 4px 12px rgba(0,0,0,0.10))',
-  jag_med_andra: 'drop-shadow(0 4px 12px rgba(0,0,0,0.10))',
-  jag_i_varlden: 'drop-shadow(0 4px 12px rgba(0,0,0,0.10))',
-  sexualitetskort: 'drop-shadow(0 4px 12px rgba(0,0,0,0.10))',
-  vardagskort: 'drop-shadow(0 4px 12px rgba(0,0,0,0.10))',
-  syskonkort: 'drop-shadow(0 4px 12px rgba(0,0,0,0.10))',
-};
-
-/** Title colors — white on all tiles for max readability */
-const ACCENT_COLORS: Record<string, string> = {
-  jag_i_mig: '#FFFFFF',
-  jag_med_andra: '#FFFFFF',
-  jag_i_varlden: '#FFFFFF',
-  sexualitetskort: '#FFFFFF',
-  vardagskort: '#FFFFFF',
-  syskonkort: '#FFFFFF',
-};
-
-/** Tagline colors — white with slight transparency */
-const TAGLINE_COLORS: Record<string, string> = {
-  jag_i_mig: 'hsla(0, 0%, 100%, 0.85)',
-  jag_med_andra: 'hsla(0, 0%, 100%, 0.85)',
-  jag_i_varlden: 'hsla(0, 0%, 100%, 0.85)',
-  sexualitetskort: 'hsla(0, 0%, 100%, 0.85)',
-  vardagskort: 'hsla(0, 0%, 100%, 0.85)',
-  syskonkort: 'hsla(0, 0%, 100%, 0.85)',
-};
-
-/** Tile height rhythm — alternating for visual breathing */
-const TILE_HEIGHTS: Record<string, string> = {
-  jag_i_mig: '260px',
-  jag_med_andra: '240px',
-  jag_i_varlden: '260px',
-  sexualitetskort: '220px',
-  vardagskort: '240px',
-  syskonkort: '220px',
-};
-
-/** Build badge text: "X ämnen" — no pricing on individual tiles */
-function buildBadgeText(product: { cards: unknown[]; id: string }): string {
-  const count = product.cards.length;
-  return `${count} ämnen`;
-}
-
-/** Relative time helper for recency labels */
-function formatRelativeTime(isoDate: string): string {
-  const diffMs = Date.now() - new Date(isoDate).getTime();
-  const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-  if (days === 0) return 'Idag';
-  if (days === 1) return 'Igår';
-  if (days < 7) return `${days} dagar sedan`;
-  if (days < 30) return `${Math.floor(days / 7)} veckor sedan`;
-  return `${Math.floor(days / 30)} mån sedan`;
-}
 
 /** Detect return visit for faster animations */
 const IS_RETURN_VISIT = (() => {
