@@ -1,27 +1,29 @@
-## Problem
+# Phase A.1.1 — Dark uniform tiles (live)
 
-The figure's silhouette is visible at the top of the paywall, but her face and upper body are obscured by a solid black band. This isn't a positioning issue — the illustration container is tall enough and the figure sits in the right place. The cause is the fade gradient over the illustration: it currently fills the bottom 40% of the container with solid Midnight Ink, then fades from there.
+Reverses saturated-gradient tile backgrounds shipped in Phase A.1. Tiles now sit on the dark library bg as uniform elevated surfaces; per-product color lives entirely in the illustration.
 
-That solid band lands directly on her face.
+Single file: `src/components/ProductLibrary.tsx`.
 
-## Fix
+## Changes
 
-Single value change in `src/components/PaywallMock.tsx`, line 155 — the gradient overlay inside the illustration backdrop container.
+**1. Delete gradient system (lines ~57–97)**
+- `TILE_COLORS`, `PRODUCT_SLUG`, `GRADIENT_TOKENS_CSS`, `tileBackground()`, `hexToRgba()`.
 
-Current:
+**2. PastelTile container (lines ~176, 187–196)**
+Remove `fallbackBg` lookup. New styles:
+```ts
+borderRadius: 18,
+background: 'rgba(255, 255, 255, 0.02)',
+border: '0.5px solid rgba(255, 255, 255, 0.08)',
+boxShadow: 'none',
 ```
-background: `linear-gradient(to top, ${MIDNIGHT_INK} 0%, ${MIDNIGHT_INK} 40%, transparent 100%)`
-```
+Bottom-scrim `borderRadius` → `'0 0 18px 18px'`.
 
-New:
-```
-background: `linear-gradient(to top, ${MIDNIGHT_INK} 0%, transparent 100%)`
-```
+**3. Title text-shadow (line ~253)**
+`textShadow: '0 1px 8px rgba(0,0,0,0.5)'`
 
-This removes the solid 0–40% midnight band and lets the fade run smoothly from full midnight at the bottom edge to fully transparent at the top. Her face becomes visible; the bottom of the container still merges cleanly into the page background so the editorial zone below ("FÖRSTA SAMTALET · KLART", headline, etc.) remains anchored on stable midnight ink.
+**4. Tagline color (line ~265)**
+`color: 'rgba(255, 255, 255, 0.78)'`
 
-No other changes — container height (52vh), positioning map, image opacity, and all editorial/commit zone layout stay exactly as they are.
-
-## Files
-
-- `src/components/PaywallMock.tsx` — single line edit (line 155, gradient stops)
+## Out of scope
+Resume banner, welcome strip, intro/onboarding/paywall — later phases.
