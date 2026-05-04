@@ -307,7 +307,7 @@ export default function ProductIntroMock({ productId }: ProductIntroMockProps) {
             color: LANTERN_GLOW,
             opacity: 0.65,
             textAlign: 'center',
-            margin: '12px 0 0',
+            margin: '40px 0 0',
             lineHeight: 1.5,
           }}
         >
