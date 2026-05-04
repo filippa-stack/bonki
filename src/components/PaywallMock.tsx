@@ -191,7 +191,7 @@ export default function PaywallMock({ productId }: PaywallMockProps) {
           flexDirection: 'column',
           padding: '0 28px',
           paddingTop: 'max(44px, env(safe-area-inset-top, 44px))',
-          paddingBottom: 'calc(28px + env(safe-area-inset-bottom, 0px))',
+          paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 100px)',
           minHeight: '100vh',
           boxSizing: 'border-box',
         }}
