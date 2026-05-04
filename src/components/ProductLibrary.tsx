@@ -13,6 +13,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/components/ui/sonner';
 import { isDemoMode } from '@/lib/demoMode';
 import { isIOSNative, isProductHiddenOnPlatform } from '@/lib/platform';
+import { MIDNIGHT_INK } from '@/lib/palette';
 
 
 import LibraryResumeCard from '@/components/LibraryResumeCard';
@@ -146,12 +147,12 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
       className="cursor-pointer"
       style={{
         borderRadius: 18,
-        background: 'rgba(255, 255, 255, 0.02)',
+        background: '#2A2D3A',
         aspectRatio: '1 / 1.05',
         width: '100%',
         position: 'relative',
         overflow: 'hidden',
-        border: '0.5px solid rgba(255, 255, 255, 0.08)',
+        border: '0.5px solid rgba(255, 255, 255, 0.06)',
         boxShadow: 'none',
       }}
     >
@@ -210,7 +211,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
             lineHeight: 1.1,
             color: '#FFFFFF',
             letterSpacing: '-0.005em',
-            textShadow: '0 1px 8px rgba(0,0,0,0.5)',
+            textShadow: '0 1px 10px rgba(0,0,0,0.7)',
             margin: '0 0 5px',
           }}
         >
@@ -271,7 +272,7 @@ export default function ProductLibrary() {
     document.documentElement.classList.remove('theme-verdigris');
     document.body.classList.remove('verdigris-grain', 'verdigris-lightleak');
   }, []);
-  usePageBackground('#0B1026');
+  usePageBackground(MIDNIGHT_INK);
   const navigate = useNavigate();
   const tracked = useRef(false);
   
@@ -395,7 +396,7 @@ export default function ProductLibrary() {
 
   const isDark = true; // Both tabs now use Midnight Ink
 
-  const libraryBg = '#0B1026';
+  const libraryBg = MIDNIGHT_INK;
 
   // Loading gate — prevent flash of incomplete content
   if (accessLoading) {
