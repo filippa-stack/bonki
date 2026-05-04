@@ -1,17 +1,16 @@
 /**
  * LibraryResumeCard — Paused-session resume card for the product library screen.
- * Shows the most recent paused session. When `global` is true it shows any product
- * (no tab filter) and uses the product's tile color as background.
+ * Quiet sister-surface to the tiles: dark Deep Dusk surface, ghost-glow dot,
+ * product name as headline, chevron affordance. Whole banner is the action.
  */
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { ChevronRight } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { getProductById } from '@/data/products';
 import { KIDS_PRODUCT_IDS } from '@/hooks/useKidsProductProgress';
-import { productTileColors } from '@/lib/palette';
 
 import { useDevState } from '@/contexts/DevStateContext';
 import { isDemoMode } from '@/lib/demoMode';
