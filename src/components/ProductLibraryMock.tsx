@@ -50,7 +50,7 @@ const TAGLINES: Record<string, string> = {
   sexualitetskort: 'Kropp, gränser och identitet',
 };
 
-/** Bright saturated tile backgrounds — vibrant flat-color aesthetic */
+/** Bright saturated tile backgrounds — vibrant flat-color aesthetic (legacy / fallback) */
 const TILE_COLORS: Record<string, string> = {
   jag_i_mig: '#27A69C',
   jag_med_andra: '#CB7AB2',
@@ -59,6 +59,33 @@ const TILE_COLORS: Record<string, string> = {
   vardagskort: '#8BDDB0',
   syskonkort: '#CF8BDD',
 };
+
+/** v4 mock — saturated per-product gradient stops + slug map for CSS vars. */
+const PRODUCT_SLUG: Record<string, string> = {
+  jag_i_mig: 'jim',
+  jag_med_andra: 'jma',
+  jag_i_varlden: 'varlden',
+  vardagskort: 'vardag',
+  syskonkort: 'syskon',
+  still_us: 'vartvi',
+};
+
+/** Per-slug accent (bg-1) used by the resume banner dot + wash. */
+const PRODUCT_ACCENT: Record<string, string> = {
+  jag_i_mig: '#2A6B65',
+  jag_med_andra: '#B85A8A',
+  jag_i_varlden: '#BAC03E',
+  vardagskort: '#6FB498',
+  syskonkort: '#C4A5D6',
+  still_us: '#A8B5C9',
+};
+
+/** Build the 165deg gradient for a product. Falls back to its flat tile color. */
+function tileGradient(productId: string): string {
+  const slug = PRODUCT_SLUG[productId];
+  if (!slug) return TILE_COLORS[productId] ?? '#1A2538';
+  return `linear-gradient(165deg, var(--${slug}-bg-1), var(--${slug}-bg-2))`;
+}
 
 /** Luminance helper — determines if a tile needs light or dark treatment.
  *  Threshold 0.38 so only truly light tiles (amber, dusty rose) get dark borders. */
