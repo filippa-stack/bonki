@@ -180,8 +180,8 @@ function ScreenPromise({ onNext }: { onNext: () => void }) {
         padding: '0 28px 32px',
       }}
     >
-      {/* ~70% top spacer — push content into lower portion */}
-      <div style={{ flex: '0 0 18%' }} />
+      {/* Flexible top spacer — breathes with viewport height */}
+      <div style={{ flex: 0.7 }} />
 
       {/* Logo */}
       <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 18 }}>
@@ -250,8 +250,8 @@ function ScreenPromise({ onNext }: { onNext: () => void }) {
       <PriceRow label="För dig och din partner" price="249 kr" />
       <PriceRow label="För dig och ditt barn" price="195 kr" />
 
-      {/* CTA block — mt 22 */}
-      <div style={{ marginTop: 22 }}>
+      {/* CTA block — pushed to bottom of available space */}
+      <div style={{ marginTop: 'auto', paddingTop: 22 }}>
         <button
           onClick={onNext}
           style={{
