@@ -154,65 +154,27 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
         overflow: 'hidden',
         border: '0.5px solid rgba(255, 255, 255, 0.06)',
         boxShadow: 'none',
+        display: 'flex',
+        flexDirection: 'column',
       }}
     >
-      {illustration && (
-        <img
-          src={illustration}
-          alt=""
-          draggable={false}
-          style={{
-            position: 'absolute',
-            inset: 0,
-            width: '100%',
-            height: '100%',
-            objectFit: 'contain',
-            objectPosition: 'right bottom',
-            pointerEvents: 'none',
-            zIndex: 0,
-            filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.10))',
-          }}
-        />
-      )}
-
-      {/* Bottom scrim */}
-      <div
-        aria-hidden
-        style={{
-          position: 'absolute',
-          left: 0, right: 0, bottom: 0,
-          height: '55%',
-          background:
-            'linear-gradient(to top, rgba(0,0,0,0.32) 0%, rgba(0,0,0,0.08) 50%, transparent 100%)',
-          pointerEvents: 'none',
-          zIndex: 1,
-          borderRadius: '0 0 18px 18px',
-        }}
-      />
-
-      {/* Text — lower-left */}
+      {/* Title block — top zone, solid dark surface */}
       <div
         style={{
-          position: 'absolute',
-          left: 14,
-          bottom: 14,
-          right: 14,
-          maxWidth: '75%',
+          padding: '16px 16px 14px',
+          position: 'relative',
           zIndex: 2,
-          display: 'flex',
-          flexDirection: 'column',
         }}
       >
         <h3
           style={{
             fontFamily: 'Fraunces, serif',
-            fontSize: 26,
+            fontSize: 24,
             fontWeight: 500,
             lineHeight: 1.1,
             color: '#FFFFFF',
             letterSpacing: '-0.005em',
-            textShadow: '0 1px 10px rgba(0,0,0,0.7)',
-            margin: '0 0 5px',
+            margin: '0 0 4px',
           }}
         >
           {name}
@@ -225,17 +187,47 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
               fontWeight: 400,
               color: 'rgba(255, 255, 255, 0.78)',
               lineHeight: 1.3,
-              textShadow: '0 1px 6px rgba(0,0,0,0.35)',
-              margin: '0 0 9px',
+              margin: 0,
             }}
           >
             {tagline}
           </p>
         )}
+      </div>
+
+      {/* Illustration zone — fills remaining space, full color, no overlay */}
+      <div
+        style={{
+          flex: 1,
+          position: 'relative',
+          overflow: 'hidden',
+        }}
+      >
+        {illustration && (
+          <img
+            src={illustration}
+            alt=""
+            draggable={false}
+            style={{
+              position: 'absolute',
+              inset: 0,
+              width: '100%',
+              height: '100%',
+              objectFit: 'contain',
+              objectPosition: 'center bottom',
+              pointerEvents: 'none',
+            }}
+          />
+        )}
+
+        {/* Pill — bottom-left of illustration zone */}
         <span
           style={{
+            position: 'absolute',
+            bottom: 14,
+            left: 14,
+            zIndex: 2,
             display: 'inline-flex',
-            alignSelf: 'flex-start',
             alignItems: 'center',
             gap: 6,
             padding: '5px 11px',
