@@ -13,6 +13,8 @@
  */
 
 import { useMemo, useRef, useEffect, useState } from 'react';
+import CategoryFilterChips, { ALL_FILTER_KEY } from '@/components/CategoryFilterChips';
+import ProductCardTile from '@/components/ProductCardTile';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import type { ProductManifest } from '@/types/product';
@@ -332,10 +334,7 @@ function CategoryTile({
 /* ── Main Component ── */
 
 export default function KidsProductHome({ product }: { product: ProductManifest }) {
-  const navigate = useNavigate();
-  const { space } = useCoupleSpaceContext();
   const progress = useKidsProductProgress(product);
-  const tileImages = useFirstCardImages(product, progress);
   const hasRenderedContent = useRef(false);
   const [kontoOpen, setKontoOpen] = useState(false);
 
@@ -355,20 +354,9 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
     }
   }, [product.heroImage]);
 
-  // Preload first portal card image per category for flicker-free entry
-  useEffect(() => {
-    tileImages.forEach((src) => {
-      if (!src) return;
-      const img = new Image();
-      img.src = src;
-    });
-  }, [tileImages]);
-
   const bg = product.backgroundColor;
   const tileLight = product.tileLight ?? bg;
-  const isSU = product.slug === 'still-us';
-  
-  const useSquareGrid = true; // 2×2 grid for all products
+  const useSquareGrid = true;
 
 
 
@@ -631,89 +619,169 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
 
             {/* Spacer — pushes content below hero face zone */}
             {!useSquareGrid && <div style={{ height: 'clamp(48px, 12vh, 100px)' }} />}
-
-            {/* ═══ Next Action Banner (persistent) ═══ */}
-            <div style={{ minHeight: '52px' }}>
-              <NextActionBanner product={product} progress={progress} />
-            </div>
           </motion.div>
         </motion.div>
 
-        {/* Small spacer before grid */}
-        {useSquareGrid && <div style={{ height: '16px' }} />}
-
-        {/* Removed "Välj ett ämne" header — tiles speak for themselves */}
-
-        {/* ═══ Category tiles ═══ */}
-        <motion.div
-          variants={containerVariants}
-          initial={false}
-          animate="visible"
-          style={{
-            display: 'grid',
-            ...(useSquareGrid
-              ? {
-                  gridTemplateColumns: '1fr 1fr',
-                  gap: '8px',
-                }
-              : { gridTemplateColumns: '1fr', gap: '12px' }),
-            width: '100%',
-            marginBottom: 0,
-          }}
-        >
-          {product.categories.map((cat, index) => {
-            const tileBg = getTileColor(product, index, useSquareGrid);
-            const catProgress = progress.categoryProgress[cat.id];
-            const completed = catProgress?.completed ?? 0;
-            const total = catProgress?.total ?? cat.cardCount ?? 0;
-            const hasUncompleted = completed < total;
-
-            // For sequential products: all preceding layers must be complete
-            const allPrecedingComplete = product.categories
-              .slice(0, index)
-              .every(prev => {
-                const p = progress.categoryProgress[prev.id];
-                return p && p.completed >= p.total;
-              });
-
-            const isRecommended = hasUncompleted && allPrecedingComplete;
-
-            // No lock — paid users get full access, numbering communicates order
-            const isLocked = false;
-
-            const isLastOdd = useSquareGrid && product.categories.length % 2 === 1 && index === product.categories.length - 1;
-
-            return (
-           <div
-                key={cat.id}
-                style={{
-                  ...(isLastOdd ? { gridColumn: '1 / -1' } : {}),
-                  
-                }}
-              >
-                <CategoryTile
-                  cat={cat}
-                  product={product}
-                  index={index}
-                  tileBg={tileBg}
-                  tileImage={tileImages[index]}
-                  completed={completed}
-                  total={total}
-                  isRecommended={isRecommended}
-                  isLocked={isLocked}
-                  showLayerNumber={isSU}
-                  compactHeight={false}
-                  squareTile={useSquareGrid}
-                  wideSpan={isLastOdd}
-                  fillHeight={false}
-                />
-              </div>
-            );
-          })}
-        </motion.div>
-
-
+        {/* ═══ Sticky header: resume banner + filter chips (no fill, blur only) ═══ */}
+        <StickyFilterHeader
+          product={product}
+          progress={progress}
+          tileLight={tileLight}
+        />
       </div>
     </div>
+  );
+}
+
+/* ── Sticky header + grid (separate component to scope filter state) ── */
+function StickyFilterHeader({
+  product,
+  progress,
+  tileLight,
+}: {
+  product: ProductManifest;
+  progress: KidsProductProgress;
+  tileLight: string;
+}) {
+  const [selected, setSelected] = useState<Set<string>>(() => new Set([ALL_FILTER_KEY]));
+
+  const completedSet = useMemo(
+    () => new Set([
+      ...progress.recentlyCompletedCardIds,
+      ...progress.allTimeCompletedCardIds,
+    ]),
+    [progress.recentlyCompletedCardIds, progress.allTimeCompletedCardIds],
+  );
+
+  const isCardVisible = (categoryId: string) =>
+    selected.has(ALL_FILTER_KEY) || selected.has(categoryId);
+
+  const visibleCount = useMemo(
+    () => product.cards.filter((c) => isCardVisible(c.categoryId)).length,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [product.cards, selected],
+  );
+
+  return (
+    <>
+      <div
+        style={{
+          position: 'sticky',
+          top: 0,
+          zIndex: 5,
+          backdropFilter: 'blur(10px)',
+          WebkitBackdropFilter: 'blur(10px)',
+          paddingTop: '8px',
+          paddingBottom: '4px',
+          marginLeft: '-16px',
+          marginRight: '-16px',
+          paddingLeft: '16px',
+          paddingRight: '16px',
+        }}
+      >
+        <div style={{ minHeight: '52px' }}>
+          <NextActionBanner product={product} progress={progress} />
+        </div>
+        <CategoryFilterChips
+          categories={product.categories.map((c) => ({ id: c.id, title: c.title }))}
+          selected={selected}
+          onChange={setSelected}
+          accentHex={tileLight}
+          totalVisible={visibleCount}
+        />
+      </div>
+
+      {/* Small spacer */}
+      <div style={{ height: '12px' }} />
+
+      {/* ═══ Card grid — all cards mount once, filter is opacity-only ═══ */}
+      {visibleCount === 0 ? (
+        <div
+          style={{
+            padding: '32px 16px',
+            textAlign: 'center',
+            fontFamily: 'var(--font-display)',
+            fontSize: '14px',
+            fontStyle: 'italic',
+            color: LANTERN_GLOW,
+            opacity: 0.7,
+          }}
+        >
+          Inga samtal i den här kategorin än.
+        </div>
+      ) : null}
+
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr',
+          gap: '8px',
+          width: '100%',
+        }}
+      >
+        {product.cards.map((card, index) => {
+          const visible = isCardVisible(card.categoryId);
+          const tileBg = product.tileLight ?? product.backgroundColor;
+          return (
+            <FilterableCardCell
+              key={card.id}
+              visible={visible}
+              enterDelay={visible ? Math.min(index, 12) * 0.03 : 0}
+            >
+              <ProductCardTile
+                card={card}
+                tileBg={tileBg}
+                isCompleted={completedSet.has(card.id)}
+              />
+            </FilterableCardCell>
+          );
+        })}
+      </div>
+    </>
+  );
+}
+
+/* ── Filterable cell: keeps subtree mounted, animates opacity, then display:none ── */
+function FilterableCardCell({
+  visible,
+  enterDelay,
+  children,
+}: {
+  visible: boolean;
+  enterDelay: number;
+  children: React.ReactNode;
+}) {
+  const [domHidden, setDomHidden] = useState(!visible);
+
+  // When becoming visible: clear display:none BEFORE animating in
+  useEffect(() => {
+    if (visible) setDomHidden(false);
+  }, [visible]);
+
+  return (
+    <motion.div
+      animate={visible ? 'shown' : 'hidden'}
+      initial={false}
+      variants={{
+        shown: { opacity: 1 },
+        hidden: { opacity: 0 },
+      }}
+      transition={{
+        duration: 0.2,
+        ease: [0.32, 0.72, 0, 1],
+        delay: visible ? enterDelay : 0,
+      }}
+      onAnimationComplete={(definition) => {
+        if (definition === 'hidden') setDomHidden(true);
+      }}
+      aria-hidden={!visible}
+      tabIndex={visible ? undefined : -1}
+      style={{
+        display: domHidden && !visible ? 'none' : 'block',
+        pointerEvents: visible ? 'auto' : 'none',
+      }}
+    >
+      {children}
+    </motion.div>
   );
 }
