@@ -205,7 +205,7 @@ export default function AdultCardPortal() {
         pointerEvents: 'none', zIndex: 0,
       }} />
 
-      <ProductHomeBackButton color={LANTERN_GLOW} onClick={goBack} />
+      <ProductHomeBackButton color={LANTERN_GLOW} />
       <KontoIcon onClick={() => setKontoOpen(true)} />
       <KontoSheet open={kontoOpen} onClose={() => setKontoOpen(false)} />
 
