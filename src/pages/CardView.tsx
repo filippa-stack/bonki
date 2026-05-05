@@ -555,6 +555,17 @@ export default function CardView() {
       });
       if (!error) {
         await normalizedSession.refetch();
+        // Directly resolve and set activeSessionId — do not wait for the gated
+        // effect to flip via isActiveSession. The gated effect creates a race
+        // window where reflections fetched before activeSessionId resolves
+        // return null, causing field-empty bugs on prompt navigation.
+        const { data: freshState } = await supabase.rpc('get_active_session_state', {
+          p_product_id: product?.id ?? 'still_us',
+        });
+        const row = Array.isArray(freshState) ? freshState[0] : freshState;
+        if (row?.session_id) {
+          setActiveSessionId(row.session_id);
+        }
       } else if (isDevToolsEnabled()) {
         console.error('[eager] session creation failed:', error);
       }
