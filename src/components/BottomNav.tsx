@@ -1,7 +1,7 @@
 import { useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { House, LayoutGrid, BookOpen } from 'lucide-react';
-import { BONKI_ORANGE, DEEP_DUSK } from '@/lib/palette';
+import { BONKI_ORANGE, MIDNIGHT_INK } from '@/lib/palette';
 
 type NavItem = {
   id: string;
@@ -76,7 +76,7 @@ export default function BottomNav() {
         left: '0px',
         right: '0px',
         paddingBottom: 'env(safe-area-inset-bottom, 0px)',
-        background: DEEP_DUSK,
+        background: MIDNIGHT_INK,
         border: 'none',
         boxShadow: 'none',
         WebkitTransform: 'translateZ(0)',
