@@ -32,6 +32,7 @@ import {
   LANTERN_GLOW,
   DRIFTWOOD,
   SAFFRON_FLAME,
+  BONKI_ORANGE,
 } from '@/lib/palette';
 
 /* ── Animation tokens ── */
@@ -686,6 +687,7 @@ function StickyFilterHeader({
           onChange={setSelected}
           accentHex={tileLight}
           totalVisible={visibleCount}
+          underlineColor={BONKI_ORANGE}
         />
       </div>
 

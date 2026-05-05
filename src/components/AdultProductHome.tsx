@@ -284,7 +284,7 @@ function StickyFilterHeader({
           onChange={setSelected}
           accentHex={accent}
           totalVisible={visibleCount}
-          variant="adult"
+          underlineColor={WARM_GOLD}
         />
       </div>
 
