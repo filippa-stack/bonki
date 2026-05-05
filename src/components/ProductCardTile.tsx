@@ -14,7 +14,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import type { Card } from '@/types';
 import { useCardImage } from '@/hooks/useCardImage';
-import { SAFFRON_FLAME, LANTERN_GLOW } from '@/lib/palette';
+import { SAFFRON_FLAME } from '@/lib/palette';
 
 interface ProductCardTileProps {
   card: Card;
@@ -131,10 +131,11 @@ export default function ProductCardTile({
         </span>
       </div>
 
-      {/* Klart completion pill */}
+      {/* Klart completion checkmark */}
       {isCompleted && (
         <motion.div
           role="status"
+          aria-label="Klart"
           initial={skipPillAnimation ? false : { opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.24, ease: [0.32, 0.72, 0, 1] }}
@@ -143,32 +144,30 @@ export default function ProductCardTile({
             top: 12,
             right: 12,
             zIndex: 4,
-            display: 'inline-flex',
+            width: 18,
+            height: 18,
+            display: 'flex',
             alignItems: 'center',
-            gap: 4,
-            padding: '4px 10px',
-            borderRadius: 999,
-            background: `color-mix(in srgb, ${SAFFRON_FLAME} 28%, rgba(255,255,255,0.08))`,
-            border: `1px solid color-mix(in srgb, ${SAFFRON_FLAME} 50%, rgba(255,255,255,0))`,
-            fontFamily: 'var(--font-display)',
-            fontSize: 12,
-            fontStyle: 'italic',
-            fontWeight: 500,
-            color: LANTERN_GLOW,
-            lineHeight: 1,
+            justifyContent: 'center',
             pointerEvents: 'none',
           }}
         >
-          <span
-            aria-hidden="true"
-            style={{
-              fontSize: 10,
-              color: `color-mix(in srgb, ${SAFFRON_FLAME} 80%, transparent)`,
-            }}
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 18 18"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            style={{ filter: 'drop-shadow(0 1px 2px rgba(0, 0, 0, 0.5))' }}
           >
-            ✓
-          </span>
-          Klart
+            <path
+              d="M3.5 9.5 L7.5 13.5 L14.5 5.5"
+              stroke={SAFFRON_FLAME}
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
         </motion.div>
       )}
     </button>
