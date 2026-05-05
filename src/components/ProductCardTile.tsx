@@ -87,9 +87,9 @@ export default function ProductCardTile({
           bottom: 0,
           left: 0,
           right: 0,
-          height: '65%',
+          height: '25%',
           background:
-            'linear-gradient(to top, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.35) 50%, transparent 100%)',
+            'linear-gradient(to top, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0) 100%)',
           borderRadius: 'inherit',
           zIndex: 2,
           pointerEvents: 'none',

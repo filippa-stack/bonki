@@ -671,7 +671,7 @@ function StickyFilterHeader({
           zIndex: 5,
           backdropFilter: 'blur(10px)',
           WebkitBackdropFilter: 'blur(10px)',
-          paddingTop: '8px',
+          paddingTop: '6px',
           paddingBottom: '4px',
           marginLeft: '-16px',
           marginRight: '-16px',
@@ -679,7 +679,7 @@ function StickyFilterHeader({
           paddingRight: '16px',
         }}
       >
-        <div style={{ minHeight: '52px' }}>
+        <div style={{ marginBottom: '6px' }}>
           <NextActionBanner product={product} progress={progress} />
         </div>
         <CategoryFilterChips
@@ -692,7 +692,7 @@ function StickyFilterHeader({
       </div>
 
       {/* Small spacer */}
-      <div style={{ height: '12px' }} />
+      <div style={{ height: '8px' }} />
 
       {/* ═══ Card grid — all cards mount once, filter is opacity-only ═══ */}
       {visibleCount === 0 ? (
