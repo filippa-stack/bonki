@@ -9,6 +9,7 @@ import { useThemeSwitcher } from '@/hooks/useThemeSwitcher';
 
 import ProductIntro, { useProductIntroNeeded } from '@/components/ProductIntro';
 import KidsProductHome from '@/components/KidsProductHome';
+import AdultProductHome from '@/components/AdultProductHome';
 import KontoIcon from '@/components/KontoIcon';
 import KontoSheet from '@/components/KontoSheet';
 import { KIDS_PRODUCT_IDS } from '@/hooks/useKidsProductProgress';
