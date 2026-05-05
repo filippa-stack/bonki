@@ -1839,7 +1839,7 @@ export default function CardView() {
               style={{
                 fontSize: '26px',
                 fontWeight: 600,
-                color: DEEP_SAFFRON,
+                color: EMBER_GLOW,
                 textAlign: 'center',
                 lineHeight: 1.2,
                 textWrap: 'balance',
