@@ -1,18 +1,11 @@
 /**
- * ProductIntroMock — sandboxed intro page state machine at /intro-mock/:productId.
+ * ProductIntroMock — sandboxed intro page at /intro-mock/:productId.
  *
- * State machine (driven by localStorage + dev panel override):
- *   - free:             no welcome session used → ghost-glow "Använd mitt gratis-samtal"
- *   - locked:           welcome used in another product → orange "Köp · 195 kr"
- *   - alreadyUsedHere:  welcome used in THIS product → paywall placeholder
- *   - purchased:        product purchased → render-time redirect to /product/{slug}
+ * Mirrors the live ProductIntro redesign (editorial layout, sticky CTA,
+ * trust block, multi-question preview stack). Free-session UI is omitted
+ * in this pass — the page targets the locked state only.
  *
- * Live ProductIntro.tsx is untouched.
- *
- * NOTE for live migration: in production, the free-state CTA should navigate
- * to /card/{firstCardId} (the product's first session), not back to
- * /library-mock. The mock loops back to the library so we can evaluate the
- * state machine end-to-end without leaving the sandbox.
+ * The dev state-machine panel is preserved but only mounts in DEV builds.
  */
 
 import { useMemo, useState } from 'react';
@@ -20,8 +13,9 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import { getProductById } from '@/data/products';
 import { productIntros } from '@/data/productIntros';
-import { PREVIEW_QUESTION } from '@/lib/productPreviewQuestions';
+import { PREVIEW_QUESTIONS } from '@/lib/productPreviewQuestions';
 import { usePageBackground } from '@/hooks/usePageBackground';
+import { LANTERN_GLOW, MIDNIGHT_INK, WARM_GOLD, DEEP_DUSK_BG, productTileColors } from '@/lib/palette';
 
 import jimImage from '@/assets/illustration-jag-i-mig.png';
 import jmaImage from '@/assets/illustration-jag-med-andra.png';
@@ -30,11 +24,6 @@ import illustrationVardag from '@/assets/illustration-vardag.png';
 import illustrationSyskon from '@/assets/illustration-syskon.png';
 import illustrationSexualitet from '@/assets/illustration-sexualitet.png';
 import illustrationStillUs from '@/assets/illustration-still-us-home.png';
-
-const LANTERN_GLOW = '#FDF6E3';
-const MIDNIGHT_INK = '#0F1727';
-const BONKI_ORANGE = '#E85D2C';
-const GHOST_GLOW = '#D4F5C0';
 
 const PRODUCT_ILLUSTRATION: Record<string, string> = {
   jag_i_mig: jimImage,
@@ -56,7 +45,6 @@ const PRODUCT_ILLUSTRATION_POSITION: Record<string, string> = {
   still_us: 'center 30%',
 };
 
-/** Subhead taglines — mirror the library mock's tagline map. */
 const TAGLINES: Record<string, string> = {
   still_us: 'Förbli ett vi medan ni uppfostrar dem',
   jag_i_mig: 'När känslor får ord',
@@ -85,20 +73,23 @@ export default function ProductIntroMock({ productId }: ProductIntroMockProps) {
   const [, setTick] = useState(0);
   const bumpTick = () => setTick(t => t + 1);
 
-  usePageBackground(MIDNIGHT_INK);
+  const isAdult = productId === 'still_us';
+  const bgColor = isAdult ? DEEP_DUSK_BG : (product?.backgroundColor ?? MIDNIGHT_INK);
+  const accentTint = isAdult ? WARM_GOLD : (productTileColors[productId]?.tileLight ?? WARM_GOLD);
+  usePageBackground(bgColor);
 
   if (!product || !introData) {
     return (
       <div
         style={{
           minHeight: '100vh',
-          background: MIDNIGHT_INK,
+          background: bgColor,
           color: LANTERN_GLOW,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           padding: 24,
-          fontFamily: 'Inter, system-ui, sans-serif',
+          fontFamily: 'var(--font-sans)',
           fontSize: 14,
           textAlign: 'center',
         }}
@@ -108,12 +99,10 @@ export default function ProductIntroMock({ productId }: ProductIntroMockProps) {
     );
   }
 
-  // ── Resolve state ──
   const resolved: ResolvedState = (() => {
     if (forcedState === 'purchased') return 'purchased';
     if (forcedState === 'free') return 'free';
     if (forcedState === 'locked') return 'locked';
-
     if (typeof window !== 'undefined') {
       if (localStorage.getItem(`bonki-mock-purchased-${productId}`)) return 'purchased';
       const spent = localStorage.getItem('bonki-mock-welcome-spent') === '1';
@@ -128,34 +117,18 @@ export default function ProductIntroMock({ productId }: ProductIntroMockProps) {
     return <Navigate to={`/product/${product.slug}`} replace />;
   }
 
-  // For locked state, "Locked" dev button hardcodes Jag i Mig display name.
-  const otherProductName = (() => {
-    if (forcedState === 'locked') return 'Jag i Mig';
-    const where = typeof window !== 'undefined'
-      ? localStorage.getItem('bonki-mock-welcome-product')
-      : null;
-    return where ? (getProductById(where)?.name ?? 'ett annat samtal') : 'ett annat samtal';
-  })();
-
   const creatureImage = PRODUCT_ILLUSTRATION[productId];
   const fullBodyText = introData.slides.map(s => s.body).join('\n\n');
-  const sexSafetyLine =
-    productId === 'sexualitetskort' ? introData.slides[0]?.signoff : null;
-
-  // ── CTA handlers ──
-  const handleFreeCta = () => {
-    localStorage.setItem('bonki-mock-welcome-spent', '1');
-    localStorage.setItem('bonki-mock-welcome-product', productId);
-    // Mock loop — in live, navigate to /card/{firstCardId}
-    navigate('/library-mock');
-  };
+  const paragraphs = fullBodyText.split('\n\n').map(p => p.trim()).filter(Boolean);
+  const opening = paragraphs[0];
+  const restParagraphs = paragraphs.slice(1);
+  const previewQuestions = PREVIEW_QUESTIONS[productId] ?? [];
+  const sexSafetyLine = productId === 'sexualitetskort' ? introData.slides[0]?.signoff : null;
 
   const handlePurchaseCta = () => {
     localStorage.setItem(`bonki-mock-purchased-${productId}`, '1');
     navigate('/library-mock');
   };
-
-  const handleSoftDecline = () => navigate('/library-mock');
 
   const clearMockFlags = () => {
     localStorage.removeItem('bonki-mock-welcome-spent');
@@ -166,11 +139,14 @@ export default function ProductIntroMock({ productId }: ProductIntroMockProps) {
   return (
     <div
       style={{
-        backgroundColor: MIDNIGHT_INK,
-        minHeight: '100vh',
-        position: 'relative',
+        backgroundColor: bgColor,
+        position: 'fixed',
+        inset: 0,
+        zIndex: 50,
         overflow: 'hidden',
-        fontFamily: 'Inter, system-ui, sans-serif',
+        display: 'flex',
+        flexDirection: 'column',
+        fontFamily: 'var(--font-sans)',
       }}
     >
       {/* Illustration backdrop */}
@@ -182,10 +158,7 @@ export default function ProductIntroMock({ productId }: ProductIntroMockProps) {
             top: 0,
             left: '-10%',
             right: '-10%',
-            height: '42%',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'flex-start',
+            height: '38%',
             overflow: 'hidden',
             pointerEvents: 'none',
             zIndex: 0,
@@ -206,12 +179,21 @@ export default function ProductIntroMock({ productId }: ProductIntroMockProps) {
           <div
             style={{
               position: 'absolute',
+              inset: 0,
+              background: isAdult
+                ? 'radial-gradient(ellipse at 50% 30%, rgba(100,149,237,0.18) 0%, transparent 70%)'
+                : `radial-gradient(ellipse at 50% 30%, ${accentTint}22 0%, transparent 70%)`,
+              pointerEvents: 'none',
+            }}
+          />
+          <div
+            style={{
+              position: 'absolute',
               bottom: 0,
               left: 0,
               right: 0,
-              height: '50%',
-              background: `linear-gradient(to top, ${MIDNIGHT_INK} 0%, transparent 100%)`,
-              pointerEvents: 'none',
+              height: '60%',
+              background: `linear-gradient(to top, ${bgColor} 0%, transparent 100%)`,
             }}
           />
         </div>
@@ -237,316 +219,280 @@ export default function ProductIntroMock({ productId }: ProductIntroMockProps) {
         <ArrowLeft size={24} />
       </button>
 
-      {/* Dev panel */}
-      <DevPanel
-        resolved={resolved}
-        forced={forcedState}
-        onSelect={(s) => {
-          clearMockFlags();
-          setForcedState(s);
-          bumpTick();
-        }}
-      />
+      {/* Dev panel (DEV-only) */}
+      {import.meta.env.DEV && (
+        <DevPanel
+          resolved={resolved}
+          forced={forcedState}
+          onSelect={(s) => {
+            clearMockFlags();
+            setForcedState(s);
+            bumpTick();
+          }}
+        />
+      )}
 
-      {/* Content column */}
+      {/* Scrollable content */}
       <div
         style={{
+          flex: 1,
+          overflowY: 'auto',
+          WebkitOverflowScrolling: 'touch',
           position: 'relative',
           zIndex: 1,
-          display: 'flex',
-          flexDirection: 'column',
-          padding: '0 28px',
-          paddingTop: 'max(44px, env(safe-area-inset-top, 44px))',
-          paddingBottom: 'calc(28px + env(safe-area-inset-bottom, 0px))',
-          minHeight: '100vh',
-          boxSizing: 'border-box',
         }}
       >
-        <div style={{ flex: '0 0 auto', minHeight: '15%', paddingTop: 60 }} />
-
-        {/* Headline — product name only */}
-        <h1
+        <div
           style={{
-            fontFamily: 'Fraunces, serif',
-            fontSize: 40,
-            fontWeight: 500,
-            color: LANTERN_GLOW,
-            textAlign: 'center',
-            lineHeight: 1.15,
-            letterSpacing: '-0.01em',
-            margin: 0,
-            textShadow: '0 2px 12px rgba(0,0,0,0.35)',
+            padding: '0 24px',
+            paddingTop: 'max(80px, calc(env(safe-area-inset-top, 0px) + 80px))',
+            display: 'flex',
+            flexDirection: 'column',
           }}
         >
-          {product.name}
-        </h1>
+          <div style={{ height: 'calc(28vh - 80px)', minHeight: 60 }} />
 
-        {/* Subhead tagline */}
-        {TAGLINES[productId] && (
-          <p
+          {/* Title */}
+          <h1
             style={{
-              fontFamily: 'Fraunces, serif',
-              fontStyle: 'italic',
-              fontSize: 18,
+              fontFamily: 'var(--font-serif)',
+              fontSize: 40,
+              fontWeight: 500,
               color: LANTERN_GLOW,
-              opacity: 0.92,
               textAlign: 'center',
-              lineHeight: 1.4,
-              margin: '10px 0 0',
-            }}
-          >
-            {TAGLINES[productId]}
-          </p>
-        )}
-
-        {/* Credentials — dark pill backing keeps contrast stable across illustration fade */}
-        <div style={{ marginTop: 24, display: 'flex', justifyContent: 'center' }}>
-          <p
-            style={{
-              fontFamily: 'Inter, system-ui, sans-serif',
-              fontSize: 12,
-              color: LANTERN_GLOW,
-              opacity: 0.85,
-              textAlign: 'center',
+              lineHeight: 1.15,
+              letterSpacing: '-0.01em',
               margin: 0,
-              lineHeight: 1.5,
-              background: 'rgba(15,23,39,0.85)',
-              padding: '6px 16px',
-              borderRadius: 999,
-              backdropFilter: 'blur(4px)',
-              WebkitBackdropFilter: 'blur(4px)',
+              textShadow: '0 2px 12px rgba(0,0,0,0.35)',
             }}
           >
-            Utvecklat av psykologer · 29 års klinisk erfarenhet
-          </p>
-        </div>
+            {product.name}
+          </h1>
 
-        {/* Body copy */}
-        <div style={{ marginTop: 24, textAlign: 'center' }}>
-          {fullBodyText.split('\n\n').map((para, i) => (
+          {/* Subtitle */}
+          {TAGLINES[productId] && (
             <p
-              key={i}
               style={{
-                fontFamily: 'Inter, system-ui, sans-serif',
-                fontSize: 16,
+                fontFamily: 'var(--font-serif)',
+                fontStyle: 'italic',
+                fontSize: 18,
                 color: LANTERN_GLOW,
-                opacity: 0.92,
-                lineHeight: 1.5,
-                margin: i === 0 ? 0 : '14px 0 0',
+                opacity: 0.85,
+                textAlign: 'center',
+                lineHeight: 1.4,
+                margin: '10px 0 0',
               }}
             >
-              {para}
+              {TAGLINES[productId]}
             </p>
-          ))}
-        </div>
+          )}
 
-        {/* Sample question card */}
-        {PREVIEW_QUESTION[productId] && (
+          {/* Trust signal */}
           <div
             style={{
-              marginTop: 28,
-              padding: '22px 22px',
-              borderRadius: 14,
-              backgroundColor: 'rgba(11, 16, 38, 0.35)',
-              border: '1px solid rgba(253, 246, 227, 0.20)',
+              marginTop: 32,
+              padding: '14px 0',
+              borderTop: `1px solid color-mix(in srgb, ${WARM_GOLD} 35%, transparent)`,
+              borderBottom: `1px solid color-mix(in srgb, ${WARM_GOLD} 35%, transparent)`,
               textAlign: 'center',
             }}
           >
             <div
               style={{
-                fontFamily: 'Inter, system-ui, sans-serif',
+                fontFamily: 'var(--font-display)',
                 fontSize: 11,
                 fontWeight: 600,
                 letterSpacing: '0.12em',
                 textTransform: 'uppercase',
-                color: LANTERN_GLOW,
-                opacity: 0.5,
-                marginBottom: 10,
+                color: WARM_GOLD,
+                opacity: 0.8,
               }}
             >
-              En fråga ur {product.name}
+              Utvecklat av psykolog
             </div>
+            <div
+              style={{
+                fontFamily: 'var(--font-serif)',
+                fontStyle: 'italic',
+                fontSize: 15,
+                color: LANTERN_GLOW,
+                opacity: 0.95,
+                marginTop: 6,
+              }}
+            >
+              Ida W. · 29 års klinisk erfarenhet
+            </div>
+          </div>
+
+          {/* Opening */}
+          {opening && (
             <p
               style={{
-                fontFamily: 'Fraunces, serif',
-                fontStyle: 'italic',
-                fontSize: 17,
-                fontWeight: 400,
-                lineHeight: 1.45,
+                fontFamily: 'var(--font-serif)',
+                fontSize: 18,
                 color: LANTERN_GLOW,
-                opacity: 0.92,
-                margin: 0,
+                lineHeight: 1.4,
+                textAlign: 'center',
+                margin: '24px 0',
               }}
             >
-              &ldquo;{PREVIEW_QUESTION[productId]}&rdquo;
+              {opening}
             </p>
-          </div>
-        )}
+          )}
 
-        {/* CTA region */}
-        <div style={{ marginTop: 28 }}>
-          {resolved === 'alreadyUsedHere' ? (
-            <AlreadyUsedHerePlaceholder onBack={handleSoftDecline} />
-          ) : (
-            <>
-              {resolved === 'free' && (
+          {/* Body paragraphs */}
+          {restParagraphs.length > 0 && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+              {restParagraphs.map((para, i) => (
                 <p
+                  key={i}
                   style={{
-                    fontFamily: 'Inter, system-ui, sans-serif',
+                    fontFamily: 'var(--font-display)',
                     fontSize: 15,
-                    fontWeight: 600,
                     color: LANTERN_GLOW,
-                    opacity: 0.9,
+                    opacity: 0.85,
+                    lineHeight: 1.55,
                     textAlign: 'center',
                     margin: 0,
-                    lineHeight: 1.5,
                   }}
                 >
-                  Resten av {product.name} — {PRICE_SEK} kr
+                  {para}
                 </p>
-              )}
-
-              {resolved === 'locked' && (
-                <p
-                  style={{
-                    fontFamily: 'Inter, system-ui, sans-serif',
-                    fontSize: 11.5,
-                    color: LANTERN_GLOW,
-                    opacity: 0.6,
-                    textAlign: 'center',
-                    margin: '0 0 14px',
-                    lineHeight: 1.5,
-                  }}
-                >
-                  Du har redan använt ditt gratis-samtal i {otherProductName}.
-                </p>
-              )}
-
-              {resolved === 'free' ? (
-                <button
-                  onClick={handleFreeCta}
-                  style={{
-                    width: '100%',
-                    height: 56,
-                    marginTop: 18,
-                    background: GHOST_GLOW,
-                    color: MIDNIGHT_INK,
-                    border: 'none',
-                    borderRadius: 14,
-                    cursor: 'pointer',
-                    fontFamily: 'Inter, system-ui, sans-serif',
-                    fontSize: 14,
-                    fontWeight: 600,
-                  }}
-                >
-                  Använd mitt gratis-samtal
-                </button>
-              ) : (
-                <button
-                  onClick={handlePurchaseCta}
-                  style={{
-                    width: '100%',
-                    height: 56,
-                    background: BONKI_ORANGE,
-                    color: LANTERN_GLOW,
-                    border: 'none',
-                    borderRadius: 14,
-                    cursor: 'pointer',
-                    fontFamily: 'Inter, system-ui, sans-serif',
-                    fontSize: 14,
-                    fontWeight: 600,
-                  }}
-                >
-                  Köp · {PRICE_SEK} kr
-                </button>
-              )}
-
-              {resolved === 'locked' && (
-                <button
-                  onClick={handleSoftDecline}
-                  style={{
-                    display: 'block',
-                    width: '100%',
-                    marginTop: 14,
-                    background: 'none',
-                    border: 'none',
-                    cursor: 'pointer',
-                    fontFamily: 'Inter, system-ui, sans-serif',
-                    fontSize: 12.5,
-                    color: LANTERN_GLOW,
-                    opacity: 0.7,
-                    padding: '4px 0',
-                  }}
-                >
-                  Inte just nu
-                </button>
-              )}
-
-              {sexSafetyLine && (
-                <p
-                  style={{
-                    fontFamily: 'Inter, system-ui, sans-serif',
-                    fontStyle: 'italic',
-                    fontSize: 13,
-                    color: LANTERN_GLOW,
-                    opacity: 0.6,
-                    textAlign: 'center',
-                    marginTop: 12,
-                    lineHeight: 1.5,
-                  }}
-                >
-                  {sexSafetyLine}
-                </p>
-              )}
-            </>
+              ))}
+            </div>
           )}
+
+          {/* Example questions */}
+          {previewQuestions.length > 0 && (
+            <div style={{ marginTop: 32, display: 'flex', flexDirection: 'column', gap: 16 }}>
+              {previewQuestions.map((q, i) => (
+                <div
+                  key={i}
+                  style={{
+                    padding: '24px 20px',
+                    borderRadius: 14,
+                    background: 'rgba(255,255,255,0.02)',
+                    border: '1px solid rgba(255,255,255,0.10)',
+                    textAlign: 'center',
+                  }}
+                >
+                  <div
+                    style={{
+                      fontFamily: 'var(--font-display)',
+                      fontSize: 11,
+                      fontWeight: 600,
+                      letterSpacing: '0.10em',
+                      textTransform: 'uppercase',
+                      color: LANTERN_GLOW,
+                      opacity: 0.55,
+                      marginBottom: 12,
+                    }}
+                  >
+                    En fråga ur {product.name}
+                  </div>
+                  <p
+                    style={{
+                      fontFamily: 'var(--font-serif)',
+                      fontStyle: 'italic',
+                      fontSize: 17,
+                      color: LANTERN_GLOW,
+                      lineHeight: 1.45,
+                      margin: 0,
+                    }}
+                  >
+                    &ldquo;{q}&rdquo;
+                  </p>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {sexSafetyLine && (
+            <p
+              style={{
+                fontFamily: 'var(--font-serif)',
+                fontStyle: 'italic',
+                fontSize: 13,
+                color: LANTERN_GLOW,
+                opacity: 0.6,
+                textAlign: 'center',
+                marginTop: 20,
+                lineHeight: 1.5,
+              }}
+            >
+              {sexSafetyLine}
+            </p>
+          )}
+
+          {resolved === 'alreadyUsedHere' && (
+            <p
+              style={{
+                fontFamily: 'var(--font-serif)',
+                fontStyle: 'italic',
+                fontSize: 13,
+                color: LANTERN_GLOW,
+                opacity: 0.6,
+                textAlign: 'center',
+                marginTop: 20,
+              }}
+            >
+              (Mock: paywall placeholder — already used here)
+            </p>
+          )}
+
+          <div style={{ height: 'calc(140px + env(safe-area-inset-bottom, 0px))' }} />
         </div>
       </div>
-    </div>
-  );
-}
 
-/* ─────────────────────────────────────────────────────────────────────────── */
-
-function AlreadyUsedHerePlaceholder({ onBack }: { onBack: () => void }) {
-  return (
-    <div
-      style={{
-        padding: '20px 20px',
-        borderRadius: 14,
-        background: 'rgba(232, 93, 44, 0.12)',
-        border: '1px dashed rgba(232, 93, 44, 0.45)',
-        textAlign: 'center',
-      }}
-    >
-      <p
+      {/* Sticky bottom: price + CTA */}
+      <div
         style={{
-          fontFamily: 'Inter, system-ui, sans-serif',
-          fontSize: 14,
-          color: LANTERN_GLOW,
-          opacity: 0.85,
-          margin: 0,
-          lineHeight: 1.5,
+          position: 'absolute',
+          left: 0,
+          right: 0,
+          bottom: 0,
+          zIndex: 5,
+          paddingBottom: 'calc(20px + env(safe-area-inset-bottom, 0px))',
+          paddingTop: 16,
+          background: `linear-gradient(to top, ${bgColor} 0%, ${bgColor} 70%, transparent 100%)`,
+          pointerEvents: 'none',
         }}
       >
-        Paywall would render here — coming next
-      </p>
-      <button
-        onClick={onBack}
-        style={{
-          marginTop: 12,
-          background: 'none',
-          border: 'none',
-          cursor: 'pointer',
-          color: LANTERN_GLOW,
-          opacity: 0.7,
-          fontFamily: 'Inter, system-ui, sans-serif',
-          fontSize: 12.5,
-          padding: '4px 8px',
-        }}
-      >
-        Tillbaka till biblioteket
-      </button>
+        <div style={{ pointerEvents: 'auto', padding: '0 24px' }}>
+          <p
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: 13,
+              color: LANTERN_GLOW,
+              opacity: 0.7,
+              letterSpacing: '0.04em',
+              textAlign: 'center',
+              margin: '0 0 10px',
+            }}
+          >
+            {product.cards.length} samtal · {PRICE_SEK} kr · engångsköp
+          </p>
+          <button
+            onClick={handlePurchaseCta}
+            style={{
+              width: '100%',
+              height: 56,
+              borderRadius: 28,
+              background: `color-mix(in srgb, ${accentTint} 28%, rgba(255,255,255,0.06))`,
+              border: `1px solid color-mix(in srgb, ${accentTint} 50%, transparent)`,
+              color: LANTERN_GLOW,
+              fontFamily: 'var(--font-display)',
+              fontSize: 16,
+              fontWeight: 600,
+              cursor: 'pointer',
+            }}
+          >
+            Köp {product.name}
+            <span style={{ opacity: 0.85, marginLeft: 6 }}>· {PRICE_SEK} kr</span>
+          </button>
+        </div>
+      </div>
+      {/* TODO: free-session branch returns in a later release */}
     </div>
   );
 }
@@ -570,7 +516,7 @@ function DevPanel({ resolved, forced, onSelect }: DevPanelProps) {
 
   const anchorStyle = {
     position: 'fixed' as const,
-    bottom: 'calc(env(safe-area-inset-bottom, 0px) + 76px)',
+    bottom: 'calc(env(safe-area-inset-bottom, 0px) + 140px)',
     left: 12,
     zIndex: 9998,
   };
@@ -588,7 +534,7 @@ function DevPanel({ resolved, forced, onSelect }: DevPanelProps) {
           backdropFilter: 'blur(8px)',
           WebkitBackdropFilter: 'blur(8px)',
           color: '#FDF6E3',
-          fontFamily: 'Inter, system-ui, sans-serif',
+          fontFamily: 'var(--font-sans)',
           fontSize: 11,
           fontWeight: 600,
           letterSpacing: '0.04em',
@@ -622,7 +568,7 @@ function DevPanel({ resolved, forced, onSelect }: DevPanelProps) {
           alignItems: 'center',
           justifyContent: 'space-between',
           gap: 8,
-          fontFamily: 'Inter, system-ui, sans-serif',
+          fontFamily: 'var(--font-sans)',
           fontSize: 9,
           fontWeight: 700,
           letterSpacing: '0.08em',
@@ -650,7 +596,7 @@ function DevPanel({ resolved, forced, onSelect }: DevPanelProps) {
               border: '0.5px solid rgba(255,255,255,0.18)',
               background: active ? 'rgba(232,93,44,0.85)' : 'rgba(255,255,255,0.06)',
               color: '#FDF6E3',
-              fontFamily: 'Inter, system-ui, sans-serif',
+              fontFamily: 'var(--font-sans)',
               fontSize: 11,
               fontWeight: 600,
               cursor: 'pointer',
