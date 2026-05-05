@@ -372,6 +372,8 @@ function FilterableCardCell({
       style={{
         display: domHidden && !visible ? 'none' : 'block',
         pointerEvents: visible ? 'auto' : 'none',
+        minWidth: 0,
+        width: '100%',
       }}
     >
       {children}

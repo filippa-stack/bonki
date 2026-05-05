@@ -13,14 +13,14 @@ export const categories: Category[] = [
   },
   {
     id: 'communication',
-    title: 'Vardagen mellan er',
+    title: 'Vardagen',
     entryLine: 'Det som sker mellan raderna.',
     description: 'Vardagens mönster och hur ni möter dem',
     cardCount: 4,
   },
   {
     id: 'category-8',
-    title: 'Hur ni bär varandra',
+    title: 'Hur ni bär',
     entryLine: 'Även när det vore enklare att släppa.',
     description: 'Enighet, utrymme och sårbarhet',
     cardCount: 3,
@@ -34,7 +34,7 @@ export const categories: Category[] = [
   },
   {
     id: 'individual-needs',
-    title: 'Arvet ni delar',
+    title: 'Arvet',
     entryLine: 'Arvet som formar ert hem.',
     description: 'Släkt, traditioner och förväntningar',
     cardCount: 1,
@@ -55,14 +55,14 @@ export const categories: Category[] = [
   },
   {
     id: 'daily-life',
-    title: 'Nära varandra',
+    title: 'Närhet',
     entryLine: 'Längtan och att hitta tillbaka.',
     description: 'Närhet, drift och att välja varandra i vardagen',
     cardCount: 2,
   },
   {
     id: 'category-10',
-    title: 'Att välja varandra',
+    title: 'Valet',
     entryLine: 'Det medvetna valet.',
     description: 'Det aktiva valet att stanna och bygga vidare',
     cardCount: 1,
@@ -242,7 +242,7 @@ export const cards: Card[] = [
   // ── Card 7 · Normen ───────────────────────────────────
   {
     id: 'behind-the-scenes',
-    title: 'Framför och bakom kulisserna',
+    title: 'Bakom kulisserna',
     subtitle: 'Enighet, reparation och ansvar',
     categoryId: 'category-8',
     sections: [
@@ -284,7 +284,7 @@ export const cards: Card[] = [
   // ── Card 9 · Konflikten ───────────────────────────────
   {
     id: 'self-esteem-wavering',
-    title: 'När självkänslan svajar',
+    title: 'När jag vacklar',
     subtitle: 'Sårbarhet och förändrade roller',
     categoryId: 'category-8',
     sections: [
@@ -347,8 +347,8 @@ export const cards: Card[] = [
   // ── Card 12 · Konflikten ──────────────────────────────
   {
     id: 'parenting-exhaustion',
-    title: 'Mina, dina, era värderingar',
-    subtitle: 'Värderingar i vardagliga val',
+    title: 'Era värderingar',
+    subtitle: 'Mina, dina och våra — i vardagliga val',
     categoryId: 'parenting-together',
     sections: [
       {
@@ -368,8 +368,8 @@ export const cards: Card[] = [
   // ── Card 13 · Längtan ─────────────────────────────────
   {
     id: 'our-traditions',
-    title: 'Mina, dina, era traditioner',
-    subtitle: 'Tillhörighet och vad ni väljer att föra vidare',
+    title: 'Era traditioner',
+    subtitle: 'Mina, dina och våra — vad ni för vidare',
     categoryId: 'individual-needs',
     sections: [
       {
