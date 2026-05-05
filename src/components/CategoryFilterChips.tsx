@@ -19,6 +19,8 @@ interface CategoryFilterChipsProps {
   accentHex: string;
   /** Number of cards currently visible — used for the aria-live announcement */
   totalVisible: number;
+  /** Visual variant — 'adult' uses outline-only unselected chips */
+  variant?: 'kids' | 'adult';
 }
 
 export const ALL_FILTER_KEY = 'all';
