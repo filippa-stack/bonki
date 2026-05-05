@@ -686,6 +686,7 @@ function StickyFilterHeader({
           onChange={setSelected}
           accentHex={tileLight}
           totalVisible={visibleCount}
+          underlineColor={BONKI_ORANGE}
         />
       </div>
 
