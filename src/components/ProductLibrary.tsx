@@ -491,61 +491,8 @@ export default function ProductLibrary() {
       <div style={{ position: 'relative', zIndex: 1 }}>
         <KontoIcon onClick={() => setKontoOpen(true)} />
         <KontoSheet open={kontoOpen} onClose={() => setKontoOpen(false)} />
-        {/* Hero zone — compact cinematic */}
-        <motion.div
-          initial={{ opacity: 1 }}
-          animate={{ opacity: 1 }}
-          style={{
-            textAlign: 'center',
-            padding: 'calc(env(safe-area-inset-top, 0px) + 56px) 32px 0',
-          }}
-        >
-          <motion.h1
-            initial={{ opacity: 1, y: 0 }}
-            animate={{ opacity: 1, y: 0 }}
-            style={{ marginBottom: '12px' }}
-          >
-            <img
-              src={bonkiWordmark}
-              alt="BONKI"
-              style={{ maxHeight: '20px', width: 'auto', objectFit: 'contain', margin: '0 auto', display: 'block', filter: 'drop-shadow(0 0 30px hsla(100, 60%, 80%, 0.2))' }}
-            />
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 1, y: 0 }}
-            animate={{ opacity: 1, y: 0 }}
-            style={{
-              fontFamily: "var(--font-body)",
-              fontStyle: 'normal',
-              fontSize: '14px',
-              fontWeight: 400,
-              color: 'hsla(100, 40%, 80%, 0.65)',
-              lineHeight: 1.6,
-              transition: 'color 400ms ease',
-              textShadow: '0 1px 16px hsla(230, 25%, 10%, 0.8)',
-            }}
-          >
-            Samtalen som bygger närhet.
-          </motion.p>
-        </motion.div>
-
-        {/* Ghost glow accent divider */}
-        <motion.div
-          initial={{ scaleX: 1, opacity: 1 }}
-          animate={{ scaleX: 1, opacity: 1 }}
-          style={{
-            width: '32px',
-            height: '1.5px',
-            backgroundColor: 'hsla(100, 50%, 75%, 0.45)',
-            margin: '24px auto 32px',
-          }}
-        />
-        
-
-
-
         {/* Resume card — product-colored, above Föräldrar */}
-        <div className="px-5" style={{ marginBottom: '8px' }}>
+        <div className="px-5" style={{ marginBottom: '8px', paddingTop: 'calc(env(safe-area-inset-top, 0px) + 56px)' }}>
           <LibraryResumeCard global />
         </div>
 
