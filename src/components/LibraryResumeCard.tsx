@@ -233,22 +233,32 @@ export default function LibraryResumeCard({ activeTab, global, forceMock }: Libr
   const display = devMock || resume;
   if (!display) return null;
 
+  const accent = PRODUCT_ACCENT[display.productId] ?? '#A8B5C9';
+  const accentRgba = (a: number) => {
+    const r = parseInt(accent.slice(1, 3), 16);
+    const g = parseInt(accent.slice(3, 5), 16);
+    const b = parseInt(accent.slice(5, 7), 16);
+    return `rgba(${r}, ${g}, ${b}, ${a})`;
+  };
+
   return (
     <button
       onClick={() => navigate(`/card/${display.cardId}`)}
       style={{
+        position: 'relative',
         width: '100%',
-        padding: '12px 16px',
-        background: PRODUCT_ACCENT[display.productId] ?? '#2A2D3A',
-        border: '0.5px solid rgba(255, 255, 255, 0.06)',
+        padding: '12px 16px 12px 20px',
+        background: '#2A2D3A',
+        border: '0.5px solid rgba(255, 255, 255, 0.08)',
         borderRadius: '14px',
         cursor: 'pointer',
         textAlign: 'left',
         display: 'flex',
         alignItems: 'center',
         gap: '12px',
-        boxShadow: 'none',
+        boxShadow: `inset 4px 0 0 ${accent}, 0 0 0 1px ${accentRgba(0.12)}`,
         WebkitTapHighlightColor: 'transparent',
+        overflow: 'hidden',
       }}
     >
       {/* Ghost-glow dot — quiet active-session signal */}
