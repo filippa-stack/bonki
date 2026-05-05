@@ -1802,7 +1802,7 @@ export default function CardView() {
     return (
       <motion.div
         className="min-h-screen"
-        style={{ backgroundColor: EMBER_NIGHT }}
+        style={{ backgroundColor: MIDNIGHT_INK }}
         initial={{ opacity: 1 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
@@ -1816,7 +1816,7 @@ export default function CardView() {
               width: '40px',
               height: '40px',
               borderRadius: '50%',
-              backgroundColor: 'rgba(218, 157, 29, 0.15)',
+              backgroundColor: 'rgba(233, 200, 144, 0.12)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -1839,7 +1839,7 @@ export default function CardView() {
               style={{
                 fontSize: '26px',
                 fontWeight: 600,
-                color: DEEP_SAFFRON,
+                color: EMBER_GLOW,
                 textAlign: 'center',
                 lineHeight: 1.2,
                 textWrap: 'balance',
@@ -1887,17 +1887,23 @@ export default function CardView() {
               Valfritt
             </p>
             <p
-              className="font-sans"
+              className="font-serif"
               style={{
-                fontSize: '14px',
-                color: DRIFTWOOD,
+                fontSize: '15px',
+                fontStyle: 'italic',
+                color: 'rgba(245, 232, 204, 0.75)',
                 textAlign: 'center',
                 marginBottom: '12px',
               }}
             >
               Något ni vill minnas?
             </p>
-            <SimpleTakeaway sessionId={activeSessionId} spaceId={space?.id ?? null} cardId={cardId} productId={product?.id} stillUsMode />
+            <div style={{
+              borderRadius: '14px',
+              boxShadow: '0 0 40px rgba(233, 200, 144, 0.08), 0 8px 32px rgba(0,0,0,0.15)',
+            }}>
+              <SimpleTakeaway sessionId={activeSessionId} spaceId={space?.id ?? null} cardId={cardId} productId={product?.id} stillUsMode />
+            </div>
           </motion.div>
 
           {/* Note: SimpleTakeaway already shows "Det ni skriver sparas i era samtal" */}
@@ -2024,15 +2030,15 @@ export default function CardView() {
                         width: '100%',
                         maxWidth: '320px',
                         height: '56px',
-                        borderRadius: '14px',
-                        backgroundColor: '#E85D2C',
-                        border: 'none',
+                        borderRadius: '28px',
+                        backgroundColor: 'color-mix(in srgb, #E9C890 28%, rgba(255,255,255,0.06))',
+                        border: '1px solid color-mix(in srgb, #E9C890 50%, transparent)',
                         cursor: completionPurchaseLoading ? 'wait' : 'pointer',
                         fontFamily: 'var(--font-display)',
                         fontVariationSettings: "'opsz' 17",
-                        fontSize: '17px',
+                        fontSize: '16px',
                         fontWeight: 600,
-                        color: '#1A1A2E',
+                        color: EMBER_GLOW,
                         opacity: completionPurchaseLoading ? 0.7 : 1,
                         transition: 'opacity 150ms ease',
                         margin: '0 auto',
@@ -2069,10 +2075,9 @@ export default function CardView() {
                       background: 'none',
                       border: 'none',
                       cursor: 'pointer',
-                      fontFamily: 'var(--font-sans)',
+                      fontFamily: 'var(--font-display)',
                       fontSize: '14px',
-                      color: DRIFTWOOD,
-                      opacity: 0.45,
+                      color: 'rgba(245, 232, 204, 0.65)',
                       textAlign: 'center',
                       marginTop: '20px',
                       padding: '4px 0',
@@ -2123,13 +2128,13 @@ export default function CardView() {
                       width: 'auto',
                       minWidth: '200px',
                       maxWidth: '280px',
-                      height: '52px',
-                      borderRadius: '24px',
-                      backgroundColor: 'transparent',
-                      border: '1px solid rgba(253, 246, 227, 0.2)',
-                      color: 'rgba(253, 246, 227, 0.7)',
-                      fontFamily: 'var(--font-sans)',
-                      fontSize: '17px',
+                      height: '56px',
+                      borderRadius: '28px',
+                      backgroundColor: 'color-mix(in srgb, #E9C890 28%, rgba(255,255,255,0.06))',
+                      border: '1px solid color-mix(in srgb, #E9C890 50%, transparent)',
+                      color: EMBER_GLOW,
+                      fontFamily: 'var(--font-display)',
+                      fontSize: '16px',
                       fontWeight: 600,
                       cursor: 'pointer',
                       paddingLeft: '32px',
@@ -2141,15 +2146,14 @@ export default function CardView() {
                 </div>
                 <button
                   onClick={() => navigateWithFeedback('/product/still-us')}
-                  className="font-sans"
                   style={{
+                    fontFamily: 'var(--font-display)',
                     fontSize: '14px',
-                    color: DRIFTWOOD,
-                    opacity: 0.55,
+                    color: 'rgba(245, 232, 204, 0.65)',
                     background: 'none',
                     border: 'none',
                     cursor: 'pointer',
-                    marginTop: '16px',
+                    marginTop: '20px',
                     textAlign: 'center',
                   }}
                 >
@@ -2196,14 +2200,14 @@ export default function CardView() {
                     width: 'auto',
                     minWidth: '200px',
                     maxWidth: '280px',
-                    height: '52px',
-                    borderRadius: '14px',
-                    backgroundColor: DEEP_SAFFRON,
-                    color: MIDNIGHT_INK,
-                    fontFamily: 'var(--font-sans)',
-                    fontSize: '17px',
+                    height: '56px',
+                    borderRadius: '28px',
+                    backgroundColor: 'color-mix(in srgb, #E9C890 28%, rgba(255,255,255,0.06))',
+                    border: '1px solid color-mix(in srgb, #E9C890 50%, transparent)',
+                    color: EMBER_GLOW,
+                    fontFamily: 'var(--font-display)',
+                    fontSize: '16px',
                     fontWeight: 600,
-                    border: 'none',
                     cursor: 'pointer',
                     paddingLeft: '32px',
                     paddingRight: '32px',
@@ -2252,13 +2256,13 @@ export default function CardView() {
                       width: 'auto',
                       minWidth: '200px',
                       maxWidth: '280px',
-                      height: '52px',
-                      borderRadius: '24px',
-                      backgroundColor: 'transparent',
-                      border: '1px solid rgba(253, 246, 227, 0.2)',
-                      color: 'rgba(253, 246, 227, 0.7)',
-                      fontFamily: 'var(--font-sans)',
-                      fontSize: '17px',
+                      height: '56px',
+                      borderRadius: '28px',
+                      backgroundColor: 'color-mix(in srgb, #E9C890 28%, rgba(255,255,255,0.06))',
+                      border: '1px solid color-mix(in srgb, #E9C890 50%, transparent)',
+                      color: EMBER_GLOW,
+                      fontFamily: 'var(--font-display)',
+                      fontSize: '16px',
                       fontWeight: 600,
                       cursor: 'pointer',
                       paddingLeft: '32px',
@@ -2273,15 +2277,14 @@ export default function CardView() {
                 {product && postCompletionNav.destination !== `/product/${product.slug}` && (
                   <button
                     onClick={() => navigateWithFeedback(`/product/${product.slug}`)}
-                    className="font-sans"
                     style={{
+                      fontFamily: 'var(--font-display)',
                       fontSize: '14px',
-                      color: DRIFTWOOD,
-                      opacity: 0.55,
+                      color: 'rgba(245, 232, 204, 0.65)',
                       background: 'none',
                       border: 'none',
                       cursor: 'pointer',
-                      marginTop: '16px',
+                      marginTop: '20px',
                       textAlign: 'center',
                     }}
                   >
