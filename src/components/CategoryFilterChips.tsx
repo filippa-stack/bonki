@@ -31,6 +31,7 @@ export default function CategoryFilterChips({
   onChange,
   accentHex,
   totalVisible,
+  variant = 'kids',
 }: CategoryFilterChipsProps) {
   const liveRef = useRef<HTMLDivElement | null>(null);
 
