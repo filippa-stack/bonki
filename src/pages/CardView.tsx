@@ -3154,14 +3154,15 @@ export default function CardView() {
             </div>
 
             <p style={{
-              fontFamily: 'var(--font-sans)',
-              fontSize: '11px',
-              fontWeight: 500,
-              color: '#FDF6E3',
-              opacity: 0.35,
+              fontFamily: 'var(--font-display)',
+              fontSize: '12px',
+              fontWeight: 600,
+              color: LANTERN_GLOW_LOCAL,
+              opacity: 0.55,
               textAlign: 'center',
-              margin: '8px 0 0',
-              letterSpacing: '0.03em',
+              margin: '10px 0 0',
+              letterSpacing: '0.08em',
+              textTransform: 'uppercase',
             }}>
               {localPromptIndex + 1} av {sectionPromptCount}
             </p>
@@ -3210,7 +3211,7 @@ export default function CardView() {
               backgroundColor: '#FAF7F2',
               borderRadius: '28px',
               padding: '28px 24px 20px',
-              boxShadow: '0 8px 32px rgba(0,0,0,0.15)',
+              boxShadow: '0 0 40px rgba(233, 200, 144, 0.10), 0 8px 32px rgba(0,0,0,0.25)',
               overflow: 'hidden',
             }}>
               {/* Centered question — crossfade */}
