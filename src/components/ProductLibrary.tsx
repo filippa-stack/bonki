@@ -55,8 +55,16 @@ const TAGLINES: Record<string, string> = {
   sexualitetskort: 'Kropp, gränser och identitet',
 };
 
-// Tiles render as uniform dark elevated surfaces against the library bg.
-// Per-product color now lives entirely in the illustration.
+/** Per-product accent color used as tile background. */
+const PRODUCT_ACCENT: Record<string, string> = {
+  still_us: '#A8B5C9',
+  jag_i_mig: '#2A6B65',
+  jag_med_andra: '#B85A8A',
+  jag_i_varlden: '#BAC03E',
+  vardagskort: '#6FB498',
+  syskonkort: '#C4A5D6',
+  sexualitetskort: '#DD958B',
+};
 
 
 /** Detect return visit for faster animations */
@@ -147,7 +155,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
       className="cursor-pointer"
       style={{
         borderRadius: 18,
-        background: '#2A2D3A',
+        background: PRODUCT_ACCENT[productId] ?? '#2A2D3A',
         aspectRatio: '1 / 1.05',
         width: '100%',
         position: 'relative',
