@@ -877,3 +877,20 @@ h1, h2, h3,
     transform: none;
   }
 }
+
+/* ── Product card tile press state (mobile tactile feedback) ── */
+.product-card-tile {
+  transform: translateZ(0);
+  transition: transform 120ms ease, filter 120ms ease, box-shadow 0.3s ease;
+  -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
+}
+.product-card-tile:active {
+  transform: scale(0.97);
+  filter: brightness(0.92);
+}
+@media (prefers-reduced-motion: reduce) {
+  .product-card-tile:active {
+    transform: none;
+  }
+}
