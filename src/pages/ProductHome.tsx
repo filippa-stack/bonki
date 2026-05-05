@@ -148,7 +148,10 @@ onClick={() => navigate('/')}
     );
   }
 
-  // All kids products use the shared KidsProductHome
+  // Vårt Vi gets the adult product home; other kids products use the shared kids home
+  if (product.id === 'still_us') {
+    return <AdultProductHome product={product} />;
+  }
   if (KIDS_PRODUCT_IDS.includes(product.id)) {
     return <KidsProductHome product={product} />;
   }
