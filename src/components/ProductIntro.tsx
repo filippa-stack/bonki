@@ -205,21 +205,36 @@ export default function ProductIntro({
         zIndex: 50,
       }}
     >
-      {/* ── 1. Illustration zone — atmospheric creature backdrop ── */}
+  const isAdult = isStillUs;
+  const accentTint = isAdult ? WARM_GOLD : (productTileColors[productId]?.tileLight ?? WARM_GOLD);
+  const stickyBg = isAdult ? DEEP_DUSK_BG : bgColor;
+  const previewQuestions = PREVIEW_QUESTIONS[productId] ?? [];
+  const paragraphs = fullBodyText.split('\n\n').map(p => p.trim()).filter(Boolean);
+  const opening = paragraphs[0];
+  const restParagraphs = paragraphs.slice(1);
+
+  return (
+    <div
+      style={{
+        backgroundColor: bgColor,
+        position: 'fixed',
+        inset: 0,
+        zIndex: 50,
+        overflow: 'hidden',
+        display: 'flex',
+        flexDirection: 'column',
+      }}
+    >
+      {/* ── Illustration zone — atmospheric creature backdrop ── */}
       {creatureImage && (
-        <motion.div
-          initial={false}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0 }}
+        <div
+          aria-hidden
           style={{
             position: 'absolute',
             top: 0,
             left: '-10%',
             right: '-10%',
-            height: '42%',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'flex-start',
+            height: '38%',
             overflow: 'hidden',
             pointerEvents: 'none',
             zIndex: 0,
@@ -228,7 +243,6 @@ export default function ProductIntro({
           <img
             src={creatureImage}
             alt=""
-            aria-hidden
             style={{
               width: '100%',
               height: '100%',
@@ -238,6 +252,17 @@ export default function ProductIntro({
               filter: 'brightness(1.15) saturate(0.95)',
             }}
           />
+          {/* Atmospheric glow */}
+          <div
+            style={{
+              position: 'absolute',
+              inset: 0,
+              background: isAdult
+                ? 'radial-gradient(ellipse at 50% 30%, rgba(100,149,237,0.18) 0%, transparent 70%)'
+                : `radial-gradient(ellipse at 50% 30%, ${accentTint}22 0%, transparent 70%)`,
+              pointerEvents: 'none',
+            }}
+          />
           {/* Bottom fade into bg */}
           <div
             style={{
@@ -245,19 +270,16 @@ export default function ProductIntro({
               bottom: 0,
               left: 0,
               right: 0,
-              height: '50%',
+              height: '60%',
               background: `linear-gradient(to top, ${bgColor} 0%, transparent 100%)`,
               pointerEvents: 'none',
             }}
           />
-        </motion.div>
+        </div>
       )}
 
       {/* ── Back button ── */}
-      <motion.button
-        initial={false}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0 }}
+      <button
         onClick={() => {
           localStorage.removeItem('bonki-last-active-product');
           navigate('/', { replace: true });
@@ -277,277 +299,268 @@ export default function ProductIntro({
         aria-label="Tillbaka"
       >
         <ArrowLeft size={24} />
-      </motion.button>
+      </button>
 
-      {/* ── Content area ── */}
+      {/* ── Scrollable content ── */}
       <div
         style={{
+          flex: 1,
+          overflowY: 'auto',
+          WebkitOverflowScrolling: 'touch',
           position: 'relative',
           zIndex: 1,
-          flex: 1,
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'flex-end',
-          padding: '0 28px',
-          paddingTop: 'max(44px, env(safe-area-inset-top, 44px))',
         }}
       >
-        {/* Spacer to push content below illustration zone */}
-        <div style={{ flex: '1 1 auto', minHeight: '15%' }} />
-
-        {/* 2. Welcome header */}
-        <motion.h1
-          initial={false}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0 }}
+        <div
           style={{
-            fontFamily: 'var(--font-serif)',
-            fontSize: '28px',
-            fontWeight: 600,
-            color: LANTERN_GLOW,
-            textAlign: 'center',
-            lineHeight: 1.2,
-            letterSpacing: '-0.02em',
-            margin: 0,
+            padding: '0 24px',
+            paddingTop: 'max(80px, calc(env(safe-area-inset-top, 0px) + 80px))',
+            display: 'flex',
+            flexDirection: 'column',
           }}
         >
-          Välkommen till{'\n'}
-          {product?.name ?? productId}
-        </motion.h1>
+          {/* Hero spacer to let illustration breathe */}
+          <div style={{ height: 'calc(28vh - 80px)', minHeight: 60 }} />
 
-        {/* Subtitle / tagline */}
-        {product?.tagline && (
-          <motion.p
-            initial={false}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0 }}
+          {/* Title */}
+          <h1
             style={{
-              fontFamily: 'var(--font-sans)',
-              fontSize: '15px',
+              fontFamily: 'var(--font-serif)',
+              fontSize: '40px',
+              fontWeight: 500,
               color: LANTERN_GLOW,
-              opacity: 0.6,
               textAlign: 'center',
-              marginTop: '8px',
-              margin: '8px 0 0',
+              lineHeight: 1.15,
+              letterSpacing: '-0.01em',
+              margin: 0,
+              textShadow: '0 2px 12px rgba(0,0,0,0.35)',
             }}
           >
-            {product.tagline}
-          </motion.p>
-        )}
+            {product?.name ?? productId}
+          </h1>
 
-        {/* 3. Full body text — all paragraphs visible */}
-        <motion.div
-          initial={false}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0 }}
-          style={{ textAlign: 'center', marginTop: '20px' }}
-        >
-          {fullBodyText.split('\n\n').map((para, i) => (
+          {/* Subtitle */}
+          {product?.tagline && (
             <p
-              key={i}
               style={{
-                fontFamily: 'var(--font-sans)',
-                fontSize: '16px',
+                fontFamily: 'var(--font-serif)',
+                fontStyle: 'italic',
+                fontSize: '18px',
                 color: LANTERN_GLOW,
+                opacity: 0.85,
                 textAlign: 'center',
-                lineHeight: 1.6,
-                opacity: 0.88,
-                marginTop: i === 0 ? 0 : '14px',
-                margin: i === 0 ? '0' : '14px 0 0',
+                lineHeight: 1.4,
+                margin: '10px 0 0',
               }}
             >
-              {para}
+              {product.tagline}
             </p>
-          ))}
-        </motion.div>
+          )}
 
-        {/* 3b. Preview question — taste of the product, proof of craft */}
-        {PREVIEW_QUESTION[productId] && (
+          {/* ── Trust signal ── */}
           <div
             style={{
-              marginTop: '32px',
-              padding: '24px 24px',
-              borderRadius: '14px',
-              backgroundColor: 'rgba(11, 16, 38, 0.35)',
-              border: '1px solid rgba(253, 246, 227, 0.20)',
+              marginTop: 32,
+              padding: '14px 0',
+              borderTop: `1px solid color-mix(in srgb, ${WARM_GOLD} 35%, transparent)`,
+              borderBottom: `1px solid color-mix(in srgb, ${WARM_GOLD} 35%, transparent)`,
               textAlign: 'center',
             }}
           >
             <div
               style={{
-                fontFamily: 'var(--font-sans)',
-                fontSize: '11px',
+                fontFamily: 'var(--font-display)',
+                fontSize: 11,
                 fontWeight: 600,
                 letterSpacing: '0.12em',
                 textTransform: 'uppercase',
-                color: LANTERN_GLOW,
-                opacity: 0.5,
-                marginBottom: '10px',
+                color: WARM_GOLD,
+                opacity: 0.8,
               }}
             >
-              {previewLabel}
+              Utvecklat av psykolog
             </div>
+            <div
+              style={{
+                fontFamily: 'var(--font-serif)',
+                fontStyle: 'italic',
+                fontSize: 15,
+                color: LANTERN_GLOW,
+                opacity: 0.95,
+                marginTop: 6,
+              }}
+            >
+              Ida W. · 29 års klinisk erfarenhet
+            </div>
+          </div>
+
+          {/* ── Opening statement ── */}
+          {opening && (
             <p
               style={{
                 fontFamily: 'var(--font-serif)',
-                fontSize: '17px',
-                fontWeight: 400,
-                lineHeight: 1.45,
+                fontSize: 18,
                 color: LANTERN_GLOW,
-                opacity: 0.92,
-                margin: 0,
+                lineHeight: 1.4,
+                textAlign: 'center',
+                margin: '24px 0',
               }}
             >
-              &ldquo;{PREVIEW_QUESTION[productId]}&rdquo;
+              {opening}
             </p>
-          </div>
-        )}
+          )}
 
-        {/* 4. Offer details — price, credibility */}
-        <div style={{ marginTop: '24px', textAlign: 'center' }}>
-          <p
-            style={{
-              fontFamily: 'var(--font-sans)',
-              fontSize: '14px',
-              fontWeight: 500,
-              color: LANTERN_GLOW,
-              opacity: 0.85,
-              margin: 0,
-              lineHeight: 1.5,
-            }}
-          >
-            {priceSek !== null ? `${priceSek} kr` : '…'} · Engångsköp · Tillgång för alltid
-          </p>
-          <p
-            style={{
-              fontFamily: 'var(--font-sans)',
-              fontSize: '13px',
-              color: LANTERN_GLOW,
-              opacity: 0.55,
-              margin: '6px 0 0',
-              lineHeight: 1.5,
-            }}
-          >
-            Utvecklat tillsammans med legitimerade psykologer · 29 års klinisk erfarenhet
-          </p>
-          <p
-            style={{
-              fontFamily: 'var(--font-sans)',
-              fontSize: '12px',
-              color: LANTERN_GLOW,
-              opacity: 0.6,
-              margin: '4px 0 0',
-              lineHeight: 1.5,
-            }}
-          >
-            Bonki är ett samtalsverktyg, inte terapi eller medicinsk rådgivning
-          </p>
-        </div>
+          {/* ── Body paragraphs ── */}
+          {restParagraphs.length > 0 && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+              {restParagraphs.map((para, i) => (
+                <p
+                  key={i}
+                  style={{
+                    fontFamily: 'var(--font-display)',
+                    fontSize: 15,
+                    color: LANTERN_GLOW,
+                    opacity: 0.85,
+                    lineHeight: 1.55,
+                    textAlign: 'center',
+                    margin: 0,
+                  }}
+                >
+                  {para}
+                </p>
+              ))}
+            </div>
+          )}
 
-        {/* 7. CTA Button */}
-        <motion.div
-          initial={false}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0 }}
-          style={{
-            marginTop: '24px',
-            paddingBottom: 'calc(24px + env(safe-area-inset-bottom, 0px))',
-          }}
-        >
-          <button
-            onClick={handleCta}
-            disabled={initiating}
-            style={{
-              width: '100%',
-              height: '56px',
-              backgroundColor: productAccent,
-              border: 'none',
-              borderRadius: '14px',
-              cursor: 'pointer',
-              fontFamily: 'var(--font-display)',
-              fontVariationSettings: "'opsz' 17",
-              fontSize: '17px',
-              fontWeight: 600,
-              color: MIDNIGHT_INK,
-              opacity: initiating ? 0.7 : 1,
-              transition: 'opacity 150ms ease, transform 140ms cubic-bezier(0.4, 0, 0.2, 1)',
-            }}
-            onMouseDown={(e) => {
-              e.currentTarget.style.transform = 'scale(0.97)';
-            }}
-            onMouseUp={(e) => {
-              e.currentTarget.style.transform = 'scale(1)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = 'scale(1)';
-            }}
-          >
-            {ctaLabel}
-          </button>
-
-          {/* Trust line — addresses "what am I committing to" friction.
-              On native iOS, signal App Store billing for Apple Guideline 3.1.1 clarity. */}
-          <p
-            style={{
-              fontFamily: 'var(--font-sans)',
-              fontSize: '12px',
-              color: LANTERN_GLOW,
-              opacity: 0.5,
-              textAlign: 'center',
-              marginTop: '12px',
-              margin: '12px 0 0',
-            }}
-          >
-            {Capacitor.isNativePlatform() ? 'Köp via App Store' : 'Säker betalning · Ingen prenumeration'}
-          </p>
-
-          {/* Skip link — goes to product home without starting free card */}
-          <button
-            onClick={() => {
-              markProductIntroSeenServer(productId);
-              localStorage.setItem(`bonki-intro-seen-${productId}`, '1');
-              navigate('/');
-            }}
-            style={{
-              display: 'block',
-              width: '100%',
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              fontFamily: 'var(--font-sans)',
-              fontSize: '14px',
-              color: LANTERN_GLOW,
-              opacity: 0.55,
-              textAlign: 'center',
-              marginTop: '16px',
-              padding: '4px 0',
-            }}
-          >
-            Inte just nu
-          </button>
+          {/* ── Example questions stack ── */}
+          {previewQuestions.length > 0 && (
+            <div style={{ marginTop: 32, display: 'flex', flexDirection: 'column', gap: 16 }}>
+              {previewQuestions.map((q, i) => (
+                <div
+                  key={i}
+                  style={{
+                    padding: '24px 20px',
+                    borderRadius: 14,
+                    background: 'rgba(255,255,255,0.02)',
+                    border: '1px solid rgba(255,255,255,0.10)',
+                    textAlign: 'center',
+                  }}
+                >
+                  <div
+                    style={{
+                      fontFamily: 'var(--font-display)',
+                      fontSize: 11,
+                      fontWeight: 600,
+                      letterSpacing: '0.10em',
+                      textTransform: 'uppercase',
+                      color: LANTERN_GLOW,
+                      opacity: 0.55,
+                      marginBottom: 12,
+                    }}
+                  >
+                    {previewLabel}
+                  </div>
+                  <p
+                    style={{
+                      fontFamily: 'var(--font-serif)',
+                      fontStyle: 'italic',
+                      fontSize: 17,
+                      color: LANTERN_GLOW,
+                      lineHeight: 1.45,
+                      margin: 0,
+                    }}
+                  >
+                    &ldquo;{q}&rdquo;
+                  </p>
+                </div>
+              ))}
+            </div>
+          )}
 
           {/* Sexualitet safety line */}
           {sexSafetyLine && (
             <p
               style={{
-                fontFamily: 'var(--font-sans)',
+                fontFamily: 'var(--font-serif)',
                 fontStyle: 'italic',
-                fontSize: '14px',
+                fontSize: 13,
                 color: LANTERN_GLOW,
                 opacity: 0.6,
                 textAlign: 'center',
-                marginTop: '12px',
+                marginTop: 20,
                 lineHeight: 1.5,
               }}
             >
               {sexSafetyLine}
             </p>
           )}
-        </motion.div>
+
+          {/* Bottom spacer so sticky CTA doesn't cover content */}
+          <div style={{ height: 'calc(140px + env(safe-area-inset-bottom, 0px))' }} />
+        </div>
       </div>
+
+      {/* ── Sticky bottom: price + CTA ── */}
+      <div
+        style={{
+          position: 'absolute',
+          left: 0,
+          right: 0,
+          bottom: 0,
+          zIndex: 5,
+          paddingBottom: 'calc(20px + env(safe-area-inset-bottom, 0px))',
+          paddingTop: 16,
+          background: `linear-gradient(to top, ${stickyBg} 0%, ${stickyBg} 70%, transparent 100%)`,
+          pointerEvents: 'none',
+        }}
+      >
+        <div style={{ pointerEvents: 'auto', padding: '0 24px' }}>
+          <p
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: 13,
+              color: LANTERN_GLOW,
+              opacity: 0.7,
+              letterSpacing: '0.04em',
+              textAlign: 'center',
+              margin: '0 0 10px',
+            }}
+          >
+            {product?.cards.length ?? 0} samtal · {priceSek ?? '…'} kr · engångsköp
+          </p>
+          <button
+            onClick={handleCta}
+            disabled={initiating}
+            style={{
+              width: '100%',
+              height: 56,
+              borderRadius: 28,
+              background: `color-mix(in srgb, ${accentTint} 28%, rgba(255,255,255,0.06))`,
+              border: `1px solid color-mix(in srgb, ${accentTint} 50%, transparent)`,
+              color: LANTERN_GLOW,
+              fontFamily: 'var(--font-display)',
+              fontSize: 16,
+              fontWeight: 600,
+              cursor: 'pointer',
+              opacity: initiating ? 0.7 : 1,
+              transition: 'opacity 150ms ease, transform 140ms cubic-bezier(0.4, 0, 0.2, 1)',
+            }}
+            onMouseDown={(e) => { e.currentTarget.style.transform = 'scale(0.98)'; }}
+            onMouseUp={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
+          >
+            Köp {product?.name ?? ''}
+            {priceSek !== null && (
+              <span style={{ opacity: 0.85, marginLeft: 6 }}>· {priceSek} kr</span>
+            )}
+          </button>
+        </div>
+      </div>
+      {/* TODO: free-session branch returns in a later release */}
     </div>
   );
 }
+
 
 /** Hook: check if a product intro should be shown.
  *  Shows intro until the user has completed at least one session in this product. */
