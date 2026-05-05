@@ -93,12 +93,21 @@ export default function CategoryFilterChips({
       >
         {chips.map((chip) => {
           const isSelected = selected.has(chip.id);
-          const bg = isSelected
-            ? `color-mix(in srgb, ${accentHex} 28%, rgba(255,255,255,0.06))`
-            : `color-mix(in srgb, ${accentHex} 14%, rgba(255,255,255,0.06))`;
-          const border = isSelected
-            ? `1px solid color-mix(in srgb, ${accentHex} 55%, rgba(255,255,255,0.18))`
-            : `1px solid color-mix(in srgb, ${accentHex} 25%, rgba(255,255,255,0.12))`;
+          const isAdult = variant === 'adult';
+          const bg = isAdult
+            ? (isSelected
+                ? `color-mix(in srgb, ${accentHex} 30%, rgba(255,255,255,0.06))`
+                : 'transparent')
+            : (isSelected
+                ? `color-mix(in srgb, ${accentHex} 28%, rgba(255,255,255,0.06))`
+                : `color-mix(in srgb, ${accentHex} 14%, rgba(255,255,255,0.06))`);
+          const border = isAdult
+            ? (isSelected
+                ? `1px solid color-mix(in srgb, ${accentHex} 55%, transparent)`
+                : `1px solid color-mix(in srgb, ${accentHex} 25%, rgba(255,255,255,0.10))`)
+            : (isSelected
+                ? `1px solid color-mix(in srgb, ${accentHex} 55%, rgba(255,255,255,0.18))`
+                : `1px solid color-mix(in srgb, ${accentHex} 25%, rgba(255,255,255,0.12))`);
           return (
             <button
               key={chip.id}
