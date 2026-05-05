@@ -1,75 +1,91 @@
-## Plan: Replace pill chips with typographic underlined labels
+## Vårt Vi refinements (combined)
 
-Rebuild `CategoryFilterChips` as a typographic section-nav row. Selection is signaled only by a 2px sliding underline beneath the active label. Behavior, ARIA, scroll/mask, and selection logic are preserved.
+Four scoped changes to the Adult Bonki product home: one layout bug fix, one edge-perception fix, plus title/category rewrites.
+
+### 1. Fix unequal column widths in card grid
+
+**Diagnosis (current state in `src/components/AdultProductHome.tsx` and `AdultProductCardTile.tsx`):**
+
+- Grid container (line ~277): `gridTemplateColumns: '1fr 1fr'`, `gap: '16px'`, `width: '100%'` — already correct.
+- Each cell is wrapped in `FilterableCardCell` (a `motion.div`) — has **no `min-width`, no `width`** set.
+- `AdultProductCardTile` outer `<button>` has `width: '100%'` but **no `min-width: 0`**.
+- Title `<span>` is a single block of nowrap-free text but uses `display: -webkit-box` with line-clamp — its intrinsic min-content width is the longest unbreakable token, which is fine, but combined with the absent `min-width: 0` on the grid item, long titles can push a cell above its `1fr` share.
+
+This matches the symptom: right column wider than left when long-title cards land on the right.
+
+**Fix — both changes required:**
+
+In `AdultProductHome.tsx` `FilterableCardCell` `motion.div` style, add:
+```ts
+minWidth: 0,
+width: '100%',
+```
+(merge with the existing `display`/`pointerEvents` style)
+
+In `AdultProductCardTile.tsx` outer `<button>` style, add:
+```ts
+minWidth: 0,
+```
+(`width: '100%'` is already present)
+
+`min-width: 0` overrides the CSS default `min-width: auto` that grid/flex items inherit, which is what allows 1fr to actually distribute equally regardless of content.
+
+### 2. Card title/subtitle rewrites — `src/data/content.ts`
+
+| Line | Field | New value |
+|---|---|---|
+| 245 | title | `Bakom kulisserna` (subtitle unchanged) |
+| 287 | title | `När jag vacklar` (subtitle unchanged) |
+| 350 | title | `Era värderingar` |
+| 351 | subtitle | `Mina, dina och våra — i vardagliga val` |
+| 371 | title | `Era traditioner` |
+| 372 | subtitle | `Mina, dina och våra — vad ni för vidare` |
+
+### 3. Category label shortening — `src/data/content.ts`
+
+Current category titles in source order: `Ert minsta vi`, `Vardagen mellan er`, `Hur ni bär varandra`, `Det som skaver`, `Arvet ni delar`, `Vad ni står för`, `Vad ni satsar på`, `Nära varandra`, `Att välja varandra` (plus `Alla` prepended by the chip component).
+
+Edits at lines 16, 23, 37, 58, 65:
+
+| Current | New |
+|---|---|
+| `Vardagen mellan er` | `Vardagen` |
+| `Hur ni bär varandra` | `Hur ni bär` |
+| `Arvet ni delar` | `Arvet` |
+| `Nära varandra` | `Närhet` |
+| `Att välja varandra` | `Valet` |
+
+Keep unchanged: `Ert minsta vi`, `Det som skaver`, `Vad ni står för`, `Vad ni satsar på`.
+
+### 4. Dark-card edge definition — `src/components/AdultProductCardTile.tsx`
+
+Change outer `<button>` boxShadow from:
+```ts
+boxShadow: '0 8px 24px rgba(0,0,0,0.20), 0 2px 6px rgba(0,0,0,0.08)',
+```
+to:
+```ts
+boxShadow: '0 0 0 1px rgba(255, 255, 255, 0.06), 0 8px 24px rgba(0,0,0,0.20), 0 2px 6px rgba(0,0,0,0.08)',
+```
+Existing `border: '1px solid rgba(255,255,255,0.10)'` stays.
+
+### What stays unchanged
+
+- Two-zone tile composition, accent line, completion check, press state
+- Filter chip underline component
+- Routing, session, autosave logic
+- Kids product home (entirely untouched)
 
 ### Files
 
-1. **`src/components/CategoryFilterChips.tsx`** — full visual rebuild.
-2. **`src/components/KidsProductHome.tsx`** — pass `underlineColor={BONKI_ORANGE}` (one-line change at the existing call site, line ~683).
-3. **`src/components/AdultProductHome.tsx`** — pass `underlineColor={WARM_GOLD}`.
-4. **`src/lib/palette.ts`** — no change (`BONKI_ORANGE` and `WARM_GOLD` already exported).
+- `src/components/AdultProductHome.tsx` — `min-width: 0` + `width: 100%` on `FilterableCardCell`
+- `src/components/AdultProductCardTile.tsx` — `min-width: 0` on outer button + boxShadow update
+- `src/data/content.ts` — 4 title rewrites, 2 subtitle rewrites, 5 category title shortenings
 
-### Component contract
+### Verification (390×844)
 
-Keep all existing props. Add:
-- `underlineColor?: string` — defaults to `BONKI_ORANGE`.
-
-`accentHex` is retained (no breakage at call sites) but no longer used for chip backgrounds. `variant` is retained but unused for styling — kept to avoid touching call sites.
-
-### Visual structure
-
-```text
-role=group
-└─ scroll container (overflow-x:auto, mask-image right-edge fade 40px)
-   └─ labels row  (position:relative, display:flex, gap:24px, padding:12px 0 16px)
-      ├─ <button> Alla
-      ├─ <button> Mina känslor
-      ├─ ...
-      └─ <motion.div underline>  (absolute, bottom:0, height:2px, radius:1px)
-```
-
-Typography (all labels):
-- `font-family: var(--font-display)`, `font-size: 14px`, `font-weight: 500`, `letter-spacing: 0.02em`
-- color: `LANTERN_GLOW` at opacity `0.65` unselected, `1.0` selected
-- button reset: no background, no border, no padding-x chrome (small vertical padding for hit area), `cursor: pointer`
-
-Underline:
-- absolutely positioned, `bottom: 0`, `height: 2px`, `border-radius: 1px`
-- `background: underlineColor`
-- width = selected label's `offsetWidth`; left = selected label's `offsetLeft`
-
-### Position measurement & animation
-
-- `labelRefs = useRef<Record<string, HTMLButtonElement | null>>({})`
-- `const [pos, setPos] = useState<{left:number,width:number}|null>(null)`
-- `useLayoutEffect` recomputes `pos` from the *first* selected label's `offsetLeft/offsetWidth` whenever:
-  - selection changes
-  - on mount
-  - on container resize (via `ResizeObserver` on the labels row)
-- Selected label for underline: if `selected.has(ALL_FILTER_KEY)` → "Alla"; else first selected category in display order. (Multi-select still toggles state; underline tracks the first active to keep one visual marker, since spec calls for a single sliding underline.)
-- `<motion.div animate={{ left, width }} transition={{ duration: 0.22, ease: [0.32, 0.72, 0, 1] }} initial={false} />` — `initial={false}` plus `useLayoutEffect` synchronous set means first paint has no entry animation.
-
-### Scroll / mask
-
-- Keep current right-edge mask: `linear-gradient(to right, black 0, black calc(100% - 40px), transparent 100%)` on both `maskImage` and `WebkitMaskImage`.
-- Underline lives **inside** the scrolling labels row, so it scrolls with the labels (positions are `offsetLeft` relative to the row, not viewport).
-
-### Behavior (unchanged)
-
-- "Alla" is exclusive; toggling categories clears "Alla"; emptying selection snaps back to `{'all'}`. Identical to current `handleToggle`.
-- `aria-pressed` per button, `role="group"` with existing aria-label, `aria-live="polite"` announcement region preserved verbatim.
-
-### Accessibility
-
-- `:focus-visible` falls through to global style; add a small `outline-offset: 4px` so the ring sits cleanly around the text label without pill background.
-- Each button keeps `type="button"` and `aria-pressed`.
-
-### Verification
-
-- Kids product home: orange underline under selected label, no pills.
-- Adult product home (Vårt Vi): warm gold underline.
-- Tap different category → underline slides ~220ms, no jump.
-- First paint: underline appears under "Alla" without animation.
-- Horizontal overflow still scrolls; mask fade intact; underline stays glued to its label while scrolling.
-- Resize/rotate: ResizeObserver repositions underline.
-- Keyboard tab → focus ring on text; Enter activates and animates underline.
+- Every row of the 2-column grid has equal-width cells regardless of title length (test row containing `Era värderingar` next to `Att säga ifrån`)
+- Renamed cards display new titles/subtitles
+- Filter row shows shortened categories; any overflow handled by existing right-edge mask-fade
+- Dark cards (Midnight Ink, Storm Grey) have visible silhouettes matching warm cards
+- Kids product home renders unchanged
