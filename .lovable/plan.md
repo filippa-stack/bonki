@@ -1,30 +1,36 @@
-## Product Home Refinements — Round 3
+## Remove the dark rectangle behind the truncating chip
 
-Two scoped visual edits. No structural/behavioral changes.
+### Inventory of elements in the right-edge region of `CategoryFilterChips`
 
-### 1. `src/components/ProductCardTile.tsx` — Replace Klart pill with floating checkmark
+I read the entire file and the parent `StickyFilterHeader` in `KidsProductHome.tsx`. There is **no second overlay, no pseudo-element, no parent background, no leftover mask**. Elements actually rendering in the right-edge region:
 
-Replace the entire `{isCompleted && (<motion.div role="status" ...>...Klart...</motion.div>)}` block with a single saffron stroke checkmark SVG (18×18) at top:12 right:12, zIndex 4, with a subtle drop-shadow for legibility. No background, no border, no text label.
+1. Outer `<div style={{position:'relative'}}>` — no background.
+2. Scroll container `<div role="group">` — no background, `padding: 4px 24px 4px 4px`, `overflow-x: auto`.
+3. **Right-edge fade `<div aria-hidden>`** — `position:absolute; right:0; width:40px; zIndex:1; background: linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,0.35) 100%)`.
+4. Visually-hidden live region — 1×1 px, clipped, invisible.
 
-- Keep: `isFirstRenderRef` pattern (rename usage to match existing `skipPillAnimation` logic — already present), `role="status"`, 240ms opacity transition with `[0.32, 0.72, 0, 1]` easing.
-- Add: `aria-label="Klart"` on the motion div (replaces the visible text as accessible label).
-- Remove: pill background, border, padding, border-radius, font styling, leading ✓ span, "Klart" text node.
-- Imports: remove `LANTERN_GLOW` import (no longer used in this file). Keep `SAFFRON_FLAME`, `motion`, `useRef`, `useEffect`.
+### Diagnosis
 
-SVG path: `M3.5 9.5 L7.5 13.5 L14.5 5.5`, stroke `SAFFRON_FLAME`, strokeWidth 2.5, round caps/joins. Filter: `drop-shadow(0 1px 2px rgba(0,0,0,0.5))`.
+The "dark rectangle" **is element #3**. It is the fade overlay itself. Because it paints a black-tinted gradient *on top of* the chips and hero illustration (zIndex 1), against bright pixels in the hero (saffron glow, illustration highlights) the gradient reads as a dark rectangular plate covering the rightmost chip. Against pure midnight background it's invisible — which is why earlier opacity tweaks didn't help. The geometry is correct; the *technique* (painting black on content) is wrong.
 
-### 2. `src/components/CategoryFilterChips.tsx` — Widen right-edge fade
+### Fix
 
-In the right-edge fade overlay (single element after the chips container):
-- `width`: `24px` → `40px`
-- gradient end stop: `rgba(0,0,0,0.25)` → `rgba(0,0,0,0.35)`
-- Direction stays `to right` (transparent left → dark right). Verified: only one overlay element exists, no second sibling to remove.
+In `src/components/CategoryFilterChips.tsx`:
+
+1. **Delete the right-edge fade overlay div entirely** (lines 115–128).
+2. **Apply a CSS mask to the scroll container** so the chips themselves fade to transparent at the right edge — no pixels are darkened, only chip alpha is reduced. Add to the scroll container's inline style:
+
+```js
+maskImage: 'linear-gradient(to right, black 0, black calc(100% - 40px), transparent 100%)',
+WebkitMaskImage: 'linear-gradient(to right, black 0, black calc(100% - 40px), transparent 100%)',
+```
+
+3. Add a short comment above the scroll container explaining the mask approach and why the overlay was removed (so a future round doesn't re-add it).
 
 ### Preserved
 
-Hero, sticky header, NextActionBanner, filter mount-everything pattern, easing/durations/stagger, ARIA live region, chip padding, all `ProductCardTile` styling (illustration, 25% scrim, title, aspect ratio, routing).
+All chip styling, toggle behavior, ARIA group, `aria-pressed`, live region announcements, padding `4px 24px 4px 4px`, gap `8px`, the outer relative wrapper. No other files touched.
 
 ### Files
 
-- `src/components/ProductCardTile.tsx` — issue 1
-- `src/components/CategoryFilterChips.tsx` — issue 2
+- `src/components/CategoryFilterChips.tsx` — remove overlay div, add mask to scroll container
