@@ -1816,7 +1816,7 @@ export default function CardView() {
               width: '40px',
               height: '40px',
               borderRadius: '50%',
-              backgroundColor: 'rgba(218, 157, 29, 0.15)',
+              backgroundColor: 'rgba(233, 200, 144, 0.12)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
