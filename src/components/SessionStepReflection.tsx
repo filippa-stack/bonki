@@ -146,14 +146,21 @@ export default function SessionStepReflection({
   const resolvedCtaLabel = ctaLabel
     ?? (submitting ? 'Sparar…' : isLastStep ? 'Avsluta' : 'Fortsätt');
 
-  // Still Us palette
-  const noteBg = stillUsMode ? EMBER_GLOW : 'hsla(36, 20%, 97%, 0.12)';
-  const noteBgFocused = stillUsMode ? EMBER_GLOW : 'hsla(36, 20%, 97%, 0.12)';
-  const noteTextColor = stillUsMode ? MIDNIGHT_INK : 'var(--text-primary)';
-  const noteBorder = stillUsMode ? `1px solid ${DRIFTWOOD}33` : '1px solid hsla(36, 20%, 80%, 0.18)';
-  const ctaBg = stillUsMode ? DEEP_SAFFRON : 'hsl(41, 78%, 48%)';
-  const ctaTextColor = stillUsMode ? MIDNIGHT_INK : 'hsl(30, 10%, 12%)';
-  const triggerColor = stillUsMode ? 'hsl(38 25% 92%)' : 'var(--text-primary)';
+  // Still Us palette — Midnight Ink shell, warm gold pill CTA
+  const WARM_GOLD = '#E9C890';
+  const LANTERN_GLOW_S = '#FDF6E3';
+  const noteBg = stillUsMode ? 'rgba(253, 246, 227, 0.06)' : 'hsla(36, 20%, 97%, 0.12)';
+  const noteBgFocused = stillUsMode ? 'rgba(253, 246, 227, 0.10)' : 'hsla(36, 20%, 97%, 0.12)';
+  const noteTextColor = stillUsMode ? LANTERN_GLOW_S : 'var(--text-primary)';
+  const noteBorder = stillUsMode ? `1px solid rgba(253, 246, 227, 0.14)` : '1px solid hsla(36, 20%, 80%, 0.18)';
+  const ctaBg = stillUsMode
+    ? `color-mix(in srgb, ${WARM_GOLD} 28%, rgba(255,255,255,0.06))`
+    : 'hsl(41, 78%, 48%)';
+  const ctaBorderColor = stillUsMode
+    ? `color-mix(in srgb, ${WARM_GOLD} 50%, transparent)`
+    : 'transparent';
+  const ctaTextColor = stillUsMode ? LANTERN_GLOW_S : 'hsl(30, 10%, 12%)';
+  const triggerColor = stillUsMode ? LANTERN_GLOW_S : 'var(--text-primary)';
 
   return (
     <motion.div data-sensitive
