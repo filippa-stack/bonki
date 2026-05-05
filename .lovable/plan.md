@@ -1,20 +1,14 @@
 ## Goal
 
-Restore per-product accent colors on the library tiles. Library page background and all other elements stay exactly as they are.
+Tint the library resume banner with the active product's accent color.
 
 ## Scope
 
-Single file: `src/components/ProductLibrary.tsx`, single property change inside the `PastelTile` component.
+Single file: `src/components/LibraryResumeCard.tsx`.
 
 ## Change
 
-In `PastelTile` (line 150), replace the uniform dark surface:
-
-```ts
-background: '#2A2D3A',
-```
-
-with a per-product accent looked up from a small map keyed by `productId`:
+1. Add a `PRODUCT_ACCENT` map (same values as the tile map):
 
 ```text
 still_us         #A8B5C9
@@ -26,14 +20,8 @@ syskonkort       #C4A5D6
 sexualitetskort  #DD958B
 ```
 
-Fallback for unknown ids: `#2A2D3A`.
+2. In the resume button, look up `accent = PRODUCT_ACCENT[display.productId] ?? '#2A2D3A'` and use it as the button `background` (replacing the current `'#2A2D3A'`).
 
 ## Untouched
 
-- Library page background and atmospheric layers
-- Tile border, border-radius, box-shadow (`none`)
-- Title block, tagline, illustration zone, pill
-- Hover/tap motion
-- Resume card, mock route, gradients, text-shadows, CSS tokens
-
-No additions of any kind beyond the single `background` value per tile.
+Layout, ghost-glow dot, typography, chevron, padding, border, text colors. Only the banner background fill changes.
