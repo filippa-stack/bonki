@@ -36,6 +36,8 @@ export interface Card {
   emptyStateDescription?: string;
   /** Preview hook sentence for the card intro screen — read aloud with a child */
   questionHook?: string;
+  /** Optional adult-product card background color override (e.g. Vårt Vi tile color) */
+  cardColor?: string;
 }
 
 export interface Category {
