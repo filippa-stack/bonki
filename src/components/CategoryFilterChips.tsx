@@ -61,6 +61,16 @@ export default function CategoryFilterChips({
     ...categories.map((c) => ({ id: c.id, title: c.title })),
   ];
 
+  // Right-edge fade is implemented as an alpha mask on the scroll container
+  // itself — the chip pixels fade to transparent at the edge. A previous
+  // approach used an absolute overlay div with a black-tinted gradient
+  // (`linear-gradient(to right, transparent, rgba(0,0,0,0.35))`) painted on
+  // top of the chips at zIndex 1; against bright pixels in the hero
+  // illustration that overlay read as a dark rectangular plate. Do not
+  // re-introduce a black-on-content overlay — use the mask approach below.
+  const fadeMask =
+    'linear-gradient(to right, black 0, black calc(100% - 40px), transparent 100%)';
+
   return (
     <div style={{ position: 'relative' }}>
       <div
@@ -74,6 +84,8 @@ export default function CategoryFilterChips({
           WebkitOverflowScrolling: 'touch',
           padding: '4px 24px 4px 4px',
           scrollbarWidth: 'none',
+          maskImage: fadeMask,
+          WebkitMaskImage: fadeMask,
         }}
       >
         {chips.map((chip) => {
@@ -111,21 +123,6 @@ export default function CategoryFilterChips({
           );
         })}
       </div>
-
-      {/* Right-edge fade overlay */}
-      <div
-        aria-hidden="true"
-        style={{
-          position: 'absolute',
-          top: 0,
-          right: 0,
-          bottom: 0,
-          width: '40px',
-          pointerEvents: 'none',
-          zIndex: 1,
-          background: 'linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,0.35) 100%)',
-        }}
-      />
 
       {/* Visually hidden live region */}
       <div
