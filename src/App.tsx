@@ -71,6 +71,11 @@ import ClaimPage from "./pages/ClaimPage";
 
 const queryClient = new QueryClient();
 
+function PortalDispatch() {
+  const { productSlug } = useParams<{ productSlug: string }>();
+  return productSlug === 'still-us' ? <AdultCardPortal /> : <KidsCardPortal />;
+}
+
 function ProtectedContent() {
   const { loading: spaceLoading } = useCoupleSpaceContext();
   const { loading: sessionLoading } = useNormalizedSessionContext();
