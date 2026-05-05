@@ -18,6 +18,16 @@ import { DEMO_SESSION_EVENT, getMostRecentDemoSession } from '@/lib/demoSession'
 
 const LANTERN_GLOW = '#FDF6E3';
 
+const PRODUCT_ACCENT: Record<string, string> = {
+  still_us: '#A8B5C9',
+  jag_i_mig: '#2A6B65',
+  jag_med_andra: '#B85A8A',
+  jag_i_varlden: '#BAC03E',
+  vardagskort: '#6FB498',
+  syskonkort: '#C4A5D6',
+  sexualitetskort: '#DD958B',
+};
+
 interface ResumeData {
   productId: string;
   productSlug: string;
@@ -229,7 +239,7 @@ export default function LibraryResumeCard({ activeTab, global, forceMock }: Libr
       style={{
         width: '100%',
         padding: '12px 16px',
-        background: '#2A2D3A',
+        background: PRODUCT_ACCENT[display.productId] ?? '#2A2D3A',
         border: '0.5px solid rgba(255, 255, 255, 0.06)',
         borderRadius: '14px',
         cursor: 'pointer',
