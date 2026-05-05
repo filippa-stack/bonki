@@ -120,10 +120,10 @@ export default function CategoryFilterChips({
           top: 0,
           right: 0,
           bottom: 0,
-          width: '24px',
+          width: '40px',
           pointerEvents: 'none',
           zIndex: 1,
-          background: 'linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,0.25) 100%)',
+          background: 'linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,0.35) 100%)',
         }}
       />
 
