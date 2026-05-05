@@ -730,6 +730,7 @@ function StickyFilterHeader({
                 card={card}
                 tileBg={tileBg}
                 isCompleted={completedSet.has(card.id)}
+                productSlug={product.slug}
               />
             </FilterableCardCell>
           );
