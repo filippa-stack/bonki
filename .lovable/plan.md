@@ -1,61 +1,34 @@
-# Hotfix: Bypass `activeSessionId` for kids note hook
+# Restore auto-abandon for same-product, different-card navigation
 
 ## Problem
+`src/pages/CardView.tsx` lines 508–519 contain only a comment where the auto-abandon effect used to live. The comment claims same-product different-card is handled implicitly via product-scoped `useNormalizedSessionContext`, but in practice, when the user navigates from card A to card B within the same product, the active session for A remains. The eager-creation block bails at line 541 (`normalizedSession.sessionId && normalizedSession.cardId !== cardId`), so no session is created for B and reflections cannot save.
 
-`activeSessionId` stays `null` because the cardId-reset effect clears it and the gated `isActiveSession` effect doesn't reliably re-set it under React batching. Result: `useSessionReflections` for kids notes always receives `null` and writes silently fail. `normalizedSession.sessionId` is populated directly from the `get_active_session_state` RPC and does not depend on intermediate effects, so it is the reliable source.
+The cross-product fix (don't wipe a Still Us session when opening a JIM card) must remain intact.
 
 ## Change
 
-Single file: `src/pages/CardView.tsx`. Two adjacent edits, no other behavior changes.
+**File:** `src/pages/CardView.tsx`
 
-### Edit 1 — lines 745–748
+Replace the comment-only block at lines 508–519 with a guarded `useEffect` that abandons the active session **only when it belongs to a different card within the same product**.
 
-Source the kids note hook's session id from `normalizedSession.sessionId`, gated on `cardId` matching to avoid leaking another card's session into the wrong hook instance.
+### Logic
+1. Bail if dev/archive/completion modes, still loading, no active session, or no space/cardId.
+2. Bail if `normalizedSession.cardId === cardId` (already on the right card).
+3. Determine whether the active session's card belongs to the current `product` by checking `product?.cards.some(c => c.id === normalizedSession.cardId)`.
+4. If it does NOT belong to the current product → leave it alone (cross-product coexistence).
+5. If it DOES → call `abandon_active_session` RPC, then `normalizedSession.refetch()`. The existing eager-creation effect (lines 532–574) will then naturally fire for the new card.
 
-```ts
-const kidsNoteSession = useSessionReflections(
-  isKidsProduct && normalizedSession.sessionId && normalizedSession.cardId === cardId
-    ? normalizedSession.sessionId
-    : null,
-  kidsNoteStepIndex
-);
-```
+### Effect dependencies
+`[devState, isFromArchive, showCompletion, normalizedSession.loading, normalizedSession.sessionId, normalizedSession.cardId, space?.id, cardId, product?.id]`
 
-### Edit 2 — lines 755–764
-
-Recovery effect: switch to the same derived id so the null→valid replay fires when `normalizedSession.sessionId` arrives.
-
-```ts
-const kidsNoteInputSessionId = isKidsProduct && normalizedSession.sessionId && normalizedSession.cardId === cardId
-  ? normalizedSession.sessionId : null;
-const prevKidsSessionIdRef = useRef<string | null>(kidsNoteInputSessionId);
-useEffect(() => {
-  const wasNull = !prevKidsSessionIdRef.current;
-  const nowValid = !!kidsNoteInputSessionId;
-  prevKidsSessionIdRef.current = kidsNoteInputSessionId;
-
-  if (wasNull && nowValid && kidsNoteLocalText.trim()) {
-    kidsNoteSession.setText(kidsNoteLocalText);
-  }
-}, [kidsNoteInputSessionId]);
-```
-
-## Explicitly NOT changed
-
-- `activeSessionId` state, the cardId-reset effect, or the gated `isActiveSession` effect (other consumers still use them).
-- Fix 7 eager-creation block.
-- `useSessionReflections` buffer-and-flush, autosave, markReady.
-- 2000ms `suppressUntilRef` in `useNormalizedSessionState`.
-- Any other reflection write/read path (Still Us, JIM, JMA prompt-level reflections).
+## What stays untouched
+- Eager creation block (lines 521–574), including Fix 7's direct `setActiveSessionId` call.
+- `kidsNoteInputSessionId` derivation hotfix.
+- `handleAbandonAndRestart` manual recovery (lines 478–496).
+- All reflection persistence fixes and protected patterns.
+- Cross-product session isolation (uniq_active_session_per_space_product).
 
 ## Verification
-
-1. Fresh kids card → type Q1 note → console `[kids-note-sync]` shows non-null `sessionId` immediately.
-2. Q1 → Fortsätt → Q2 → back to Q1: text present.
-3. `step_reflections` row exists with correct `text` and `state`.
-4. Resume via banner (skips eager block): notes still load and persist.
-5. Switching between two kids cards within a product does not bleed text across (cardId guard).
-
-## Files affected
-
-- `src/pages/CardView.tsx` — ~6 line diff in the kids note section.
+1. Start session on card A in jim-skam → navigate to card B in jim-skam → console logs `[auto-abandon] same-product different-card` → eager creation fires for B → `[kids-note-sync]` shows non-null `sessionId` → typing reflection persists to `step_reflections`.
+2. Start Still Us session → open a kids-product card → Still Us session remains `active` in DB (not abandoned).
+3. Existing intra-session Q1↔Q2 navigation still preserves text (Fix 7 + hotfix unaffected).

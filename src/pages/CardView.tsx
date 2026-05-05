@@ -505,18 +505,34 @@ export default function CardView() {
 
   // Volume 1: single-writer model, reflection surface always active
 
-  // ─── Auto-abandon REMOVED (Bug 2 fix) ───
-  // Previously this block abandoned any active session whose cardId didn't match
-  // the current route. With the new per-(space, product) active-session uniqueness
-  // (uniq_active_session_per_space_product), sessions in OTHER products no longer
-  // conflict with this card — they live in their own product slot. Abandoning them
-  // was the root cause of the cross-product session wipe (start JIM, then Still Us,
-  // return to JIM → JIM's "Fortsätt" banner gone).
-  //
-  // Same-product, different-card: handled implicitly because
-  // useNormalizedSessionContext is now product-scoped, so normalizedSession.cardId
-  // will only ever reference a card in THIS product. The eager-create block below
-  // races with no other writer for this product slot.
+  // ─── Auto-abandon: same-product, different-card only ───
+  // Cross-product sessions are NOT abandoned — they live in separate product slots
+  // via the uniq_active_session_per_space_product constraint.
+  useEffect(() => {
+    if (devState || isFromArchive || showCompletion) return;
+    if (normalizedSession.loading) return;
+    if (!normalizedSession.sessionId || !space?.id || !cardId) return;
+    if (normalizedSession.cardId === cardId) return;
+
+    // Only abandon if the active session's card belongs to the CURRENT product.
+    const activeBelongsToCurrentProduct = !!product?.cards.some(
+      (c) => c.id === normalizedSession.cardId
+    );
+    if (!activeBelongsToCurrentProduct) return;
+
+    (async () => {
+      console.log('[auto-abandon] same-product different-card', {
+        abandoning: normalizedSession.cardId,
+        openingCard: cardId,
+        product: product?.id,
+      });
+      await supabase.rpc('abandon_active_session', {
+        p_session_id: normalizedSession.sessionId!,
+      });
+      await normalizedSession.refetch();
+    })();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [devState, isFromArchive, showCompletion, normalizedSession.loading, normalizedSession.sessionId, normalizedSession.cardId, space?.id, cardId, product?.id]);
 
   // ─── Eager session creation for kids products ───
   // Kids products create sessions immediately so resume banners appear on home/library.
