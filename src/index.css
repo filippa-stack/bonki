@@ -859,3 +859,21 @@ h1, h2, h3,
     animation: none;
   }
 }
+
+/* ── Category filter chip press state (mobile tactile feedback) ──
+   Inline styles can't express :active, and WebkitTapHighlightColor is
+   suppressed on the chip — this restores tactile press feedback. */
+.category-filter-chip {
+  transform: translateZ(0);
+  transition: background 120ms ease, border-color 120ms ease,
+              transform 120ms ease, filter 120ms ease;
+}
+.category-filter-chip:active {
+  transform: scale(0.96);
+  filter: brightness(1.15);
+}
+@media (prefers-reduced-motion: reduce) {
+  .category-filter-chip:active {
+    transform: none;
+  }
+}

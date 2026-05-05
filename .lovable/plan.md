@@ -1,36 +1,35 @@
-## Remove the dark rectangle behind the truncating chip
+## Add press state to filter chips (mobile tactile feedback)
 
-### Inventory of elements in the right-edge region of `CategoryFilterChips`
+### Verification
 
-I read the entire file and the parent `StickyFilterHeader` in `KidsProductHome.tsx`. There is **no second overlay, no pseudo-element, no parent background, no leftover mask**. Elements actually rendering in the right-edge region:
-
-1. Outer `<div style={{position:'relative'}}>` — no background.
-2. Scroll container `<div role="group">` — no background, `padding: 4px 24px 4px 4px`, `overflow-x: auto`.
-3. **Right-edge fade `<div aria-hidden>`** — `position:absolute; right:0; width:40px; zIndex:1; background: linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,0.35) 100%)`.
-4. Visually-hidden live region — 1×1 px, clipped, invisible.
-
-### Diagnosis
-
-The "dark rectangle" **is element #3**. It is the fade overlay itself. Because it paints a black-tinted gradient *on top of* the chips and hero illustration (zIndex 1), against bright pixels in the hero (saffron glow, illustration highlights) the gradient reads as a dark rectangular plate covering the rightmost chip. Against pure midnight background it's invisible — which is why earlier opacity tweaks didn't help. The geometry is correct; the *technique* (painting black on content) is wrong.
+I checked `src/components/CategoryFilterChips.tsx` (lines 100–122). The chip `<button>` has `WebkitTapHighlightColor: 'transparent'` (suppresses the default mobile tap flash) but **no `:active` styling** — so on touch the chip gives zero tactile feedback. Inline styles cannot express `:active`, so the fix needs a CSS class.
 
 ### Fix
 
-In `src/components/CategoryFilterChips.tsx`:
+1. **`src/index.css`** — Append a `.category-filter-chip` rule with a 120ms press-down (`transform: scale(0.96); filter: brightness(1.15);`) on `:active`. Respect `prefers-reduced-motion` (no transform, brightness only).
 
-1. **Delete the right-edge fade overlay div entirely** (lines 115–128).
-2. **Apply a CSS mask to the scroll container** so the chips themselves fade to transparent at the right edge — no pixels are darkened, only chip alpha is reduced. Add to the scroll container's inline style:
+   ```css
+   .category-filter-chip {
+     transform: translateZ(0);
+     transition: background 120ms ease, border-color 120ms ease,
+                 transform 120ms ease, filter 120ms ease;
+   }
+   .category-filter-chip:active {
+     transform: scale(0.96);
+     filter: brightness(1.15);
+   }
+   @media (prefers-reduced-motion: reduce) {
+     .category-filter-chip:active { transform: none; }
+   }
+   ```
 
-```js
-maskImage: 'linear-gradient(to right, black 0, black calc(100% - 40px), transparent 100%)',
-WebkitMaskImage: 'linear-gradient(to right, black 0, black calc(100% - 40px), transparent 100%)',
-```
-
-3. Add a short comment above the scroll container explaining the mask approach and why the overlay was removed (so a future round doesn't re-add it).
+2. **`src/components/CategoryFilterChips.tsx`** — Add `className="category-filter-chip"` to the chip `<button>`. Remove the inline `transition` (now in CSS) to avoid duplication. Keep all other inline styles (background, border, padding, color, `WebkitTapHighlightColor`).
 
 ### Preserved
 
-All chip styling, toggle behavior, ARIA group, `aria-pressed`, live region announcements, padding `4px 24px 4px 4px`, gap `8px`, the outer relative wrapper. No other files touched.
+Selection states, color-mix backgrounds/borders, `aria-pressed`, ARIA group/live region, mask fade, padding, font, all behavior. No new color tokens.
 
 ### Files
 
-- `src/components/CategoryFilterChips.tsx` — remove overlay div, add mask to scroll container
+- `src/index.css` — append chip press-state rule
+- `src/components/CategoryFilterChips.tsx` — add className, drop duplicate inline transition
