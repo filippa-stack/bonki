@@ -116,8 +116,8 @@ export const cards: Card[] = [
   // ── Card 1 · Grunden ──────────────────────────────────
   {
     id: 'family-ab',
-    title: 'När ert "vi" blir "Familjen AB"',
-    subtitle: 'Logistik som ersätter kontakt',
+    title: 'Familjen AB',
+    subtitle: 'När ert "vi" blir logistik',
     categoryId: 'emotional-intimacy',
     sections: [
       {
@@ -179,7 +179,7 @@ export const cards: Card[] = [
   // ── Card 4 · Normen ───────────────────────────────────
   {
     id: 'conflict-repair',
-    title: 'Rollerna ni tar (och får)',
+    title: 'Rollerna ni tar',
     subtitle: 'Roller som uppstår utan att ni valt dem',
     categoryId: 'communication',
     sections: [

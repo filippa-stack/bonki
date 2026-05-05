@@ -23,6 +23,14 @@ export const EMBER_NIGHT = '#0A1628';
 export const EMBER_MID = '#0D2E6B';
 export const EMBER_GLOW = '#D0DFEF';
 
+// ── Adult product palette (Vårt Vi and future adult products) ──
+export const DEEP_DUSK_BG = '#0B1026';
+export const CORNFLOWER = '#6495ED';
+export const DUSTY_ROSE = '#B8868A';
+export const STORM_GREY = '#3A4554';
+export const SAGE = '#7A8B7A';
+export const WARM_GOLD = '#E9C890';
+
 // ── Per-product tile colors ──
 export interface ProductTileColors {
   tileLight: string;
