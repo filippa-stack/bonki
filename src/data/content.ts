@@ -179,7 +179,7 @@ export const cards: Card[] = [
   // ── Card 4 · Normen ───────────────────────────────────
   {
     id: 'conflict-repair',
-    title: 'Rollerna ni tar (och får)',
+    title: 'Rollerna ni tar',
     subtitle: 'Roller som uppstår utan att ni valt dem',
     categoryId: 'communication',
     sections: [
