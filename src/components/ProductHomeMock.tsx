@@ -336,7 +336,7 @@ export default function ProductHomeMock() {
                         style={{
                           position: 'relative',
                           aspectRatio: '1 / 1.05',
-                          background: DEEP_DUSK,
+                          background: meta.progressColor,
                           border: '0.5px solid rgba(255,255,255,0.06)',
                           borderRadius: 14,
                           overflow: 'hidden',
