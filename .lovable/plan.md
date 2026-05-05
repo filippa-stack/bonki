@@ -1,11 +1,13 @@
 ## Goal
-Clean up the Library page hero by removing the BONKI wordmark, the "Samtalen som bygger närhet." tagline, and the ghost glow divider beneath them.
+Tint each library tile's progress pill with a faint version of that product's signature accent color, instead of the uniform translucent grey used today.
 
 ## Change
-In `src/components/ProductLibrary.tsx` (lines ~494–542):
-- Remove the entire hero `motion.div` containing the BONKI wordmark image and the tagline `<motion.p>`.
-- Remove the ghost glow divider `motion.div` directly below it.
-- Keep the `KontoIcon`/`KontoSheet` and the `LibraryResumeCard` section intact.
-- Adjust top spacing so the resume card still sits below the safe-area inset (add `paddingTop: 'calc(env(safe-area-inset-top, 0px) + 56px)'` to the first remaining content block).
+In `src/components/ProductLibrary.tsx` (`PastelTile`, lines ~232–252) update the pill's `background` and `border`:
 
-No other files affected. `ProductLibraryMock.tsx` is left untouched since this request targets the live Library page.
+- Background: `color-mix(in srgb, ${PRODUCT_ACCENT[productId] ?? '#FFFFFF'} 18%, rgba(255, 255, 255, 0.14))` — keeps the frosted glass feel, adds a ~15% accent hint.
+- Border: `color-mix(in srgb, ${PRODUCT_ACCENT[productId] ?? '#FFFFFF'} 25%, rgba(255, 255, 255, 0.22))` — picks up the same accent at the edge.
+- Keep `backdropFilter`, text color (`LANTERN_GLOW`), padding, radius, and font unchanged.
+
+`PRODUCT_ACCENT[productId]` is already imported and used for the tile background, so no new lookups or imports are needed. `color-mix` is supported on all current iOS/Android WebViews and modern browsers we ship to.
+
+No other files affected.
