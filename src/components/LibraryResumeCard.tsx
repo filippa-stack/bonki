@@ -19,7 +19,7 @@ import { DEMO_SESSION_EVENT, getMostRecentDemoSession } from '@/lib/demoSession'
 const LANTERN_GLOW = '#FDF6E3';
 
 const PRODUCT_ACCENT: Record<string, string> = {
-  still_us: '#A8B5C9',
+  still_us: '#6495ED',
   jag_i_mig: '#2A6B65',
   jag_med_andra: '#B85A8A',
   jag_i_varlden: '#BAC03E',
