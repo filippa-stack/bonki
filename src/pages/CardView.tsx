@@ -2128,13 +2128,13 @@ export default function CardView() {
                       width: 'auto',
                       minWidth: '200px',
                       maxWidth: '280px',
-                      height: '52px',
-                      borderRadius: '24px',
-                      backgroundColor: 'transparent',
-                      border: '1px solid rgba(253, 246, 227, 0.2)',
-                      color: 'rgba(253, 246, 227, 0.7)',
-                      fontFamily: 'var(--font-sans)',
-                      fontSize: '17px',
+                      height: '56px',
+                      borderRadius: '28px',
+                      backgroundColor: 'color-mix(in srgb, #E9C890 28%, rgba(255,255,255,0.06))',
+                      border: '1px solid color-mix(in srgb, #E9C890 50%, transparent)',
+                      color: EMBER_GLOW,
+                      fontFamily: 'var(--font-display)',
+                      fontSize: '16px',
                       fontWeight: 600,
                       cursor: 'pointer',
                       paddingLeft: '32px',
@@ -2146,15 +2146,14 @@ export default function CardView() {
                 </div>
                 <button
                   onClick={() => navigateWithFeedback('/product/still-us')}
-                  className="font-sans"
                   style={{
+                    fontFamily: 'var(--font-display)',
                     fontSize: '14px',
-                    color: DRIFTWOOD,
-                    opacity: 0.55,
+                    color: 'rgba(245, 232, 204, 0.65)',
                     background: 'none',
                     border: 'none',
                     cursor: 'pointer',
-                    marginTop: '16px',
+                    marginTop: '20px',
                     textAlign: 'center',
                   }}
                 >
