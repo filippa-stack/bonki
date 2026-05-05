@@ -72,7 +72,7 @@ export default function CategoryFilterChips({
           overflowX: 'auto',
           overflowY: 'hidden',
           WebkitOverflowScrolling: 'touch',
-          padding: '8px 24px 8px 4px',
+          padding: '4px 24px 4px 4px',
           scrollbarWidth: 'none',
         }}
       >
@@ -100,7 +100,7 @@ export default function CategoryFilterChips({
                 background: bg,
                 border,
                 borderRadius: '999px',
-                padding: '7px 14px',
+                padding: '7px 10px',
                 cursor: 'pointer',
                 transition: 'background 120ms ease, border-color 120ms ease',
                 WebkitTapHighlightColor: 'transparent',
@@ -122,7 +122,8 @@ export default function CategoryFilterChips({
           bottom: 0,
           width: '24px',
           pointerEvents: 'none',
-          background: 'linear-gradient(to right, transparent, var(--surface-base))',
+          zIndex: 1,
+          background: 'linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,0.4) 100%)',
         }}
       />
 

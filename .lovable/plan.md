@@ -1,63 +1,65 @@
-## Product Home Redesign — Filter chips + flat card grid
+## Product Home Refinements
 
-### Scope
-The live product home pages (Jag i Mig, Vårt Vi, etc.) all render via `src/components/KidsProductHome.tsx`. The redesign applies there. `ProductHomeMock` and `LibraryMock` remain untouched. `KidsCardPortal` route stays intact for any other entry point.
+Three scoped edits across three files. No structural or behavioral changes — only visual/spacing tuning.
 
-### Current vs target
+---
 
-```text
-NOW                          →   TARGET
-─────────────────────────────────────────────
-Title + tagline                   Title + tagline (scrolls away)
-NextActionBanner                  NextActionBanner   ┐ sticky
-                                  Filter chip row   ┘ (blurred, no fill)
-2-col grid of CATEGORY tiles      2-col grid of CARD tiles
-(tap → /portal/:categoryId)       (tap → /card/:cardId)
-```
+### 1. `src/components/ProductCardTile.tsx` — Lighter card scrim
 
-Preserved as-is: full-bleed evighetsskogen hero, atmospheric glow, top scrim, title typography, NextActionBanner pill, painterly card illustration treatment (illustration + bottom-left serif title).
+Replace the existing bottom scrim (`height: '65%'`, multi-stop dark gradient) with a much lighter one that respects the illustrations.
 
-### New: `CategoryFilterChips` (`src/components/CategoryFilterChips.tsx`)
-Props: `categories`, `selected: Set<string>`, `onChange`, `accentHex`, `totalVisible`.
+- `height: '25%'` (was `'65%'`)
+- `background: 'linear-gradient(to top, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0) 100%)'`
 
-- "Alla" first, selected by default and exclusive. Tapping a category clears `'all'` and adds the category. Toggling all categories off snaps back to `{'all'}`. Tapping "Alla" resets.
-- Pill: `var(--font-display)` 13px, `LANTERN_GLOW`. Bg `color-mix(in srgb, ${accent} 14%, rgba(255,255,255,0.06))`; selected `color-mix(...) 28%` + 1px tinted border. No new tokens.
-- Horizontal scroll with momentum; 24px right-edge fade via `linear-gradient(to right, transparent, var(--surface-base))`.
-- Selection cross-fades 120ms. No bouncy motion.
-- A11y: `<button role="button" aria-pressed>`, container `role="group" aria-label="Filtrera samtal efter kategori"`, sibling visually-hidden `aria-live="polite"` region announces `Visar X samtal i alla kategorier` / `Visar X samtal i Y kategorier`.
+No other changes to the file. Title position, completion border (`SAFFRON_FLAME` inset shadow), aspect ratio, and tile image treatment all stay identical.
 
-### New: `ProductCardTile` (`src/components/ProductCardTile.tsx`)
-- `useCardImage(card.id)` at top level — mounted once per card, never unmounted.
-- Reuses `CategoryTile`'s illustration + bottom scrim + bottom-left serif title.
-- Tap → `navigate(\`/card/\${card.id}\`)`.
-- Completed (in `recentlyCompletedCardIds` ∪ `allTimeCompletedCardIds`): add `inset 0 0 0 1.5px ${SAFFRON_FLAME}` to the existing `box-shadow` so the saffron border sits inside the rounded radius without disturbing layout.
+---
 
-### Refactored `KidsProductHome`
-1. Remove `useFirstCardImages` (no longer needed).
-2. Title block stays above sticky region so it scrolls away.
-3. Sticky header: `<div style={{ position:'sticky', top:0, zIndex:5, backdropFilter:'blur(10px)', WebkitBackdropFilter:'blur(10px)' }}>` containing `<NextActionBanner/>` + `<CategoryFilterChips/>`. **No background fill.**
-4. 2-col grid of `<ProductCardTile>` for **every** card in `product.cards`. All tiles mount on first render and stay mounted across filter changes — image cache persists, no re-mount flicker.
-5. **Filter rendering — mount-everything pattern:**
-   - Each tile wrapped in `<motion.div>` with variants `{ shown: { opacity: 1 }, hidden: { opacity: 0 } }` (opacity-only; scale stays 1).
-   - Hidden tiles: `aria-hidden`, `tabIndex=-1`, `pointer-events:none`.
-   - **Grid-collapse fix:** apply `display: 'none'` via `onAnimationComplete` after the exit animation finishes, so visible tiles repack into the 2-col grid without holes. React subtree stays mounted (component instance + `useCardImage` cache preserved); only the DOM display toggles.
-   - Transition: `duration: 0.2`, `ease: [0.32, 0.72, 0, 1]`, `staggerChildren: 0.03` on enter.
-6. **Empty state** (defensive, not normally reachable): centered italic `Inga samtal i den här kategorin än.` — `var(--font-display)` 14px italic, `LANTERN_GLOW` @ 0.7 opacity, 32px vertical padding.
-7. Hero illustration, top scrim, atmospheric glow blocks: untouched.
+### 2. `src/components/CategoryFilterChips.tsx` — Chip padding + edge fade
 
-### Routing / data
-- Card tap → `/card/:cardId` (existing `CardView`). One fewer tap than the portal flow.
-- Categories from `product.categories`, cards from `product.cards` filtered by `categoryId`. No data-layer refactor.
+**a) Tighter chip padding.** In the chip `<button>` style, change `padding: '7px 14px'` → `padding: '7px 10px'` (vertical unchanged, horizontal -4px each side).
 
-### QA checklist (post-build, on real devices)
-- iPhone 15 / 390×844: title + tagline (~20vh) + sticky header (~88px) + at least one full row of 2 cards in initial viewport.
-- Toggle filters rapidly: no image flicker on toggle-back.
-- Hero illustration visible at all times, including under the sticky blur.
-- Completed cards show saffron inset border.
-- VoiceOver announces filter changes.
-- **iOS Safari blur check (iPhone 11/12, real hardware):** verify `backdrop-filter: blur(10px)` actually renders smoothly under the sticky header during scroll. If blur fails or stutters, add a 24px `linear-gradient(to bottom, transparent, var(--surface-base) 80%)` fade just below the sticky region — do **not** add an opaque fill (would kill the brand world). Don't pre-build the fallback; only ship if testing requires it.
+**b) Fix the right-edge fade.** The current overlay fades to `var(--surface-base)` (solid color) which creates a seam against the blurred sticky header. Replace it:
 
-### Files
-- New: `src/components/CategoryFilterChips.tsx`
-- New: `src/components/ProductCardTile.tsx`
-- Edited: `src/components/KidsProductHome.tsx`
+- Keep absolute positioning, 24px wide, anchored right, `pointer-events: none`.
+- New gradient: `linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,0.4) 100%)`.
+- Ensure z-order: the fade sits above the scrolling chip row but is purely visual (no pointer events), so taps on visible chips are unaffected. Add `zIndex: 1` to the fade overlay; chips remain in normal flow with no z-index, so the fade renders above them visually but the pointer-events:none keeps them tappable. The fade naturally only obscures the truncating chip on the right edge.
+
+No changes to: chip toggle logic, ARIA, color-mix tinting, live region.
+
+---
+
+### 3. `src/components/KidsProductHome.tsx` — Sticky header spacing
+
+In the `StickyFilterHeader` sticky wrapper (lines ~667–692):
+
+- `paddingTop: '8px'` → `'6px'` (top of sticky region)
+- `paddingBottom: '4px'` → unchanged (already tight)
+- Inner `NextActionBanner` wrapper `<div style={{ minHeight: '52px' }}>`: remove the `minHeight` so the banner sizes to its content; add `marginBottom: '6px'` instead of relying on the chip row's own top padding for spacing.
+
+Also tighten the `NextActionBanner` pill itself. View `src/components/NextActionBanner.tsx`, locate the pill's vertical padding (currently ~18–20px top/bottom), and reduce to `12px` top and bottom. Eyebrow label, card name, and Öppna button stay as-is.
+
+Reduce the spacer below the sticky header (line ~695):
+
+- `<div style={{ height: '12px' }} />` → `<div style={{ height: '8px' }} />`
+
+Inside `CategoryFilterChips`, the chip scroll container has `padding: '8px 24px 8px 4px'`. Reduce to `padding: '4px 24px 4px 4px'` so the chip row contributes less internal vertical padding. (Right padding stays at 24px to give the fade gradient room.)
+
+Net effect: ~20–30px reclaimed in the sticky header on a 390×844 viewport.
+
+---
+
+### What stays exactly the same
+
+- Mount-everything filter pattern, `FilterableCardCell` opacity-only animation, `display: none` after exit via `onAnimationComplete`.
+- Easing `[0.32, 0.72, 0, 1]`, 200ms duration, 30ms stagger.
+- Hero illustration, top scrim, title typography, 2-col grid, `/card/:cardId` routing.
+- Completion border treatment (`inset 0 0 0 1.5px ${SAFFRON_FLAME}`).
+- All ARIA (`aria-pressed`, `aria-live`, `aria-hidden` on filtered tiles, `role="group"`).
+
+### QA on iPhone 15 (390×844)
+
+1. Each card: bottom 25% has subtle darkening that fully clears above; top 75% of illustration unobstructed.
+2. All four primary chips visible without truncation; if a 5th chip exists, it fades into translucent black at the right edge with no color seam against the blur.
+3. Sticky header occupies ≤ ~22% viewport; first card row meaningfully visible above the fold.
+4. Filter toggling, completion border, and hero blur all behave unchanged.
