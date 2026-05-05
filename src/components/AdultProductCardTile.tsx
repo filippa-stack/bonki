@@ -57,8 +57,9 @@ export default function AdultProductCardTile({
         textAlign: 'left',
         backgroundColor: cardColor,
         border: '1px solid rgba(255, 255, 255, 0.10)',
-        boxShadow: '0 8px 24px rgba(0,0,0,0.20), 0 2px 6px rgba(0,0,0,0.08)',
+        boxShadow: '0 0 0 1px rgba(255, 255, 255, 0.06), 0 8px 24px rgba(0,0,0,0.20), 0 2px 6px rgba(0,0,0,0.08)',
         padding: 0,
+        minWidth: 0,
       }}
     >
       {/* Zone A — illustration (65%) */}
