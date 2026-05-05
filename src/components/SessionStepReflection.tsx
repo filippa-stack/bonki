@@ -146,14 +146,21 @@ export default function SessionStepReflection({
   const resolvedCtaLabel = ctaLabel
     ?? (submitting ? 'Sparar…' : isLastStep ? 'Avsluta' : 'Fortsätt');
 
-  // Still Us palette
-  const noteBg = stillUsMode ? EMBER_GLOW : 'hsla(36, 20%, 97%, 0.12)';
-  const noteBgFocused = stillUsMode ? EMBER_GLOW : 'hsla(36, 20%, 97%, 0.12)';
-  const noteTextColor = stillUsMode ? MIDNIGHT_INK : 'var(--text-primary)';
-  const noteBorder = stillUsMode ? `1px solid ${DRIFTWOOD}33` : '1px solid hsla(36, 20%, 80%, 0.18)';
-  const ctaBg = stillUsMode ? DEEP_SAFFRON : 'hsl(41, 78%, 48%)';
-  const ctaTextColor = stillUsMode ? MIDNIGHT_INK : 'hsl(30, 10%, 12%)';
-  const triggerColor = stillUsMode ? 'hsl(38 25% 92%)' : 'var(--text-primary)';
+  // Still Us palette — Midnight Ink shell, warm gold pill CTA
+  const WARM_GOLD = '#E9C890';
+  const LANTERN_GLOW_S = '#FDF6E3';
+  const noteBg = stillUsMode ? 'rgba(253, 246, 227, 0.06)' : 'hsla(36, 20%, 97%, 0.12)';
+  const noteBgFocused = stillUsMode ? 'rgba(253, 246, 227, 0.10)' : 'hsla(36, 20%, 97%, 0.12)';
+  const noteTextColor = stillUsMode ? LANTERN_GLOW_S : 'var(--text-primary)';
+  const noteBorder = stillUsMode ? `1px solid rgba(253, 246, 227, 0.14)` : '1px solid hsla(36, 20%, 80%, 0.18)';
+  const ctaBg = stillUsMode
+    ? `color-mix(in srgb, ${WARM_GOLD} 28%, rgba(255,255,255,0.06))`
+    : 'hsl(41, 78%, 48%)';
+  const ctaBorderColor = stillUsMode
+    ? `color-mix(in srgb, ${WARM_GOLD} 50%, transparent)`
+    : 'transparent';
+  const ctaTextColor = stillUsMode ? LANTERN_GLOW_S : 'hsl(30, 10%, 12%)';
+  const triggerColor = stillUsMode ? LANTERN_GLOW_S : 'var(--text-primary)';
 
   return (
     <motion.div data-sensitive
@@ -197,10 +204,11 @@ export default function SessionStepReflection({
           />
           <span
             style={{
-              fontFamily: 'var(--font-sans)',
+              fontFamily: stillUsMode ? 'var(--font-serif)' : 'var(--font-sans)',
+              fontStyle: stillUsMode ? 'italic' : 'normal',
               fontSize: '14px',
               color: triggerColor,
-              opacity: 0.78,
+              opacity: stillUsMode ? 0.7 : 0.78,
               letterSpacing: '0.01em',
             }}
           >
@@ -340,15 +348,15 @@ export default function SessionStepReflection({
               width: 'auto',
               minWidth: '200px',
               maxWidth: '280px',
-              height: '52px',
-              borderRadius: '14px',
+              height: stillUsMode ? '56px' : '52px',
+              borderRadius: stillUsMode ? '999px' : '14px',
               backgroundColor: ctaBg,
               color: ctaTextColor,
-              fontFamily: 'var(--font-sans)',
-              fontSize: stillUsMode ? '17px' : '15px',
+              fontFamily: stillUsMode ? 'var(--font-display)' : 'var(--font-sans)',
+              fontSize: stillUsMode ? '16px' : '15px',
               fontWeight: 600,
               letterSpacing: '0.01em',
-              border: 'none',
+              border: stillUsMode ? `1px solid ${ctaBorderColor}` : 'none',
               cursor: submitting ? 'default' : 'pointer',
               boxShadow: 'none',
               opacity: submitting ? 0.5 : (hadPriorTextRef.current ? 0.90 : 1),
@@ -371,15 +379,15 @@ export default function SessionStepReflection({
             alignItems: 'center',
             justifyContent: 'center',
             width: '100%',
-            height: '52px',
-            borderRadius: '14px',
+            height: stillUsMode ? '56px' : '52px',
+            borderRadius: stillUsMode ? '999px' : '14px',
             backgroundColor: ctaBg,
             color: ctaTextColor,
-            fontFamily: 'var(--font-sans)',
-            fontSize: stillUsMode ? '17px' : '15px',
+            fontFamily: stillUsMode ? 'var(--font-display)' : 'var(--font-sans)',
+            fontSize: stillUsMode ? '16px' : '15px',
             fontWeight: 600,
             letterSpacing: '0.01em',
-            border: 'none',
+            border: stillUsMode ? `1px solid ${ctaBorderColor}` : 'none',
             cursor: submitting ? 'default' : 'pointer',
             boxShadow: 'none',
             opacity: submitting ? 0.5 : (hadPriorTextRef.current ? 0.90 : 1),

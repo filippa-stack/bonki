@@ -35,6 +35,8 @@ import CardView from "./pages/CardView";
 import CardPreview from "./pages/CardPreview";
 import ProductHome from "./pages/ProductHome";
 import KidsCardPortal from "./pages/KidsCardPortal";
+import AdultCardPortal from "./pages/AdultCardPortal";
+import { useParams } from "react-router-dom";
 import StillUsExplore from "./pages/StillUsExplore";
 
 import SharedSummary from "./pages/SharedSummary";
@@ -69,6 +71,11 @@ import ClaimPage from "./pages/ClaimPage";
 
 const queryClient = new QueryClient();
 
+function PortalDispatch() {
+  const { productSlug } = useParams<{ productSlug: string }>();
+  return productSlug === 'still-us' ? <AdultCardPortal /> : <KidsCardPortal />;
+}
+
 function ProtectedContent() {
   const { loading: spaceLoading } = useCoupleSpaceContext();
   const { loading: sessionLoading } = useNormalizedSessionContext();
@@ -98,7 +105,7 @@ function ProtectedContent() {
             <Route path="/card/:cardId" element={<CardView />} />
             <Route path="/preview/:cardId" element={<CardPreview />} />
             <Route path="/product/:slug" element={<ProductHome />} />
-            <Route path="/product/:productSlug/portal/:categoryId" element={<KidsCardPortal />} />
+            <Route path="/product/:productSlug/portal/:categoryId" element={<PortalDispatch />} />
             <Route path="/saved" element={<Navigate to="/journal" replace />} />
             <Route path="/shared" element={<SharedSummary />} />
             <Route path="/journal" element={<Journal />} />

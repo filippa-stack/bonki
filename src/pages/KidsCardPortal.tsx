@@ -534,26 +534,25 @@ export default function KidsCardPortal() {
                 <h2
                   style={{
                     fontFamily: 'var(--font-display)',
-                    fontSize: '28px',
-                    fontWeight: 400,
+                    fontSize: '26px',
+                    fontWeight: 600,
                     color: LANTERN_GLOW,
-                    letterSpacing: '1.5px',
-                    textTransform: 'uppercase',
+                    letterSpacing: '-0.005em',
                     margin: 0,
+                    lineHeight: 1.2,
                   }}
                 >
                   {card.title}
                 </h2>
                 {allTimeSet.has(card.id) && (
                   <p style={{
-                    fontFamily: 'var(--font-sans)',
-                    fontSize: '11px',
-                    fontWeight: 500,
-                    color: 'var(--text-primary, #FDF6E3)',
-                    opacity: 0.4,
+                    fontFamily: 'var(--font-serif, var(--font-display))',
+                    fontStyle: 'italic',
+                    fontSize: '14px',
+                    color: '#E9B44C',
                     marginTop: '4px',
                   }}>
-                    ✓ Genomfört
+                    ✓ Klart
                   </p>
                 )}
               </div>
@@ -615,26 +614,38 @@ export default function KidsCardPortal() {
             {/* ── Start session button ── */}
             {(() => {
               const isLocked = product && !isFreeCard && !productIsPurchased && !bypassPaywall;
+              const ctaColor = product?.tileLight ?? product?.accentColor ?? LANTERN_GLOW;
+              const ctaBg = isLocked
+                ? 'rgba(255,255,255,0.04)'
+                : `color-mix(in srgb, ${ctaColor} 30%, rgba(255,255,255,0.06))`;
+              const ctaBorder = isLocked
+                ? '1px solid rgba(255,255,255,0.12)'
+                : `1px solid color-mix(in srgb, ${ctaColor} 50%, transparent)`;
+              const ctaLabel = isLocked
+                ? `Lås upp alla ${product.cards.length} samtal`
+                : (allTimeSet.has(card.id) ? 'Gör om samtalet' : 'Starta samtal');
               return (
                 <button
                   onClick={startSession}
                   style={{
-                    display: 'inline-block',
-                    marginTop: '14px',
-                    padding: '16px 64px',
-                    borderRadius: '12px',
-                    border: isLocked ? '0.5px solid rgba(255, 255, 255, 0.12)' : '0.5px solid rgba(255, 255, 255, 0.3)',
-                    background: 'transparent',
+                    display: 'block',
+                    width: '100%',
+                    maxWidth: '420px',
+                    margin: '14px auto 0',
+                    height: '56px',
+                    borderRadius: '999px',
+                    border: ctaBorder,
+                    background: ctaBg,
                     cursor: 'pointer',
-                    fontFamily: 'var(--font-sans)',
-                    fontSize: '15px',
-                    fontWeight: 500,
-                    color: isLocked ? 'rgba(255, 255, 255, 0.5)' : 'rgba(255, 255, 255, 0.85)',
-                    letterSpacing: '0.3px',
+                    fontFamily: 'var(--font-display)',
+                    fontSize: '16px',
+                    fontWeight: 600,
+                    color: LANTERN_GLOW,
+                    letterSpacing: '0.01em',
                     WebkitTapHighlightColor: 'transparent',
                   }}
                 >
-                  {isLocked ? `Lås upp alla ${product.cards.length} samtal` : 'Starta samtal'}
+                  {ctaLabel}
                 </button>
               );
             })()}
@@ -655,72 +666,75 @@ export default function KidsCardPortal() {
             transition: 'opacity 200ms ease-in',
           }}
         >
-          {/* Prev / Next arrows */}
+          {/* Text-only sequence nav */}
           {!isFreeCard && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
-            <button
-              onClick={goPrev}
-              disabled={isFirst}
-              aria-label="Föregående samtal"
-              style={{
-                background: 'transparent',
-                border: '0.5px solid rgba(255, 255, 255, 0.15)',
-                borderRadius: '50%',
-                cursor: isFirst ? 'default' : 'pointer',
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: '1fr auto 1fr',
+              alignItems: 'center',
+              width: '100%',
+              maxWidth: '420px',
+              padding: '0 4px',
+            }}>
+              <button
+                onClick={goPrev}
+                disabled={isFirst}
+                aria-label="Föregående samtal"
+                style={{
+                  background: 'none', border: 'none', textAlign: 'left',
+                  fontFamily: 'var(--font-display)',
+                  fontSize: '14px',
+                  letterSpacing: '0.04em',
+                  color: LANTERN_GLOW,
+                  opacity: isFirst ? 0.35 : 0.65,
+                  cursor: isFirst ? 'default' : 'pointer',
+                  padding: '12px 4px',
+                  minHeight: '44px',
+                }}
+              >
+                Föregående
+              </button>
+              <span style={{
+                fontFamily: 'var(--font-display)',
+                fontSize: '11px',
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
                 color: LANTERN_GLOW,
-                opacity: isFirst ? 0.2 : 0.8,
-                width: '28px',
-                height: '28px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                transition: 'opacity 200ms',
-              }}
-            >
-              <ChevronLeft size={14} strokeWidth={2} />
-            </button>
-            <span
-              style={{
-                fontFamily: 'var(--font-sans)',
-                fontSize: '15px',
-                color: LANTERN_GLOW,
-                opacity: 0.6,
-                minWidth: '48px',
-                textAlign: 'center',
-              }}
-            >
-              {currentIndex + 1} av {categoryCards.length} i {category.title}
-            </span>
-            <button
-              onClick={goNext}
-              disabled={isLast}
-              aria-label="Nästa samtal"
-              style={{
-                background: 'transparent',
-                border: '0.5px solid rgba(255, 255, 255, 0.15)',
-                borderRadius: '50%',
-                cursor: isLast ? 'default' : 'pointer',
-                color: LANTERN_GLOW,
-                opacity: isLast ? 0.2 : 0.8,
-                width: '28px',
-                height: '28px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                transition: 'opacity 200ms',
-              }}
-            >
-              <ChevronRight size={14} strokeWidth={2} />
-            </button>
-          </div>
+                opacity: 0.45,
+                padding: '0 12px',
+                whiteSpace: 'nowrap',
+              }}>
+                {currentIndex + 1} av {categoryCards.length}
+              </span>
+              <button
+                onClick={goNext}
+                disabled={isLast}
+                aria-label="Nästa samtal"
+                style={{
+                  background: 'none', border: 'none', textAlign: 'right',
+                  fontFamily: 'var(--font-display)',
+                  fontSize: '14px',
+                  letterSpacing: '0.04em',
+                  color: LANTERN_GLOW,
+                  opacity: isLast ? 0.35 : 0.65,
+                  cursor: isLast ? 'default' : 'pointer',
+                  padding: '12px 4px',
+                  minHeight: '44px',
+                }}
+              >
+                Nästa
+              </button>
+            </div>
           )}
 
           {/* Free card: product-scoped counter */}
           {isFreeCard && !productIsPurchased && (
             <span
               style={{
-                fontFamily: 'var(--font-sans)',
-                fontSize: '15px',
+                fontFamily: 'var(--font-display)',
+                fontSize: '12px',
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
                 color: LANTERN_GLOW,
                 opacity: 0.6,
                 textAlign: 'center',
@@ -729,32 +743,6 @@ export default function KidsCardPortal() {
               1 av {product.cards.length} samtal i {product.name}
             </span>
           )}
-
-          {/* Browse all */}
-          <button
-            onClick={() => {
-              if (isFreeCard && !productIsPurchased) {
-                localStorage.setItem(`bonki-intro-seen-${product.id}`, '1');
-                navigate(`/product/${product.slug}`);
-              } else {
-                setBrowseOpen(true);
-              }
-            }}
-            style={{
-              background: 'transparent',
-              border: '0.5px solid rgba(255, 255, 255, 0.1)',
-              borderRadius: '12px',
-              cursor: 'pointer',
-              fontFamily: 'var(--font-sans)',
-              fontSize: '12px',
-              fontWeight: 400,
-              color: 'rgba(255, 255, 255, 0.3)',
-              padding: '8px 20px',
-              letterSpacing: '0.3px',
-            }}
-          >
-            {isFreeCard && !productIsPurchased ? `Utforska ${product.name}` : `Fler i ${category.title}`}
-          </button>
         </div>
       </div>
 
