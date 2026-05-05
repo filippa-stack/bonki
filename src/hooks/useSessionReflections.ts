@@ -18,27 +18,48 @@ export interface StepReflection {
 interface UseSessionReflectionsReturn {
   sessionId: string | null;
   loading: boolean;
-  /** Current user's reflection for the active step */
   myReflection: StepReflection | null;
-  /** Current state of the user's reflection */
   state: ReflectionState;
-  /** Update draft text (autosaved) */
   setText: (text: string) => void;
-  /**
-   * Transition draft → ready.
-   * Accepts an explicit text override to avoid stale-ref issues.
-   */
   markReady: (explicitText?: string) => Promise<void>;
 }
 
 const AUTOSAVE_DELAY = 800;
 
 /**
+ * Single source of truth for writing to step_reflections.
+ * All save paths (autosave, reset-flush, markReady, unmount-flush, buffered-flush)
+ * funnel through this helper.
+ */
+async function upsertStepReflection(args: {
+  sessionId: string;
+  stepIndex: number;
+  userId: string;
+  text: string;
+  state: 'draft' | 'ready';
+}) {
+  const { error } = await supabase
+    .from('step_reflections')
+    .upsert(
+      {
+        session_id: args.sessionId,
+        step_index: args.stepIndex,
+        user_id: args.userId,
+        text: args.text,
+        state: args.state as any,
+      },
+      { onConflict: 'session_id,step_index,user_id' }
+    );
+  if (error) throw error;
+}
+
+/**
  * Single-writer reflection hook.
  * One reflection row per (session_id, step_index, user_id).
- * No A/B protocol, no partner gating, no reveal state.
  *
- * State machine: draft → ready  (terminal for this step)
+ * Buffer-and-flush guarantee: writes attempted before sessionId resolves are
+ * stored in pendingWritesRef and flushed when sessionId becomes valid. This
+ * prevents silent data loss on direct deep-link entries to CardView.
  */
 export function useSessionReflections(
   normalizedSessionId: string | null,
@@ -59,13 +80,17 @@ export function useSessionReflections(
   const prevStepIndexRef = useRef(stepIndex);
   const userIdRef = useRef<string | null>(user?.id ?? null);
 
-  // Keep userId ref in sync (user changes independently of step/session)
+  // Buffer for writes attempted before sessionId resolves.
+  // Keyed by stepIndex so rapid typing on the same step overwrites instead of queuing.
+  const pendingWritesRef = useRef<
+    Map<number, { text: string; state: 'draft' | 'ready'; updatedAt: number }>
+  >(new Map());
+  const previousSessionIdRef = useRef<string | null>(null);
+
+  // Keep userId ref in sync
   useEffect(() => { userIdRef.current = user?.id ?? null; }, [user]);
 
   // ─── 1. Reset state when session or step changes ───
-  // IMPORTANT: This effect also updates sessionIdRef and stepIndexRef AFTER flushing.
-  // Do NOT add separate useEffect blocks to sync these refs — that reintroduces
-  // the timing bug where refs update before the flush reads them.
   useEffect(() => {
     // Flush any pending save to the PREVIOUS step/session before resetting
     if (pendingSave.current) {
@@ -76,25 +101,16 @@ export function useSessionReflections(
       const uid = userIdRef.current;
       const si = prevStepIndexRef.current;
       if (text?.trim() && sid && uid) {
-        supabase
-          .from('step_reflections')
-          .upsert(
-            {
-              session_id: sid,
-              step_index: si,
-              user_id: uid,
-              text,
-              state: 'draft' as any,
-            },
-            { onConflict: 'session_id,step_index,user_id' }
-          )
-          .then(({ error }) => {
-            if (error) console.error('Reset flush failed:', error);
-          });
+        upsertStepReflection({
+          sessionId: sid,
+          stepIndex: si,
+          userId: uid,
+          text,
+          state: 'draft',
+        }).catch((err) => console.error('Reset flush failed:', err));
       }
     }
 
-    // Now update refs to the NEW values (after flush used the old ones)
     prevSessionIdRef.current = normalizedSessionId;
     prevStepIndexRef.current = stepIndex;
     if (normalizedSessionId) {
@@ -104,7 +120,6 @@ export function useSessionReflections(
       stepIndexRef.current = stepIndex;
     }
 
-    // Reset local state for the new step/session
     setMyReflection(null);
     setLocalText('');
     localTextRef.current = '';
@@ -145,22 +160,13 @@ export function useSessionReflections(
         setLocalText(data.text);
         localTextRef.current = data.text;
       } else if (sessionId && user.id) {
-        // Create an empty draft row to track prompt visit (fire-and-forget)
-        supabase
-          .from('step_reflections')
-          .upsert(
-            {
-              session_id: sessionId,
-              step_index: stepIndex,
-              user_id: user.id,
-              text: '',
-              state: 'draft' as any,
-            },
-            { onConflict: 'session_id,step_index,user_id' }
-          )
-          .then(({ error }) => {
-            if (error) console.error('Failed to create draft marker:', error);
-          });
+        upsertStepReflection({
+          sessionId,
+          stepIndex,
+          userId: user.id,
+          text: '',
+          state: 'draft',
+        }).catch((err) => console.error('Failed to create draft marker:', err));
       }
       setLoading(false);
     };
@@ -201,6 +207,33 @@ export function useSessionReflections(
     return () => { supabase.removeChannel(channel); };
   }, [sessionId, stepIndex, user, devState]);
 
+  // ─── 3b. Flush buffered writes when sessionId resolves ───
+  useEffect(() => {
+    const prev = previousSessionIdRef.current;
+    const curr = sessionId;
+    previousSessionIdRef.current = curr ?? null;
+
+    if (!prev && curr && pendingWritesRef.current.size > 0 && userIdRef.current) {
+      const uid = userIdRef.current;
+      const entries = Array.from(pendingWritesRef.current.entries());
+      console.log(`[useSessionReflections] flushed ${entries.length} buffered writes`);
+      entries.forEach(async ([stepIdx, entry]) => {
+        try {
+          await upsertStepReflection({
+            sessionId: curr,
+            stepIndex: stepIdx,
+            userId: uid,
+            text: entry.text,
+            state: entry.state,
+          });
+          pendingWritesRef.current.delete(stepIdx);
+        } catch (err) {
+          console.error('[useSessionReflections] flush write failed, will retry', err);
+        }
+      });
+    }
+  }, [sessionId]);
+
   // ─── 4. Autosave draft text ───
   const setText = useCallback((text: string) => {
     setLocalText(text);
@@ -222,26 +255,34 @@ export function useSessionReflections(
     if (pendingSave.current) clearTimeout(pendingSave.current);
 
     pendingSave.current = setTimeout(async () => {
-      
       const sid = sessionIdRef.current;
       const uid = userIdRef.current;
       const si = stepIndexRef.current;
-      if (!uid || !sid) return;
+      if (!uid) return;
 
-      const { error } = await supabase
-        .from('step_reflections')
-        .upsert(
-          {
-            session_id: sid,
-            step_index: si,
-            user_id: uid,
-            text,
-            state: 'draft' as any,
-          },
-          { onConflict: 'session_id,step_index,user_id' }
-        );
+      // Buffer-and-flush: if sessionId hasn't resolved yet, store the write
+      // for replay when it does. Do not silently drop.
+      if (!sid) {
+        pendingWritesRef.current.set(si, {
+          text,
+          state: 'draft',
+          updatedAt: Date.now(),
+        });
+        console.debug('[useSessionReflections] buffered write awaiting sessionId resolution');
+        return;
+      }
 
-      if (error) console.error('Failed to save reflection:', error);
+      try {
+        await upsertStepReflection({
+          sessionId: sid,
+          stepIndex: si,
+          userId: uid,
+          text,
+          state: 'draft',
+        });
+      } catch (err) {
+        console.error('Failed to save reflection:', err);
+      }
     }, AUTOSAVE_DELAY);
   }, []);
 
@@ -249,37 +290,38 @@ export function useSessionReflections(
   const markReady = useCallback(async (explicitText?: string) => {
     if (!user) return;
 
-    // Cancel any pending autosave to prevent draft overwriting ready state
     if (pendingSave.current) {
       clearTimeout(pendingSave.current);
       pendingSave.current = null;
     }
 
-    // Use explicit text if provided, otherwise fall back to ref
     const currentText = explicitText ?? localTextRef.current;
 
-    if (!devState && sessionIdRef.current) {
-      // Skip DB write if text is empty — no point saving an empty reflection
-      if (!currentText.trim()) {
-        return;
-      }
-
-      const { error } = await supabase
-        .from('step_reflections')
-        .upsert(
-          {
-            session_id: sessionIdRef.current,
-            step_index: stepIndex,
-            user_id: user.id,
+    if (!devState) {
+      if (currentText.trim()) {
+        const sid = sessionIdRef.current;
+        if (!sid) {
+          // Buffer the ready-state write; flush effect will replay it.
+          pendingWritesRef.current.set(stepIndex, {
             text: currentText,
-            state: 'ready' as any,
-          },
-          { onConflict: 'session_id,step_index,user_id' }
-        );
-
-      if (error) {
-        console.error('Failed to mark reflection as ready:', error);
-        return;
+            state: 'ready',
+            updatedAt: Date.now(),
+          });
+          console.debug('[useSessionReflections] buffered ready write awaiting sessionId resolution');
+        } else {
+          try {
+            await upsertStepReflection({
+              sessionId: sid,
+              stepIndex,
+              userId: user.id,
+              text: currentText,
+              state: 'ready',
+            });
+          } catch (err) {
+            console.error('Failed to mark reflection as ready:', err);
+            return;
+          }
+        }
       }
     }
 
@@ -298,9 +340,10 @@ export function useSessionReflections(
     );
   }, [user, stepIndex, devState]);
 
-  // Flush pending autosave on unmount (fire-and-forget)
+  // Flush pending autosave + buffered writes on unmount
   useEffect(() => {
     return () => {
+      // Flush in-flight debounced autosave
       if (pendingSave.current) {
         clearTimeout(pendingSave.current);
         pendingSave.current = null;
@@ -309,21 +352,46 @@ export function useSessionReflections(
         const uid = userIdRef.current;
         const si = stepIndexRef.current;
         if (text?.trim() && sid && uid) {
-          supabase
-            .from('step_reflections')
-            .upsert(
-              {
-                session_id: sid,
-                step_index: si,
-                user_id: uid,
-                text,
-                state: 'draft' as any,
-              },
-              { onConflict: 'session_id,step_index,user_id' }
-            )
-            .then(({ error }) => {
-              if (error) console.error('Flush save failed:', error);
-            });
+          upsertStepReflection({
+            sessionId: sid,
+            stepIndex: si,
+            userId: uid,
+            text,
+            state: 'draft',
+          }).catch((err) => console.error('Flush save failed:', err));
+        } else if (text?.trim() && uid && !sid) {
+          // No sessionId yet — buffer it so a future hook instance could in
+          // theory replay it. In practice the buffer dies with the hook, so
+          // we also warn below.
+          pendingWritesRef.current.set(si, {
+            text,
+            state: 'draft',
+            updatedAt: Date.now(),
+          });
+        }
+      }
+
+      // Flush buffered writes that never made it to the DB
+      if (pendingWritesRef.current.size > 0) {
+        const sid = sessionIdRef.current;
+        const uid = userIdRef.current;
+        if (sid && uid) {
+          const entries = Array.from(pendingWritesRef.current.entries());
+          entries.forEach(([stepIdx, entry]) => {
+            upsertStepReflection({
+              sessionId: sid,
+              stepIndex: stepIdx,
+              userId: uid,
+              text: entry.text,
+              state: entry.state,
+            }).catch((err) =>
+              console.error('[useSessionReflections] unmount flush failed', err)
+            );
+          });
+        } else {
+          console.warn(
+            `[useSessionReflections] component unmounting with ${pendingWritesRef.current.size} unflushed writes and no sessionId — data may be lost`
+          );
         }
       }
     };
