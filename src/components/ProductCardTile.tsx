@@ -20,12 +20,14 @@ interface ProductCardTileProps {
   card: Card;
   tileBg: string;
   isCompleted: boolean;
+  productSlug: string;
 }
 
 export default function ProductCardTile({
   card,
   tileBg,
   isCompleted,
+  productSlug,
 }: ProductCardTileProps) {
   const navigate = useNavigate();
   const tileImage = useCardImage(card.id);
@@ -44,7 +46,7 @@ export default function ProductCardTile({
     <button
       type="button"
       className="product-card-tile"
-      onClick={() => navigate(`/card/${card.id}`)}
+      onClick={() => navigate(`/product/${productSlug}/portal/${card.categoryId}?card=${card.id}`)}
       aria-label={card.title}
       style={{
         position: 'relative',
