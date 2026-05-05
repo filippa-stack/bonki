@@ -100,6 +100,7 @@ export default function CategoryFilterChips({
             <button
               key={chip.id}
               type="button"
+              className="category-filter-chip"
               aria-pressed={isSelected}
               onClick={() => handleToggle(chip.id)}
               style={{
@@ -114,7 +115,6 @@ export default function CategoryFilterChips({
                 borderRadius: '999px',
                 padding: '7px 10px',
                 cursor: 'pointer',
-                transition: 'background 120ms ease, border-color 120ms ease',
                 WebkitTapHighlightColor: 'transparent',
               }}
             >
