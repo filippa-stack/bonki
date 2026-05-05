@@ -614,26 +614,38 @@ export default function KidsCardPortal() {
             {/* ── Start session button ── */}
             {(() => {
               const isLocked = product && !isFreeCard && !productIsPurchased && !bypassPaywall;
+              const ctaColor = product?.tileLight ?? product?.accentColor ?? LANTERN_GLOW;
+              const ctaBg = isLocked
+                ? 'rgba(255,255,255,0.04)'
+                : `color-mix(in srgb, ${ctaColor} 30%, rgba(255,255,255,0.06))`;
+              const ctaBorder = isLocked
+                ? '1px solid rgba(255,255,255,0.12)'
+                : `1px solid color-mix(in srgb, ${ctaColor} 50%, transparent)`;
+              const ctaLabel = isLocked
+                ? `Lås upp alla ${product.cards.length} samtal`
+                : (allTimeSet.has(card.id) ? 'Gör om samtalet' : 'Starta samtal');
               return (
                 <button
                   onClick={startSession}
                   style={{
-                    display: 'inline-block',
-                    marginTop: '14px',
-                    padding: '16px 64px',
-                    borderRadius: '12px',
-                    border: isLocked ? '0.5px solid rgba(255, 255, 255, 0.12)' : '0.5px solid rgba(255, 255, 255, 0.3)',
-                    background: 'transparent',
+                    display: 'block',
+                    width: '100%',
+                    maxWidth: '420px',
+                    margin: '14px auto 0',
+                    height: '56px',
+                    borderRadius: '999px',
+                    border: ctaBorder,
+                    background: ctaBg,
                     cursor: 'pointer',
-                    fontFamily: 'var(--font-sans)',
-                    fontSize: '15px',
-                    fontWeight: 500,
-                    color: isLocked ? 'rgba(255, 255, 255, 0.5)' : 'rgba(255, 255, 255, 0.85)',
-                    letterSpacing: '0.3px',
+                    fontFamily: 'var(--font-display)',
+                    fontSize: '16px',
+                    fontWeight: 600,
+                    color: LANTERN_GLOW,
+                    letterSpacing: '0.01em',
                     WebkitTapHighlightColor: 'transparent',
                   }}
                 >
-                  {isLocked ? `Lås upp alla ${product.cards.length} samtal` : 'Starta samtal'}
+                  {ctaLabel}
                 </button>
               );
             })()}
