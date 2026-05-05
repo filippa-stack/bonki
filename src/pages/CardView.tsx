@@ -2950,9 +2950,13 @@ export default function CardView() {
     );
   }
 
+  // Pause routes to the product home (not a portal page). The product home's
+  // resume banner surfaces the paused card with one-tap continuation, while
+  // also giving the user alternative paths (other cards in the product) if
+  // they paused because this card isn't the right one for now. This matches
+  // the emotional contour of pause in Bonki — pause is a step back, not just
+  // a "resume soon" placeholder. Do not route to portal pages from pause exit.
   const exitBackTo = isFromArchive ? '/shared' : (
-    isFreeCard && product ? `/product/${product.slug}` :
-    product && category ? `/product/${product.slug}/portal/${category.id}` :
     product ? `/product/${product.slug}` : '/'
   );
 
