@@ -123,7 +123,7 @@ export default function CategoryFilterChips({
           width: '24px',
           pointerEvents: 'none',
           zIndex: 1,
-          background: 'linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,0.4) 100%)',
+          background: 'linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,0.25) 100%)',
         }}
       />
 

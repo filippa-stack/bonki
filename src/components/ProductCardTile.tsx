@@ -4,14 +4,17 @@
  * Reuses the painterly illustration + bottom scrim + bottom-left serif title
  * pattern from KidsProductHome's CategoryTile. Tap → /card/:cardId.
  *
- * Completed cards: 1.5px saffron INSET border (box-shadow) — sits inside the
- * rounded radius without disturbing layout or being clipped.
+ * Completed cards display a glassy saffron "Klart" pill in the top-right.
+ * The pill fades in (240ms) when transitioning incomplete → complete; on
+ * initial mount with already-completed cards it appears without animation.
  */
 
+import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import type { Card } from '@/types';
 import { useCardImage } from '@/hooks/useCardImage';
-import { SAFFRON_FLAME } from '@/lib/palette';
+import { SAFFRON_FLAME, LANTERN_GLOW } from '@/lib/palette';
 
 interface ProductCardTileProps {
   card: Card;
@@ -27,11 +30,15 @@ export default function ProductCardTile({
   const navigate = useNavigate();
   const tileImage = useCardImage(card.id);
 
-  const baseShadow =
+  // Track first render so already-completed cards don't fade in on mount
+  const isFirstRenderRef = useRef(true);
+  useEffect(() => {
+    isFirstRenderRef.current = false;
+  }, []);
+  const skipPillAnimation = isFirstRenderRef.current && isCompleted;
+
+  const shadow =
     '0 8px 24px rgba(0,0,0,0.12), 0 2px 6px rgba(0,0,0,0.06)';
-  const shadow = isCompleted
-    ? `${baseShadow}, inset 0 0 0 1.5px ${SAFFRON_FLAME}`
-    : baseShadow;
 
   return (
     <button
@@ -123,6 +130,47 @@ export default function ProductCardTile({
           {card.title}
         </span>
       </div>
+
+      {/* Klart completion pill */}
+      {isCompleted && (
+        <motion.div
+          role="status"
+          initial={skipPillAnimation ? false : { opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.24, ease: [0.32, 0.72, 0, 1] }}
+          style={{
+            position: 'absolute',
+            top: 12,
+            right: 12,
+            zIndex: 4,
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 4,
+            padding: '4px 10px',
+            borderRadius: 999,
+            background: `color-mix(in srgb, ${SAFFRON_FLAME} 28%, rgba(255,255,255,0.08))`,
+            border: `1px solid color-mix(in srgb, ${SAFFRON_FLAME} 50%, rgba(255,255,255,0))`,
+            fontFamily: 'var(--font-display)',
+            fontSize: 12,
+            fontStyle: 'italic',
+            fontWeight: 500,
+            color: LANTERN_GLOW,
+            lineHeight: 1,
+            pointerEvents: 'none',
+          }}
+        >
+          <span
+            aria-hidden="true"
+            style={{
+              fontSize: 10,
+              color: `color-mix(in srgb, ${SAFFRON_FLAME} 80%, transparent)`,
+            }}
+          >
+            ✓
+          </span>
+          Klart
+        </motion.div>
+      )}
     </button>
   );
 }
