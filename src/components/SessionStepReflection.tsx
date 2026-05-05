@@ -204,10 +204,11 @@ export default function SessionStepReflection({
           />
           <span
             style={{
-              fontFamily: 'var(--font-sans)',
+              fontFamily: stillUsMode ? 'var(--font-serif)' : 'var(--font-sans)',
+              fontStyle: stillUsMode ? 'italic' : 'normal',
               fontSize: '14px',
               color: triggerColor,
-              opacity: 0.78,
+              opacity: stillUsMode ? 0.7 : 0.78,
               letterSpacing: '0.01em',
             }}
           >
