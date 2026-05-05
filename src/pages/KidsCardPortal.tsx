@@ -546,14 +546,13 @@ export default function KidsCardPortal() {
                 </h2>
                 {allTimeSet.has(card.id) && (
                   <p style={{
-                    fontFamily: 'var(--font-sans)',
-                    fontSize: '11px',
-                    fontWeight: 500,
-                    color: 'var(--text-primary, #FDF6E3)',
-                    opacity: 0.4,
+                    fontFamily: 'var(--font-serif, var(--font-display))',
+                    fontStyle: 'italic',
+                    fontSize: '14px',
+                    color: '#E9B44C',
                     marginTop: '4px',
                   }}>
-                    ✓ Genomfört
+                    ✓ Klart
                   </p>
                 )}
               </div>
