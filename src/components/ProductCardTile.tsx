@@ -20,12 +20,14 @@ interface ProductCardTileProps {
   card: Card;
   tileBg: string;
   isCompleted: boolean;
+  productSlug: string;
 }
 
 export default function ProductCardTile({
   card,
   tileBg,
   isCompleted,
+  productSlug,
 }: ProductCardTileProps) {
   const navigate = useNavigate();
   const tileImage = useCardImage(card.id);
