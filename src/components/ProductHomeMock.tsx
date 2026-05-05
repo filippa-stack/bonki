@@ -236,27 +236,41 @@ export default function ProductHomeMock() {
             <button
               onClick={() => navigate('/library-mock')}
               style={{
+                position: 'relative',
                 width: '100%',
                 display: 'flex',
                 alignItems: 'center',
                 gap: 12,
-                padding: '12px 16px',
+                padding: '12px 16px 12px 20px',
                 background: DEEP_DUSK,
                 border: '0.5px solid rgba(255,255,255,0.06)',
                 borderRadius: 14,
                 color: 'inherit',
                 cursor: 'pointer',
                 textAlign: 'left',
+                overflow: 'hidden',
+                boxShadow: `inset 0 1px 0 rgba(255,255,255,0.06), 0 0 0 1px ${meta.progressColor}1F`,
               }}
             >
+              <span
+                aria-hidden
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  bottom: 0,
+                  left: 0,
+                  width: 4,
+                  background: meta.progressColor,
+                }}
+              />
               <span
                 aria-hidden
                 style={{
                   width: 8,
                   height: 8,
                   borderRadius: '50%',
-                  background: GHOST_GLOW,
-                  boxShadow: `0 0 10px ${GHOST_GLOW}`,
+                  background: meta.progressColor,
+                  boxShadow: `0 0 10px ${meta.progressColor}`,
                   flex: '0 0 auto',
                 }}
               />
@@ -358,17 +372,31 @@ export default function ProductHomeMock() {
                             objectPosition: 'center',
                           }}
                         />
+                        <div
+                          aria-hidden
+                          style={{
+                            position: 'absolute',
+                            left: 0,
+                            right: 0,
+                            bottom: 0,
+                            height: '55%',
+                            background:
+                              'linear-gradient(to top, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.35) 50%, transparent 100%)',
+                            pointerEvents: 'none',
+                          }}
+                        />
                         <h3
                           style={{
                             position: 'absolute',
                             bottom: 14,
                             left: 14,
-                            maxWidth: '75%',
+                            right: 14,
                             fontFamily: 'var(--font-serif)',
-                            fontSize: 18,
-                            fontWeight: 500,
+                            fontSize: 20,
+                            fontWeight: 600,
                             color: '#FFFFFF',
-                            textShadow: '0 1px 14px rgba(0,0,0,0.85)',
+                            textShadow:
+                              '0 1px 2px rgba(0,0,0,0.9), 0 2px 14px rgba(0,0,0,0.7)',
                             margin: 0,
                             lineHeight: 1.15,
                           }}
