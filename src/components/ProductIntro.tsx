@@ -192,19 +192,6 @@ export default function ProductIntro({
 
   const previewLabel = `En fråga ur ${product?.name ?? 'samtalen'}`;
 
-  return (
-    <div
-      style={{
-        backgroundColor: bgColor,
-        height: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
-        overflow: expanded ? 'auto' : 'hidden',
-        position: 'fixed',
-        inset: 0,
-        zIndex: 50,
-      }}
-    >
   const isAdult = isStillUs;
   const accentTint = isAdult ? WARM_GOLD : (productTileColors[productId]?.tileLight ?? WARM_GOLD);
   const stickyBg = isAdult ? DEEP_DUSK_BG : bgColor;
@@ -212,6 +199,7 @@ export default function ProductIntro({
   const paragraphs = fullBodyText.split('\n\n').map(p => p.trim()).filter(Boolean);
   const opening = paragraphs[0];
   const restParagraphs = paragraphs.slice(1);
+
 
   return (
     <div
