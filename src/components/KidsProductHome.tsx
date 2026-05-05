@@ -334,10 +334,7 @@ function CategoryTile({
 /* ── Main Component ── */
 
 export default function KidsProductHome({ product }: { product: ProductManifest }) {
-  const navigate = useNavigate();
-  const { space } = useCoupleSpaceContext();
   const progress = useKidsProductProgress(product);
-  // (per-category preview images removed — cards now load their own via ProductCardTile)
   const hasRenderedContent = useRef(false);
   const [kontoOpen, setKontoOpen] = useState(false);
 
@@ -357,13 +354,9 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
     }
   }, [product.heroImage]);
 
-  // (Removed per-category preview preloading — ProductCardTile loads its own image.)
-
   const bg = product.backgroundColor;
   const tileLight = product.tileLight ?? bg;
-  const isSU = product.slug === 'still-us';
-  
-  const useSquareGrid = true; // 2×2 grid for all products
+  const useSquareGrid = true;
 
 
 
