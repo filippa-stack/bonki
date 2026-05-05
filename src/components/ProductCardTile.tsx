@@ -46,7 +46,7 @@ export default function ProductCardTile({
     <button
       type="button"
       className="product-card-tile"
-      onClick={() => navigate(`/card/${card.id}`)}
+      onClick={() => navigate(`/product/${productSlug}/portal/${card.categoryId}?card=${card.id}`)}
       aria-label={card.title}
       style={{
         position: 'relative',
