@@ -3075,7 +3075,7 @@ export default function CardView() {
         <div style={{
           position: 'fixed',
           inset: 0,
-          backgroundColor: product?.backgroundColor ?? MIDNIGHT_INK_LOCAL,
+          backgroundColor: MIDNIGHT_INK_LOCAL,
           display: 'flex',
           flexDirection: 'column',
           zIndex: 10,
@@ -3084,7 +3084,7 @@ export default function CardView() {
           <div style={{
             flex: '0 0 auto',
             width: '100%',
-            backgroundColor: product?.backgroundColor ?? MIDNIGHT_INK_LOCAL,
+            backgroundColor: MIDNIGHT_INK_LOCAL,
             paddingTop: 'env(safe-area-inset-top, 0px)',
           }}>
             {/* Nav bar — 52px */}
