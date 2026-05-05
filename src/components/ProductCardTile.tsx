@@ -43,6 +43,7 @@ export default function ProductCardTile({
   return (
     <button
       type="button"
+      className="product-card-tile"
       onClick={() => navigate(`/card/${card.id}`)}
       aria-label={card.title}
       style={{
@@ -51,13 +52,11 @@ export default function ProductCardTile({
         width: '100%',
         aspectRatio: '2 / 3',
         borderRadius: '38px',
-        cursor: 'pointer',
         textAlign: 'left',
         backgroundColor: tileBg,
         border: '1px solid rgba(255, 255, 255, 0.18)',
         boxShadow: shadow,
         padding: 0,
-        transition: 'box-shadow 0.3s ease, transform 0.3s ease',
       }}
     >
       {tileImage && (
