@@ -743,25 +743,30 @@ export default function CardView() {
   // ─── Kids session note state ───
   const kidsNoteStepIndex = currentStepIndex * 100 + localPromptIndex;
   const kidsNoteSession = useSessionReflections(
-    isKidsProduct ? (activeSessionId ?? null) : null,
+    isKidsProduct && normalizedSession.sessionId && normalizedSession.cardId === cardId
+      ? normalizedSession.sessionId
+      : null,
     kidsNoteStepIndex
   );
   const [kidsNoteExpanded, setKidsNoteExpanded] = useState(false);
   const [kidsNoteLocalText, setKidsNoteLocalText] = useState('');
 
   // ─── Recovery: re-push typed text when session arrives late ───
-  // Mirrors the null→valid pattern in SessionStepReflection.tsx (lines 93–103).
-  // Without this, notes typed before activeSessionId resolves are silently lost.
-  const prevKidsSessionIdRef = useRef<string | null>(isKidsProduct ? (activeSessionId ?? null) : null);
+  // Sourced from normalizedSession.sessionId (direct RPC output) instead of
+  // activeSessionId, which depends on a chain of effects that may not settle
+  // before the user starts typing.
+  const kidsNoteInputSessionId = isKidsProduct && normalizedSession.sessionId && normalizedSession.cardId === cardId
+    ? normalizedSession.sessionId : null;
+  const prevKidsSessionIdRef = useRef<string | null>(kidsNoteInputSessionId);
   useEffect(() => {
     const wasNull = !prevKidsSessionIdRef.current;
-    const nowValid = !!(isKidsProduct && activeSessionId);
-    prevKidsSessionIdRef.current = isKidsProduct ? (activeSessionId ?? null) : null;
+    const nowValid = !!kidsNoteInputSessionId;
+    prevKidsSessionIdRef.current = kidsNoteInputSessionId;
 
     if (wasNull && nowValid && kidsNoteLocalText.trim()) {
       kidsNoteSession.setText(kidsNoteLocalText);
     }
-  }, [activeSessionId, isKidsProduct]); // kidsNoteLocalText intentionally excluded — only fire on session ID transitions
+  }, [kidsNoteInputSessionId]); // kidsNoteLocalText intentionally excluded — only fire on session ID transitions
   const [kidsNoteSaveIndicator, setKidsNoteSaveIndicator] = useState<'idle' | 'saved'>('idle');
   const kidsNoteInteractedRef = useRef(false);
   const kidsNoteTextareaRef = useRef<HTMLTextAreaElement>(null);
