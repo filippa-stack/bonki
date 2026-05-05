@@ -666,72 +666,75 @@ export default function KidsCardPortal() {
             transition: 'opacity 200ms ease-in',
           }}
         >
-          {/* Prev / Next arrows */}
+          {/* Text-only sequence nav */}
           {!isFreeCard && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
-            <button
-              onClick={goPrev}
-              disabled={isFirst}
-              aria-label="Föregående samtal"
-              style={{
-                background: 'transparent',
-                border: '0.5px solid rgba(255, 255, 255, 0.15)',
-                borderRadius: '50%',
-                cursor: isFirst ? 'default' : 'pointer',
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: '1fr auto 1fr',
+              alignItems: 'center',
+              width: '100%',
+              maxWidth: '420px',
+              padding: '0 4px',
+            }}>
+              <button
+                onClick={goPrev}
+                disabled={isFirst}
+                aria-label="Föregående samtal"
+                style={{
+                  background: 'none', border: 'none', textAlign: 'left',
+                  fontFamily: 'var(--font-display)',
+                  fontSize: '14px',
+                  letterSpacing: '0.04em',
+                  color: LANTERN_GLOW,
+                  opacity: isFirst ? 0.35 : 0.65,
+                  cursor: isFirst ? 'default' : 'pointer',
+                  padding: '12px 4px',
+                  minHeight: '44px',
+                }}
+              >
+                Föregående
+              </button>
+              <span style={{
+                fontFamily: 'var(--font-display)',
+                fontSize: '11px',
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
                 color: LANTERN_GLOW,
-                opacity: isFirst ? 0.2 : 0.8,
-                width: '28px',
-                height: '28px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                transition: 'opacity 200ms',
-              }}
-            >
-              <ChevronLeft size={14} strokeWidth={2} />
-            </button>
-            <span
-              style={{
-                fontFamily: 'var(--font-sans)',
-                fontSize: '15px',
-                color: LANTERN_GLOW,
-                opacity: 0.6,
-                minWidth: '48px',
-                textAlign: 'center',
-              }}
-            >
-              {currentIndex + 1} av {categoryCards.length} i {category.title}
-            </span>
-            <button
-              onClick={goNext}
-              disabled={isLast}
-              aria-label="Nästa samtal"
-              style={{
-                background: 'transparent',
-                border: '0.5px solid rgba(255, 255, 255, 0.15)',
-                borderRadius: '50%',
-                cursor: isLast ? 'default' : 'pointer',
-                color: LANTERN_GLOW,
-                opacity: isLast ? 0.2 : 0.8,
-                width: '28px',
-                height: '28px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                transition: 'opacity 200ms',
-              }}
-            >
-              <ChevronRight size={14} strokeWidth={2} />
-            </button>
-          </div>
+                opacity: 0.45,
+                padding: '0 12px',
+                whiteSpace: 'nowrap',
+              }}>
+                {currentIndex + 1} av {categoryCards.length}
+              </span>
+              <button
+                onClick={goNext}
+                disabled={isLast}
+                aria-label="Nästa samtal"
+                style={{
+                  background: 'none', border: 'none', textAlign: 'right',
+                  fontFamily: 'var(--font-display)',
+                  fontSize: '14px',
+                  letterSpacing: '0.04em',
+                  color: LANTERN_GLOW,
+                  opacity: isLast ? 0.35 : 0.65,
+                  cursor: isLast ? 'default' : 'pointer',
+                  padding: '12px 4px',
+                  minHeight: '44px',
+                }}
+              >
+                Nästa
+              </button>
+            </div>
           )}
 
           {/* Free card: product-scoped counter */}
           {isFreeCard && !productIsPurchased && (
             <span
               style={{
-                fontFamily: 'var(--font-sans)',
-                fontSize: '15px',
+                fontFamily: 'var(--font-display)',
+                fontSize: '12px',
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
                 color: LANTERN_GLOW,
                 opacity: 0.6,
                 textAlign: 'center',
@@ -740,32 +743,6 @@ export default function KidsCardPortal() {
               1 av {product.cards.length} samtal i {product.name}
             </span>
           )}
-
-          {/* Browse all */}
-          <button
-            onClick={() => {
-              if (isFreeCard && !productIsPurchased) {
-                localStorage.setItem(`bonki-intro-seen-${product.id}`, '1');
-                navigate(`/product/${product.slug}`);
-              } else {
-                setBrowseOpen(true);
-              }
-            }}
-            style={{
-              background: 'transparent',
-              border: '0.5px solid rgba(255, 255, 255, 0.1)',
-              borderRadius: '12px',
-              cursor: 'pointer',
-              fontFamily: 'var(--font-sans)',
-              fontSize: '12px',
-              fontWeight: 400,
-              color: 'rgba(255, 255, 255, 0.3)',
-              padding: '8px 20px',
-              letterSpacing: '0.3px',
-            }}
-          >
-            {isFreeCard && !productIsPurchased ? `Utforska ${product.name}` : `Fler i ${category.title}`}
-          </button>
         </div>
       </div>
 
