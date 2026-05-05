@@ -1,26 +1,29 @@
 /**
- * CategoryFilterChips — horizontal multi-select pill row for product home.
+ * CategoryFilterChips — typographic section-nav row for product home filters.
  *
- * "Alla" is exclusive: tapping a category clears 'all' and adds the category.
- * Toggling all categories off snaps back to {'all'}. Tapping "Alla" resets.
+ * Visual: plain text labels, no pills/borders/backgrounds. Selection is
+ * signaled by a single 2px underline that slides between labels on change.
  *
- * Visual: glassy pill tinted with the product's accent color via color-mix.
- * Selected: more opaque tint + 1px tinted border. No new color tokens.
+ * Behavior is unchanged from the previous pill version: "Alla" is exclusive,
+ * multi-select within categories, snap back to {'all'} when emptied.
  */
 
-import { useEffect, useRef } from 'react';
-import { LANTERN_GLOW } from '@/lib/palette';
+import { useEffect, useLayoutEffect, useRef, useState, useMemo } from 'react';
+import { motion } from 'framer-motion';
+import { LANTERN_GLOW, BONKI_ORANGE } from '@/lib/palette';
 
 interface CategoryFilterChipsProps {
   categories: { id: string; title: string }[];
   selected: Set<string>;
   onChange: (next: Set<string>) => void;
-  /** Product accent hex (e.g. tileLight) used to tint the chips */
-  accentHex: string;
+  /** @deprecated Retained for call-site compatibility; no longer used. */
+  accentHex?: string;
   /** Number of cards currently visible — used for the aria-live announcement */
   totalVisible: number;
-  /** Visual variant — 'adult' uses outline-only unselected chips */
+  /** @deprecated Retained for call-site compatibility; no longer used. */
   variant?: 'kids' | 'adult';
+  /** Color of the sliding underline. Defaults to BONKI_ORANGE. */
+  underlineColor?: string;
 }
 
 export const ALL_FILTER_KEY = 'all';
@@ -29,11 +32,67 @@ export default function CategoryFilterChips({
   categories,
   selected,
   onChange,
-  accentHex,
   totalVisible,
-  variant = 'kids',
+  underlineColor = BONKI_ORANGE,
 }: CategoryFilterChipsProps) {
   const liveRef = useRef<HTMLDivElement | null>(null);
+  const rowRef = useRef<HTMLDivElement | null>(null);
+  const labelRefs = useRef<Record<string, HTMLButtonElement | null>>({});
+  const hasMountedRef = useRef(false);
+
+  const chips = useMemo(
+    () => [
+      { id: ALL_FILTER_KEY, title: 'Alla' },
+      ...categories.map((c) => ({ id: c.id, title: c.title })),
+    ],
+    [categories],
+  );
+
+  // The underline tracks the first selected chip in display order. If "Alla"
+  // is selected it always wins (it's the first chip and is exclusive).
+  const activeId = useMemo(() => {
+    if (selected.has(ALL_FILTER_KEY)) return ALL_FILTER_KEY;
+    const first = chips.find((c) => selected.has(c.id));
+    return first?.id ?? ALL_FILTER_KEY;
+  }, [selected, chips]);
+
+  const [pos, setPos] = useState<{ left: number; width: number } | null>(null);
+
+  const measure = () => {
+    const el = labelRefs.current[activeId];
+    if (!el) return;
+    setPos({ left: el.offsetLeft, width: el.offsetWidth });
+  };
+
+  useLayoutEffect(() => {
+    measure();
+    // After first synchronous measurement, future updates can animate.
+    // Using rAF so motion picks up the new value as an animation target.
+    const id = requestAnimationFrame(() => {
+      hasMountedRef.current = true;
+    });
+    return () => cancelAnimationFrame(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeId]);
+
+  // Re-measure on container resize (rotate, font load, viewport change).
+  useEffect(() => {
+    if (!rowRef.current) return;
+    const ro = new ResizeObserver(() => measure());
+    ro.observe(rowRef.current);
+    Object.values(labelRefs.current).forEach((el) => el && ro.observe(el));
+    return () => ro.disconnect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [chips.length]);
+
+  // Re-measure once webfonts finish loading (label widths can shift).
+  useEffect(() => {
+    const fonts = (document as any).fonts;
+    if (fonts?.ready) {
+      fonts.ready.then(() => measure()).catch(() => {});
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Announce filter state to screen readers
   useEffect(() => {
@@ -59,81 +118,88 @@ export default function CategoryFilterChips({
     else onChange(next);
   };
 
-  const chips = [
-    { id: ALL_FILTER_KEY, title: 'Alla' },
-    ...categories.map((c) => ({ id: c.id, title: c.title })),
-  ];
-
-  // Right-edge fade is implemented as an alpha mask on the scroll container
-  // itself — the chip pixels fade to transparent at the edge. A previous
-  // approach used an absolute overlay div with a black-tinted gradient
-  // (`linear-gradient(to right, transparent, rgba(0,0,0,0.35))`) painted on
-  // top of the chips at zIndex 1; against bright pixels in the hero
-  // illustration that overlay read as a dark rectangular plate. Do not
-  // re-introduce a black-on-content overlay — use the mask approach below.
   const fadeMask =
     'linear-gradient(to right, black 0, black calc(100% - 40px), transparent 100%)';
 
   return (
-    <div style={{ position: 'relative' }}>
+    <div role="group" aria-label="Filtrera samtal efter kategori" style={{ position: 'relative' }}>
       <div
-        role="group"
-        aria-label="Filtrera samtal efter kategori"
         style={{
-          display: 'flex',
-          gap: '8px',
           overflowX: 'auto',
           overflowY: 'hidden',
           WebkitOverflowScrolling: 'touch',
-          padding: '4px 24px 4px 4px',
           scrollbarWidth: 'none',
           maskImage: fadeMask,
           WebkitMaskImage: fadeMask,
+          paddingRight: '24px',
         }}
       >
-        {chips.map((chip) => {
-          const isSelected = selected.has(chip.id);
-          const isAdult = variant === 'adult';
-          const bg = isAdult
-            ? (isSelected
-                ? `color-mix(in srgb, ${accentHex} 30%, rgba(255,255,255,0.06))`
-                : 'transparent')
-            : (isSelected
-                ? `color-mix(in srgb, ${accentHex} 28%, rgba(255,255,255,0.06))`
-                : `color-mix(in srgb, ${accentHex} 14%, rgba(255,255,255,0.06))`);
-          const border = isAdult
-            ? (isSelected
-                ? `1px solid color-mix(in srgb, ${accentHex} 55%, transparent)`
-                : `1px solid color-mix(in srgb, ${accentHex} 25%, rgba(255,255,255,0.10))`)
-            : (isSelected
-                ? `1px solid color-mix(in srgb, ${accentHex} 55%, rgba(255,255,255,0.18))`
-                : `1px solid color-mix(in srgb, ${accentHex} 25%, rgba(255,255,255,0.12))`);
-          return (
-            <button
-              key={chip.id}
-              type="button"
-              className="category-filter-chip"
-              aria-pressed={isSelected}
-              onClick={() => handleToggle(chip.id)}
+        <div
+          ref={rowRef}
+          style={{
+            position: 'relative',
+            display: 'inline-flex',
+            alignItems: 'flex-end',
+            gap: '24px',
+            padding: '12px 4px 16px',
+            whiteSpace: 'nowrap',
+          }}
+        >
+          {chips.map((chip) => {
+            const isSelected = selected.has(chip.id);
+            return (
+              <button
+                key={chip.id}
+                ref={(el) => {
+                  labelRefs.current[chip.id] = el;
+                }}
+                type="button"
+                aria-pressed={isSelected}
+                onClick={() => handleToggle(chip.id)}
+                style={{
+                  flex: '0 0 auto',
+                  background: 'transparent',
+                  border: 0,
+                  padding: '2px 0',
+                  margin: 0,
+                  cursor: 'pointer',
+                  fontFamily: 'var(--font-display)',
+                  fontSize: '14px',
+                  fontWeight: 500,
+                  letterSpacing: '0.02em',
+                  color: LANTERN_GLOW,
+                  opacity: isSelected ? 1 : 0.65,
+                  WebkitTapHighlightColor: 'transparent',
+                  outlineOffset: '4px',
+                  transition: 'opacity 180ms ease-out',
+                }}
+              >
+                {chip.title}
+              </button>
+            );
+          })}
+
+          {pos && (
+            <motion.div
+              aria-hidden="true"
+              initial={false}
+              animate={{ left: pos.left, width: pos.width }}
+              transition={
+                hasMountedRef.current
+                  ? { duration: 0.22, ease: [0.32, 0.72, 0, 1] }
+                  : { duration: 0 }
+              }
               style={{
-                flex: '0 0 auto',
-                whiteSpace: 'nowrap',
-                fontFamily: 'var(--font-display)',
-                fontSize: '13px',
-                fontWeight: 500,
-                color: LANTERN_GLOW,
-                background: bg,
-                border,
-                borderRadius: '999px',
-                padding: '7px 10px',
-                cursor: 'pointer',
-                WebkitTapHighlightColor: 'transparent',
+                position: 'absolute',
+                bottom: '10px',
+                height: '2px',
+                borderRadius: '1px',
+                background: underlineColor,
+                pointerEvents: 'none',
               }}
-            >
-              {chip.title}
-            </button>
-          );
-        })}
+            />
+          )}
+        </div>
       </div>
 
       {/* Visually hidden live region */}
