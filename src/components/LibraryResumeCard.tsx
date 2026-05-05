@@ -261,15 +261,15 @@ export default function LibraryResumeCard({ activeTab, global, forceMock }: Libr
         overflow: 'hidden',
       }}
     >
-      {/* Ghost-glow dot — quiet active-session signal */}
+      {/* Accent dot — tinted to active product's signature color */}
       <span
         aria-hidden="true"
         style={{
           width: '8px',
           height: '8px',
           borderRadius: '50%',
-          background: '#D4F5C0',
-          boxShadow: '0 0 8px rgba(212, 245, 192, 0.5)',
+          background: accent,
+          boxShadow: `0 0 8px ${accentRgba(0.5)}`,
           flexShrink: 0,
           display: 'inline-block',
         }}
