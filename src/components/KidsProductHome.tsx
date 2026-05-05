@@ -337,7 +337,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
   const navigate = useNavigate();
   const { space } = useCoupleSpaceContext();
   const progress = useKidsProductProgress(product);
-  const tileImages = useFirstCardImages(product, progress);
+  // (per-category preview images removed — cards now load their own via ProductCardTile)
   const hasRenderedContent = useRef(false);
   const [kontoOpen, setKontoOpen] = useState(false);
 
@@ -357,14 +357,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
     }
   }, [product.heroImage]);
 
-  // Preload first portal card image per category for flicker-free entry
-  useEffect(() => {
-    tileImages.forEach((src) => {
-      if (!src) return;
-      const img = new Image();
-      img.src = src;
-    });
-  }, [tileImages]);
+  // (Removed per-category preview preloading — ProductCardTile loads its own image.)
 
   const bg = product.backgroundColor;
   const tileLight = product.tileLight ?? bg;
