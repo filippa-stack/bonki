@@ -210,14 +210,14 @@ export default function AdultProductHome({ product }: { product: ProductManifest
               fontStyle: 'italic',
               color: LANTERN_GLOW,
               opacity: 0.85,
-              marginTop: '8px',
+              marginTop: '6px',
               letterSpacing: '0.03em',
               textShadow: '0 1px 3px rgba(0,0,0,0.9), 0 2px 8px rgba(0,0,0,0.7)',
             }}
           >
             {product.cards.length} samtal om {product.tagline.toLowerCase().replace(/\.$/, '')}.
           </p>
-          <div style={{ height: 'clamp(28px, 7vh, 60px)' }} />
+          <div style={{ height: 'clamp(16px, 4.5vh, 40px)' }} />
         </div>
 
         <StickyFilterHeader product={adultProduct} progress={progress} accent={accent} />
