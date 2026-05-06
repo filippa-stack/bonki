@@ -64,11 +64,6 @@ function PortalCardImage({ cardId, children }: { cardId: string; children: (src:
   return <>{children(src)}</>;
 }
 
-function PortalCardImage({ cardId, children }: { cardId: string; children: (src: string | null) => React.ReactNode }) {
-  const src = useCardImage(cardId);
-  return <>{children(src)}</>;
-}
-
 export default function AdultCardPortal() {
   const { productSlug, categoryId } = useParams<{ productSlug: string; categoryId: string }>();
   const navigate = useNavigate();
