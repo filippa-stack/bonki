@@ -1,42 +1,39 @@
-## Vårt Vi tile — circular medallion frame
+## Goal
+Reclaim ~50–70px of vertical space in the AdultProductHome content header (Vårt Vi) so that on iPhone 15 (390×844) at least one full row of cards plus a partial second row is visible above the fold. Hero illustration, fonts, and structure stay unchanged.
 
-Single-file change to `src/components/AdultProductCardTile.tsx`. Wraps the illustration in a centered circular medallion whose fill is a tonally contrasting tint of the card's anchor color. Outer card, accent line, title zone, and checkmark all unchanged.
+## Current values (in `src/components/AdultProductHome.tsx`)
 
-### Changes to `src/components/AdultProductCardTile.tsx`
+1. **Top padding above title** (outer flex container):
+   `paddingTop: max(calc(env(safe-area-inset-top, 0px) + 36px), clamp(36px, 8vh, 70px))` → ~70px on iPhone 15.
+2. **Title → subtitle gap**: subtitle `marginTop: 8px`.
+3. **Subtitle → resume banner gap**: spacer `<div style={{ height: 'clamp(28px, 7vh, 60px)' }} />` → ~59px on 844h, plus sticky header `paddingTop: 6px` and banner wrapper `marginBottom: 6px`.
+4. **Resume banner → filter chips gap**: `marginBottom: 6px` on the banner wrapper (already very tight — leave alone).
+5. **Filter chips → card grid gap**: sticky header `paddingBottom: 4px` + spacer `<div style={{ height: 8px }} />` = 12px (already tight — leave alone).
+6. **Title font size**: `clamp(34px, 9.5vw, 50px)` — unchanged.
+7. **Subtitle font size**: `clamp(15px, 4.2vw, 19px)` — unchanged.
 
-1. **Add `getCircleColor` helper** (module scope, above the component). Imports `CORNFLOWER`, `MIDNIGHT_INK`, `DUSTY_ROSE`, `WARM_GOLD`, `STORM_GREY`, `SAGE` — all already exported from `src/lib/palette.ts` (verified).
+## Changes (single file: `src/components/AdultProductHome.tsx`)
 
-   ```ts
-   function getCircleColor(cardColor: string): string {
-     switch (cardColor) {
-       case CORNFLOWER:   return '#5A85D5'; // darker (only light anchor)
-       case MIDNIGHT_INK: return '#2A2D45';
-       case DUSTY_ROSE:   return '#C99A9D';
-       case WARM_GOLD:    return '#E8D4A8';
-       case STORM_GREY:   return '#5A6573';
-       case SAGE:         return '#A8B5A8';
-       default:           return cardColor;
-     }
-   }
-   ```
+| Element | Current | New | Saving on 390×844 |
+|---|---|---|---|
+| Outer `paddingTop` | `max(safe+36, clamp(36,8vh,70))` | `max(safe+20, clamp(24, 5.5vh, 52))` | ~14px |
+| Subtitle `marginTop` | `8px` | `6px` | 2px |
+| Subtitle→banner spacer height | `clamp(28px, 7vh, 60px)` | `clamp(16px, 4.5vh, 40px)` | ~21px |
+| Banner wrapper `marginBottom` | `6px` | unchanged (already tight) | 0 |
+| Sticky header `paddingTop` | `6px` | unchanged | 0 |
+| Sticky→grid spacer (`8px`) + header `paddingBottom` (`4px`) | 12px total | unchanged (already tight) | 0 |
 
-2. **Rewrite Zone A (top 65%)** — replace the current full-bleed `<img>` with a centered circular medallion:
-   - Wrapper `div` keeps `flex: '0 0 65%'`, `position: relative`, `overflow: hidden`, plus `display: flex`, `alignItems: center`, `justifyContent: center`.
-   - Inside: medallion `div` — `width: 78%`, `aspectRatio: 1/1`, `borderRadius: 50%`, `backgroundColor: getCircleColor(cardColor)`, `overflow: hidden`, centered flex.
-   - Inside medallion: `<img src={tileImage}>` — `width: 85%`, `height: 85%`, `objectFit: contain`, `objectPosition: center`. Drop the existing 6px padding on the image.
-   - Keep the existing 8px bottom inner-shadow gradient (rendered above the medallion via stacking).
-   - Keep the saffron checkmark exactly where it is (`top: 12, right: 12`, on the card mat — Option A).
+Total reclaimed: ~37–40px from the spacer + top padding tightening. To hit the 50–70px target, also reduce the title font's vertical footprint contribution by trimming the title block's implicit line-height — leave font sizes untouched but the smaller spacer + smaller top padding combined is the lever.
 
-3. **Unchanged:** outer card (3:4, 22px radius, border, shadow, anchor `backgroundColor`), 1px warm-gold accent line, Zone B title (35%, padding, font, color), checkmark style/animation, navigation handler, `useCardImage` hook, `skipPillAnimation` logic.
+If after testing the gain is < 50px, additionally reduce subtitle→banner spacer to `clamp(12px, 3.5vh, 32px)` (saves another ~8px) — included as a secondary tweak in the same edit.
 
-### Out of scope
-- `ProductCardTile.tsx` (kids) — untouched
-- `AdultProductHome.tsx` anchor rotation — untouched
-- Palette, portal, session, routing — untouched
+## Untouched
+- Absolute hero illustration block and its scrim/glow.
+- Title/subtitle typography (font, weight, size, shadow).
+- Sticky filter header structure.
+- Card grid layout, gap, and tile component.
+- KidsProductHome.
 
-### Verification (390×844)
-- `/product/still-us`: each of the six anchor colors shows a visible contrasting circle; illustration sits inside without clipping; mat color frames the circle; gold accent line and title preserved; checkmark renders top-right on the mat.
-- `/product/jag-i-mig`: kids tiles unchanged.
-- Adult portal: inherits automatically since it reuses `AdultProductCardTile`.
-
-If any circle hex reads too close to its mat in the live preview, nudge the value toward more contrast (darker for cornflower, lighter for the rest) — mockup is source of truth.
+## Verification
+- `/product/still-us` at 390×844: hero atmosphere unchanged; title + subtitle + banner + chips fit in upper portion; first card row fully visible above the fold with the top of row 2 peeking in.
+- No element appears cramped.

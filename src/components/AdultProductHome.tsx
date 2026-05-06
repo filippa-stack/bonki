@@ -179,7 +179,7 @@ export default function AdultProductHome({ product }: { product: ProductManifest
           zIndex: 1,
           display: 'flex',
           flexDirection: 'column',
-          paddingTop: 'max(calc(env(safe-area-inset-top, 0px) + 36px), clamp(36px, 8vh, 70px))',
+          paddingTop: 'max(calc(env(safe-area-inset-top, 0px) + 20px), clamp(24px, 5.5vh, 52px))',
           paddingRight: '16px',
           paddingBottom: 'calc(56px + env(safe-area-inset-bottom, 0px))',
           paddingLeft: '16px',
