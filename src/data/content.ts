@@ -448,27 +448,6 @@ export const cards: Card[] = [
       },
     ],
   },
-  // ── Card 19 · Valet ───────────────────────────────────
-  {
-    id: 'choosing-to-stay',
-    title: 'Att fortsätta välja',
-    subtitle: 'Att aktivt prioritera relationen',
-    categoryId: 'category-10',
-    sections: [
-      {
-        id: 'opening-choosing-to-stay',
-        type: 'opening',
-        title: 'Frågor',
-        content: '',
-        prompts: [
-          'Vad fick dig att välja din partner från början — och vad är det som får dig att välja igen idag?',
-          'Vad har förändrats i hur du ser på er relation sedan ni började med de här samtalen?',
-          'Hur ser det ut att välja relationen när det inte finns någon kris — utan att något tvingar fram ett val?',
-          'Relationen fungerar. Inget är trasigt. Men ibland finns en tyst insikt: att man kan lämna — även utan konflikt.\n\nVad gör den insikten med er — är det den som gör valet verkligt, eller är den skrämmande?',
-        ],
-      },
-    ],
-  },
 ];
 
 export function getCardsByCategory(categoryId: string): Card[] {
