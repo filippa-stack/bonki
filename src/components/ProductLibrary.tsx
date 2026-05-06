@@ -666,7 +666,7 @@ export default function ProductLibrary() {
               opacity: 0.55,
               marginBottom: '20px',
             }}>
-              Par
+              Ni som par
             </p>
             <PastelTile
               name="Vårt Vi"
