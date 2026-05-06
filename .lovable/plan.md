@@ -1,11 +1,20 @@
-# Remove kids tile bottom scrim
+# Kids product home: flat Midnight Ink page
 
-## Edit: `src/components/ProductCardTile.tsx`
+## Edit: `src/components/KidsProductHome.tsx`
 
-Delete the scrim element at lines 88–101 (the `{/* Bottom scrim — inset to match the 16px frame */}` block and the `<div>` immediately following it). Nothing else changes.
+Replace the gradient root container with a flat Midnight Ink background:
 
-Title's `textShadow` already provides legibility — kept as-is. Illustration container, title block, completion checkmark, press state, outer shape all unchanged. `AdultProductCardTile.tsx` not touched.
+```tsx
+<div
+  className="min-h-screen relative overflow-x-hidden"
+  style={{ backgroundColor: MIDNIGHT_INK }}
+>
+```
+
+The hero illustration, atmospheric radial glow, sticky header, tiles, and all other styling stay exactly as-is. The atmospheric glow uses `tileLight` per product at low opacity (15–35%); against Midnight Ink it remains perceptible for every product so no tint adjustment is needed.
+
+`AdultProductHome.tsx` not touched.
 
 ## Verification (390×844)
 
-Open `/product/jag-i-mig` and other kids product homes — no darkening band at card bottoms; per-product color frame reads as a clean continuous matte; titles remain legible from text-shadow alone.
+All kids product homes (`/product/jag-i-mig`, `/product/jag-med-andra`, `/product/jag-i-varlden`, `/product/vardagskort`, `/product/syskonkort`, `/product/sexualitetskort`): page is uniformly Midnight Ink top to bottom; hero illustration and glow unchanged; tile accent colors pop. `/product/still-us` unchanged.

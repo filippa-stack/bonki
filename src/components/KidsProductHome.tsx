@@ -373,10 +373,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
   return (
     <div
       className="min-h-screen relative overflow-x-hidden"
-      style={{
-        backgroundColor: MIDNIGHT_INK,
-        backgroundImage: `linear-gradient(to bottom, ${bg} 0%, ${bg} 35%, ${MIDNIGHT_INK} 60%, ${MIDNIGHT_INK} 100%)`,
-      }}
+      style={{ backgroundColor: MIDNIGHT_INK }}
     >
       <ProductHomeBackButton color={LANTERN_GLOW} />
       <KontoIcon onClick={() => setKontoOpen(true)} />
