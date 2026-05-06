@@ -93,7 +93,7 @@ export default function PreAuthIntroSlide1({ onContinue }: PreAuthIntroSlide1Pro
           maxWidth: 360,
         }}
       >
-        {/* Bar indicator: two 18×2 segments */}
+        {/* Three-dot pagination — first dot active */}
         <div
           aria-hidden="true"
           style={{
@@ -102,24 +102,18 @@ export default function PreAuthIntroSlide1({ onContinue }: PreAuthIntroSlide1Pro
             alignItems: 'center',
           }}
         >
-          <span
-            style={{
-              width: 18,
-              height: 2,
-              borderRadius: 2,
-              background: ORANGE,
-              display: 'block',
-            }}
-          />
-          <span
-            style={{
-              width: 18,
-              height: 2,
-              borderRadius: 2,
-              background: CREAM_DIM,
-              display: 'block',
-            }}
-          />
+          {[0, 1, 2].map((i) => (
+            <span
+              key={i}
+              style={{
+                width: 6,
+                height: 6,
+                borderRadius: '50%',
+                background: i === 0 ? ORANGE : 'rgba(253,246,227,0.20)',
+                display: 'block',
+              }}
+            />
+          ))}
         </div>
 
         {/* Filled Bonki Orange CTA */}
