@@ -435,9 +435,10 @@ export default function AdultCardPortal() {
       {/* ── Sticky CTA bar ── */}
       <div style={{
         position: 'fixed',
-        left: 0, right: 0, bottom: 0,
-        zIndex: 20,
-        padding: `16px 20px calc(16px + env(safe-area-inset-bottom, 0px))`,
+        left: 0, right: 0,
+        bottom: 'calc(56px + env(safe-area-inset-bottom, 0px))',
+        zIndex: 30,
+        padding: '16px 20px',
         background: `linear-gradient(to top, ${DEEP_DUSK_BG} 0%, color-mix(in srgb, ${DEEP_DUSK_BG} 92%, transparent) 60%, transparent 100%)`,
         backdropFilter: 'blur(12px)',
         WebkitBackdropFilter: 'blur(12px)',
