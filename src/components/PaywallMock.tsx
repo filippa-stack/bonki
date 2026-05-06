@@ -58,7 +58,7 @@ const NEXT_CARD_TITLE: Record<string, string> = {
   still_us: 'Det vi inte sa',
 };
 
-/** Products where the single-line CTA "Fortsätt med {name} — 195 kr" is too wide at 14px. */
+/** Products where the single-line CTA "Fortsätt med {name} — 199 kr" is too wide at 14px. */
 const CTA_TWO_LINE: Record<string, boolean> = {
   jag_med_andra: true,
   jag_i_varlden: true,
