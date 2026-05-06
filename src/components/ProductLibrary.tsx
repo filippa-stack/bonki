@@ -448,7 +448,7 @@ export default function ProductLibrary() {
           zIndex: 0,
         }} />
 
-        {/* Mid-zone warmth — Deep Navy bleed behind Par section */}
+        {/* Mid-zone warmth — Deep Navy bleed behind Ni som par section */}
         <div style={{
           position: 'absolute',
           top: '350px',
@@ -491,7 +491,7 @@ export default function ProductLibrary() {
       <div style={{ position: 'relative', zIndex: 1 }}>
         <KontoIcon onClick={() => setKontoOpen(true)} />
         <KontoSheet open={kontoOpen} onClose={() => setKontoOpen(false)} />
-        {/* Resume card — product-colored, above Par */}
+        {/* Resume card — product-colored, above Ni som par */}
         <div className="px-5" style={{ marginBottom: '8px', paddingTop: 'calc(env(safe-area-inset-top, 0px) + 56px)' }}>
           <LibraryResumeCard global />
         </div>
@@ -666,7 +666,7 @@ export default function ProductLibrary() {
               opacity: 0.55,
               marginBottom: '20px',
             }}>
-              Par
+              Ni som par
             </p>
             <PastelTile
               name="Vårt Vi"
@@ -716,7 +716,7 @@ export default function ProductLibrary() {
 
         <div className="px-5" style={{ scrollMarginTop: '8px' }}>
           {/* Free-trial mention removed — now shown per-tile */}
-          {/* Resume card moved above Par */}
+          {/* Resume card moved above Ni som par */}
           <div style={{ height: '0px' }} />
           <motion.div
             variants={containerVariants}
