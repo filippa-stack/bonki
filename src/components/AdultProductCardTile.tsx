@@ -114,8 +114,8 @@ export default function AdultProductCardTile({
               top: 12,
               right: 12,
               zIndex: 4,
-              width: 18,
-              height: 18,
+              width: 16,
+              height: 16,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -123,17 +123,17 @@ export default function AdultProductCardTile({
             }}
           >
             <svg
-              width="18"
-              height="18"
+              width="16"
+              height="16"
               viewBox="0 0 18 18"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
-              style={{ filter: 'drop-shadow(0 1px 2px rgba(0, 0, 0, 0.5))' }}
+              style={{ filter: 'drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3))' }}
             >
               <path
                 d="M3.5 9.5 L7.5 13.5 L14.5 5.5"
                 stroke={SAFFRON_FLAME}
-                strokeWidth="2.5"
+                strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />

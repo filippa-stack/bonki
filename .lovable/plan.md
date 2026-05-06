@@ -1,20 +1,26 @@
-# Kids product home: flat Midnight Ink page
+# Kids tile + nav refinements
 
-## Edit: `src/components/KidsProductHome.tsx`
+Three small edits across three files. No structural change.
 
-Replace the gradient root container with a flat Midnight Ink background:
+## 1. `src/components/ProductCardTile.tsx`
 
-```tsx
-<div
-  className="min-h-screen relative overflow-x-hidden"
-  style={{ backgroundColor: MIDNIGHT_INK }}
->
-```
+- Line 103: title `fontSize: '16px'` → `'18px'`.
+- Checkmark block (lines ~129–152):
+  - Container `width/height: 18` → `16`.
+  - SVG `width="18" height="18"` → `width="16" height="16"` (keep `viewBox="0 0 18 18"`).
+  - SVG filter drop-shadow alpha `0.5` → `0.3`.
+  - Path `strokeWidth="2.5"` → `"2"`.
+  - `stroke={SAFFRON_FLAME}` unchanged. Position (`top: 16, right: 16`) and animation unchanged.
 
-The hero illustration, atmospheric radial glow, sticky header, tiles, and all other styling stay exactly as-is. The atmospheric glow uses `tileLight` per product at low opacity (15–35%); against Midnight Ink it remains perceptible for every product so no tint adjustment is needed.
+## 2. `src/components/AdultProductCardTile.tsx`
 
-`AdultProductHome.tsx` not touched.
+Apply identical checkmark refinement (lines ~117–140): container 18→16, SVG width/height 18→16 (keep viewBox 0 0 18 18), drop-shadow alpha 0.5→0.3, strokeWidth 2.5→2. Color, position, animation unchanged. Card title size unchanged.
+
+## 3. `src/components/CategoryFilterChips.tsx`
+
+Line 171: `opacity: isSelected ? 1 : 0.65` → `opacity: isSelected ? 1 : 0.78`. Selected stays at 1.0; underline marker, typography, transitions unchanged. Applies to both kids and adult product homes.
 
 ## Verification (390×844)
 
-All kids product homes (`/product/jag-i-mig`, `/product/jag-med-andra`, `/product/jag-i-varlden`, `/product/vardagskort`, `/product/syskonkort`, `/product/sexualitetskort`): page is uniformly Midnight Ink top to bottom; hero illustration and glow unchanged; tile accent colors pop. `/product/still-us` unchanged.
+- `/product/jag-i-mig`: tile titles read at 18px; chip row's unselected labels clearly tappable; checkmarks read as elegant ticks.
+- `/product/still-us`: same chip readability; checkmarks refined; adult tile titles unchanged.

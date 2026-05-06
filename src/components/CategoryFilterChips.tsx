@@ -168,7 +168,7 @@ export default function CategoryFilterChips({
                   fontWeight: 500,
                   letterSpacing: '0.02em',
                   color: LANTERN_GLOW,
-                  opacity: isSelected ? 1 : 0.65,
+                  opacity: isSelected ? 1 : 0.78,
                   WebkitTapHighlightColor: 'transparent',
                   outlineOffset: '4px',
                   transition: 'opacity 180ms ease-out',
