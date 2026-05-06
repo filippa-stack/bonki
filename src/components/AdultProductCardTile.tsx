@@ -18,7 +18,6 @@ import {
   CORNFLOWER,
   MIDNIGHT_INK,
   DUSTY_ROSE,
-  WARM_GOLD as WARM_GOLD_ANCHOR,
   STORM_GREY,
   SAGE,
 } from '@/lib/palette';
@@ -26,13 +25,13 @@ import {
 /** Hardcoded contrasting medallion fill per anchor color (Emma's mockups). */
 function getCircleColor(cardColor: string): string {
   switch (cardColor) {
-    case CORNFLOWER:        return '#5A85D5'; // darker (only light anchor)
-    case MIDNIGHT_INK:      return '#2A2D45';
-    case DUSTY_ROSE:        return '#C99A9D';
-    case WARM_GOLD_ANCHOR:  return '#E8D4A8';
-    case STORM_GREY:        return '#5A6573';
-    case SAGE:              return '#A8B5A8';
-    default:                return cardColor;
+    case CORNFLOWER:   return '#5A85D5'; // darker (only light anchor)
+    case MIDNIGHT_INK: return '#2A2D45';
+    case DUSTY_ROSE:   return '#C99A9D';
+    case WARM_GOLD:    return '#E8D4A8';
+    case STORM_GREY:   return '#5A6573';
+    case SAGE:         return '#A8B5A8';
+    default:           return cardColor;
   }
 }
 
