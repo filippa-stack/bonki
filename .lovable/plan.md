@@ -1,39 +1,39 @@
-# Vårt Vi completion — remove product-color top band
+# Five atomic fixes
 
-## Diagnosis
+## 1. Vårt Vi tile subtitle → "De samtal ni redan vill ha"
 
-In `src/pages/CardView.tsx` (Still Us completion branch, line 1787+), the page wrapper sets `backgroundColor: MIDNIGHT_INK` correctly. However the first child rendered inside is:
+- `src/components/ProductLibrary.tsx:49`
+- `src/components/ProductLibraryMock.tsx:56`
+- `src/components/ProductIntroMock.tsx:49`
 
-```tsx
-<Header title="" variant="immersive" />
-```
+## 2. Hero subtitle → "De samtal ni redan vill ha"
 
-`Header` (immersive variant, `src/components/Header.tsx` line 68) sets:
+- `src/contexts/SiteSettingsContext.tsx:30` (`heroSubtitle`)
 
-```ts
-backgroundColor: 'var(--page-bg, var(--surface-base))'
-```
+## 3. Library section heading "Föräldrar" → "Par"
 
-`--page-bg` is set globally by `useProductTheme` to the product's background color (cornflower for Vårt Vi via `useVerdigrisTheme(isStillUsCard)` and the still-us product theme). That's the cornflower band visible at the top of the completion screen — the immersive header inheriting the product page bg, not the Midnight Ink completion bg.
+- `src/components/ProductLibrary.tsx:669` (visible heading)
+- `src/components/ProductLibraryMock.tsx:523` (mock heading)
+- Update nearby comments at ProductLibrary.tsx:451, 494, 719 and ProductLibraryMock.tsx:522 for grep consistency
 
-It also draws a faint bottom border, reinforcing the band appearance.
+No routing/filter keys reference the string.
 
-## Fix
+## 4. Vårt Vi portal back → product home (not library)
 
-Replace the `<Header title="" variant="immersive" />` in the Still Us completion branch with a plain safe-area spacer painted Midnight Ink. The header serves no functional purpose on this screen (no title, no back button — the back action lives in the CTA area below).
+Add optional `to?: string` prop to `src/components/ProductHomeBackButton.tsx`. When provided, navigate there; otherwise preserve current behavior (clear last-active-product, navigate `/`).
 
-```tsx
-<div style={{ height: 'env(safe-area-inset-top, 0px)', backgroundColor: MIDNIGHT_INK }} />
-```
+In `src/pages/AdultCardPortal.tsx:216`, pass `to="/product/still-us"`.
 
-Scope: only the Still Us completion branch (line ~1812). Kids completion branch (line 1340) is not touched. Live/archive branches keep their headers.
+All other consumers (Home, all product home pages) unchanged.
 
-## Verification (390×844)
+## 5. Single-select chips for kids products
 
-- Complete a Vårt Vi session. Completion screen renders uniformly Midnight Ink top to bottom — no cornflower band.
-- Saffron checkmark, headline, takeaway, CTAs unchanged.
-- Kids completion screens unchanged.
+`src/components/KidsProductHome.tsx:687` — add `selectionMode="single"` to `<CategoryFilterChips>`. Propagates to all kids products (jim/jma/jiv/vk/sk/sex).
 
-## Files
+## Verification
 
-- `src/pages/CardView.tsx` — Still Us completion branch only
+- Library tile subtitle and hero subtitle both read "De samtal ni redan vill ha"
+- Library section heading reads "Par"
+- Vårt Vi card portal back chevron lands on `/product/still-us`
+- Vårt Vi product home back still goes to library
+- Kids product chips are single-select with sliding underline
