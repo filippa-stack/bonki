@@ -280,25 +280,25 @@ export default function AdultCardPortal() {
           const copy = getPortalCopy(resolveBareCardId(card.id));
           return copy?.preparation ? (
             <p style={{
-              fontFamily: 'var(--font-sans)',
-              fontSize: '14px',
+              fontFamily: 'var(--font-display)',
+              fontSize: '15px',
               fontWeight: 400,
               color: LANTERN_GLOW,
-              opacity: 0.72,
-              margin: '36px auto',
+              opacity: 0.85,
+              margin: '24px auto 32px',
               lineHeight: 1.55,
-              maxWidth: '520px',
-              textAlign: 'left',
+              letterSpacing: 0,
+              maxWidth: '320px',
+              textAlign: 'center',
             }}>
               {copy.preparation}
             </p>
           ) : null;
         })()}
 
-        {/* ── Zone 2: Card preview (purely visual) ── */}
+        {/* ── Zone 2: Card preview (medallion-on-mat, mirrors AdultProductCardTile) ── */}
         <div style={{
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          marginTop: '12px',
         }}>
           <button
             type="button"
@@ -322,21 +322,41 @@ export default function AdultCardPortal() {
               WebkitTapHighlightColor: 'transparent',
             }}
           >
-            {/* Illustration zone — fills the tile */}
-            <div style={{ position: 'relative', flex: '1 1 auto', backgroundColor: cardColor, overflow: 'hidden' }}>
-              <PortalCardImage cardId={card.id}>
-                {(src) => src ? (
-                  <img src={src} alt="" aria-hidden="true" style={{
-                    width: '100%', height: '100%', objectFit: 'contain', padding: '8px', display: 'block',
-                  }} />
-                ) : null}
-              </PortalCardImage>
+            {/* Zone A — illustration medallion (65%) */}
+            <div style={{
+              position: 'relative',
+              flex: '0 0 65%',
+              backgroundColor: cardColor,
+              overflow: 'hidden',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+              <div style={{
+                width: '60%',
+                aspectRatio: '1 / 1',
+                borderRadius: '50%',
+                backgroundColor: getCircleColor(cardColor),
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                overflow: 'hidden',
+              }}>
+                <PortalCardImage cardId={card.id}>
+                  {(src) => src ? (
+                    <img src={src} alt="" aria-hidden="true" style={{
+                      width: '80%', height: '80%', objectFit: 'contain', display: 'block',
+                    }} />
+                  ) : null}
+                </PortalCardImage>
+              </div>
 
               {isCompleted && (
                 <div style={{
                   position: 'absolute', top: 12, right: 12,
                   width: 22, height: 22,
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  zIndex: 4,
                 }}>
                   <svg width="22" height="22" viewBox="0 0 18 18" fill="none"
                     style={{ filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.5))' }}>
@@ -351,11 +371,36 @@ export default function AdultCardPortal() {
                 height: '8px',
                 background: 'linear-gradient(to bottom, transparent, rgba(0,0,0,0.15))',
                 pointerEvents: 'none',
+                zIndex: 2,
               }} />
             </div>
 
-            {/* Saffron accent line — closing visual element */}
+            {/* Warm-gold accent line */}
             <div style={{ height: '1px', width: '100%', backgroundColor: accentLine, flexShrink: 0 }} />
+
+            {/* Zone B — title strip (35%) */}
+            <div style={{
+              flex: '1 1 auto',
+              display: 'flex',
+              alignItems: 'center',
+              padding: '14px 16px',
+              backgroundColor: titleZoneBg,
+            }}>
+              <span style={{
+                fontFamily: 'var(--font-display)',
+                fontVariationSettings: "'opsz' 24",
+                fontSize: '16px',
+                fontWeight: 600,
+                color: LANTERN_GLOW,
+                lineHeight: 1.25,
+                display: '-webkit-box',
+                WebkitLineClamp: 2,
+                WebkitBoxOrient: 'vertical',
+                overflow: 'hidden',
+              }}>
+                {card.title}
+              </span>
+            </div>
           </button>
         </div>
 
