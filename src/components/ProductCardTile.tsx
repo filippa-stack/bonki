@@ -85,21 +85,6 @@ export default function ProductCardTile({
         </div>
       )}
 
-      {/* Bottom scrim — inset to match the 16px frame */}
-      <div
-        style={{
-          position: 'absolute',
-          bottom: 16,
-          left: 16,
-          right: 16,
-          height: '25%',
-          background:
-            'linear-gradient(to top, rgba(0, 0, 0, 0.24) 0%, rgba(0, 0, 0, 0) 100%)',
-          zIndex: 2,
-          pointerEvents: 'none',
-        }}
-      />
-
       {/* Title */}
       <div
         style={{
