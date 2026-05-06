@@ -248,7 +248,7 @@ export default function CardView() {
       .eq('id', product.id)
       .single()
       .then(({ data }) => {
-        setCompletionPriceSek(data?.price_sek ?? (product.id === 'still_us' ? 249 : 195));
+        setCompletionPriceSek(data?.price_sek ?? (product.id === 'still_us' ? 249 : 199));
       });
   }, [product?.id]);
 

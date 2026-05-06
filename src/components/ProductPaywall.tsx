@@ -96,7 +96,7 @@ export default function ProductPaywall({ product, onAccessGranted }: ProductPayw
       .eq('id', product.id)
       .single()
       .then(({ data }) => {
-        setPriceSek(data?.price_sek ?? (product.id === 'still_us' ? 249 : 195));
+        setPriceSek(data?.price_sek ?? (product.id === 'still_us' ? 249 : 199));
       });
   }, [product.id]);
 

@@ -71,7 +71,7 @@ export default function BuyPage() {
       .eq('id', productId)
       .single()
       .then(({ data }) => {
-        setPriceSek(data?.price_sek ?? (productId === 'still_us' ? 249 : 195));
+        setPriceSek(data?.price_sek ?? (productId === 'still_us' ? 249 : 199));
       });
   }, [productId]);
 
