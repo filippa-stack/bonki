@@ -100,11 +100,6 @@ const gorExercises: Record<string, GorExercise> = {
     title: 'Att nå fram',
     instructionText: 'Kom överens om hur ni säger två saker: "Jag längtar efter närhet" och "Jag kan inte just nu, men jag vill dig."\n\n→ Hur kan de se ut — så att ingen behöver gissa?',
   },
-  'choosing-to-stay': {
-    cardId: 'choosing-to-stay',
-    title: 'Att fortsätta välja',
-    instructionText: 'Säg till varandra, utan att förklara eller försvara:\n\n"Det här hos dig gör att jag vill vara kvar."\n→ Stanna upp. Låt din partner ta emot det utan att svara direkt.\n"Det här vill jag inte ta för givet."\n→ Tacka varandra.',
-  },
 };
 
 /** Look up a Gör exercise by card ID */
