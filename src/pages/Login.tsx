@@ -525,6 +525,25 @@ export default function Login() {
                   exit={{ opacity: 0, y: -10 }}
                   className="flex flex-col items-center"
                 >
+                  {/* Three-dot pagination — middle dot active */}
+                  <div
+                    aria-hidden="true"
+                    style={{ display: 'flex', gap: 6, alignItems: 'center', marginBottom: 20 }}
+                  >
+                    {[0, 1, 2].map((i) => (
+                      <span
+                        key={i}
+                        style={{
+                          width: 6,
+                          height: 6,
+                          borderRadius: '50%',
+                          background: i === 1 ? '#E85D2C' : 'rgba(253,246,227,0.20)',
+                          display: 'block',
+                        }}
+                      />
+                    ))}
+                  </div>
+
                   {/* Primary CTA — orange pill, 44px tall */}
                   <button
                     onClick={handleGoogleSignIn}
