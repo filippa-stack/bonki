@@ -1,13 +1,14 @@
 /**
- * Still Us v3.0 — Slider check-in prompts per card.
- * Each card has 2-3 sliders. Phase A = sliders only, Phase B/C add reflection.
+ * Vårt Vi v3.1 — Slider check-in prompts per card.
+ * Slider sets are tied to each card by bare id; positional `cardIndex`
+ * and `slug` are derived from CARD_SEQUENCE so they auto-update with
+ * any sequence reorder.
  */
 
-import { CARD_SEQUENCE } from '@/data/stillUsSequence';
+import { CARD_SEQUENCE, bareIdFromSlug } from '@/data/stillUsSequence';
 
 export interface SliderPrompt {
   sliderId: string;
-  /** The question shown above the slider */
   text: string;
   leftLabel: string;
   rightLabel: string;
@@ -15,265 +16,204 @@ export interface SliderPrompt {
 
 export interface CardSliderSet {
   cardIndex: number;
-  /** Backend card ID: 'card_1' through 'card_22' */
   cardId: string;
-  /** URL-safe slug used in frontend routes */
   slug: string;
   cardTitle: string;
   layerName: string;
   sliders: SliderPrompt[];
-  /** Phase B/C reflection prompt (shown after sliders) */
   reflectionPrompt?: string;
 }
 
-/** Derive slug from CARD_SEQUENCE by index (positional) */
-function slugFor(idx: number): string {
-  return CARD_SEQUENCE[idx]?.cardId ?? `su-${String(idx + 1).padStart(2, '0')}-unknown`;
+interface RawSliderSet {
+  bareId: string;
+  sliders: SliderPrompt[];
+  reflectionPrompt?: string;
 }
 
-const sliderPrompts: CardSliderSet[] = [
-  // Card 0 — Ert minsta "vi" (redan författade)
+/** Slider content keyed by bare card id — survives sequence reordering. */
+const RAW: RawSliderSet[] = [
   {
-    cardIndex: 0,
-    cardId: 'card_1',
-    slug: slugFor(0),
-    cardTitle: 'Ert minsta "vi"',
-    layerName: 'Grunden',
+    bareId: 'smallest-we',
     sliders: [
-      { sliderId: 's0-1', text: 'Hur nära känns vi just nu?', leftLabel: 'Långt bort', rightLabel: 'Väldigt nära' },
-      { sliderId: 's0-2', text: 'Hur mycket tid har ni haft för varandra den här veckan?', leftLabel: 'Nästan ingen', rightLabel: 'Massor' },
+      { sliderId: 'smallest-we-1', text: 'Hur nära känns vi just nu?', leftLabel: 'Långt bort', rightLabel: 'Väldigt nära' },
+      { sliderId: 'smallest-we-2', text: 'Hur mycket tid har ni haft för varandra den här veckan?', leftLabel: 'Nästan ingen', rightLabel: 'Massor' },
     ],
   },
-  // Card 1 — När ert "vi" blir "Familjen AB"
   {
-    cardIndex: 1,
-    cardId: 'card_2',
-    slug: slugFor(1),
-    cardTitle: 'När ert "vi" blir "Familjen AB"',
-    layerName: 'Grunden',
+    bareId: 'family-ab',
     sliders: [
-      { sliderId: 's1-1', text: 'Kontakt', leftLabel: 'Jag söker fortfarande kontakt', rightLabel: 'Jag har vant mig vid tystnaden' },
-      { sliderId: 's1-2', text: 'Saknad', leftLabel: 'Jag saknar oss', rightLabel: 'Det funkar som det är' },
-      { sliderId: 's1-3', text: 'Kommunikation', leftLabel: 'Jag har sagt det', rightLabel: 'Jag har tänkt det men inte sagt det' },
+      { sliderId: 'family-ab-1', text: 'Kontakt', leftLabel: 'Jag söker fortfarande kontakt', rightLabel: 'Jag har vant mig vid tystnaden' },
+      { sliderId: 'family-ab-2', text: 'Saknad', leftLabel: 'Jag saknar oss', rightLabel: 'Det funkar som det är' },
+      { sliderId: 'family-ab-3', text: 'Kommunikation', leftLabel: 'Jag har sagt det', rightLabel: 'Jag har tänkt det men inte sagt det' },
     ],
   },
-  // Card 2 — Identitetsskiftet (redan författade)
   {
-    cardIndex: 2,
-    cardId: 'card_3',
-    slug: slugFor(2),
-    cardTitle: 'Identitetsskiftet',
-    layerName: 'Grunden',
+    bareId: 'identity-shift',
     sliders: [
-      { sliderId: 's2-1', text: 'Hur tryggt känns det att vara ärlig med din partner?', leftLabel: 'Osäkert', rightLabel: 'Helt tryggt' },
-      { sliderId: 's2-2', text: 'Hur väl lyssnar ni på varandra?', leftLabel: 'Sällan', rightLabel: 'Alltid' },
+      { sliderId: 'identity-shift-1', text: 'Hur tryggt känns det att vara ärlig med din partner?', leftLabel: 'Osäkert', rightLabel: 'Helt tryggt' },
+      { sliderId: 'identity-shift-2', text: 'Hur väl lyssnar ni på varandra?', leftLabel: 'Sällan', rightLabel: 'Alltid' },
     ],
   },
-  // Card 3 — När dagen är slut
   {
-    cardIndex: 3,
-    cardId: 'card_4',
-    slug: slugFor(3),
-    cardTitle: 'När dagen är slut',
-    layerName: 'Grunden',
+    bareId: 'listening-presence',
     sliders: [
-      { sliderId: 's3-1', text: 'Energi', leftLabel: 'Jag återhämtar mig under dagen', rightLabel: 'Jag tär på reserver som inte fylls på' },
-      { sliderId: 's3-2', text: 'Kvällen', leftLabel: 'Kvällen är vår', rightLabel: 'Kvällen är en till uppgift' },
-      { sliderId: 's3-3', text: 'Gränser', leftLabel: 'Jag säger till innan jag är slut', rightLabel: 'Jag märker det först när det redan gått för långt' },
+      { sliderId: 'listening-1', text: 'Energi', leftLabel: 'Jag återhämtar mig under dagen', rightLabel: 'Jag tär på reserver som inte fylls på' },
+      { sliderId: 'listening-2', text: 'Kvällen', leftLabel: 'Kvällen är vår', rightLabel: 'Kvällen är en till uppgift' },
+      { sliderId: 'listening-3', text: 'Gränser', leftLabel: 'Jag säger till innan jag är slut', rightLabel: 'Jag märker det först när det redan gått för långt' },
     ],
   },
-  // Card 4 — Rollerna ni tar (och får)
   {
-    cardIndex: 4,
-    cardId: 'card_5',
-    slug: slugFor(4),
-    cardTitle: 'Rollerna ni tar (och får)',
-    layerName: 'Normen',
+    bareId: 'conflict-repair',
     sliders: [
-      { sliderId: 's4-1', text: 'Mina roller', leftLabel: 'Jag valde mina roller', rightLabel: 'Rollerna valde mig' },
-      { sliderId: 's4-2', text: 'Trivsel', leftLabel: 'Jag trivs i dem', rightLabel: 'Jag saknar den jag var' },
-      { sliderId: 's4-3', text: 'Förändring', leftLabel: 'Jag vill släppa en roll', rightLabel: 'Jag vågar inte släppa den' },
+      { sliderId: 'conflict-1', text: 'Mina roller', leftLabel: 'Jag valde mina roller', rightLabel: 'Rollerna valde mig' },
+      { sliderId: 'conflict-2', text: 'Trivsel', leftLabel: 'Jag trivs i dem', rightLabel: 'Jag saknar den jag var' },
+      { sliderId: 'conflict-3', text: 'Förändring', leftLabel: 'Jag vill släppa en roll', rightLabel: 'Jag vågar inte släppa den' },
     ],
   },
-  // Card 5 — Mitt sätt, ditt sätt
   {
-    cardIndex: 5,
-    cardId: 'card_6',
-    slug: slugFor(5),
-    cardTitle: 'Mitt sätt, ditt sätt',
-    layerName: 'Normen',
+    bareId: 'expressing-needs',
     sliders: [
-      { sliderId: 's5-1', text: 'Tillit', leftLabel: 'Jag litar på partnerns sätt', rightLabel: 'Jag tvivlar i tysthet' },
-      { sliderId: 's5-2', text: 'Trygghet', leftLabel: 'Jag känner mig trygg som förälder', rightLabel: 'Jag känner mig bedömd' },
-      { sliderId: 's5-3', text: 'Olikheter', leftLabel: 'Olikheterna berikar oss', rightLabel: 'Olikheterna gnager' },
+      { sliderId: 'expressing-1', text: 'Tillit', leftLabel: 'Jag litar på partnerns sätt', rightLabel: 'Jag tvivlar i tysthet' },
+      { sliderId: 'expressing-2', text: 'Trygghet', leftLabel: 'Jag känner mig trygg som förälder', rightLabel: 'Jag känner mig bedömd' },
+      { sliderId: 'expressing-3', text: 'Olikheter', leftLabel: 'Olikheterna berikar oss', rightLabel: 'Olikheterna gnager' },
     ],
   },
-  // Card 6 — Att möta motgångar (redan författade)
   {
-    cardIndex: 6,
-    cardId: 'card_7',
-    slug: slugFor(6),
-    cardTitle: 'Att möta motgångar',
-    layerName: 'Normen',
+    bareId: 'facing-adversity',
     sliders: [
-      { sliderId: 's6-1', text: 'Hur hanterar du press?', leftLabel: 'Jag pratar om det', rightLabel: 'Jag håller det för mig själv' },
-      { sliderId: 's6-2', text: 'Stöd från partner', leftLabel: 'Jag känner mig stöttad', rightLabel: 'Jag bär det själv' },
+      { sliderId: 'adversity-1', text: 'Hur hanterar du press?', leftLabel: 'Jag pratar om det', rightLabel: 'Jag håller det för mig själv' },
+      { sliderId: 'adversity-2', text: 'Stöd från partner', leftLabel: 'Jag känner mig stöttad', rightLabel: 'Jag bär det själv' },
     ],
   },
-  // Card 7 — Framför och bakom kulisserna
   {
-    cardIndex: 7,
-    cardId: 'card_8',
-    slug: slugFor(7),
-    cardTitle: 'Framför och bakom kulisserna',
-    layerName: 'Normen',
+    bareId: 'behind-the-scenes',
     sliders: [
-      { sliderId: 's7-1', text: 'Enighet', leftLabel: 'Vi är eniga på riktigt', rightLabel: 'Vi spelar eniga' },
-      { sliderId: 's7-2', text: 'Stöd', leftLabel: 'Jag känner mig stöttad', rightLabel: 'Jag bär det ensam' },
-      { sliderId: 's7-3', text: 'Synlighet', leftLabel: 'Det jag bär syns', rightLabel: 'Det jag bär är osynligt' },
+      { sliderId: 'behind-1', text: 'Enighet', leftLabel: 'Vi är eniga på riktigt', rightLabel: 'Vi spelar eniga' },
+      { sliderId: 'behind-2', text: 'Stöd', leftLabel: 'Jag känner mig stöttad', rightLabel: 'Jag bär det ensam' },
+      { sliderId: 'behind-3', text: 'Synlighet', leftLabel: 'Det jag bär syns', rightLabel: 'Det jag bär är osynligt' },
     ],
     reflectionPrompt: 'Om du vill — en tanke med egna ord',
   },
-  // Card 8 — Omtänksamt utrymme
   {
-    cardIndex: 8,
-    cardId: 'card_9',
-    slug: slugFor(8),
-    cardTitle: 'Omtänksamt utrymme',
-    layerName: 'Normen',
+    bareId: 'thoughtful-space',
     sliders: [
-      { sliderId: 's8-1', text: 'Behov', leftLabel: 'Jag behöver mer närhet', rightLabel: 'Jag behöver mer utrymme' },
-      { sliderId: 's8-2', text: 'Förståelse', leftLabel: 'Du förstår vad jag behöver', rightLabel: 'Jag har slutat förklara' },
-      { sliderId: 's8-3', text: 'Signaler', leftLabel: 'Jag visar vad jag behöver', rightLabel: 'Jag hoppas att du märker det' },
+      { sliderId: 'thoughtful-1', text: 'Behov', leftLabel: 'Jag behöver mer närhet', rightLabel: 'Jag behöver mer utrymme' },
+      { sliderId: 'thoughtful-2', text: 'Förståelse', leftLabel: 'Du förstår vad jag behöver', rightLabel: 'Jag har slutat förklara' },
+      { sliderId: 'thoughtful-3', text: 'Signaler', leftLabel: 'Jag visar vad jag behöver', rightLabel: 'Jag hoppas att du märker det' },
     ],
     reflectionPrompt: 'Om du vill — en tanke med egna ord',
   },
-  // Card 9 — När självkänslan svajar
   {
-    cardIndex: 9,
-    cardId: 'card_10',
-    slug: slugFor(9),
-    cardTitle: 'När självkänslan svajar',
-    layerName: 'Konflikten',
+    bareId: 'self-esteem-wavering',
     sliders: [
-      { sliderId: 's9-1', text: 'Öppenhet', leftLabel: 'Jag visar hur jag mår', rightLabel: 'Jag döljer det' },
-      { sliderId: 's9-2', text: 'Självvärde', leftLabel: 'Jag vet vad jag är värd för oss', rightLabel: 'Jag har tappat känslan av att räcka till' },
-      { sliderId: 's9-3', text: 'Sårbarhet', leftLabel: 'Det är lätt att vara sårbar', rightLabel: 'Det kostar att visa sårbarhet' },
+      { sliderId: 'self-esteem-1', text: 'Öppenhet', leftLabel: 'Jag visar hur jag mår', rightLabel: 'Jag döljer det' },
+      { sliderId: 'self-esteem-2', text: 'Självvärde', leftLabel: 'Jag vet vad jag är värd för oss', rightLabel: 'Jag har tappat känslan av att räcka till' },
+      { sliderId: 'self-esteem-3', text: 'Sårbarhet', leftLabel: 'Det är lätt att vara sårbar', rightLabel: 'Det kostar att visa sårbarhet' },
     ],
     reflectionPrompt: 'Om du vill — en tanke med egna ord',
   },
-  // Card 10 — Uppfostran ni ärvt
   {
-    cardIndex: 10,
-    cardId: 'card_11',
-    slug: slugFor(10),
-    cardTitle: 'Uppfostran ni ärvt',
-    layerName: 'Konflikten',
+    bareId: 'different-parenting-styles',
     sliders: [
-      { sliderId: 's10-1', text: 'Mönster', leftLabel: 'Jag ser mina mönster', rightLabel: 'De styr utan att jag märker' },
-      { sliderId: 's10-2', text: 'Historia', leftLabel: 'Min historia hjälper mig', rightLabel: 'Min historia stör' },
-      { sliderId: 's10-3', text: 'Röster', leftLabel: 'Jag hör mina föräldrars röst och väljer annorlunda', rightLabel: 'Jag hör mina föräldrars röst och följer den' },
+      { sliderId: 'different-parenting-1', text: 'Mönster', leftLabel: 'Jag ser mina mönster', rightLabel: 'De styr utan att jag märker' },
+      { sliderId: 'different-parenting-2', text: 'Historia', leftLabel: 'Min historia hjälper mig', rightLabel: 'Min historia stör' },
+      { sliderId: 'different-parenting-3', text: 'Röster', leftLabel: 'Jag hör mina föräldrars röst och väljer annorlunda', rightLabel: 'Jag hör mina föräldrars röst och följer den' },
     ],
     reflectionPrompt: 'Om du vill — en tanke med egna ord',
   },
-  // Card 11 — Att säga ifrån
   {
-    cardIndex: 11,
-    cardId: 'card_12',
-    slug: slugFor(11),
-    cardTitle: 'Att säga ifrån',
-    layerName: 'Konflikten',
+    bareId: 'parenting-boundaries',
     sliders: [
-      { sliderId: 's11-1', text: 'Gränser', leftLabel: 'Jag är trygg i mina gränser', rightLabel: 'Jag tvivlar varje gång' },
-      { sliderId: 's11-2', text: 'Tillsammans', leftLabel: 'Vi sätter gränser ihop', rightLabel: 'En av oss står ensam' },
-      { sliderId: 's11-3', text: 'När ni sätter gränser', leftLabel: 'Det handlar om barnet', rightLabel: 'Det handlar om oss' },
+      { sliderId: 'boundaries-1', text: 'Gränser', leftLabel: 'Jag är trygg i mina gränser', rightLabel: 'Jag tvivlar varje gång' },
+      { sliderId: 'boundaries-2', text: 'Tillsammans', leftLabel: 'Vi sätter gränser ihop', rightLabel: 'En av oss står ensam' },
+      { sliderId: 'boundaries-3', text: 'När ni sätter gränser', leftLabel: 'Det handlar om barnet', rightLabel: 'Det handlar om oss' },
     ],
     reflectionPrompt: 'Om du vill — en tanke med egna ord',
   },
-  // Card 12 — Mina, dina, era värderingar
   {
-    cardIndex: 12,
-    cardId: 'card_13',
-    slug: slugFor(12),
-    cardTitle: 'Mina, dina, era värderingar',
-    layerName: 'Konflikten',
+    bareId: 'parenting-exhaustion',
     sliders: [
-      { sliderId: 's12-1', text: 'Integritet', leftLabel: 'Vi lever som vi tror', rightLabel: 'Vi lever inte som vi säger' },
-      { sliderId: 's12-2', text: 'Enighet', leftLabel: 'Vi tycker likadant', rightLabel: 'Vi låtsas tycka likadant' },
-      { sliderId: 's12-3', text: 'Kompromisser', leftLabel: 'Mina kompromisser är fria', rightLabel: 'Mina kompromisser kostar' },
+      { sliderId: 'exhaustion-1', text: 'Integritet', leftLabel: 'Vi lever som vi tror', rightLabel: 'Vi lever inte som vi säger' },
+      { sliderId: 'exhaustion-2', text: 'Enighet', leftLabel: 'Vi tycker likadant', rightLabel: 'Vi låtsas tycka likadant' },
+      { sliderId: 'exhaustion-3', text: 'Kompromisser', leftLabel: 'Mina kompromisser är fria', rightLabel: 'Mina kompromisser kostar' },
     ],
     reflectionPrompt: 'Om du vill — en tanke med egna ord',
   },
-  // Card 13 — Röster från släkten (redan författade)
   {
-    cardIndex: 13,
-    cardId: 'card_14',
-    slug: slugFor(13),
-    cardTitle: 'Röster från släkten',
-    layerName: 'Konflikten',
+    bareId: 'our-traditions',
     sliders: [
-      { sliderId: 's13-1', text: 'Familjen', leftLabel: 'Familjen stöttar', rightLabel: 'Familjen komplicerar' },
-      { sliderId: 's13-2', text: 'Anpassning', leftLabel: 'Vi sätter gränserna', rightLabel: 'Familjen sätter gränserna' },
-    ],
-    reflectionPrompt: 'Om du vill — en tanke med egna ord',
-  },
-  // Card 14 — Mina, dina, era traditioner
-  {
-    cardIndex: 14,
-    cardId: 'card_15',
-    slug: slugFor(14),
-    cardTitle: 'Mina, dina, era traditioner',
-    layerName: 'Längtan',
-    sliders: [
-      { sliderId: 's14-1', text: 'Plats', leftLabel: 'Mina traditioner har plats', rightLabel: 'Jag har anpassat mig' },
-      { sliderId: 's14-2', text: 'Förståelse', leftLabel: 'Jag förstår varför det är viktigt', rightLabel: 'Jag följer med utan att förstå' },
-      { sliderId: 's14-3', text: 'Motivation', leftLabel: 'Jag följer med av kärlek', rightLabel: 'Jag följer med av plikt' },
+      { sliderId: 'traditions-1', text: 'Plats', leftLabel: 'Mina traditioner har plats', rightLabel: 'Jag har anpassat mig' },
+      { sliderId: 'traditions-2', text: 'Förståelse', leftLabel: 'Jag förstår varför det är viktigt', rightLabel: 'Jag följer med utan att förstå' },
+      { sliderId: 'traditions-3', text: 'Motivation', leftLabel: 'Jag följer med av kärlek', rightLabel: 'Jag följer med av plikt' },
     ],
     reflectionPrompt: 'Beskriv känslan med ett par ord',
   },
-  // Card 15 — Er filosofi
   {
-    cardIndex: 15,
-    cardId: 'card_16',
-    slug: slugFor(15),
-    cardTitle: 'Er filosofi',
-    layerName: 'Längtan',
+    bareId: 'when-life-tilts',
     sliders: [
-      { sliderId: 's15-1', text: 'Integritet', leftLabel: 'Jag lever som jag tror', rightLabel: 'Jag sviker mig själv ibland' },
-      { sliderId: 's15-2', text: 'När du inte lever som du tror', leftLabel: 'Jag pratar om det', rightLabel: 'Jag bär det själv' },
-      { sliderId: 's15-3', text: 'När det går fel', leftLabel: 'Skulden fördelas', rightLabel: 'Skulden landar på mig' },
+      { sliderId: 'life-tilts-1', text: 'Mål', leftLabel: 'Mina mål har plats', rightLabel: 'Mina mål får vänta' },
+      { sliderId: 'life-tilts-2', text: 'Stöd', leftLabel: 'Jag stöttar utan kostnad', rightLabel: 'Mitt stöd kostar mig' },
+      { sliderId: 'life-tilts-3', text: 'Riktning', leftLabel: 'Vi bygger åt samma håll', rightLabel: 'Jag vet inte vart vi är på väg' },
     ],
     reflectionPrompt: 'Beskriv känslan med ett par ord',
   },
-  // Card 16 — När livet lutar
   {
-    cardIndex: 16,
-    cardId: 'card_17',
-    slug: slugFor(16),
-    cardTitle: 'När livet lutar',
-    layerName: 'Längtan',
+    bareId: 'worth-spending-on',
     sliders: [
-      { sliderId: 's16-1', text: 'Mål', leftLabel: 'Mina mål har plats', rightLabel: 'Mina mål får vänta' },
-      { sliderId: 's16-2', text: 'Stöd', leftLabel: 'Jag stöttar utan kostnad', rightLabel: 'Mitt stöd kostar mig' },
-      { sliderId: 's16-3', text: 'Riktning', leftLabel: 'Vi bygger åt samma håll', rightLabel: 'Jag vet inte vart vi är på väg' },
+      { sliderId: 'spending-1', text: 'Önskningar', leftLabel: 'Jag säger vad jag vill', rightLabel: 'Jag håller tillbaka mina önskningar' },
+      { sliderId: 'spending-2', text: 'Förståelse', leftLabel: 'Det jag värderar förstås', rightLabel: 'Jag har slutat förklara varför det är viktigt' },
+      { sliderId: 'spending-3', text: 'Prioritering', leftLabel: 'Min prioritering räknas', rightLabel: 'Min prioritering ifrågasätts' },
     ],
     reflectionPrompt: 'Beskriv känslan med ett par ord',
   },
-  // Card 17 — Värt att spendera på
   {
-    cardIndex: 17,
-    cardId: 'card_18',
-    slug: slugFor(17),
-    cardTitle: 'Värt att spendera på',
-    layerName: 'Längtan',
+    bareId: 'adrift',
     sliders: [
-      { sliderId: 's17-1', text: 'Önskningar', leftLabel: 'Jag säger vad jag vill', rightLabel: 'Jag håller tillbaka mina önskningar' },
-      { sliderId: 's17-2', text: 'Förståelse', leftLabel: 'Det jag värderar förstås', rightLabel: 'Jag har slutat förklara varför det är viktigt' },
-      { sliderId: 's17-3', text: 'Prioritering', leftLabel: 'Min prioritering räknas', rightLabel: 'Min prioritering ifrågasätts' },
+      { sliderId: 'adrift-1', text: 'Närhet', leftLabel: 'Vi söker varandra', rightLabel: 'Vi går förbi varandra' },
+      { sliderId: 'adrift-2', text: 'Begär', leftLabel: 'Begäret finns där', rightLabel: 'Begäret har dragit sig undan' },
+      { sliderId: 'adrift-3', text: 'Initiativ', leftLabel: 'Jag tar initiativ', rightLabel: 'Jag väntar på att du ska göra det' },
+    ],
+    reflectionPrompt: 'Beskriv känslan med ett par ord',
+  },
+  {
+    bareId: 'love-languages',
+    sliders: [
+      { sliderId: 'love-1', text: 'Att be', leftLabel: 'Jag ber om det jag behöver', rightLabel: 'Jag hoppas du ska gissa' },
+      { sliderId: 'love-2', text: 'Att ta emot', leftLabel: 'Jag tar emot det du ger', rightLabel: 'Jag har svårt att ta emot' },
+      { sliderId: 'love-3', text: 'Längtan', leftLabel: 'Min längtan får plats', rightLabel: 'Min längtan tystas' },
     ],
     reflectionPrompt: 'Beskriv känslan med ett par ord',
   },
 ];
+
+/** Build CardSliderSet[] in CARD_SEQUENCE order, looking up sliders by bare id. */
+const sliderPrompts: CardSliderSet[] = CARD_SEQUENCE.map((entry) => {
+  const bare = bareIdFromSlug(entry.cardId);
+  const raw = RAW.find((r) => r.bareId === bare);
+  if (!raw) {
+    // Fallback (shouldn't happen if RAW is in sync)
+    return {
+      cardIndex: entry.index,
+      cardId: `card_${entry.index + 1}`,
+      slug: entry.cardId,
+      cardTitle: entry.title,
+      layerName: '',
+      sliders: [
+        { sliderId: `${bare}-1`, text: 'Hur är det mellan er just nu?', leftLabel: 'Avstånd', rightLabel: 'Närhet' },
+        { sliderId: `${bare}-2`, text: 'Hur mycket har ni pratat den här veckan?', leftLabel: 'Knappt', rightLabel: 'Mycket' },
+      ],
+    };
+  }
+  return {
+    cardIndex: entry.index,
+    cardId: `card_${entry.index + 1}`,
+    slug: entry.cardId,
+    cardTitle: entry.title,
+    layerName: '',
+    sliders: raw.sliders,
+    reflectionPrompt: raw.reflectionPrompt,
+  };
+});
 
 export function getSliderSet(cardIndex: number): CardSliderSet | undefined {
   return sliderPrompts.find((s) => s.cardIndex === cardIndex);

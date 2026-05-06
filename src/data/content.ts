@@ -1,7 +1,7 @@
 import { Category, Card } from '@/types';
 
 /** Bump this whenever categories or cards change in this file */
-export const CONTENT_VERSION = 13;
+export const CONTENT_VERSION = 14;
 
 export const categories: Category[] = [
   {
@@ -69,384 +69,298 @@ export const categories: Category[] = [
   },
 ];
 
+/**
+ * Vårt Vi v3.1 cards. Card order in this array matches CARD_SEQUENCE
+ * so `cards[seqEntry.index]` returns the right card for still-us-mock.ts.
+ */
 export const cards: Card[] = [
-  // ── Vardagen — Ert minsta "vi" ──────────────────────────
-  {
-    id: 'smallest-we',
-    title: 'Ert minsta "vi"',
-    subtitle: 'Det minsta ni kan göra för att hålla ihop i vardagen',
-    categoryId: 'emotional-intimacy',
-    sections: [
-      {
-        id: 'opening-smallest-we',
-        type: 'opening',
-        title: 'Frågor',
-        content: '',
-        prompts: [
-          'Vad är det som gör att ni känner er som ett par — bortom det praktiska ni delar?',
-          'Vad har ni börjat göra tillsammans det senaste året — om än något litet — som ni inte riktigt planerade?',
-          'Förändras du mot din partner när ni inte haft tid för varandra — och i så fall, hur?',
-          'Om något litet mellan er tyst försvann, vad tror du att du skulle märka först?',
-        ],
-      },
-    ],
-  },
-  // ── Card 1 · Grunden ──────────────────────────────────
-  {
-    id: 'family-ab',
-    title: 'Familjen AB',
-    subtitle: 'När ert "vi" blir logistik',
-    categoryId: 'emotional-intimacy',
-    sections: [
-      {
-        id: 'opening-family-ab',
-        type: 'opening',
-        title: 'Frågor',
-        content: '',
-        prompts: [
-          'När ni väl sitter ner och pratar — hur snabbt hamnar ni i det praktiska?',
-          'Finns det en stämning ni brukar ha — eller brukade ha — mellan er, som du saknar när vardagen tar över?',
-          'Vad är skillnaden för dig mellan att vara på samma ställe och att faktiskt vara med varandra?',
-          'Ni löser vardagen smidigt. Allt fungerar. Men samtalen handlar nästan bara om tider, ansvar och barn. Ingen längtar — men ingen klagar heller.\n\nVar går gränsen för när en relation som fungerar bra på det praktiska planet börjar kännas som att den går på tomgång?',
-        ],
-      },
-    ],
-  },
-  // ── Card 2 · Grunden ──────────────────────────────────
-  {
-    id: 'identity-shift',
-    title: 'Identitetsskiftet',
-    subtitle: 'Anpassning som förändrar vem ni får vara',
-    categoryId: 'emotional-intimacy',
-    sections: [
-      {
-        id: 'opening-identity-shift',
-        type: 'opening',
-        title: 'Frågor',
-        content: '',
-        prompts: [
-          'Vilken del av dig tar mindre plats sedan du blev förälder - något du brukade göra, tänka på eller vara?',
-          'Finns det något du anpassat dig till som faktiskt fungerar för dig?',
-          'Hur vet du när anpassningen till vardagen börjar kännas som att du ger upp något?',
-          'En av er håller tillbaka behov för att vardagen ska fungera.\n\nNär du tänker på hur du förändrats sedan ni fick barn — vilka förändringar känns som dina egna val, och vilka hände bara med dig?',
-        ],
-      },
-    ],
-  },
-  // ── Card 3 · Normen ───────────────────────────────────
-  {
-    id: 'listening-presence',
-    title: 'När dagen är slut',
-    subtitle: 'Ansvar för hem och hushåll, återhämtning',
-    categoryId: 'communication',
-    sections: [
-      {
-        id: 'opening-listening-presence',
-        type: 'opening',
-        title: 'Frågor',
-        content: '',
-        prompts: [
-          'Vad behöver hända — eller sägas — innan du faktiskt kan sluta tänka på dagen?',
-          'Vad gör ni med tiden mellan barnets läggning och er egen — och hur bestäms det?',
-          'Är det något du fortsätter att göra på kvällarna som egentligen inte behöver göras — men som känns fel att sluta med?',
-          'Efter läggning gör ni olika saker. En fortsätter "lite till", den andra sätter sig. Ingen säger något, men båda drar egna slutsatser.\n\nHur signalerar du att kvällen är slut för dig — utan att säga det rakt ut?',
-        ],
-      },
-    ],
-  },
-  // ── Card 4 · Normen ───────────────────────────────────
-  {
-    id: 'conflict-repair',
-    title: 'Rollerna ni tar',
-    subtitle: 'Roller som uppstår utan att ni valt dem',
-    categoryId: 'communication',
-    sections: [
-      {
-        id: 'opening-conflict-repair',
-        type: 'opening',
-        title: 'Frågor',
-        content: '',
-        prompts: [
-          'Vilken roll hemma skulle du vilja ha mer utrymme för?',
-          'Vilka roller hemma har du hamnat i — utan att egentligen ha bestämt dig för dem?',
-          'Är det någon roll du har hemma som känns meningsfull — men som du också ibland känner att du sitter fast i?',
-          'En uppgift har blivit "din". Den andra kliver undan. Med tiden blir ansvaret ditt.\n\nNär en uppgift hemma har varit din tillräckligt länge — vad gör det med dig? Vad skulle förändras mellan er om du släppte den?',
-        ],
-      },
-    ],
-  },
-  // ── Card 5 · Normen ───────────────────────────────────
-  {
-    id: 'expressing-needs',
-    title: 'Mitt sätt, ditt sätt',
-    subtitle: 'Olika sätt att vara förälder',
-    categoryId: 'communication',
-    sections: [
-      {
-        id: 'opening-expressing-needs',
-        type: 'opening',
-        title: 'Frågor',
-        content: '',
-        prompts: [
-          'I vilka situationer känner du dig mest trygg i ditt sätt att vara förälder?',
-          'Tänk på ett tillfälle nyligen när ni hanterade något med barnet på väldigt olika sätt — hur kändes det för dig i stunden?',
-          'Har du märkt att du ibland förklarar dig mer än du ville — som om du behövde rättfärdiga ditt sätt att göra saker?',
-          'Ni gör samma saker, men på olika sätt. Barnet märker och kommenterar skillnaderna.\n\nNär barnet märker att ni gör saker på olika sätt — vad tror du det lär sig om er?',
-        ],
-      },
-    ],
-  },
-  // ── Card 6 · Normen ───────────────────────────────────
-  {
-    id: 'facing-adversity',
-    title: 'Att möta motgångar',
-    subtitle: 'Olika sätt att hantera press',
-    categoryId: 'communication',
-    sections: [
-      {
-        id: 'opening-facing-adversity',
-        type: 'opening',
-        title: 'Frågor',
-        content: '',
-        prompts: [
-          'När något känns svårt — vilken brukar vara din första reaktion, nästan utan att tänka?',
-          'När du är i något svårt, hur stöttar din partner dig - som faktiskt gör skillnad för dig?',
-          'Vad är det du behöver att din partner förstår om dig — som du inte brukar säga rakt ut — när du har det svårt?',
-          'Ni möter en svår period. En vill planera och agera, den andra behöver pausa och reflektera.\n\nVad händer mellan er i glappet — innan ni hittat ett gemensamt sätt att hantera det?',
-        ],
-      },
-    ],
-  },
-  // ── Card 7 · Normen ───────────────────────────────────
-  {
-    id: 'behind-the-scenes',
-    title: 'Bakom kulisserna',
-    subtitle: 'Enighet, reparation och ansvar',
-    categoryId: 'category-8',
-    sections: [
-      {
-        id: 'opening-behind-the-scenes',
-        type: 'opening',
-        title: 'Frågor',
-        content: '',
-        prompts: [
-          'Vad brukar vara det första tecknet på att ni är okej igen — efter att något gått snett mellan er?',
-          'Vad gör det svårare för dig att ta första steget tillbaka — efter en dålig stund?',
-          'Vad är skillnaden för er mellan att låta något passera — och att faktiskt göra upp?',
-          'Efter en jobbig kväll tappar en av er tålamodet inför barnet. Den andra reagerar på det, men ni tar inte diskussionen där och då.\n\nNär en av er tappat tålamodet inför barnet — vad händer mellan er efteråt?',
-        ],
-      },
-    ],
-  },
-  // ── Card 8 · Normen ───────────────────────────────────
-  {
-    id: 'thoughtful-space',
-    title: 'Omtänksamt utrymme',
-    subtitle: 'Att ge och ta utrymme utan att skapa avstånd',
-    categoryId: 'category-8',
-    sections: [
-      {
-        id: 'opening-thoughtful-space',
-        type: 'opening',
-        title: 'Frågor',
-        content: '',
-        prompts: [
-          'Vad är det första du märker i dig — precis innan du är helt slut och behöver utrymme?',
-          'Vad vill du egentligen ha från din partner när du drar dig undan — även om du inte säger det?',
-          'Är det skillnad för dig mellan att få utrymme för att din partner respekterar att du behöver det — och att bli lämnad ensam?',
-          'En drar sig undan för att orka, den andra känner sig övergiven. Båda försöker skydda relationen.\n\nNär börjar utrymmet ni ger varandra bli ett avstånd — istället för en omsorg?',
-        ],
-      },
-    ],
-  },
-  // ── Card 9 · Konflikten ───────────────────────────────
-  {
-    id: 'self-esteem-wavering',
-    title: 'När jag vacklar',
-    subtitle: 'Sårbarhet och förändrade roller',
-    categoryId: 'category-8',
-    sections: [
-      {
-        id: 'opening-self-esteem-wavering',
-        type: 'opening',
-        title: 'Frågor',
-        content: '',
-        prompts: [
-          'Hur märker du själv om ditt självförtroende skulle börja svikta — vad är det första som förändras?',
-          'När en av er går igenom en svårare period med självförtroendet — vad händer då mellan er?',
-          'Vad slutar du be om — eller ta plats med — när du inte känner dig trygg i dig själv?',
-          'En av er tar mindre plats än vanligt. Det sägs inte rakt ut, men det märks.\n\nVad behöver du från din partner i de perioderna — som du kanske inte ber om?',
-        ],
-      },
-    ],
-  },
-  // ── Card 10 · Konflikten ──────────────────────────────
-  {
-    id: 'different-parenting-styles',
-    title: 'Uppfostran ni ärvt',
-    subtitle: 'Reaktioner formade av uppväxt',
-    categoryId: 'parenting-together',
-    sections: [
-      {
-        id: 'opening-different-parenting-styles',
-        type: 'opening',
-        title: 'Frågor',
-        content: '',
-        prompts: [
-          'Vad från din egen uppväxt är du mest säker på att du vill föra vidare?',
-          'Har du någonsin reagerat på något med barnet och direkt tänkt - just så här skulle mina föräldrar ha gjort?',
-          'Kan du skilja på om du reagerar på det som faktiskt händer — eller på något det påminner dig om?',
-          'En vardagssituation väcker starka reaktioner. Den ena reagerar på händelsen, den andra på känslan som väcks.\n\nHur pratar ni om en situation där ni reagerat helt olika — utan att det blir en fråga om vem som hade rätt?',
-        ],
-      },
-    ],
-  },
-  // ── Card 11 · Konflikten ──────────────────────────────
-  {
-    id: 'parenting-boundaries',
-    title: 'Att säga ifrån',
-    subtitle: 'Gränser, starka reaktioner och samspel',
-    categoryId: 'parenting-together',
-    sections: [
-      {
-        id: 'opening-parenting-boundaries',
-        type: 'opening',
-        title: 'Frågor',
-        content: '',
-        prompts: [
-          'Efter att du satt en gräns med barnet — hur vet du om det landade rätt?',
-          'Vad är det barnet gör som väcker den starkaste reaktionen i dig — den som ibland till och med överraskar dig själv?',
-          'Vad händer mellan er när ni inte är överens om hur hårt eller mjukt en gräns ska sättas?',
-          'Ett beteende väcker olika impulser. Den ena vill agera direkt, den andra vill avvakta.\n\nVad tror du att din partner försöker skydda - i de stunderna där ni agerar olika snabbt?',
-        ],
-      },
-    ],
-  },
-  // ── Card 12 · Konflikten ──────────────────────────────
-  {
-    id: 'parenting-exhaustion',
-    title: 'Era värderingar',
-    subtitle: 'Mina, dina och våra — i vardagliga val',
-    categoryId: 'parenting-together',
-    sections: [
-      {
-        id: 'opening-parenting-exhaustion',
-        type: 'opening',
-        title: 'Frågor',
-        content: '',
-        prompts: [
-          'Vad hoppas du att barnet lär sig av att se hur ni är mot varandra?',
-          'Vilken värdering är viktigast för dig i teorin — men svårast att faktiskt följa hemma?',
-          'Gör er relation det lättare eller svårare att leva som du egentligen vill?',
-          'Barnet beter sig respektlöst. En markerar direkt mot barnet. Den andra reagerar mer på hur gränsen sätts: ton, ordval eller situation.\n\nNär ni reagerar olika i ett spänt ögonblick med barnet - vad försökte du skydda?',
-        ],
-      },
-    ],
-  },
-  // ── Card 13 · Längtan ─────────────────────────────────
+  // 0 — our-traditions (Grunden)
   {
     id: 'our-traditions',
-    title: 'Era traditioner',
-    subtitle: 'Mina, dina och våra — vad ni för vidare',
+    title: 'Vår uppväxt',
+    subtitle: 'Mönstren vi ärvde – och de vi skapar idag',
     categoryId: 'individual-needs',
-    sections: [
-      {
-        id: 'opening-our-traditions',
-        type: 'opening',
-        title: 'Frågor',
-        content: '',
-        prompts: [
-          'Finns det något ni gör nu som familj, som började i en av era uppväxter - men som nu känns som ert eget?',
-          'Har ni skapat något tillsammans - en vana, ett sätt att fira, ett återkommande ögonblick — som inte fanns i någon av era familjer innan?',
-          'Vilka förväntningar på hur ett hem ska fungera har ni ärvt var för sig — men aldrig riktigt pratat igenom som era gemensamma?',
-          'Barnet frågar varför ni gör saker på ett visst sätt. Ni märker att svaret inte är "för att vi valt det" — utan "för att det alltid varit så".\nVad vill ni att svaret ska vara - när barnet frågar varför er familj gör som ni gör?',
-        ],
-      },
-    ],
+    sections: [{
+      id: 'opening-our-traditions', type: 'opening', title: 'Frågor', content: '',
+      prompts: [
+        'Hur tog sig kärleken uttryck i hemmet där du växte upp? Tänk inte på vad du fick höra, utan på vad du faktiskt såg.',
+        'Vad lärde din uppväxtmiljö dig om hur man hanterar konflikter och försoning?',
+        'Vilka beteenden från din barndom har du tagit med dig, och vilka har du valt att lämna bakom dig, när det gäller att visa kärlek som vuxen?',
+        'Reflektera: Vilket invant mönster faller du in i när du är trött, sårad eller mitt i ett gräl? Har du funderat på varifrån det mönstret kommer?',
+      ],
+    }],
   },
-  // ── Card · Längtan ────────────────────────────────────
+  // 1 — identity-shift (Grunden)
   {
-    id: 'when-life-tilts',
-    title: 'När livet lutar',
-    subtitle: 'Att ge varandra utrymme',
-    categoryId: 'category-9',
-    sections: [
-      {
-        id: 'opening-when-life-tilts',
-        type: 'opening',
-        title: 'Frågor',
-        content: '',
-        prompts: [
-          'Finns det något du drömmer om för egen del — som skulle förändra er vardag?',
-          'Hur känns det att stötta din partners dröm — när det kostar dig något?',
-          'När börjar stödet till din partner kosta mer än du klarar av?',
-          'En av er vill satsa helhjärtat på något som under en tid tar mycket energi. Den andra stöttar, men oroar sig för balansen.\n\nVad behöver finnas på plats mellan er för att den perioden ska stärka relationen — istället för att tära på den?',
-        ],
-      },
-    ],
+    id: 'identity-shift',
+    title: 'Utvecklingen',
+    subtitle: 'Hur vi formats sedan vi blev ett par',
+    categoryId: 'emotional-intimacy',
+    sections: [{
+      id: 'opening-identity-shift', type: 'opening', title: 'Frågor', content: '',
+      prompts: [
+        'Vad har förändrats hos dig sedan vi möttes — på riktigt, inte bara på ytan?',
+        'Vilka av mina förändringar tror du att jag inte själv har sett ännu?',
+        'Hur har du själv hanterat att jag har förändrats — vad har du anpassat dig till, och vad har du burit tyst?',
+        'Föreställ er: Om en av er fortsätter förändras i en riktning den andra inte kan följa — hur skulle ni märka det innan det var för sent?',
+      ],
+    }],
   },
-  // ── Card 16 · Längtan ─────────────────────────────────
+  // 2 — listening-presence (Tillsammans)
+  {
+    id: 'listening-presence',
+    title: 'Att bli sedd på riktigt',
+    subtitle: 'Det jag längtar efter att du ser – och det du kanske missar',
+    categoryId: 'communication',
+    sections: [{
+      id: 'opening-listening-presence', type: 'opening', title: 'Frågor', content: '',
+      prompts: [
+        'När kände du dig senast genuint sedd av mig?',
+        'Vilken sida av dig upplever du att jag missar mest?',
+        'Vad har du gjort för att verkligen bli sedd av mig, och finns det något du har gett upp om längs vägen?',
+        'Föreställ er: Om en del av dig förblir osedd hos mig — hur tror du att det kommer att påverka er om fem år?',
+      ],
+    }],
+  },
+  // 3 — expressing-needs (Tillsammans)
+  {
+    id: 'expressing-needs',
+    title: 'Det som förblir osagt',
+    subtitle: 'Tystnadens innehåll – och priset vi betalar',
+    categoryId: 'communication',
+    sections: [{
+      id: 'opening-expressing-needs', type: 'opening', title: 'Frågor', content: '',
+      prompts: [
+        'Finns det någon sanning om dig själv som du aldrig har vågat dela med mig?',
+        'Har det funnits stunder när du valt att vara tyst för att skydda mig — och vem skyddade egentligen den tystnaden?',
+        'Hur mår du med det som du inte berättar — känns det lätt eller tynger det dig?',
+        'Tänk om en av er bär på en tystnad under de kommande tio åren — hur skulle det påverka er relation?',
+      ],
+    }],
+  },
+  // 4 — behind-the-scenes (Grunden)
+  {
+    id: 'behind-the-scenes',
+    title: 'Vänskapens betydelse',
+    subtitle: 'Det som vänner ger – det relationen inte rymmer',
+    categoryId: 'category-8',
+    sections: [{
+      id: 'opening-behind-the-scenes', type: 'opening', title: 'Frågor', content: '',
+      prompts: [
+        'Vad ger dina närmaste vänner dig som jag inte kan ge?',
+        'När valde du senast en vän framför mig — och hur kändes det efteråt?',
+        'Hur har du själv balanserat dina vänskaper mot vårt förhållande — och har den balansen förändrats med tiden?',
+        'Föreställ dig: Om en av dina närmaste vänner och jag hamnade i konflikt — vems sida tror du att du skulle ta, och varför?',
+      ],
+    }],
+  },
+  // 5 — thoughtful-space (Grunden)
+  {
+    id: 'thoughtful-space',
+    title: 'Rösterna utifrån',
+    subtitle: 'Omvärldens blickar – hur påverkas vi av andras åsikter?',
+    categoryId: 'category-8',
+    sections: [{
+      id: 'opening-thoughtful-space', type: 'opening', title: 'Frågor', content: '',
+      prompts: [
+        'Vems syn på vårt förhållande betyder mest för dig?',
+        'Finns det någon i din närhet vars åsikt om oss du fortfarande bär med dig — på gott eller ont?',
+        'Hur hanterar du det när någon ifrågasätter eller bekräftar oss — tar du till dig det eller stänger du ute det?',
+        'Föreställ er: Om människor ni litar på började tvivla på er som par — skulle ni lyssna eller göra motstånd? Och vad skulle det kosta att välja det andra alternativet?',
+      ],
+    }],
+  },
+  // 6 — self-esteem-wavering (Grunden)
+  {
+    id: 'self-esteem-wavering',
+    title: 'Det egna utrymmet',
+    subtitle: 'Livet utanför oss – nödvändigheten av att få andas fritt',
+    categoryId: 'category-8',
+    sections: [{
+      id: 'opening-self-esteem-wavering', type: 'opening', title: 'Frågor', content: '',
+      prompts: [
+        'Vilket rum utanför "oss" känns mest betydelsefullt för dig just nu?',
+        'På vilket sätt berikar ditt eget utrymme vår relation — och när får det dig snarare att distansera dig?',
+        'Vad har du gjort för att värna om ditt eget utrymme — och vad har du valt att avstå från för vår skull?',
+        'Föreställ er: Om en av er helt förlorade sitt eget utrymme — vad skulle hända med "oss"?',
+      ],
+    }],
+  },
+  // 7 — smallest-we (Vardagen)
+  {
+    id: 'smallest-we',
+    title: 'Det osynliga ansvaret',
+    subtitle: 'Tankekraften och den mentala bördan',
+    categoryId: 'emotional-intimacy',
+    sections: [{
+      id: 'opening-smallest-we', type: 'opening', title: 'Frågor', content: '',
+      prompts: [
+        'Vem av oss bär det osynliga ansvaret för vårt liv — och hur märker den andra av det?',
+        'När du tar ansvar för oss, hur känns det i kroppen — som omtanke eller som en tyngd?',
+        'Vad har du gjort med rollen du har hamnat i — har du accepterat den, kämpat emot den eller försökt prata om den?',
+        'Föreställ er: Om den som planerar slutade planera under en månad — vad skulle hända med er då?',
+      ],
+    }],
+  },
+  // 8 — worth-spending-on (Vardagen)
   {
     id: 'worth-spending-on',
-    title: 'Värt att spendera på',
-    subtitle: 'Vad som känns värdefullt att investera i; tid, energi, pengar',
+    title: 'Pengarnas symbolik',
+    subtitle: 'Vad ekonomi betyder för oss – bortom kronor och ören',
     categoryId: 'category-6',
-    sections: [
-      {
-        id: 'opening-worth-spending-on',
-        type: 'opening',
-        title: 'Frågor',
-        content: '',
-        prompts: [
-          'Vad saknade du som barn som du nu vill ge dina egna barn?',
-          'Vad skulle ni vilja investera i som familj — som verkligen känns värt det?',
-          'Tänk på en satsning ni gjort som familj som kändes rätt — och en som i efterhand inte var värd det. Vad skilde dem åt?',
-          'Ni står inför en investering som kräver tid, pengar eller energi. Ni märker att ni har olika bilder av vad som är "värt det."\n\nNär ni inte är överens om en prioritering — vad behöver var och en av er veta för att kunna mötas? Trygghet, mening, eller något annat.',
-        ],
-      },
-    ],
+    sections: [{
+      id: 'opening-worth-spending-on', type: 'opening', title: 'Frågor', content: '',
+      prompts: [
+        'Vad betyder pengar för dig — trygghet, frihet, kontroll, oberoende eller något helt annat?',
+        'Hur tror du att du skulle förändras om du tjänade betydligt mer eller mindre än vad du gör i dag?',
+        'Vad har din uppväxt lärt dig om pengar — och vad väljer du att göra annorlunda i dag?',
+        'Föreställ er följande: Om en av er förlorade sin inkomst under ett års tid — hur skulle det påverka era roller och er ömsesidiga respekt?',
+      ],
+    }],
   },
-  // ── Card 17 · Valet ───────────────────────────────────
+  // 9 — facing-adversity (Tillsammans)
+  {
+    id: 'facing-adversity',
+    title: 'Att bära och bli buren',
+    subtitle: 'Omsorgens förutsättningar – balansen mellan närhet och tyngd',
+    categoryId: 'communication',
+    sections: [{
+      id: 'opening-facing-adversity', type: 'opening', title: 'Frågor', content: '',
+      prompts: [
+        'När känner du dig genuint omhändertagen av mig?',
+        'Finns det stunder då du upplever att du bär mig — eller att jag bär dig — på ett sätt som känns för tungt?',
+        'När du själv har behövt mest stöd, hur har du hanterat det — har du vänt dig till mig, dragit dig undan eller hittat något annat sätt?',
+        'Föreställ er: Om en av er drabbades av långvarig sjukdom eller psykisk ohälsa — hur skulle ni hantera det utan att den ena försvinner i omsorgstagandet och den andra bryts ner?',
+      ],
+    }],
+  },
+  // 10 — conflict-repair (Tillsammans)
+  {
+    id: 'conflict-repair',
+    title: 'Den tysta muren',
+    subtitle: 'Konflikternas reaktionsmönster – vad döljer sig bakom tystnaden?',
+    categoryId: 'communication',
+    sections: [{
+      id: 'opening-conflict-repair', type: 'opening', title: 'Frågor', content: '',
+      prompts: [
+        'Vad händer i din kropp när en konflikt blir övermäktig?',
+        'Vad behöver du av mig i sådana stunder — och vet jag det redan, eller har vi aldrig pratat om det på riktigt?',
+        'Hur har du hanterat det när jag har dragit mig undan eller tystnat — vad har du gjort, och hur har det känts för dig?',
+        'Föreställ er: Om en av er stängde av helt i flera dagar — hur skulle den andre kunna skilja på att ge utrymme och att bli övergiven?',
+      ],
+    }],
+  },
+  // 11 — adrift (Vardagen)
   {
     id: 'adrift',
-    title: 'På drift',
-    subtitle: 'När relationen långsamt ändrar riktning',
+    title: 'Begäret och avståndet',
+    subtitle: 'När begäret möter vardagen – och allt som sker däremellan',
     categoryId: 'daily-life',
-    sections: [
-      {
-        id: 'opening-adrift',
-        type: 'opening',
-        title: 'Frågor',
-        content: '',
-        prompts: [
-          'Har det hänt att ni varit tillsammans men du ändå känt dig ensam — och vad tror du det berodde på?',
-          'Vad är det första du brukar göra när du märker att avståndet mellan er har växt — säger du något, eller väntar du?',
-          'Växer distansen mellan er mer efter bråk — eller tyst, under perioder när ingenting är fel?',
-          'Ni bråkar sällan. Men ni skrattar inte heller som förr. Närhet skjuts upp till "sen".\n\nHur avgör ni om ni bara går igenom en tyst period — eller om något faktiskt håller på att förändras mellan er?',
-        ],
-      },
-    ],
+    sections: [{
+      id: 'opening-adrift', type: 'opening', title: 'Frågor', content: '',
+      prompts: [
+        'När känner du dig genuint nära mig — utöver sex?',
+        'Hur visar du begär — och hur skulle du vilja att jag besvarade det?',
+        'Hur har du förhållit dig till ditt begär i vår relation — har du närat det, lagt det åt sidan eller väntat på att det ska uppstå av sig själv?',
+        'Föreställ er: Om en av er hade betydligt mindre sexlust än den andra — hur skulle ni kunna vårda närheten utan att skapa press eller skuldkänslor?',
+      ],
+    }],
   },
-  // ── Card 18 · Valet ───────────────────────────────────
+  // 12 — love-languages (Vardagen)
   {
     id: 'love-languages',
-    title: 'Att nå fram',
-    subtitle: 'Närhet och att nå fram till varandra',
+    title: 'Den outtalade längtan',
+    subtitle: 'Det vi suktar efter – men sällan vågar be om',
     categoryId: 'daily-life',
-    sections: [
-      {
-        id: 'opening-love-languages',
-        type: 'opening',
-        title: 'Frågor',
-        content: '',
-        prompts: [
-          'Hur visar du att du vill vara nära — och tror du att din partner läser det rätt?',
-          'Vilken liten sak gör din partner — eller skulle kunna göra — som får dig att känna dig genuint omhändertagen?',
-          'Vad gör din partner som du ibland misstolkar — som egentligen är deras sätt att söka närhet?',
-          'Trötthet och längtan krockar. Den ena vill vara nära, den andra orkar inte. Trots goda intentioner smyger sig både press och tolkningar in.\n\nVad händer mellan er när "jag vill" möter "jag orkar inte"?',
-        ],
-      },
-    ],
+    sections: [{
+      id: 'opening-love-languages', type: 'opening', title: 'Frågor', content: '',
+      prompts: [
+        'Vilken typ av närhet längtar du mest efter från mig just nu?',
+        'Vad är svårast för dig att be mig om — och vad är du rädd ska hända om du uttryckte det rakt ut?',
+        'Hur har du hanterat önskningar som du burit på men inte sagt högt — har du väntat, antytt eller gett upp hoppet om dem?',
+        'Föreställ er: Om ni fortsatte att undvika vissa behov i tio år till — hur skulle de outtalade önskningarna forma er närhet då?',
+      ],
+    }],
+  },
+  // 13 — when-life-tilts (Tillsammans)
+  {
+    id: 'when-life-tilts',
+    title: 'Vägen tillbaka',
+    subtitle: 'Hur vi finner varandra igen – efter att ha orsakat varandra smärta',
+    categoryId: 'category-9',
+    sections: [{
+      id: 'opening-when-life-tilts', type: 'opening', title: 'Frågor', content: '',
+      prompts: [
+        'Tänk på varsitt tillfälle då ni sårade varandra. Inte nödvändigtvis det värsta, men en händelse du minns tydligt. Vad hände, och varför upplevde du det som sårande?',
+        'Hur hanterades situationen — pratade ni ut om det, eller gick ni bara vidare?',
+        'Vad krävs för att en spricka ska kännas läkt för din del?',
+        'Föreställ er: Nästa gång ni sårar eller blir sårade av varandra — vad är det allra första du önskar att den andre gör?',
+      ],
+    }],
+  },
+  // 14 — family-ab (Riktningen)
+  {
+    id: 'family-ab',
+    title: 'Uppmärksamhet åt annat håll',
+    subtitle: 'Dragningen utåt – och var gränserna går',
+    categoryId: 'emotional-intimacy',
+    sections: [{
+      id: 'opening-family-ab', type: 'opening', title: 'Frågor', content: '',
+      prompts: [
+        'Vad eller vem fångar din uppmärksamhet utanför vår relation — även när du inte vill att det ska ske?',
+        'Var går din gräns mellan att bara lägga märke till någon och att faktiskt agera — och har vi någonsin diskuterat var den gränsen går?',
+        'Hur har du själv hanterat dragning till andra under tiden vi varit tillsammans — har du låtit känslan passera, ältat den eller burit den i tysthet?',
+        'Föreställ er: Om någon av er kände en dragning till en annan person — skulle det att prata öppet om det föra er närmare, eller skulle det kännas som ett hot?',
+      ],
+    }],
+  },
+  // 15 — parenting-boundaries (Riktningen)
+  {
+    id: 'parenting-boundaries',
+    title: 'De röda linjerna',
+    subtitle: 'Det icke-förhandlingsbara – och det som aldrig sagts',
+    categoryId: 'parenting-together',
+    sections: [{
+      id: 'opening-parenting-boundaries', type: 'opening', title: 'Frågor', content: '',
+      prompts: [
+        'Vilka beteenden är absolut oacceptabla för dig i en relation?',
+        'Vilka av mina gränser anser du dig ha lärt dig tolka, trots att jag aldrig uttryckt dem explicit?',
+        'Vad har du förlåtit tidigare som du trodde var omöjligt — och finns det något du idag vet med säkerhet att du aldrig skulle kunna förlåta?',
+        'Föreställ er: Om en av er överskred en absolut gräns hos den andre — finns det en väg tillbaka, och vad skulle krävas för att den vägen skulle vara möjlig?',
+      ],
+    }],
+  },
+  // 16 — different-parenting-styles (Riktningen)
+  {
+    id: 'different-parenting-styles',
+    title: 'Frågan om barn',
+    subtitle: 'Förväntningar på föräldraskap – och det vi inte vågat uttala',
+    categoryId: 'parenting-together',
+    sections: [{
+      id: 'opening-different-parenting-styles', type: 'opening', title: 'Frågor', content: '',
+      prompts: [
+        'Hur har din barndom påverkat din bild av att vara förälder — eller att välja att inte vara det?',
+        'Vilken roll spelar barn i din vision av vår framtid, och hur har den bilden förändrats sedan vi träffades?',
+        'Finns det något gällande frågan om barn som du har burit på, men inte vågat säga rakt ut till mig?',
+        'Föreställ er: Om en av er ville ha barn (eller fler barn) och den andre inte ville — hur skulle ni navigera mellan ett ja och ett nej i en och samma kärlek?',
+      ],
+    }],
+  },
+  // 17 — parenting-exhaustion (Riktningen)
+  {
+    id: 'parenting-exhaustion',
+    title: 'Drömmens pris',
+    subtitle: 'Det vi bär på – och vad det kostar att förverkliga våra mål',
+    categoryId: 'parenting-together',
+    sections: [{
+      id: 'opening-parenting-exhaustion', type: 'opening', title: 'Frågor', content: '',
+      prompts: [
+        'Vilken av dina drömmar är icke-förhandlingsbar — det där som måste få finnas i ditt liv för att det ska kännas som ditt eget?',
+        'Vilken av mina drömmar är du rädd att jag ska förlora — för min skull, snarare än din?',
+        'Vad har du redan offrat av dina egna drömmar för vår skull, och har det varit värt det?',
+        'Tänk er följande: Om en av er var tvungen att ge upp en dröm för att skapa stabilitet — hur skulle ni avgöra vems dröm som fick prioriteras, och hur skulle ni hantera konsekvenserna av det beslutet?',
+      ],
+    }],
   },
 ];
 

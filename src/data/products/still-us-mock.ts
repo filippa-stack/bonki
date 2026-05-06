@@ -32,7 +32,7 @@ const categories: Category[] = LAYER_META.map((l, i) => ({
   title: l.title,
   subtitle: l.subtitle,
   description: l.subtitle,
-  cardCount: LAYERS[i].cards.length,
+  cardCount: LAYERS[i].cardIds.length,
   color: l.color,
 }));
 
