@@ -11,7 +11,29 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import type { Card } from '@/types';
 import { useCardImage } from '@/hooks/useCardImage';
-import { SAFFRON_FLAME, WARM_GOLD, LANTERN_GLOW } from '@/lib/palette';
+import {
+  SAFFRON_FLAME,
+  WARM_GOLD,
+  LANTERN_GLOW,
+  CORNFLOWER,
+  MIDNIGHT_INK,
+  DUSTY_ROSE,
+  STORM_GREY,
+  SAGE,
+} from '@/lib/palette';
+
+/** Hardcoded contrasting medallion fill per anchor color (Emma's mockups). */
+function getCircleColor(cardColor: string): string {
+  switch (cardColor) {
+    case CORNFLOWER:   return '#5A85D5'; // darker (only light anchor)
+    case MIDNIGHT_INK: return '#2A2D45';
+    case DUSTY_ROSE:   return '#C99A9D';
+    case WARM_GOLD:    return '#E8D4A8';
+    case STORM_GREY:   return '#5A6573';
+    case SAGE:         return '#A8B5A8';
+    default:           return cardColor;
+  }
+}
 
 interface AdultProductCardTileProps {
   card: Card;
@@ -62,29 +84,46 @@ export default function AdultProductCardTile({
         minWidth: 0,
       }}
     >
-      {/* Zone A — illustration (65%) */}
+      {/* Zone A — circular medallion holding illustration (65%) */}
       <div
         style={{
           position: 'relative',
           flex: '0 0 65%',
           backgroundColor: cardColor,
           overflow: 'hidden',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
         }}
       >
-        {tileImage && (
-          <img
-            src={tileImage}
-            alt=""
-            aria-hidden="true"
-            style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'contain',
-              padding: '6px',
-              display: 'block',
-            }}
-          />
-        )}
+        {/* Medallion */}
+        <div
+          style={{
+            width: '78%',
+            aspectRatio: '1 / 1',
+            borderRadius: '50%',
+            backgroundColor: getCircleColor(cardColor),
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            overflow: 'hidden',
+          }}
+        >
+          {tileImage && (
+            <img
+              src={tileImage}
+              alt=""
+              aria-hidden="true"
+              style={{
+                width: '85%',
+                height: '85%',
+                objectFit: 'contain',
+                objectPosition: 'center',
+                display: 'block',
+              }}
+            />
+          )}
+        </div>
 
         {/* Inner shadow at bottom edge of zone A */}
         <div
