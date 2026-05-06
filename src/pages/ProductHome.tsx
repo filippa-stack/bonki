@@ -98,22 +98,19 @@ export default function ProductHome() {
     );
   }
 
-  // Loading gate while DB decides whether intro is needed — matches product bg to avoid flash
+  // Loading gate paints the destination shell color (Deep Dusk for Still Us, Midnight Ink for kids)
+  // — never product color, to avoid a color flash before the home renders.
+  const loadingBg = product?.id === 'still_us' ? '#0B1026' : '#1A1A2E';
+
   if (showIntro === null) {
     return (
-      <div style={{
-        minHeight: '100vh',
-        backgroundColor: product?.backgroundColor ?? 'var(--surface-base)',
-      }} />
+      <div style={{ minHeight: '100vh', backgroundColor: loadingBg }} />
     );
   }
 
   if (paywallAccessLoading && product) {
     return (
-      <div style={{
-        minHeight: '100vh',
-        backgroundColor: product.backgroundColor ?? 'var(--surface-base)',
-      }} />
+      <div style={{ minHeight: '100vh', backgroundColor: loadingBg }} />
     );
   }
 
