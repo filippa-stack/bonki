@@ -85,7 +85,7 @@ export function slugFromCardIndex(index: number): string | null {
 }
 
 // ── Feedback cards (0-indexed) ──────────────────────────────
-export const FEEDBACK_CARDS = [0, 3, 10, 21];
+export const FEEDBACK_CARDS = [0, 3, 9, 17];
 
 // ── Notification codes ──────────────────────────────────────
 export type NotificationType = 'N1' | 'N2' | 'N3' | 'N4' | 'N5' | 'N6' | 'N7' | 'N8';
