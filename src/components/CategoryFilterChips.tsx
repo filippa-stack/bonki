@@ -117,6 +117,15 @@ export default function CategoryFilterChips({
       onChange(new Set([ALL_FILTER_KEY]));
       return;
     }
+    if (selectionMode === 'single') {
+      // Tapping the active chip snaps back to Alla; otherwise replace.
+      if (selected.has(id) && selected.size === 1) {
+        onChange(new Set([ALL_FILTER_KEY]));
+      } else {
+        onChange(new Set([id]));
+      }
+      return;
+    }
     const next = new Set(selected);
     next.delete(ALL_FILTER_KEY);
     if (next.has(id)) next.delete(id);
