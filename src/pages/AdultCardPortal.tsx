@@ -194,8 +194,8 @@ export default function AdultCardPortal() {
   }
   hasRenderedContent.current = true;
 
-  const ctaBg = `color-mix(in srgb, ${cardColor} 30%, rgba(255,255,255,0.06))`;
-  const ctaBorder = `1px solid color-mix(in srgb, ${cardColor} 50%, transparent)`;
+  const ctaBg = `color-mix(in srgb, ${WARM_GOLD} 28%, rgba(255,255,255,0.06))`;
+  const ctaBorder = `1px solid color-mix(in srgb, ${WARM_GOLD} 50%, transparent)`;
 
   return (
     <div data-sensitive style={{
