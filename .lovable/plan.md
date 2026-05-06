@@ -1,70 +1,62 @@
-## Goal
-Make Vårt Vi's hero behave like the kids product home pattern: hero illustration confined to a defined zone at the top, fading cleanly into a uniform Deep Dusk workspace behind the card grid. The illustration must not bleed through behind cards.
+## Diagnosis
 
-## Diagnosis (`src/components/AdultProductHome.tsx`)
+### Subtitle → resume banner gap
 
-**How the hero is positioned today (lines 116–160):**
-- `motion.div` wrapper: `position: absolute; top: -8vh; left: -5vw; right: -5vw; height: 100vh; zIndex: 0`.
-- Inside: a backlight glow + an `<img>` at `opacity: 0.42`, `width: 110%`, `top: 5%`.
-- **No bottom-fade scrim.** That's why the couple shows through behind every card row — the image is full-height with no mask.
+**KidsProductHome.tsx (lines 624–625):**
+```tsx
+{/* Spacer — pushes content below hero face zone */}
+{!useSquareGrid && <div style={{ height: 'clamp(28px, 7vh, 60px)' }} />}
+```
+Line 360: `const useSquareGrid = true;` → **the spacer is never rendered.** The gap is effectively 0 from the title block; only the sticky header's own `paddingTop: 6px` and the banner wrapper's `marginBottom: 6px` create breathing room.
 
-**How `KidsProductHome.tsx` solves it (lines 537–549):**
-- Same wrapper geometry (`height: 100vh`).
-- Adds a bottom-anchored gradient inside the wrapper:
-  ```
-  background: linear-gradient(to top,
-    ${bg}F0 0%, ${bg}E0 15%, ${bg}C0 35%,
-    ${bg}80 55%, ${bg}40 70%, transparent 100%);
-  height: 90%;
-  ```
-- This scrim (filled with the page bg color) covers the lower portion of the hero, leaving only the top ~25–30% visible. Below it, cards sit on uniform `bg`.
-- For Still Us specifically the kids file currently *skips* this scrim (`product.id !== 'still_us'` is in the exclusion list), which is why Still Us inherited the "no scrim" treatment when its bespoke AdultProductHome was built.
+**AdultProductHome.tsx (line 232):**
+```tsx
+<div style={{ height: 'clamp(16px, 4.5vh, 40px)' }} />
+```
+Always rendered — adds ~16–40px of empty space that kids doesn't have. This is the visible difference.
 
-**Page background below hero today:**
-- The outer container is already `backgroundColor: DEEP_DUSK_BG` (#0B1026). The Deep Dusk is *there* — the hero illustration is just painted over it. We don't need a different bg; we need a scrim that fades the hero into the existing Deep Dusk.
+### Subtitle typography
+
+| Property | Kids (line 603–622) | Adult (line 217–228) |
+|---|---|---|
+| `fontFamily` | `var(--font-display)` | `var(--font-display)` ✓ |
+| `fontSize` | `clamp(15px, 4.2vw, 19px)` | `clamp(15px, 4.2vw, 19px)` ✓ |
+| `fontStyle` | `italic` | `italic` ✓ |
+| `fontWeight` | **`600`** | **`500`** ✗ |
+| `color` | `LANTERN_GLOW` | `LANTERN_GLOW` ✓ |
+| `opacity` | (none) | **`0.85`** ✗ |
+| `letterSpacing` | `0.03em` | `0.03em` ✓ |
+| `textShadow` | drop shadows **+ 3 bg-color glow stops** (`0 0 24px ${bg}`, `0 0 48px ${bg}`, `0 0 72px ${bg}`) | drop shadows only ✗ |
+| `marginTop` | `8px` | `6px` ✗ (kids tighter→larger) |
+
+The lighter, more delicate look on Vårt Vi comes from `fontWeight: 500` + `opacity: 0.85` + missing glow halo.
 
 ## Fix (single file: `src/components/AdultProductHome.tsx`)
 
-Add a bottom-fading scrim inside the hero `motion.div`, immediately after the `<img>` (around line 158). Same pattern as kids, tuned for Vårt Vi:
+Mirror kids exactly. Use `CORNFLOWER` as the equivalent of kids' `bg` glow color (Vårt Vi's anchor — same role kids' product `bg` plays for them).
 
-```tsx
-{/* Bottom scrim — defines hero zone end, fades into Deep Dusk workspace */}
-<div
-  style={{
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    height: '70%',
-    background: `linear-gradient(to top,
-      ${DEEP_DUSK_BG} 0%,
-      ${DEEP_DUSK_BG}F0 18%,
-      ${DEEP_DUSK_BG}D0 35%,
-      ${DEEP_DUSK_BG}90 55%,
-      ${DEEP_DUSK_BG}40 75%,
-      transparent 100%)`,
-    pointerEvents: 'none',
-  }}
-/>
-```
+1. **Subtitle styling** (lines 217–228) — change `fontWeight` to `600`, drop `opacity`, restore `marginTop: 8px` to match kids, and add the three glow-halo shadow stops using `CORNFLOWER`:
+   ```tsx
+   fontWeight: 600,
+   marginTop: '8px',
+   textShadow: [
+     '0 1px 3px rgba(0,0,0,0.9)',
+     '0 2px 8px rgba(0,0,0,0.7)',
+     `0 0 24px ${CORNFLOWER}`,
+     `0 0 48px ${CORNFLOWER}`,
+     `0 0 72px ${CORNFLOWER}`,
+   ].join(', '),
+   ```
 
-Why these stops:
-- The hero zone visually ends just above the resume banner / filter chips. Wrapper is `100vh` from `-8vh` → bottom of wrapper is at ~92vh. The 70%-tall scrim covers roughly the lower 64vh, fully opaque from ~0–18% (bottom ~12vh), heavy through 35% (~24vh), fading out at the top of the scrim ~64vh from page top — which is right around the resume banner / chips area on a 844px viewport.
-- Final stop at `transparent 100%` means the upper hero zone is untouched: the couple, glow, and atmospheric scrim above it all read exactly as today.
-- Using `DEEP_DUSK_BG` (already imported) matches the page background exactly, so the transition is seamless — no color shift.
+2. **Subtitle → banner spacer** (line 232) — remove entirely. Kids effectively renders 0 here (spacer is gated off by `useSquareGrid`).
 
 ## Untouched
-- Hero illustration itself (same source, same opacity, same crop).
-- Backlight glow (line 132–144).
-- Atmospheric cool-glow ellipse (line 102–114) — sits above the scrim's transparent zone, so it stays visible.
-- Top scrim (line 162–173).
-- Title, subtitle, banner, chips, grid, tile composition.
-- All routing, session, and progress logic.
-- `KidsProductHome.tsx`.
+- Hero illustration, scrim, glow.
+- Title `<h1>` styling.
+- Resume banner, filter chips, grid, tile composition.
+- KidsProductHome.tsx.
 
 ## Verification (iPhone 15, 390×844)
-- `/product/still-us`: hero illustration visible at the top (couple + glow), atmosphere intact.
-- Around the resume banner / filter chips, background fades smoothly to clean Deep Dusk.
-- Cards sit on uniform Deep Dusk; no figure or hero content shows through behind any card row.
-- Scrolling: cards scroll over uniform Deep Dusk all the way down. Hero stays at the top.
+- Subtitle "21 samtal om att förbli ett vi." reads with the same weight, halo, and visual presence as kids subtitles.
+- Resume banner sits immediately below the subtitle (only the sticky header's 6px + banner's 6px margins between them) — matching kids rhythm exactly.
 - Kids product homes unchanged.

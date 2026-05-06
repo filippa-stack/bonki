@@ -218,18 +218,22 @@ export default function AdultProductHome({ product }: { product: ProductManifest
             style={{
               fontFamily: 'var(--font-display)',
               fontSize: 'clamp(15px, 4.2vw, 19px)',
-              fontWeight: 500,
+              fontWeight: 600,
               fontStyle: 'italic',
               color: LANTERN_GLOW,
-              opacity: 0.85,
-              marginTop: '6px',
+              marginTop: '8px',
               letterSpacing: '0.03em',
-              textShadow: '0 1px 3px rgba(0,0,0,0.9), 0 2px 8px rgba(0,0,0,0.7)',
+              textShadow: [
+                '0 1px 3px rgba(0,0,0,0.9)',
+                '0 2px 8px rgba(0,0,0,0.7)',
+                `0 0 24px ${CORNFLOWER}`,
+                `0 0 48px ${CORNFLOWER}`,
+                `0 0 72px ${CORNFLOWER}`,
+              ].join(', '),
             }}
           >
             {product.cards.length} samtal om {product.tagline.toLowerCase().replace(/\.$/, '')}.
           </p>
-          <div style={{ height: 'clamp(16px, 4.5vh, 40px)' }} />
         </div>
 
         <StickyFilterHeader product={adultProduct} progress={progress} accent={accent} />
