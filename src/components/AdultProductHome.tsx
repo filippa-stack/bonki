@@ -103,51 +103,7 @@ export default function AdultProductHome({ product }: { product: ProductManifest
         }}
       />
 
-      {/* Hero illustration */}
-      {product.heroImage && (
-        <motion.div
-          initial={{ opacity: 1 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6 }}
-          style={{
-            position: 'absolute',
-            top: '-8vh',
-            left: '-5vw',
-            right: '-5vw',
-            height: '100vh',
-            zIndex: 0,
-            pointerEvents: 'none',
-          }}
-        >
-          {/* Subtle backlight behind figures */}
-          <div
-            style={{
-              position: 'absolute',
-              top: '5%',
-              left: '-5%',
-              width: '70%',
-              height: '60%',
-              background:
-                'radial-gradient(ellipse at 30% 35%, rgba(100,149,237,0.30), transparent 60%)',
-              pointerEvents: 'none',
-            }}
-          />
-          <img
-            src={product.heroImage}
-            alt=""
-            aria-hidden="true"
-            style={{
-              position: 'absolute',
-              top: '5%',
-              left: '-15%',
-              width: '110%',
-              height: 'auto',
-              opacity: 0.42,
-              pointerEvents: 'none',
-            }}
-          />
-        </motion.div>
-      )}
+      {/* Hero illustration removed per design — atmospheric glow only */}
 
       {/* Top scrim */}
       <div
