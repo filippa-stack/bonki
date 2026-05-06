@@ -1261,7 +1261,9 @@ export default function CardView() {
   // ─────────────────────────────────────────────────────────────
   const isInitializing = normalizedSession.loading || accessLoading || resumeLoading;
   if (isInitializing && !devState && !showCompletion && !hasRenderedContent.current) {
-    const loadingBg = product?.backgroundColor ?? 'var(--surface-base, #0B1026)';
+    const loadingBg = product?.id === 'still_us'
+      ? '#1A1A2E'
+      : (product?.backgroundColor ?? '#1A1A2E');
     return (
       <div
         style={{
