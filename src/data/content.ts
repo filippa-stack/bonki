@@ -1,7 +1,7 @@
 import { Category, Card } from '@/types';
 
 /** Bump this whenever categories or cards change in this file */
-export const CONTENT_VERSION = 12;
+export const CONTENT_VERSION = 13;
 
 export const categories: Category[] = [
   {
