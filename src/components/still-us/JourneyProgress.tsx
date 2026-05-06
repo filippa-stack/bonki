@@ -6,7 +6,25 @@
 import { motion } from 'framer-motion';
 import { EASE, BEAT_1 } from '@/lib/motion';
 import { COLORS } from '@/lib/stillUsTokens';
-import { LAYERS, TOTAL_PROGRAM_CARDS } from '@/data/stillUsSequence';
+import { LAYERS, TOTAL_PROGRAM_CARDS, CARD_SEQUENCE, bareIdFromSlug } from '@/data/stillUsSequence';
+
+/** Indices in CARD_SEQUENCE grouped by layer (used for boundary dots / current-layer label). */
+const indicesByLayer: number[][] = LAYERS.map((layer) =>
+  CARD_SEQUENCE
+    .filter((c) => (layer.cardIds as readonly string[]).includes(bareIdFromSlug(c.cardId)))
+    .map((c) => c.index)
+    .sort((a, b) => a - b),
+);
+
+function layerNameForIndex(idx: number): string {
+  const found = indicesByLayer.findIndex((arr) => arr.includes(idx));
+  return found >= 0 ? LAYERS[found].name : '';
+}
+
+function isLayerStartIndex(idx: number): boolean {
+  if (idx === 0) return false;
+  return indicesByLayer.some((arr) => arr[0] === idx);
+}
 
 interface JourneyProgressProps {
   currentCardIndex: number;
@@ -33,7 +51,7 @@ export default function JourneyProgress({ currentCardIndex, dark = false }: Jour
           letterSpacing: '0.05em',
           textTransform: 'uppercase',
         }}>
-          {LAYERS.find((l) => (l.cards as readonly number[]).includes(currentCardIndex))?.name ?? ''}
+          {layerNameForIndex(currentCardIndex)}
         </span>
       </div>
 
@@ -45,7 +63,7 @@ export default function JourneyProgress({ currentCardIndex, dark = false }: Jour
         flexWrap: 'wrap',
       }}>
         {Array.from({ length: TOTAL_PROGRAM_CARDS }, (_, i) => {
-          const isLayerBoundary = LAYERS.some((l) => (l.cards as readonly number[])[0] === i && i > 0);
+          const isLayerBoundary = isLayerStartIndex(i);
           return (
             <div key={i} style={{ display: 'flex', alignItems: 'center' }}>
               {isLayerBoundary && <div style={{ width: '6px' }} />}
