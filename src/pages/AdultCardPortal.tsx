@@ -36,6 +36,7 @@ import {
   WARM_GOLD,
   SAFFRON_FLAME,
 } from '@/lib/palette';
+import { getPortalCopy } from '@/data/stillUsPortalCopy';
 
 const ADULT_ANCHOR_COLORS = [
   CORNFLOWER, MIDNIGHT_INK, DUSTY_ROSE, WARM_GOLD, STORM_GREY, SAGE,
@@ -243,22 +244,46 @@ export default function AdultCardPortal() {
           }}>
             {card.title}
           </h1>
-          {card.subtitle && (
-            <p style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: '15px',
-              fontStyle: 'italic',
-              fontWeight: 500,
-              color: LANTERN_GLOW,
-              opacity: 0.85,
-              marginTop: '8px',
-              letterSpacing: '0.01em',
-              lineHeight: 1.4,
-              textShadow: '0 1px 3px rgba(0,0,0,0.6)',
-            }}>
-              {card.subtitle}
-            </p>
-          )}
+          {(() => {
+            const copy = product?.slug === 'still-us' ? getPortalCopy(card.id) : undefined;
+            const subtitleText = copy?.subtitle ?? card.subtitle;
+            return subtitleText ? (
+              <p style={{
+                fontFamily: 'var(--font-display)',
+                fontSize: '15px',
+                fontStyle: 'italic',
+                fontWeight: 500,
+                color: LANTERN_GLOW,
+                opacity: 0.85,
+                marginTop: '8px',
+                letterSpacing: '0.01em',
+                lineHeight: 1.4,
+                textShadow: '0 1px 3px rgba(0,0,0,0.6)',
+              }}>
+                {subtitleText}
+              </p>
+            ) : null;
+          })()}
+          {product?.slug === 'still-us' && (() => {
+            const copy = getPortalCopy(card.id);
+            return copy?.preparation ? (
+              <p style={{
+                fontFamily: 'var(--font-sans)',
+                fontSize: '14px',
+                fontWeight: 400,
+                color: LANTERN_GLOW,
+                opacity: 0.72,
+                marginTop: '14px',
+                lineHeight: 1.55,
+                maxWidth: '520px',
+                marginLeft: 'auto',
+                marginRight: 'auto',
+                textAlign: 'left',
+              }}>
+                {copy.preparation}
+              </p>
+            ) : null;
+          })()}
         </div>
 
         {/* ── Zone 2: Card preview ── */}
