@@ -46,7 +46,7 @@ const ILLUSTRATIONS: Record<string, string> = {
 };
 
 const TAGLINES: Record<string, string> = {
-  still_us: 'Förbli ett vi medan ni uppfostrar dem',
+  still_us: 'De samtal ni redan vill ha',
   jag_i_mig: 'När känslor får ord',
   jag_med_andra: 'Att vara sig själv och samspela med andra',
   jag_i_varlden: 'Att utveckla sig själv i en värld som vidgas',
@@ -448,7 +448,7 @@ export default function ProductLibrary() {
           zIndex: 0,
         }} />
 
-        {/* Mid-zone warmth — Deep Navy bleed behind Föräldrar section */}
+        {/* Mid-zone warmth — Deep Navy bleed behind Par section */}
         <div style={{
           position: 'absolute',
           top: '350px',
@@ -491,7 +491,7 @@ export default function ProductLibrary() {
       <div style={{ position: 'relative', zIndex: 1 }}>
         <KontoIcon onClick={() => setKontoOpen(true)} />
         <KontoSheet open={kontoOpen} onClose={() => setKontoOpen(false)} />
-        {/* Resume card — product-colored, above Föräldrar */}
+        {/* Resume card — product-colored, above Par */}
         <div className="px-5" style={{ marginBottom: '8px', paddingTop: 'calc(env(safe-area-inset-top, 0px) + 56px)' }}>
           <LibraryResumeCard global />
         </div>
@@ -666,7 +666,7 @@ export default function ProductLibrary() {
               opacity: 0.55,
               marginBottom: '20px',
             }}>
-              Föräldrar
+              Par
             </p>
             <PastelTile
               name="Vårt Vi"
@@ -716,7 +716,7 @@ export default function ProductLibrary() {
 
         <div className="px-5" style={{ scrollMarginTop: '8px' }}>
           {/* Free-trial mention removed — now shown per-tile */}
-          {/* Resume card moved above Föräldrar */}
+          {/* Resume card moved above Par */}
           <div style={{ height: '0px' }} />
           <motion.div
             variants={containerVariants}

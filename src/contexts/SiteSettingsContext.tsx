@@ -27,7 +27,7 @@ interface SiteSettingsContextType {
 
 const defaultSettings: SiteSettings = {
   heroTitle: 'STILL US - So we stay us',
-  heroSubtitle: 'Förbli ett vi medan vi uppfostrar dem',
+  heroSubtitle: 'De samtal ni redan vill ha',
   heroTitleColor: '#2C2420',
   heroSubtitleColor: '',
   heroTitleFont: 'serif',

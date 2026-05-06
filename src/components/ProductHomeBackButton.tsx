@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
  * Consistent back-to-library button for all product home pages.
  * Positioned top-left with safe-area support.
  */
-export default function ProductHomeBackButton({ color }: { color?: string }) {
+export default function ProductHomeBackButton({ color, to }: { color?: string; to?: string }) {
   const navigate = useNavigate();
 
   return (
@@ -15,6 +15,10 @@ export default function ProductHomeBackButton({ color }: { color?: string }) {
       animate={{ opacity: 1 }}
       transition={{ delay: 0.2, duration: 0.4 }}
       onClick={() => {
+        if (to) {
+          navigate(to);
+          return;
+        }
         localStorage.removeItem('bonki-last-active-product');
         navigate('/');
       }}
