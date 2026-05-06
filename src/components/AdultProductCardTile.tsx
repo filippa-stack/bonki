@@ -11,7 +11,30 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import type { Card } from '@/types';
 import { useCardImage } from '@/hooks/useCardImage';
-import { SAFFRON_FLAME, WARM_GOLD, LANTERN_GLOW } from '@/lib/palette';
+import {
+  SAFFRON_FLAME,
+  WARM_GOLD,
+  LANTERN_GLOW,
+  CORNFLOWER,
+  MIDNIGHT_INK,
+  DUSTY_ROSE,
+  WARM_GOLD as WARM_GOLD_ANCHOR,
+  STORM_GREY,
+  SAGE,
+} from '@/lib/palette';
+
+/** Hardcoded contrasting medallion fill per anchor color (Emma's mockups). */
+function getCircleColor(cardColor: string): string {
+  switch (cardColor) {
+    case CORNFLOWER:        return '#5A85D5'; // darker (only light anchor)
+    case MIDNIGHT_INK:      return '#2A2D45';
+    case DUSTY_ROSE:        return '#C99A9D';
+    case WARM_GOLD_ANCHOR:  return '#E8D4A8';
+    case STORM_GREY:        return '#5A6573';
+    case SAGE:              return '#A8B5A8';
+    default:                return cardColor;
+  }
+}
 
 interface AdultProductCardTileProps {
   card: Card;
