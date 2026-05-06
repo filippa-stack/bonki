@@ -188,8 +188,6 @@ export default function AdultCardPortal() {
     <div data-sensitive style={{
       minHeight: '100vh',
       background: DEEP_DUSK_BG,
-      display: 'flex',
-      flexDirection: 'column',
       position: 'relative',
       overflow: 'hidden',
     }}>
@@ -206,15 +204,17 @@ export default function AdultCardPortal() {
       <KontoIcon onClick={() => setKontoOpen(true)} />
       <KontoSheet open={kontoOpen} onClose={() => setKontoOpen(false)} />
 
+      {/* ── Scroll region ── */}
       <div style={{
         position: 'relative', zIndex: 1,
-        flex: 1, display: 'flex', flexDirection: 'column',
+        minHeight: '100vh',
+        display: 'flex', flexDirection: 'column',
         paddingTop: 'max(calc(env(safe-area-inset-top, 0px) + 60px), clamp(60px, 11vh, 90px))',
         paddingLeft: '20px', paddingRight: '20px',
-        paddingBottom: 'calc(24px + env(safe-area-inset-bottom, 0px))',
+        paddingBottom: 'calc(132px + env(safe-area-inset-bottom, 0px))',
       }}>
         {/* ── Zone 1: Header ── */}
-        <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+        <div style={{ textAlign: 'center' }}>
           <div style={{
             fontFamily: 'var(--font-display)',
             fontSize: '12px',
@@ -260,32 +260,32 @@ export default function AdultCardPortal() {
               </p>
             ) : null;
           })()}
-          {product?.slug === 'still-us' && (() => {
-            const copy = getPortalCopy(card.id);
-            return copy?.preparation ? (
-              <p style={{
-                fontFamily: 'var(--font-sans)',
-                fontSize: '14px',
-                fontWeight: 400,
-                color: LANTERN_GLOW,
-                opacity: 0.72,
-                marginTop: '14px',
-                lineHeight: 1.55,
-                maxWidth: '520px',
-                marginLeft: 'auto',
-                marginRight: 'auto',
-                textAlign: 'left',
-              }}>
-                {copy.preparation}
-              </p>
-            ) : null;
-          })()}
         </div>
 
-        {/* ── Zone 2: Card preview ── */}
+        {/* ── Preparation paragraph ── */}
+        {product?.slug === 'still-us' && (() => {
+          const copy = getPortalCopy(card.id);
+          return copy?.preparation ? (
+            <p style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: '14px',
+              fontWeight: 400,
+              color: LANTERN_GLOW,
+              opacity: 0.72,
+              margin: '36px auto',
+              lineHeight: 1.55,
+              maxWidth: '520px',
+              textAlign: 'left',
+            }}>
+              {copy.preparation}
+            </p>
+          ) : null;
+        })()}
+
+        {/* ── Zone 2: Card preview (purely visual) ── */}
         <div style={{
-          flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center',
-          minHeight: 0,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          marginTop: '12px',
         }}>
           <button
             type="button"
@@ -308,8 +308,8 @@ export default function AdultCardPortal() {
               WebkitTapHighlightColor: 'transparent',
             }}
           >
-            {/* Illustration zone (65%) */}
-            <div style={{ position: 'relative', flex: '0 0 65%', backgroundColor: cardColor, overflow: 'hidden' }}>
+            {/* Illustration zone — fills the tile */}
+            <div style={{ position: 'relative', flex: '1 1 auto', backgroundColor: cardColor, overflow: 'hidden' }}>
               <PortalCardImage cardId={card.id}>
                 {(src) => src ? (
                   <img src={src} alt="" aria-hidden="true" style={{
@@ -340,46 +340,13 @@ export default function AdultCardPortal() {
               }} />
             </div>
 
-            {/* Accent line */}
+            {/* Saffron accent line — closing visual element */}
             <div style={{ height: '1px', width: '100%', backgroundColor: accentLine, flexShrink: 0 }} />
-
-            {/* Title zone (35%) */}
-            <div style={{
-              flex: '1 1 auto', display: 'flex', alignItems: 'center',
-              padding: '14px 18px', backgroundColor: titleZoneBg, textAlign: 'left',
-            }}>
-              <span style={{
-                fontFamily: 'var(--font-display)',
-                fontVariationSettings: "'opsz' 24",
-                fontSize: '18px',
-                fontWeight: 600,
-                color: LANTERN_GLOW,
-                lineHeight: 1.25,
-                display: '-webkit-box',
-                WebkitLineClamp: 2,
-                WebkitBoxOrient: 'vertical',
-                overflow: 'hidden',
-              }}>
-                {card.title}
-              </span>
-            </div>
           </button>
         </div>
 
-        {/* ── Zone 3: Action ── */}
-        <div style={{ marginTop: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
-          <div style={{
-            fontFamily: 'var(--font-display)',
-            fontSize: '12px',
-            fontWeight: 600,
-            letterSpacing: '0.08em',
-            textTransform: 'uppercase',
-            color: LANTERN_GLOW,
-            opacity: 0.65,
-          }}>
-            CA {Math.max(2, Math.round(getPromptCount(card) * 1.2))}–{Math.max(4, Math.round(getPromptCount(card) * 2))} MIN
-          </div>
-
+        {/* ── Zone 3: Completion + sequence nav ── */}
+        <div style={{ marginTop: '24px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
           {isCompleted && (
             <div style={{
               fontFamily: 'var(--font-display)',
@@ -390,28 +357,6 @@ export default function AdultCardPortal() {
               ✓ Klart
             </div>
           )}
-
-          <button
-            onClick={startSession}
-            style={{
-              width: '100%',
-              maxWidth: '420px',
-              height: '56px',
-              borderRadius: '999px',
-              backgroundColor: ctaBg,
-              border: ctaBorder,
-              color: LANTERN_GLOW,
-              fontFamily: 'var(--font-display)',
-              fontSize: '16px',
-              fontWeight: 600,
-              letterSpacing: '0.01em',
-              cursor: 'pointer',
-              WebkitTapHighlightColor: 'transparent',
-              marginTop: '4px',
-            }}
-          >
-            {ctaLabel}
-          </button>
 
           {/* Text-only sequence nav */}
           <div style={{
@@ -472,6 +417,41 @@ export default function AdultCardPortal() {
             </button>
           </div>
         </div>
+      </div>
+
+      {/* ── Sticky CTA bar ── */}
+      <div style={{
+        position: 'fixed',
+        left: 0, right: 0, bottom: 0,
+        zIndex: 20,
+        padding: `16px 20px calc(16px + env(safe-area-inset-bottom, 0px))`,
+        background: `linear-gradient(to top, ${DEEP_DUSK_BG} 0%, color-mix(in srgb, ${DEEP_DUSK_BG} 92%, transparent) 60%, transparent 100%)`,
+        backdropFilter: 'blur(12px)',
+        WebkitBackdropFilter: 'blur(12px)',
+        display: 'flex', justifyContent: 'center',
+        pointerEvents: 'none',
+      }}>
+        <button
+          onClick={startSession}
+          style={{
+            pointerEvents: 'auto',
+            width: '100%',
+            maxWidth: '420px',
+            height: '56px',
+            borderRadius: '999px',
+            backgroundColor: ctaBg,
+            border: ctaBorder,
+            color: LANTERN_GLOW,
+            fontFamily: 'var(--font-display)',
+            fontSize: '16px',
+            fontWeight: 600,
+            letterSpacing: '0.01em',
+            cursor: 'pointer',
+            WebkitTapHighlightColor: 'transparent',
+          }}
+        >
+          {ctaLabel}
+        </button>
       </div>
 
       {product && card && (
