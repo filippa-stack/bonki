@@ -491,7 +491,7 @@ export default function ProductLibrary() {
       <div style={{ position: 'relative', zIndex: 1 }}>
         <KontoIcon onClick={() => setKontoOpen(true)} />
         <KontoSheet open={kontoOpen} onClose={() => setKontoOpen(false)} />
-        {/* Resume card — product-colored, above Par */}
+        {/* Resume card — product-colored, above Ni som par */}
         <div className="px-5" style={{ marginBottom: '8px', paddingTop: 'calc(env(safe-area-inset-top, 0px) + 56px)' }}>
           <LibraryResumeCard global />
         </div>
