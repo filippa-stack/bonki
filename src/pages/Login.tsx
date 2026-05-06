@@ -30,9 +30,7 @@ const SUBLINE_LINES = [
   'och psykoterapeut.',
   'Ni bestämmer takten.',
 ];
-// Verified Live 2026-04-29 against products.price_sek.
-const FALLBACK_PRICE_COUPLE = 249;
-const FALLBACK_PRICE_KIDS = 195;
+// Pricing removed from onboarding — shown on intro page where it belongs commercially.
 const PREAUTH_SEEN_KEY = 'bonki-preauth-seen';
 
 const ORANGE_GRADIENT = 'linear-gradient(180deg, #E85D2C 0%, #C44D22 100%)';
