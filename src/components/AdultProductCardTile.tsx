@@ -84,29 +84,46 @@ export default function AdultProductCardTile({
         minWidth: 0,
       }}
     >
-      {/* Zone A — illustration (65%) */}
+      {/* Zone A — circular medallion holding illustration (65%) */}
       <div
         style={{
           position: 'relative',
           flex: '0 0 65%',
           backgroundColor: cardColor,
           overflow: 'hidden',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
         }}
       >
-        {tileImage && (
-          <img
-            src={tileImage}
-            alt=""
-            aria-hidden="true"
-            style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'contain',
-              padding: '6px',
-              display: 'block',
-            }}
-          />
-        )}
+        {/* Medallion */}
+        <div
+          style={{
+            width: '78%',
+            aspectRatio: '1 / 1',
+            borderRadius: '50%',
+            backgroundColor: getCircleColor(cardColor),
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            overflow: 'hidden',
+          }}
+        >
+          {tileImage && (
+            <img
+              src={tileImage}
+              alt=""
+              aria-hidden="true"
+              style={{
+                width: '85%',
+                height: '85%',
+                objectFit: 'contain',
+                objectPosition: 'center',
+                display: 'block',
+              }}
+            />
+          )}
+        </div>
 
         {/* Inner shadow at bottom edge of zone A */}
         <div
