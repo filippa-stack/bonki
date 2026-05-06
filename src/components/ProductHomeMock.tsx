@@ -54,11 +54,11 @@ interface MockMeta {
 
 const MOCK_META: Record<string, MockMeta> = {
   jag_i_mig: {
-    subtitle: '21 samtal om känslor som får ord.',
+    subtitle: '18 samtal om känslor som får ord.',
     progressColor: '#5BC9BC',
   },
   jag_med_andra: {
-    subtitle: '21 samtal om det trygga och det svåra.',
+    subtitle: '18 samtal om det trygga och det svåra.',
     progressColor: '#E27BAC',
   },
   jag_i_varlden: {
@@ -78,7 +78,7 @@ const MOCK_META: Record<string, MockMeta> = {
     progressColor: '#5BC9BC',
   },
   still_us: {
-    subtitle: '21 samtal om att förbli ett vi.',
+    subtitle: '18 samtal om att förbli ett vi.',
     progressColor: '#8898AE',
   },
 };
