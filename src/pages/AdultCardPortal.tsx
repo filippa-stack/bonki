@@ -223,7 +223,7 @@ export default function AdultCardPortal() {
         display: 'flex', flexDirection: 'column',
         paddingTop: 'max(calc(env(safe-area-inset-top, 0px) + 60px), clamp(60px, 11vh, 90px))',
         paddingLeft: '20px', paddingRight: '20px',
-        paddingBottom: 'calc(132px + env(safe-area-inset-bottom, 0px))',
+        paddingBottom: 'calc(56px + 96px + env(safe-area-inset-bottom, 0px))',
       }}>
         {/* ── Zone 1: Header ── */}
         <div style={{ textAlign: 'center' }}>
