@@ -40,7 +40,7 @@ export default function Paywall() {
         .or(`initiator_id.eq.${user.id},partner_id.eq.${user.id}`)
         .maybeSingle();
       if (cs) {
-        setSlug(slugFromCardIndex(cs.current_card_index) ?? `su-01-smallest-we`);
+        setSlug(slugFromCardIndex(cs.current_card_index) ?? `su-00-our-traditions`);
       }
     })();
   }, [user?.id]);
