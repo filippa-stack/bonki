@@ -1,59 +1,85 @@
 /**
  * Vårt Vi v3.1 — Canonical 18-card sequence & phase constants.
- * Cards are delivered in this exact clinical order. No user choice.
  *
- * v3.1 changes vs v3.0:
+ * v3.1 (final):
  *  - Removed 3 cards (first-conversation, our-philosophy, choosing-to-stay)
- *  - Re-grouped remaining 18 cards into 4 thematic layers (4/5/5/4)
- *    per the D1 thematic split (NOT positional buckets).
+ *  - 4 thematic layers (4/5/5/4) — membership by id, not by sequence position.
+ *  - CARD_SEQUENCE is the recommended "Nästa" order; LAYERS are filter chips.
+ *    The two are independent.
  */
 
 export const TOTAL_PROGRAM_CARDS = 18;
-export const FREE_TRIAL_CARDS = 1; // Card 0 is free
+export const FREE_TRIAL_CARDS = 1;
 export const TOTAL_TILLBAKA_CARDS = 12;
 export const RESTART_MIN_TILLBAKA = 4;
 
-/** Layer boundaries (0-indexed card ranges) — derived from CARD_SEQUENCE below */
+/** Layer membership — by bare card id, independent of sequence position. */
 export const LAYERS = [
-  { id: 'layer-1', name: 'Vardagen',    cards: [0, 1, 2, 3] },
-  { id: 'layer-2', name: 'Tillsammans', cards: [4, 5, 6, 7, 8] },
-  { id: 'layer-3', name: 'Grunden',     cards: [9, 10, 11, 12, 13] },
-  { id: 'layer-4', name: 'Riktningen',  cards: [14, 15, 16, 17] },
+  {
+    id: 'layer-vardagen',
+    name: 'Vardagen',
+    cardIds: ['smallest-we', 'worth-spending-on', 'adrift', 'love-languages'],
+  },
+  {
+    id: 'layer-tillsammans',
+    name: 'Tillsammans',
+    cardIds: ['listening-presence', 'expressing-needs', 'facing-adversity', 'conflict-repair', 'when-life-tilts'],
+  },
+  {
+    id: 'layer-grunden',
+    name: 'Grunden',
+    cardIds: ['our-traditions', 'identity-shift', 'behind-the-scenes', 'thoughtful-space', 'self-esteem-wavering'],
+  },
+  {
+    id: 'layer-riktningen',
+    name: 'Riktningen',
+    cardIds: ['family-ab', 'parenting-boundaries', 'different-parenting-styles', 'parenting-exhaustion'],
+  },
 ] as const;
 
 /** Slider check-in phase progression */
 export type SliderPhase = 'A' | 'B' | 'C';
 
 export function getSliderPhase(cardIndex: number): SliderPhase {
-  if (cardIndex <= 5) return 'A';   // Cards 0-5
-  if (cardIndex <= 11) return 'B';  // Cards 6-11
-  return 'C';                        // Cards 12-17
+  if (cardIndex <= 5) return 'A';
+  if (cardIndex <= 11) return 'B';
+  return 'C';
 }
 
-/** The canonical 18-card order — D1 thematic grouping (4/5/5/4) */
+/** Look up a layer by bare card id. */
+export function getLayerForCardId(bareId: string): typeof LAYERS[number] | undefined {
+  return LAYERS.find((l) => (l.cardIds as readonly string[]).includes(bareId));
+}
+
+/** Strip the `su-NN-` prefix from a sequence cardId to get the bare id. */
+export function bareIdFromSlug(slug: string): string {
+  return slug.replace(/^su-\d{2}-/, '');
+}
+
+/**
+ * The canonical 18-card recommended order ("Nästa" walks this).
+ * `cardId` is the prefixed slug used in routes.
+ * `layerIndex` is the index in LAYERS for the bare id.
+ */
 export const CARD_SEQUENCE: { index: number; cardId: string; title: string; layerIndex: number }[] = [
-  // Vardagen (4) — everyday mechanics
-  { index: 0,  cardId: 'su-00-smallest-we',              title: 'Ert minsta "vi"',            layerIndex: 0 },
-  { index: 1,  cardId: 'su-01-worth-spending-on',        title: 'Värt att spendera på',       layerIndex: 0 },
-  { index: 2,  cardId: 'su-02-adrift',                   title: 'På drift',                   layerIndex: 0 },
-  { index: 3,  cardId: 'su-03-love-languages',           title: 'Att nå fram',                layerIndex: 0 },
-  // Tillsammans (5) — emotional
-  { index: 4,  cardId: 'su-04-listening-presence',       title: 'När dagen är slut',          layerIndex: 1 },
-  { index: 5,  cardId: 'su-05-expressing-needs',         title: 'Mitt sätt, ditt sätt',       layerIndex: 1 },
-  { index: 6,  cardId: 'su-06-facing-adversity',         title: 'Att möta motgångar',         layerIndex: 1 },
-  { index: 7,  cardId: 'su-07-conflict-repair',          title: 'Rollerna ni tar',            layerIndex: 1 },
-  { index: 8,  cardId: 'su-08-when-life-tilts',          title: 'När livet lutar',            layerIndex: 1 },
-  // Grunden (5) — formative
-  { index: 9,  cardId: 'su-09-our-traditions',           title: 'Era traditioner',            layerIndex: 2 },
-  { index: 10, cardId: 'su-10-identity-shift',           title: 'Identitetsskiftet',          layerIndex: 2 },
-  { index: 11, cardId: 'su-11-behind-the-scenes',        title: 'Bakom kulisserna',           layerIndex: 2 },
-  { index: 12, cardId: 'su-12-thoughtful-space',         title: 'Omtänksamt utrymme',         layerIndex: 2 },
-  { index: 13, cardId: 'su-13-self-esteem-wavering',     title: 'När jag vacklar',            layerIndex: 2 },
-  // Riktningen (4) — direction & parenting
-  { index: 14, cardId: 'su-14-family-ab',                title: 'Familjen AB',                layerIndex: 3 },
-  { index: 15, cardId: 'su-15-parenting-boundaries',     title: 'Att säga ifrån',             layerIndex: 3 },
-  { index: 16, cardId: 'su-16-different-parenting-styles', title: 'Uppfostran ni ärvt',       layerIndex: 3 },
-  { index: 17, cardId: 'su-17-parenting-exhaustion',     title: 'Era värderingar',            layerIndex: 3 },
+  { index: 0,  cardId: 'su-00-our-traditions',           title: 'Vår uppväxt',                  layerIndex: 2 },
+  { index: 1,  cardId: 'su-01-identity-shift',           title: 'Utvecklingen',                 layerIndex: 2 },
+  { index: 2,  cardId: 'su-02-listening-presence',       title: 'Att bli sedd på riktigt',      layerIndex: 1 },
+  { index: 3,  cardId: 'su-03-expressing-needs',         title: 'Det som förblir osagt',        layerIndex: 1 },
+  { index: 4,  cardId: 'su-04-behind-the-scenes',        title: 'Vänskapens betydelse',         layerIndex: 2 },
+  { index: 5,  cardId: 'su-05-thoughtful-space',         title: 'Rösterna utifrån',             layerIndex: 2 },
+  { index: 6,  cardId: 'su-06-self-esteem-wavering',     title: 'Det egna utrymmet',            layerIndex: 2 },
+  { index: 7,  cardId: 'su-07-smallest-we',              title: 'Det osynliga ansvaret',        layerIndex: 0 },
+  { index: 8,  cardId: 'su-08-worth-spending-on',        title: 'Pengarnas symbolik',           layerIndex: 0 },
+  { index: 9,  cardId: 'su-09-facing-adversity',         title: 'Att bära och bli buren',       layerIndex: 1 },
+  { index: 10, cardId: 'su-10-conflict-repair',          title: 'Den tysta muren',              layerIndex: 1 },
+  { index: 11, cardId: 'su-11-adrift',                   title: 'Begäret och avståndet',        layerIndex: 0 },
+  { index: 12, cardId: 'su-12-love-languages',           title: 'Den outtalade längtan',        layerIndex: 0 },
+  { index: 13, cardId: 'su-13-when-life-tilts',          title: 'Vägen tillbaka',               layerIndex: 1 },
+  { index: 14, cardId: 'su-14-family-ab',                title: 'Uppmärksamhet åt annat håll',  layerIndex: 3 },
+  { index: 15, cardId: 'su-15-parenting-boundaries',     title: 'De röda linjerna',             layerIndex: 3 },
+  { index: 16, cardId: 'su-16-different-parenting-styles', title: 'Frågan om barn',             layerIndex: 3 },
+  { index: 17, cardId: 'su-17-parenting-exhaustion',     title: 'Drömmens pris',                layerIndex: 3 },
 ];
 
 /** Stale card thresholds */

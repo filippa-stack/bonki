@@ -1,6 +1,6 @@
 /**
- * Still Us v3.0 — Gör Exercises (Teamwork)
- * 20 entries, keyed by card ID for resilience against reordering.
+ * Vårt Vi v3.1 — Gör Exercises (Teamwork).
+ * 18 entries, keyed by bare card id.
  */
 
 export interface GorExercise {
@@ -10,95 +10,95 @@ export interface GorExercise {
 }
 
 const gorExercises: Record<string, GorExercise> = {
-  'smallest-we': {
-    cardId: 'smallest-we',
-    title: 'Ert minsta "vi"',
-    instructionText: 'Välj en mycket liten handling eller aktivitet ni gör tillsammans tre gånger kommande vecka.\n\n→ Blev det ett test - eller en lösning?',
-  },
-  'family-ab': {
-    cardId: 'family-ab',
-    title: 'När ert "vi" blir "Familjen AB"',
-    instructionText: 'Avsätt tio minuter en gång den här veckan. Inga barn, ingen logistik. Om ni inte har något att säga – sitt kvar ändå. Vad lade ni märke till?',
+  'our-traditions': {
+    cardId: 'our-traditions',
+    title: 'Vår uppväxt',
+    instructionText: 'Kom överens om en mening att säga till varandra nästa gång ni märker att den andre har fastnat i ett gammalt mönster. Något omtänksamt som ni båda kan ta till er utan att gå i försvarsställning. Skriv ner den.',
   },
   'identity-shift': {
     cardId: 'identity-shift',
-    title: 'Identitetsskiftet',
-    instructionText: 'Berätta för varandra om en sak ni idag håller tillbaka.\n\n→ Vad skulle ett litet första steg kunna vara — för att ge den mer plats?',
+    title: 'Utvecklingen',
+    instructionText: 'Säg till varandra: en förändring jag har sett hos dig som jag uppskattar, och en som jag fortfarande försöker förstå. Två meningar var. Inget mer.',
   },
   'listening-presence': {
     cardId: 'listening-presence',
-    title: 'När dagen är slut',
-    instructionText: 'Välj en konkret handling eller mening som markerar att dagen är avslutad för er båda.\n\n→ Prova i tre kvällar — och prata sedan om vad det förändrade.',
-  },
-  'conflict-repair': {
-    cardId: 'conflict-repair',
-    title: 'Rollerna ni tar (och får)',
-    instructionText: 'Välj en etablerad roll som ni byter under en vecka. Prata om hur det kändes - utan att rätta varandra. Var det något som överraskade er - positivt eller negativt?',
+    title: 'Att bli sedd på riktigt',
+    instructionText: 'Berätta för varandra om en sak du vill att den andre ska se hos dig, som du tror att de missar. Den som lyssnar svarar endast: "Tack för att du delade med dig."',
   },
   'expressing-needs': {
     cardId: 'expressing-needs',
-    title: 'Mitt sätt, ditt sätt',
-    instructionText: 'Välj ett område där ni medvetet låter två sätt samexistera.\n\n→ Prata om vad ni vill att barnet ska förstå — inte om vem som gör rätt.',
-  },
-  'facing-adversity': {
-    cardId: 'facing-adversity',
-    title: 'Att möta motgångar',
-    instructionText: 'Välj en situation ni vet kommer att uppstå den här veckan.\n\n→ Bestäm i förväg att ni provar den enas sätt — utan att den andra rättar eller tar över.',
+    title: 'Det som förblir osagt',
+    instructionText: 'Säg en liten sanning till varandra. Inte den största. En sak du har tänkt men inte sagt. Lyssnaren svarar: "Tack för att du delade med dig."',
   },
   'behind-the-scenes': {
     cardId: 'behind-the-scenes',
-    title: 'Framför och bakom kulisserna',
-    instructionText: 'Bestäm ett sätt att signalera "vi tar det här sen" — som båda litar på.\n\n→ Prova det nästa gång det behövs.',
+    title: 'Vänskapens betydelse',
+    instructionText: 'Berätta för varandra om en vän du vill att den andre ska lära känna bättre, för att personen då skulle förstå dig på ett nytt sätt. Bestäm en kväll inom en månad då detta faktiskt ska ske.',
   },
   'thoughtful-space': {
     cardId: 'thoughtful-space',
-    title: 'Omtänksamt utrymme',
-    instructionText: 'Kom överens om hur ni visar varandra:\n\n→ när jag behöver vara ifred\n→ när jag behöver att du stannar\n→ när jag inte vet vad jag behöver',
+    title: 'Rösterna utifrån',
+    instructionText: 'Berätta för varandra om en person vars åsikt om oss jag har låtit påverka mig mer än jag borde. Två meningar var. Inget mer.',
   },
   'self-esteem-wavering': {
     cardId: 'self-esteem-wavering',
-    title: 'När självkänslan svajar',
-    instructionText: 'Berätta för varandra: "När jag tvivlar på mig själv, hjälper det mig om du..."\n\n→ Lyssna utan att rätta eller tona ner.',
+    title: 'Det egna utrymmet',
+    instructionText: 'Kom överens om en konkret förändring: en kväll i veckan, en eftermiddag eller en helg i månaden – skapa ett skyddat utrymme för det egna jaget. Var specifik. När börjar ni? Skriv ner det.',
   },
-  'different-parenting-styles': {
-    cardId: 'different-parenting-styles',
-    title: 'Uppfostran ni ärvt',
-    instructionText: 'Berätta för varandra om en situation med barnen där du reagerade mer på din historia än på det som faktiskt hände. Vad var det som tog över?',
-  },
-  'parenting-boundaries': {
-    cardId: 'parenting-boundaries',
-    title: 'Att säga ifrån',
-    instructionText: 'Prata om en sak ni vill undvika att göra i affekt - och en sak ni vill hålla fast vid, även när ni tycker olika.',
-  },
-  'parenting-exhaustion': {
-    cardId: 'parenting-exhaustion',
-    title: 'Mina, dina, era värderingar',
-    instructionText: 'Välj en värdering ni delar men uttrycker olika.\n\n→ Prata om hur den syns i var och ens sätt att vara förälder.',
-  },
-  'our-traditions': {
-    cardId: 'our-traditions',
-    title: 'Mina, dina, era traditioner',
-    instructionText: 'Välj något från vardera familj som ni vill föra vidare — och en ny tradition som bara är er. \n→ Blev ni överraskade av varandras val?',
-  },
-  'when-life-tilts': {
-    cardId: 'when-life-tilts',
-    title: 'När livet lutar',
-    instructionText: 'Berätta för varandra om något ni vill satsa på — stort eller litet.\n\n→ Prata om vad som gör det värt det.',
+  'smallest-we': {
+    cardId: 'smallest-we',
+    title: 'Det osynliga ansvaret',
+    instructionText: 'Välj en konkret sak som ni förändrar eller delar på ett nytt sätt från och med imorgon. Bara en sak. Skriv ner den. Bestäm när ni ska stämma av om två veckor.',
   },
   'worth-spending-on': {
     cardId: 'worth-spending-on',
-    title: 'Värt att spendera på',
-    instructionText: 'Välj ett beslut ni skjutit framför er — och fatta det tillsammans den här veckan.\n\n→ Inte det perfekta beslutet. Bara ett gemensamt.',
+    title: 'Pengarnas symbolik',
+    instructionText: 'Dela med varandra: en sak du är tacksam för i hur ni hanterar er ekonomi, och en sak du önskar vore annorlunda. Två meningar var.',
+  },
+  'facing-adversity': {
+    cardId: 'facing-adversity',
+    title: 'Att bära och bli buren',
+    instructionText: 'Berätta för varandra: När jag kämpar vill jag att du finns nära på det här specifika sättet. Var konkret. Säg inte bara "var där för mig" – beskriv något du faktiskt kan göra. Båda berättar, båda lyssnar.',
+  },
+  'conflict-repair': {
+    cardId: 'conflict-repair',
+    title: 'Den tysta muren',
+    instructionText: 'Säg till varandra: nästa gång jag drar mig undan vill jag att du gör precis det här. Inte något generellt, utan en konkret handling. Säg varsin sak och skriv ner båda.',
   },
   'adrift': {
     cardId: 'adrift',
-    title: 'På drift',
-    instructionText: 'Välj en sak den här veckan som bryter mönstret — något litet som ni inte gjort på länge.\n\n→ Gör det. Prata sedan om vad det väckte.',
+    title: 'Begäret och avståndet',
+    instructionText: 'Berätta för varandra: en sak, förutom sex, som får mig att känna mig nära dig. Var konkret. Bestäm därefter när ni ska göra mer av detta under de kommande två veckorna.',
   },
   'love-languages': {
     cardId: 'love-languages',
-    title: 'Att nå fram',
-    instructionText: 'Kom överens om hur ni säger två saker: "Jag längtar efter närhet" och "Jag kan inte just nu, men jag vill dig."\n\n→ Hur kan de se ut — så att ingen behöver gissa?',
+    title: 'Den outtalade längtan',
+    instructionText: 'Dela en outtalad önskan med varandra. Inte den största, utan en liten. Den som lyssnar svarar bara: "Tack för att du delade med dig."',
+  },
+  'when-life-tilts': {
+    cardId: 'when-life-tilts',
+    title: 'Vägen tillbaka',
+    instructionText: 'Skapa ert reparationsprotokoll. Bestäm tre saker: en mening den som sårat kan säga för att inleda en försoning, en tidsram för när ni senast måste prata om det, samt en specifik plats där ni gör det. Skriv ner alla tre och spara dem.',
+  },
+  'family-ab': {
+    cardId: 'family-ab',
+    title: 'Uppmärksamhet åt annat håll',
+    instructionText: 'Bestäm er: vad vill ni att den andre ska göra om en dragning till någon annan uppstår? Var ärliga och tydliga. Skriv ner vad ni kommer överens om.',
+  },
+  'parenting-boundaries': {
+    cardId: 'parenting-boundaries',
+    title: 'De röda linjerna',
+    instructionText: 'Den här sessionen var den tyngsta hittills. Säg till varandra: "Det här är vad jag har delat ikväll. Du har hört det. Jag litar på dig med det." Den andre svarar: "Jag tar emot det. Jag bär det varsamt."',
+  },
+  'different-parenting-styles': {
+    cardId: 'different-parenting-styles',
+    title: 'Frågan om barn',
+    instructionText: 'Dela en längtan eller en rädsla du bär på just nu angående barnfrågan. Den som lyssnar svarar enbart: "Tack för att du delade med dig."',
+  },
+  'parenting-exhaustion': {
+    cardId: 'parenting-exhaustion',
+    title: 'Drömmens pris',
+    instructionText: 'Skriv ner en dröm du har, som du vill att den andra personen ska känna till och fråga dig om en gång om året. Byt papper med varandra. Bestäm ett datum om exakt ett år. Lägg in det i kalendern redan nu — det är drömmens årsdag.',
   },
 };
 
