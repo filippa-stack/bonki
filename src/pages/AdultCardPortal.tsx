@@ -37,6 +37,18 @@ import {
   SAFFRON_FLAME,
 } from '@/lib/palette';
 import { getPortalCopy } from '@/data/stillUsPortalCopy';
+import { CARD_SEQUENCE, bareIdFromSlug } from '@/data/stillUsSequence';
+
+/** Map a manifest card id (e.g. 'su-mock-3') to the bare id used by
+ *  stillUsPortalCopy (e.g. 'expressing-needs'). */
+function resolveBareCardId(cardId: string): string {
+  const m = cardId.match(/^su-mock-(\d+)$/);
+  if (m) {
+    const seq = CARD_SEQUENCE[Number(m[1])];
+    if (seq) return bareIdFromSlug(seq.cardId);
+  }
+  return bareIdFromSlug(cardId);
+}
 
 const ADULT_ANCHOR_COLORS = [
   CORNFLOWER, MIDNIGHT_INK, DUSTY_ROSE, WARM_GOLD, STORM_GREY, SAGE,
@@ -241,7 +253,7 @@ export default function AdultCardPortal() {
             {card.title}
           </h1>
           {(() => {
-            const copy = product?.slug === 'still-us' ? getPortalCopy(card.id) : undefined;
+            const copy = product?.slug === 'still-us' ? getPortalCopy(resolveBareCardId(card.id)) : undefined;
             const subtitleText = copy?.subtitle ?? card.subtitle;
             return subtitleText ? (
               <p style={{
@@ -264,7 +276,7 @@ export default function AdultCardPortal() {
 
         {/* ── Preparation paragraph ── */}
         {product?.slug === 'still-us' && (() => {
-          const copy = getPortalCopy(card.id);
+          const copy = getPortalCopy(resolveBareCardId(card.id));
           return copy?.preparation ? (
             <p style={{
               fontFamily: 'var(--font-sans)',
@@ -295,8 +307,9 @@ export default function AdultCardPortal() {
               position: 'relative',
               display: 'flex',
               flexDirection: 'column',
-              width: '80%',
-              maxWidth: '320px',
+              width: '100%',
+              maxWidth: '280px',
+              maxHeight: '45vh',
               aspectRatio: '3 / 4',
               borderRadius: '22px',
               overflow: 'hidden',
