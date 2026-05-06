@@ -364,28 +364,7 @@ export const cards: Card[] = [
       },
     ],
   },
-  // ── Card 14 · Längtan ─────────────────────────────────
-  {
-    id: 'our-philosophy',
-    title: 'Er filosofi',
-    subtitle: 'Värderingar under press',
-    categoryId: 'category-9',
-    sections: [
-      {
-        id: 'opening-our-philosophy',
-        type: 'opening',
-        title: 'Frågor',
-        content: '',
-        prompts: [
-          'Finns det något ni hanterade tillsammans nyligen där du efteråt tänkte — ja, det där var vi, som vi vill vara?',
-          'Vilken av dina värderingar är du mest benägen att låta glida när vardagen pressar?',
-          'Är det viktigare för er att vara konsekventa eller att kunna anpassa er?',
-          'Vardagen har pressat er länge. Ni märker att ni börjat ta genvägar - i tonen mot varandra, i tålamodet, i det ni tidigare aldrig hade accepterat. Ingen av er valde det. Det bara hände.\n— Hur tar ni er tillbaka till det ni egentligen vill stå för när ni märker att ni glidit?',
-        ],
-      },
-    ],
-  },
-  // ── Card 15 · Längtan ─────────────────────────────────
+  // ── Card · Längtan ────────────────────────────────────
   {
     id: 'when-life-tilts',
     title: 'När livet lutar',
