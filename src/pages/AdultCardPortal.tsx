@@ -276,7 +276,7 @@ export default function AdultCardPortal() {
 
         {/* ── Preparation paragraph ── */}
         {product?.slug === 'still-us' && (() => {
-          const copy = getPortalCopy(card.id);
+          const copy = getPortalCopy(resolveBareCardId(card.id));
           return copy?.preparation ? (
             <p style={{
               fontFamily: 'var(--font-sans)',
