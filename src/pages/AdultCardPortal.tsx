@@ -253,7 +253,7 @@ export default function AdultCardPortal() {
             {card.title}
           </h1>
           {(() => {
-            const copy = product?.slug === 'still-us' ? getPortalCopy(card.id) : undefined;
+            const copy = product?.slug === 'still-us' ? getPortalCopy(resolveBareCardId(card.id)) : undefined;
             const subtitleText = copy?.subtitle ?? card.subtitle;
             return subtitleText ? (
               <p style={{
