@@ -1,50 +1,49 @@
 ## Diagnosis
 
-Audit of every loading gate that paints a full-screen color before content resolves:
+Stripe cancel flow trace:
 
-| Location | Current bg | Destination page bg | Status |
-|---|---|---|---|
-| `ProductHome.tsx` line 102 (intro-resolution gate) | `product.backgroundColor` (e.g. deep teal `#115D57`) | Kids home = Midnight Ink, Still Us = Deep Dusk | **WRONG** — flashes product color |
-| `ProductHome.tsx` line 111 (paywall-access gate) | `product.backgroundColor` | same as above | **WRONG** |
-| `KidsProductHome.tsx` line 368 (progress gate) | `MIDNIGHT_INK` | Midnight Ink | OK |
-| `AdultProductHome.tsx` line 91 (progress gate) | Deep Dusk | Deep Dusk | OK |
-| `KidsCardPortal.tsx` line 297 (progress gate) | `product.backgroundColor` | Portal renders on `product.backgroundColor` | OK (matches destination — spec says portals keep product color) |
-| `CardView.tsx` line 1264 (session init gate) | `product.backgroundColor` | Kids session uses product color; Still Us session uses Midnight Ink | Partially wrong for Still Us |
-| `App.tsx` `BonkiLoadingScreen` | `#0B1026` (Deep Dusk) | n/a — global splash | OK |
-| `Category.tsx` line 194 (not-found) | `pageBg` (parchment / `#2E2233`) | matches | OK |
+1. User on redesigned `ProductIntro` taps **Köp** → `handleCta` marks intro seen (localStorage + `onboarding_events`) → `navigate('/buy?product=X')`.
+2. `BuyPage` auto-triggers Stripe checkout with `cancelUrl: ${origin}/buy?product=X&cancelled=1`.
+3. User taps back arrow in Stripe → returns to `/buy?cancelled=1`.
+4. `BuyPage` effect (line 250) sees authenticated cancel-return → `navigate('/product/{slug}', {replace: true})`.
+5. `ProductHome` reads the `bonki-intro-seen-X` marker (set in step 1) → renders `KidsProductHome` / `AdultProductHome` instead of the redesigned `ProductIntro`.
 
-The user-visible flash on `/product/jag-i-mig` etc. originates from `ProductHome.tsx`'s two pre-resolution gates returning the product color before delegating to `KidsProductHome` (which is Midnight Ink).
+Result: user came from the editorial redesigned `ProductIntro` and lands on the regular product home — visually different page at the most fragile decision moment.
 
-## Fix
+`PaywallFullScreen` and `ProductPaywall` are not in this funnel; the `BuyPage` cancel handoff to product home is the bug.
 
-Replace the two `ProductHome.tsx` loading gates so they paint the correct **destination** background:
+## Fix (Option A — cleanest)
 
-- Still Us (`product.id === 'still_us'`) → Deep Dusk `#0B1026` (matches `AdultProductHome`)
-- All kids products → Midnight Ink `#1A1A2E` (matches `KidsProductHome`)
-- Unknown product → Deep Dusk fallback
+Send the cancel-return back to the same `ProductIntro` page via a URL flag.
 
-Also fix `CardView.tsx` line 1264 init-gate so Still Us sessions paint Midnight Ink (the actual session bg) while kids sessions keep `product.backgroundColor` (their session bg).
+### Changes
 
-### Technical changes
-
-**`src/pages/ProductHome.tsx`** — replace both gates:
+**`src/pages/BuyPage.tsx`** line 251 — append `?intro=1` so `ProductHome` knows to force-show the intro:
 ```ts
-const loadingBg = product?.id === 'still_us' ? '#0B1026' : '#1A1A2E';
-// use loadingBg in both showIntro===null and paywallAccessLoading returns
+navigate(`/product/${product.slug}?intro=1`, { replace: true });
 ```
 
-**`src/pages/CardView.tsx`** line 1264:
+**`src/pages/ProductHome.tsx`** — read `intro=1` from the URL and force `showIntro=true` regardless of the `bonki-intro-seen-X` marker / `useProductIntroNeeded` result. Skip the loading gate when `forceIntro` is set so the user lands directly on the redesigned page with no flash.
+
 ```ts
-const loadingBg = product?.id === 'still_us'
-  ? '#1A1A2E'
-  : (product?.backgroundColor ?? '#1A1A2E');
+const forceIntro = new URLSearchParams(location.search).get('intro') === '1';
+
+const [showIntro, setShowIntro] = useState<boolean | null>(() => {
+  if (forceIntro) return true;
+  // ...existing logic
+});
+
+useEffect(() => {
+  if (forceIntro) { setShowIntro(true); return; }
+  // ...existing logic
+}, [introChecked, needsIntro, forceIntro]);
 ```
 
-No other loading gates need changes — kids portal, kids session, and intro pages all correctly match their destination backgrounds.
+No changes to the edge function (`create-checkout`) needed — the cancel URL is supplied by the caller. Other callers (`PaywallFullScreen`, `ProductPaywall`, `Paywall`, `PurchaseScreen`, `PaywallBottomSheet`, `CardView`) are out of the redesigned funnel and stay as-is.
 
 ## Verification
 
-- Navigate library → `/product/jag-i-mig`: loading paints Midnight Ink, then content resolves on Midnight Ink. No teal flash.
-- Navigate library → `/product/still-us`: loading paints Deep Dusk → AdultProductHome renders on Deep Dusk.
-- Navigate product home → portal: portal loading paints the product color (unchanged, intentional).
-- Hard refresh on any kids product home: initial paint is Midnight Ink.
+- Open `/product/still-us` → tap Köp → Stripe → back. Lands on the same redesigned ProductIntro (Vårt Vi).
+- Open `/product/jag-i-mig` → tap Köp → Stripe → back. Lands on the same redesigned ProductIntro (kids).
+- Successful purchase still routes via `successUrl` to `/?purchase=success&product=…` — unaffected.
+- Direct (unauthenticated) `/buy?product=X` cancel-return still falls through to the BuyPage selling surface — unaffected (only the authenticated branch changes).
