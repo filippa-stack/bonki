@@ -448,7 +448,7 @@ export default function ProductLibrary() {
           zIndex: 0,
         }} />
 
-        {/* Mid-zone warmth — Deep Navy bleed behind Föräldrar section */}
+        {/* Mid-zone warmth — Deep Navy bleed behind Par section */}
         <div style={{
           position: 'absolute',
           top: '350px',
