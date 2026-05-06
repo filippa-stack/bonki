@@ -28,7 +28,7 @@ import illustrationStillUs from '@/assets/illustration-still-us-home.png';
 const LANTERN_GLOW = '#FDF6E3';
 const MIDNIGHT_INK = '#0F1727';
 const BONKI_ORANGE = '#E85D2C';
-const PRICE_SEK = 195;
+const PRICE_SEK = 199;
 
 const PRODUCT_ILLUSTRATION: Record<string, string> = {
   jag_i_mig: jimImage,

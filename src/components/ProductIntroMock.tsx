@@ -58,7 +58,7 @@ const TAGLINES: Record<string, string> = {
 type ForcedState = 'free' | 'locked' | 'purchased' | null;
 type ResolvedState = 'free' | 'locked' | 'alreadyUsedHere' | 'purchased';
 
-const PRICE_SEK = 195;
+const PRICE_SEK = 199;
 
 interface ProductIntroMockProps {
   productId: string;
