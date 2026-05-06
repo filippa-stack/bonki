@@ -69,13 +69,13 @@ export default function PreAuthIntroSlide1({ onContinue }: PreAuthIntroSlide1Pro
             fontFamily: "'Cormorant Garamond', Georgia, serif",
             fontStyle: 'italic',
             fontWeight: 400,
-            fontSize: 26,
-            lineHeight: 1.1,
+            fontSize: 22,
+            lineHeight: 1.4,
             letterSpacing: 0,
             color: CREAM,
             textAlign: 'center',
             margin: 0,
-            maxWidth: 320,
+            maxWidth: 280,
           }}
         >
           Samtalet som dagen inte gav plats för.
