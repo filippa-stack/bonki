@@ -1,42 +1,35 @@
+## Kids product price: 195 → 199 kr
 
-## Page 3 — editorial register redesign
+Single price field is the source of truth: Supabase `products.price_sek`. Checkout dynamically computes `unit_amount = price_sek * 100` (`supabase/functions/create-checkout/index.ts:108`), so updating the DB row also updates what Stripe charges. **No `stripe_price_id` is set on any product row** — there's no preconfigured Stripe Price object that could drift out of sync. No Stripe dashboard work required.
 
-Page 3 lives only in the mock at `/onboarding-mock` (per the prior plan, page 3 is not in the live flow until the free-session backend ships). Component: `src/components/OnboardingMock.tsx`, `ScreenGift` function.
+### Changes
 
-### Change
+**1. DB migration** — bump all kids products from 195 → 199, leave `still_us` at 249:
+```sql
+UPDATE public.products SET price_sek = 199
+WHERE id IN ('jag_i_mig','jag_med_andra','jag_i_varlden','vardagskort','syskonkort','sexualitetskort');
+```
 
-Replace the bordered "promise card" block (lines ~447–479) — currently a translucent ghost-glow container with three checkmarked bullets — with three standalone italic serif statements, no border, no background, no markers.
+(Note: the spec lists "Närhet & Intimitet" as a separate product. The DB has no such row — `sexualitetskort` is the only intimacy-themed product. No additional row to update.)
 
-### Implementation
+**2. Code fallback constants** — every place a hardcoded `195` is used as the kids fallback when the DB fetch hasn't returned yet, change to `199`:
+- `src/pages/KidsCardPortal.tsx`
+- `src/pages/BuyPage.tsx`
+- `src/pages/CardView.tsx`
+- `src/pages/PaywallFullScreen.tsx`
+- `src/components/ProductPaywall.tsx`
+- `src/components/ProductIntro.tsx`
 
-In `ScreenGift`:
+Pattern: `data?.price_sek ?? (productId === 'still_us' ? 249 : 195)` → `… : 199)`.
 
-1. **Remove** the bordered card wrapper (`background: 'rgba(212,245,192,0.06)'`, `border`, `borderRadius: 18`, `padding`, `marginBottom: 22`) and its three flex-row children with the `✓` spans.
+`still_us` 249 fallback unchanged. `OnboardingMock.tsx` price row was already removed in earlier work — no change there.
 
-2. **Insert** in its place a plain flex column:
-   - `marginTop: 32` (gap from subtitle)
-   - `marginBottom: 48` (gap to CTA)
-   - `gap: 12`, `alignItems: 'center'`
-   - Three `<p>` elements, each:
-     - `fontFamily: '"Cormorant Garamond", Georgia, serif'`
-     - `fontStyle: 'italic'`
-     - `fontSize: 16`, `lineHeight: 1.45`
-     - `color: 'rgba(253,246,227,0.85)'`
-     - `textAlign: 'center'`, `maxWidth: 300`, `margin: 0`
-
-3. **Copy** (tightened editorial cadence, matches pages 1 & 2 voice):
-   - "Det första samtalet — vår gåva till er."
-   - "Engångsköp. Aldrig prenumeration."
-   - "Tillgång för alltid."
-
-4. **No marker** (Option B) — pages 1 & 2 use no list markers; keep page 3 unified.
-
-### Unchanged
-
-Illustration block, "EN GÅVA TILL ER" eyebrow, title, subtitle, "Visa biblioteket" ghost-glow CTA, three-dot pagination, Midnight Ink background, all routing/auth.
-
-Pages 1 & 2 (live flow) — entirely untouched.
+### Verification
+- `psql` shows kids = 199, still_us = 249.
+- Intro/paywall/buy pages show "199 kr" for kids products.
+- Vårt Vi intro still shows 249 kr.
+- A test checkout for a kids product creates a Stripe session with `unit_amount: 19900`.
 
 ### Files affected
-
-- `src/components/OnboardingMock.tsx` — replace promise-card block in `ScreenGift` only.
+- New migration updating `products.price_sek`
+- 6 source files for the fallback constant

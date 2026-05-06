@@ -248,7 +248,7 @@ function ScreenPromise({ onNext }: { onNext: () => void }) {
 
       {/* Price rows */}
       <PriceRow label="För dig och din partner" price="249 kr" />
-      <PriceRow label="För dig och ditt barn" price="195 kr" />
+      <PriceRow label="För dig och ditt barn" price="199 kr" />
 
       {/* CTA block — pushed to bottom of available space */}
       <div style={{ marginTop: 28 }}>

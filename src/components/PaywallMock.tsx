@@ -28,7 +28,7 @@ import illustrationStillUs from '@/assets/illustration-still-us-home.png';
 const LANTERN_GLOW = '#FDF6E3';
 const MIDNIGHT_INK = '#0F1727';
 const BONKI_ORANGE = '#E85D2C';
-const PRICE_SEK = 195;
+const PRICE_SEK = 199;
 
 const PRODUCT_ILLUSTRATION: Record<string, string> = {
   jag_i_mig: jimImage,
@@ -58,7 +58,7 @@ const NEXT_CARD_TITLE: Record<string, string> = {
   still_us: 'Det vi inte sa',
 };
 
-/** Products where the single-line CTA "Fortsätt med {name} — 195 kr" is too wide at 14px. */
+/** Products where the single-line CTA "Fortsätt med {name} — 199 kr" is too wide at 14px. */
 const CTA_TWO_LINE: Record<string, boolean> = {
   jag_med_andra: true,
   jag_i_varlden: true,
