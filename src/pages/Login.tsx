@@ -74,13 +74,7 @@ export default function Login() {
     };
   }, []);
 
-  // ── Pre-auth intro + dynamic pricing (web redesign branch only) ──
-  // Hooks declared BEFORE any early return so React hook order stays stable
-  // across mode switches (native vs. web).
-  const [prices, setPrices] = useState<{ couple: number; kids: number } | null>(null);
-  const [pricesReady, setPricesReady] = useState(false);
-  // Pre-auth slide is shown once per device on ALL platforms (web + native iOS/Android).
-  // `skipRedesign` only governs the post-slide branch (legacy native JSX vs. redesigned web login).
+  // ── Pre-auth intro gate (shown once per device, all platforms) ──
   const [showSlide1, setShowSlide1] = useState(() => {
     try {
       return localStorage.getItem(PREAUTH_SEEN_KEY) !== '1';
@@ -88,38 +82,6 @@ export default function Login() {
       return true;
     }
   });
-
-  useEffect(() => {
-    // Native pays zero network cost.
-    if (skipRedesign) return;
-    let cancelled = false;
-    const timeout = setTimeout(() => {
-      if (!cancelled) setPricesReady(true);
-    }, 1500);
-
-    supabase
-      .from('products')
-      .select('id, price_sek')
-      .in('id', ['still_us', 'jag_i_mig'])
-      .then(({ data, error }) => {
-        if (cancelled) return;
-        clearTimeout(timeout);
-        if (!error && data) {
-          const couple = data.find((p) => p.id === 'still_us')?.price_sek;
-          const kids = data.find((p) => p.id === 'jag_i_mig')?.price_sek;
-          if (typeof couple === 'number' && typeof kids === 'number') {
-            setPrices({ couple, kids });
-          }
-        }
-        setPricesReady(true);
-      });
-
-    return () => {
-      cancelled = true;
-      clearTimeout(timeout);
-    };
-  }, [skipRedesign]);
-
   const handleSlide1Continue = () => {
     try {
       // Persist on all platforms — Capacitor WKWebView's localStorage is sandboxed
