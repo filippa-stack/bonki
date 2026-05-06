@@ -65,10 +65,7 @@ export default function ProductCardTile({
         <div
           style={{
             position: 'absolute',
-            inset: 0,
-            overflow: 'hidden',
-            transform: 'scale(1.05)',
-            transformOrigin: 'center center',
+            inset: 16,
             zIndex: 1,
             pointerEvents: 'none',
           }}
@@ -80,25 +77,24 @@ export default function ProductCardTile({
             style={{
               width: '100%',
               height: '100%',
-              objectFit: 'cover',
-              objectPosition: '50% 25%',
+              objectFit: 'contain',
+              objectPosition: 'center',
               filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.10))',
             }}
           />
         </div>
       )}
 
-      {/* Bottom scrim */}
+      {/* Bottom scrim — inset to match the 16px frame */}
       <div
         style={{
           position: 'absolute',
-          bottom: 0,
-          left: 0,
-          right: 0,
+          bottom: 16,
+          left: 16,
+          right: 16,
           height: '25%',
           background:
-            'linear-gradient(to top, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0) 100%)',
-          borderRadius: 'inherit',
+            'linear-gradient(to top, rgba(0, 0, 0, 0.24) 0%, rgba(0, 0, 0, 0) 100%)',
           zIndex: 2,
           pointerEvents: 'none',
         }}
@@ -108,10 +104,10 @@ export default function ProductCardTile({
       <div
         style={{
           position: 'absolute',
-          bottom: 0,
-          left: 0,
-          right: 0,
-          padding: '10px 14px',
+          bottom: 16,
+          left: 16,
+          right: 16,
+          padding: 0,
           zIndex: 3,
         }}
       >
@@ -119,7 +115,7 @@ export default function ProductCardTile({
           style={{
             fontFamily: 'var(--font-display)',
             fontVariationSettings: "'opsz' 24",
-            fontSize: '20px',
+            fontSize: '16px',
             fontWeight: 600,
             color: '#FFFFFF',
             lineHeight: 1.2,
@@ -142,8 +138,8 @@ export default function ProductCardTile({
           transition={{ duration: 0.24, ease: [0.32, 0.72, 0, 1] }}
           style={{
             position: 'absolute',
-            top: 12,
-            right: 12,
+            top: 16,
+            right: 16,
             zIndex: 4,
             width: 18,
             height: 18,
