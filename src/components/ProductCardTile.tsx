@@ -138,8 +138,8 @@ export default function ProductCardTile({
           transition={{ duration: 0.24, ease: [0.32, 0.72, 0, 1] }}
           style={{
             position: 'absolute',
-            top: 12,
-            right: 12,
+            top: 16,
+            right: 16,
             zIndex: 4,
             width: 18,
             height: 18,
