@@ -365,13 +365,19 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
 
   // Loading gate — prevent flash while progress resolves
   if (progress.loading && !hasRenderedContent.current) {
-    return <div style={{ minHeight: '100vh', backgroundColor: bg }} />;
+    return <div style={{ minHeight: '100vh', backgroundColor: MIDNIGHT_INK }} />;
   }
 
   hasRenderedContent.current = true;
 
   return (
-    <div className="min-h-screen relative overflow-x-hidden" style={{ backgroundColor: bg }}>
+    <div
+      className="min-h-screen relative overflow-x-hidden"
+      style={{
+        backgroundColor: MIDNIGHT_INK,
+        backgroundImage: `linear-gradient(to bottom, ${bg} 0%, ${bg} 35%, ${MIDNIGHT_INK} 60%, ${MIDNIGHT_INK} 100%)`,
+      }}
+    >
       <ProductHomeBackButton color={LANTERN_GLOW} />
       <KontoIcon onClick={() => setKontoOpen(true)} />
       <KontoSheet open={kontoOpen} onClose={() => setKontoOpen(false)} />

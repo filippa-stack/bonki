@@ -1,45 +1,45 @@
-# Kids tile: show full illustration, never crop
+# Kids product home: Midnight Ink workspace background
 
-Verified illustration source format: kids card webp files have **transparent backgrounds** (alpha:Blend confirmed on jim-trygg, jim-skam, jma-vanskap). This is **Case A** — figures float on transparent canvas, so contain-with-padding will sit cleanly on the per-product accent color. No card-color clash expected. No content-coordination work surfaces from this change.
+Single shared component handles all kids products: `src/components/KidsProductHome.tsx` (the per-product `JagIMig*`/`JagMedAndra*`/`JagIVarlden*` files are unused legacy). `MIDNIGHT_INK` is already exported from `src/lib/palette.ts` and already imported by `KidsProductHome.tsx`. No palette change needed.
 
-## Single file edit: `src/components/ProductCardTile.tsx`
+## Edit: `src/components/KidsProductHome.tsx`
 
-Outer `<button>` unchanged: `aspectRatio: '3 / 4'`, `borderRadius: '22px'`, per-product `tileBg`, existing border/shadow, `.product-card-tile` press class.
+Root container at line 374 currently:
+```tsx
+<div className="min-h-screen relative overflow-x-hidden" style={{ backgroundColor: bg }}>
+```
 
-### 1. Illustration container — contain with padding
+Change to a vertical gradient: hero color at top, Midnight Ink in the workspace area. Use `backgroundColor: MIDNIGHT_INK` as the fallback so any beyond-content scroll area sits on Midnight Ink, with the gradient layered on top:
 
-Replace the current cover-with-1.05-scale wrapper:
+```tsx
+<div
+  className="min-h-screen relative overflow-x-hidden"
+  style={{
+    backgroundColor: MIDNIGHT_INK,
+    backgroundImage: `linear-gradient(to bottom, ${bg} 0%, ${bg} 35%, ${MIDNIGHT_INK} 60%, ${MIDNIGHT_INK} 100%)`,
+  }}
+>
+```
 
-- Remove `transform: scale(1.05)` and the inner overflow-hidden trick (no longer needed; nothing to crop).
-- Container becomes `position: absolute; inset: 16px;` (16px padding on all sides, lives inside the 22px-radius card).
-- `<img>` becomes `width: 100%; height: 100%; objectFit: 'contain'; objectPosition: 'center';` — drop the `50% 25%` cover anchor.
-- Keep the soft drop-shadow filter on the image for figure lift.
+Also update the loading-gate placeholder a few lines above (line 368) so it doesn't flash the old solid hero color before content renders:
 
-### 2. Title — inside the padded frame, smaller
+```tsx
+return <div style={{ minHeight: '100vh', backgroundColor: MIDNIGHT_INK }} />;
+```
 
-- Title block moves from `bottom: 0; left: 0; right: 0; padding: 10px 14px` to `bottom: 16px; left: 16px; right: 16px; padding: 0` so it respects the same 16px frame as the illustration.
-- Font size: `20px` → `16px`. Serif, weight 600, color `#FFFFFF`, `var(--font-display)`, `'opsz' 24` — all unchanged.
-- Keep textShadow for legibility against varied illustration content behind the title.
+That's the entire change — two style edits in one file.
 
-### 3. Scrim — lighter
+## What stays unchanged
 
-- Current scrim: `linear-gradient(to top, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0) 100%)` over bottom 25%.
-- New: reduce peak opacity ~30% → `rgba(0,0,0,0.24)`. Keep height/position. Inset to match the 16px frame (so the scrim doesn't bleed onto the colored matting outside the illustration).
-
-### 4. Completion checkmark — respect padding
-
-- Move from `top: 12; right: 12` → `top: 16; right: 16` so it aligns with the new frame.
-- Same 18×18 SVG, same SAFFRON_FLAME stroke, same drop-shadow, same fade-in animation with `skipPillAnimation` first-render guard.
-
-## What stays the same
-
-- `AdultProductCardTile.tsx` — not touched.
-- Card outer shape (3:4, 22px), per-product accent colors, navigation, completion logic, press behavior, `useCardImage` source.
+- Hero illustration, atmospheric radial glow, hero positioning per product (`HERO_TOP_OFFSET`, per-id image treatments).
+- Sticky filter header, resume banner, filter chips (transparent backdrop reads correctly against the gradient as it scrolls).
+- Per-product accent colors on tiles, contain-with-padding tile composition, completion checkmarks.
+- `AdultProductHome.tsx` — not touched.
+- All routing, session, completion, account-sheet logic.
 
 ## Verification (390×844)
 
-- `/product/jag-i-mig`: bear on Trygg fully visible; Skam silhouette complete; teal frames the illustrations as deliberate matting.
-- `/product/jag-med-andra`, `/product/jag-i-varlden`: same — every figure complete, no crop.
-- Titles read at 16px in bottom-left of the padded zone, legible.
-- `/product/still-us` adult tiles unchanged.
-- Completed cards show saffron checkmark in top-right of padded area.
+- `/product/jag-i-mig`, `/product/jag-med-andra`, `/product/jag-i-varlden`, `/product/vardagskort`, `/product/syskonkort`, `/product/sexualitetskort`: hero atmosphere preserved; below the hero the page settles into Midnight Ink; per-product tile accents pop with stronger contrast.
+- Gradient transition is smooth — no hard color edge at the chip-row boundary.
+- `/product/still-us` (Vårt Vi) unchanged.
+- Scrolling past the bottom of content stays on Midnight Ink (no flash of hero color), thanks to the `backgroundColor: MIDNIGHT_INK` fallback.
