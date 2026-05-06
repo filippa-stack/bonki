@@ -716,7 +716,7 @@ export default function ProductLibrary() {
 
         <div className="px-5" style={{ scrollMarginTop: '8px' }}>
           {/* Free-trial mention removed — now shown per-tile */}
-          {/* Resume card moved above Par */}
+          {/* Resume card moved above Ni som par */}
           <div style={{ height: '0px' }} />
           <motion.div
             variants={containerVariants}
