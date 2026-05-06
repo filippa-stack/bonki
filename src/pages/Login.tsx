@@ -361,54 +361,45 @@ export default function Login() {
                 De små samtalen är de som bär. De som faktiskt blir av.
               </p>
 
-              {/* Credential — Cormorant Garamond italic 13px */}
+              {/* Hairline above trust block */}
+              <div style={{ height: 1, width: '60%', background: 'color-mix(in srgb, #E9C890 35%, transparent)', marginTop: 28 }} />
+
+              {/* Credential — regular serif, non-italic */}
               <p
                 style={{
                   fontFamily: "'Cormorant Garamond', Georgia, serif",
-                  fontStyle: 'italic',
+                  fontStyle: 'normal',
                   fontSize: 13,
                   lineHeight: 1.4,
-                  color: 'rgba(253, 246, 227, 0.75)',
+                  color: 'rgba(253, 246, 227, 0.65)',
                   fontWeight: 400,
                   margin: 0,
-                  marginTop: 24,
+                  marginTop: 16,
                   maxWidth: 280,
                 }}
               >
                 Utvecklat av leg. psykolog och psykoterapeut med 29 års klinisk erfarenhet.
               </p>
 
-              {/* Pacing line */}
+              {/* Pacing line — italic serif, slightly larger */}
               <p
                 style={{
                   fontFamily: "'Cormorant Garamond', Georgia, serif",
                   fontStyle: 'italic',
-                  fontSize: 13,
+                  fontSize: 14,
                   lineHeight: 1.4,
-                  color: 'rgba(253, 246, 227, 0.75)',
+                  color: 'rgba(253, 246, 227, 0.65)',
                   fontWeight: 400,
                   margin: 0,
-                  marginTop: 12,
+                  marginTop: 10,
                   maxWidth: 280,
                 }}
               >
                 Ni bestämmer takten.
               </p>
 
-              {/* Single hairline rule */}
-              <div style={{ height: 1, width: '60%', background: 'rgba(253, 246, 227, 0.50)', marginTop: 32 }} />
-
-              {/* Pricing rows — four-state render rule preserved */}
-              <div style={{ width: '100%', marginTop: 24, display: 'flex', flexDirection: 'column', gap: 16 }}>
-                <PricingRow
-                  label="För dig och din partner"
-                  price={prices !== null ? prices.couple : pricesReady ? FALLBACK_PRICE_COUPLE : null}
-                />
-                <PricingRow
-                  label="För dig och ditt barn"
-                  price={prices !== null ? prices.kids : pricesReady ? FALLBACK_PRICE_KIDS : null}
-                />
-              </div>
+              {/* Hairline below trust block */}
+              <div style={{ height: 1, width: '60%', background: 'color-mix(in srgb, #E9C890 35%, transparent)', marginTop: 16 }} />
             </>
           )}
 
