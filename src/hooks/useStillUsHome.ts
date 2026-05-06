@@ -81,9 +81,9 @@ export interface StillUsHomeState {
 const EMPTY_STATE: StillUsHomeState = {
   actionCard: 'loading',
   cardIndex: 0,
-  cardId: 'su-01-smallest-we',
-  cardTitle: 'Minsta vi',
-  layerName: 'Grunden',
+  cardId: 'su-00-smallest-we',
+  cardTitle: 'Ert minsta "vi"',
+  layerName: 'Vardagen',
   phase: 'program',
   cycleId: 1,
   purchaseStatus: 'free_trial',

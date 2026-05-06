@@ -78,7 +78,7 @@ const MOCK_META: Record<string, MockMeta> = {
     progressColor: '#5BC9BC',
   },
   still_us: {
-    subtitle: '21 samtal om att förbli ett vi.',
+    subtitle: '18 samtal om att förbli ett vi.',
     progressColor: '#8898AE',
   },
 };

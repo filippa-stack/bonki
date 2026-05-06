@@ -273,61 +273,6 @@ const sliderPrompts: CardSliderSet[] = [
     ],
     reflectionPrompt: 'Beskriv känslan med ett par ord',
   },
-  // Card 18 — Risk under ansvar
-  {
-    cardIndex: 18,
-    cardId: 'card_19',
-    slug: slugFor(18),
-    cardTitle: 'Risk under ansvar',
-    layerName: 'Valet',
-    sliders: [
-      { sliderId: 's18-1', text: 'Kontroll', leftLabel: 'Jag känner kontroll', rightLabel: 'Jag känner beroende' },
-      { sliderId: 's18-2', text: 'Osäkerhet', leftLabel: 'Osäkerhet ger mig energi', rightLabel: 'Osäkerhet tär på mig' },
-      { sliderId: 's18-3', text: 'Ekonomisk risk', leftLabel: 'Jag säger ifrån i tid', rightLabel: 'Jag anpassar mig tills det brister' },
-    ],
-    reflectionPrompt: 'Beskriv känslan med ett par ord',
-  },
-  // Card 19 — På drift
-  {
-    cardIndex: 19,
-    cardId: 'card_20',
-    slug: slugFor(19),
-    cardTitle: 'På drift',
-    layerName: 'Valet',
-    sliders: [
-      { sliderId: 's19-1', text: 'Närhet', leftLabel: 'Jag är nära just nu', rightLabel: 'Jag har dragit mig undan' },
-      { sliderId: 's19-2', text: 'Vald', leftLabel: 'Jag känner mig vald', rightLabel: 'Jag känner mig kvar' },
-      { sliderId: 's19-3', text: 'Fas', leftLabel: 'Det är en fas', rightLabel: 'Jag vet inte vad det är' },
-    ],
-    reflectionPrompt: 'Beskriv känslan med ett par ord',
-  },
-  // Card 20 — Kärleksspråk
-  {
-    cardIndex: 20,
-    cardId: 'card_21',
-    slug: slugFor(20),
-    cardTitle: 'Kärleksspråk',
-    layerName: 'Valet',
-    sliders: [
-      { sliderId: 's20-1', text: 'Förstådd', leftLabel: 'Jag känner mig förstådd', rightLabel: 'Min längtan missas' },
-      { sliderId: 's20-2', text: 'Signaler', leftLabel: 'Jag visar vad jag vill', rightLabel: 'Jag väntar och hoppas' },
-      { sliderId: 's20-3', text: 'Språk', leftLabel: 'Vi talar samma språk', rightLabel: 'Vi menar olika saker' },
-    ],
-    reflectionPrompt: 'Beskriv känslan med ett par ord',
-  },
-  // Card 21 — Att fortsätta välja (redan författade)
-  {
-    cardIndex: 21,
-    cardId: 'card_22',
-    slug: slugFor(21),
-    cardTitle: 'Att fortsätta välja',
-    layerName: 'Valet',
-    sliders: [
-      { sliderId: 's21-1', text: 'Valet', leftLabel: 'Jag väljer aktivt', rightLabel: 'Jag stannar av vana' },
-      { sliderId: 's21-2', text: 'Varför', leftLabel: 'Jag vet varför jag är här', rightLabel: 'Jag stannar utan att veta varför' },
-    ],
-    reflectionPrompt: 'Beskriv känslan med ett par ord',
-  },
 ];
 
 export function getSliderSet(cardIndex: number): CardSliderSet | undefined {

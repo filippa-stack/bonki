@@ -1994,7 +1994,7 @@ export default function CardView() {
                     marginBottom: '16px',
                     textAlign: 'center',
                   }}>
-                    Lås upp hela resan genom 21 samtal i Vårt Vi.
+                    Lås upp hela resan genom 18 samtal i Vårt Vi.
                   </p>
                   <p style={{
                     fontFamily: 'var(--font-sans)',

@@ -1,3 +1,4 @@
+/** @deprecated — unreachable in current architecture (route redirected). Kept for future reference; do not edit copy in this pass. */
 /**
  * Still Us v3.0 — Session 2 reorientation summaries.
  * Shown at the start of Session 2 to recap Session 1.

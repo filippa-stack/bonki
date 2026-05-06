@@ -79,7 +79,7 @@ export const stillUsProduct: ProductManifest = {
   name: 'Vårt Vi',
   slug: 'still-us',
   tagline: 'Att förbli ett vi.',
-  description: '21 samtal fördelade på fyra lager.',
+  description: '18 samtal fördelade på fyra lager.',
   headerTitle: 'Vårt Vi',
   accentColor: 'hsl(215, 100%, 34%)',
   accentColorMuted: 'hsl(215, 60%, 80%)',

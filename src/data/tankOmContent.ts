@@ -1,3 +1,4 @@
+/** @deprecated — unreachable in current architecture (route redirected). Kept for future reference; do not edit copy in this pass. */
 /**
  * Still Us v3.0 — Tänk om content for each card.
  * Each card has a scenario (preamble text) and a question (discussion prompt).

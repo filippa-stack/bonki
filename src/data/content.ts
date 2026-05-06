@@ -1,7 +1,7 @@
 import { Category, Card } from '@/types';
 
 /** Bump this whenever categories or cards change in this file */
-export const CONTENT_VERSION = 12;
+export const CONTENT_VERSION = 13;
 
 export const categories: Category[] = [
   {
@@ -70,29 +70,7 @@ export const categories: Category[] = [
 ];
 
 export const cards: Card[] = [
-  // ── Card 0 · Vardagen — Ert första samtal ──────────────────
-  {
-    id: 'first-conversation',
-    title: 'Ert första samtal',
-    subtitle: 'Ett första samtal — för att landa tillsammans.',
-    categoryId: 'su-mock-vardagen',
-    sections: [
-      {
-        id: 'opening-first-conversation',
-        type: 'opening',
-        title: 'Frågor',
-        content: '',
-        prompts: [
-          'Finns det något din partner gör — kanske utan att tänka på det — som alltid får dig att må lite bättre?',
-          'När kände du dig senast glad att det är just den här personen som sitter bredvid dig?',
-          'Finns det något du önskar att din partner visste om dig just nu — utan att du behövt säga det?',
-          'Hur ofta pratar ni om er — så här?',
-          'Vad skulle det betyda för er om ni hade de här samtalen — regelbundet?',
-        ],
-      },
-    ],
-  },
-  // ── Card 1 · Grunden ──────────────────────────────────
+  // ── Vardagen — Ert minsta "vi" ──────────────────────────
   {
     id: 'smallest-we',
     title: 'Ert minsta "vi"',
@@ -386,28 +364,7 @@ export const cards: Card[] = [
       },
     ],
   },
-  // ── Card 14 · Längtan ─────────────────────────────────
-  {
-    id: 'our-philosophy',
-    title: 'Er filosofi',
-    subtitle: 'Värderingar under press',
-    categoryId: 'category-9',
-    sections: [
-      {
-        id: 'opening-our-philosophy',
-        type: 'opening',
-        title: 'Frågor',
-        content: '',
-        prompts: [
-          'Finns det något ni hanterade tillsammans nyligen där du efteråt tänkte — ja, det där var vi, som vi vill vara?',
-          'Vilken av dina värderingar är du mest benägen att låta glida när vardagen pressar?',
-          'Är det viktigare för er att vara konsekventa eller att kunna anpassa er?',
-          'Vardagen har pressat er länge. Ni märker att ni börjat ta genvägar - i tonen mot varandra, i tålamodet, i det ni tidigare aldrig hade accepterat. Ingen av er valde det. Det bara hände.\n— Hur tar ni er tillbaka till det ni egentligen vill stå för när ni märker att ni glidit?',
-        ],
-      },
-    ],
-  },
-  // ── Card 15 · Längtan ─────────────────────────────────
+  // ── Card · Längtan ────────────────────────────────────
   {
     id: 'when-life-tilts',
     title: 'När livet lutar',
@@ -487,27 +444,6 @@ export const cards: Card[] = [
           'Vilken liten sak gör din partner — eller skulle kunna göra — som får dig att känna dig genuint omhändertagen?',
           'Vad gör din partner som du ibland misstolkar — som egentligen är deras sätt att söka närhet?',
           'Trötthet och längtan krockar. Den ena vill vara nära, den andra orkar inte. Trots goda intentioner smyger sig både press och tolkningar in.\n\nVad händer mellan er när "jag vill" möter "jag orkar inte"?',
-        ],
-      },
-    ],
-  },
-  // ── Card 19 · Valet ───────────────────────────────────
-  {
-    id: 'choosing-to-stay',
-    title: 'Att fortsätta välja',
-    subtitle: 'Att aktivt prioritera relationen',
-    categoryId: 'category-10',
-    sections: [
-      {
-        id: 'opening-choosing-to-stay',
-        type: 'opening',
-        title: 'Frågor',
-        content: '',
-        prompts: [
-          'Vad fick dig att välja din partner från början — och vad är det som får dig att välja igen idag?',
-          'Vad har förändrats i hur du ser på er relation sedan ni började med de här samtalen?',
-          'Hur ser det ut att välja relationen när det inte finns någon kris — utan att något tvingar fram ett val?',
-          'Relationen fungerar. Inget är trasigt. Men ibland finns en tyst insikt: att man kan lämna — även utan konflikt.\n\nVad gör den insikten med er — är det den som gör valet verkligt, eller är den skrämmande?',
         ],
       },
     ],
