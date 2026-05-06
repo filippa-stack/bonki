@@ -156,6 +156,18 @@ export default function AdultProductHome({ product }: { product: ProductManifest
               pointerEvents: 'none',
             }}
           />
+          {/* Bottom scrim — fades hero into Deep Dusk workspace */}
+          <div
+            style={{
+              position: 'absolute',
+              bottom: 0,
+              left: 0,
+              right: 0,
+              height: '70%',
+              background: `linear-gradient(to top, ${DEEP_DUSK_BG} 0%, ${DEEP_DUSK_BG}F0 18%, ${DEEP_DUSK_BG}D0 35%, ${DEEP_DUSK_BG}90 55%, ${DEEP_DUSK_BG}40 75%, transparent 100%)`,
+              pointerEvents: 'none',
+            }}
+          />
         </motion.div>
       )}
 
