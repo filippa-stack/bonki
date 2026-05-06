@@ -46,7 +46,7 @@ const ILLUSTRATIONS: Record<string, string> = {
 };
 
 const TAGLINES: Record<string, string> = {
-  still_us: 'Förbli ett vi medan ni uppfostrar dem',
+  still_us: 'De samtal ni redan vill ha',
   jag_i_mig: 'När känslor får ord',
   jag_med_andra: 'Att vara sig själv och samspela med andra',
   jag_i_varlden: 'Att utveckla sig själv i en värld som vidgas',
