@@ -24,6 +24,12 @@ interface CategoryFilterChipsProps {
   variant?: 'kids' | 'adult';
   /** Color of the sliding underline. Defaults to BONKI_ORANGE. */
   underlineColor?: string;
+  /**
+   * Selection paradigm. 'multi' (default) toggles chips into a set;
+   * 'single' replaces selection on each tap (radio-like). Tapping the
+   * active chip in 'single' mode snaps back to 'Alla'.
+   */
+  selectionMode?: 'multi' | 'single';
 }
 
 export const ALL_FILTER_KEY = 'all';
