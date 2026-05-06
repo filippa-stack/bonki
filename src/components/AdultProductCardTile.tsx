@@ -23,7 +23,7 @@ import {
 } from '@/lib/palette';
 
 /** Hardcoded contrasting medallion fill per anchor color (Emma's mockups). */
-function getCircleColor(cardColor: string): string {
+export function getCircleColor(cardColor: string): string {
   switch (cardColor) {
     case CORNFLOWER:   return '#5A85D5'; // darker (only light anchor)
     case MIDNIGHT_INK: return '#2A2D45';
