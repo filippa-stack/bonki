@@ -519,8 +519,8 @@ export default function ProductLibraryMock() {
           <MockResumeBanner />
         </div>
 
-        {/* Par */}
-        <SectionLabel label="Par" />
+        {/* Ni som par */}
+        <SectionLabel label="Ni som par" />
         <div className="px-5" style={{ marginBottom: 28 }}>
           {couplesProducts.map(product => (
             <PastelTile
