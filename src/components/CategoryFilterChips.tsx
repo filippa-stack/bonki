@@ -40,6 +40,7 @@ export default function CategoryFilterChips({
   onChange,
   totalVisible,
   underlineColor = BONKI_ORANGE,
+  selectionMode = 'multi',
 }: CategoryFilterChipsProps) {
   const liveRef = useRef<HTMLDivElement | null>(null);
   const rowRef = useRef<HTMLDivElement | null>(null);
