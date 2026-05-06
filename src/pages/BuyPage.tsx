@@ -248,7 +248,7 @@ export default function BuyPage() {
     // Authenticated cancel-return: send them back to the intro page they came from.
     // The unauthenticated /buy surface would feel like a login page and confuse them.
     if (isCancelReturn && user && product) {
-      navigate(`/product/${product.slug}`, { replace: true });
+      navigate(`/product/${product.slug}?intro=1`, { replace: true });
       return;
     }
     // Unauthenticated cancel-return: fall through to render the selling surface (stays).

@@ -43,8 +43,13 @@ export default function ProductHome() {
 
   const { needed: needsIntro, checked: introChecked } = useProductIntroNeeded(product?.id ?? '');
 
+  // Force-show intro when returning from Stripe cancel (?intro=1) — keeps the user
+  // on the same redesigned ProductIntro page they tapped Köp from.
+  const forceIntro = new URLSearchParams(location.search).get('intro') === '1';
+
   // Tri-state: null = undecided (waiting for DB), false = skip, true = show
   const [showIntro, setShowIntro] = useState<boolean | null>(() => {
+    if (forceIntro) return true;
     if (!product?.id) return null;
     const seen = localStorage.getItem(`bonki-intro-seen-${product.id}`);
     if (seen) return false;
@@ -53,6 +58,10 @@ export default function ProductHome() {
   const [kontoOpen, setKontoOpen] = useState(false);
 
   useEffect(() => {
+    if (forceIntro) {
+      setShowIntro(true);
+      return;
+    }
     if (!introChecked) return;
     const alreadySeen = product?.id
       ? !!localStorage.getItem(`bonki-intro-seen-${product.id}`)
@@ -67,7 +76,7 @@ export default function ProductHome() {
       setShowIntro(false);
       if (product?.id) localStorage.setItem(`bonki-intro-seen-${product.id}`, '1');
     }
-  }, [introChecked, needsIntro]);
+  }, [introChecked, needsIntro, forceIntro]);
 
   // Remember last active product for skip-to-product launch
   useEffect(() => {
