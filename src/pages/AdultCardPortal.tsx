@@ -59,8 +59,9 @@ function distributeColors(cardIds: string[], overrides: Record<string, string | 
   return result;
 }
 
-function getPromptCount(card: { sections?: { prompts?: unknown[] }[] }): number {
-  return card.sections?.reduce((sum, s) => sum + (s.prompts?.length ?? 0), 0) ?? 0;
+function PortalCardImage({ cardId, children }: { cardId: string; children: (src: string | null) => React.ReactNode }) {
+  const src = useCardImage(cardId);
+  return <>{children(src)}</>;
 }
 
 function PortalCardImage({ cardId, children }: { cardId: string; children: (src: string | null) => React.ReactNode }) {
