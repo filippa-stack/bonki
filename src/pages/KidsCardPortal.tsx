@@ -181,7 +181,7 @@ export default function KidsCardPortal() {
       .select('price_sek')
       .eq('id', product.id)
       .single()
-      .then(({ data }) => setPriceSek(data?.price_sek ?? 195));
+      .then(({ data }) => setPriceSek(data?.price_sek ?? 199));
   }, [product?.id]);
 
   const promptCount = card ? getPromptCount(card) : 0;
