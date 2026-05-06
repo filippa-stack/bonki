@@ -223,7 +223,7 @@ export default function AdultCardPortal() {
         display: 'flex', flexDirection: 'column',
         paddingTop: 'max(calc(env(safe-area-inset-top, 0px) + 60px), clamp(60px, 11vh, 90px))',
         paddingLeft: '20px', paddingRight: '20px',
-        paddingBottom: 'calc(132px + env(safe-area-inset-bottom, 0px))',
+        paddingBottom: 'calc(56px + 96px + env(safe-area-inset-bottom, 0px))',
       }}>
         {/* ── Zone 1: Header ── */}
         <div style={{ textAlign: 'center' }}>
@@ -435,9 +435,10 @@ export default function AdultCardPortal() {
       {/* ── Sticky CTA bar ── */}
       <div style={{
         position: 'fixed',
-        left: 0, right: 0, bottom: 0,
-        zIndex: 20,
-        padding: `16px 20px calc(16px + env(safe-area-inset-bottom, 0px))`,
+        left: 0, right: 0,
+        bottom: 'calc(56px + env(safe-area-inset-bottom, 0px))',
+        zIndex: 30,
+        padding: '16px 20px',
         background: `linear-gradient(to top, ${DEEP_DUSK_BG} 0%, color-mix(in srgb, ${DEEP_DUSK_BG} 92%, transparent) 60%, transparent 100%)`,
         backdropFilter: 'blur(12px)',
         WebkitBackdropFilter: 'blur(12px)',
