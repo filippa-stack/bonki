@@ -80,11 +80,6 @@ const gorExercises: Record<string, GorExercise> = {
     title: 'Mina, dina, era traditioner',
     instructionText: 'Välj något från vardera familj som ni vill föra vidare — och en ny tradition som bara är er. \n→ Blev ni överraskade av varandras val?',
   },
-  'our-philosophy': {
-    cardId: 'our-philosophy',
-    title: 'Er filosofi',
-    instructionText: 'Finns det mågot ni kompromissat med den senaste tiden — som ni egentligen inte ville ge upp.',
-  },
   'when-life-tilts': {
     cardId: 'when-life-tilts',
     title: 'När livet lutar',
