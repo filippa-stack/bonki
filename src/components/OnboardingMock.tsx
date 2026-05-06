@@ -444,37 +444,37 @@ function ScreenGift() {
         Välj vilket — där det betyder mest just nu.
       </p>
 
-      {/* Promise card */}
+      {/* Editorial body — three standalone statements, no card, no markers */}
       <div
         style={{
-          background: 'rgba(212,245,192,0.06)',
-          border: '0.5px solid rgba(212,245,192,0.20)',
-          borderRadius: 18,
-          padding: '14px 16px',
-          marginBottom: 22,
+          marginTop: 32,
+          marginBottom: 48,
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 12,
+          alignItems: 'center',
         }}
       >
         {[
-          'Det första samtalet i en produkt — gratis',
-          'Engångsköp · Tillgång för alltid',
-          'Ingen prenumeration',
-        ].map(line => (
-          <div
+          'Det första samtalet — vår gåva till er.',
+          'Engångsköp. Aldrig prenumeration.',
+          'Tillgång för alltid.',
+        ].map((line) => (
+          <p
             key={line}
             style={{
-              display: 'flex',
-              alignItems: 'flex-start',
-              gap: 10,
-              padding: '5px 0',
-              fontFamily: 'Inter, system-ui, sans-serif',
-              fontSize: 12.5,
-              color: 'rgba(253,246,227,0.78)',
-              lineHeight: 1.4,
+              fontFamily: '"Cormorant Garamond", Georgia, serif',
+              fontStyle: 'italic',
+              fontSize: 16,
+              lineHeight: 1.45,
+              color: 'rgba(253,246,227,0.85)',
+              textAlign: 'center',
+              margin: 0,
+              maxWidth: 300,
             }}
           >
-            <span aria-hidden style={{ color: GHOST_GLOW, lineHeight: 1.4 }}>✓</span>
-            <span>{line}</span>
-          </div>
+            {line}
+          </p>
         ))}
       </div>
 
