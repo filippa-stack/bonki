@@ -30,9 +30,7 @@ const SUBLINE_LINES = [
   'och psykoterapeut.',
   'Ni bestämmer takten.',
 ];
-// Verified Live 2026-04-29 against products.price_sek.
-const FALLBACK_PRICE_COUPLE = 249;
-const FALLBACK_PRICE_KIDS = 195;
+// Pricing removed from onboarding — shown on intro page where it belongs commercially.
 const PREAUTH_SEEN_KEY = 'bonki-preauth-seen';
 
 const ORANGE_GRADIENT = 'linear-gradient(180deg, #E85D2C 0%, #C44D22 100%)';
@@ -76,13 +74,7 @@ export default function Login() {
     };
   }, []);
 
-  // ── Pre-auth intro + dynamic pricing (web redesign branch only) ──
-  // Hooks declared BEFORE any early return so React hook order stays stable
-  // across mode switches (native vs. web).
-  const [prices, setPrices] = useState<{ couple: number; kids: number } | null>(null);
-  const [pricesReady, setPricesReady] = useState(false);
-  // Pre-auth slide is shown once per device on ALL platforms (web + native iOS/Android).
-  // `skipRedesign` only governs the post-slide branch (legacy native JSX vs. redesigned web login).
+  // ── Pre-auth intro gate (shown once per device, all platforms) ──
   const [showSlide1, setShowSlide1] = useState(() => {
     try {
       return localStorage.getItem(PREAUTH_SEEN_KEY) !== '1';
@@ -90,38 +82,6 @@ export default function Login() {
       return true;
     }
   });
-
-  useEffect(() => {
-    // Native pays zero network cost.
-    if (skipRedesign) return;
-    let cancelled = false;
-    const timeout = setTimeout(() => {
-      if (!cancelled) setPricesReady(true);
-    }, 1500);
-
-    supabase
-      .from('products')
-      .select('id, price_sek')
-      .in('id', ['still_us', 'jag_i_mig'])
-      .then(({ data, error }) => {
-        if (cancelled) return;
-        clearTimeout(timeout);
-        if (!error && data) {
-          const couple = data.find((p) => p.id === 'still_us')?.price_sek;
-          const kids = data.find((p) => p.id === 'jag_i_mig')?.price_sek;
-          if (typeof couple === 'number' && typeof kids === 'number') {
-            setPrices({ couple, kids });
-          }
-        }
-        setPricesReady(true);
-      });
-
-    return () => {
-      cancelled = true;
-      clearTimeout(timeout);
-    };
-  }, [skipRedesign]);
-
   const handleSlide1Continue = () => {
     try {
       // Persist on all platforms — Capacitor WKWebView's localStorage is sandboxed
@@ -361,54 +321,45 @@ export default function Login() {
                 De små samtalen är de som bär. De som faktiskt blir av.
               </p>
 
-              {/* Credential — Cormorant Garamond italic 13px */}
+              {/* Hairline above trust block */}
+              <div style={{ height: 1, width: '60%', background: 'color-mix(in srgb, #E9C890 35%, transparent)', marginTop: 28 }} />
+
+              {/* Credential — regular serif, non-italic */}
               <p
                 style={{
                   fontFamily: "'Cormorant Garamond', Georgia, serif",
-                  fontStyle: 'italic',
+                  fontStyle: 'normal',
                   fontSize: 13,
                   lineHeight: 1.4,
-                  color: 'rgba(253, 246, 227, 0.75)',
+                  color: 'rgba(253, 246, 227, 0.65)',
                   fontWeight: 400,
                   margin: 0,
-                  marginTop: 24,
+                  marginTop: 16,
                   maxWidth: 280,
                 }}
               >
                 Utvecklat av leg. psykolog och psykoterapeut med 29 års klinisk erfarenhet.
               </p>
 
-              {/* Pacing line */}
+              {/* Pacing line — italic serif, slightly larger */}
               <p
                 style={{
                   fontFamily: "'Cormorant Garamond', Georgia, serif",
                   fontStyle: 'italic',
-                  fontSize: 13,
+                  fontSize: 14,
                   lineHeight: 1.4,
-                  color: 'rgba(253, 246, 227, 0.75)',
+                  color: 'rgba(253, 246, 227, 0.65)',
                   fontWeight: 400,
                   margin: 0,
-                  marginTop: 12,
+                  marginTop: 10,
                   maxWidth: 280,
                 }}
               >
                 Ni bestämmer takten.
               </p>
 
-              {/* Single hairline rule */}
-              <div style={{ height: 1, width: '60%', background: 'rgba(253, 246, 227, 0.50)', marginTop: 32 }} />
-
-              {/* Pricing rows — four-state render rule preserved */}
-              <div style={{ width: '100%', marginTop: 24, display: 'flex', flexDirection: 'column', gap: 16 }}>
-                <PricingRow
-                  label="För dig och din partner"
-                  price={prices !== null ? prices.couple : pricesReady ? FALLBACK_PRICE_COUPLE : null}
-                />
-                <PricingRow
-                  label="För dig och ditt barn"
-                  price={prices !== null ? prices.kids : pricesReady ? FALLBACK_PRICE_KIDS : null}
-                />
-              </div>
+              {/* Hairline below trust block */}
+              <div style={{ height: 1, width: '60%', background: 'color-mix(in srgb, #E9C890 35%, transparent)', marginTop: 16 }} />
             </>
           )}
 
@@ -534,6 +485,25 @@ export default function Login() {
                   exit={{ opacity: 0, y: -10 }}
                   className="flex flex-col items-center"
                 >
+                  {/* Three-dot pagination — middle dot active */}
+                  <div
+                    aria-hidden="true"
+                    style={{ display: 'flex', gap: 6, alignItems: 'center', marginBottom: 20 }}
+                  >
+                    {[0, 1, 2].map((i) => (
+                      <span
+                        key={i}
+                        style={{
+                          width: 6,
+                          height: 6,
+                          borderRadius: '50%',
+                          background: i === 1 ? '#E85D2C' : 'rgba(253,246,227,0.20)',
+                          display: 'block',
+                        }}
+                      />
+                    ))}
+                  </div>
+
                   {/* Primary CTA — orange pill, 44px tall */}
                   <button
                     onClick={handleGoogleSignIn}
@@ -947,55 +917,3 @@ export default function Login() {
   );
 }
 
-/**
- * PricingRow — label left, price right.
- * `price === null` renders a skeleton bar (same row height, no layout shift).
- */
-function PricingRow({ label, price }: { label: string; price: number | null }) {
-  return (
-    <div
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        gap: 12,
-        minHeight: 22,
-      }}
-    >
-      <span
-        style={{
-          fontFamily: 'var(--font-sans)',
-          fontSize: 15,
-          color: 'rgba(253, 246, 227, 0.85)',
-          textAlign: 'left',
-        }}
-      >
-        {label}
-      </span>
-      {price === null ? (
-        <span
-          aria-hidden="true"
-          style={{
-            display: 'inline-block',
-            width: 56,
-            height: 12,
-            borderRadius: 4,
-            background: 'rgba(253, 246, 227, 0.10)',
-          }}
-        />
-      ) : (
-        <span
-          style={{
-            fontFamily: 'var(--font-sans)',
-            fontSize: 15,
-            fontWeight: 500,
-            color: '#FDF6E3',
-            fontVariantNumeric: 'tabular-nums',
-          }}
-        >
-          {price} kr
-        </span>
-      )}
-    </div>
-  );
-}
