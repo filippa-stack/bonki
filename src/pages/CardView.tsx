@@ -1809,7 +1809,8 @@ export default function CardView() {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
       >
-        <Header title="" variant="immersive" />
+        {/* Safe-area spacer in Midnight Ink — replaces immersive Header to avoid product-color band */}
+        <div style={{ height: 'env(safe-area-inset-top, 0px)', backgroundColor: MIDNIGHT_INK }} />
         <div className="px-6 pb-16 relative" style={{ paddingTop: '48px' }}>
           {/* Back arrow removed — Föregående is in the CTA area below */}
 
