@@ -24,6 +24,12 @@ interface CategoryFilterChipsProps {
   variant?: 'kids' | 'adult';
   /** Color of the sliding underline. Defaults to BONKI_ORANGE. */
   underlineColor?: string;
+  /**
+   * Selection paradigm. 'multi' (default) toggles chips into a set;
+   * 'single' replaces selection on each tap (radio-like). Tapping the
+   * active chip in 'single' mode snaps back to 'Alla'.
+   */
+  selectionMode?: 'multi' | 'single';
 }
 
 export const ALL_FILTER_KEY = 'all';
@@ -34,6 +40,7 @@ export default function CategoryFilterChips({
   onChange,
   totalVisible,
   underlineColor = BONKI_ORANGE,
+  selectionMode = 'multi',
 }: CategoryFilterChipsProps) {
   const liveRef = useRef<HTMLDivElement | null>(null);
   const rowRef = useRef<HTMLDivElement | null>(null);
@@ -108,6 +115,15 @@ export default function CategoryFilterChips({
   const handleToggle = (id: string) => {
     if (id === ALL_FILTER_KEY) {
       onChange(new Set([ALL_FILTER_KEY]));
+      return;
+    }
+    if (selectionMode === 'single') {
+      // Tapping the active chip snaps back to Alla; otherwise replace.
+      if (selected.has(id) && selected.size === 1) {
+        onChange(new Set([ALL_FILTER_KEY]));
+      } else {
+        onChange(new Set([id]));
+      }
       return;
     }
     const next = new Set(selected);

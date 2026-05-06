@@ -301,6 +301,7 @@ function StickyFilterHeader({
           accentHex={accent}
           totalVisible={visibleCount}
           underlineColor={WARM_GOLD}
+          selectionMode="single"
         />
       </div>
 
