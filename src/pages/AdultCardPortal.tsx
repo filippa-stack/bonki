@@ -37,6 +37,18 @@ import {
   SAFFRON_FLAME,
 } from '@/lib/palette';
 import { getPortalCopy } from '@/data/stillUsPortalCopy';
+import { CARD_SEQUENCE, bareIdFromSlug } from '@/data/stillUsSequence';
+
+/** Map a manifest card id (e.g. 'su-mock-3') to the bare id used by
+ *  stillUsPortalCopy (e.g. 'expressing-needs'). */
+function resolveBareCardId(cardId: string): string {
+  const m = cardId.match(/^su-mock-(\d+)$/);
+  if (m) {
+    const seq = CARD_SEQUENCE[Number(m[1])];
+    if (seq) return bareIdFromSlug(seq.cardId);
+  }
+  return bareIdFromSlug(cardId);
+}
 
 const ADULT_ANCHOR_COLORS = [
   CORNFLOWER, MIDNIGHT_INK, DUSTY_ROSE, WARM_GOLD, STORM_GREY, SAGE,
