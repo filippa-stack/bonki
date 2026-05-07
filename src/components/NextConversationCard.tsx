@@ -122,12 +122,12 @@ export default function NextConversationCard({ product, progress }: NextConversa
         fontFamily: 'var(--font-sans)',
         fontSize: '11px',
         fontWeight: 600,
-        color: `${LANTERN_GLOW}B3`,
+        color: product.darkTextOnTile ? 'rgba(90,58,31,0.75)' : `${LANTERN_GLOW}B3`,
         textTransform: 'uppercase',
         letterSpacing: '1.5px',
         position: 'relative',
         zIndex: 2,
-        textShadow: '0 1px 4px rgba(0,0,0,0.5)',
+        textShadow: product.darkTextOnTile ? 'none' : '0 1px 4px rgba(0,0,0,0.5)',
       }}>
         Nästa samtal
       </span>
@@ -137,11 +137,11 @@ export default function NextConversationCard({ product, progress }: NextConversa
         fontVariationSettings: "'opsz' 20",
         fontSize: '22px',
         fontWeight: 600,
-        color: LANTERN_GLOW,
+        color: product.darkTextOnTile ? '#5A3A1F' : LANTERN_GLOW,
         lineHeight: 1.3,
         position: 'relative',
         zIndex: 2,
-        textShadow: '0 1px 6px rgba(0,0,0,0.6)',
+        textShadow: product.darkTextOnTile ? 'none' : '0 1px 6px rgba(0,0,0,0.6)',
       }}>
         {card.title}
       </span>
@@ -151,10 +151,10 @@ export default function NextConversationCard({ product, progress }: NextConversa
           fontFamily: 'var(--font-sans)',
           fontSize: '13px',
           fontWeight: 500,
-          color: '#C8BFB4',
+          color: product.darkTextOnTile ? 'rgba(90,58,31,0.65)' : '#C8BFB4',
           position: 'relative',
           zIndex: 2,
-          textShadow: '0 1px 4px rgba(0,0,0,0.5)',
+          textShadow: product.darkTextOnTile ? 'none' : '0 1px 4px rgba(0,0,0,0.5)',
         }}>
           Från {category.title}
         </span>
