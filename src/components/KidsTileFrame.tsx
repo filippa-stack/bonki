@@ -35,6 +35,8 @@ interface KidsTileFrameProps {
   subtitle?: string;
   /** Optional small-caps meta row (e.g. "8 AV 21 · FRÅN 3 ÅR"). */
   meta?: string;
+  /** Optional trailing element rendered on the right of the meta row. */
+  metaTrailing?: ReactNode;
   /** Dark text color (in product hue family). */
   darkText: string;
   /** Show saffron checkmark in top-right of inner zone. */
@@ -61,6 +63,7 @@ export default function KidsTileFrame({
   title,
   subtitle,
   meta,
+  metaTrailing,
   darkText,
   completed = false,
   onClick,
@@ -217,21 +220,35 @@ export default function KidsTileFrame({
           </span>
         )}
         {meta && (
-          <span
+          <div
             style={{
-              fontFamily: 'var(--font-body)',
-              fontSize: 9,
-              fontWeight: 600,
-              letterSpacing: '0.08em',
-              textTransform: 'uppercase',
-              color: darkText,
-              opacity: 0.55,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: 6,
               marginTop: 4,
-              display: 'block',
             }}
           >
-            {meta}
-          </span>
+            <span
+              style={{
+                fontFamily: 'var(--font-body)',
+                fontSize: 9,
+                fontWeight: 600,
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+                color: darkText,
+                opacity: 0.55,
+                lineHeight: 1.2,
+              }}
+            >
+              {meta}
+            </span>
+            {metaTrailing && (
+              <span style={{ display: 'inline-flex', color: darkText, opacity: 0.55, flexShrink: 0 }}>
+                {metaTrailing}
+              </span>
+            )}
+          </div>
         )}
       </div>
     </Wrapper>
