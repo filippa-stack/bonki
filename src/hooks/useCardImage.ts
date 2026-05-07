@@ -1,11 +1,23 @@
 /**
  * useCardImage — returns the URL for a card's illustration.
  * All images are served as standalone files from /card-images/{cardId}.webp.
- * No ZIP extraction needed.
+ *
+ * Still Us cards (su-mock-N) resolve via bare card id (e.g. expressing-needs)
+ * looked up through CARD_SEQUENCE, so reordering the sequence does not break
+ * visuals. Falls back to legacy /card-images/su-mock-N.webp if no bare-id
+ * file is registered.
  */
+import { CARD_SEQUENCE, bareIdFromSlug } from '@/data/stillUsSequence';
 
 /** Set of all card IDs that have illustrations */
 const CARD_IDS_WITH_IMAGES = new Set([
+  // ── Vårt Vi (bare ids — new ID-bound pattern) ──
+  'thoughtful-space', 'expressing-needs', 'behind-the-scenes', 'smallest-we',
+  'self-esteem-wavering', 'parenting-exhaustion', 'love-languages',
+  'different-parenting-styles', 'worth-spending-on', 'when-life-tilts',
+  'family-ab', 'conflict-repair', 'facing-adversity', 'parenting-boundaries',
+  'listening-presence', 'adrift', 'our-traditions', 'identity-shift',
+
   // ── Jag i Mig ──
   'jim-trygg', 'jim-ensam', 'jim-stress', 'jim-glad', 'jim-ledsen',
   'jim-arg', 'jim-radd', 'jim-vild', 'jim-besviken', 'jim-acklad',
@@ -54,9 +66,27 @@ const CARD_IDS_WITH_IMAGES = new Set([
 /**
  * Returns the URL for a card's illustration, or null if no image exists.
  * Synchronous — no async loading, no ZIP parsing.
+ *
+ * For Still Us (`su-mock-N`), prefers the bare-id file (id-bound) and falls
+ * back to the legacy indexed file.
  */
 export function useCardImage(cardId: string | null | undefined): string | null {
-  if (!cardId || !CARD_IDS_WITH_IMAGES.has(cardId)) return null;
+  if (!cardId) return null;
+
+  if (cardId.startsWith('su-mock-')) {
+    const n = Number(cardId.slice('su-mock-'.length));
+    if (Number.isFinite(n)) {
+      const seq = CARD_SEQUENCE[n];
+      if (seq) {
+        const bare = bareIdFromSlug(seq.cardId);
+        if (CARD_IDS_WITH_IMAGES.has(bare)) return `/card-images/${bare}.webp`;
+      }
+    }
+    if (CARD_IDS_WITH_IMAGES.has(cardId)) return `/card-images/${cardId}.webp`;
+    return null;
+  }
+
+  if (!CARD_IDS_WITH_IMAGES.has(cardId)) return null;
   return `/card-images/${cardId}.webp`;
 }
 
