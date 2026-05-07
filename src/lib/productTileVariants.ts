@@ -31,37 +31,37 @@ export const interiorVariants: Record<string, ProductInteriorVariants> = {
     // Frame: #E89B6B (coral-amber) — 4 variants, 21 cards
     variants: ['#D08560', '#E0926A', '#EDA980', '#F2BC97'],
     permutation: [0, 2, 1, 3, 2, 0, 3, 1, 0, 2, 1, 3, 2, 0, 3, 1, 0, 2, 1, 3, 2],
-    calmIndex: 1,
+    calmIndex: 3,
   },
   jag_med_andra: {
     // Frame: #CB7AB2 (magenta-pink) — 3 variants, 21 cards
     variants: ['#B05E96', '#CB7AB2', '#DCA1C8'],
     permutation: [0, 2, 1, 0, 2, 1, 0, 2, 1, 0, 2, 1, 0, 2, 1, 0, 2, 1, 0, 2, 1],
-    calmIndex: 1,
+    calmIndex: 2,
   },
   jag_i_varlden: {
     // Frame: #C6D423 (chartreuse) — 3 variants, 20 cards
     variants: ['#B0BD1E', '#C6D423', '#D4DE48'],
     permutation: [0, 2, 1, 0, 2, 1, 0, 2, 1, 0, 2, 1, 0, 2, 1, 0, 2, 1, 0, 2],
-    calmIndex: 1,
+    calmIndex: 2,
   },
   vardagskort: {
     // Frame: #8BDDB0 (sage) — 4 variants, 15 cards
     variants: ['#6BC494', '#8BDDB0', '#A8E6C4', '#C4F0DA'],
     permutation: [0, 2, 1, 3, 2, 0, 3, 1, 0, 2, 1, 3, 2, 0, 3],
-    calmIndex: 1,
+    calmIndex: 3,
   },
   syskonkort: {
     // Frame: #CF8BDD (lavender) — 5 variants, 13 cards (middle variant matches frame)
     variants: ['#9B5BAE', '#B570C5', '#CF8BDD', '#DDA8E5', '#EAC8EE'],
     permutation: [0, 3, 1, 4, 2, 0, 3, 1, 4, 2, 0, 3, 1],
-    calmIndex: 2,
+    calmIndex: 4,
   },
   sexualitetskort: {
     // Frame: #B87560 (rose-clay / N&I) — 4 variants, 14 cards
     variants: ['#A26350', '#B06D58', '#C28571', '#CFA08D'],
     permutation: [0, 2, 1, 3, 2, 0, 3, 1, 0, 2, 1, 3, 2, 0],
-    calmIndex: 1,
+    calmIndex: 3,
   },
 };
 
