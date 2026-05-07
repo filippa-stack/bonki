@@ -68,28 +68,28 @@ const tileVariants = {
 function LibraryHeader() {
   return (
     <div style={{ textAlign: 'center', marginBottom: 20 }}>
-      <p style={{
-        fontFamily: 'var(--font-body)',
-        fontSize: 10,
-        fontWeight: 600,
-        letterSpacing: '0.15em',
-        textTransform: 'uppercase',
-        color: 'rgba(253, 246, 227, 0.45)',
-        margin: '0 0 6px',
-      }}>
-        Samtal för hela familjen
-      </p>
       <h1 style={{
         fontFamily: 'var(--font-display)',
         fontSize: 28,
         fontWeight: 500,
         letterSpacing: '-0.005em',
         color: LANTERN_GLOW,
-        margin: 0,
+        margin: '0 0 6px',
         fontVariationSettings: "'opsz' 28",
       }}>
         Biblioteket
       </h1>
+      <p style={{
+        fontFamily: 'var(--font-body)',
+        fontSize: 10,
+        fontWeight: 600,
+        letterSpacing: '0.15em',
+        textTransform: 'uppercase',
+        color: 'rgba(253, 246, 227, 0.55)',
+        margin: 0,
+      }}>
+        Samtal för hela familjen
+      </p>
     </div>
   );
 }
@@ -145,7 +145,7 @@ function StillUsMarquee({
         display: 'flex',
         alignItems: 'center',
         gap: 16,
-        padding: '20px 16px',
+        padding: '22px 18px',
         borderRadius: 18,
         background: 'rgba(15, 15, 15, 0.55)',
         backdropFilter: 'blur(22px)',
@@ -207,34 +207,45 @@ function StillUsMarquee({
         }}>
           {TAGLINES.still_us}
         </p>
-        <span style={{
-          display: 'inline-flex',
-          alignItems: 'center',
-          gap: 6,
-          marginTop: 12,
-          padding: '5px 11px',
-          borderRadius: 999,
-          background: `color-mix(in srgb, ${accent} 18%, rgba(255,255,255,0.14))`,
-          backdropFilter: 'blur(8px)',
-          WebkitBackdropFilter: 'blur(8px)',
-          border: `0.5px solid color-mix(in srgb, ${accent} 25%, rgba(255,255,255,0.22))`,
-          fontFamily: 'var(--font-body)',
-          fontSize: 11.5,
-          fontWeight: 600,
-          letterSpacing: '0.02em',
-          color: LANTERN_GLOW,
-        }}>
-          {isPurchased ? (
-            `${completedCount} av ${totalCards}`
-          ) : tasted ? (
-            <>
-              <BonkiLogoMark size={9} style={{ color: LANTERN_GLOW }} />
-              Du har provat
-            </>
-          ) : (
-            `${totalCards} samtal`
-          )}
-        </span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginTop: 12, flexWrap: 'wrap' }}>
+          <span style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 6,
+            padding: '5px 11px',
+            borderRadius: 999,
+            background: `color-mix(in srgb, ${accent} 18%, rgba(255,255,255,0.14))`,
+            backdropFilter: 'blur(8px)',
+            WebkitBackdropFilter: 'blur(8px)',
+            border: `0.5px solid color-mix(in srgb, ${accent} 25%, rgba(255,255,255,0.22))`,
+            fontFamily: 'var(--font-body)',
+            fontSize: 11.5,
+            fontWeight: 600,
+            letterSpacing: '0.02em',
+            color: LANTERN_GLOW,
+          }}>
+            {isPurchased ? (
+              `${completedCount} av ${totalCards}`
+            ) : tasted ? (
+              <>
+                <BonkiLogoMark size={9} style={{ color: LANTERN_GLOW }} />
+                Du har provat
+              </>
+            ) : (
+              `${totalCards} samtal`
+            )}
+          </span>
+          <span style={{
+            fontFamily: 'var(--font-body)',
+            fontSize: 10,
+            fontWeight: 600,
+            letterSpacing: '0.12em',
+            textTransform: 'uppercase',
+            color: 'rgba(253, 246, 227, 0.55)',
+          }}>
+            {totalCards} samtal
+          </span>
+        </div>
       </div>
     </button>
   );

@@ -1,118 +1,64 @@
-# Batch C correction — library kids tiles use KidsTileFrame
+# Library — match approved mockup composition
 
-## Problem
+Three targeted fixes. `KidsTileFrame` already renders correctly (16px inset, rounded interior, 30% strip, hairline). The bugs are in callers and in the calm-variant table.
 
-Library kids tiles still render via the old `PastelTile` (single-zone, illustration anchored bottom-right, dense top stack). Batch C never swapped them to the shared `KidsTileFrame` primitive, so the frame/interior compositional structure is missing.
+## 1. `src/lib/productTileVariants.ts` — fix invisible inner zones (root cause)
 
-## Changes
+For four products, `calmIndex` points to a variant **identical to the frame color**, so the inner zone is invisible. Remap each `calmIndex` to a visibly lighter (or darker) variant:
 
-### 1. `src/components/KidsTileFrame.tsx` — extend, don't fork
+| Product | Frame | Current calm (broken) | New calm |
+|---|---|---|---|
+| `jag_i_mig` | `#E89B6B` | `#E0926A` (idx 1) — too close | `#F2BC97` (idx 3, lighter) |
+| `jag_med_andra` | `#CB7AB2` | `#CB7AB2` (idx 1) — **identical** | `#DCA1C8` (idx 2, lighter) |
+| `jag_i_varlden` | `#C6D423` | `#C6D423` (idx 1) — **identical** | `#D4DE48` (idx 2, lighter) |
+| `vardagskort` | `#8BDDB0` | `#8BDDB0` (idx 1) — **identical** | `#C4F0DA` (idx 3, lighter) |
+| `syskonkort` | `#CF8BDD` | `#CF8BDD` (idx 2) — **identical** | `#EAC8EE` (idx 4, lighter) |
+| `sexualitetskort` | `#B87560` | `#B06D58` (idx 1) — too close | `#CFA08D` (idx 3, lighter) |
 
-- Add optional prop `metaTrailing?: ReactNode` rendered on the right side of the meta row (used for the `BonkiLogoMark` "tasted" glyph).
-- Convert the existing `<span>{meta}</span>` block to a flex row with `justify-content: space-between`, hosting the meta text on the left and `metaTrailing` on the right.
-- All other props/behavior unchanged. The product-home callsite (`ProductCardTile`) keeps working — it doesn't pass `metaTrailing`.
+Each new calm variant already exists in the `variants` array; only the `calmIndex` integer changes per product. Keeps `getInteriorForCard` (in-product card grid) untouched.
 
-### 2. `src/components/ProductLibrary.tsx`
+## 2. `src/components/ProductLibrary.tsx` — `LibraryHeader` order
 
-Replace the `PastelTile` definition and all kids-tile callsites with a `LibraryKidsTile` wrapper that delegates to `KidsTileFrame`:
-
-```tsx
-import KidsTileFrame from '@/components/KidsTileFrame';
-import { getCalmInterior } from '@/lib/productTileVariants';
-import { productDarkText } from '@/lib/palette';
-
-function LibraryKidsTile({ product, illustration, totalCards, completedCount, isPurchased, onClick }) {
-  const frame = PRODUCT_ACCENT[product.id];
-  const interior = getCalmInterior(product.id, frame);
-  const darkText = productDarkText[product.id] ?? '#5A3A1F';
-  const tasted = !isPurchased && completedCount > 0;
-  const progress = isPurchased ? `${completedCount} AV ${totalCards}` : `${totalCards} SAMTAL`;
-  const meta = product.ageLabel ? `${progress} · ${product.ageLabel.toUpperCase()}` : progress;
-
-  return (
-    <KidsTileFrame
-      frame={frame}
-      interior={interior}
-      title={product.name}
-      subtitle={TAGLINES[product.id]}
-      meta={meta}
-      metaTrailing={tasted ? <BonkiLogoMark size={9} /> : undefined}
-      darkText={darkText}
-      titleSize={15}
-      stripFraction={0.30}
-      style={{ aspectRatio: '1 / 1.05' }}
-      onClick={onClick}
-      ariaLabel={product.name}
-    >
-      <img
-        src={illustration}
-        alt=""
-        aria-hidden="true"
-        style={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          maxWidth: '70%',
-          maxHeight: '70%',
-          width: 'auto',
-          height: 'auto',
-          objectFit: 'contain',
-          filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.10))',
-        }}
-      />
-    </KidsTileFrame>
-  );
-}
-```
-
-Then the kids grid map:
+Swap so title comes first:
 
 ```tsx
-{sortedKidsProducts.map((product) => (
-  <LibraryKidsTile
-    key={product.id}
-    product={product}
-    illustration={ILLUSTRATIONS[product.id]}
-    totalCards={product.cards.length}
-    completedCount={completedCountMap[product.id] || 0}
-    isPurchased={purchased.has(product.id)}
-    onClick={() => navigate(`/product/${product.slug}`)}
-  />
-))}
+<h1>Biblioteket</h1>          // 28px Fraunces, marginBottom: 6
+<p>Samtal för hela familjen</p>  // 10px small-caps eyebrow, opacity 0.55
 ```
 
-Drop the now-unused `PastelTile` component entirely (Vårt Vi has its own `StillUsMarquee`).
+## 3. `src/components/ProductLibrary.tsx` — `StillUsMarquee` add SAMTAL eyebrow
 
-### 3. `StillUsMarquee` proportion tightening
+In the right column, replace the standalone pill with a row containing pill + small-caps eyebrow side by side:
 
-In `src/components/ProductLibrary.tsx`:
+```tsx
+<div style={{ display: 'flex', alignItems: 'center', gap: 10, marginTop: 12 }}>
+  <span /* progress pill, unchanged */ />
+  <span style={{
+    fontFamily: 'var(--font-body)',
+    fontSize: 10,
+    fontWeight: 600,
+    letterSpacing: '0.12em',
+    textTransform: 'uppercase',
+    color: 'rgba(253, 246, 227, 0.55)',
+  }}>
+    {totalCards} samtal
+  </span>
+</div>
+```
 
-- Container: bump `padding` from `16` to `padding: '20px 16px'` to add 4 px vertical breathing room above the title and below the pill.
-- Medallion: change the inner `<img>` from `inset: 6` filling the medallion to centered at 70%:
-  ```tsx
-  style={{
-    position: 'absolute', top: '50%', left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: '70%', height: '70%',
-    objectFit: 'contain', objectPosition: 'center',
-    pointerEvents: 'none',
-  }}
-  ```
-- Pill: change `marginTop: 10` → `marginTop: 12` for clearer separation from the tagline.
+Bump container padding `'20px 16px'` → `'22px 18px'` for the requested breathing room. Medallion stays 110×110 with 70% inner image (already correct).
 
-## What does NOT change
+## What stays unchanged
 
-- `LibraryHeader`, `SectionEyebrow`, disclaimer copy, locked kids order, 2-col grid + 12 px gap, resume card, nudges.
-- Kids product home tiles (Batch B) — they keep using `KidsTileFrame` via `ProductCardTile`, no changes.
-- Vårt Vi tile content (title, tagline, pill states, navigation), only proportions tighten.
-- Color tokens, calm-variant table, `productDarkText` map.
+- `KidsTileFrame` primitive (already renders 16px inset interior, 30% strip, hairline at strip top)
+- `LibraryKidsTile` callsite (`stripFraction={0.30}`, illustration 70%/70%, `metaTrailing` for tasted state)
+- Section eyebrows, locked kids order, 12px gap, disclaimer copy, resume card, nudges
+- Product home tiles — they use `getInteriorForCard` (position-indexed), not `getCalmInterior`, so unaffected
 
 ## Verification (390×844)
 
-At `/library`:
-1. Each kids tile shows clear frame (product color) + interior (calm variant) zones with the illustration centered in the inner zone — no bottom-anchored crops.
-2. Title strip occupies ~30% height; reads as three editorial lines: title (Fraunces 15), italic-serif subtitle, small-caps meta row.
-3. JIV and N&I (no `ageLabel`) show only progress in the meta row.
-4. Tasted state renders `BonkiLogoMark` to the right of the meta row in the same dark-text color at 0.55 opacity.
-5. Vårt Vi marquee right column has visible breathing room; medallion shows the figure centered at ~70 % of the circle, not bottom-anchored.
+1. Header reads: large serif "Biblioteket" then small-caps "SAMTAL FÖR HELA FAMILJEN" below.
+2. Vårt Vi marquee: 110px medallion left; right column shows title, italic subtitle, then pill + "21 SAMTAL" eyebrow on one row.
+3. Each kids tile shows a clearly lighter rounded-rectangle inner zone inset 16px from the frame edge — frame band visible on all four sides of the interior.
+4. Hairline visible between inner zone bottom and title strip top.
+5. Disclaimer "Åldrarna är en vägledning. Ni känner ert barn bäst." present below FÖR BARN section.
