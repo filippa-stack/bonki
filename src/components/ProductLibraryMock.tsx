@@ -91,7 +91,7 @@ const TILE_DARK_TEXT = '#5A3A1F';
 const GRADIENT_TOKENS_CSS = `
   .v4-mock-root {
     --vartvi-bg-1:#C5D0E2; --vartvi-bg-2:#647892;
-    --jim-bg-1:#3A9088;    --jim-bg-2:#175048;
+    --jim-bg-1:#E8C593;    --jim-bg-2:#C39855;
     --jma-bg-1:#D86BA0;    --jma-bg-2:#7A2E5A;
     --varlden-bg-1:#D8E04A; --varlden-bg-2:#7A8019;
     --vardag-bg-1:#7FCEAB;  --vardag-bg-2:#3E8868;
@@ -131,6 +131,11 @@ function PastelTile({ product, onClick, completedCount, isPurchased }: PastelTil
   const totalCards = product.cards.length;
   const tasted = !isPurchased && completedCount > 0;
   const accent = PRODUCT_ACCENT[product.id] ?? '#1A2538';
+  const darkText = DARK_TEXT_TILE_IDS.has(product.id);
+  const titleColor = darkText ? TILE_DARK_TEXT : '#FFFFFF';
+  const subtitleColor = darkText ? TILE_DARK_TEXT : 'rgba(255, 255, 255, 0.92)';
+  const titleShadow = darkText ? 'none' : '0 2px 14px rgba(0,0,0,0.45)';
+  const subtitleShadow = darkText ? 'none' : '0 1px 6px rgba(0,0,0,0.35)';
 
   return (
     <motion.div
