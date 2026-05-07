@@ -75,7 +75,7 @@ const PRODUCT_SLUG: Record<string, string> = {
 /** Per-product accent (gradient bg-1) used by resume banner dot + wash. */
 const PRODUCT_ACCENT: Record<string, string> = {
   still_us: '#A8B5C9',
-  jag_i_mig: '#E0B374',
+  jag_i_mig: '#F5B82E',
   jag_med_andra: '#B85A8A',
   jag_i_varlden: '#BAC03E',
   vardagskort: '#6FB498',
@@ -91,7 +91,7 @@ const TILE_DARK_TEXT = '#5A3A1F';
 const GRADIENT_TOKENS_CSS = `
   .v4-mock-root {
     --vartvi-bg-1:#C5D0E2; --vartvi-bg-2:#647892;
-    --jim-bg-1:#E8C593;    --jim-bg-2:#C39855;
+    --jim-bg-1:#F5B82E;    --jim-bg-2:#C39855;
     --jma-bg-1:#D86BA0;    --jma-bg-2:#7A2E5A;
     --varlden-bg-1:#D8E04A; --varlden-bg-2:#7A8019;
     --vardag-bg-1:#7FCEAB;  --vardag-bg-2:#3E8868;
