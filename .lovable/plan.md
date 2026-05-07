@@ -1,39 +1,57 @@
-# Five atomic fixes
+## Goal
 
-## 1. Vårt Vi tile subtitle → "De samtal ni redan vill ha"
+Visual A/B test: swap Jag i Mig from saturated teal to muted warm honey, and apply dark brown text to both JIM and Jag i Världen library tiles (their lighter backgrounds can't carry white text).
 
-- `src/components/ProductLibrary.tsx:49`
-- `src/components/ProductLibraryMock.tsx:56`
-- `src/components/ProductIntroMock.tsx:49`
+## Color changes
 
-## 2. Hero subtitle → "De samtal ni redan vill ha"
+- JIM library tile accent: `#27A69C` → `#E0B374`
+- JIM palette `tileLight`: `#27A69C` → `#E8C593`
+- JIM manifest `ctaButtonColor`: `#27A69C` → `#E0B374`
+- Dark text on tile (`#5A3A1F` for both title and subtitle): JIM + JIV
+- All other JIM tokens (deep teal `backgroundColor`, `tileMid`, `tileDeep`, `accentColor` HSL) — unchanged
+- All other JIV tokens — unchanged (only adding the dark-text flag)
 
-- `src/contexts/SiteSettingsContext.tsx:30` (`heroSubtitle`)
+## Approach for the dark text
 
-## 3. Library section heading "Föräldrar" → "Par"
+Add `darkTextOnTile?: boolean` to `ProductManifest`, default false. Set `true` on `jag_i_mig` and `jag_i_varlden` manifests. Both `ProductLibrary.tsx` and `ProductLibraryMock.tsx` read the flag at render time and conditionally use `#5A3A1F` for `<h3>` and the subtitle `<p>` (full opacity, not the translucent white). Pill stays as-is.
 
-- `src/components/ProductLibrary.tsx:669` (visible heading)
-- `src/components/ProductLibraryMock.tsx:523` (mock heading)
-- Update nearby comments at ProductLibrary.tsx:451, 494, 719 and ProductLibraryMock.tsx:522 for grep consistency
+This keeps the rule co-located with each product's palette — future palette swaps just flip the flag.
 
-No routing/filter keys reference the string.
+## Files to edit
 
-## 4. Vårt Vi portal back → product home (not library)
+1. **`src/types/product.ts`** — add `/** When true, library tile renders dark brown text instead of white (for light backgrounds) */ darkTextOnTile?: boolean;`
 
-Add optional `to?: string` prop to `src/components/ProductHomeBackButton.tsx`. When provided, navigate there; otherwise preserve current behavior (clear last-active-product, navigate `/`).
+2. **`src/data/products/jag-i-mig.ts`** (manifest, ~line 519+):
+   - `ctaButtonColor: '#E0B374'`
+   - `tileLight: '#E8C593'`
+   - add `darkTextOnTile: true`
 
-In `src/pages/AdultCardPortal.tsx:216`, pass `to="/product/still-us"`.
+3. **`src/data/products/jag-i-varlden.ts`** (manifest):
+   - add `darkTextOnTile: true`
 
-All other consumers (Home, all product home pages) unchanged.
+4. **`src/lib/palette.ts`** (`productTileColors.jag_i_mig`):
+   - `tileLight: '#E8C593'`
 
-## 5. Single-select chips for kids products
+5. **`src/components/ProductLibrary.tsx`**:
+   - Line 61: `PRODUCT_ACCENT.jag_i_mig: '#27A69C'` → `'#E0B374'`
+   - Tile component (lines 177-203): accept/derive `darkTextOnTile` from the product manifest passed in; when true, set `<h3>` color = `#5A3A1F` and subtitle `<p>` color = `#5A3A1F` (drop the translucent white).
 
-`src/components/KidsProductHome.tsx:687` — add `selectionMode="single"` to `<CategoryFilterChips>`. Propagates to all kids products (jim/jma/jiv/vk/sk/sex).
+6. **`src/components/ProductLibraryMock.tsx`**:
+   - Mirror PRODUCT_ACCENT update for JIM (`#2A6B65` → `#E0B374`)
+   - Mirror conditional dark text rendering using the same manifest flag.
 
-## Verification
+## Out of scope (confirmed)
 
-- Library tile subtitle and hero subtitle both read "De samtal ni redan vill ha"
-- Library section heading reads "Par"
-- Vårt Vi card portal back chevron lands on `/product/still-us`
-- Vårt Vi product home back still goes to library
-- Kids product chips are single-select with sliding underline
+- JIM product home page background (`#115D57`), `tileMid`, `tileDeep`, `accentColor` HSL tokens
+- Any JIV color changes beyond the text flag
+- Any redesign of dependent surfaces beyond what `ctaButtonColor` propagates automatically
+
+## Review surfaces
+
+- `/bibliotek` → JIM tile honey + dark brown text; JIV tile olive + dark brown text; all other tiles unchanged
+- JIM product home → resume banner / CTAs pick up honey via `useProductTheme`; deep teal background remains
+- Mock library page (same dark text treatment for parity)
+
+## Rollback
+
+Revert the five color values to original; remove `darkTextOnTile: true` from both manifests; remove the conditional in both library files. The interface field can stay (no-op when no manifest sets it).
