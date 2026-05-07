@@ -503,7 +503,6 @@ export default function ProductLibrary() {
         {activeProductIds.size === 0 && Object.keys(completedCountMap).length > 0 && (() => {
           const untriedProduct = defaultKidsOrder.find(p => !completedCountMap[p.id]);
           if (!untriedProduct) return null;
-          const isUntriedFree = false;
           return (
             <div className="px-5" style={{ marginBottom: '8px' }}>
               <button
@@ -557,7 +556,7 @@ export default function ProductLibrary() {
                     marginTop: '2px',
                     margin: '2px 0 0',
                   }}>
-                    {isUntriedFree ? 'Ert första samtal är gratis' : `${untriedProduct.cards.length} samtal`}
+                    {`${untriedProduct.cards.length} samtal`}
                   </p>
                 </div>
                 <span style={{

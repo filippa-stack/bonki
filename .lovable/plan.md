@@ -1,32 +1,22 @@
-# JIM Tile Color Calibration — Switch to #F5B82E
+# Library cleanup batch (approved scope)
 
-Replace the current JIM honey accent with a brighter saffron-amber `#F5B82E`. Dark text treatment on JIM and JIV stays unchanged.
+## 1. Delete dead `isUntriedFree` branch
 
-## Color changes
+**File:** `src/components/ProductLibrary.tsx`
 
-- JIM library tile accent (`PRODUCT_ACCENT.jag_i_mig`): `#E0B374` → `#F5B82E`
-- JIM palette `tileLight`: `#E8C593` → `#F5B82E`
-- JIM manifest `ctaButtonColor`: `#E0B374` → `#F5B82E`
+- Line 506: remove `const isUntriedFree = false;`
+- Line 560: replace `{isUntriedFree ? 'Ert första samtal är gratis' : `${untriedProduct.cards.length} samtal`}` with `` {`${untriedProduct.cards.length} samtal`} ``
 
-(Using a single value across accent/tileLight/CTA for a flat, saturated read. If we want a lighter palette `tileLight` for gradients, we can split later.)
+Nudge behavior unchanged. "Återvänd till {produkt}" left untouched.
 
-## Files to edit
+## 2. freeCardCtaLabel fixes
 
-1. **`src/data/products/jag-i-mig.ts`** — `ctaButtonColor: '#F5B82E'`, `tileLight: '#F5B82E'`
-2. **`src/lib/palette.ts`** — `productTileColors.jag_i_mig.tileLight: '#F5B82E'`
-3. **`src/components/ProductLibrary.tsx`** — `PRODUCT_ACCENT.jag_i_mig: '#F5B82E'`
-4. **`src/components/ProductLibraryMock.tsx`** — `PRODUCT_ACCENT.jag_i_mig: '#F5B82E'` and `--jim-bg-1: #F5B82E`
+**File:** `src/data/productIntros.ts`
 
-## Out of scope (unchanged)
+- `still_us.freeCardCtaLabel`: `"Börja med Ert första samtal"` → `"Börja med Vår uppväxt"`
+- `jag_i_varlden.freeCardCtaLabel`: `"Börja med Identitet"` → `"Börja med Fördomar"` (manifest stays `freeCardId: 'jiv-fordomar'`)
 
-- `darkTextOnTile: true` and `#5A3A1F` text color on JIM + JIV
-- JIM product home background `#115D57`, `tileMid`, `tileDeep`, `accentColor` HSL tokens
-- JIV everything
+Other products confirmed in sync — no changes.
 
-## Verification
-
-- `/bibliotek` → JIM tile shows saturated amber with dark brown text
-
-## Rollback
-
-Revert the four values to the previous honey (`#E0B374` / `#E8C593`).
+## Out of scope
+- Larger library redesign (separate prompt)
