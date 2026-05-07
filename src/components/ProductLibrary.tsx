@@ -104,7 +104,7 @@ function SectionEyebrow({ label }: { label: string }) {
       letterSpacing: '0.12em',
       textTransform: 'uppercase',
       color: 'rgba(253, 246, 227, 0.45)',
-      margin: '0 0 10px',
+      margin: '24px 0 10px',
       padding: '0 4px',
     }}>
       {label}
@@ -143,36 +143,27 @@ function StillUsMarquee({
         cursor: 'pointer',
         textAlign: 'left',
         WebkitTapHighlightColor: 'transparent',
-        minHeight: 97,
+        minHeight: 110,
       }}
     >
       <div style={{
-        flex: '0 0 75px',
+        flex: '0 0 95px',
         aspectRatio: '1 / 1',
         borderRadius: '50%',
-        background: '#5A85D5',
+        background: `color-mix(in srgb, ${PRODUCT_ACCENT.still_us} 75%, white)`,
+        overflow: 'hidden',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
       }}>
-        <div style={{
-          width: '70%',
-          height: '70%',
-          borderRadius: '50%',
-          background: 'rgba(15, 30, 80, 0.18)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}>
-          <img
-            src={illustrationStillUs}
-            alt=""
-            draggable={false}
-            style={{ width: '90%', height: '90%', objectFit: 'contain', pointerEvents: 'none' }}
-          />
-        </div>
+        <img
+          src={illustrationStillUs}
+          alt=""
+          draggable={false}
+          style={{ width: '115%', height: '115%', objectFit: 'contain', objectPosition: 'center', pointerEvents: 'none' }}
+        />
       </div>
-      <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 4 }}>
+      <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', paddingTop: 2, gap: 4 }}>
         <h3 style={{
           fontFamily: 'var(--font-display)',
           color: onColorText,
@@ -187,11 +178,11 @@ function StillUsMarquee({
         <p style={{
           color: onColorText,
           opacity: 0.85,
-          fontSize: 13,
+          fontSize: 12,
           margin: 0,
           fontStyle: 'italic',
           fontFamily: 'var(--font-display)',
-          lineHeight: 1.35,
+          lineHeight: 1.3,
         }}>
           {TAGLINES.still_us}
         </p>
@@ -332,14 +323,14 @@ function LibraryKidsTile({
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
-          gap: 4,
+          gap: 2,
         }}
       >
         <span
           style={{
             fontFamily: 'var(--font-display)',
             fontVariationSettings: "'opsz' 24",
-            fontSize: 16,
+            fontSize: 14,
             fontWeight: 600,
             color: darkText,
             lineHeight: 1.05,
@@ -353,7 +344,7 @@ function LibraryKidsTile({
             style={{
               fontFamily: 'var(--font-display)',
               fontStyle: 'italic',
-              fontSize: 11,
+              fontSize: 10,
               fontWeight: 400,
               color: darkText,
               opacity: 0.7,
@@ -375,7 +366,7 @@ function LibraryKidsTile({
           <span
             style={{
               fontFamily: 'var(--font-body)',
-              fontSize: 9,
+              fontSize: 8,
               fontWeight: 600,
               letterSpacing: '0.08em',
               textTransform: 'uppercase',
