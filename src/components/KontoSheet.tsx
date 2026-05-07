@@ -183,7 +183,7 @@ export default function KontoSheet({
               style={{
                 fontSize: '15px',
                 fontWeight: 500,
-                color: '#2C2420',
+                color: '#F5E8CC',
                 padding: '16px 24px',
                 background: 'none',
                 border: 'none',
@@ -196,15 +196,18 @@ export default function KontoSheet({
             </button>
 
             {/* Divider */}
-            <div style={{ height: '1px', background: 'hsla(30, 15%, 20%, 0.10)' }} />
+            <div style={{ height: '1px', background: 'rgba(245, 232, 204, 0.10)' }} />
 
             {/* Mina köp — native iOS only */}
             {isNative && (
               <>
                 <div
                   style={{
+                    fontFamily: 'var(--font-display)',
+                    fontStyle: 'italic',
                     fontSize: '13px',
-                    color: '#6B5E52',
+                    letterSpacing: 0,
+                    color: 'rgba(245, 232, 204, 0.55)',
                     padding: '16px 24px 4px',
                   }}
                 >
@@ -218,7 +221,7 @@ export default function KontoSheet({
                   style={{
                     fontSize: '15px',
                     fontWeight: 500,
-                    color: '#2C2420',
+                    color: '#F5E8CC',
                     padding: '12px 24px 16px',
                     background: 'none',
                     border: 'none',
@@ -244,7 +247,7 @@ export default function KontoSheet({
                 <div
                   style={{
                     fontSize: '13px',
-                    color: '#6B5E52',
+                    color: 'rgba(245, 232, 204, 0.55)',
                     padding: '0 24px 16px',
                   }}
                 >
@@ -252,7 +255,7 @@ export default function KontoSheet({
                 </div>
 
                 {/* Divider */}
-                <div style={{ height: '1px', background: 'hsla(30, 15%, 20%, 0.10)' }} />
+                <div style={{ height: '1px', background: 'rgba(245, 232, 204, 0.10)' }} />
               </>
             )}
 
@@ -263,7 +266,7 @@ export default function KontoSheet({
               style={{
                 fontSize: '15px',
                 fontWeight: 500,
-                color: '#8B3A3A',
+                color: 'rgba(245, 232, 204, 0.85)',
                 padding: '16px 24px',
                 background: 'none',
                 border: 'none',
@@ -280,18 +283,38 @@ export default function KontoSheet({
               onClick={handleOpenDelete}
               className="font-sans"
               style={{
-                fontSize: '15px',
-                fontWeight: 500,
-                color: '#8B3A3A',
                 padding: '16px 24px',
                 background: 'none',
                 border: 'none',
                 cursor: 'pointer',
                 textAlign: 'left',
                 width: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'flex-start',
               }}
             >
-              Radera konto
+              <span
+                style={{
+                  fontSize: '13px',
+                  fontWeight: 500,
+                  color: '#C56B6B',
+                }}
+              >
+                Radera konto
+              </span>
+              <span
+                style={{
+                  fontFamily: 'var(--font-display)',
+                  fontStyle: 'italic',
+                  fontSize: '11px',
+                  color: 'rgba(245, 232, 204, 0.45)',
+                  lineHeight: 1.3,
+                  marginTop: 2,
+                }}
+              >
+                Permanent. Kan inte ångras.
+              </span>
             </button>
           </div>
         </div>
