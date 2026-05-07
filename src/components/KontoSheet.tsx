@@ -325,20 +325,25 @@ export default function KontoSheet({
         <DialogContent
           className="max-w-md"
           style={{
-            backgroundColor: '#F7F2EB',
-            color: '#2C2420',
-            border: '1px solid hsla(30, 15%, 20%, 0.12)',
+            backgroundColor: '#1A1A2E',
+            color: '#F5E8CC',
+            border: '1px solid rgba(245, 232, 204, 0.10)',
           }}
         >
           <DialogTitle
-            className="font-serif"
-            style={{ fontSize: '20px', fontWeight: 600, color: '#2C2420' }}
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: '20px',
+              fontWeight: 500,
+              color: '#F5E8CC',
+              letterSpacing: '-0.005em',
+            }}
           >
             Radera konto
           </DialogTitle>
           <DialogDescription
             className="font-sans"
-            style={{ fontSize: '14px', color: '#6B5E52', lineHeight: 1.5 }}
+            style={{ fontSize: '14px', color: 'rgba(245, 232, 204, 0.75)', lineHeight: 1.5 }}
           >
             Detta tar bort ditt konto och all din data permanent. Det går inte
             att ångra.
@@ -351,11 +356,11 @@ export default function KontoSheet({
               style={{
                 display: 'block',
                 fontSize: '13px',
-                color: '#6B5E52',
+                color: 'rgba(245, 232, 204, 0.65)',
                 marginBottom: '8px',
               }}
             >
-              Skriv <strong style={{ color: '#2C2420' }}>RADERA</strong> för att
+              Skriv <strong style={{ color: '#F5E8CC' }}>RADERA</strong> för att
               bekräfta.
             </label>
             <input
@@ -374,9 +379,9 @@ export default function KontoSheet({
                 fontSize: '15px',
                 padding: '10px 12px',
                 borderRadius: '8px',
-                border: '1px solid hsla(30, 15%, 20%, 0.20)',
-                background: '#FFFEFB',
-                color: '#2C2420',
+                border: '1px solid rgba(245, 232, 204, 0.20)',
+                background: 'rgba(245, 232, 204, 0.06)',
+                color: '#F5E8CC',
                 outline: 'none',
               }}
             />
@@ -397,10 +402,10 @@ export default function KontoSheet({
               style={{
                 fontSize: '15px',
                 fontWeight: 500,
-                color: '#2C2420',
+                color: '#F5E8CC',
                 padding: '10px 16px',
                 background: 'transparent',
-                border: '1px solid hsla(30, 15%, 20%, 0.20)',
+                border: '1px solid rgba(245, 232, 204, 0.20)',
                 borderRadius: '8px',
                 cursor: deleting ? 'default' : 'pointer',
                 opacity: deleting ? 0.5 : 1,
@@ -415,9 +420,9 @@ export default function KontoSheet({
               style={{
                 fontSize: '15px',
                 fontWeight: 600,
-                color: '#FFFEFB',
+                color: '#1A1A2E',
                 padding: '10px 16px',
-                background: '#8B3A3A',
+                background: '#C56B6B',
                 border: 'none',
                 borderRadius: '8px',
                 cursor: !canConfirmDelete || deleting ? 'default' : 'pointer',
