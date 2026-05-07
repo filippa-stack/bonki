@@ -66,9 +66,27 @@ const CARD_IDS_WITH_IMAGES = new Set([
 /**
  * Returns the URL for a card's illustration, or null if no image exists.
  * Synchronous — no async loading, no ZIP parsing.
+ *
+ * For Still Us (`su-mock-N`), prefers the bare-id file (id-bound) and falls
+ * back to the legacy indexed file.
  */
 export function useCardImage(cardId: string | null | undefined): string | null {
-  if (!cardId || !CARD_IDS_WITH_IMAGES.has(cardId)) return null;
+  if (!cardId) return null;
+
+  if (cardId.startsWith('su-mock-')) {
+    const n = Number(cardId.slice('su-mock-'.length));
+    if (Number.isFinite(n)) {
+      const seq = CARD_SEQUENCE[n];
+      if (seq) {
+        const bare = bareIdFromSlug(seq.cardId);
+        if (CARD_IDS_WITH_IMAGES.has(bare)) return `/card-images/${bare}.webp`;
+      }
+    }
+    if (CARD_IDS_WITH_IMAGES.has(cardId)) return `/card-images/${cardId}.webp`;
+    return null;
+  }
+
+  if (!CARD_IDS_WITH_IMAGES.has(cardId)) return null;
   return `/card-images/${cardId}.webp`;
 }
 
