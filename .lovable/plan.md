@@ -1,53 +1,31 @@
-## Vårt Vi — bind illustrations to card ID
+## Goal
 
-### 1. Extract & convert Emma's 18 PNGs to WebP in `public/card-images/`
+Grant `bernhard.emma@gmail.com` (user_id `8105cd94-be94-473e-977a-883e461cfea8`) full access to all 7 products in the catalog.
 
-Filename mapping (Emma → saved as):
+## Approach
 
-| Emma file | Saved as |
-|---|---|
-| rösternautifrån.png | thoughtful-space.webp |
-| osagt.png | expressing-needs.webp |
-| vänskap.png | behind-the-scenes.webp |
-| osynliga ansvaret.png | smallest-we.webp |
-| egnautrymmet.png | self-esteem-wavering.webp |
-| drömmenspris.png | parenting-exhaustion.webp |
-| outtaladelängtan.png | love-languages.webp |
-| frågaombarn.png | different-parenting-styles.webp |
-| pengarssymbolik.png | worth-spending-on.webp |
-| vägentillbaka.png | when-life-tilts.webp |
-| uppmärksamhetåtannathåll.png | family-ab.webp |
-| tystamuren.png | conflict-repair.webp |
-| bäraochbliburen.png | facing-adversity.webp |
-| derödalinjerna.png | parenting-boundaries.webp |
-| attblisedd.png | listening-presence.webp |
-| begäretavståndet.png | adrift.webp |
-| våruppväxt.png | our-traditions.webp |
-| utveckligen.png (sic) | identity-shift.webp |
+Run a single migration that inserts rows into `user_product_access` for the user across all known product IDs, with `granted_via = 'admin_grant'`. Idempotent via `ON CONFLICT (user_id, product_id) DO NOTHING`, so re-running is safe and existing entitlements are preserved.
 
-Conversion via `cwebp` (quality ~85). Old `su-mock-{N}.webp` files left untouched as fallback.
+## Products granted
 
-### 2. Update `src/hooks/useCardImage.ts` — bare-id resolution for Still Us
+`still_us`, `jag_i_mig`, `jag_med_andra`, `jag_i_varlden`, `vardagskort`, `syskonkort`, `sexualitetskort`
 
-Add the 18 bare card IDs to `CARD_IDS_WITH_IMAGES`. When `cardId` matches the `su-mock-N` pattern, translate N → bare id via `CARD_SEQUENCE` (imported from `src/data/stillUsSequence.ts`) and resolve to `/card-images/{bareId}.webp`. If that bare-id isn't in our known set, fall back to `/card-images/su-mock-{N}.webp`. Non-Still-Us card IDs continue working unchanged.
+## SQL
 
-Resolver logic (concise):
-```ts
-if (id.startsWith('su-mock-')) {
-  const n = Number(id.slice('su-mock-'.length));
-  const seq = CARD_SEQUENCE[n];
-  const bare = seq ? bareIdFromSlug(seq.cardId) : null;
-  if (bare && CARD_IDS_WITH_IMAGES.has(bare)) return `/card-images/${bare}.webp`;
-  // fallback to legacy indexed file
-  return CARD_IDS_WITH_IMAGES.has(id) ? `/card-images/${id}.webp` : null;
-}
+```sql
+INSERT INTO public.user_product_access (user_id, product_id, granted_at, granted_via)
+SELECT
+  '8105cd94-be94-473e-977a-883e461cfea8'::uuid,
+  pid,
+  now(),
+  'admin_grant'
+FROM unnest(ARRAY[
+  'still_us','jag_i_mig','jag_med_andra','jag_i_varlden',
+  'vardagskort','syskonkort','sexualitetskort'
+]) AS pid
+ON CONFLICT (user_id, product_id) DO NOTHING;
 ```
 
-### 3. Verify
+## Out of scope
 
-- Spot-check 6 cards across all 4 layers in the portal.
-- Confirm no broken images; no other product affected.
-
-### Out of scope
-
-Other products' image pattern, image optimization beyond standard cwebp conversion, tile color treatments.
+No code changes, no schema changes, no changes for any other user.
