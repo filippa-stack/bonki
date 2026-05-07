@@ -30,6 +30,8 @@ export interface ProductManifest {
   ageLabel?: string;
   /** Short paywall description — one sentence about the product's emotional territory */
   paywallDescription?: string;
+  /** When true, library tile renders dark brown text instead of white (for light-background tiles) */
+  darkTextOnTile?: boolean;
   categories: Category[];
   cards: Card[];
 }
