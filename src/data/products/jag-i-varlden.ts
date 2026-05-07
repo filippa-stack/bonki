@@ -88,21 +88,22 @@ export const jagIVarldenProduct: ProductManifest = {
   id: 'jag_i_varlden',
   name: 'Jag i Världen',
   slug: 'jag-i-varlden',
-  tagline: 'En värld som vidgas.',
+  tagline: 'Att hitta sig själv när allt blir större',
   description: 'Utforska dig själv i större sammanhang',
   headerTitle: 'Jag i sammanhang',
-  accentColor: 'hsl(95, 7%, 42%)',
-  accentColorMuted: 'hsl(184, 18%, 78%)',
-  secondaryAccent: 'hsl(184, 20%, 35%)',
-  backgroundColor: '#606613',
-  ctaButtonColor: '#C6D423',
+  // Chartreuse identity — accents now in family (was teal-derived)
+  accentColor: 'hsl(65, 71%, 49%)',        // ~#C6D423
+  accentColorMuted: 'hsl(65, 60%, 88%)',
+  secondaryAccent: 'hsl(70, 72%, 40%)',
+  backgroundColor: '#3F4A0E',              // deep chartreuse atmospheric (was olive #606613)
+  ctaButtonColor: '#D8E145',               // lifted chartreuse — verify pill contrast vs bg
   tileLight: '#C6D423',
   tileMid: '#A3AF1C',
   tileDeep: '#606613',
   pronounMode: 'du',
   heroImage,
   freeCardId: 'jiv-fordomar',
-  ageLabel: '12+',
+  // No ageLabel — older product
   paywallDescription: 'Lås upp alla samtal om världen, rättvisa och att hitta sin plats.',
   darkTextOnTile: true,
   categories,

@@ -151,21 +151,23 @@ export const sexualitetskortProduct: ProductManifest = {
   id: 'sexualitetskort',
   name: 'Närhet & Intimitet',
   slug: 'sexualitetskort',
-  tagline: 'Kropp, gränser och identitet.',
+  tagline: 'Kropp, gränser, identitet',
   description: 'Utforska kropp, identitet och sexualitet',
   headerTitle: 'Min kropp & min sexualitet',
-  accentColor: 'hsl(10, 24%, 54%)',
-  accentColorMuted: 'hsl(10, 18%, 82%)',
-  secondaryAccent: 'hsl(310, 24%, 44%)',
-  backgroundColor: '#AF685E',
-  ctaButtonColor: '#DD958B',
-  tileLight: '#DD958B',
-  tileMid: '#C87D73',
-  tileDeep: '#AF685E',
+  // Deepened rose-clay identity
+  accentColor: 'hsl(13, 33%, 55%)',        // ~#B87560
+  accentColorMuted: 'hsl(13, 30%, 86%)',
+  secondaryAccent: 'hsl(13, 33%, 55%)',
+  backgroundColor: '#7E4838',              // deep rose-clay atmospheric
+  ctaButtonColor: '#CFA08D',               // lightest interior variant
+  tileLight: '#B87560',                    // frame
+  tileMid: '#A26350',                      // interior variant 0 (deeper)
+  tileDeep: '#7E4838',                     // matches atmospheric
+  darkTextOnTile: true,
   pronounMode: 'du',
   heroImage,
   freeCardId: 'sex-normer',
-  ageLabel: '13+',
+  // No ageLabel — older product, parents evaluate
   paywallDescription: 'Lås upp alla samtal om kroppen, gränser och relationer.',
   categories,
   cards,
