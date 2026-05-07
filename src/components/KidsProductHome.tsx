@@ -747,7 +747,7 @@ function StickyFilterHeader({
                 tileBg={tileBg}
                 isCompleted={completedSet.has(card.id)}
                 productSlug={product.slug}
-                darkText={product.darkTextOnTile}
+                productId={product.id}
               />
             </FilterableCardCell>
           );
