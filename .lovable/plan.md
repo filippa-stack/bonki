@@ -1,95 +1,118 @@
-# Batch C — Library Editorial Redesign (revised)
+# Batch C correction — library kids tiles use KidsTileFrame
 
-## Scope
+## Problem
 
-Redesign `ProductLibrary.tsx`: editorial header, locked kids order, distinct Vårt Vi marquee composition, 2-column kids grid with always-visible age meta in title strip footer. Vårt Vi is visually re-housed (medallion marquee), not stretched.
+Library kids tiles still render via the old `PastelTile` (single-zone, illustration anchored bottom-right, dense top stack). Batch C never swapped them to the shared `KidsTileFrame` primitive, so the frame/interior compositional structure is missing.
 
-## Changes — `src/components/ProductLibrary.tsx`
+## Changes
 
-### 1. Editorial library header
+### 1. `src/components/KidsTileFrame.tsx` — extend, don't fork
 
-Above the resume card, add a centered header block:
+- Add optional prop `metaTrailing?: ReactNode` rendered on the right side of the meta row (used for the `BonkiLogoMark` "tasted" glyph).
+- Convert the existing `<span>{meta}</span>` block to a flex row with `justify-content: space-between`, hosting the meta text on the left and `metaTrailing` on the right.
+- All other props/behavior unchanged. The product-home callsite (`ProductCardTile`) keeps working — it doesn't pass `metaTrailing`.
 
-- Eyebrow: `SAMTAL FÖR HELA FAMILJEN` — `var(--font-body)`, 10px, weight 600, `letter-spacing: 0.15em`, uppercase, color `rgba(253,246,227,0.45)`, `marginBottom: 6px`.
-- Title: `Biblioteket` — `var(--font-display)` (Fraunces), 28px, weight 500, `letter-spacing: -0.005em`, color `#FDF6E3`, `fontVariationSettings: "'opsz' 28"`.
-- Wrapping div: `text-align: center`, `marginTop: 0`, `marginBottom: 20px`, sits inside the existing `paddingTop: 'calc(env(safe-area-inset-top, 0px) + 56px)'` container (move that padding to the header wrapper, drop from resume card).
+### 2. `src/components/ProductLibrary.tsx`
 
-### 2. Section labels (small-caps eyebrows)
+Replace the `PastelTile` definition and all kids-tile callsites with a `LibraryKidsTile` wrapper that delegates to `KidsTileFrame`:
 
-Replace the existing "Ni som par" and "Barn & Familj" labels:
+```tsx
+import KidsTileFrame from '@/components/KidsTileFrame';
+import { getCalmInterior } from '@/lib/productTileVariants';
+import { productDarkText } from '@/lib/palette';
 
-- Couples section: `FÖR PAR`
-- Kids section: `FÖR BARN · FÖR FAMILJEN`
+function LibraryKidsTile({ product, illustration, totalCards, completedCount, isPurchased, onClick }) {
+  const frame = PRODUCT_ACCENT[product.id];
+  const interior = getCalmInterior(product.id, frame);
+  const darkText = productDarkText[product.id] ?? '#5A3A1F';
+  const tasted = !isPurchased && completedCount > 0;
+  const progress = isPurchased ? `${completedCount} AV ${totalCards}` : `${totalCards} SAMTAL`;
+  const meta = product.ageLabel ? `${progress} · ${product.ageLabel.toUpperCase()}` : progress;
 
-Both keep the existing eyebrow style (13px, weight 700, `letter-spacing: 2px`, uppercase, `#FDF6E3` @ 0.55, mushroom-tinted divider above).
-
-### 3. Vårt Vi marquee — horizontal medallion composition
-
-Remove the Vårt Vi `PastelTile`. Inline a `StillUsMarquee` block under the FÖR PAR header:
-
-```text
-┌─────────────────────────────────────────────────┐
-│  ⬤  medallion  Vårt Vi                          │
-│   (110px)      tagline (italic serif 13px)      │
-│                3 av 21 · pill / "Du har provat" │
-└─────────────────────────────────────────────────┘
+  return (
+    <KidsTileFrame
+      frame={frame}
+      interior={interior}
+      title={product.name}
+      subtitle={TAGLINES[product.id]}
+      meta={meta}
+      metaTrailing={tasted ? <BonkiLogoMark size={9} /> : undefined}
+      darkText={darkText}
+      titleSize={15}
+      stripFraction={0.30}
+      style={{ aspectRatio: '1 / 1.05' }}
+      onClick={onClick}
+      ariaLabel={product.name}
+    >
+      <img
+        src={illustration}
+        alt=""
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          maxWidth: '70%',
+          maxHeight: '70%',
+          width: 'auto',
+          height: 'auto',
+          objectFit: 'contain',
+          filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.10))',
+        }}
+      />
+    </KidsTileFrame>
+  );
+}
 ```
 
-- Container: full-width button, `display: flex`, `alignItems: center`, `gap: 16`, `padding: 16`, `borderRadius: 18`, `background: rgba(15,15,15,0.55)`, `backdropFilter: 'blur(22px)'`, `border: 1px solid rgba(255,255,255,0.10)`, subtle inset shadow.
-- Medallion (left, fixed 110×110): `borderRadius: 9999`, `background: PRODUCT_ACCENT.still_us` (`#6495ED`), `flexShrink: 0`, `overflow: hidden`, illustration `illustrationStillUs` rendered absolutely inset 6px, `objectFit: contain`.
-- Right column (`flex: 1`, `min-width: 0`):
-  - Title `Vårt Vi` — Fraunces 22px/500, `#FDF6E3`, `letter-spacing: -0.005em`, `margin: 0`.
-  - Tagline (`TAGLINES.still_us`) — Inter 12px, `rgba(253,246,227,0.72)`, `lineHeight: 1.35`, `marginTop: 4`.
-  - Progress pill — same glass treatment as kids tiles, `marginTop: 10`, content per state (`{n} av {total}` / `Du har provat` with logo / `{total} samtal`).
-- Tap → `navigate('/product/still-us')`.
+Then the kids grid map:
 
-### 4. Kids grid (2-column)
-
-Convert kids `flex column gap:28` to `display: grid; gridTemplateColumns: '1fr 1fr'; gap: 12px`. Tile aspect stays at the existing `1 / 1.05`.
-
-Keep order locked: `[jagIMig, jagMedAndra, vardag, syskon, jagIVarlden, sexualitet]` filtered through `isProductHiddenOnPlatform`. Drop the activity-based reorder. Update `defaultKidsOrder` to alias the same array so the existing nudge logic still works.
-
-### 5. Age-guidance disclaimer
-
-Directly under the `FÖR BARN · FÖR FAMILJEN` eyebrow, before the grid:
-
-> Åldrarna är en vägledning. Ni känner ert barn bäst.
-
-Style: `font-display` (Fraunces), italic, 12px, weight 400, color `LANTERN_GLOW` (`#FDF6E3`) at opacity 0.55, `lineHeight: 1.5`, centered, `marginTop: 4px`, `marginBottom: 18px`.
-
-### 6. Tile metadata — title strip footer (always visible)
-
-Modify `PastelTile` so the count + age-label live in the title strip footer (under the title/tagline block), not the pill. Add an always-visible small-caps row:
-
-- New prop: `ageLabel?: string` (sourced from `product.ageLabel`).
-- New row inside the title block, after the tagline:
-
-```text
-8 AV 21 · FRÅN 3 ÅR     (uppercase small-caps)
+```tsx
+{sortedKidsProducts.map((product) => (
+  <LibraryKidsTile
+    key={product.id}
+    product={product}
+    illustration={ILLUSTRATIONS[product.id]}
+    totalCards={product.cards.length}
+    completedCount={completedCountMap[product.id] || 0}
+    isPurchased={purchased.has(product.id)}
+    onClick={() => navigate(`/product/${product.slug}`)}
+  />
+))}
 ```
 
-Style: `var(--font-body)`, 9px, weight 600, `letter-spacing: 0.08em`, uppercase, color `rgba(255,255,255,0.55)` (or `#5A3A1F` @ 0.55 when `darkTextOnTile`), `marginTop: 8`. Format:
+Drop the now-unused `PastelTile` component entirely (Vårt Vi has its own `StillUsMarquee`).
 
-- Purchased: `{completedCount} AV {totalCards} · {ageLabel}` (omit ` · ` segment if `ageLabel` missing).
-- Unstarted/tasted: `{totalCards} SAMTAL · {ageLabel}`.
+### 3. `StillUsMarquee` proportion tightening
 
-The bottom-left glass pill is removed (its info now lives in the strip). The "Du har provat" state collapses to a small `BonkiLogoMark` glyph at the right of the same footer row, color matching the small-caps text — confirms tasted state without redundant pill.
+In `src/components/ProductLibrary.tsx`:
+
+- Container: bump `padding` from `16` to `padding: '20px 16px'` to add 4 px vertical breathing room above the title and below the pill.
+- Medallion: change the inner `<img>` from `inset: 6` filling the medallion to centered at 70%:
+  ```tsx
+  style={{
+    position: 'absolute', top: '50%', left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: '70%', height: '70%',
+    objectFit: 'contain', objectPosition: 'center',
+    pointerEvents: 'none',
+  }}
+  ```
+- Pill: change `marginTop: 10` → `marginTop: 12` for clearer separation from the tagline.
 
 ## What does NOT change
 
-- `KidsTileFrame`, `ProductCardTile`, `productTileVariants` (Batch B work).
-- Tile colors, accent map, illustrations, background gradients/scrims.
-- Resume card component, "Prova X" / "Återuppta" nudges.
-- Vårt Vi tagline text and navigation target.
+- `LibraryHeader`, `SectionEyebrow`, disclaimer copy, locked kids order, 2-col grid + 12 px gap, resume card, nudges.
+- Kids product home tiles (Batch B) — they keep using `KidsTileFrame` via `ProductCardTile`, no changes.
+- Vårt Vi tile content (title, tagline, pill states, navigation), only proportions tighten.
+- Color tokens, calm-variant table, `productDarkText` map.
 
 ## Verification (390×844)
 
-After edits, confirm at `/library`:
-
-1. Header: small-caps `SAMTAL FÖR HELA FAMILJEN` over centered serif `Biblioteket`.
-2. Section labels read `FÖR PAR` and `FÖR BARN · FÖR FAMILJEN`.
-3. Vårt Vi marquee: 110px cobalt circular medallion left, title/tagline/pill right, taps to `/product/still-us`.
-4. Disclaimer line: italic serif Fraunces, locked copy.
-5. Kids grid: 2 columns, 12 px gap, locked order JIM → JMA → Vardag → Syskon → JIV → (N&I unless iOS native).
-6. Each kids tile shows the small-caps footer row with progress + age label (always visible, not state-gated).
-7. No pill on kids tiles; "Du har provat" indicated by inline logo glyph in the footer row.
+At `/library`:
+1. Each kids tile shows clear frame (product color) + interior (calm variant) zones with the illustration centered in the inner zone — no bottom-anchored crops.
+2. Title strip occupies ~30% height; reads as three editorial lines: title (Fraunces 15), italic-serif subtitle, small-caps meta row.
+3. JIV and N&I (no `ageLabel`) show only progress in the meta row.
+4. Tasted state renders `BonkiLogoMark` to the right of the meta row in the same dark-text color at 0.55 opacity.
+5. Vårt Vi marquee right column has visible breathing room; medallion shows the figure centered at ~70 % of the circle, not bottom-anchored.

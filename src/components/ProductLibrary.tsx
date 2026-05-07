@@ -12,7 +12,9 @@ import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { supabase } from '@/integrations/supabase/client';
 import { isDemoMode } from '@/lib/demoMode';
 import { isProductHiddenOnPlatform } from '@/lib/platform';
-import { MIDNIGHT_INK } from '@/lib/palette';
+import { MIDNIGHT_INK, productDarkText } from '@/lib/palette';
+import { getCalmInterior } from '@/lib/productTileVariants';
+import KidsTileFrame from '@/components/KidsTileFrame';
 
 import LibraryResumeCard from '@/components/LibraryResumeCard';
 import BonkiLogoMark from '@/components/BonkiLogoMark';
@@ -143,7 +145,7 @@ function StillUsMarquee({
         display: 'flex',
         alignItems: 'center',
         gap: 16,
-        padding: 16,
+        padding: '20px 16px',
         borderRadius: 18,
         background: 'rgba(15, 15, 15, 0.55)',
         backdropFilter: 'blur(22px)',
@@ -171,9 +173,11 @@ function StillUsMarquee({
           draggable={false}
           style={{
             position: 'absolute',
-            inset: 6,
-            width: 'calc(100% - 12px)',
-            height: 'calc(100% - 12px)',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: '70%',
+            height: '70%',
             objectFit: 'contain',
             objectPosition: 'center',
             pointerEvents: 'none',
@@ -207,7 +211,7 @@ function StillUsMarquee({
           display: 'inline-flex',
           alignItems: 'center',
           gap: 6,
-          marginTop: 10,
+          marginTop: 12,
           padding: '5px 11px',
           borderRadius: 999,
           background: `color-mix(in srgb, ${accent} 18%, rgba(255,255,255,0.14))`,
@@ -237,126 +241,72 @@ function StillUsMarquee({
 }
 
 /* ── Kids tile — title strip footer carries always-visible meta row ──── */
-const PastelTile = React.forwardRef<HTMLDivElement, {
-  name: string;
-  productId: string;
-  tagline?: string;
-  ageLabel?: string;
-  onClick?: () => void;
+/* ── Library kids tile — delegates to KidsTileFrame primitive ─────────── */
+function LibraryKidsTile({
+  product,
+  illustration,
+  totalCards,
+  completedCount,
+  isPurchased,
+  onClick,
+}: {
+  product: { id: string; name: string; ageLabel?: string };
   illustration?: string;
-  totalCards?: number;
-  completedCount?: number;
-  isPurchased?: boolean;
-  darkTextOnTile?: boolean;
-}>(function PastelTile({
-  name, productId, tagline, ageLabel, onClick, illustration,
-  totalCards = 0, completedCount = 0, isPurchased = false, darkTextOnTile = false,
-}, ref) {
+  totalCards: number;
+  completedCount: number;
+  isPurchased: boolean;
+  onClick: () => void;
+}) {
+  const frame = PRODUCT_ACCENT[product.id] ?? '#2A2D3A';
+  const interior = getCalmInterior(product.id, frame);
+  const darkText = productDarkText[product.id] ?? '#5A3A1F';
   const tasted = !isPurchased && completedCount > 0;
-  const titleColor = darkTextOnTile ? '#5A3A1F' : '#FFFFFF';
-  const subtitleColor = darkTextOnTile ? '#5A3A1F' : 'rgba(255, 255, 255, 0.78)';
-  const metaColor = darkTextOnTile ? 'rgba(90, 58, 31, 0.65)' : 'rgba(255, 255, 255, 0.55)';
-
-  // Always-visible footer row content
-  const progressText = isPurchased
+  const progress = isPurchased
     ? `${completedCount} AV ${totalCards}`
     : `${totalCards} SAMTAL`;
-  const metaText = ageLabel
-    ? `${progressText} · ${ageLabel.toUpperCase()}`
-    : progressText;
+  const meta = product.ageLabel
+    ? `${progress} · ${product.ageLabel.toUpperCase()}`
+    : progress;
 
   return (
-    <motion.div
-      ref={ref}
-      variants={tileVariants}
-      whileHover={{ scale: 1.025, y: -3 }}
-      whileTap={{ scale: 0.96, y: 2 }}
+    <KidsTileFrame
+      frame={frame}
+      interior={interior}
+      title={product.name}
+      subtitle={TAGLINES[product.id]}
+      meta={meta}
+      metaTrailing={tasted ? <BonkiLogoMark size={9} /> : undefined}
+      darkText={darkText}
+      titleSize={15}
+      stripFraction={0.30}
+      style={{ aspectRatio: '1 / 1.05' }}
       onClick={onClick}
-      className="cursor-pointer"
-      style={{
-        borderRadius: 18,
-        background: PRODUCT_ACCENT[productId] ?? '#2A2D3A',
-        aspectRatio: '1 / 1.05',
-        width: '100%',
-        position: 'relative',
-        overflow: 'hidden',
-        border: '0.5px solid rgba(255, 255, 255, 0.06)',
-        display: 'flex',
-        flexDirection: 'column',
-      }}
+      ariaLabel={product.name}
     >
-      {/* Title block — top zone */}
-      <div style={{ padding: '14px 14px 10px', position: 'relative', zIndex: 2 }}>
-        <h3 style={{
-          fontFamily: 'Fraunces, serif',
-          fontSize: 20,
-          fontWeight: 500,
-          lineHeight: 1.1,
-          color: titleColor,
-          letterSpacing: '-0.005em',
-          margin: '0 0 3px',
-        }}>
-          {name}
-        </h3>
-        {tagline && (
-          <p style={{
-            fontFamily: 'Inter, system-ui, sans-serif',
-            fontSize: 11,
-            fontWeight: 400,
-            color: subtitleColor,
-            lineHeight: 1.3,
-            margin: 0,
-          }}>
-            {tagline}
-          </p>
-        )}
-        {/* Always-visible small-caps meta row */}
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          marginTop: 8,
-          gap: 6,
-        }}>
-          <span style={{
-            fontFamily: 'var(--font-body)',
-            fontSize: 9,
-            fontWeight: 600,
-            letterSpacing: '0.08em',
-            textTransform: 'uppercase',
-            color: metaColor,
-            lineHeight: 1.2,
-          }}>
-            {metaText}
-          </span>
-          {tasted && (
-            <BonkiLogoMark size={9} style={{ color: metaColor, flexShrink: 0 }} />
-          )}
-        </div>
-      </div>
-
-      {/* Illustration zone — fills remaining space */}
-      <div style={{ flex: 1, position: 'relative', overflow: 'hidden' }}>
-        {illustration && (
-          <img
-            src={illustration}
-            alt=""
-            draggable={false}
-            style={{
-              position: 'absolute',
-              inset: 0,
-              width: '100%',
-              height: '100%',
-              objectFit: 'contain',
-              objectPosition: 'center bottom',
-              pointerEvents: 'none',
-            }}
-          />
-        )}
-      </div>
-    </motion.div>
+      {illustration && (
+        <img
+          src={illustration}
+          alt=""
+          aria-hidden="true"
+          draggable={false}
+          style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            maxWidth: '70%',
+            maxHeight: '70%',
+            width: 'auto',
+            height: 'auto',
+            objectFit: 'contain',
+            filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.10))',
+            pointerEvents: 'none',
+          }}
+        />
+      )}
+    </KidsTileFrame>
   );
-});
+}
 
 export default function ProductLibrary() {
   useLayoutEffect(() => {
@@ -649,18 +599,14 @@ export default function ProductLibrary() {
             gap: 12,
           }}>
             {sortedKidsProducts.map((product) => (
-              <PastelTile
+              <LibraryKidsTile
                 key={product.id}
-                name={product.name}
-                productId={product.id}
-                tagline={TAGLINES[product.id]}
-                ageLabel={product.ageLabel}
+                product={product}
                 illustration={ILLUSTRATIONS[product.id]}
-                onClick={() => navigate(`/product/${product.slug}`)}
+                totalCards={product.cards.length}
                 completedCount={completedCountMap[product.id] || 0}
                 isPurchased={purchased.has(product.id)}
-                totalCards={product.cards.length}
-                darkTextOnTile={product.darkTextOnTile ?? false}
+                onClick={() => navigate(`/product/${product.slug}`)}
               />
             ))}
           </div>
