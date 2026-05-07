@@ -75,13 +75,17 @@ const PRODUCT_SLUG: Record<string, string> = {
 /** Per-product accent (gradient bg-1) used by resume banner dot + wash. */
 const PRODUCT_ACCENT: Record<string, string> = {
   still_us: '#A8B5C9',
-  jag_i_mig: '#2A6B65',
+  jag_i_mig: '#E0B374',
   jag_med_andra: '#B85A8A',
   jag_i_varlden: '#BAC03E',
   vardagskort: '#6FB498',
   syskonkort: '#C4A5D6',
   sexualitetskort: '#DD958B',
 };
+
+/** Products whose tile background is too light for white text — render dark brown text instead. */
+const DARK_TEXT_TILE_IDS = new Set(['jag_i_mig', 'jag_i_varlden']);
+const TILE_DARK_TEXT = '#5A3A1F';
 
 /** v4 gradient spec — saturated, high-chroma stops for vibrant tile bg. */
 const GRADIENT_TOKENS_CSS = `
