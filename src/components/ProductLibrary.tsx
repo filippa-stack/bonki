@@ -49,6 +49,15 @@ const TAGLINES: Record<string, string> = {
 };
 
 /** Per-product accent color. Mirrors manifest.tileLight. */
+const TILE_COLORS: Record<string, { frame: string; interior: string; text: string }> = {
+  jag_i_mig:       { frame: '#E89B6B', interior: '#F2BC97', text: '#5A3A1F' },
+  jag_med_andra:   { frame: '#CB7AB2', interior: '#DCA1C8', text: '#FAEDF2' },
+  jag_i_varlden:   { frame: '#C6D423', interior: '#D4DE48', text: '#2E2D08' },
+  vardagskort:     { frame: '#8BDDB0', interior: '#C4F0DA', text: '#0E2E22' },
+  syskonkort:      { frame: '#CF8BDD', interior: '#EAC8EE', text: '#2A1F40' },
+  sexualitetskort: { frame: '#B87560', interior: '#CFA08D', text: '#FAEDE5' },
+};
+
 const PRODUCT_ACCENT: Record<string, string> = {
   still_us: '#6495ED',
   jag_i_mig: '#E89B6B',
@@ -147,10 +156,10 @@ function StillUsMarquee({
       }}
     >
       <div style={{
-        flex: '0 0 95px',
+        flex: '0 0 105px',
         aspectRatio: '1 / 1',
         borderRadius: '50%',
-        background: `color-mix(in srgb, ${PRODUCT_ACCENT.still_us} 75%, white)`,
+        background: '#5A85D5',
         overflow: 'hidden',
         display: 'flex',
         alignItems: 'center',
@@ -160,7 +169,7 @@ function StillUsMarquee({
           src={illustrationStillUs}
           alt=""
           draggable={false}
-          style={{ width: '115%', height: '115%', objectFit: 'contain', objectPosition: 'center', pointerEvents: 'none' }}
+          style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'center', pointerEvents: 'none' }}
         />
       </div>
       <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', paddingTop: 2, gap: 4 }}>
@@ -178,7 +187,7 @@ function StillUsMarquee({
         <p style={{
           color: onColorText,
           opacity: 0.85,
-          fontSize: 12,
+          fontSize: 11,
           margin: 0,
           fontStyle: 'italic',
           fontFamily: 'var(--font-display)',
@@ -230,11 +239,8 @@ function LibraryKidsTile({
   isPurchased: boolean;
   onClick: () => void;
 }) {
-  const frame = PRODUCT_ACCENT[product.id] ?? '#2A2D3A';
-  const interior = product.id === 'jag_i_varlden'
-    ? `color-mix(in srgb, ${frame} 72%, #FFF8DC)`
-    : `color-mix(in srgb, ${frame} 75%, white)`;
-  const darkText = productDarkText[product.id] ?? '#5A3A1F';
+  const { frame, interior, text: darkText } = TILE_COLORS[product.id]
+    ?? { frame: '#2A2D3A', interior: '#3A3D4A', text: '#5A3A1F' };
   const tasted = !isPurchased && completedCount > 0;
   const progress = isPurchased
     ? `${completedCount} AV ${totalCards}`
