@@ -744,6 +744,7 @@ export default function ProductLibrary() {
                   completedCount={count}
                   isPurchased={purchased.has(product.id)}
                   totalCards={product.cards.length}
+                  darkTextOnTile={product.darkTextOnTile ?? false}
                 />
               );
             })}
