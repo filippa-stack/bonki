@@ -1,59 +1,56 @@
-## Restyle KontoSheet to dark editorial
+## Fix 1 — Android native top inset
 
-Single-file visual restyle of `src/components/KontoSheet.tsx`. No logic, imports, handlers, or behavior changes.
+**`package.json`** — add `@capacitor/status-bar` dependency (installs as `^8.0.2`).
 
-### Scope
-Touch only `src/components/KontoSheet.tsx`. All `useState`, `useNavigate`, `useAuth`, supabase, `restorePurchases`, toast, navigation, the `RADERA` typed-confirm pattern, `isNative` gating, sheet sizing (`calc(100vh - 32px)`), `paddingBottom` safe-area math, scroll properties, the early-return guard, backdrop click-to-close, and `e.stopPropagation()` are preserved verbatim.
+**`src/main.tsx`** — at top, before `createRoot`, add:
 
-### Token map
-- Surface: `#1A1A2E` (MIDNIGHT_INK)
-- Text primary: `#F5E8CC` (LANTERN_GLOW)
-- Text secondary: `rgba(245, 232, 204, 0.65)` / `0.55` / `0.45` per spec
-- Hairlines: `rgba(245, 232, 204, 0.10)`
-- Top border: `rgba(245, 232, 204, 0.08)`
-- Destructive (Radera only): `#C56B6B`
-- Backdrop: `hsla(230, 25%, 5%, 0.55)`
+```ts
+import { Capacitor } from "@capacitor/core";
+import { StatusBar } from "@capacitor/status-bar";
 
-### Edits
+if (Capacitor.isNativePlatform()) {
+  StatusBar.setOverlaysWebView({ overlay: true }).catch(() => {});
+}
+```
 
-**Backdrop & sheet shell**
-- Backdrop color → `hsla(230, 25%, 5%, 0.55)`
-- Sheet `backgroundColor` → `#1A1A2E`, `borderRadius` → `20px 20px 0 0`, add `borderTop: 1px solid rgba(245,232,204,0.08)`. Sizing/scroll/safe-area untouched.
+No call to `setStyle` or `setBackgroundColor`. `.catch(() => {})` keeps web-only runs safe.
 
-**Title "Konto"**
-- Drop `font-serif` class; inline `fontFamily: var(--font-display)`, `fontSize 22`, `fontWeight 500`, `color #F5E8CC`, `padding 24px 24px 8px`, `letterSpacing -0.005em`, `lineHeight 1.1`.
+**`capacitor.config.ts`** — no plugin block needed; `setOverlaysWebView` is a runtime call. No change.
 
-**Email row**
-- Inline `fontFamily: var(--font-display)`, `fontStyle: italic`, color `rgba(245,232,204,0.65)`, padding `0 24px 24px`.
+Note for Filippa: after Lovable applies these changes, run `npx cap sync` locally before the next native build.
 
-**All dividers** → `background: rgba(245,232,204,0.10)`.
+## Fix 2 — Landscape horizontal safe-area insets
 
-**Integritetspolicy** → color `#F5E8CC`.
+Edits anchored by content, not line numbers.
 
-**Mina köp section (native only, untouched conditional)**
-- Label: color `rgba(245,232,204,0.55)`, add `fontFamily: var(--font-display)`, `fontStyle: italic`.
-- Återställ köp button: color `#F5E8CC` (Loader2 inherits via currentColor — already does).
-- Caption: color `rgba(245,232,204,0.55)`.
+**`src/components/BottomNav.tsx`** — on the outer fixed `<nav>` style block (the one with `position: 'fixed'` and `bottom: '0px'`):
+- Add `paddingLeft: 'env(safe-area-inset-left, 0px)'`
+- Add `paddingRight: 'env(safe-area-inset-right, 0px)'`
+- Existing `paddingBottom` env calc preserved.
 
-**Logga ut** → color `rgba(245,232,204,0.85)` (demoted, no longer red).
+**`src/components/KontoIcon.tsx`** — on the motion.button style block (where `right: '16px'` is currently set):
+- Change `right: '16px'` → `right: 'calc(env(safe-area-inset-right, 0px) + 16px)'`
 
-**Radera konto** — restructure inner content of the same `<button>` (handler unchanged):
-- Replace text node with a flex column (`display:flex; flexDirection:column; alignItems:flex-start`).
-- Line 1 span: "Radera konto", `fontSize 13`, `fontWeight 500`, color `#C56B6B`.
-- Line 2 span: "Permanent. Kan inte ångras.", `fontFamily var(--font-display)`, italic, `fontSize 11`, color `rgba(245,232,204,0.45)`, `lineHeight 1.3`, `marginTop 2`.
-- Outer button keeps padding/width/cursor; remove the old inline `color`/`fontSize`/`fontWeight` since spans own them.
+**`src/components/ProductHomeBackButton.tsx`** — on the motion.button style block (where `left: '16px'` is currently set):
+- Change `left: '16px'` → `left: 'calc(env(safe-area-inset-left, 0px) + 16px)'`
 
-**Confirmation dialog**
-- DialogContent: bg `#1A1A2E`, color `#F5E8CC`, border `1px solid rgba(245,232,204,0.10)`.
-- DialogTitle: drop `font-serif`; inline `fontFamily var(--font-display)`, `fontWeight 500`, color `#F5E8CC`, `letterSpacing -0.005em`.
-- DialogDescription: color `rgba(245,232,204,0.75)`.
-- Label: color `rgba(245,232,204,0.65)`; the inner `<strong>` color `#F5E8CC`.
-- Input: border `1px solid rgba(245,232,204,0.20)`, bg `rgba(245,232,204,0.06)`, color `#F5E8CC`.
-- Avbryt button: color `#F5E8CC`, border `1px solid rgba(245,232,204,0.20)`.
-- Radera permanent button: bg `#C56B6B`, color `#1A1A2E`. Disabled/opacity/Loader2 untouched.
+**`src/components/KontoSheet.tsx`** — on the sheet container `<div>` (the one with `position: 'absolute'`, `bottom/left/right: 0` via class, and `backgroundColor: '#1A1A2E'`):
+- Add `paddingLeft: 'env(safe-area-inset-left, 0px)'`
+- Add `paddingRight: 'env(safe-area-inset-right, 0px)'`
+- Existing `paddingBottom` calc preserved.
 
-### Files
-- `src/components/KontoSheet.tsx` — edited (only file)
+**`src/components/FeedbackSheet.tsx`** — on the motion.div sheet container currently with `padding: '24px'`:
+- Replace `padding: '24px'` with explicit per-side values:
+  - `paddingTop: 24`
+  - `paddingLeft: 'calc(24px + env(safe-area-inset-left, 0px))'`
+  - `paddingRight: 'calc(24px + env(safe-area-inset-right, 0px))'`
+- Keep existing `paddingBottom: 'calc(24px + env(safe-area-inset-bottom, 0px))'` unchanged.
 
-### Verification
-Open the Konto sheet: dark surface, cream serif title, italic dimmed email, cream hairlines, cream Integritetspolicy/Logga ut/Återställ köp, only Radera konto in muted red with italic subtitle. Confirm dialog dark with `#C56B6B` confirm button (dark text). Typed `RADERA` still gates confirm; logout/privacy/restore/delete flows unchanged.
+## Out of scope (per request)
+
+Items 3-8 from audit (body padding, Diary/Onboarding top edges, BottomNav clearance constants, CardView normalization, light-page seams, keyboard plugin) — not touched here.
+
+## Verification
+
+- DevTools iPhone 14 Pro landscape: BottomNav, KontoIcon, ProductHomeBackButton, KontoSheet, FeedbackSheet all clear of notch on left/right.
+- Native Android build (after `npx cap sync`): status bar overlays WebView; top elements (KontoIcon, page headers) sit below the status bar via `env(safe-area-inset-top)`.

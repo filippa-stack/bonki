@@ -26,7 +26,7 @@ export default function ProductHomeBackButton({ color, to }: { color?: string; t
       style={{
         position: 'absolute',
         top: 'calc(env(safe-area-inset-top, 0px) + 16px)',
-        left: '16px',
+        left: 'calc(env(safe-area-inset-left, 0px) + 16px)',
         zIndex: 10,
         background: 'none',
         border: 'none',

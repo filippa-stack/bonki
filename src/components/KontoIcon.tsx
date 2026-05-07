@@ -22,7 +22,7 @@ export default function KontoIcon({
       style={{
         position: 'absolute',
         top: 'calc(env(safe-area-inset-top, 0px) + 16px)',
-        right: '16px',
+        right: 'calc(env(safe-area-inset-right, 0px) + 16px)',
         zIndex: 10,
         background: 'none',
         border: 'none',
