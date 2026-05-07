@@ -76,6 +76,8 @@ export default function BottomNav() {
         left: '0px',
         right: '0px',
         paddingBottom: 'env(safe-area-inset-bottom, 0px)',
+        paddingLeft: 'env(safe-area-inset-left, 0px)',
+        paddingRight: 'env(safe-area-inset-right, 0px)',
         background: 'rgba(26, 26, 46, 0.92)',
         borderTop: '1px solid rgba(245, 232, 204, 0.10)',
         boxShadow: 'none',
