@@ -58,7 +58,7 @@ const TAGLINES: Record<string, string> = {
 /** Per-product accent color used as tile background. */
 const PRODUCT_ACCENT: Record<string, string> = {
   still_us: '#6495ED',
-  jag_i_mig: '#E0B374',
+  jag_i_mig: '#F5B82E',
   jag_med_andra: '#B85A8A',
   jag_i_varlden: '#BAC03E',
   vardagskort: '#6FB498',
