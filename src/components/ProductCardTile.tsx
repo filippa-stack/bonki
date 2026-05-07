@@ -23,6 +23,8 @@ interface ProductCardTileProps {
   productSlug: string;
   /** Product id used to look up variant table + dark text. */
   productId: string;
+  /** Position index of this card in the product's grid (drives interior variant). */
+  positionIndex: number;
   /** Legacy prop kept for compatibility — dark text now resolved per-product. */
   darkText?: boolean;
 }
@@ -33,11 +35,12 @@ export default function ProductCardTile({
   isCompleted,
   productSlug,
   productId,
+  positionIndex,
 }: ProductCardTileProps) {
   const navigate = useNavigate();
   const tileImage = useCardImage(card.id);
 
-  const interior = getInteriorForCard(productId, card.id, tileBg);
+  const interior = getInteriorForCard(productId, positionIndex, tileBg);
   const titleColor = productDarkText[productId] ?? '#5A3A1F';
 
   return (

@@ -1,50 +1,63 @@
-# BATCH 2 — JIM color propagation (final, approved)
+# Kids tile variant assignment — adjacency fix
 
-## (a) Manifest token updates
+## Problem
 
-**`src/data/products/jag-i-mig.ts`** (lines 517–524):
-- `accentColor` → `hsl(41, 78%, 48%)`
-- `accentColorMuted` → `hsl(41, 70%, 88%)`
-- `secondaryAccent` → `hsl(41, 78%, 48%)`
-- `tileMid` → `#D9A012`
-- `tileDeep` → `#9A6B0A`
+`getInteriorForCard` in `src/lib/productTileVariants.ts` currently picks an interior variant by hashing `cardId` and indexing into a short permutation table. Because hashes collide arbitrarily, adjacent cards in the 2-col grid often land on the same variant, producing visible clustering on JIM, JmA, JIV, and Vardag.
 
-(`backgroundColor #115D57`, `ctaButtonColor #F5B82E`, `tileLight #F5B82E`, `darkTextOnTile true` unchanged.)
+## Fix
 
-**`src/lib/palette.ts`** mirror in `productTileColors.jag_i_mig`:
-- `tileMid` → `#D9A012`
-- `tileDeep` → `#9A6B0A`
+Replace the hash-based lookup with a **position-based** lookup that uses hand-tuned per-product permutations long enough to cover each product's full card list, designed to avoid 2-col adjacency repeats.
 
-## (b) `darkTextOnTile` propagation
+## Changes
 
-Dark-text token: `#5A3A1F` (matches established `ProductLibrary.tsx` value).
+### 1. `src/lib/productTileVariants.ts`
 
-1. **`src/components/ProductCardTile.tsx`** — accept `darkText?: boolean`; swap title color `#FFFFFF` → `#5A3A1F` and weaken textShadow when true.
-2. **`src/components/KidsProductHome.tsx`** — `CategoryTile` reads `product.darkTextOnTile`. When true: title (288), layer-number (271), progress count (318) → `#5A3A1F`; bottom scrim (247) → light-wash gradient (`rgba(255,255,255,0.30 → 0)`); progress bar fill (309) → `#5A3A1F` (instead of SAFFRON_FLAME for the active state). Pass `darkText={product.darkTextOnTile}` into `<ProductCardTile>` (line 735).
-3. **`src/components/NextConversationCard.tsx`** — gate purely on `product.darkTextOnTile`. When true: eyebrow → `rgba(90,58,31,0.75)`, title → `#5A3A1F`, category → `rgba(90,58,31,0.65)`, all `textShadow` → `none`.
+Update each product's `permutation` to the full-length, adjacency-aware sequences from the prompt:
 
-No edits to `KidsCardPortal` portal title (sits on dark surround), `ResumeBanner`, `UnifiedResumeBanner`, or `LibraryResumeCard` — text in all four cases sits on dark backgrounds, not on the product tile color.
+- `jag_i_mig` (4 variants, 21 cards): `[0,2,1,3,2,0,3,1,0,2,1,3,2,0,3,1,0,2,1,3,2]`
+- `jag_med_andra` (3 variants, 21 cards): `[0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1]`
+- `jag_i_varlden` (3 variants, 20 cards): `[0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2,1,0,2]`
+- `vardagskort` (4 variants, 15 cards): `[0,2,1,3,2,0,3,1,0,2,1,3,2,0,3]`
+- `syskonkort` (5 variants, 13 cards): `[0,3,1,4,2,0,3,1,4,2,0,3,1]`
+- `sexualitetskort` (4 variants, 14 cards): `[0,2,1,3,2,0,3,1,0,2,1,3,2,0]`
 
-## (c) CardView accent + (d) paywall
+Replace `getInteriorForCard(productId, cardId, fallback)` with `getInteriorForCard(productId, positionIndex, fallback)`:
 
-`accentColor`/`secondaryAccent` updates propagate automatically into:
-- `CardView.tsx` session glow / gradients / accent ring
-- `KidsCardPortal.tsx` portal theme
-- `ProductHome.tsx` shell theme
-- `ProductIntro` accent
-- Completion ceremony (inherits CardView accents)
-- **Paywall** — `Paywall.tsx` and `PaywallFullScreen.tsx` read `product.accentColor` / `product.ctaButtonColor` for header glow, CTA, and sample-question pills. The manifest update flows through. After applying, I'll inspect the JIM paywall and flag any hardcoded teal — if any surface still renders teal, that's a follow-up patch logged in the verification step (not blocking this batch).
+```ts
+export function getInteriorForCard(productId, positionIndex, fallback) {
+  const entry = interiorVariants[productId];
+  if (!entry) return fallback;
+  const idx = entry.permutation[positionIndex % entry.permutation.length];
+  return entry.variants[idx] ?? fallback;
+}
+```
 
-## Verification (after apply)
+Drop the `hashCardId` helper (no longer needed). Keep `getCalmInterior` unchanged.
 
-Capture screenshots of:
-- JIM library tile (unchanged)
-- JIM product home (deep teal bg + marigold tiles, dark text)
-- JIM portal (marigold inner frame, dark teal surround, white title)
-- JIM CardView session (amber glow)
-- NextConversationCard (amber bg, dark text)
-- ResumeBanner (marigold bloom on dark)
-- JIM paywall (marigold accents — flag stale teal if found)
+Add an inline self-check (dev-only, runs once at module load) that asserts for each product:
+- `permutation[i] !== permutation[i+1]` for all `i` (horizontal adjacency)
+- For 4+ variant products: `permutation[i] !== permutation[i+2]` (vertical adjacency)
+- For 3-variant products (JmA, JIV): only the horizontal check is required
 
-## Out of scope
-- `backgroundColor #115D57` deep teal — kept by design.
+If a check fails, `console.warn` once with the offending product/index — no throw.
+
+### 2. `src/components/ProductCardTile.tsx`
+
+Add a required `positionIndex: number` prop and pass it to `getInteriorForCard` instead of `card.id`.
+
+### 3. `src/components/KidsProductHome.tsx`
+
+Pass `positionIndex={index}` from the existing `product.cards.map((card, index) => ...)` callsite (line 736).
+
+## What does NOT change
+
+- Variant hex values, frame colors, `KidsTileFrame`, library/portal/session/completion code paths (they use `getCalmInterior`).
+- Card ordering in product manifests (positions are already stable).
+- Same card always renders the same variant because positions are stable in the data.
+
+## Verification
+
+After implementation, on iPhone 15 (390×844), screenshot each kids product home (JIM, JmA, JIV, Vardag, Syskon, N&I) and visually confirm:
+- No horizontally adjacent cards share a variant in any product.
+- For 4+ variant products, no vertically adjacent cards share a variant either.
+- Reload twice — same card → same variant.
