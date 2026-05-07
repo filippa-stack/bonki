@@ -1,7 +1,7 @@
 import { useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { House, LayoutGrid, BookOpen } from 'lucide-react';
-import { BONKI_ORANGE, MIDNIGHT_INK } from '@/lib/palette';
+import { BONKI_ORANGE } from '@/lib/palette';
 
 type NavItem = {
   id: string;
