@@ -11,10 +11,29 @@ import { supabase } from '@/integrations/supabase/client';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { getProductById } from '@/data/products';
 import { KIDS_PRODUCT_IDS } from '@/hooks/useKidsProductProgress';
+import { getCalmInterior } from '@/lib/productTileVariants';
 
 import { useDevState } from '@/contexts/DevStateContext';
 import { isDemoMode } from '@/lib/demoMode';
 import { DEMO_SESSION_EVENT, getMostRecentDemoSession } from '@/lib/demoSession';
+
+import illustrationStillUs from '@/assets/illustration-still-us-tile.png';
+import illustrationJagIMig from '@/assets/illustration-jag-i-mig.png';
+import illustrationJagMedAndra from '@/assets/illustration-jag-med-andra.png';
+import illustrationJagIVarlden from '@/assets/illustration-jag-i-varlden.png';
+import illustrationSexualitet from '@/assets/illustration-sexualitet.png';
+import illustrationSyskon from '@/assets/illustration-syskon.png';
+import illustrationVardag from '@/assets/illustration-vardag.png';
+
+const ILLUSTRATIONS: Record<string, string> = {
+  still_us: illustrationStillUs,
+  jag_i_mig: illustrationJagIMig,
+  jag_med_andra: illustrationJagMedAndra,
+  jag_i_varlden: illustrationJagIVarlden,
+  sexualitetskort: illustrationSexualitet,
+  syskonkort: illustrationSyskon,
+  vardagskort: illustrationVardag,
+};
 
 const LANTERN_GLOW = '#FDF6E3';
 
