@@ -209,9 +209,9 @@ function PastelTile({ product, onClick, completedCount, isPurchased }: PastelTil
             fontSize: 26,
             fontWeight: 500,
             lineHeight: 1.1,
-            color: '#FFFFFF',
+            color: titleColor,
             letterSpacing: '-0.005em',
-            textShadow: '0 2px 14px rgba(0,0,0,0.45)',
+            textShadow: titleShadow,
             margin: '0 0 5px',
           }}
         >
@@ -223,9 +223,9 @@ function PastelTile({ product, onClick, completedCount, isPurchased }: PastelTil
               fontFamily: 'Inter, system-ui, sans-serif',
               fontSize: 12,
               fontWeight: 400,
-              color: 'rgba(255, 255, 255, 0.92)',
+              color: subtitleColor,
               lineHeight: 1.3,
-              textShadow: '0 1px 6px rgba(0,0,0,0.35)',
+              textShadow: subtitleShadow,
               margin: '0 0 9px',
             }}
           >
