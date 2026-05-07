@@ -323,14 +323,14 @@ function LibraryKidsTile({
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
-          gap: 4,
+          gap: 2,
         }}
       >
         <span
           style={{
             fontFamily: 'var(--font-display)',
             fontVariationSettings: "'opsz' 24",
-            fontSize: 16,
+            fontSize: 14,
             fontWeight: 600,
             color: darkText,
             lineHeight: 1.05,
@@ -344,7 +344,7 @@ function LibraryKidsTile({
             style={{
               fontFamily: 'var(--font-display)',
               fontStyle: 'italic',
-              fontSize: 11,
+              fontSize: 10,
               fontWeight: 400,
               color: darkText,
               opacity: 0.7,
@@ -366,7 +366,7 @@ function LibraryKidsTile({
           <span
             style={{
               fontFamily: 'var(--font-body)',
-              fontSize: 9,
+              fontSize: 8,
               fontWeight: 600,
               letterSpacing: '0.08em',
               textTransform: 'uppercase',
