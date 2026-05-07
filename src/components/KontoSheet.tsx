@@ -134,6 +134,8 @@ export default function KontoSheet({
               overflowY: 'auto',
               WebkitOverflowScrolling: 'touch',
               overscrollBehavior: 'contain',
+              paddingLeft: 'env(safe-area-inset-left, 0px)',
+              paddingRight: 'env(safe-area-inset-right, 0px)',
               // Reserve space for BottomNav (56px) + safe-area-inset-bottom,
               // so the last row scrolls clear of the nav on Library/Journal.
               paddingBottom:
