@@ -288,9 +288,9 @@ function LibraryKidsTile({
       meta={meta}
       metaTrailing={tasted ? <BonkiLogoMark size={9} /> : undefined}
       darkText={darkText}
-      titleSize={15}
-      stripFraction={0.30}
-      style={{ aspectRatio: '1 / 1.05' }}
+      titleSize={16}
+      stripFraction={0.26}
+      style={{ aspectRatio: '1 / 1.18' }}
       onClick={onClick}
       ariaLabel={product.name}
     >
@@ -302,15 +302,13 @@ function LibraryKidsTile({
           draggable={false}
           style={{
             position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            maxWidth: '70%',
-            maxHeight: '70%',
-            width: 'auto',
-            height: 'auto',
+            inset: 0,
+            width: '100%',
+            height: '100%',
             objectFit: 'contain',
-            filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.10))',
+            objectPosition: 'center',
+            padding: 10,
+            boxSizing: 'border-box',
             pointerEvents: 'none',
           }}
         />
@@ -578,7 +576,7 @@ export default function ProductLibrary() {
 
         {/* ── FÖR PAR — Vårt Vi marquee ── */}
         <div className="px-5">
-          <SectionEyebrow label="För par" />
+          <SectionEyebrow label="För er som par" />
           <StillUsMarquee
             totalCards={stillUsProduct?.cards.length ?? 22}
             completedCount={completedCountMap['still_us'] || 0}
