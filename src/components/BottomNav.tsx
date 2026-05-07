@@ -76,78 +76,78 @@ export default function BottomNav() {
         left: '0px',
         right: '0px',
         paddingBottom: 'env(safe-area-inset-bottom, 0px)',
-        background: MIDNIGHT_INK,
-        border: 'none',
+        background: 'rgba(26, 26, 46, 0.92)',
+        borderTop: '1px solid rgba(245, 232, 204, 0.10)',
         boxShadow: 'none',
         WebkitTransform: 'translateZ(0)',
         transform: 'translateZ(0)',
       }}
     >
-      <div style={{ background: 'transparent' }}>
-        <div className="flex items-stretch justify-around" style={{ height: '56px' }}>
-          {items.map((item) => {
-            const active = item.match(pathname, search);
-            const Icon = item.icon;
-            const color = active ? BONKI_ORANGE : 'rgba(253, 246, 227, 0.55)';
+      <div className="flex items-stretch justify-around" style={{ paddingTop: 8, paddingBottom: 12 }}>
+        {items.map((item) => {
+          const active = item.match(pathname, search);
+          const Icon = item.icon;
+          const color = active ? BONKI_ORANGE : 'rgba(245, 232, 204, 0.55)';
 
-            return (
-              <motion.button
-                key={item.id}
-                onClick={() => {
-                  if (item.id === 'library') {
-                    sessionStorage.setItem('bonki-navigating-to-library', '1');
-                    navigate('/');
-                    return;
-                  }
-                  if (item.id === 'hem') {
-                    let productSlug: string | null = null;
-                    const productMatch = pathname.match(/^\/product\/([^/]+)/);
-                    if (productMatch) productSlug = productMatch[1];
-                    else if (pathname.startsWith('/still-us/')) productSlug = 'still-us';
-                    else if (pathname.startsWith('/category/')) productSlug = localStorage.getItem('bonki-last-active-product');
-                    else if (pathname.startsWith('/preview/')) productSlug = localStorage.getItem('bonki-last-active-product');
-                    if (!productSlug) productSlug = localStorage.getItem('bonki-last-active-product');
-                    if (!productSlug) { navigate('/'); return; }
-                    navigate(`/product/${productSlug}`);
-                    return;
-                  }
-                  navigate(item.path);
-                }}
-                whileTap={{ scale: 0.92 }}
-                transition={{ duration: 0.1 }}
-                className="relative flex flex-1 flex-col items-center justify-center"
+          return (
+            <motion.button
+              key={item.id}
+              onClick={() => {
+                if (item.id === 'library') {
+                  sessionStorage.setItem('bonki-navigating-to-library', '1');
+                  navigate('/');
+                  return;
+                }
+                if (item.id === 'hem') {
+                  let productSlug: string | null = null;
+                  const productMatch = pathname.match(/^\/product\/([^/]+)/);
+                  if (productMatch) productSlug = productMatch[1];
+                  else if (pathname.startsWith('/still-us/')) productSlug = 'still-us';
+                  else if (pathname.startsWith('/category/')) productSlug = localStorage.getItem('bonki-last-active-product');
+                  else if (pathname.startsWith('/preview/')) productSlug = localStorage.getItem('bonki-last-active-product');
+                  if (!productSlug) productSlug = localStorage.getItem('bonki-last-active-product');
+                  if (!productSlug) { navigate('/'); return; }
+                  navigate(`/product/${productSlug}`);
+                  return;
+                }
+                navigate(item.path);
+              }}
+              whileTap={{ scale: 0.97, opacity: 0.7 }}
+              transition={{ duration: 0.1 }}
+              className="relative flex flex-1 flex-col items-center justify-center"
+              style={{
+                color,
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                WebkitTapHighlightColor: 'transparent',
+                gap: '3px',
+                minHeight: 44,
+              }}
+            >
+              <Icon
                 style={{
-                  color,
-                  background: 'none',
-                  border: 'none',
-                  cursor: 'pointer',
-                  WebkitTapHighlightColor: 'transparent',
-                  gap: '2px',
+                  width: '20px',
+                  height: '20px',
+                  strokeWidth: active ? 2 : 1.5,
+                }}
+              />
+              <span
+                style={{
+                  fontFamily: 'var(--font-display)',
+                  fontSize: '10px',
+                  fontWeight: active ? 500 : 400,
+                  letterSpacing: '0.02em',
+                  lineHeight: 1,
                 }}
               >
-                <Icon
-                  style={{
-                    width: '22px',
-                    height: '22px',
-                    strokeWidth: 1.5,
-                  }}
-                />
-                <span
-                  style={{
-                    fontSize: '10px',
-                    fontWeight: active ? 600 : 400,
-                    letterSpacing: '0.04em',
-                    lineHeight: 1,
-                    textTransform: 'uppercase',
-                  }}
-                >
-                  {item.label}
-                </span>
-              </motion.button>
-            );
-          })}
-        </div>
+                {item.label}
+              </span>
+            </motion.button>
+          );
+        })}
       </div>
     </nav>
   );
 }
+
