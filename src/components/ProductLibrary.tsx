@@ -587,8 +587,9 @@ export default function ProductLibrary() {
             color: LANTERN_GLOW,
             opacity: 0.55,
             lineHeight: 1.5,
-            textAlign: 'center',
-            margin: '4px 0 18px',
+            textAlign: 'left',
+            padding: '0 4px',
+            margin: '8px 0 16px',
           }}>
             Åldrarna är en vägledning. Ni känner ert barn bäst.
           </p>
