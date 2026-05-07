@@ -143,13 +143,15 @@ export default function KontoSheet({
           >
             {/* Title */}
             <div
-              className="font-serif"
               style={{
-                fontSize: '18px',
-                fontWeight: 600,
-                color: '#2C2420',
-                padding: '20px 24px 16px',
+                fontFamily: 'var(--font-display)',
+                fontSize: '22px',
+                fontWeight: 500,
+                color: '#F5E8CC',
+                padding: '24px 24px 8px',
                 textAlign: 'left',
+                letterSpacing: '-0.005em',
+                lineHeight: 1.1,
               }}
             >
               Konto
@@ -158,16 +160,18 @@ export default function KontoSheet({
             {/* Email row */}
             <div
               style={{
+                fontFamily: 'var(--font-display)',
+                fontStyle: 'italic',
                 fontSize: '13px',
-                color: '#6B5E52',
-                padding: '0 24px 20px',
+                color: 'rgba(245, 232, 204, 0.65)',
+                padding: '0 24px 24px',
               }}
             >
               {user?.email ? `Inloggad som ${user.email}` : 'Inloggad'}
             </div>
 
             {/* Divider */}
-            <div style={{ height: '1px', background: 'hsla(30, 15%, 20%, 0.10)' }} />
+            <div style={{ height: '1px', background: 'rgba(245, 232, 204, 0.10)' }} />
 
             {/* Integritetspolicy */}
             <button
