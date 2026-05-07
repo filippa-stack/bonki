@@ -104,6 +104,7 @@ export const jagIVarldenProduct: ProductManifest = {
   freeCardId: 'jiv-fordomar',
   ageLabel: '12+',
   paywallDescription: 'Lås upp alla samtal om världen, rättvisa och att hitta sin plats.',
+  darkTextOnTile: true,
   categories,
   cards,
 };

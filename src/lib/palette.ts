@@ -40,7 +40,7 @@ export interface ProductTileColors {
 
 export const productTileColors: Record<string, ProductTileColors> = {
   jag_i_mig: {
-    tileLight: '#27A69C',
+    tileLight: '#E8C593',
     tileMid: '#1D8A82',
     tileDeep: '#115D57',
   },

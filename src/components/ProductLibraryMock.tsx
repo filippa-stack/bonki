@@ -75,7 +75,7 @@ const PRODUCT_SLUG: Record<string, string> = {
 /** Per-product accent (gradient bg-1) used by resume banner dot + wash. */
 const PRODUCT_ACCENT: Record<string, string> = {
   still_us: '#A8B5C9',
-  jag_i_mig: '#2A6B65',
+  jag_i_mig: '#E0B374',
   jag_med_andra: '#B85A8A',
   jag_i_varlden: '#BAC03E',
   vardagskort: '#6FB498',
@@ -83,11 +83,15 @@ const PRODUCT_ACCENT: Record<string, string> = {
   sexualitetskort: '#DD958B',
 };
 
+/** Products whose tile background is too light for white text — render dark brown text instead. */
+const DARK_TEXT_TILE_IDS = new Set(['jag_i_mig', 'jag_i_varlden']);
+const TILE_DARK_TEXT = '#5A3A1F';
+
 /** v4 gradient spec — saturated, high-chroma stops for vibrant tile bg. */
 const GRADIENT_TOKENS_CSS = `
   .v4-mock-root {
     --vartvi-bg-1:#C5D0E2; --vartvi-bg-2:#647892;
-    --jim-bg-1:#3A9088;    --jim-bg-2:#175048;
+    --jim-bg-1:#E8C593;    --jim-bg-2:#C39855;
     --jma-bg-1:#D86BA0;    --jma-bg-2:#7A2E5A;
     --varlden-bg-1:#D8E04A; --varlden-bg-2:#7A8019;
     --vardag-bg-1:#7FCEAB;  --vardag-bg-2:#3E8868;
@@ -127,6 +131,11 @@ function PastelTile({ product, onClick, completedCount, isPurchased }: PastelTil
   const totalCards = product.cards.length;
   const tasted = !isPurchased && completedCount > 0;
   const accent = PRODUCT_ACCENT[product.id] ?? '#1A2538';
+  const darkText = DARK_TEXT_TILE_IDS.has(product.id);
+  const titleColor = darkText ? TILE_DARK_TEXT : '#FFFFFF';
+  const subtitleColor = darkText ? TILE_DARK_TEXT : 'rgba(255, 255, 255, 0.92)';
+  const titleShadow = darkText ? 'none' : '0 2px 14px rgba(0,0,0,0.45)';
+  const subtitleShadow = darkText ? 'none' : '0 1px 6px rgba(0,0,0,0.35)';
 
   return (
     <motion.div
@@ -200,9 +209,9 @@ function PastelTile({ product, onClick, completedCount, isPurchased }: PastelTil
             fontSize: 26,
             fontWeight: 500,
             lineHeight: 1.1,
-            color: '#FFFFFF',
+            color: titleColor,
             letterSpacing: '-0.005em',
-            textShadow: '0 2px 14px rgba(0,0,0,0.45)',
+            textShadow: titleShadow,
             margin: '0 0 5px',
           }}
         >
@@ -214,9 +223,9 @@ function PastelTile({ product, onClick, completedCount, isPurchased }: PastelTil
               fontFamily: 'Inter, system-ui, sans-serif',
               fontSize: 12,
               fontWeight: 400,
-              color: 'rgba(255, 255, 255, 0.92)',
+              color: subtitleColor,
               lineHeight: 1.3,
-              textShadow: '0 1px 6px rgba(0,0,0,0.35)',
+              textShadow: subtitleShadow,
               margin: '0 0 9px',
             }}
           >

@@ -58,7 +58,7 @@ const TAGLINES: Record<string, string> = {
 /** Per-product accent color used as tile background. */
 const PRODUCT_ACCENT: Record<string, string> = {
   still_us: '#6495ED',
-  jag_i_mig: '#27A69C',
+  jag_i_mig: '#E0B374',
   jag_med_andra: '#B85A8A',
   jag_i_varlden: '#BAC03E',
   vardagskort: '#6FB498',
@@ -139,11 +139,14 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
   totalCards?: number;
   completedCount?: number;
   isPurchased?: boolean;
+  darkTextOnTile?: boolean;
 }>(function PastelTile({
   name, productId, tagline, onClick, illustration,
-  totalCards = 0, completedCount = 0, isPurchased = false,
+  totalCards = 0, completedCount = 0, isPurchased = false, darkTextOnTile = false,
 }, ref) {
   const tasted = !isPurchased && completedCount > 0;
+  const titleColor = darkTextOnTile ? '#5A3A1F' : '#FFFFFF';
+  const subtitleColor = darkTextOnTile ? '#5A3A1F' : 'rgba(255, 255, 255, 0.78)';
 
   return (
     <motion.div
@@ -180,7 +183,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
             fontSize: 24,
             fontWeight: 500,
             lineHeight: 1.1,
-            color: '#FFFFFF',
+            color: titleColor,
             letterSpacing: '-0.005em',
             margin: '0 0 4px',
           }}
@@ -193,7 +196,7 @@ const PastelTile = React.forwardRef<HTMLDivElement, {
               fontFamily: 'Inter, system-ui, sans-serif',
               fontSize: 12,
               fontWeight: 400,
-              color: 'rgba(255, 255, 255, 0.78)',
+              color: subtitleColor,
               lineHeight: 1.3,
               margin: 0,
             }}
@@ -741,6 +744,7 @@ export default function ProductLibrary() {
                   completedCount={count}
                   isPurchased={purchased.has(product.id)}
                   totalCards={product.cards.length}
+                  darkTextOnTile={product.darkTextOnTile ?? false}
                 />
               );
             })}
