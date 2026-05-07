@@ -1,28 +1,53 @@
-## Widen kids tile variant spread
+## Vårt Vi — bind illustrations to card ID
 
-Single-file edit to `src/lib/productTileVariants.ts`. Replace the `variants` array on each of the six kids products so every variant reads as visibly distinct from the frame.
+### 1. Extract & convert Emma's 18 PNGs to WebP in `public/card-images/`
 
-### Changes (variants only)
+Filename mapping (Emma → saved as):
 
-| Product | Frame | New variants |
-|---|---|---|
-| `jag_i_mig` | `#E89B6B` | `['#B86838', '#DC8050', '#F0B080', '#FAD2B0']` |
-| `jag_med_andra` | `#CB7AB2` | `['#92356A', '#B05A8C', '#E5B0D0']` |
-| `jag_i_varlden` | `#C6D423` | `['#989826', '#B0B038', '#E0EA85']` |
-| `vardagskort` | `#8BDDB0` | `['#3F8E72', '#62B090', '#B0E8C8', '#DCF5E5']` |
-| `syskonkort` | `#CF8BDD` | `['#8C70A8', '#A689BD', '#C5A8D6', '#DEC3E5', '#ECD5F0']` |
-| `sexualitetskort` | `#B87560` | `['#8A5340', '#A56350', '#C8907A', '#DBB5A0']` |
+| Emma file | Saved as |
+|---|---|
+| rösternautifrån.png | thoughtful-space.webp |
+| osagt.png | expressing-needs.webp |
+| vänskap.png | behind-the-scenes.webp |
+| osynliga ansvaret.png | smallest-we.webp |
+| egnautrymmet.png | self-esteem-wavering.webp |
+| drömmenspris.png | parenting-exhaustion.webp |
+| outtaladelängtan.png | love-languages.webp |
+| frågaombarn.png | different-parenting-styles.webp |
+| pengarssymbolik.png | worth-spending-on.webp |
+| vägentillbaka.png | when-life-tilts.webp |
+| uppmärksamhetåtannathåll.png | family-ab.webp |
+| tystamuren.png | conflict-repair.webp |
+| bäraochbliburen.png | facing-adversity.webp |
+| derödalinjerna.png | parenting-boundaries.webp |
+| attblisedd.png | listening-presence.webp |
+| begäretavståndet.png | adrift.webp |
+| våruppväxt.png | our-traditions.webp |
+| utveckligen.png (sic) | identity-shift.webp |
 
-### calmIndex verification
+Conversion via `cwebp` (quality ~85). Old `su-mock-{N}.webp` files left untouched as fallback.
 
-In every new array, the lightest variant sits at the highest index, which matches the current `calmIndex` values (3, 2, 2, 3, 4, 3 respectively). No `calmIndex` updates required.
+### 2. Update `src/hooks/useCardImage.ts` — bare-id resolution for Still Us
 
-### Untouched
+Add the 18 bare card IDs to `CARD_IDS_WITH_IMAGES`. When `cardId` matches the `su-mock-N` pattern, translate N → bare id via `CARD_SEQUENCE` (imported from `src/data/stillUsSequence.ts`) and resolve to `/card-images/{bareId}.webp`. If that bare-id isn't in our known set, fall back to `/card-images/su-mock-{N}.webp`. Non-Still-Us card IDs continue working unchanged.
 
-- `permutation` arrays (assignment algorithm unchanged)
-- Frame colors in product manifests
-- `getInteriorForCard` / `getCalmInterior` logic
-- Library calm tile usage
-- All non-kids surfaces
+Resolver logic (concise):
+```ts
+if (id.startsWith('su-mock-')) {
+  const n = Number(id.slice('su-mock-'.length));
+  const seq = CARD_SEQUENCE[n];
+  const bare = seq ? bareIdFromSlug(seq.cardId) : null;
+  if (bare && CARD_IDS_WITH_IMAGES.has(bare)) return `/card-images/${bare}.webp`;
+  // fallback to legacy indexed file
+  return CARD_IDS_WITH_IMAGES.has(id) ? `/card-images/${id}.webp` : null;
+}
+```
 
-After implementation: visually verify on 390×844 that each kids product home shows a clearly perceptible inner zone on every tile.
+### 3. Verify
+
+- Spot-check 6 cards across all 4 layers in the portal.
+- Confirm no broken images; no other product affected.
+
+### Out of scope
+
+Other products' image pattern, image optimization beyond standard cwebp conversion, tile color treatments.
