@@ -32,7 +32,7 @@ export const productIntros: Record<string, ProductIntroData> = {
       },
     ],
     ctaLabel: 'Börja utforska',
-    freeCardCtaLabel: 'Börja med Ert första samtal',
+    freeCardCtaLabel: 'Börja med Vår uppväxt',
   },
 
   jag_i_mig: {
@@ -68,7 +68,7 @@ export const productIntros: Record<string, ProductIntroData> = {
       },
     ],
     ctaLabel: 'Sätt igång',
-    freeCardCtaLabel: 'Börja med Identitet',
+    freeCardCtaLabel: 'Börja med Fördomar',
   },
 
   vardagskort: {
