@@ -67,12 +67,12 @@ const tileVariants = {
 /* ── Editorial library header ─────────────────────────────────────────── */
 function LibraryHeader() {
   return (
-    <div style={{ textAlign: 'center', marginBottom: 20 }}>
+    <div style={{ textAlign: 'center', marginBottom: 32 }}>
       <h1 style={{
         fontFamily: 'var(--font-display)',
         fontSize: 28,
         fontWeight: 500,
-        letterSpacing: '-0.005em',
+        letterSpacing: '0',
         color: LANTERN_GLOW,
         margin: '0 0 6px',
         fontVariationSettings: "'opsz' 28",
@@ -81,9 +81,9 @@ function LibraryHeader() {
       </h1>
       <p style={{
         fontFamily: 'var(--font-body)',
-        fontSize: 10,
+        fontSize: 11,
         fontWeight: 600,
-        letterSpacing: '0.15em',
+        letterSpacing: '0.10em',
         textTransform: 'uppercase',
         color: 'rgba(253, 246, 227, 0.55)',
         margin: 0,
@@ -97,28 +97,18 @@ function LibraryHeader() {
 /* ── Section eyebrow with mushroom-tinted divider ─────────────────────── */
 function SectionEyebrow({ label }: { label: string }) {
   return (
-    <div style={{ position: 'relative', paddingTop: 20, marginBottom: 16 }}>
-      <div aria-hidden="true" style={{
-        position: 'absolute',
-        top: 0,
-        left: '10%',
-        right: '10%',
-        height: 1,
-        background: 'linear-gradient(90deg, transparent 0%, rgba(110, 201, 184, 0.15) 30%, rgba(110, 201, 184, 0.20) 50%, rgba(110, 201, 184, 0.15) 70%, transparent 100%)',
-      }} />
-      <p style={{
-        fontFamily: 'var(--font-body)',
-        fontSize: 13,
-        fontWeight: 700,
-        letterSpacing: '2px',
-        textTransform: 'uppercase',
-        color: LANTERN_GLOW,
-        opacity: 0.55,
-        margin: 0,
-      }}>
-        {label}
-      </p>
-    </div>
+    <p style={{
+      fontFamily: 'var(--font-body)',
+      fontSize: 10,
+      fontWeight: 600,
+      letterSpacing: '0.12em',
+      textTransform: 'uppercase',
+      color: 'rgba(253, 246, 227, 0.45)',
+      margin: '0 0 10px',
+      padding: '0 4px',
+    }}>
+      {label}
+    </p>
   );
 }
 
@@ -134,8 +124,8 @@ function StillUsMarquee({
   isPurchased: boolean;
   onClick: () => void;
 }) {
-  const tasted = !isPurchased && completedCount > 0;
   const accent = PRODUCT_ACCENT.still_us;
+  const onColorText = '#F5E8CC';
   return (
     <button
       type="button"
@@ -145,103 +135,84 @@ function StillUsMarquee({
         display: 'flex',
         alignItems: 'center',
         gap: 16,
-        padding: '22px 18px',
-        borderRadius: 18,
-        background: 'rgba(15, 15, 15, 0.55)',
-        backdropFilter: 'blur(22px)',
-        WebkitBackdropFilter: 'blur(22px)',
-        border: '1px solid rgba(255, 255, 255, 0.10)',
-        boxShadow: '0 12px 36px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.08)',
+        padding: 16,
+        borderRadius: 14,
+        background: accent,
+        border: 'none',
+        boxShadow: '0 0 0 1px rgba(255,255,255,0.06)',
         cursor: 'pointer',
         textAlign: 'left',
         WebkitTapHighlightColor: 'transparent',
+        minHeight: 97,
       }}
     >
       <div style={{
-        position: 'relative',
-        width: 110,
-        height: 110,
-        borderRadius: 9999,
-        background: accent,
-        flexShrink: 0,
-        overflow: 'hidden',
-        boxShadow: 'inset 0 -6px 16px rgba(0,0,0,0.18)',
+        flex: '0 0 75px',
+        aspectRatio: '1 / 1',
+        borderRadius: '50%',
+        background: '#5A85D5',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
       }}>
-        <img
-          src={illustrationStillUs}
-          alt=""
-          draggable={false}
-          style={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            width: '70%',
-            height: '70%',
-            objectFit: 'contain',
-            objectPosition: 'center',
-            pointerEvents: 'none',
-          }}
-        />
+        <div style={{
+          width: '70%',
+          height: '70%',
+          borderRadius: '50%',
+          background: 'rgba(15, 30, 80, 0.18)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+          <img
+            src={illustrationStillUs}
+            alt=""
+            draggable={false}
+            style={{ width: '90%', height: '90%', objectFit: 'contain', pointerEvents: 'none' }}
+          />
+        </div>
       </div>
-      <div style={{ flex: 1, minWidth: 0 }}>
+      <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 4 }}>
         <h3 style={{
           fontFamily: 'var(--font-display)',
+          color: onColorText,
           fontSize: 22,
           fontWeight: 500,
-          color: LANTERN_GLOW,
+          lineHeight: 1.05,
           letterSpacing: '-0.005em',
           margin: 0,
-          lineHeight: 1.1,
         }}>
           Vårt Vi
         </h3>
         <p style={{
-          fontFamily: 'var(--font-display)',
-          fontStyle: 'italic',
+          color: onColorText,
+          opacity: 0.85,
           fontSize: 13,
-          fontWeight: 400,
-          color: 'rgba(253, 246, 227, 0.72)',
+          margin: 0,
+          fontStyle: 'italic',
+          fontFamily: 'var(--font-display)',
           lineHeight: 1.35,
-          margin: '4px 0 0',
         }}>
           {TAGLINES.still_us}
         </p>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginTop: 12, flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginTop: 8 }}>
           <span style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: 6,
-            padding: '5px 11px',
+            background: 'rgba(255,255,255,0.18)',
             borderRadius: 999,
-            background: `color-mix(in srgb, ${accent} 18%, rgba(255,255,255,0.14))`,
-            backdropFilter: 'blur(8px)',
-            WebkitBackdropFilter: 'blur(8px)',
-            border: `0.5px solid color-mix(in srgb, ${accent} 25%, rgba(255,255,255,0.22))`,
-            fontFamily: 'var(--font-body)',
-            fontSize: 11.5,
+            padding: '4px 12px',
+            fontSize: 11,
+            color: onColorText,
             fontWeight: 600,
-            letterSpacing: '0.02em',
-            color: LANTERN_GLOW,
           }}>
-            {isPurchased ? (
-              `${completedCount} av ${totalCards}`
-            ) : tasted ? (
-              <>
-                <BonkiLogoMark size={9} style={{ color: LANTERN_GLOW }} />
-                Du har provat
-              </>
-            ) : (
-              `${totalCards} samtal`
-            )}
+            {completedCount} av {totalCards}
           </span>
           <span style={{
-            fontFamily: 'var(--font-body)',
+            color: onColorText,
+            opacity: 0.55,
             fontSize: 10,
-            fontWeight: 600,
-            letterSpacing: '0.12em',
+            letterSpacing: '0.08em',
             textTransform: 'uppercase',
-            color: 'rgba(253, 246, 227, 0.55)',
+            fontWeight: 600,
           }}>
             {totalCards} samtal
           </span>
@@ -269,7 +240,9 @@ function LibraryKidsTile({
   onClick: () => void;
 }) {
   const frame = PRODUCT_ACCENT[product.id] ?? '#2A2D3A';
-  const interior = getCalmInterior(product.id, frame);
+  const interior = product.id === 'jag_i_varlden'
+    ? `color-mix(in srgb, ${frame} 72%, #FFF8DC)`
+    : `color-mix(in srgb, ${frame} 75%, white)`;
   const darkText = productDarkText[product.id] ?? '#5A3A1F';
   const tasted = !isPurchased && completedCount > 0;
   const progress = isPurchased
@@ -304,10 +277,10 @@ function LibraryKidsTile({
       <div
         style={{
           position: 'absolute',
-          top: 14,
-          left: 14,
-          right: 14,
-          bottom: '30%',
+          top: 9,
+          left: 9,
+          right: 9,
+          bottom: '20%',
           backgroundColor: interior,
           borderRadius: 12,
           overflow: 'hidden',
@@ -323,8 +296,8 @@ function LibraryKidsTile({
             aria-hidden="true"
             draggable={false}
             style={{
-              width: '85%',
-              height: '85%',
+              width: '92%',
+              height: '92%',
               objectFit: 'contain',
               objectPosition: 'center',
               pointerEvents: 'none',
@@ -338,9 +311,9 @@ function LibraryKidsTile({
         aria-hidden="true"
         style={{
           position: 'absolute',
-          left: 14,
-          right: 14,
-          bottom: '30%',
+          left: 9,
+          right: 9,
+          bottom: '20%',
           height: 1,
           backgroundColor: darkText,
           opacity: 0.25,
@@ -354,8 +327,8 @@ function LibraryKidsTile({
           left: 0,
           right: 0,
           bottom: 0,
-          height: '30%',
-          padding: '12px 14px',
+          height: '20%',
+          padding: '8px 9px',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
@@ -594,92 +567,6 @@ export default function ProductLibrary() {
         <div className="px-5" style={{ marginBottom: 8 }}>
           <LibraryResumeCard global />
         </div>
-
-        {/* Next-step / return-user nudges (unchanged logic, condensed) */}
-        {activeProductIds.size === 0 && Object.keys(completedCountMap).length > 0 && (() => {
-          const untriedProduct = defaultKidsOrder.find(p => !completedCountMap[p.id]);
-          if (!untriedProduct) return null;
-          return (
-            <div className="px-5" style={{ marginBottom: 8 }}>
-              <button
-                onClick={() => navigate(`/product/${untriedProduct.slug}`)}
-                style={{
-                  width: '100%', padding: '16px 20px', borderRadius: 16,
-                  background: 'rgba(15, 15, 15, 0.7)',
-                  backdropFilter: 'blur(22px)', WebkitBackdropFilter: 'blur(22px)',
-                  border: '1px solid rgba(255, 255, 255, 0.12)',
-                  display: 'flex', alignItems: 'center', gap: 14,
-                  boxShadow: '0 12px 36px rgba(0, 0, 0, 0.40), inset 0 1px 0 rgba(255, 255, 255, 0.12)',
-                  cursor: 'pointer', textAlign: 'left', WebkitTapHighlightColor: 'transparent',
-                }}
-              >
-                <div style={{
-                  width: 36, height: 36, borderRadius: 10,
-                  backgroundColor: 'rgba(212, 160, 58, 0.15)',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
-                }}>
-                  <span style={{ fontSize: 16, color: '#D4A03A' }}>✦</span>
-                </div>
-                <div style={{ flex: 1 }}>
-                  <p style={{
-                    fontFamily: 'var(--font-display)', fontVariationSettings: "'opsz' 16",
-                    fontSize: 15, fontWeight: 400, color: LANTERN_GLOW, lineHeight: 1.3, margin: 0,
-                  }}>
-                    Prova {untriedProduct.name}
-                  </p>
-                  <p style={{
-                    fontFamily: 'var(--font-body)', fontSize: 11,
-                    color: 'hsla(100, 40%, 80%, 0.45)', margin: '2px 0 0',
-                  }}>
-                    {untriedProduct.cards.length} samtal
-                  </p>
-                </div>
-                <span style={{ fontFamily: 'var(--font-body)', fontSize: 10, fontWeight: 600, color: '#D4F5C0', opacity: 0.4 }}>→</span>
-              </button>
-            </div>
-          );
-        })()}
-
-        {activeProductIds.size === 0 &&
-         Object.keys(completedCountMap).length > 0 &&
-         !defaultKidsOrder.find(p => !completedCountMap[p.id]) && (() => {
-          const lastSlug = localStorage.getItem('bonki-last-active-product');
-          if (!lastSlug) return null;
-          const lastProduct = allProducts.find(p => p.slug === lastSlug);
-          if (!lastProduct) return null;
-          return (
-            <div className="px-5" style={{ marginBottom: 8 }}>
-              <button
-                onClick={() => navigate(`/product/${lastSlug}`)}
-                style={{
-                  width: '100%', padding: '16px 20px', borderRadius: 16,
-                  background: 'rgba(15, 15, 15, 0.7)',
-                  backdropFilter: 'blur(22px)', WebkitBackdropFilter: 'blur(22px)',
-                  border: '1px solid rgba(255, 255, 255, 0.12)',
-                  display: 'flex', alignItems: 'center', gap: 14,
-                  boxShadow: '0 12px 36px rgba(0, 0, 0, 0.40), inset 0 1px 0 rgba(255, 255, 255, 0.12)',
-                  cursor: 'pointer', textAlign: 'left', WebkitTapHighlightColor: 'transparent',
-                }}
-              >
-                <div style={{ flex: 1 }}>
-                  <p style={{
-                    fontFamily: 'var(--font-display)', fontVariationSettings: "'opsz' 16",
-                    fontSize: 15, fontWeight: 400, color: LANTERN_GLOW, lineHeight: 1.3, margin: 0,
-                  }}>
-                    {lastProduct.name}
-                  </p>
-                  <p style={{
-                    fontFamily: 'var(--font-body)', fontSize: 11,
-                    color: 'rgba(253, 246, 227, 0.4)', margin: '2px 0 0',
-                  }}>
-                    {completedCountMap[lastProduct.id] || 0} av {lastProduct.cards.length} samtal
-                  </p>
-                </div>
-                <span style={{ fontFamily: 'var(--font-body)', fontSize: 10, fontWeight: 600, color: '#D4F5C0', opacity: 0.4 }}>→</span>
-              </button>
-            </div>
-          );
-        })()}
 
         {/* ── FÖR PAR — Vårt Vi marquee ── */}
         <div className="px-5">
