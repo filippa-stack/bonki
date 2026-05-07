@@ -277,7 +277,7 @@ function LibraryKidsTile({
           top: 9,
           left: 9,
           right: 9,
-          bottom: '24%',
+          bottom: '26%',
           backgroundColor: interior,
           borderRadius: 12,
           overflow: 'hidden',
