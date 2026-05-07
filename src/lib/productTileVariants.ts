@@ -29,37 +29,37 @@ export interface ProductInteriorVariants {
 export const interiorVariants: Record<string, ProductInteriorVariants> = {
   jag_i_mig: {
     // Frame: #E89B6B (coral-amber) — 4 variants, 21 cards
-    variants: ['#D08560', '#E0926A', '#EDA980', '#F2BC97'],
+    variants: ['#B86838', '#DC8050', '#F0B080', '#FAD2B0'],
     permutation: [0, 2, 1, 3, 2, 0, 3, 1, 0, 2, 1, 3, 2, 0, 3, 1, 0, 2, 1, 3, 2],
     calmIndex: 3,
   },
   jag_med_andra: {
     // Frame: #CB7AB2 (magenta-pink) — 3 variants, 21 cards
-    variants: ['#B05E96', '#CB7AB2', '#DCA1C8'],
+    variants: ['#92356A', '#B05A8C', '#E5B0D0'],
     permutation: [0, 2, 1, 0, 2, 1, 0, 2, 1, 0, 2, 1, 0, 2, 1, 0, 2, 1, 0, 2, 1],
     calmIndex: 2,
   },
   jag_i_varlden: {
     // Frame: #C6D423 (chartreuse) — 3 variants, 20 cards
-    variants: ['#B0BD1E', '#C6D423', '#D4DE48'],
+    variants: ['#989826', '#B0B038', '#E0EA85'],
     permutation: [0, 2, 1, 0, 2, 1, 0, 2, 1, 0, 2, 1, 0, 2, 1, 0, 2, 1, 0, 2],
     calmIndex: 2,
   },
   vardagskort: {
     // Frame: #8BDDB0 (sage) — 4 variants, 15 cards
-    variants: ['#6BC494', '#8BDDB0', '#A8E6C4', '#C4F0DA'],
+    variants: ['#3F8E72', '#62B090', '#B0E8C8', '#DCF5E5'],
     permutation: [0, 2, 1, 3, 2, 0, 3, 1, 0, 2, 1, 3, 2, 0, 3],
     calmIndex: 3,
   },
   syskonkort: {
     // Frame: #CF8BDD (lavender) — 5 variants, 13 cards (middle variant matches frame)
-    variants: ['#9B5BAE', '#B570C5', '#CF8BDD', '#DDA8E5', '#EAC8EE'],
+    variants: ['#8C70A8', '#A689BD', '#C5A8D6', '#DEC3E5', '#ECD5F0'],
     permutation: [0, 3, 1, 4, 2, 0, 3, 1, 4, 2, 0, 3, 1],
     calmIndex: 4,
   },
   sexualitetskort: {
     // Frame: #B87560 (rose-clay / N&I) — 4 variants, 14 cards
-    variants: ['#A26350', '#B06D58', '#C28571', '#CFA08D'],
+    variants: ['#8A5340', '#A56350', '#C8907A', '#DBB5A0'],
     permutation: [0, 2, 1, 3, 2, 0, 3, 1, 0, 2, 1, 3, 2, 0],
     calmIndex: 3,
   },
