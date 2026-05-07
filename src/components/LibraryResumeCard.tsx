@@ -20,12 +20,12 @@ const LANTERN_GLOW = '#FDF6E3';
 
 const PRODUCT_ACCENT: Record<string, string> = {
   still_us: '#6495ED',
-  jag_i_mig: '#2A6B65',
-  jag_med_andra: '#B85A8A',
-  jag_i_varlden: '#BAC03E',
-  vardagskort: '#6FB498',
-  syskonkort: '#C4A5D6',
-  sexualitetskort: '#DD958B',
+  jag_i_mig: '#E89B6B',
+  jag_med_andra: '#CB7AB2',
+  jag_i_varlden: '#C6D423',
+  vardagskort: '#8BDDB0',
+  syskonkort: '#CF8BDD',
+  sexualitetskort: '#B87560',
 };
 
 interface ResumeData {
