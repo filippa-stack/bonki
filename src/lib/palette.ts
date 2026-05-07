@@ -40,9 +40,9 @@ export interface ProductTileColors {
 
 export const productTileColors: Record<string, ProductTileColors> = {
   jag_i_mig: {
-    tileLight: '#F5B82E',
-    tileMid: '#D9A012',
-    tileDeep: '#9A6B0A',
+    tileLight: '#E89B6B',
+    tileMid: '#D08560',
+    tileDeep: '#8C4A2D',
   },
   jag_med_andra: {
     tileLight: '#CB7AB2',
@@ -65,13 +65,24 @@ export const productTileColors: Record<string, ProductTileColors> = {
     tileDeep: '#8E459D',
   },
   sexualitetskort: {
-    tileLight: '#DD958B',
-    tileMid: '#C87D73',
-    tileDeep: '#AF685E',
+    tileLight: '#B87560',
+    tileMid: '#A26350',
+    tileDeep: '#7E4838',
   },
   still_us: {
     tileLight: '#94BCE1',
     tileMid: '#6F9CC5',
     tileDeep: '#4B759B',
   },
+};
+
+/** Per-product dark text color for titles on tiles (in product hue family). */
+export const productDarkText: Record<string, string> = {
+  jag_i_mig: '#5A3A1F',       // deep coral-brown
+  jag_med_andra: '#4A1428',   // deep wine
+  jag_i_varlden: '#2E2D08',   // deep olive-brown
+  vardagskort: '#0E2E22',     // deep forest
+  syskonkort: '#2A1F40',      // deep mauve-violet
+  sexualitetskort: '#3D1F15', // deep terracotta
+  still_us: '#0A1628',        // ember night
 };
