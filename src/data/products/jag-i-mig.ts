@@ -511,22 +511,23 @@ export const jagIMigProduct: ProductManifest = {
   id: 'jag_i_mig',
   name: 'Jag i Mig',
   slug: 'jag-i-mig',
-  tagline: 'Känslor som får ord.',
+  tagline: 'När känslor får ord',
   description: 'Utforska känslor inifrån och ut',
   headerTitle: 'Inifrån & ut',
-  accentColor: 'hsl(41, 78%, 48%)',
-  accentColorMuted: 'hsl(41, 70%, 88%)',
-  secondaryAccent: 'hsl(41, 78%, 48%)',
-  backgroundColor: '#115D57',
-  ctaButtonColor: '#F5B82E',
-  tileLight: '#F5B82E',
-  tileMid: '#D9A012',
-  tileDeep: '#9A6B0A',
+  // Coral-amber identity (replaces marigold/teal direction)
+  accentColor: 'hsl(22, 73%, 66%)',        // ~#E89B6B
+  accentColorMuted: 'hsl(22, 65%, 90%)',
+  secondaryAccent: 'hsl(22, 73%, 66%)',
+  backgroundColor: '#8C4A2D',              // deep terracotta atmospheric
+  ctaButtonColor: '#F2BC97',               // lightest interior variant — glassy pill accent
+  tileLight: '#E89B6B',                    // frame
+  tileMid: '#D08560',                      // interior variant 0 (deeper)
+  tileDeep: '#8C4A2D',                     // matches atmospheric for depth
   darkTextOnTile: true,
   pronounMode: 'du',
   heroImage,
   freeCardId: 'jim-glad',
-  ageLabel: '3+',
+  ageLabel: 'Från 3 år',
   paywallDescription: 'Lås upp alla samtal om känslor, mod och att förstå sig själv.',
   categories,
   cards,
