@@ -118,14 +118,15 @@ export default function KontoSheet({
           {/* Backdrop */}
           <div
             className="absolute inset-0"
-            style={{ backgroundColor: 'hsla(0, 0%, 0%, 0.25)' }}
+            style={{ backgroundColor: 'hsla(230, 25%, 5%, 0.55)' }}
           />
           {/* Sheet */}
           <div
             className="absolute bottom-0 left-0 right-0"
             style={{
-              backgroundColor: '#F7F2EB',
-              borderRadius: '16px 16px 0 0',
+              backgroundColor: '#1A1A2E',
+              borderTop: '1px solid rgba(245, 232, 204, 0.08)',
+              borderRadius: '20px 20px 0 0',
               // Cap height so destructive actions (Radera konto) cannot hide
               // behind safe-area or the BottomNav (56px + safe-area).
               // Per mem://design/layout/ios-safari-stability use 100vh, never 100dvh.
