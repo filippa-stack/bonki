@@ -283,7 +283,7 @@ onClick={() => navigate('/')}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.8, duration: 0.6 }}
         className="text-center"
-        style={{ paddingBottom: 'calc(72px + env(safe-area-inset-bottom, 0px))' }}
+        style={{ paddingBottom: 'var(--bottom-nav-clearance-loose)' }}
       >
         <p
           className="font-serif"

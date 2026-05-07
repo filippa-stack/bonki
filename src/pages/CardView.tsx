@@ -1776,7 +1776,7 @@ export default function CardView() {
         </div>
 
         {/* Bottom spacer for nav bar */}
-        <div style={{ height: 'calc(72px + env(safe-area-inset-bottom, 0px))', flexShrink: 0 }} />
+        <div style={{ height: 'var(--bottom-nav-clearance-loose)', flexShrink: 0 }} />
       </motion.div>
     );
   }
@@ -1980,7 +1980,7 @@ export default function CardView() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.55, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             className="max-w-md mx-auto flex flex-col items-center"
-            style={{ paddingBottom: 'calc(72px + env(safe-area-inset-bottom, 0px))', marginTop: '48px' }}
+            style={{ paddingBottom: 'var(--bottom-nav-clearance-loose)', marginTop: '48px' }}
           >
             {cardId === 'su-mock-0' ? (
               !hasProductAccess ? (
@@ -4160,7 +4160,7 @@ export default function CardView() {
                       paddingTop: '20px',
                       paddingLeft: '24px',
                       paddingRight: '24px',
-                      paddingBottom: 'calc(56px + env(safe-area-inset-bottom, 0px))',
+                      paddingBottom: 'var(--bottom-nav-clearance)',
                     } : undefined}
                   >
                     <SessionStepReflection
