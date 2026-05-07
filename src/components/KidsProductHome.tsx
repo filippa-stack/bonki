@@ -748,6 +748,7 @@ function StickyFilterHeader({
                 isCompleted={completedSet.has(card.id)}
                 productSlug={product.slug}
                 productId={product.id}
+                positionIndex={index}
               />
             </FilterableCardCell>
           );
