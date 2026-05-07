@@ -12,7 +12,9 @@ import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { supabase } from '@/integrations/supabase/client';
 import { isDemoMode } from '@/lib/demoMode';
 import { isProductHiddenOnPlatform } from '@/lib/platform';
-import { MIDNIGHT_INK } from '@/lib/palette';
+import { MIDNIGHT_INK, productDarkText } from '@/lib/palette';
+import { getCalmInterior } from '@/lib/productTileVariants';
+import KidsTileFrame from '@/components/KidsTileFrame';
 
 import LibraryResumeCard from '@/components/LibraryResumeCard';
 import BonkiLogoMark from '@/components/BonkiLogoMark';
@@ -597,18 +599,14 @@ export default function ProductLibrary() {
             gap: 12,
           }}>
             {sortedKidsProducts.map((product) => (
-              <PastelTile
+              <LibraryKidsTile
                 key={product.id}
-                name={product.name}
-                productId={product.id}
-                tagline={TAGLINES[product.id]}
-                ageLabel={product.ageLabel}
+                product={product}
                 illustration={ILLUSTRATIONS[product.id]}
-                onClick={() => navigate(`/product/${product.slug}`)}
+                totalCards={product.cards.length}
                 completedCount={completedCountMap[product.id] || 0}
                 isPurchased={purchased.has(product.id)}
-                totalCards={product.cards.length}
-                darkTextOnTile={product.darkTextOnTile ?? false}
+                onClick={() => navigate(`/product/${product.slug}`)}
               />
             ))}
           </div>
