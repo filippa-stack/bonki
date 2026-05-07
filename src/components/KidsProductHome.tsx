@@ -244,7 +244,9 @@ function CategoryTile({
           left: 0,
           right: 0,
           height: '65%',
-          background: `linear-gradient(to top, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.35) 50%, transparent 100%)`,
+          background: product.darkTextOnTile
+            ? `linear-gradient(to top, rgba(255,255,255,0.30) 0%, rgba(255,255,255,0.12) 50%, transparent 100%)`
+            : `linear-gradient(to top, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.35) 50%, transparent 100%)`,
           borderRadius: 'inherit',
           zIndex: 2,
           pointerEvents: 'none',
@@ -268,11 +270,13 @@ function CategoryTile({
               fontFamily: 'var(--font-sans)',
               fontSize: '13px',
               fontWeight: 600,
-              color: 'rgba(255,255,255,0.85)',
+              color: product.darkTextOnTile ? 'rgba(90,58,31,0.85)' : 'rgba(255,255,255,0.85)',
               lineHeight: 1,
               marginBottom: '4px',
               display: 'block',
-              textShadow: '0 1px 3px rgba(0,0,0,0.9), 0 2px 6px rgba(0,0,0,0.5)',
+              textShadow: product.darkTextOnTile
+                ? '0 1px 2px rgba(255,255,255,0.4)'
+                : '0 1px 3px rgba(0,0,0,0.9), 0 2px 6px rgba(0,0,0,0.5)',
               letterSpacing: '0.04em',
             }}
           >
@@ -285,10 +289,12 @@ function CategoryTile({
             fontVariationSettings: "'opsz' 24",
             fontSize: '24px',
             fontWeight: 600,
-            color: '#FFFFFF',
+            color: product.darkTextOnTile ? '#5A3A1F' : '#FFFFFF',
             lineHeight: 1.2,
             display: 'block',
-            textShadow: '0 1px 3px rgba(0,0,0,0.9), 0 2px 8px rgba(0,0,0,0.7), 0 0 24px rgba(0,0,0,0.5)',
+            textShadow: product.darkTextOnTile
+              ? '0 1px 2px rgba(255,255,255,0.45)'
+              : '0 1px 3px rgba(0,0,0,0.9), 0 2px 8px rgba(0,0,0,0.7), 0 0 24px rgba(0,0,0,0.5)',
           }}
         >
           {cat.title}
@@ -298,7 +304,7 @@ function CategoryTile({
           <div style={{ marginTop: '6px', display: 'flex', alignItems: 'center', gap: '8px' }}>
             <div style={{
               width: '44px', height: '5px', borderRadius: '3px',
-              backgroundColor: 'rgba(255,255,255,0.25)',
+              backgroundColor: product.darkTextOnTile ? 'rgba(90,58,31,0.25)' : 'rgba(255,255,255,0.25)',
               overflow: 'hidden',
               flexShrink: 0,
             }}>
@@ -306,7 +312,7 @@ function CategoryTile({
                 width: `${total > 0 ? (completed / total) * 100 : 0}%`,
                 height: '100%',
                 borderRadius: '3px',
-                backgroundColor: SAFFRON_FLAME,
+                backgroundColor: product.darkTextOnTile ? '#5A3A1F' : SAFFRON_FLAME,
                 opacity: completed > 0 ? 1 : 0,
                 transition: 'width 0.4s ease',
               }} />
@@ -315,12 +321,16 @@ function CategoryTile({
               style={{
                 fontSize: '13px',
                 fontWeight: 600,
-                color: completed > 0 ? SAFFRON_FLAME : '#FFFFFF',
+                color: product.darkTextOnTile
+                  ? '#5A3A1F'
+                  : (completed > 0 ? SAFFRON_FLAME : '#FFFFFF'),
                 opacity: completed > 0 ? 0.9 : 0.7,
                 lineHeight: 1.3,
                 letterSpacing: '0.03em',
                 whiteSpace: 'nowrap',
-                textShadow: `0 1px 4px rgba(0,0,0,0.7)`,
+                textShadow: product.darkTextOnTile
+                  ? '0 1px 2px rgba(255,255,255,0.4)'
+                  : `0 1px 4px rgba(0,0,0,0.7)`,
               }}
             >
               {completed}/{total} samtal
@@ -737,6 +747,7 @@ function StickyFilterHeader({
                 tileBg={tileBg}
                 isCompleted={completedSet.has(card.id)}
                 productSlug={product.slug}
+                darkText={product.darkTextOnTile}
               />
             </FilterableCardCell>
           );

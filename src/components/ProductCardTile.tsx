@@ -21,6 +21,7 @@ interface ProductCardTileProps {
   tileBg: string;
   isCompleted: boolean;
   productSlug: string;
+  darkText?: boolean;
 }
 
 export default function ProductCardTile({
@@ -28,6 +29,7 @@ export default function ProductCardTile({
   tileBg,
   isCompleted,
   productSlug,
+  darkText = false,
 }: ProductCardTileProps) {
   const navigate = useNavigate();
   const tileImage = useCardImage(card.id);
@@ -102,11 +104,12 @@ export default function ProductCardTile({
             fontVariationSettings: "'opsz' 24",
             fontSize: '18px',
             fontWeight: 600,
-            color: '#FFFFFF',
+            color: darkText ? '#5A3A1F' : '#FFFFFF',
             lineHeight: 1.2,
             display: 'block',
-            textShadow:
-              '0 1px 3px rgba(0,0,0,0.9), 0 2px 8px rgba(0,0,0,0.7), 0 0 24px rgba(0,0,0,0.5)',
+            textShadow: darkText
+              ? '0 1px 2px rgba(255,255,255,0.45)'
+              : '0 1px 3px rgba(0,0,0,0.9), 0 2px 8px rgba(0,0,0,0.7), 0 0 24px rgba(0,0,0,0.5)',
           }}
         >
           {card.title}
