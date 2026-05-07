@@ -11,10 +11,29 @@ import { supabase } from '@/integrations/supabase/client';
 import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { getProductById } from '@/data/products';
 import { KIDS_PRODUCT_IDS } from '@/hooks/useKidsProductProgress';
+import { getCalmInterior } from '@/lib/productTileVariants';
 
 import { useDevState } from '@/contexts/DevStateContext';
 import { isDemoMode } from '@/lib/demoMode';
 import { DEMO_SESSION_EVENT, getMostRecentDemoSession } from '@/lib/demoSession';
+
+import illustrationStillUs from '@/assets/illustration-still-us-tile.png';
+import illustrationJagIMig from '@/assets/illustration-jag-i-mig.png';
+import illustrationJagMedAndra from '@/assets/illustration-jag-med-andra.png';
+import illustrationJagIVarlden from '@/assets/illustration-jag-i-varlden.png';
+import illustrationSexualitet from '@/assets/illustration-sexualitet.png';
+import illustrationSyskon from '@/assets/illustration-syskon.png';
+import illustrationVardag from '@/assets/illustration-vardag.png';
+
+const ILLUSTRATIONS: Record<string, string> = {
+  still_us: illustrationStillUs,
+  jag_i_mig: illustrationJagIMig,
+  jag_med_andra: illustrationJagMedAndra,
+  jag_i_varlden: illustrationJagIVarlden,
+  sexualitetskort: illustrationSexualitet,
+  syskonkort: illustrationSyskon,
+  vardagskort: illustrationVardag,
+};
 
 const LANTERN_GLOW = '#FDF6E3';
 
@@ -234,91 +253,153 @@ export default function LibraryResumeCard({ activeTab, global, forceMock }: Libr
   if (!display) return null;
 
   const accent = PRODUCT_ACCENT[display.productId] ?? '#A8B5C9';
-  const accentRgba = (a: number) => {
-    const r = parseInt(accent.slice(1, 3), 16);
-    const g = parseInt(accent.slice(3, 5), 16);
-    const b = parseInt(accent.slice(5, 7), 16);
-    return `rgba(${r}, ${g}, ${b}, ${a})`;
-  };
+  const innerCircleColor = display.productId === 'still_us'
+    ? '#5A85D5'
+    : getCalmInterior(display.productId, accent);
+  const illustration = ILLUSTRATIONS[display.productId];
 
   return (
-    <button
-      onClick={() => navigate(`/card/${display.cardId}`)}
-      style={{
-        position: 'relative',
-        width: '100%',
-        padding: '12px 16px 12px 20px',
-        background: '#2A2D3A',
-        border: '0.5px solid rgba(255, 255, 255, 0.08)',
-        borderRadius: '14px',
-        cursor: 'pointer',
-        textAlign: 'left',
-        display: 'flex',
-        alignItems: 'center',
-        gap: '12px',
-        boxShadow: `inset 4px 0 0 ${accent}, 0 0 0 1px ${accentRgba(0.12)}`,
-        WebkitTapHighlightColor: 'transparent',
-        overflow: 'hidden',
-      }}
-    >
-      {/* Accent dot — tinted to active product's signature color */}
-      <span
-        aria-hidden="true"
+    <div>
+      {/* Eyebrow */}
+      <p
         style={{
-          width: '8px',
-          height: '8px',
-          borderRadius: '50%',
-          background: accent,
-          boxShadow: `0 0 8px ${accentRgba(0.5)}`,
-          flexShrink: 0,
-          display: 'inline-block',
+          fontFamily: 'var(--font-body)',
+          fontSize: 9,
+          fontWeight: 600,
+          letterSpacing: '0.14em',
+          textTransform: 'uppercase',
+          color: 'rgba(253, 246, 227, 0.45)',
+          margin: '0 0 8px',
+          padding: '0 4px',
         }}
-      />
+      >
+        Fortsätt
+      </p>
 
-      {/* Text block */}
-      <div style={{ flex: 1, minWidth: 0 }}>
-        <p
+      <button
+        onClick={() => navigate(`/card/${display.cardId}`)}
+        style={{
+          display: 'flex',
+          alignItems: 'stretch',
+          gap: '14px',
+          width: '100%',
+          padding: '14px 16px',
+          borderRadius: '14px',
+          background: `color-mix(in srgb, ${accent} 12%, transparent)`,
+          border: `1px solid color-mix(in srgb, ${accent} 20%, transparent)`,
+          cursor: 'pointer',
+          textAlign: 'left',
+          WebkitTapHighlightColor: 'transparent',
+        }}
+      >
+        {/* Left: medallion */}
+        <div
+          aria-hidden="true"
           style={{
-            fontFamily: 'Fraunces, serif',
-            fontSize: '14.5px',
-            fontWeight: 500,
-            color: '#FFFFFF',
-            lineHeight: 1.15,
-            margin: 0,
+            flex: '0 0 56px',
+            width: 56,
+            height: 56,
+            borderRadius: '50%',
+            background: accent,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
             overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            whiteSpace: 'nowrap',
           }}
         >
-          {display.productName}
-        </p>
-        <p
+          <div
+            style={{
+              width: '70%',
+              height: '70%',
+              borderRadius: '50%',
+              background: innerCircleColor,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              overflow: 'hidden',
+            }}
+          >
+            {illustration && (
+              <img
+                src={illustration}
+                alt=""
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'contain',
+                  objectPosition: 'center',
+                  pointerEvents: 'none',
+                }}
+              />
+            )}
+          </div>
+        </div>
+
+        {/* Middle: text */}
+        <div
           style={{
-            fontFamily: 'Inter, system-ui, sans-serif',
-            fontSize: '11px',
-            color: 'rgba(255, 255, 255, 0.55)',
-            lineHeight: 1.3,
-            margin: '2px 0 0',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            whiteSpace: 'nowrap',
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            gap: 3,
+            minWidth: 0,
           }}
         >
-          {display.stepLabel} · {display.cardTitle}
-        </p>
-      </div>
+          <p
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: 16,
+              fontWeight: 500,
+              color: LANTERN_GLOW,
+              lineHeight: 1.1,
+              margin: 0,
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            {display.cardTitle}
+          </p>
+          <p
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontStyle: 'italic',
+              fontSize: 11,
+              fontWeight: 400,
+              color: LANTERN_GLOW,
+              opacity: 0.65,
+              lineHeight: 1.3,
+              margin: 0,
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            {display.productName} · {display.stepLabel}
+          </p>
+        </div>
 
-      {/* Chevron affordance */}
-      <ChevronRight
-        size={16}
-        style={{
-          color: LANTERN_GLOW,
-          opacity: 0.5,
-          flexShrink: 0,
-        }}
-        aria-hidden="true"
-      />
-    </button>
+        {/* Right: chevron */}
+        <div
+          style={{
+            flexShrink: 0,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '0 4px',
+          }}
+        >
+          <ChevronRight
+            size={18}
+            strokeWidth={1.5}
+            color={accent}
+            aria-hidden="true"
+          />
+        </div>
+      </button>
+    </div>
   );
 }
+
 
