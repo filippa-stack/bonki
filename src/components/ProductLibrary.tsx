@@ -280,40 +280,147 @@ function LibraryKidsTile({
     : progress;
 
   return (
-    <KidsTileFrame
-      frame={frame}
-      interior={interior}
-      title={product.name}
-      subtitle={TAGLINES[product.id]}
-      meta={meta}
-      metaTrailing={tasted ? <BonkiLogoMark size={9} /> : undefined}
-      darkText={darkText}
-      titleSize={16}
-      stripFraction={0.26}
-      style={{ aspectRatio: '1 / 1.18' }}
+    <button
+      type="button"
       onClick={onClick}
-      ariaLabel={product.name}
+      aria-label={product.name}
+      style={{
+        position: 'relative',
+        width: '100%',
+        aspectRatio: '3 / 4',
+        borderRadius: 14,
+        overflow: 'hidden',
+        backgroundColor: frame,
+        border: '1px solid rgba(255, 255, 255, 0.10)',
+        boxShadow: '0 8px 24px rgba(0,0,0,0.12), 0 2px 6px rgba(0,0,0,0.06)',
+        padding: 0,
+        cursor: 'pointer',
+        display: 'block',
+        textAlign: 'left',
+        WebkitTapHighlightColor: 'transparent',
+      }}
     >
-      {illustration && (
-        <img
-          src={illustration}
-          alt=""
-          aria-hidden="true"
-          draggable={false}
+      {/* Inner zone — distinct rounded plate */}
+      <div
+        style={{
+          position: 'absolute',
+          top: 14,
+          left: 14,
+          right: 14,
+          bottom: '30%',
+          backgroundColor: interior,
+          borderRadius: 12,
+          overflow: 'hidden',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        {illustration && (
+          <img
+            src={illustration}
+            alt=""
+            aria-hidden="true"
+            draggable={false}
+            style={{
+              width: '85%',
+              height: '85%',
+              objectFit: 'contain',
+              objectPosition: 'center',
+              pointerEvents: 'none',
+            }}
+          />
+        )}
+      </div>
+
+      {/* Hairline at inner-zone / title-strip seam */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          left: 14,
+          right: 14,
+          bottom: '30%',
+          height: 1,
+          backgroundColor: darkText,
+          opacity: 0.25,
+        }}
+      />
+
+      {/* Title strip — bottom 30%, sits on frame color */}
+      <div
+        style={{
+          position: 'absolute',
+          left: 0,
+          right: 0,
+          bottom: 0,
+          height: '30%',
+          padding: '12px 14px',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          gap: 4,
+        }}
+      >
+        <span
           style={{
-            position: 'absolute',
-            inset: 0,
-            width: '100%',
-            height: '100%',
-            objectFit: 'contain',
-            objectPosition: 'center',
-            padding: 10,
-            boxSizing: 'border-box',
-            pointerEvents: 'none',
+            fontFamily: 'var(--font-display)',
+            fontVariationSettings: "'opsz' 24",
+            fontSize: 16,
+            fontWeight: 600,
+            color: darkText,
+            lineHeight: 1.05,
+            display: 'block',
           }}
-        />
-      )}
-    </KidsTileFrame>
+        >
+          {product.name}
+        </span>
+        {TAGLINES[product.id] && (
+          <span
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontStyle: 'italic',
+              fontSize: 11,
+              fontWeight: 400,
+              color: darkText,
+              opacity: 0.7,
+              lineHeight: 1.2,
+              display: 'block',
+            }}
+          >
+            {TAGLINES[product.id]}
+          </span>
+        )}
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: 6,
+          }}
+        >
+          <span
+            style={{
+              fontFamily: 'var(--font-body)',
+              fontSize: 9,
+              fontWeight: 600,
+              letterSpacing: '0.08em',
+              textTransform: 'uppercase',
+              color: darkText,
+              opacity: 0.55,
+              lineHeight: 1.2,
+            }}
+          >
+            {meta}
+          </span>
+          {tasted && (
+            <span style={{ display: 'inline-flex', color: darkText, opacity: 0.55, flexShrink: 0 }}>
+              <BonkiLogoMark size={9} />
+            </span>
+          )}
+        </div>
+      </div>
+    </button>
   );
 }
 
