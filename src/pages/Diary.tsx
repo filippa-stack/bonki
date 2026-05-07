@@ -503,7 +503,7 @@ export default function Diary() {
     <div data-sensitive className="min-h-screen" style={{ backgroundColor: '#F8F4EE' }}>
       <Header title="" showBack backTo={`/product/${product.slug}`} />
 
-      <div className="px-5" style={{ paddingTop: '8px', paddingBottom: 'calc(72px + env(safe-area-inset-bottom, 0px))' }}>
+      <div className="px-5" style={{ paddingTop: '8px', paddingBottom: 'var(--bottom-nav-clearance-loose)' }}>
         <div className="max-w-md mx-auto relative">
 
 
