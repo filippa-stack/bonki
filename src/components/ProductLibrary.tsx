@@ -46,24 +46,24 @@ const ILLUSTRATIONS: Record<string, string> = {
 };
 
 const TAGLINES: Record<string, string> = {
-  still_us: 'De samtal ni redan vill ha',
+  still_us: 'Samtalen som dagen inte gav plats för',
   jag_i_mig: 'När känslor får ord',
-  jag_med_andra: 'Att vara sig själv och samspela med andra',
-  jag_i_varlden: 'Att utveckla sig själv i en värld som vidgas',
+  jag_med_andra: 'Att höra till & vara sig själv',
+  jag_i_varlden: 'Att hitta sig själv när allt blir större',
   vardagskort: 'Det vanliga, på djupet',
-  syskonkort: 'Band för livet',
-  sexualitetskort: 'Kropp, gränser och identitet',
+  syskonkort: 'När vi delar allt & inget',
+  sexualitetskort: 'Kropp, gränser, identitet',
 };
 
-/** Per-product accent color used as tile background. */
+/** Per-product accent color used as tile background. Mirrors manifest.tileLight. */
 const PRODUCT_ACCENT: Record<string, string> = {
   still_us: '#6495ED',
-  jag_i_mig: '#F5B82E',
-  jag_med_andra: '#B85A8A',
-  jag_i_varlden: '#BAC03E',
-  vardagskort: '#6FB498',
-  syskonkort: '#C4A5D6',
-  sexualitetskort: '#DD958B',
+  jag_i_mig: '#E89B6B',
+  jag_med_andra: '#CB7AB2',
+  jag_i_varlden: '#C6D423',
+  vardagskort: '#8BDDB0',
+  syskonkort: '#CF8BDD',
+  sexualitetskort: '#B87560',
 };
 
 
