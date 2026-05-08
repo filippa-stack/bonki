@@ -175,6 +175,7 @@ export default function KidsCardPortal() {
   const navigating = useRef(false);
 
   const isStillUs = productSlug === 'still-us';
+  const [kontoOpen, setKontoOpen] = useState(false);
 
   const { hasAccess: productIsPurchased } = useProductAccess(product?.id ?? '');
   const [priceSek, setPriceSek] = useState<number | null>(null);
