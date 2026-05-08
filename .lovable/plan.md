@@ -1,78 +1,89 @@
-## Goal
+# App Store Screenshots — 7 graphics at 1290×2796
 
-On iOS only, add a new "Lös in kod" secondary link to ProductIntro and ProductPaywall that opens Apple's native StoreKit Offer Code redemption sheet (e.g. `TACK25`). On web and Android, nothing changes.
+Production-ready PNG assets for iPhone 6.7" App Store Connect uploads. Built as in-app routes using real production components, with one-click PNG export per graphic.
 
-## Scope
+## Architecture
 
-Exactly 3 files touched:
+A new isolated route tree at `/export/app-store/*` that does **not** touch any shipped surface. Each route renders one of the 7 graphics at exact pixel dimensions; an export button on each page produces the PNG.
 
-1. `src/lib/revenueCat.ts` — add one new exported function.
-2. `src/components/ProductIntro.tsx` — add iOS-only secondary link below the primary CTA.
-3. `src/components/ProductPaywall.tsx` — add iOS-only secondary link above the existing "Utforska andra produkter" link.
-
-Nothing else is modified. Primary CTAs, Stripe routing, BuyPage, edge functions, Capacitor config, and design tokens stay byte-identical.
-
-## Changes
-
-### 1. `src/lib/revenueCat.ts`
-
-Add a new export adjacent to `purchaseProduct` and `restorePurchases`. Do not modify any existing function.
-
-```ts
-export async function presentCodeRedemptionSheet(): Promise<{ success: boolean; error?: string }> {
-  if (Capacitor.getPlatform() !== 'ios') {
-    return { success: false, error: 'Endast tillgänglig på iOS.' };
-  }
-  try {
-    await Purchases.presentCodeRedemptionSheet();
-    return { success: true };
-  } catch (err: unknown) {
-    const message = err instanceof Error ? err.message : 'Okänt fel';
-    console.error('[RevenueCat] presentCodeRedemptionSheet failed:', err);
-    return { success: false, error: message };
-  }
-}
+```text
+src/pages/export/AppStoreScreenshot.tsx        ← shared frame + export button
+src/pages/export/screenshots/
+  Screenshot1Recognition.tsx                   ← Vårt Vi marquee close-up
+  Screenshot2Journal.tsx                       ← Era samtal demo data
+  Screenshot3Audience.tsx                      ← Jag i Mig product home
+  Screenshot4Mechanism.tsx                     ← Jag i Mig session card
+  Screenshot5AdultSession.tsx                  ← Vårt Vi session card
+  Screenshot6Outcome.tsx                       ← Jag i Mig completion takeaway
+  Screenshot7Authority.tsx                     ← Ida Welbourn credentialing
+src/lib/exportScreenshot/
+  composition.tsx                              ← CaptionZone, HairlineDivider, DeviceFrame
+  demoJournal.ts                               ← hardcoded reflections (Graphic 2 + 6)
+  exportPng.ts                                 ← html-to-image based PNG export
 ```
 
-The `console.error` here is the only debug surface for failures — sufficient because Apple's redemption sheet provides its own UI feedback for actual error conditions, and user dismissal also bubbles up as a thrown error (which is normal, not an error to surface).
+Routes added to `src/App.tsx` only — gated to `import.meta.env.DEV || ?key=export` so they are never user-discoverable in production.
 
-### 2. `src/components/ProductIntro.tsx`
+## Shared composition system
 
-- Imports: add `Capacitor` from `@capacitor/core` and `presentCodeRedemptionSheet`, `restorePurchases` from `@/lib/revenueCat`.
-- Below the primary "Köp …" button (around line 544, inside the sticky CTA container at `padding: '0 24px'`), conditionally render a "Lös in kod" link **only when `Capacitor.getPlatform() === 'ios'`**. On web/Android nothing additional renders — preserves current behavior (no secondary link today).
-- Visual styling matches the canonical "Utforska andra produkter" link from `ProductPaywall.tsx` exactly: `font-sans`, 14px, weight 500, `LANTERN_GLOW`, opacity 0.75, underlined with `textUnderlineOffset: 3px`, padding `8px 16px`, centered with `margin: 16px auto 0`, no background/border.
-- onClick handler:
-  1. `const result = await presentCodeRedemptionSheet();`
-  2. On `success: true`: call `restorePurchases()` (forces RC sync in case webhook is delayed), then `window.location.reload()` so the parent `ProductHome` re-runs `useProductAccess` and bypasses the intro/paywall when access is granted.
-  3. On `success: false`: **do nothing in the UI.** No toast. Apple's sheet handles its own feedback, and user dismissal bubbles up as a thrown error — toasting would falsely flag normal cancellation as a failure. The `console.error` inside the wrapper is the sole debug signal.
-- No loading state — Apple's sheet appears instantly with its own UI.
+A single `<AppStoreCanvas>` component enforces the spec exactly (numbers from your brief):
 
-### 3. `src/components/ProductPaywall.tsx`
+- Canvas: 1290×2796, background per graphic
+- Top breathing room: 170px
+- Caption zone: Fraunces 500, `opsz` 144, color `#F5E8CC`, letter-spacing -0.005em, line-height 1.1, max-width 85%, baseline at ~26% from top, sizes calibrated 120/130/140 per caption length
+- Hairline divider: 1px solid `rgba(245, 232, 204, 0.25)`, ~50% canvas width, 90px below caption baseline
+- App screen frame: 84% canvas width, 9:19.5 aspect, 90px corner radius, 10px black bezel, status bar (`9:41`, signal, battery), home indicator, drop shadow `0 8px 32px rgba(0,0,0,0.3)`
+- Bottom breathing room: 110px
 
-- Imports: `Capacitor` is already imported — reuse. Add `presentCodeRedemptionSheet` and `restorePurchases` to the existing `purchaseProduct` import line.
-- Directly above the existing "Utforska andra produkter" button (around line 419), insert a "Lös in kod" link **only when `Capacitor.getPlatform() === 'ios'`**. Order on screen: `Lös in kod` first, then `Utforska andra produkter` below.
-- Visual styling: identical to the existing "Utforska andra produkter" button on the same screen (canonical secondary-link style). Same font/size/color/opacity/spacing/tap target.
-- onClick handler:
-  1. `const result = await presentCodeRedemptionSheet();`
-  2. On `success: true`: call `restorePurchases()` then `onAccessGranted?.()` — same handler that fires after a successful `purchaseProduct` (line 130).
-  3. On `success: false`: **do nothing in the UI.** Same rationale as ProductIntro — Apple owns the feedback; user dismissal must not trigger a toast.
+True em-dashes (`—`) hard-coded in caption strings. Fraunces variable axis used.
 
-## Protected — DO NOT CHANGE
+## Per-graphic specs (locked)
 
-- Primary "Köp …" / "Lås upp …" CTAs and their `handleCta` / `handlePurchase` flows.
-- `Capacitor.isNativePlatform()` guards anywhere.
-- Existing `purchaseProduct`, `restorePurchases`, and bootstrap functions in `src/lib/revenueCat.ts`.
-- `KontoSheet.tsx`, `PaywallBottomSheet.tsx`, `BuyPage.tsx`, `PurchaseScreen.tsx`.
-- `capacitor.config.ts`, edge functions, Stripe paths, Supabase schema/RPCs.
-- "Utforska andra produkter" link behavior and styling — completely unchanged.
-- Content-safety disclaimers on both surfaces.
-- No new dependencies (`@revenuecat/purchases-capacitor` already exposes the method).
+| # | Caption | Canvas BG | App-screen content | Source component |
+|---|---------|-----------|--------------------|------------------|
+| 1 | Samtalen som bär. | `#1A1A2E` | Vårt Vi marquee — 40/60 medallion + text, "16 av 18" | `LibraryMarquee` (real) |
+| 2 | En tidskapsel av era ord. | `#1A1A2E` | Era samtal with 4 dated reflections | Real `Journal` page + demo data |
+| 3 | Att förstå sitt barn — på riktigt. | `#8C4A2D` | Jag i Mig home with 5 saffron checkmarks | Real `JagIMigProductHome` + demo progress |
+| 4 | Frågor som faktiskt öppnar samtalet. | `#8C4A2D` | JIM session, "Glad" card, step 2 av 4 | Real `CardView` + frozen state |
+| 5 | Tiden ni inte hittar — finns här. | `#1A1A2E` | Vårt Vi session card, real prompt | Real `CardView` + frozen state |
+| 6 | Det ni säger till varandra — finns kvar. | `#8C4A2D` | JIM completion + takeaway field | Real `CompletionCeremony` + demo |
+| 7 | Utvecklat under 29 år av klinisk praktik. | `#1A1A2E` | Typographic credentialing block (no device frame) | Inline composition |
 
-## Web/Android verification (after deploy)
+Real card prompts chosen from shipped manifests (`src/data/products/jag-i-mig.ts`, `src/data/products/still-us-mock.ts` / Vårt Vi data) so prompts are authentic to the deck — no invented copy.
 
-1. Open Test URL on desktop browser. Open ProductIntro for a locked product → only primary CTA renders, no secondary link (unchanged).
-2. Open ProductPaywall for a locked product → only "Utforska andra produkter" renders below CTA (unchanged).
-3. Click primary CTA → still navigates to `/buy?product=X`.
-4. No console errors.
+## Demo data (Graphic 2 + 6)
 
-iOS verification of the new "Lös in kod" link must happen on the Mac/TestFlight build after publishing to Live — Lovable preview reports `web` for `Capacitor.getPlatform()`, so the iOS branch is invisible in the browser. On device: tap "Lös in kod" → Apple sheet appears → dismissing without entering a code shows no toast (correct); entering `TACK25` and confirming refreshes entitlements and unlocks the product.
+You uploaded two real Vårt Vi journal entries (10 april "Mitt sätt, ditt sätt" / 9 april "Ert minsta vi"). Plan:
+
+1. Hardcode those two entries verbatim under APRIL 2026.
+2. Add two plausible kids entries dated MARS 2026 anchored to real shipped card titles (Jag i Mig "Glad", Syskon "Vi blev syskon") — body text written in BONKI voice, parent-perspective, no invented child names beyond a single neutral first name. You can swap or rewrite any of them after preview.
+3. Graphic 6 takeaway field uses one real reflection sentence in JIM "Glad" completion context — neutral wording you can replace.
+
+Demo data lives in a single file (`demoJournal.ts`) so all four entries are easy to edit in one place.
+
+## PNG export
+
+`html-to-image` (small, no canvas-tainting issues with our SVGs/PNGs) renders the 1290×2796 node directly at 1× pixel ratio. Each route shows a fixed "Ladda ner PNG" button outside the canvas. Filenames: `app-store-{n}-{name}.png`.
+
+If a font or webfont race causes blurry export on first click, the export helper waits for `document.fonts.ready` before snapshotting.
+
+## Verification per graphic
+
+Before delivery I will:
+
+1. Open each route in the browser at the correct viewport.
+2. Screenshot, then `image_tools--zoom_image` into caption + device frame to confirm: exact pixel dims, em-dash characters, caption position, hairline opacity, status bar/home indicator presence, demo state correctness.
+3. Export the PNG to `/mnt/documents/app-store-{n}-{name}.png` and re-open it to verify pixel dimensions and rendering fidelity.
+4. Deliver all 7 PNGs as `<lov-artifact>` tags.
+
+## What does NOT change
+
+No edits to Library, product homes, sessions, completion, journal, Vårt Vi, or any shipped surface. The export routes consume existing components in read-only demo mode. No schema, no edge functions, no auth.
+
+## Future device classes
+
+`AppStoreCanvas` accepts `{ width, height }` props with proportional internal calc — re-rendering at 1242×2688 (6.5") and 1242×2208 (5.5") is a single prop change per route, no rebuild.
+
+## Open item (non-blocking)
+
+The journal/takeaway demo content in `demoJournal.ts` is my best authentic-feeling fill using your two provided entries plus shipped card titles. After you see the preview, paste any replacement copy and I'll swap it in.
