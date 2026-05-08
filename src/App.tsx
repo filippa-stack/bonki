@@ -46,6 +46,7 @@ import Login from "./pages/Login";
 // Install page removed — route redirects to /login
 import NotFound from "./pages/NotFound";
 import ScreenshotExport from "./pages/ScreenshotExport";
+import AppStoreScreenshot from "./pages/export/AppStoreScreenshot";
 import AnalyticsDashboard from "./pages/AnalyticsDashboard";
 import { useCaptureController } from "@/hooks/useCaptureController";
 
@@ -188,6 +189,8 @@ function AppRoutes() {
       } />
       <Route path="/install" element={<Navigate to="/login" replace />} />
       <Route path="/screenshot-export" element={<ScreenshotExport />} />
+      <Route path="/export/app-store" element={<Navigate to="/export/app-store/1" replace />} />
+      <Route path="/export/app-store/:n" element={<AppStoreScreenshot />} />
       <Route path="/analytics" element={<AnalyticsDashboard />} />
       <Route path="/privacy" element={<PrivacyPolicy />} />
       <Route path="/delete-account" element={<DeleteAccount />} />
