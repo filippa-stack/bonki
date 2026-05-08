@@ -112,6 +112,7 @@ export default function KidsTileFrame({
           bottom: `calc(${stripFraction * 100}% + 8px)`,
           borderRadius: Math.max(8, radius - 8),
           backgroundColor: interior,
+          border: `1px solid ${darkText}30`,
           overflow: 'hidden',
         }}
       >
