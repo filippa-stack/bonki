@@ -3,13 +3,14 @@
 // The JSON session model is deprecated.
 // All session state must come from normalized tables.
 
-import { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { getCompletionMessages } from '@/lib/pronouns';
 import { getProductForCard } from '@/data/products';
 import { isProductFreeForUser } from '@/lib/freeCardPolicy';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Check } from 'lucide-react';
+import { productAccentColor, SAFFRON_FLAME, LANTERN_GLOW, BARK } from '@/lib/palette';
 
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
@@ -260,29 +261,45 @@ export default function CompletedSessionView({
             className="text-center"
             style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}
           >
-            {/* Ceremonial saffron line */}
-            <motion.div
-              initial={{ scaleX: 1 }}
-              animate={{ scaleX: 1 }}
-              transition={{ delay: 0.2, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-              style={{
-                width: '32px',
-                height: '2px',
-                borderRadius: '1px',
-                background: 'var(--accent-saffron)',
-                opacity: 0.5,
-                marginBottom: '8px',
-                transformOrigin: 'center',
-              }}
-            />
+            {isChildProduct ? (
+              <div
+                style={{
+                  width: '64px',
+                  height: '64px',
+                  borderRadius: '50%',
+                  background: 'rgba(233, 200, 144, 0.15)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginBottom: '16px',
+                }}
+              >
+                <Check size={36} strokeWidth={2} style={{ color: SAFFRON_FLAME }} />
+              </div>
+            ) : (
+              <motion.div
+                initial={{ scaleX: 1 }}
+                animate={{ scaleX: 1 }}
+                transition={{ delay: 0.2, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                style={{
+                  width: '32px',
+                  height: '2px',
+                  borderRadius: '1px',
+                  background: 'var(--accent-saffron)',
+                  opacity: 0.5,
+                  marginBottom: '8px',
+                  transformOrigin: 'center',
+                }}
+              />
+            )}
             <h2
               style={{
                 fontFamily: "var(--font-display)",
                 fontVariationSettings: "'opsz' 26",
-                fontSize: 'clamp(26px, 7vw, 34px)',
-                fontWeight: 400,
-                lineHeight: 1.2,
-                color: 'hsl(41, 78%, 38%)',
+                fontSize: isChildProduct ? 'clamp(24px, 6.5vw, 28px)' : 'clamp(26px, 7vw, 34px)',
+                fontWeight: 500,
+                lineHeight: isChildProduct ? 1.1 : 1.2,
+                color: isChildProduct ? LANTERN_GLOW : 'hsl(41, 78%, 38%)',
               }}
             >
               {headline}
@@ -360,14 +377,37 @@ export default function CompletedSessionView({
               transition={{ delay: BEAT_3, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
               style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}
             >
-              <p style={{ fontSize: '11px', letterSpacing: '0.06em', textTransform: 'uppercase', color: '#FDF6E3', opacity: 0.45 }}>Det ni tog med er</p>
-              <div style={{
-                background: 'rgba(255, 255, 255, 0.06)',
-                borderRadius: '12px',
-                border: '1px solid rgba(255, 255, 255, 0.08)',
-              }}>
-                <p className="font-serif italic whitespace-pre-wrap" style={{ padding: '20px 24px', fontSize: '17px', lineHeight: 1.7, color: '#FDF6E3', opacity: 0.8 }}>{session.takeawayText}</p>
-              </div>
+              {isChildProduct ? (
+                <p style={{
+                  fontFamily: 'var(--font-body, var(--font-sans))',
+                  fontSize: '11px',
+                  fontWeight: 600,
+                  letterSpacing: '0.10em',
+                  textTransform: 'uppercase',
+                  color: LANTERN_GLOW,
+                  opacity: 0.55,
+                  textAlign: 'center',
+                }}>VALFRITT</p>
+              ) : (
+                <p style={{ fontSize: '11px', letterSpacing: '0.06em', textTransform: 'uppercase', color: '#FDF6E3', opacity: 0.45 }}>Det ni tog med er</p>
+              )}
+              {isChildProduct ? (
+                <div style={{
+                  background: '#FAF7F2',
+                  borderRadius: '12px',
+                  boxShadow: '0 0 40px rgba(233, 200, 144, 0.10), 0 8px 32px rgba(0, 0, 0, 0.20)',
+                }}>
+                  <p className="font-serif whitespace-pre-wrap" style={{ padding: '20px 24px', fontSize: '17px', lineHeight: 1.7, color: BARK }}>{session.takeawayText}</p>
+                </div>
+              ) : (
+                <div style={{
+                  background: 'rgba(255, 255, 255, 0.06)',
+                  borderRadius: '12px',
+                  border: '1px solid rgba(255, 255, 255, 0.08)',
+                }}>
+                  <p className="font-serif italic whitespace-pre-wrap" style={{ padding: '20px 24px', fontSize: '17px', lineHeight: 1.7, color: '#FDF6E3', opacity: 0.8 }}>{session.takeawayText}</p>
+                </div>
+              )}
             </motion.div>
           )}
 
@@ -379,45 +419,80 @@ export default function CompletedSessionView({
             style={{ marginTop: '8px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}
           >
             {/* Primary: Next card (child products) or Fortsätt utforska */}
-            {isChildProduct && nextDest ? (
-              <>
+            {(() => {
+              const accent = isChildProduct && product ? (productAccentColor[product.id] ?? SAFFRON_FLAME) : null;
+              const kidsPillStyle: React.CSSProperties | null = accent
+                ? {
+                    width: '100%',
+                    maxWidth: '320px',
+                    height: '56px',
+                    borderRadius: '28px',
+                    backgroundColor: `color-mix(in srgb, ${accent} 40%, rgba(255,255,255,0.06))`,
+                    border: `1px solid color-mix(in srgb, ${accent} 60%, transparent)`,
+                    color: LANTERN_GLOW,
+                    fontFamily: 'var(--font-display, var(--font-serif))',
+                    fontSize: '16px',
+                    fontWeight: 600,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '8px',
+                    cursor: 'pointer',
+                  }
+                : null;
+              const kidsLinkStyle: React.CSSProperties = {
+                fontFamily: 'var(--font-display, var(--font-serif))',
+                fontSize: '14px',
+                fontWeight: 400,
+                color: LANTERN_GLOW,
+                opacity: 0.65,
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+              };
+
+              if (isChildProduct && nextDest) {
+                return (
+                  <>
+                    <button
+                      onClick={() => {
+                        if (isFreeCard && !productIsPurchased) {
+                          navigate(`/paywall-full?product=${product!.id}`);
+                        } else {
+                          navigate(nextDest);
+                        }
+                      }}
+                      style={kidsPillStyle ?? undefined}
+                      className={kidsPillStyle ? undefined : 'cta-primary'}
+                    >
+                      Nästa samtal <ArrowRight size={16} style={{ opacity: 0.85 }} />
+                    </button>
+                    <button
+                      onClick={() => navigate(`/product/${product!.slug}`)}
+                      style={kidsLinkStyle}
+                    >
+                      Tillbaka till {product!.name}
+                    </button>
+                  </>
+                );
+              }
+
+              return (
                 <button
                   onClick={() => {
                     if (isFreeCard && !productIsPurchased) {
                       navigate(`/paywall-full?product=${product!.id}`);
                     } else {
-                      navigate(nextDest);
+                      navigate(isChildProduct ? `/product/${product!.slug}` : '/');
                     }
                   }}
-                  className="cta-primary"
-                  style={{ display: 'flex', alignItems: 'center', gap: '6px' }}
+                  style={kidsPillStyle ?? undefined}
+                  className={kidsPillStyle ? undefined : 'cta-primary'}
                 >
-                  Nästa <ArrowRight size={16} style={{ opacity: 0.7 }} />
+                  {isChildProduct ? `Tillbaka till ${product!.name}` : 'Fortsätt utforska'}
                 </button>
-                <button
-                  onClick={() => navigate(`/product/${product!.slug}`)}
-                  className="font-sans"
-                  style={{ fontSize: '13px', color: '#FDF6E3', opacity: 0.45, background: 'none', border: 'none', cursor: 'pointer' }}
-                >
-                  Tillbaka till {product!.name}
-                </button>
-              </>
-            ) : (
-              <button
-                onClick={() => {
-                  if (isFreeCard && !productIsPurchased) {
-                    navigate(`/paywall-full?product=${product!.id}`);
-                  } else {
-                    navigate(
-                      isChildProduct ? `/product/${product!.slug}` : '/'
-                    );
-                  }
-                }}
-                className="cta-primary"
-              >
-                {isChildProduct ? 'Tillbaka till ' + product!.name : 'Fortsätt utforska'}
-              </button>
-            )}
+              );
+            })()}
           </motion.div>
 
         </div>

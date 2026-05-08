@@ -70,6 +70,7 @@ import { useTogetherMode } from '@/hooks/useTogetherMode';
 import { useOptimisticCompletions } from '@/contexts/OptimisticCompletionsContext';
 import { BEAT_1, BEAT_2, BEAT_3, EASE, PRESS, PAGE, EMOTION } from '@/lib/motion';
 import { getRecommendedCategoryOrder } from '@/lib/recommendedOrder';
+import { productAccentColor, SAFFRON_FLAME } from '@/lib/palette';
 
 // ─── Coaching hint (first-time only) ───
 const COACHING_KEY = 'bonki-coaching-hint-count';
@@ -3436,7 +3437,6 @@ export default function CardView() {
                 fontSize: '15px',
                 fontWeight: 400,
                 color: LANTERN_GLOW,
-                ...(isKidsProduct ? { textTransform: 'uppercase' as const, letterSpacing: '1.5px' } : {}),
               }}>
                 {card.title}
               </span>
@@ -3455,7 +3455,7 @@ export default function CardView() {
                 cursor: 'pointer',
               }}
             >
-              <X size={20} style={{ color: LANTERN_GLOW }} />
+              <X size={20} strokeWidth={1.5} style={{ color: LANTERN_GLOW, opacity: 0.65 }} />
             </button>
           </div>
 
@@ -3463,25 +3463,25 @@ export default function CardView() {
           <div style={{
             width: '100%',
             height: '4px',
-            backgroundColor: PARCHMENT,
+            backgroundColor: 'rgba(255,255,255,0.10)',
           }}>
             <div style={{
               width: `${progressFraction * 100}%`,
               height: '100%',
-              backgroundColor: SAFFRON,
+              backgroundColor: SAFFRON_FLAME,
               transition: 'width 300ms ease',
             }} />
           </div>
           <p style={{
-            fontFamily: 'var(--font-sans)',
-            fontSize: '11px',
-            fontWeight: 500,
-            color: '#FDF6E3',
+            fontFamily: 'var(--font-body, var(--font-sans))',
+            fontSize: '12px',
+            fontWeight: 400,
+            color: LANTERN_GLOW,
             opacity: 0.55,
-            textShadow: '0 1px 3px rgba(0,0,0,0.5)',
             textAlign: 'center',
-            margin: '8px 0 0',
-            letterSpacing: '0.03em',
+            margin: '10px 0 0',
+            letterSpacing: '0.08em',
+            textTransform: 'uppercase',
           }}>
             {localPromptIndex + 1} av {totalPrompts}
           </p>
@@ -3529,7 +3529,7 @@ export default function CardView() {
               backgroundColor: '#FAF7F2',
               borderRadius: '28px',
               padding: '28px 24px 20px',
-              boxShadow: '0 8px 32px rgba(0,0,0,0.15)',
+              boxShadow: '0 0 40px rgba(233, 200, 144, 0.10), 0 8px 32px rgba(0, 0, 0, 0.20)',
               overflow: 'hidden',
             }}>
               {/* Question text — centered */}
@@ -3586,17 +3586,18 @@ export default function CardView() {
                       cursor: 'pointer',
                     }}
                   >
-                    <Pencil size={showFullNudge ? 14 : 12} style={{ color: '#6B5E52', opacity: 0.6 }} />
-                    {showFullNudge && (
-                      <span style={{
-                        fontFamily: 'var(--font-sans)',
-                        fontSize: '14px',
-                        fontWeight: 400,
-                        color: '#6B5E52',
-                      }}>
-                        Skriv vad ni vill minnas
-                      </span>
-                    )}
+                    <Pencil size={14} strokeWidth={1.5} style={{ color: BARK, opacity: 0.7 }} />
+                    <span style={{
+                      fontFamily: 'var(--font-display, var(--font-serif))',
+                      fontStyle: 'italic',
+                      fontSize: '14px',
+                      fontWeight: 400,
+                      lineHeight: 1.4,
+                      color: BARK,
+                      opacity: 0.7,
+                    }}>
+                      Skriv vad ni vill minnas
+                    </span>
                   </button>
                 ) : (
                   <motion.div
@@ -3729,14 +3730,14 @@ export default function CardView() {
                     minWidth: '200px',
                     maxWidth: '280px',
                     height: '56px',
-                    borderRadius: '14px',
-                    backgroundColor: SAFFRON,
-                    border: 'none',
+                    borderRadius: '28px',
+                    backgroundColor: `color-mix(in srgb, ${productAccentColor[product.id] ?? SAFFRON_FLAME} 40%, rgba(255,255,255,0.06))`,
+                    border: `1px solid color-mix(in srgb, ${productAccentColor[product.id] ?? SAFFRON_FLAME} 60%, transparent)`,
                     cursor: 'pointer',
-                    fontFamily: 'var(--font-sans)',
-                    fontSize: '17px',
+                    fontFamily: 'var(--font-display, var(--font-serif))',
+                    fontSize: '16px',
                     fontWeight: 600,
-                    color: MIDNIGHT_INK,
+                    color: LANTERN_GLOW,
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -3754,14 +3755,14 @@ export default function CardView() {
                 style={{
                   width: '100%',
                   height: '56px',
-                  borderRadius: '14px',
-                  backgroundColor: SAFFRON,
-                  border: 'none',
+                  borderRadius: '28px',
+                  backgroundColor: `color-mix(in srgb, ${productAccentColor[product.id] ?? SAFFRON_FLAME} 40%, rgba(255,255,255,0.06))`,
+                  border: `1px solid color-mix(in srgb, ${productAccentColor[product.id] ?? SAFFRON_FLAME} 60%, transparent)`,
                   cursor: 'pointer',
-                  fontFamily: 'var(--font-sans)',
-                  fontSize: '17px',
+                  fontFamily: 'var(--font-display, var(--font-serif))',
+                  fontSize: '16px',
                   fontWeight: 600,
-                  color: MIDNIGHT_INK,
+                  color: LANTERN_GLOW,
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
