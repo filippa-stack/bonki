@@ -1,45 +1,48 @@
-## Why the message still shows
+# Sofia access + Google login on preview
 
-The previous edit only touched `CompletedSessionView.tsx`. But the route `/card/su-mock-0?view=completed` renders **Still Us / Vårt Vi completion inline inside `CardView.tsx`** — a separate code path with its own hardcoded headline.
+## Diagnosis
 
-Found at `src/pages/CardView.tsx` lines **1841–1871**:
+### 1. Why Sofia still has no access (the real cause)
 
-```tsx
-<h2 ...>
-  {cardId === 'su-mock-0'
-    ? 'Ert första samtal är klart. Nu börjar resan.'
-    : 'Varje samtal är ett val. Ni valde rätt.'}
-</h2>
-{cardId === 'su-mock-0' && (
-  <p ...>Det här var ert första steg. Nästa samtal väntar.</p>
-)}
-```
+The auth logs show that **sofia.wigen@gmail.com in Test has user_id `4ab87a29-0645-4551-9182-5467827bc963`**.
 
-This is the position-tied copy the user is seeing in the screenshot. It also has a second position-tied variant (`'Varje samtal är ett val. Ni valde rätt.'`) for all other Vårt Vi cards.
+Earlier we inserted `user_product_access` rows for user_id `097faf41-7076-47f7-86b5-5d4ac3c6d0b9`. That ID belongs to her **Live** account — it does not exist in Test.
 
-## Change
+So in the **preview link (Test environment)** she is logged in as `4ab87a29...`, and that user has zero rows in `user_product_access`. The grants we ran landed on the wrong account in Test.
 
-Replace lines 1841–1871 with a single unified headline (matching the spec from the previous turn) and drop the subline entirely:
+The Live grant (097faf41) is correct and will work when she uses bonkiapp.com.
 
-```tsx
-<h2 className="font-serif" style={{
-  fontSize: '26px', fontWeight: 600, color: EMBER_GLOW,
-  textAlign: 'center', lineHeight: 1.2, textWrap: 'balance',
-}}>
-  Ni pratade om {card.title}.
-</h2>
-```
+**Fix:** insert the 7 grants for `4ab87a29-0645-4551-9182-5467827bc963` in the **Test** database. After that she should hard-refresh / sign out + back in on the preview link.
 
-- No more `cardId === 'su-mock-0'` branching.
-- No more "Nu börjar resan" / "Varje samtal är ett val" / "Det här var ert första steg…" sublines.
-- All other layout/spacing/checkmark/note nudge/CTA rows stay byte-identical.
+### 2. Why "Login with Google" doesn't work on the preview link
 
-## Out of scope (intentionally untouched)
+The preview URL is `id-preview--1604837d-627c-4368-a714-aa6b770c1b8c.lovable.app`. Two things combine to break Google OAuth there:
 
-- Line 1463 (`'Ert första samtal är klart.'`) — this is the **free-card kids paywall path** (`product?.id !== 'still_us'`), not Vårt Vi. Keep as-is.
-- Kids completion rendering elsewhere — already aligned in the previous pass.
-- `CompletedSessionView.tsx` — already updated.
+- **Preview links are gated by Lovable login by default.** When the OAuth flow returns to `window.location.origin` (the preview host), Lovable's preview gate intercepts the redirect before our app can consume the tokens. Sofia is not a workspace member, so the gate blocks her and the session is lost.
+- Magic Link / email OTP works for her because it doesn't depend on a return-to-origin redirect that the preview gate blocks (the auth log confirms she successfully signed in via OTP at 09:55:59).
 
-## Verify
+This is a **platform constraint of preview links**, not a bug in our Login page or in the managed Google OAuth setup. Google login works fine on the published site (`bonkiapp.com`).
 
-Reload `/card/su-mock-0?view=completed` → headline reads `Ni pratade om {card.title}.`, no subline. Spot-check a mid-sequence Still Us card → same single line, no "Varje samtal är ett val…" copy.
+**Recommended fix for Sofia's testing:**
+- Have her keep using **email magic link** on the preview link (already proven to work for her), OR
+- Generate a **Share preview** link (Share → Share preview) — public 7-day link that doesn't require Lovable login. Google OAuth should complete on a Share preview link because the preview gate is removed.
+
+No code change needed for #2 — it is a platform behaviour to communicate.
+
+## Plan
+
+1. **Grant access in Test for the correct user_id**
+   - Insert 7 rows into Test `user_product_access` for `4ab87a29-0645-4551-9182-5467827bc963` (one per product), `granted_via = 'admin_grant'`, `ON CONFLICT DO NOTHING`.
+   - Verify by querying Test.
+
+2. **Tell Sofia how to unblock herself on preview**
+   - Hard refresh / sign out + sign back in on the preview link to pick up the new access rows.
+   - Use **email magic link** on the preview (Google OAuth won't complete through the Lovable preview gate).
+   - Or switch to a **Share preview** link if you want Google OAuth to work for her.
+
+3. **No code changes.** Login page and managed Google OAuth are configured correctly; the issue is the preview gate, not our code.
+
+## Technical notes
+
+- Test and Live are isolated Supabase projects; the same email gets a different `auth.users.id` in each. Any per-user data grants must be repeated against the correct user_id per environment.
+- `lovable.auth.signInWithOAuth` redirects through `oauth.lovable.app` and then back to `window.location.origin`. On preview hosts, the Lovable login interstitial breaks the return leg for non-workspace users. Share-preview links and the published domain don't have this interstitial.
