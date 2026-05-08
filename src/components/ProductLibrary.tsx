@@ -280,6 +280,7 @@ function LibraryKidsTile({
           bottom: '26%',
           backgroundColor: interior,
           borderRadius: 12,
+          border: `1px solid ${darkText}30`,
           overflow: 'hidden',
           display: 'flex',
           alignItems: 'center',
