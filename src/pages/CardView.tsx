@@ -70,6 +70,7 @@ import { useTogetherMode } from '@/hooks/useTogetherMode';
 import { useOptimisticCompletions } from '@/contexts/OptimisticCompletionsContext';
 import { BEAT_1, BEAT_2, BEAT_3, EASE, PRESS, PAGE, EMOTION } from '@/lib/motion';
 import { getRecommendedCategoryOrder } from '@/lib/recommendedOrder';
+import { productAccentColor, SAFFRON_FLAME, LANTERN_GLOW as LANTERN_GLOW_TOKEN, BARK as BARK_TOKEN } from '@/lib/palette';
 
 // ─── Coaching hint (first-time only) ───
 const COACHING_KEY = 'bonki-coaching-hint-count';
