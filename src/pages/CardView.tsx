@@ -3586,17 +3586,18 @@ export default function CardView() {
                       cursor: 'pointer',
                     }}
                   >
-                    <Pencil size={showFullNudge ? 14 : 12} style={{ color: '#6B5E52', opacity: 0.6 }} />
-                    {showFullNudge && (
-                      <span style={{
-                        fontFamily: 'var(--font-sans)',
-                        fontSize: '14px',
-                        fontWeight: 400,
-                        color: '#6B5E52',
-                      }}>
-                        Skriv vad ni vill minnas
-                      </span>
-                    )}
+                    <Pencil size={14} strokeWidth={1.5} style={{ color: BARK, opacity: 0.7 }} />
+                    <span style={{
+                      fontFamily: 'var(--font-display, var(--font-serif))',
+                      fontStyle: 'italic',
+                      fontSize: '14px',
+                      fontWeight: 400,
+                      lineHeight: 1.4,
+                      color: BARK,
+                      opacity: 0.7,
+                    }}>
+                      Skriv vad ni vill minnas
+                    </span>
                   </button>
                 ) : (
                   <motion.div
