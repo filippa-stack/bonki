@@ -3437,7 +3437,6 @@ export default function CardView() {
                 fontSize: '15px',
                 fontWeight: 400,
                 color: LANTERN_GLOW,
-                ...(isKidsProduct ? { textTransform: 'uppercase' as const, letterSpacing: '1.5px' } : {}),
               }}>
                 {card.title}
               </span>
@@ -3456,7 +3455,7 @@ export default function CardView() {
                 cursor: 'pointer',
               }}
             >
-              <X size={20} style={{ color: LANTERN_GLOW }} />
+              <X size={20} strokeWidth={1.5} style={{ color: LANTERN_GLOW, opacity: 0.65 }} />
             </button>
           </div>
 
