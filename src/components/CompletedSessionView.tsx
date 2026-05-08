@@ -64,15 +64,12 @@ export default function CompletedSessionView({
   const product = getProductForCard(cardId);
   const pronounMode = product?.pronounMode ?? 'ni';
   const ageLabel = product?.ageLabel;
-  const completionMessages = useMemo(() => getCompletionMessages(pronounMode, ageLabel), [pronounMode, ageLabel]);
   const isChildProduct = product && product.id !== 'still_us';
   const cardIllustration = useCardImage(cardId);
   const { hasAccess: productIsPurchased } = useProductAccess(product?.id ?? '');
   const isFreeCard = product?.freeCardId === cardId && isProductFreeForUser(product?.id ?? '');
 
-  const headline = useMemo(() =>
-    completionMessages[Math.floor(Math.random() * completionMessages.length)],
-  [completionMessages]);
+  const headline = `Ni pratade om ${cardTitle}.`;
 
   // Compute next card for child products
   const [busyCardIds, setBusyCardIds] = useState<Set<string>>(new Set());
