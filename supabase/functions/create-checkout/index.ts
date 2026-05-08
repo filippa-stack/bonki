@@ -103,6 +103,7 @@ serve(async (req) => {
       body: new URLSearchParams({
         "customer_creation": "always",
         mode: "payment",
+        allow_promotion_codes: "true",
         "line_items[0][price_data][currency]": "sek",
         "line_items[0][price_data][product_data][name]": product.name,
         "line_items[0][price_data][unit_amount]": String(product.price_sek * 100),
