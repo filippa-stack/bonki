@@ -1849,25 +1849,8 @@ export default function CardView() {
                 textWrap: 'balance',
               }}
             >
-              {cardId === 'su-mock-0'
-                ? 'Ert första samtal är klart. Nu börjar resan.'
-                : 'Varje samtal är ett val. Ni valde rätt.'}
+              Ni pratade om {card.title}.
             </h2>
-            {cardId === 'su-mock-0' && (
-              <p
-                className="font-sans"
-                style={{
-                  fontSize: '15px',
-                  color: DRIFTWOOD,
-                  opacity: 0.6,
-                  lineHeight: 1.6,
-                  marginTop: '12px',
-                  textWrap: 'balance',
-                }}
-              >
-                Det här var ert första steg. Nästa samtal väntar.
-              </p>
-            )}
           </motion.div>
 
           {/* 2. Note nudge — "Något ni vill minnas?" → Ember Glow input */}
