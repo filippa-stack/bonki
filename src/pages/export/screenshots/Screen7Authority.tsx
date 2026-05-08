@@ -71,7 +71,7 @@ export default function Screen7Authority() {
           textWrap: 'balance' as any,
         }}
       >
-        BONKI är inte en app som kom ur ingenting.
+        Bonki är inte en app som kom ur ingenting.
         Den kom ur tjugonio år av rummet där föräldrar och barn försöker förstå varandra.
       </p>
     </div>
