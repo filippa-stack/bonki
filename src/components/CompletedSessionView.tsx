@@ -4,7 +4,6 @@
 // All session state must come from normalized tables.
 
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { getCompletionMessages } from '@/lib/pronouns';
 import { getProductForCard } from '@/data/products';
 import { isProductFreeForUser } from '@/lib/freeCardPolicy';
 import { useNavigate } from 'react-router-dom';
