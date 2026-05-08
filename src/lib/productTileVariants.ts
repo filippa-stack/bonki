@@ -28,38 +28,38 @@ export interface ProductInteriorVariants {
 
 export const interiorVariants: Record<string, ProductInteriorVariants> = {
   jag_i_mig: {
-    // Frame: #E89B6B (coral-amber) — 4 variants, 21 cards
-    variants: ['#B86838', '#DC8050', '#F0B080', '#FAD2B0'],
+    // Frame: #E89B6B (coral-amber) — 4 variants, 21 cards. Variant 1 matches frame.
+    variants: ['#DC8050', '#E89B6B', '#F2B58F', '#FAD2B0'],
     permutation: [0, 2, 1, 3, 2, 0, 3, 1, 0, 2, 1, 3, 2, 0, 3, 1, 0, 2, 1, 3, 2],
     calmIndex: 3,
   },
   jag_med_andra: {
-    // Frame: #CB7AB2 (magenta-pink) — 3 variants, 21 cards
-    variants: ['#92356A', '#B05A8C', '#E5B0D0'],
+    // Frame: #CB7AB2 (magenta-pink) — 3 variants, 21 cards. Variant 1 matches frame.
+    variants: ['#B05A8C', '#CB7AB2', '#E5B0D0'],
     permutation: [0, 2, 1, 0, 2, 1, 0, 2, 1, 0, 2, 1, 0, 2, 1, 0, 2, 1, 0, 2, 1],
     calmIndex: 2,
   },
   jag_i_varlden: {
-    // Frame: #C6D423 (chartreuse) — 3 variants, 20 cards
-    variants: ['#989826', '#B0B038', '#E0EA85'],
+    // Frame: #C6D423 (chartreuse) — 3 variants, 20 cards. Variant 1 matches frame.
+    variants: ['#B0B038', '#C6D423', '#E0EA85'],
     permutation: [0, 2, 1, 0, 2, 1, 0, 2, 1, 0, 2, 1, 0, 2, 1, 0, 2, 1, 0, 2],
     calmIndex: 2,
   },
   vardagskort: {
-    // Frame: #8BDDB0 (sage) — 4 variants, 15 cards
-    variants: ['#3F8E72', '#62B090', '#B0E8C8', '#DCF5E5'],
+    // Frame: #8BDDB0 (sage) — 4 variants, 15 cards. Variant 1 matches frame.
+    variants: ['#62B090', '#8BDDB0', '#B5E2C5', '#DCF5E5'],
     permutation: [0, 2, 1, 3, 2, 0, 3, 1, 0, 2, 1, 3, 2, 0, 3],
     calmIndex: 3,
   },
   syskonkort: {
-    // Frame: #CF8BDD (lavender) — 5 variants, 13 cards (middle variant matches frame)
-    variants: ['#8C70A8', '#A689BD', '#C5A8D6', '#DEC3E5', '#ECD5F0'],
+    // Frame: #CF8BDD (lavender) — 5 variants, 13 cards. Variant 2 (middle) matches frame.
+    variants: ['#A689BD', '#B89BC8', '#CF8BDD', '#DAC4DE', '#ECD5F0'],
     permutation: [0, 3, 1, 4, 2, 0, 3, 1, 4, 2, 0, 3, 1],
     calmIndex: 4,
   },
   sexualitetskort: {
-    // Frame: #B87560 (rose-clay / N&I) — 4 variants, 14 cards
-    variants: ['#8A5340', '#A56350', '#C8907A', '#DBB5A0'],
+    // Frame: #B87560 (rose-clay / N&I) — 4 variants, 14 cards. Variant 1 matches frame.
+    variants: ['#A56350', '#B87560', '#C89788', '#DBB5A0'],
     permutation: [0, 2, 1, 3, 2, 0, 3, 1, 0, 2, 1, 3, 2, 0],
     calmIndex: 3,
   },

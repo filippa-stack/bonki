@@ -1,26 +1,66 @@
-# Jag i Världen — Content Update
+# Kids Tile Variants — Frame-Color Slot + Universal Hairline Border
 
-## Scope
-Single file: `src/data/products/jag-i-varlden.ts`. Content-only edits to 18 of 20 cards (subtitles, questions, scenarios). No structural changes.
+Two coordinated changes to the kids tile system that produce visible rhythm via both color contrast (tinted variants) and hairline definition (no-tint variants).
 
-## Untouched
-- `jiv-social-media`, `jiv-identitet` (skipped)
-- All card `id`s and `categoryId`s
-- Card order within categories (free-card position preserved)
-- `categories` array, `cardCount` values
-- `qsCard` helper, product metadata, imports/exports
-- Protected runtime patterns (not in this file anyway): `suppressUntilRef.current`, `prevServerStepRef.current`, `clearTimeout(pendingSave.current)`, `hasSyncedRef.current`
+## Files affected
 
-## Approach
-Replace each affected `qsCard(...)` call as a single targeted edit, anchored on the unique `id` literal (1st arg) so line drift is irrelevant. For each card, only the 3rd arg (subtitle), 5th arg (questions array), and/or 6th arg (scenario) change, exactly matching the spec in the message.
+1. `src/lib/productTileVariants.ts` — variant array updates
+2. `src/components/KidsTileFrame.tsx` — accept `darkText` for hairline border on inner zone
+3. `src/components/ProductCardTile.tsx` — pass `darkText` (already resolved via `productDarkText[productId]`) to `KidsTileFrame`
+4. `src/components/ProductLibrary.tsx` — add hairline border to `LibraryKidsTile` inner zone div
 
-Cards to edit (18): `jiv-fordomar`, `jiv-prestation`, `jiv-halsa`, `jiv-psykisk-ohalsa`, `jiv-sjalvkansla`, `jiv-roller`, `jiv-bekraftelse`, `jiv-vanskap`, `jiv-kommunikation`, `jiv-medkansla`, `jiv-konflikt`, `jiv-mobbning`, `jiv-karlek`, `jiv-sexualitet`, `jiv-moral-etik`, `jiv-frihet`, `jiv-existens`, `jiv-aktivism`.
+No other files touched. `getInteriorForCard`, `getCalmInterior`, permutations, frame colors, and `darkText` palette stay unchanged.
 
-Where the spec says "unchanged" for subtitle/questions/scenario, the existing value is preserved verbatim.
+## 1. Variant arrays (productTileVariants.ts)
 
-## Verification (post-edit)
-1. Print a 20-row table: `# | Card ID | Subtitle (first 50 chars) | Prompt count | First question (first 40 chars)`.
-2. Assert total prompt count = 116.
-3. Confirm card count per category unchanged (5/4/5/6) and `freeCardId: 'jiv-fordomar'` still matches first card of K1.
-4. Grep canary: ensure `jiv-social-media` and `jiv-identitet` blocks are byte-identical to before.
-5. Manual check at `/?devState=browse` → Jag i Världen → open one edited card per category and confirm new prompts render.
+Replace each product's `variants` array. `permutation` and `calmIndex` unchanged.
+
+| Product | Frame | New variants | Frame-color slot |
+|---|---|---|---|
+| jag_i_mig | `#E89B6B` | `['#DC8050', '#E89B6B', '#F2B58F', '#FAD2B0']` | idx 1 |
+| jag_med_andra | `#CB7AB2` | `['#B05A8C', '#CB7AB2', '#E5B0D0']` | idx 1 |
+| jag_i_varlden | `#C6D423` | `['#B0B038', '#C6D423', '#E0EA85']` | idx 1 |
+| vardagskort | `#8BDDB0` | `['#62B090', '#8BDDB0', '#B5E2C5', '#DCF5E5']` | idx 1 |
+| syskonkort | `#CF8BDD` | `['#A689BD', '#B89BC8', '#CF8BDD', '#DAC4DE', '#ECD5F0']` | idx 2 |
+| sexualitetskort | `#B87560` | `['#A56350', '#B87560', '#C89788', '#DBB5A0']` | idx 1 |
+
+calmIndex verified to still point at the lightest variant (highest index) for every product — no changes needed.
+
+## 2. Universal hairline border on inner zones
+
+Apply `border: 1px solid ${darkText}30` (~19% alpha) to the inner-zone div on every kids tile.
+
+### KidsTileFrame.tsx
+- Add new required prop `darkText: string` (already passed in via the existing `darkText` prop — confirmed; just thread it onto the inner zone div's style).
+- On the inner zone div (the one positioned at `top: 16, left: 16, right: 16, bottom: calc(...)`), add `border: \`1px solid ${darkText}30\``.
+
+### ProductCardTile.tsx
+- Already passes `darkText={titleColor}` (resolved from `productDarkText[productId]`). No change needed beyond confirming KidsTileFrame uses it for the border.
+
+### ProductLibrary.tsx — LibraryKidsTile
+- On the inner zone div (lines 274–288), add `border: \`1px solid ${darkText}30\``. `darkText` is already in scope from `TILE_COLORS[product.id]`.
+
+Calibration knob: opacity hex suffix. Default `30` (19%). Tune to `20` (12%) if too prominent, `40` (25%) if too subtle. No per-product tuning by default.
+
+## 3. Verification at 390×844 (iPhone 15)
+
+Use `/?devState=browse` to unlock all content, then:
+
+- Visit each kids product home: `/product/jag-i-mig`, `/product/jag-med-andra`, `/product/jag-i-varlden`, `/product/vardagskort`, `/product/syskonkort`, `/product/sexualitetskort`
+- Scroll the full grid for each. Confirm every tile shows a perceptible inner zone — defined by either color contrast or hairline.
+- Confirm no tile reads as "uniform card with no inner zone."
+- Confirm the no-tint variant cards (where interior = frame) have a clearly visible hairline-defined plate.
+- Open the library — confirm hairline applies on calm tiles (lightest variant, tinted) and they remain visible.
+- Vårt Vi flow regression: confirm Vårt Vi product home, library marquee, portal, session, completion are unchanged (they don't use this system).
+
+## What stays unchanged
+
+- All `permutation` arrays and `calmIndex` values
+- Frame colors in product manifests
+- `getInteriorForCard` / `getCalmInterior` logic
+- `productDarkText` palette
+- All non-kids surfaces (Vårt Vi, library marquee, etc.)
+
+## Edge cases to flag during implementation
+
+If the hairline reads too heavy on a specific product (e.g. JmA's strong color contrast), surface for per-product opacity tuning. Otherwise, ship with universal `${darkText}30`.
