@@ -103,6 +103,7 @@ export default function AdultProductCardTile({
             aspectRatio: '1 / 1',
             borderRadius: '50%',
             backgroundColor: getCircleColor(cardColor),
+            border: '1px solid rgba(245, 232, 204, 0.30)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
