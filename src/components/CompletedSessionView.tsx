@@ -419,45 +419,80 @@ export default function CompletedSessionView({
             style={{ marginTop: '8px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}
           >
             {/* Primary: Next card (child products) or Fortsätt utforska */}
-            {isChildProduct && nextDest ? (
-              <>
+            {(() => {
+              const accent = isChildProduct && product ? (productAccentColor[product.id] ?? SAFFRON_FLAME) : null;
+              const kidsPillStyle: React.CSSProperties | null = accent
+                ? {
+                    width: '100%',
+                    maxWidth: '320px',
+                    height: '56px',
+                    borderRadius: '28px',
+                    backgroundColor: `color-mix(in srgb, ${accent} 40%, rgba(255,255,255,0.06))`,
+                    border: `1px solid color-mix(in srgb, ${accent} 60%, transparent)`,
+                    color: LANTERN_GLOW,
+                    fontFamily: 'var(--font-display, var(--font-serif))',
+                    fontSize: '16px',
+                    fontWeight: 600,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '8px',
+                    cursor: 'pointer',
+                  }
+                : null;
+              const kidsLinkStyle: React.CSSProperties = {
+                fontFamily: 'var(--font-display, var(--font-serif))',
+                fontSize: '14px',
+                fontWeight: 400,
+                color: LANTERN_GLOW,
+                opacity: 0.65,
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+              };
+
+              if (isChildProduct && nextDest) {
+                return (
+                  <>
+                    <button
+                      onClick={() => {
+                        if (isFreeCard && !productIsPurchased) {
+                          navigate(`/paywall-full?product=${product!.id}`);
+                        } else {
+                          navigate(nextDest);
+                        }
+                      }}
+                      style={kidsPillStyle ?? undefined}
+                      className={kidsPillStyle ? undefined : 'cta-primary'}
+                    >
+                      Nästa samtal <ArrowRight size={16} style={{ opacity: 0.85 }} />
+                    </button>
+                    <button
+                      onClick={() => navigate(`/product/${product!.slug}`)}
+                      style={kidsLinkStyle}
+                    >
+                      Tillbaka till {product!.name}
+                    </button>
+                  </>
+                );
+              }
+
+              return (
                 <button
                   onClick={() => {
                     if (isFreeCard && !productIsPurchased) {
                       navigate(`/paywall-full?product=${product!.id}`);
                     } else {
-                      navigate(nextDest);
+                      navigate(isChildProduct ? `/product/${product!.slug}` : '/');
                     }
                   }}
-                  className="cta-primary"
-                  style={{ display: 'flex', alignItems: 'center', gap: '6px' }}
+                  style={kidsPillStyle ?? undefined}
+                  className={kidsPillStyle ? undefined : 'cta-primary'}
                 >
-                  Nästa <ArrowRight size={16} style={{ opacity: 0.7 }} />
+                  {isChildProduct ? `Tillbaka till ${product!.name}` : 'Fortsätt utforska'}
                 </button>
-                <button
-                  onClick={() => navigate(`/product/${product!.slug}`)}
-                  className="font-sans"
-                  style={{ fontSize: '13px', color: '#FDF6E3', opacity: 0.45, background: 'none', border: 'none', cursor: 'pointer' }}
-                >
-                  Tillbaka till {product!.name}
-                </button>
-              </>
-            ) : (
-              <button
-                onClick={() => {
-                  if (isFreeCard && !productIsPurchased) {
-                    navigate(`/paywall-full?product=${product!.id}`);
-                  } else {
-                    navigate(
-                      isChildProduct ? `/product/${product!.slug}` : '/'
-                    );
-                  }
-                }}
-                className="cta-primary"
-              >
-                {isChildProduct ? 'Tillbaka till ' + product!.name : 'Fortsätt utforska'}
-              </button>
-            )}
+              );
+            })()}
           </motion.div>
 
         </div>
