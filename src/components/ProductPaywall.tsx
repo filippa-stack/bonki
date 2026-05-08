@@ -7,7 +7,7 @@ import { toast } from 'sonner';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { isDemoMode, isDemoParam } from '@/lib/demoMode';
-import { purchaseProduct } from '@/lib/revenueCat';
+import { purchaseProduct, presentCodeRedemptionSheet, restorePurchases } from '@/lib/revenueCat';
 import { isAndroidNative } from '@/lib/platform';
 import { productIntros } from '@/data/productIntros';
 import { PREVIEW_QUESTION } from '@/lib/productPreviewQuestions';
