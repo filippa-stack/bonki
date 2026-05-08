@@ -514,6 +514,37 @@ export default function ProductPaywall({ product, onAccessGranted }: ProductPayw
             Säker betalning · Ingen prenumeration
           </p>
 
+          {/* Redeem code (iOS only) */}
+          {Capacitor.getPlatform() === 'ios' && (
+            <button
+              onClick={async () => {
+                const result = await presentCodeRedemptionSheet();
+                if (result.success) {
+                  await restorePurchases();
+                  onAccessGranted?.();
+                }
+                // On failure (incl. user dismissal): no UI feedback. Apple owns it.
+              }}
+              style={{
+                display: 'block',
+                margin: '16px auto 0',
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                fontFamily: 'var(--font-sans)',
+                fontSize: '14px',
+                fontWeight: 500,
+                color: LANTERN_GLOW,
+                opacity: 0.75,
+                textDecoration: 'underline',
+                textUnderlineOffset: '3px',
+                padding: '8px 16px',
+              }}
+            >
+              Lös in kod
+            </button>
+          )}
+
           {/* Escape link */}
           <button
             onClick={() => navigate('/', { replace: true })}
