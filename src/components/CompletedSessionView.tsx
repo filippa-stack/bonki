@@ -9,7 +9,8 @@ import { getProductForCard } from '@/data/products';
 import { isProductFreeForUser } from '@/lib/freeCardPolicy';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Check } from 'lucide-react';
+import { productAccentColor, SAFFRON_FLAME, LANTERN_GLOW, BARK } from '@/lib/palette';
 
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
