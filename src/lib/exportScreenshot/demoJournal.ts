@@ -52,7 +52,7 @@ export const DEMO_REFLECTIONS: DemoReflection[] = [
     monthLabel: 'MARS 2026',
     question: 'Vad minns ni från när ni blev syskon?',
     body:
-      'Att de pratar om det som om det alltid varit så — och att det är vi som bär minnet av hur det började.',
+      'Att vi var rädda att Edvin skulle bli avundsjuk — och att han är den som mest av alla beskyddar henne nu, fyra år senare.',
   },
 ];
 

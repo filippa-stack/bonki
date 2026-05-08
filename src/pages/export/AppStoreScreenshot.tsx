@@ -107,7 +107,7 @@ const GRAPHICS: GraphicSpec[] = [
         <br />finns kvar.
       </>
     ),
-    captionSize: 120,
+    captionSize: 128,
     canvasBg: JIM_DEEP,
     screenBg: JIM_DEEP,
     Screen: Screen6JimCompletion,
@@ -233,26 +233,20 @@ export default function AppStoreScreenshot() {
           }}
         >
           <AppStoreCanvas innerRef={(el) => (captureRef.current = el)} background={spec.canvasBg}>
-            <CaptionZone size={spec.captionSize} topPercent={captionTopPercent}>
-              {spec.caption}
-            </CaptionZone>
-            <HairlineDivider topPx={hairlineTopPx} />
             {spec.bare ? (
-              <div
-                style={{
-                  position: 'absolute',
-                  top: frameTopPx,
-                  left: 0,
-                  right: 0,
-                  bottom: 110,
-                }}
-              >
+              <div style={{ position: 'absolute', inset: 0 }}>
                 <Screen />
               </div>
             ) : (
-              <DeviceFrame topPx={frameTopPx} width={frameWidth} background={spec.screenBg}>
-                <Screen />
-              </DeviceFrame>
+              <>
+                <CaptionZone size={spec.captionSize} topPercent={captionTopPercent}>
+                  {spec.caption}
+                </CaptionZone>
+                <HairlineDivider topPx={hairlineTopPx} />
+                <DeviceFrame topPx={frameTopPx} width={frameWidth} background={spec.screenBg}>
+                  <Screen />
+                </DeviceFrame>
+              </>
             )}
           </AppStoreCanvas>
         </div>
