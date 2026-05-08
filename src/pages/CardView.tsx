@@ -3463,25 +3463,25 @@ export default function CardView() {
           <div style={{
             width: '100%',
             height: '4px',
-            backgroundColor: PARCHMENT,
+            backgroundColor: 'rgba(255,255,255,0.10)',
           }}>
             <div style={{
               width: `${progressFraction * 100}%`,
               height: '100%',
-              backgroundColor: SAFFRON,
+              backgroundColor: SAFFRON_FLAME,
               transition: 'width 300ms ease',
             }} />
           </div>
           <p style={{
-            fontFamily: 'var(--font-sans)',
-            fontSize: '11px',
-            fontWeight: 500,
-            color: '#FDF6E3',
+            fontFamily: 'var(--font-body, var(--font-sans))',
+            fontSize: '12px',
+            fontWeight: 400,
+            color: LANTERN_GLOW,
             opacity: 0.55,
-            textShadow: '0 1px 3px rgba(0,0,0,0.5)',
             textAlign: 'center',
-            margin: '8px 0 0',
-            letterSpacing: '0.03em',
+            margin: '10px 0 0',
+            letterSpacing: '0.08em',
+            textTransform: 'uppercase',
           }}>
             {localPromptIndex + 1} av {totalPrompts}
           </p>
