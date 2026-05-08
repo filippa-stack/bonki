@@ -361,398 +361,369 @@ export default function KidsCardPortal() {
         />
       )}
 
-      {/* ═══ Top Bar ═══ */}
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          padding: `calc(env(safe-area-inset-top, 0px) + 10px) 16px 6px`,
-          position: 'relative',
-          zIndex: 10,
-          opacity: portalPhase !== 'idle' ? 0 : 1,
-          transition: 'opacity 200ms ease-in',
-          flexShrink: 0,
-        }}
-      >
-        <button
-          onClick={goBack}
-          aria-label="Tillbaka"
-          style={{ background: 'none', border: 'none', cursor: 'pointer', color: LANTERN_GLOW, opacity: 0.7, padding: '4px' }}
-        >
-          <ChevronLeft size={22} strokeWidth={1.5} />
-        </button>
-        <span
-          style={{
-            fontFamily: 'var(--font-sans)',
-            fontSize: '10px',
-            fontWeight: 600,
-            letterSpacing: '2px',
-            textTransform: 'uppercase',
-            color: LANTERN_GLOW,
-            opacity: 0.45,
-          }}
-        >
-          {category.title}
-        </span>
-        <div style={{ width: '28px' }} />
-      </div>
+      {(() => {
+        const accent = productAccentColor[product.id] ?? tileLight;
+        const darkText = productDarkText[product.id] ?? MIDNIGHT_INK;
+        const calmInterior = getCalmInterior(product.id, tileLight);
+        const completed = allTimeSet.has(card.id);
+        const active = activeSet.has(card.id);
+        const isLocked = !productIsPurchased && !bypassPaywall;
+        const ctaLabel = isLocked
+          ? `Lås upp alla ${product.cards.length} samtal`
+          : completed
+          ? 'Gör om samtalet'
+          : active
+          ? 'Fortsätt samtal'
+          : 'Starta samtal';
+        const ctaBg = isLocked
+          ? 'rgba(255,255,255,0.04)'
+          : `color-mix(in srgb, ${accent} 40%, rgba(255,255,255,0.06))`;
+        const ctaBorder = isLocked
+          ? '1px solid rgba(255,255,255,0.12)'
+          : `1px solid color-mix(in srgb, ${accent} 60%, transparent)`;
+        const timeStr = estimateMinutes(promptCount, productSlug)
+          .replace(/^ca\s+/, 'CA ')
+          .replace(/min$/, 'MIN')
+          .toUpperCase();
 
-      {/* ═══ Main area ═══ */}
-      <div
-        style={{
-          flex: 1,
-          display: 'flex',
-          flexDirection: 'column',
-          padding: '4px 12px 0',
-          position: 'relative',
-          zIndex: 1,
-          minHeight: 0,
-        }}
-      >
-        {/* ═══ Portal tile — constrained to leave room for copy ═══ */}
-        <div style={{ flex: 1, position: 'relative', minHeight: 0, maxHeight: 'calc(100vh - 340px)' }}>
-
-          <AnimatePresence mode="wait" custom={direction}>
-            <motion.div
-              key={card.id}
-              custom={direction}
-              variants={slideVariants}
-              initial={fromBrowse.current ? "center" : false}
-              animate="center"
-              exit={fromBrowse.current ? "center" : "exit"}
-              transition={{ duration: fromBrowse.current ? 0 : 0.35, ease: [0.22, 1, 0.36, 1] }}
-              whileHover={portalPhase === 'idle' ? { scale: 1.02, boxShadow: '0 8px 32px rgba(0,0,0,0.25)' } : undefined}
-              whileTap={portalPhase === 'idle' ? { scale: 0.97, y: 0 } : undefined}
-              onClick={startSession}
-              drag={portalPhase === 'idle' && !isFreeCard ? 'x' : false}
-              dragConstraints={{ left: 0, right: 0 }}
-              dragElastic={0.15}
-              onDragEnd={handleDragEnd}
+        return (
+          <>
+            {/* ═══ Top Bar ═══ */}
+            <div
               style={{
-                width: '100%',
-                height: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                padding: `calc(env(safe-area-inset-top, 0px) + 16px) 18px 8px`,
                 position: 'relative',
-                borderRadius: portalPhase === 'phase2' || portalPhase === 'phase3' ? '0px' : '20px',
-                overflow: 'hidden',
-                cursor: 'pointer',
-                backgroundColor: tileDark,
-                padding: '10px 10px 16px',
+                zIndex: 10,
+                opacity: portalPhase !== 'idle' ? 0 : 1,
+                transition: 'opacity 200ms ease-in',
+                flexShrink: 0,
+              }}
+            >
+              <button
+                onClick={goBack}
+                aria-label="Tillbaka"
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  color: LANTERN_GLOW,
+                  opacity: 0.65,
+                  padding: '11px',
+                  margin: '-11px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  minWidth: '44px',
+                  minHeight: '44px',
+                }}
+              >
+                <ChevronLeft size={22} strokeWidth={1.5} />
+              </button>
+              <KontoIcon onClick={() => setKontoOpen(true)} />
+            </div>
+
+            {/* ═══ Scrollable editorial body ═══ */}
+            <div
+              style={{
+                flex: 1,
+                minHeight: 0,
+                overflowY: 'auto',
                 display: 'flex',
                 flexDirection: 'column',
-                zIndex: 1,
-                ...(isStillUs ? {
-                  transform:
-                    portalPhase === 'phase1' ? 'scale(1.02)' :
-                    portalPhase === 'phase2' ? 'scale(1.04)' :
-                    portalPhase === 'phase3' ? 'scale(1.04)' : undefined,
-                  filter:
-                    portalPhase === 'phase1' ? 'brightness(1.15) saturate(1.2)' :
-                    portalPhase === 'phase2' ? 'brightness(1.6) saturate(0.8)' :
-                    portalPhase === 'phase3' ? 'brightness(2.5) saturate(0.3)' : undefined,
-                  opacity: portalPhase === 'phase3' ? 0 : 1,
-                  transition: 'transform 400ms cubic-bezier(0.22, 1, 0.36, 1), filter 500ms ease-out, opacity 350ms ease-in, border-radius 300ms ease',
-                } : {
-                  transform:
-                    portalPhase === 'phase1' ? 'scale(1.04)' :
-                    portalPhase === 'phase2' ? 'scale(2.8)' :
-                    portalPhase === 'phase3' ? 'scale(4.0)' : undefined,
-                  filter:
-                    portalPhase === 'phase1' ? 'brightness(1.12)' :
-                    portalPhase === 'phase2' ? 'brightness(1.3)' :
-                    portalPhase === 'phase3' ? 'brightness(2.0)' : undefined,
-                  opacity: portalPhase === 'phase3' ? 0 : 1,
-                  transition: 'transform 500ms cubic-bezier(0.22, 1, 0.36, 1), filter 400ms ease-out, opacity 250ms ease-in, border-radius 200ms ease',
-                }),
+                alignItems: 'center',
+                paddingBottom: 8,
+                opacity: portalPhase !== 'idle' ? 0 : 1,
+                transition: 'opacity 200ms ease-in',
               }}
             >
-              {/* Inner illustration frame */}
+              {/* Eyebrow — category */}
               <div
                 style={{
-                  flex: 1,
-                  borderRadius: '16px',
-                  overflow: 'hidden',
-                  position: 'relative',
-                  backgroundColor: tileLight,
-                  minHeight: 0,
+                  fontFamily: 'var(--font-body, var(--font-sans))',
+                  fontSize: 11,
+                  fontWeight: 600,
+                  letterSpacing: '0.10em',
+                  textTransform: 'uppercase',
+                  color: LANTERN_GLOW,
+                  opacity: 0.55,
+                  textAlign: 'center',
+                  padding: '8px 24px 8px',
                 }}
               >
-                <PortalCardImage cardId={card.id}>
-                  {(imageSrc) => imageSrc ? (
-                    <img
-                      src={imageSrc}
-                      alt={card.title}
-                      decoding="sync"
-                      onLoad={() => setImageLoaded(true)}
-                      style={{
-                        position: 'absolute',
-                        inset: 0,
-                        width: '100%',
-                        height: '100%',
-                        objectFit: 'contain',
-                        objectPosition: '50% 50%',
-                        opacity: imageLoaded ? 1 : 0,
-                        transition: 'opacity 300ms ease-in',
-                        zIndex: 1,
-                      }}
-                    />
-                  ) : null}
-                </PortalCardImage>
-
-                {/* Completion / in-progress indicator */}
-                {completedSet.has(card.id) && (
-                  <div
-                    style={{
-                      position: 'absolute',
-                      top: 10,
-                      right: 10,
-                      width: 20,
-                      height: 20,
-                      borderRadius: '50%',
-                      background: tileDark,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      zIndex: 7,
-                      boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
-                    }}
-                  >
-                    <Check size={12} strokeWidth={2.5} color={LANTERN_GLOW} />
-                  </div>
-                )}
-                {!completedSet.has(card.id) && activeSet.has(card.id) && (
-                  <div
-                    style={{
-                      position: 'absolute',
-                      top: 14,
-                      right: 14,
-                      width: 8,
-                      height: 8,
-                      borderRadius: '50%',
-                      background: tileDark,
-                      zIndex: 7,
-                      boxShadow: '0 1px 4px rgba(0,0,0,0.3)',
-                    }}
-                  />
-                )}
+                {category.title}
               </div>
 
-              {/* Title below inner frame */}
-              <div style={{ textAlign: 'center', marginTop: '10px' }}>
-                <h2
+              {/* Title */}
+              <h1
+                style={{
+                  fontFamily: 'var(--font-serif, var(--font-display))',
+                  fontSize: 28,
+                  fontWeight: 500,
+                  lineHeight: 1.1,
+                  color: LANTERN_GLOW,
+                  margin: 0,
+                  textAlign: 'center',
+                  padding: '0 24px 6px',
+                }}
+              >
+                {card.title}
+              </h1>
+
+              {/* Italic serif subtitle */}
+              {card.subtitle && (
+                <p
                   style={{
-                    fontFamily: 'var(--font-display)',
-                    fontSize: '26px',
-                    fontWeight: 600,
-                    color: LANTERN_GLOW,
-                    letterSpacing: '-0.005em',
-                    margin: 0,
-                    lineHeight: 1.2,
-                  }}
-                >
-                  {card.title}
-                </h2>
-                {allTimeSet.has(card.id) && (
-                  <p style={{
                     fontFamily: 'var(--font-serif, var(--font-display))',
                     fontStyle: 'italic',
-                    fontSize: '14px',
-                    color: '#E9B44C',
-                    marginTop: '4px',
-                  }}>
-                    ✓ Klart
-                  </p>
-                )}
-              </div>
-            </motion.div>
-          </AnimatePresence>
-        </div>
-
-        {/* ═══ Compact info below tile ═══ */}
-        <AnimatePresence mode="wait" custom={direction}>
-          <motion.div
-            key={`text-${card.id}`}
-            custom={direction}
-            initial={false}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -6 }}
-            transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
-            style={{
-              textAlign: 'center',
-              marginTop: '10px',
-              flexShrink: 0,
-              opacity: portalPhase !== 'idle' ? 0 : 1,
-              transition: 'opacity 200ms ease-in',
-            }}
-          >
-            {card.subtitle && (
-              <p
-                style={{
-                  fontFamily: 'var(--font-sans)',
-                  fontSize: '15px',
-                  fontWeight: 500,
-                  color: 'rgba(255, 255, 255, 0.6)',
-                  lineHeight: 1.6,
-                  margin: 0,
-                  display: '-webkit-box',
-                  WebkitLineClamp: 2,
-                  WebkitBoxOrient: 'vertical',
-                  overflow: 'hidden',
-                  padding: '0 20px',
-                  marginBottom: '4px',
-                }}
-              >
-                {card.subtitle}
-              </p>
-            )}
-            {!(isFreeCard && !productIsPurchased) && (
-            <p
-              style={{
-                fontFamily: 'var(--font-sans)',
-                fontSize: '12px',
-                fontWeight: 400,
-                color: 'rgba(255, 255, 255, 0.35)',
-                letterSpacing: '0.3px',
-                marginTop: '2px',
-              }}
-            >
-              {estimateMinutes(promptCount, productSlug)}
-            </p>
-            )}
-            {/* ── Start session button ── */}
-            {(() => {
-              const isLocked = product && !isFreeCard && !productIsPurchased && !bypassPaywall;
-              const ctaColor = product?.tileLight ?? product?.accentColor ?? LANTERN_GLOW;
-              const ctaBg = isLocked
-                ? 'rgba(255,255,255,0.04)'
-                : `color-mix(in srgb, ${ctaColor} 30%, rgba(255,255,255,0.06))`;
-              const ctaBorder = isLocked
-                ? '1px solid rgba(255,255,255,0.12)'
-                : `1px solid color-mix(in srgb, ${ctaColor} 50%, transparent)`;
-              const ctaLabel = isLocked
-                ? `Lås upp alla ${product.cards.length} samtal`
-                : (allTimeSet.has(card.id) ? 'Gör om samtalet' : 'Starta samtal');
-              return (
-                <button
-                  onClick={startSession}
-                  style={{
-                    display: 'block',
-                    width: '100%',
-                    maxWidth: '420px',
-                    margin: '14px auto 0',
-                    height: '56px',
-                    borderRadius: '999px',
-                    border: ctaBorder,
-                    background: ctaBg,
-                    cursor: 'pointer',
-                    fontFamily: 'var(--font-display)',
-                    fontSize: '16px',
-                    fontWeight: 600,
+                    fontSize: 14,
+                    fontWeight: 400,
+                    lineHeight: 1.4,
                     color: LANTERN_GLOW,
-                    letterSpacing: '0.01em',
-                    WebkitTapHighlightColor: 'transparent',
+                    opacity: 0.85,
+                    margin: 0,
+                    textAlign: 'center',
+                    padding: '0 24px 18px',
                   }}
                 >
-                  {ctaLabel}
-                </button>
-              );
-            })()}
-          </motion.div>
-        </AnimatePresence>
+                  {card.subtitle}
+                </p>
+              )}
 
-        {/* ═══ Navigation controls ═══ */}
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: '8px',
-            marginTop: '8px',
-            paddingBottom: `calc(env(safe-area-inset-bottom, 0px) + 72px)`,
-            flexShrink: 0,
-            opacity: portalPhase !== 'idle' ? 0 : 1,
-            transition: 'opacity 200ms ease-in',
-          }}
-        >
-          {/* Text-only sequence nav */}
-          {!isFreeCard && (
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: '1fr auto 1fr',
-              alignItems: 'center',
-              width: '100%',
-              maxWidth: '420px',
-              padding: '0 4px',
-            }}>
-              <button
-                onClick={goPrev}
-                disabled={isFirst}
-                aria-label="Föregående samtal"
+              {/* Framing paragraph */}
+              {card.description && (
+                <p
+                  style={{
+                    fontFamily: 'var(--font-display)',
+                    fontSize: 15,
+                    fontWeight: 400,
+                    lineHeight: 1.55,
+                    color: LANTERN_GLOW,
+                    opacity: 0.85,
+                    maxWidth: 320,
+                    margin: '0 auto',
+                    textAlign: 'center',
+                    padding: '0 36px 22px',
+                  }}
+                >
+                  {card.description}
+                </p>
+              )}
+
+              {/* Card preview tile */}
+              <div
                 style={{
-                  background: 'none', border: 'none', textAlign: 'left',
-                  fontFamily: 'var(--font-display)',
-                  fontSize: '14px',
-                  letterSpacing: '0.04em',
-                  color: LANTERN_GLOW,
-                  opacity: isFirst ? 0.35 : 0.65,
-                  cursor: isFirst ? 'default' : 'pointer',
-                  padding: '12px 4px',
-                  minHeight: '44px',
+                  width: 'min(75vw, 320px)',
+                  padding: '4px 0 14px',
                 }}
               >
-                Föregående
-              </button>
-              <span style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: '11px',
-                letterSpacing: '0.08em',
-                textTransform: 'uppercase',
-                color: LANTERN_GLOW,
-                opacity: 0.45,
-                padding: '0 12px',
-                whiteSpace: 'nowrap',
-              }}>
-                {currentIndex + 1} av {categoryCards.length}
-              </span>
-              <button
-                onClick={goNext}
-                disabled={isLast}
-                aria-label="Nästa samtal"
-                style={{
-                  background: 'none', border: 'none', textAlign: 'right',
-                  fontFamily: 'var(--font-display)',
-                  fontSize: '14px',
-                  letterSpacing: '0.04em',
-                  color: LANTERN_GLOW,
-                  opacity: isLast ? 0.35 : 0.65,
-                  cursor: isLast ? 'default' : 'pointer',
-                  padding: '12px 4px',
-                  minHeight: '44px',
-                }}
-              >
-                Nästa
-              </button>
+                <AnimatePresence mode="wait" custom={direction}>
+                  <motion.div
+                    key={card.id}
+                    custom={direction}
+                    variants={slideVariants}
+                    initial={fromBrowse.current ? 'center' : 'enter'}
+                    animate="center"
+                    exit={fromBrowse.current ? 'center' : 'exit'}
+                    transition={{ duration: fromBrowse.current ? 0 : 0.32, ease: [0.22, 1, 0.36, 1] }}
+                    drag={portalPhase === 'idle' ? 'x' : false}
+                    dragConstraints={{ left: 0, right: 0 }}
+                    dragElastic={0.15}
+                    onDragEnd={handleDragEnd}
+                    onClick={startSession}
+                    style={{
+                      cursor: 'pointer',
+                      transform:
+                        portalPhase === 'phase1' ? 'scale(1.04)' :
+                        portalPhase === 'phase2' ? 'scale(2.4)' :
+                        portalPhase === 'phase3' ? 'scale(3.6)' : undefined,
+                      filter:
+                        portalPhase === 'phase1' ? 'brightness(1.12)' :
+                        portalPhase === 'phase2' ? 'brightness(1.3)' :
+                        portalPhase === 'phase3' ? 'brightness(2.0)' : undefined,
+                      opacity: portalPhase === 'phase3' ? 0 : 1,
+                      transition: portalPhase !== 'idle'
+                        ? 'transform 500ms cubic-bezier(0.22, 1, 0.36, 1), filter 400ms ease-out, opacity 250ms ease-in'
+                        : undefined,
+                    }}
+                  >
+                    <KidsTileFrame
+                      frame={tileLight}
+                      interior={calmInterior}
+                      darkText={darkText}
+                      title={card.title}
+                      stripFraction={0.20}
+                      completed={completed}
+                    >
+                      <PortalCardImage cardId={card.id}>
+                        {(imageSrc) => imageSrc ? (
+                          <img
+                            src={imageSrc}
+                            alt={card.title}
+                            decoding="sync"
+                            onLoad={() => setImageLoaded(true)}
+                            style={{
+                              position: 'absolute',
+                              inset: 0,
+                              width: '100%',
+                              height: '100%',
+                              objectFit: 'contain',
+                              opacity: imageLoaded ? 1 : 0,
+                              transition: 'opacity 300ms ease-in',
+                            }}
+                          />
+                        ) : null}
+                      </PortalCardImage>
+                    </KidsTileFrame>
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+
+              {/* Time estimate */}
+              {timeStr && (
+                <div
+                  style={{
+                    fontFamily: 'var(--font-body, var(--font-sans))',
+                    fontSize: 11,
+                    fontWeight: 600,
+                    letterSpacing: '0.08em',
+                    textTransform: 'uppercase',
+                    color: LANTERN_GLOW,
+                    opacity: 0.65,
+                    textAlign: 'center',
+                    padding: '4px 24px 6px',
+                  }}
+                >
+                  {timeStr}
+                </div>
+              )}
+
+              {/* Completion indicator */}
+              {completed && (
+                <div
+                  style={{
+                    fontFamily: 'var(--font-serif, var(--font-display))',
+                    fontStyle: 'italic',
+                    fontSize: 13,
+                    fontWeight: 400,
+                    color: SAFFRON_FLAME,
+                    textAlign: 'center',
+                    padding: '0 24px 10px',
+                  }}
+                >
+                  ✓ Klart
+                </div>
+              )}
             </div>
-          )}
 
-          {/* Free card: product-scoped counter */}
-          {isFreeCard && !productIsPurchased && (
-            <span
+            {/* ═══ Sticky bottom CTA + sequence nav ═══ */}
+            <div
               style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: '12px',
-                letterSpacing: '0.08em',
-                textTransform: 'uppercase',
-                color: LANTERN_GLOW,
-                opacity: 0.6,
-                textAlign: 'center',
+                flexShrink: 0,
+                padding: `0 24px calc(env(safe-area-inset-bottom, 0px) + 72px)`,
+                opacity: portalPhase !== 'idle' ? 0 : 1,
+                transition: 'opacity 200ms ease-in',
+                position: 'relative',
+                zIndex: 5,
               }}
             >
-              1 av {product.cards.length} samtal i {product.name}
-            </span>
-          )}
-        </div>
-      </div>
+              <button
+                onClick={startSession}
+                style={{
+                  display: 'block',
+                  width: '100%',
+                  maxWidth: 420,
+                  margin: '0 auto',
+                  height: 56,
+                  borderRadius: 28,
+                  border: ctaBorder,
+                  background: ctaBg,
+                  cursor: 'pointer',
+                  fontFamily: 'var(--font-display)',
+                  fontSize: 16,
+                  fontWeight: 600,
+                  color: LANTERN_GLOW,
+                  letterSpacing: '0.01em',
+                  WebkitTapHighlightColor: 'transparent',
+                }}
+              >
+                {ctaLabel}
+              </button>
+
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: '1fr auto 1fr',
+                  alignItems: 'center',
+                  width: '100%',
+                  maxWidth: 420,
+                  margin: '4px auto 0',
+                }}
+              >
+                <button
+                  onClick={goPrev}
+                  disabled={isFirst}
+                  aria-label="Föregående samtal"
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    textAlign: 'left',
+                    fontFamily: 'var(--font-display)',
+                    fontSize: 13,
+                    fontWeight: 400,
+                    color: LANTERN_GLOW,
+                    opacity: isFirst ? 0.35 : 0.65,
+                    cursor: isFirst ? 'default' : 'pointer',
+                    padding: '12px 4px',
+                    minHeight: 44,
+                  }}
+                >
+                  ‹ Föregående
+                </button>
+                <span
+                  style={{
+                    fontFamily: 'var(--font-body, var(--font-sans))',
+                    fontSize: 11,
+                    fontWeight: 600,
+                    letterSpacing: '0.08em',
+                    textTransform: 'uppercase',
+                    color: LANTERN_GLOW,
+                    opacity: 0.45,
+                    padding: '0 12px',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  {currentIndex + 1} AV {categoryCards.length}
+                </span>
+                <button
+                  onClick={goNext}
+                  disabled={isLast}
+                  aria-label="Nästa samtal"
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    textAlign: 'right',
+                    fontFamily: 'var(--font-display)',
+                    fontSize: 13,
+                    fontWeight: 400,
+                    color: LANTERN_GLOW,
+                    opacity: isLast ? 0.35 : 0.65,
+                    cursor: isLast ? 'default' : 'pointer',
+                    padding: '12px 4px',
+                    minHeight: 44,
+                  }}
+                >
+                  Nästa ›
+                </button>
+              </div>
+            </div>
+
+            <KontoSheet open={kontoOpen} onClose={() => setKontoOpen(false)} />
+          </>
+        );
+      })()}
 
       {/* ═══ Browse Sheet ═══ */}
       <PortalBrowseSheet
