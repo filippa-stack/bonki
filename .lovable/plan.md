@@ -1,33 +1,45 @@
-## 1. Vårt Vi completion — single unified message
+## Why the message still shows
 
-**File:** `src/components/CompletedSessionView.tsx`
+The previous edit only touched `CompletedSessionView.tsx`. But the route `/card/su-mock-0?view=completed` renders **Still Us / Vårt Vi completion inline inside `CardView.tsx`** — a separate code path with its own hardcoded headline.
 
-Today (line 68/74), the headline is randomly chosen from `getCompletionMessages(pronounMode, ageLabel)` — a list with several position/sequence-tied variants (e.g. "Ert första samtal är klart…"). These misfire when the user replays a card or starts mid-sequence.
+Found at `src/pages/CardView.tsx` lines **1841–1871**:
 
-Replace the randomized adult headline with a single template that mirrors the kids completion line in `CardView.tsx:1464` (`Ni pratade om ${card.title}.`).
-
-**Change (Vårt Vi only — kids path untouched):**
-- Remove the `completionMessages` / random-pick logic for the adult branch.
-- Render `headline` as: `Ni pratade om ${cardTitle}.`
-- Keep all surrounding styling (gold serif `hsl(41, 78%, 38%)`, sizing, layout, date subline, translucent dark takeaway block).
-- For kids (`isChildProduct`) keep current behaviour byte-identical (kids already use the same template upstream and we don't want to touch their headline source).
-
-Practically: compute `headline` as `\`Ni pratade om ${cardTitle}.\`` for both branches (kids already render this same string today, so the unified value is safe), and drop the `completionMessages` import + `useMemo` random pick. If `getCompletionMessages` is unused elsewhere it stays in `lib/pronouns.ts` untouched (no library cleanup in scope).
-
-**Verify:** complete first card in sequence, mid-sequence card, and a replayed card on Vårt Vi — all read `Ni pratade om {title}.`. Kids completion screen unchanged. Vårt Vi takeaway block, badge/dash, date, navigation buttons unchanged.
-
-## 2. Vårt Vi product home — medallion hairline ring
-
-**File:** `src/components/AdultProductCardTile.tsx` (lines 100–111)
-
-Add a single property to the medallion `<div>`:
-
-```
-border: '1px solid rgba(245, 232, 204, 0.30)',
+```tsx
+<h2 ...>
+  {cardId === 'su-mock-0'
+    ? 'Ert första samtal är klart. Nu börjar resan.'
+    : 'Varje samtal är ett val. Ni valde rätt.'}
+</h2>
+{cardId === 'su-mock-0' && (
+  <p ...>Det här var ert första steg. Nästa samtal väntar.</p>
+)}
 ```
 
-That's the entire change. No layout/size/anchor-color/rotation/title-strip changes; library marquee, kids tiles, resume banner, portal — all untouched.
+This is the position-tied copy the user is seeing in the screenshot. It also has a second position-tied variant (`'Varje samtal är ett val. Ni valde rätt.'`) for all other Vårt Vi cards.
 
-**Verify (390×844):** scroll all 21 Vårt Vi tiles — every medallion shows a delicate cream ring across all six anchor mats (cornflower, midnight ink, dusty rose, warm gold, storm grey, sage). Composition otherwise identical.
+## Change
 
-If a specific anchor reads off in QA, calibrate opacity (drop to 0.20 or raise to 0.40) — but ship with 0.30 first.
+Replace lines 1841–1871 with a single unified headline (matching the spec from the previous turn) and drop the subline entirely:
+
+```tsx
+<h2 className="font-serif" style={{
+  fontSize: '26px', fontWeight: 600, color: EMBER_GLOW,
+  textAlign: 'center', lineHeight: 1.2, textWrap: 'balance',
+}}>
+  Ni pratade om {card.title}.
+</h2>
+```
+
+- No more `cardId === 'su-mock-0'` branching.
+- No more "Nu börjar resan" / "Varje samtal är ett val" / "Det här var ert första steg…" sublines.
+- All other layout/spacing/checkmark/note nudge/CTA rows stay byte-identical.
+
+## Out of scope (intentionally untouched)
+
+- Line 1463 (`'Ert första samtal är klart.'`) — this is the **free-card kids paywall path** (`product?.id !== 'still_us'`), not Vårt Vi. Keep as-is.
+- Kids completion rendering elsewhere — already aligned in the previous pass.
+- `CompletedSessionView.tsx` — already updated.
+
+## Verify
+
+Reload `/card/su-mock-0?view=completed` → headline reads `Ni pratade om {card.title}.`, no subline. Spot-check a mid-sequence Still Us card → same single line, no "Varje samtal är ett val…" copy.
