@@ -12,6 +12,8 @@ import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { getProductById } from '@/data/products';
 import { KIDS_PRODUCT_IDS } from '@/hooks/useKidsProductProgress';
 import { getCalmInterior } from '@/lib/productTileVariants';
+import { productDarkText } from '@/lib/palette';
+import { useCardImage } from '@/hooks/useCardImage';
 
 import { useDevState } from '@/contexts/DevStateContext';
 import { isDemoMode } from '@/lib/demoMode';
