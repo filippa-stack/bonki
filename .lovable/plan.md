@@ -1,66 +1,83 @@
-# Kids Tile Variants — Frame-Color Slot + Universal Hairline Border
+# Kids Portal — Editorial Redesign
 
-Two coordinated changes to the kids tile system that produce visible rhythm via both color contrast (tinted variants) and hairline definition (no-tint variants).
+Single-file restructure of `src/pages/KidsCardPortal.tsx`. Replaces the current illustration-dominant tile with an editorial layout (eyebrow + serif title + italic subtitle + framing paragraph + KidsTileFrame preview + small-caps time + CTA + text-only sequence nav). Vårt Vi (Still Us) branch in this file stays byte-identical to current production.
 
-## Files affected
+## Scope
 
-1. `src/lib/productTileVariants.ts` — variant array updates
-2. `src/components/KidsTileFrame.tsx` — accept `darkText` for hairline border on inner zone
-3. `src/components/ProductCardTile.tsx` — pass `darkText` (already resolved via `productDarkText[productId]`) to `KidsTileFrame`
-4. `src/components/ProductLibrary.tsx` — add hairline border to `LibraryKidsTile` inner zone div
+**Edit:** `src/pages/KidsCardPortal.tsx` (kids branch only)
 
-No other files touched. `getInteriorForCard`, `getCalmInterior`, permutations, frame colors, and `darkText` palette stay unchanged.
+**Reuse (no changes):** `KidsTileFrame`, `getCalmInterior`, `productDarkText`, `useProductTheme`, `useProductAccess`, `useKidsProductProgress`, `PaywallBottomSheet`, `PortalBrowseSheet`, swipe + portalPhase animation logic, routing.
 
-## 1. Variant arrays (productTileVariants.ts)
+**Add:** A `productAccentColor` map (in `src/lib/palette.ts`) keyed by product id, with the per-product CTA accent values from the spec.
 
-Replace each product's `variants` array. `permutation` and `calmIndex` unchanged.
+## Layout (top → bottom)
 
-| Product | Frame | New variants | Frame-color slot |
-|---|---|---|---|
-| jag_i_mig | `#E89B6B` | `['#DC8050', '#E89B6B', '#F2B58F', '#FAD2B0']` | idx 1 |
-| jag_med_andra | `#CB7AB2` | `['#B05A8C', '#CB7AB2', '#E5B0D0']` | idx 1 |
-| jag_i_varlden | `#C6D423` | `['#B0B038', '#C6D423', '#E0EA85']` | idx 1 |
-| vardagskort | `#8BDDB0` | `['#62B090', '#8BDDB0', '#B5E2C5', '#DCF5E5']` | idx 1 |
-| syskonkort | `#CF8BDD` | `['#A689BD', '#B89BC8', '#CF8BDD', '#DAC4DE', '#ECD5F0']` | idx 2 |
-| sexualitetskort | `#B87560` | `['#A56350', '#B87560', '#C89788', '#DBB5A0']` | idx 1 |
+```
+[‹ back]                              [account ⊙]
+                MINA KÄNSLOR                          ← eyebrow
+                    Glad                              ← serif 28
+              Vad gör dig glad?                       ← italic serif 14
+   <framing paragraph if present, font-display 15>
+              ┌──────────────┐
+              │ KidsTileFrame│  75% vw, 3:4
+              │  with title  │
+              └──────────────┘
+                CA 5–8 MIN                            ← if present
+                  ✓ Klart                             ← if completed
+   ┌─────────────────────────┐
+   │      Starta samtal      │                       ← glassy pill
+   └─────────────────────────┘
+   ‹ Föregående    3 AV 21    Nästa ›
+```
 
-calmIndex verified to still point at the lightest variant (highest index) for every product — no changes needed.
+## Element details
 
-## 2. Universal hairline border on inner zones
+1. **Top bar** — `ChevronLeft` (left, LANTERN_GLOW @ 0.65, 44×44 hit area) and a 32×32 thin-bordered circle with `User` icon (right). Account icon routes to `/settings` (or whatever the existing account route is — confirm during impl, fall back to no-op if no account route exists in this app yet).
+2. **Eyebrow** — `category.title` uppercased, `var(--font-body)` 11/600, letter-spacing 0.10em, LANTERN_GLOW @ 0.55, centered.
+3. **Title** — `card.title`, `var(--font-serif)` 28/500, line-height 1.1, LANTERN_GLOW.
+4. **Italic serif subtitle** — `card.subtitle`, `var(--font-serif)` italic 14/400, LANTERN_GLOW @ 0.85.
+5. **Framing paragraph** — `card.description` (existing field, see Edge case 2 below). `var(--font-display)` 15/400, line-height 1.55, LANTERN_GLOW @ 0.85, max-width 320, centered. Section omitted entirely when absent.
+6. **Card preview tile** — `KidsTileFrame` at width `75vw` (capped at e.g. 320px on wider phones), 3:4 aspect, `frame={product.tileLight}`, `interior={getCalmInterior(product.id, product.tileLight)}`, `darkText={productDarkText[product.id]}`, `title={card.title}`, `stripFraction={0.20}`. Illustration (existing `useCardImage`) rendered as child with `width:100%; height:100%; object-fit:contain`. Non-interactive.
+7. **Time estimate** — `estimateMinutes(...)` already in file, uppercased, small-caps style. Hide if absent.
+8. **Completion indicator** — `✓ Klart`, `var(--font-serif)` italic 13, SAFFRON_FLAME. Only when `allTimeSet.has(card.id)`.
+9. **CTA** — width 100% (max 420), height 56, radius 28. Bg `color-mix(in srgb, ${productAccentColor} 40%, rgba(255,255,255,0.06))`, border `color-mix(in srgb, ${productAccentColor} 60%, transparent)`. Label: `Starta samtal` / `Fortsätt samtal` (when `activeSet.has(card.id)`) / `Gör om samtalet` (when `allTimeSet.has(card.id)` and not active). Locked-state label `Lås upp alla N samtal` preserved.
+10. **Sequence nav** — three-column grid, text-only `‹ Föregående` / `N AV M` / `Nästa ›`. Disabled opacity 0.35 on first/last.
 
-Apply `border: 1px solid ${darkText}30` (~19% alpha) to the inner-zone div on every kids tile.
+## productAccentColor map (new in palette.ts)
 
-### KidsTileFrame.tsx
-- Add new required prop `darkText: string` (already passed in via the existing `darkText` prop — confirmed; just thread it onto the inner zone div's style).
-- On the inner zone div (the one positioned at `top: 16, left: 16, right: 16, bottom: calc(...)`), add `border: \`1px solid ${darkText}30\``.
+```ts
+export const productAccentColor: Record<string, string> = {
+  jag_i_mig:        '#F2BC97',
+  jag_med_andra:    '#E59FCF',
+  jag_i_varlden:    '#D8E145',
+  vardagskort:      '#A8E5C0',
+  syskonkort:       '#E0BFEA',
+  sexualitetskort:  '#CFA08D',
+};
+```
 
-### ProductCardTile.tsx
-- Already passes `darkText={titleColor}` (resolved from `productDarkText[productId]`). No change needed beyond confirming KidsTileFrame uses it for the border.
+## Preserved behavior
 
-### ProductLibrary.tsx — LibraryKidsTile
-- On the inner zone div (lines 274–288), add `border: \`1px solid ${darkText}30\``. `darkText` is already in scope from `TILE_COLORS[product.id]`.
+- `portalPhase` state machine, zoom-into-illustration animation, swipe drag/threshold, slide direction variants. The animated element wraps the **card preview tile** (not the whole layout) — same as today, just with `KidsTileFrame` swapped in for the inline illustration block.
+- Paywall intercept (`startSession` checks `productIsPurchased`).
+- `useProductTheme`, `usePageBackground`, browse sheet, paywall sheet — unchanged.
+- Vårt Vi: `isStillUs` branch (overlays, transform/filter values) untouched. Current implementation already uses `isStillUs` checks for the animation; the editorial layout is applied only to the kids (non-Still Us) render path. **However:** Still Us currently renders through this same component. Confirm during impl whether Still Us hits a different portal route — if it does, this file is kids-only and no branching needed; if not, gate the new editorial layout behind `!isStillUs`.
 
-Calibration knob: opacity hex suffix. Default `30` (19%). Tune to `20` (12%) if too prominent, `40` (25%) if too subtle. No per-product tuning by default.
+## Edge cases (flagged)
 
-## 3. Verification at 390×844 (iPhone 15)
+1. **`productAccentColor` missing** — added to `palette.ts` per above.
+2. **No dedicated `framingCopy` field on `Card`** — `Card` type has `subtitle` and `description`. Plan uses `card.subtitle` for the italic prompt line and `card.description` for the framing paragraph. **Most cards today only set `subtitle`** (e.g., `jim-glad`'s subtitle is "Vad som ger energi och glädje — och hur vi delar det", and there's no `description` or separate question line). This means out of the box: the italic line will show the existing subtitle, and the framing paragraph will be empty for almost every card. **Decision needed:** ship with empty framing paragraph (data layer fills in over time) OR repurpose `subtitle` as the framing paragraph and use `card.questionHook` (existing field) as the italic question. Recommendation: ship with `subtitle → italic`, `description → framing` so layout supports the spec; surface the data gap to the user and let content fill in `description` per card.
+3. **Account icon route** — no obvious account/settings route referenced in this file today. Will use the same target as `KontoIcon` elsewhere in the app (likely `/settings` or `/konto`); confirm during impl.
+4. **Still Us shares this file** — current code uses `isStillUs` flags. Will gate the new editorial layout behind `!isStillUs` so Still Us continues rendering exactly as today.
 
-Use `/?devState=browse` to unlock all content, then:
+## Verification (390×844, /?devState=browse)
 
-- Visit each kids product home: `/product/jag-i-mig`, `/product/jag-med-andra`, `/product/jag-i-varlden`, `/product/vardagskort`, `/product/syskonkort`, `/product/sexualitetskort`
-- Scroll the full grid for each. Confirm every tile shows a perceptible inner zone — defined by either color contrast or hairline.
-- Confirm no tile reads as "uniform card with no inner zone."
-- Confirm the no-tint variant cards (where interior = frame) have a clearly visible hairline-defined plate.
-- Open the library — confirm hairline applies on calm tiles (lightest variant, tinted) and they remain visible.
-- Vårt Vi flow regression: confirm Vårt Vi product home, library marquee, portal, session, completion are unchanged (they don't use this system).
-
-## What stays unchanged
-
-- All `permutation` arrays and `calmIndex` values
-- Frame colors in product manifests
-- `getInteriorForCard` / `getCalmInterior` logic
-- `productDarkText` palette
-- All non-kids surfaces (Vårt Vi, library marquee, etc.)
-
-## Edge cases to flag during implementation
-
-If the hairline reads too heavy on a specific product (e.g. JmA's strong color contrast), surface for per-product opacity tuning. Otherwise, ship with universal `${darkText}30`.
+Visit one card portal per kids product (`jim-glad`, `jma-*`, `jiv-*`, `vk-*`, `sk-*`, `nki-*`):
+- Atmospheric bg fills viewport
+- Eyebrow / serif title / italic subtitle render correctly
+- Framing paragraph appears only when `description` is present
+- KidsTileFrame preview shows correct frame + calm interior + hairline + title strip
+- CTA label flips correctly across not-started / active / completed states
+- Sequence nav disables on first/last
+- Swipe still navigates between cards; tap on the tile still triggers `startSession`; portal-zoom animation still plays
+- Vårt Vi card portal renders byte-identical to current production
