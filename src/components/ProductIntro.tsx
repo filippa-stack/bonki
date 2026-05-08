@@ -11,6 +11,7 @@ import { LANTERN_GLOW, DRIFTWOOD, MIDNIGHT_INK, BONKI_ORANGE, DEEP_SAFFRON, WARM
 import { isProductFreeForUser } from '@/lib/freeCardPolicy';
 import { usePageBackground } from '@/hooks/usePageBackground';
 import { PREVIEW_QUESTIONS } from '@/lib/productPreviewQuestions';
+import { presentCodeRedemptionSheet, restorePurchases } from '@/lib/revenueCat';
 
 // ── Illustration imports (same as product homes) ──
 import jimImage from '@/assets/illustration-jag-i-mig.png';
