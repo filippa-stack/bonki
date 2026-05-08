@@ -7,7 +7,7 @@ import { toast } from 'sonner';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { isDemoMode, isDemoParam } from '@/lib/demoMode';
-import { purchaseProduct } from '@/lib/revenueCat';
+import { purchaseProduct, presentCodeRedemptionSheet, restorePurchases } from '@/lib/revenueCat';
 import { isAndroidNative } from '@/lib/platform';
 import { productIntros } from '@/data/productIntros';
 import { PREVIEW_QUESTION } from '@/lib/productPreviewQuestions';
@@ -513,6 +513,37 @@ export default function ProductPaywall({ product, onAccessGranted }: ProductPayw
           >
             Säker betalning · Ingen prenumeration
           </p>
+
+          {/* Redeem code (iOS only) */}
+          {Capacitor.getPlatform() === 'ios' && (
+            <button
+              onClick={async () => {
+                const result = await presentCodeRedemptionSheet();
+                if (result.success) {
+                  await restorePurchases();
+                  onAccessGranted?.();
+                }
+                // On failure (incl. user dismissal): no UI feedback. Apple owns it.
+              }}
+              style={{
+                display: 'block',
+                margin: '16px auto 0',
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                fontFamily: 'var(--font-sans)',
+                fontSize: '14px',
+                fontWeight: 500,
+                color: LANTERN_GLOW,
+                opacity: 0.75,
+                textDecoration: 'underline',
+                textUnderlineOffset: '3px',
+                padding: '8px 16px',
+              }}
+            >
+              Lös in kod
+            </button>
+          )}
 
           {/* Escape link */}
           <button

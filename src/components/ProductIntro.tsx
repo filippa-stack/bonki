@@ -11,6 +11,7 @@ import { LANTERN_GLOW, DRIFTWOOD, MIDNIGHT_INK, BONKI_ORANGE, DEEP_SAFFRON, WARM
 import { isProductFreeForUser } from '@/lib/freeCardPolicy';
 import { usePageBackground } from '@/hooks/usePageBackground';
 import { PREVIEW_QUESTIONS } from '@/lib/productPreviewQuestions';
+import { presentCodeRedemptionSheet, restorePurchases } from '@/lib/revenueCat';
 
 // ── Illustration imports (same as product homes) ──
 import jimImage from '@/assets/illustration-jag-i-mig.png';
@@ -542,6 +543,35 @@ export default function ProductIntro({
               <span style={{ opacity: 0.85, marginLeft: 6 }}>· {priceSek} kr</span>
             )}
           </button>
+          {Capacitor.getPlatform() === 'ios' && (
+            <button
+              onClick={async () => {
+                const result = await presentCodeRedemptionSheet();
+                if (result.success) {
+                  await restorePurchases();
+                  window.location.reload();
+                }
+                // On failure (incl. user dismissal): no UI feedback. Apple owns it.
+              }}
+              style={{
+                display: 'block',
+                margin: '16px auto 0',
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                fontFamily: 'var(--font-sans)',
+                fontSize: '14px',
+                fontWeight: 500,
+                color: LANTERN_GLOW,
+                opacity: 0.75,
+                textDecoration: 'underline',
+                textUnderlineOffset: '3px',
+                padding: '8px 16px',
+              }}
+            >
+              Lös in kod
+            </button>
+          )}
         </div>
       </div>
       {/* TODO: free-session branch returns in a later release */}
