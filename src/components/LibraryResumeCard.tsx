@@ -252,13 +252,16 @@ export default function LibraryResumeCard({ activeTab, global, forceMock }: Libr
   }, [space?.id, devState, fetchFromDb]);
 
   const display = devMock || resume;
+  const cardIllustration = useCardImage(display?.cardId ?? null);
   if (!display) return null;
 
   const accent = PRODUCT_ACCENT[display.productId] ?? '#A8B5C9';
-  const innerCircleColor = display.productId === 'still_us'
+  const isStillUs = display.productId === 'still_us';
+  const innerColor = isStillUs
     ? '#5A85D5'
     : getCalmInterior(display.productId, accent);
-  const illustration = ILLUSTRATIONS[display.productId];
+  const darkText = productDarkText[display.productId] ?? '#5A3A1F';
+  const illustration = cardIllustration ?? ILLUSTRATIONS[display.productId];
 
   return (
     <div>
@@ -294,47 +297,80 @@ export default function LibraryResumeCard({ activeTab, global, forceMock }: Libr
           WebkitTapHighlightColor: 'transparent',
         }}
       >
-        {/* Left: medallion */}
+        {/* Left: medallion — circle for Vårt Vi, rounded rect for kids */}
         <div
           aria-hidden="true"
           style={{
             flex: '0 0 56px',
             width: 56,
             height: 56,
-            borderRadius: '50%',
+            borderRadius: isStillUs ? '50%' : 10,
             background: accent,
+            position: 'relative',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             overflow: 'hidden',
           }}
         >
-          <div
-            style={{
-              width: '70%',
-              height: '70%',
-              borderRadius: '50%',
-              background: innerCircleColor,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              overflow: 'hidden',
-            }}
-          >
-            {illustration && (
-              <img
-                src={illustration}
-                alt=""
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'contain',
-                  objectPosition: 'center',
-                  pointerEvents: 'none',
-                }}
-              />
-            )}
-          </div>
+          {isStillUs ? (
+            <div
+              style={{
+                width: '70%',
+                height: '70%',
+                borderRadius: '50%',
+                background: innerColor,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                overflow: 'hidden',
+              }}
+            >
+              {illustration && (
+                <img
+                  src={illustration}
+                  alt=""
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'contain',
+                    objectPosition: 'center',
+                    pointerEvents: 'none',
+                  }}
+                />
+              )}
+            </div>
+          ) : (
+            <div
+              style={{
+                position: 'absolute',
+                inset: 6,
+                borderRadius: 6,
+                background: innerColor,
+                border: `1px solid ${darkText}30`,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                overflow: 'hidden',
+              }}
+            >
+              {illustration && (
+                <img
+                  src={illustration}
+                  alt=""
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'contain',
+                    objectPosition: 'center',
+                    padding: 4,
+                    boxSizing: 'border-box',
+                    pointerEvents: 'none',
+                  }}
+                />
+              )}
+            </div>
+          )}
         </div>
 
         {/* Middle: text */}
