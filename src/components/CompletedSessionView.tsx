@@ -377,14 +377,37 @@ export default function CompletedSessionView({
               transition={{ delay: BEAT_3, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
               style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}
             >
-              <p style={{ fontSize: '11px', letterSpacing: '0.06em', textTransform: 'uppercase', color: '#FDF6E3', opacity: 0.45 }}>Det ni tog med er</p>
-              <div style={{
-                background: 'rgba(255, 255, 255, 0.06)',
-                borderRadius: '12px',
-                border: '1px solid rgba(255, 255, 255, 0.08)',
-              }}>
-                <p className="font-serif italic whitespace-pre-wrap" style={{ padding: '20px 24px', fontSize: '17px', lineHeight: 1.7, color: '#FDF6E3', opacity: 0.8 }}>{session.takeawayText}</p>
-              </div>
+              {isChildProduct ? (
+                <p style={{
+                  fontFamily: 'var(--font-body, var(--font-sans))',
+                  fontSize: '11px',
+                  fontWeight: 600,
+                  letterSpacing: '0.10em',
+                  textTransform: 'uppercase',
+                  color: LANTERN_GLOW,
+                  opacity: 0.55,
+                  textAlign: 'center',
+                }}>VALFRITT</p>
+              ) : (
+                <p style={{ fontSize: '11px', letterSpacing: '0.06em', textTransform: 'uppercase', color: '#FDF6E3', opacity: 0.45 }}>Det ni tog med er</p>
+              )}
+              {isChildProduct ? (
+                <div style={{
+                  background: '#FAF7F2',
+                  borderRadius: '12px',
+                  boxShadow: '0 0 40px rgba(233, 200, 144, 0.10), 0 8px 32px rgba(0, 0, 0, 0.20)',
+                }}>
+                  <p className="font-serif whitespace-pre-wrap" style={{ padding: '20px 24px', fontSize: '17px', lineHeight: 1.7, color: BARK }}>{session.takeawayText}</p>
+                </div>
+              ) : (
+                <div style={{
+                  background: 'rgba(255, 255, 255, 0.06)',
+                  borderRadius: '12px',
+                  border: '1px solid rgba(255, 255, 255, 0.08)',
+                }}>
+                  <p className="font-serif italic whitespace-pre-wrap" style={{ padding: '20px 24px', fontSize: '17px', lineHeight: 1.7, color: '#FDF6E3', opacity: 0.8 }}>{session.takeawayText}</p>
+                </div>
+              )}
             </motion.div>
           )}
 
