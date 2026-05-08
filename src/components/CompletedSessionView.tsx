@@ -261,29 +261,45 @@ export default function CompletedSessionView({
             className="text-center"
             style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}
           >
-            {/* Ceremonial saffron line */}
-            <motion.div
-              initial={{ scaleX: 1 }}
-              animate={{ scaleX: 1 }}
-              transition={{ delay: 0.2, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-              style={{
-                width: '32px',
-                height: '2px',
-                borderRadius: '1px',
-                background: 'var(--accent-saffron)',
-                opacity: 0.5,
-                marginBottom: '8px',
-                transformOrigin: 'center',
-              }}
-            />
+            {isChildProduct ? (
+              <div
+                style={{
+                  width: '64px',
+                  height: '64px',
+                  borderRadius: '50%',
+                  background: 'rgba(233, 200, 144, 0.15)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginBottom: '16px',
+                }}
+              >
+                <Check size={36} strokeWidth={2} style={{ color: SAFFRON_FLAME }} />
+              </div>
+            ) : (
+              <motion.div
+                initial={{ scaleX: 1 }}
+                animate={{ scaleX: 1 }}
+                transition={{ delay: 0.2, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                style={{
+                  width: '32px',
+                  height: '2px',
+                  borderRadius: '1px',
+                  background: 'var(--accent-saffron)',
+                  opacity: 0.5,
+                  marginBottom: '8px',
+                  transformOrigin: 'center',
+                }}
+              />
+            )}
             <h2
               style={{
                 fontFamily: "var(--font-display)",
                 fontVariationSettings: "'opsz' 26",
-                fontSize: 'clamp(26px, 7vw, 34px)',
-                fontWeight: 400,
-                lineHeight: 1.2,
-                color: 'hsl(41, 78%, 38%)',
+                fontSize: isChildProduct ? 'clamp(24px, 6.5vw, 28px)' : 'clamp(26px, 7vw, 34px)',
+                fontWeight: 500,
+                lineHeight: isChildProduct ? 1.1 : 1.2,
+                color: isChildProduct ? LANTERN_GLOW : 'hsl(41, 78%, 38%)',
               }}
             >
               {headline}
