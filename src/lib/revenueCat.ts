@@ -88,6 +88,28 @@ export async function purchaseProduct(productId: string): Promise<PurchaseResult
   }
 }
 
+/**
+ * Present Apple's native StoreKit Offer Code redemption sheet.
+ * iOS only. Web/Android return a non-success result without surfacing UI.
+ * User dismissal of the sheet bubbles up as a thrown error from the SDK —
+ * callers should NOT show a toast on `success: false` because that would
+ * falsely flag normal cancellation as a failure. Apple's sheet provides its
+ * own UI feedback for actual error conditions.
+ */
+export async function presentCodeRedemptionSheet(): Promise<{ success: boolean; error?: string }> {
+  if (Capacitor.getPlatform() !== 'ios') {
+    return { success: false, error: 'Endast tillgänglig på iOS.' };
+  }
+  try {
+    await Purchases.presentCodeRedemptionSheet();
+    return { success: true };
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : 'Okänt fel';
+    console.error('[RevenueCat] presentCodeRedemptionSheet failed:', err);
+    return { success: false, error: message };
+  }
+}
+
 export interface RestoreResult {
   success: boolean;
   restoredCount: number;
