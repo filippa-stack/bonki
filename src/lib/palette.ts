@@ -76,6 +76,17 @@ export const productTileColors: Record<string, ProductTileColors> = {
   },
 };
 
+/** Per-product accent color for portal CTA pills (lighter, glassy tint). */
+export const productAccentColor: Record<string, string> = {
+  jag_i_mig:        '#F2BC97',
+  jag_med_andra:    '#E59FCF',
+  jag_i_varlden:    '#D8E145',
+  vardagskort:      '#A8E5C0',
+  syskonkort:       '#E0BFEA',
+  sexualitetskort:  '#CFA08D',
+  still_us:         '#E9C890',
+};
+
 /** Per-product dark text color for titles on tiles (in product hue family). */
 export const productDarkText: Record<string, string> = {
   jag_i_mig: '#5A3A1F',       // deep coral-brown
