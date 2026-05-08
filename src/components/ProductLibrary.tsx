@@ -152,27 +152,45 @@ function StillUsMarquee({
         cursor: 'pointer',
         textAlign: 'left',
         WebkitTapHighlightColor: 'transparent',
-        minHeight: 110,
+        minHeight: 150,
       }}
     >
       <div style={{
-        flex: '0 0 105px',
-        aspectRatio: '1 / 1',
-        borderRadius: '50%',
-        background: '#5A85D5',
-        overflow: 'hidden',
+        flex: '0 0 40%',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
       }}>
-        <img
-          src={illustrationStillUs}
-          alt=""
-          draggable={false}
-          style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'center', pointerEvents: 'none' }}
-        />
+        <div style={{
+          width: '100%',
+          aspectRatio: '1 / 1',
+          maxWidth: 130,
+          maxHeight: 130,
+          borderRadius: '50%',
+          background: '#5A85D5',
+          border: '1px solid rgba(245, 232, 204, 0.30)',
+          overflow: 'hidden',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+          <img
+            src={illustrationStillUs}
+            alt=""
+            draggable={false}
+            style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'center', pointerEvents: 'none' }}
+          />
+        </div>
       </div>
-      <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', paddingTop: 2, gap: 4 }}>
+      <div style={{
+        flex: 1,
+        minWidth: 0,
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        paddingLeft: 16,
+        borderLeft: '1px solid rgba(245, 232, 204, 0.30)',
+      }}>
         <h3 style={{
           fontFamily: 'var(--font-display)',
           color: onColorText,
