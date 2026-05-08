@@ -25,10 +25,17 @@ import { useProductTheme } from '@/hooks/useProductTheme';
 import { useProductAccess } from '@/hooks/useProductAccess';
 import { supabase } from '@/integrations/supabase/client';
 import PortalBrowseSheet from '@/components/PortalBrowseSheet';
+import KontoIcon from '@/components/KontoIcon';
+import KontoSheet from '@/components/KontoSheet';
+import KidsTileFrame from '@/components/KidsTileFrame';
+import { getCalmInterior } from '@/lib/productTileVariants';
 import {
   MIDNIGHT_INK,
   LANTERN_GLOW,
   DRIFTWOOD,
+  SAFFRON_FLAME,
+  productDarkText,
+  productAccentColor,
 } from '@/lib/palette';
 
 /* ── Helpers ── */
