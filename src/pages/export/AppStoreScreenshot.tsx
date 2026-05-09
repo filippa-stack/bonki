@@ -107,7 +107,7 @@ const GRAPHICS: GraphicSpec[] = [
         <br />finns kvar.
       </>
     ),
-    captionSize: 128,
+    captionSize: 120,
     canvasBg: JIM_DEEP,
     screenBg: JIM_DEEP,
     Screen: Screen6JimCompletion,
