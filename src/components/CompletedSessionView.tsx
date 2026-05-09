@@ -128,7 +128,29 @@ export default function CompletedSessionView({
   }, []);
 
   useEffect(() => {
-    if (!space || !cardId) { setLoading(false); return; }
+    if (!cardId) { setLoading(false); return; }
+
+    // Demo-mode override: when ?demo=1, take precedence over Supabase and
+    // synthesize a completed session from local state. Used by App Store
+    // screenshot export (Graphic 6).
+    const isDemo =
+      typeof window !== 'undefined' &&
+      new URLSearchParams(window.location.search).get('demo') === '1';
+    if (isDemo) {
+      const takeawayKey = `bonki-demo-takeaway-${cardId}`;
+      const takeawayText =
+        (typeof window !== 'undefined' && localStorage.getItem(takeawayKey)) || null;
+      setSession({
+        id: `demo-${cardId}`,
+        startedAt: new Date().toISOString(),
+        reflections: [],
+        takeawayText,
+      });
+      setLoading(false);
+      return;
+    }
+
+    if (!space) { setLoading(false); return; }
 
     let cancelled = false;
 
