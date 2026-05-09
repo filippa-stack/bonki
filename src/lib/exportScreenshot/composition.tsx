@@ -42,6 +42,7 @@ export function CaptionZone({
       }}
     >
       <div
+        data-export-caption="1"
         style={{
           maxWidth: `${CANVAS_W * 0.86}px`,
           color: LANTERN_GLOW,
