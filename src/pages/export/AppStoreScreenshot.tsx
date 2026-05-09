@@ -4,7 +4,7 @@
  * html-to-image. The canvas is visually scaled down with CSS transform for
  * preview only — capture happens at native pixel size.
  */
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import {
   AppStoreCanvas,
@@ -37,6 +37,8 @@ interface GraphicSpec {
   bare?: boolean;
   /** When false, hides DeviceFrame's status bar + home indicator (e.g. Graphic 2 image already includes them). */
   showChrome?: boolean;
+  /** Optional iframe content scroll-Y in CSS pixels (used to bring clipped content into view). */
+  iframeScrollY?: number;
 }
 
 const GRAPHICS: GraphicSpec[] = [
