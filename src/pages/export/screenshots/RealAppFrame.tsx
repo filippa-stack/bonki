@@ -8,9 +8,11 @@ import { FRAME_WIDTH_PX, FRAME_HEIGHT_PX, INNER_LOGICAL_W } from '@/lib/exportSc
 
 interface Props {
   src: string;
+  /** Optional CSS-pixel scroll-Y to apply to the iframe document after load. */
+  scrollY?: number;
 }
 
-export default function RealAppFrame({ src }: Props) {
+export default function RealAppFrame({ src, scrollY = 0 }: Props) {
   const ref = useRef<HTMLIFrameElement | null>(null);
 
   // Inner screen dimensions (frame minus bezel) — must match DeviceFrame's bezel.
@@ -26,10 +28,22 @@ export default function RealAppFrame({ src }: Props) {
     if (!iframe) return;
     const onLoad = () => {
       (window as any).__realAppFrameLoaded = true;
+      // Apply scroll after content settles.
+      if (scrollY) {
+        try {
+          const doc = iframe.contentWindow;
+          if (doc) {
+            setTimeout(() => doc.scrollTo({ top: scrollY, behavior: 'instant' as any }), 200);
+            setTimeout(() => doc.scrollTo({ top: scrollY, behavior: 'instant' as any }), 1200);
+          }
+        } catch {
+          // cross-origin guarded — ignore
+        }
+      }
     };
     iframe.addEventListener('load', onLoad);
     return () => iframe.removeEventListener('load', onLoad);
-  }, [src]);
+  }, [src, scrollY]);
 
   return (
     <div style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
