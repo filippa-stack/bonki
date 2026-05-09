@@ -6,5 +6,5 @@
 import RealAppFrame from './RealAppFrame';
 
 export default function Screen1Marquee() {
-  return <RealAppFrame src="/?demo=1&devState=browse" />;
+  return <RealAppFrame src="/?demo=1&devState=browse&exportFonts=1" />;
 }
