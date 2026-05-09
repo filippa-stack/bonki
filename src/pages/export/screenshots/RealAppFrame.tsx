@@ -10,9 +10,13 @@ interface Props {
   src: string;
   /** Optional CSS-pixel scroll-Y to apply to the iframe document after load. */
   scrollY?: number;
+  /** Optional logical-pixel translate applied to the iframe in the inner-screen
+   *  space. Negative values shift content up (reveals top of page above the
+   *  status-bar zone painted by DeviceFrame). */
+  translateY?: number;
 }
 
-export default function RealAppFrame({ src, scrollY = 0 }: Props) {
+export default function RealAppFrame({ src, scrollY = 0, translateY = 0 }: Props) {
   const ref = useRef<HTMLIFrameElement | null>(null);
 
   // Inner screen dimensions (frame minus bezel) — must match DeviceFrame's bezel.
@@ -28,7 +32,6 @@ export default function RealAppFrame({ src, scrollY = 0 }: Props) {
     if (!iframe) return;
     const onLoad = () => {
       (window as any).__realAppFrameLoaded = true;
-      // Apply scroll after content settles.
       if (scrollY) {
         try {
           const doc = iframe.contentWindow;
@@ -53,11 +56,11 @@ export default function RealAppFrame({ src, scrollY = 0 }: Props) {
         title="real-app-screen"
         style={{
           width: `${INNER_LOGICAL_W}px`,
-          height: `${logicalH}px`,
+          height: `${logicalH - translateY}px`,
           border: 'none',
           display: 'block',
           background: 'transparent',
-          transform: `scale(${scale})`,
+          transform: `translateY(${translateY * scale}px) scale(${scale})`,
           transformOrigin: 'top left',
         }}
       />
