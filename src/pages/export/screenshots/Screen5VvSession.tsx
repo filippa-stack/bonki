@@ -7,7 +7,7 @@ import { useEffect } from 'react';
 import RealAppFrame from './RealAppFrame';
 import { saveDemoSession } from '@/lib/demoSession';
 
-const CARD_ID = 'su-07-smallest-we';
+const CARD_ID = 'smallest-we';
 
 export default function Screen5VvSession() {
   useEffect(() => {
