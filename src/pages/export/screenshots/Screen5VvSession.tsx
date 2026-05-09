@@ -1,23 +1,23 @@
 /**
- * Screen 5 — Vårt Vi session, "Det osynliga ansvaret" (smallest-we), step 0.
- * Pre-seeds a paused demo session so CardView resumes on the cream prompt
- * card with the opening question visible.
+ * Screen 5 — Vårt Vi session ("Det osynliga ansvaret" / smallest-we).
+ * Uses the user-provided real iPhone screenshot directly. The screenshot
+ * already includes the iOS status bar, so the surrounding spec sets
+ * `showChrome={false}` to avoid double-painting.
  */
-import { useEffect } from 'react';
-import RealAppFrame from './RealAppFrame';
-import { saveDemoSession } from '@/lib/demoSession';
-
-const CARD_ID = 'smallest-we';
+import vvImg from '@/assets/exports/vart-vi-session-real.png';
 
 export default function Screen5VvSession() {
-  useEffect(() => {
-    saveDemoSession({
-      productId: 'still_us',
-      cardId: CARD_ID,
-      categoryId: 'emotional-intimacy',
-      currentStepIndex: 0,
-    });
-  }, []);
-
-  return <RealAppFrame src={`/card/${CARD_ID}?demo=1&devState=browse&step=0`} />;
+  return (
+    <img
+      src={vvImg}
+      alt=""
+      style={{
+        width: '100%',
+        height: '100%',
+        objectFit: 'cover',
+        objectPosition: 'center top',
+        display: 'block',
+      }}
+    />
+  );
 }

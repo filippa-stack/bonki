@@ -1,9 +1,9 @@
 /**
- * Screen 2 — Era samtal (Journal). Uses user-provided real iPhone screenshot
- * directly. The screenshot already includes the iOS status bar, so the
- * surrounding spec sets `showChrome={false}` to avoid double-painting.
+ * Screen 2 — Era samtal (Journal). Uses pre-cropped clean journal screenshot
+ * (status bar / Dynamic Island / device bezel removed). DeviceFrame paints
+ * canonical iOS chrome on top via showChrome={true} in the spec.
  */
-import journalImg from '@/assets/exports/journal-real.png';
+import journalImg from '@/assets/exports/journal-clean.png';
 
 export default function Screen2Journal() {
   return (

@@ -37,12 +37,13 @@ export default function Screen7Authority() {
       <p
         style={{
           fontFamily: '"Fraunces", serif',
-          fontStyle: 'italic',
+          fontStyle: 'normal',
           fontSize: 36,
           fontWeight: 400,
           color: 'rgba(245,232,204,0.85)',
           lineHeight: 1.4,
           margin: '40px 0 0',
+          letterSpacing: '0.005em',
         }}
       >
         Leg. psykolog · Leg. psykoterapeut
@@ -63,7 +64,7 @@ export default function Screen7Authority() {
         style={{
           fontFamily: '"Fraunces", serif',
           fontStyle: 'italic',
-          fontSize: 38,
+          fontSize: 43,
           fontWeight: 400,
           color: 'rgba(245,232,204,0.88)',
           lineHeight: 1.5,
