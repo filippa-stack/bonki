@@ -1,28 +1,26 @@
 /**
- * RealAppFrame — embeds the real production app inside an iframe sized
- * to fill the DeviceFrame inner content area. Used by Screen1–6 so each
- * App Store graphic shows the actual production component (with real
- * `useCardImage` illustrations, layouts, shadows, etc.) instead of a
- * hand-built replica.
- *
- * Demo mode (`?demo=1`) bypasses auth; `?devState=...` provides deterministic
- * frozen state. Both work in the preview environment, which is where puppeteer
- * captures these screenshots.
+ * RealAppFrame — embeds the production app inside an iframe rendered at
+ * iPhone logical width (390 px) and CSS-scaled to fill the DeviceFrame
+ * inner screen. Forces production components into mobile breakpoints.
  */
 import { useEffect, useRef } from 'react';
+import { FRAME_WIDTH_PX, FRAME_HEIGHT_PX, INNER_LOGICAL_W } from '@/lib/exportScreenshot/composition';
 
 interface Props {
-  /** Path + query string, e.g. "/journal?demo=1&devState=archiveWithHistory" */
   src: string;
-  /** Optional extra delay (ms) before iframe is considered ready, for animations to settle. */
-  settleMs?: number;
 }
 
 export default function RealAppFrame({ src }: Props) {
   const ref = useRef<HTMLIFrameElement | null>(null);
 
+  // Inner screen dimensions (frame minus bezel) — must match DeviceFrame's bezel.
+  const bezel = 12;
+  const innerW = FRAME_WIDTH_PX - bezel * 2;
+  const innerH = FRAME_HEIGHT_PX - bezel * 2;
+  const scale = innerW / INNER_LOGICAL_W;
+  const logicalH = innerH / scale;
+
   useEffect(() => {
-    // Mark window so puppeteer knows when to wait for iframe load.
     (window as any).__realAppFrameLoaded = false;
     const iframe = ref.current;
     if (!iframe) return;
@@ -34,17 +32,21 @@ export default function RealAppFrame({ src }: Props) {
   }, [src]);
 
   return (
-    <iframe
-      ref={ref}
-      src={src}
-      title="real-app-screen"
-      style={{
-        width: '100%',
-        height: '100%',
-        border: 'none',
-        display: 'block',
-        background: 'transparent',
-      }}
-    />
+    <div style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
+      <iframe
+        ref={ref}
+        src={src}
+        title="real-app-screen"
+        style={{
+          width: `${INNER_LOGICAL_W}px`,
+          height: `${logicalH}px`,
+          border: 'none',
+          display: 'block',
+          background: 'transparent',
+          transform: `scale(${scale})`,
+          transformOrigin: 'top left',
+        }}
+      />
+    </div>
   );
 }
