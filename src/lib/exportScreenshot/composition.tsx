@@ -1,20 +1,21 @@
 import type { CSSProperties, ReactNode } from 'react';
 
-export const CANVAS_W = 1290;
-export const CANVAS_H = 2796;
+// iPhone 6.5" App Store slot: 1284 × 2778.
+export const CANVAS_W = 1284;
+export const CANVAS_H = 2778;
 
 export const LANTERN_GLOW = '#F5E8CC';
 export const MIDNIGHT_INK = '#1A1A2E';
 export const JIM_DEEP = '#8C4A2D';
 
 // Spec-zone layout constants. See .lovable/plan.md.
-export const TOP_BREATH_PX = 170;
-export const CAPTION_ZONE_TOP_PX = 170;
-export const CAPTION_ZONE_HEIGHT_PX = 720;
-export const HAIRLINE_TOP_PX = 910;
-export const FRAME_TOP_PX = 970;
-export const FRAME_WIDTH_PX = 1084;   // 84% of canvas width
-export const FRAME_HEIGHT_PX = 1700;  // ~60.8% of canvas height
+export const TOP_BREATH_PX = 169;
+export const CAPTION_ZONE_TOP_PX = 169;
+export const CAPTION_ZONE_HEIGHT_PX = 715;
+export const HAIRLINE_TOP_PX = 904;
+export const FRAME_TOP_PX = 964;
+export const FRAME_WIDTH_PX = 1079;
+export const FRAME_HEIGHT_PX = 1689;
 // Logical iPhone CSS viewport used inside the device frame (mobile breakpoints)
 export const INNER_LOGICAL_W = 390;
 
