@@ -35,6 +35,8 @@ interface GraphicSpec {
   Screen: React.ComponentType;
   /** When true, renders the screen full-canvas without a device frame (Screen 7). */
   bare?: boolean;
+  /** When false, hides DeviceFrame's status bar + home indicator (e.g. Graphic 2 image already includes them). */
+  showChrome?: boolean;
 }
 
 const GRAPHICS: GraphicSpec[] = [
@@ -55,6 +57,7 @@ const GRAPHICS: GraphicSpec[] = [
     canvasBg: MIDNIGHT_INK,
     screenBg: MIDNIGHT_INK,
     Screen: Screen2Journal,
+    showChrome: false,
   },
   {
     n: 3,
