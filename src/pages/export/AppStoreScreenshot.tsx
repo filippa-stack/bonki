@@ -87,6 +87,7 @@ const GRAPHICS: GraphicSpec[] = [
     canvasBg: JIM_DEEP,
     screenBg: JIM_DEEP,
     Screen: Screen4JimSession,
+    iframeScrollY: 0,
   },
   {
     n: 5,
