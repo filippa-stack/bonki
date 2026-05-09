@@ -239,11 +239,9 @@ export default function AppStoreScreenshot() {
               </div>
             ) : (
               <>
-                <CaptionZone size={spec.captionSize} topPercent={captionTopPercent}>
-                  {spec.caption}
-                </CaptionZone>
-                <HairlineDivider topPx={hairlineTopPx} />
-                <DeviceFrame topPx={frameTopPx} width={frameWidth} background={spec.screenBg}>
+                <CaptionZone size={spec.captionSize}>{spec.caption}</CaptionZone>
+                <HairlineDivider />
+                <DeviceFrame background={spec.screenBg} showChrome={spec.showChrome ?? true}>
                   <Screen />
                 </DeviceFrame>
               </>
