@@ -35,6 +35,8 @@ interface GraphicSpec {
   Screen: React.ComponentType;
   /** When true, renders the screen full-canvas without a device frame (Screen 7). */
   bare?: boolean;
+  /** When false, hides DeviceFrame's status bar + home indicator (e.g. Graphic 2 image already includes them). */
+  showChrome?: boolean;
 }
 
 const GRAPHICS: GraphicSpec[] = [
@@ -55,6 +57,7 @@ const GRAPHICS: GraphicSpec[] = [
     canvasBg: MIDNIGHT_INK,
     screenBg: MIDNIGHT_INK,
     Screen: Screen2Journal,
+    showChrome: false,
   },
   {
     n: 3,
@@ -137,23 +140,24 @@ export default function AppStoreScreenshot() {
   const [busy, setBusy] = useState(false);
   const [scale, setScale] = useState(0.3);
 
+  // ?raw=1 mode for puppeteer: skip preview chrome and render the canvas at
+  // native 1290×2796 from origin so page.screenshot can clip cleanly.
+  const isRaw =
+    typeof window !== 'undefined' &&
+    new URLSearchParams(window.location.search).get('raw') === '1';
+
   useEffect(() => {
+    if (isRaw) return;
     const compute = () => {
       const w = window.innerWidth;
-      // Fit canvas width within 80% of viewport.
       setScale(Math.min(0.4, (w * 0.8) / CANVAS_W));
     };
     compute();
     window.addEventListener('resize', compute);
     return () => window.removeEventListener('resize', compute);
-  }, []);
+  }, [isRaw]);
 
   const Screen = spec.Screen;
-  const captionTopPercent = 0.075;
-  const hairlineTopPx = Math.round(captionTopPercent * CANVAS_H + spec.captionSize * 1.1 * 2 + 40);
-  // Device frame placement
-  const frameWidth = 1080;
-  const frameTopPx = hairlineTopPx + 80;
 
   const handleDownload = async () => {
     if (!captureRef.current || busy) return;
@@ -164,6 +168,29 @@ export default function AppStoreScreenshot() {
       setBusy(false);
     }
   };
+
+  // Render the bare canvas at 1:1 with no surrounding chrome — for puppeteer.
+  if (isRaw) {
+    return (
+      <div style={{ margin: 0, padding: 0, background: '#000', width: CANVAS_W, height: CANVAS_H }}>
+        <AppStoreCanvas innerRef={(el) => (captureRef.current = el)} background={spec.canvasBg}>
+          {spec.bare ? (
+            <div style={{ position: 'absolute', inset: 0 }}>
+              <Screen />
+            </div>
+          ) : (
+            <>
+              <CaptionZone size={spec.captionSize}>{spec.caption}</CaptionZone>
+              <HairlineDivider />
+              <DeviceFrame background={spec.screenBg} showChrome={spec.showChrome ?? true}>
+                <Screen />
+              </DeviceFrame>
+            </>
+          )}
+        </AppStoreCanvas>
+      </div>
+    );
+  }
 
   return (
     <div
@@ -239,11 +266,9 @@ export default function AppStoreScreenshot() {
               </div>
             ) : (
               <>
-                <CaptionZone size={spec.captionSize} topPercent={captionTopPercent}>
-                  {spec.caption}
-                </CaptionZone>
-                <HairlineDivider topPx={hairlineTopPx} />
-                <DeviceFrame topPx={frameTopPx} width={frameWidth} background={spec.screenBg}>
+                <CaptionZone size={spec.captionSize}>{spec.caption}</CaptionZone>
+                <HairlineDivider />
+                <DeviceFrame background={spec.screenBg} showChrome={spec.showChrome ?? true}>
                   <Screen />
                 </DeviceFrame>
               </>

@@ -7,27 +7,36 @@ export const LANTERN_GLOW = '#F5E8CC';
 export const MIDNIGHT_INK = '#1A1A2E';
 export const JIM_DEEP = '#8C4A2D';
 
+// Spec-zone layout constants. See .lovable/plan.md.
+export const TOP_BREATH_PX = 170;
+export const CAPTION_ZONE_TOP_PX = 170;
+export const CAPTION_ZONE_HEIGHT_PX = 720;
+export const HAIRLINE_TOP_PX = 910;
+export const FRAME_TOP_PX = 970;
+export const FRAME_WIDTH_PX = 1084;   // 84% of canvas width
+export const FRAME_HEIGHT_PX = 1700;  // ~60.8% of canvas height
+// Logical iPhone CSS viewport used inside the device frame (mobile breakpoints)
+export const INNER_LOGICAL_W = 390;
+
 const FRAUNCES = '"Fraunces", "Cormorant", Georgia, serif';
 
 export function CaptionZone({
   children,
   size = 130,
-  topPercent = 0.083,
 }: {
   children: ReactNode;
-  /** Caption font size in px (calibrate per caption length). */
   size?: number;
-  /** Vertical offset of caption block from canvas top, fraction of canvas height. */
-  topPercent?: number;
 }) {
   return (
     <div
       style={{
         position: 'absolute',
-        top: `${topPercent * CANVAS_H}px`,
+        top: `${CAPTION_ZONE_TOP_PX}px`,
         left: 0,
         right: 0,
+        height: `${CAPTION_ZONE_HEIGHT_PX}px`,
         display: 'flex',
+        alignItems: 'center',
         justifyContent: 'center',
         pointerEvents: 'none',
       }}
@@ -52,12 +61,12 @@ export function CaptionZone({
   );
 }
 
-export function HairlineDivider({ topPx }: { topPx: number }) {
+export function HairlineDivider() {
   return (
     <div
       style={{
         position: 'absolute',
-        top: `${topPx}px`,
+        top: `${HAIRLINE_TOP_PX}px`,
         left: '50%',
         transform: 'translateX(-50%)',
         width: `${CANVAS_W * 0.5}px`,
@@ -69,45 +78,36 @@ export function HairlineDivider({ topPx }: { topPx: number }) {
 }
 
 /**
- * iPhone 15 Pro Max-ish device frame around the app screen content.
- * Inner content area is `screenW × screenH`. Children render inside that area
- * (full-bleed, edge to edge). Status bar + home indicator are drawn on top.
+ * iPhone-styled device frame at fixed spec dimensions
+ * (FRAME_WIDTH_PX × FRAME_HEIGHT_PX) centered horizontally on the canvas.
+ * Children render inside the inner screen, full-bleed.
  */
 export function DeviceFrame({
-  topPx,
-  width,
   background,
   children,
-  contentScale = 1,
   showChrome = true,
 }: {
-  topPx: number;
-  width: number;
   background: string;
   children: ReactNode;
-  /** When the inner content was authored at e.g. 390 px wide, this scales it up to fit. */
-  contentScale?: number;
   showChrome?: boolean;
 }) {
-  const aspect = 19.5 / 9;
-  const height = Math.round(width * aspect);
-  const bezel = 10;
-  const innerW = width - bezel * 2;
-  const innerH = height - bezel * 2;
-  const innerRadius = 80;
+  const bezel = 12;
+  const innerW = FRAME_WIDTH_PX - bezel * 2;
+  const innerH = FRAME_HEIGHT_PX - bezel * 2;
+  const innerRadius = 90;
 
   return (
     <div
       style={{
         position: 'absolute',
-        top: `${topPx}px`,
+        top: `${FRAME_TOP_PX}px`,
         left: '50%',
         transform: 'translateX(-50%)',
-        width: `${width}px`,
-        height: `${height}px`,
+        width: `${FRAME_WIDTH_PX}px`,
+        height: `${FRAME_HEIGHT_PX}px`,
         borderRadius: `${innerRadius + bezel}px`,
         background: '#000',
-        boxShadow: '0 18px 60px rgba(0,0,0,0.55), 0 4px 14px rgba(0,0,0,0.35)',
+        boxShadow: '0 24px 80px rgba(0,0,0,0.55), 0 6px 18px rgba(0,0,0,0.35)',
         padding: `${bezel}px`,
         boxSizing: 'border-box',
       }}
@@ -122,20 +122,7 @@ export function DeviceFrame({
           background,
         }}
       >
-        {/* App content layer */}
-        <div
-          style={{
-            position: 'absolute',
-            inset: 0,
-            transform: contentScale === 1 ? undefined : `scale(${contentScale})`,
-            transformOrigin: 'top left',
-            width: contentScale === 1 ? '100%' : `${innerW / contentScale}px`,
-            height: contentScale === 1 ? '100%' : `${innerH / contentScale}px`,
-          }}
-        >
-          {children}
-        </div>
-
+        <div style={{ position: 'absolute', inset: 0 }}>{children}</div>
         {showChrome && <StatusBar />}
         {showChrome && <HomeIndicator />}
       </div>
@@ -144,7 +131,6 @@ export function DeviceFrame({
 }
 
 function StatusBar() {
-  // Pixel-positioned to land inside the device inner radius.
   return (
     <div
       style={{
@@ -167,11 +153,8 @@ function StatusBar() {
     >
       <span>9:41</span>
       <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-        {/* Signal */}
         <SvgSignal />
-        {/* Wifi */}
         <SvgWifi />
-        {/* Battery */}
         <SvgBattery />
       </div>
     </div>
@@ -227,10 +210,7 @@ function SvgBattery() {
   );
 }
 
-/**
- * Outer canvas wrapper. Holds the page background and provides absolute
- * positioning context for caption + hairline + device frame.
- */
+/** Outer canvas wrapper at exact 1290×2796. */
 export function AppStoreCanvas({
   background,
   children,
