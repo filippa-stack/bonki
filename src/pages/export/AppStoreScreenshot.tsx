@@ -152,11 +152,6 @@ export default function AppStoreScreenshot() {
   }, []);
 
   const Screen = spec.Screen;
-  const captionTopPercent = 0.075;
-  const hairlineTopPx = Math.round(captionTopPercent * CANVAS_H + spec.captionSize * 1.1 * 2 + 40);
-  // Device frame placement
-  const frameWidth = 1080;
-  const frameTopPx = hairlineTopPx + 80;
 
   const handleDownload = async () => {
     if (!captureRef.current || busy) return;
