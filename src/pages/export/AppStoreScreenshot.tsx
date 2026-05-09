@@ -102,6 +102,7 @@ const GRAPHICS: GraphicSpec[] = [
     canvasBg: MIDNIGHT_INK,
     screenBg: MIDNIGHT_INK,
     Screen: Screen5VvSession,
+    showChrome: false,
   },
   {
     n: 6,
