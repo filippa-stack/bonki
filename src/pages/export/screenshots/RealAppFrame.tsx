@@ -30,8 +30,7 @@ export default function RealAppFrame({ src, scrollY = 0, translateY = 0 }: Props
     (window as any).__realAppFrameLoaded = false;
     const iframe = ref.current;
     if (!iframe) return;
-    const onLoad = () => {
-      (window as any).__realAppFrameLoaded = true;
+    const onLoad = async () => {
       if (scrollY) {
         try {
           const doc = iframe.contentWindow;
@@ -43,6 +42,18 @@ export default function RealAppFrame({ src, scrollY = 0, translateY = 0 }: Props
           // cross-origin guarded — ignore
         }
       }
+      // Wait for the iframe document's fonts to finish loading before
+      // signaling readiness — prevents capturing in a serif fallback while
+      // Fraunces (display:block) is still in flight.
+      try {
+        const innerDoc: any = iframe.contentDocument;
+        if (innerDoc?.fonts?.ready) {
+          await innerDoc.fonts.ready;
+        }
+      } catch {
+        // ignore
+      }
+      (window as any).__realAppFrameLoaded = true;
     };
     iframe.addEventListener('load', onLoad);
     return () => iframe.removeEventListener('load', onLoad);
