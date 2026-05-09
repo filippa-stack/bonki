@@ -59,7 +59,6 @@ const GRAPHICS: GraphicSpec[] = [
     canvasBg: MIDNIGHT_INK,
     screenBg: MIDNIGHT_INK,
     Screen: Screen2Journal,
-    showChrome: false,
   },
   {
     n: 3,
