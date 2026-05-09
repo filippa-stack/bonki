@@ -4,7 +4,7 @@
  * html-to-image. The canvas is visually scaled down with CSS transform for
  * preview only — capture happens at native pixel size.
  */
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import {
   AppStoreCanvas,
@@ -37,6 +37,8 @@ interface GraphicSpec {
   bare?: boolean;
   /** When false, hides DeviceFrame's status bar + home indicator (e.g. Graphic 2 image already includes them). */
   showChrome?: boolean;
+  /** Optional iframe content scroll-Y in CSS pixels (used to bring clipped content into view). */
+  iframeScrollY?: number;
 }
 
 const GRAPHICS: GraphicSpec[] = [
@@ -100,6 +102,7 @@ const GRAPHICS: GraphicSpec[] = [
     canvasBg: MIDNIGHT_INK,
     screenBg: MIDNIGHT_INK,
     Screen: Screen5VvSession,
+    showChrome: false,
   },
   {
     n: 6,
@@ -139,6 +142,23 @@ export default function AppStoreScreenshot() {
   const captureRef = useRef<HTMLDivElement | null>(null);
   const [busy, setBusy] = useState(false);
   const [scale, setScale] = useState(0.3);
+
+  // Inject a Fraunces stylesheet with font-display:block so the headline never
+  // paints in a serif fallback during capture (font-race fix). Scoped to this
+  // route only — does NOT leak into production via the global index.html link.
+  useLayoutEffect(() => {
+    const existing = document.querySelector('link[data-export-fraunces="1"]');
+    if (existing) return;
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href =
+      'https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400&display=block';
+    link.setAttribute('data-export-fraunces', '1');
+    document.head.appendChild(link);
+    return () => {
+      // Keep it for the lifetime of the export tab; safe to re-inject if removed.
+    };
+  }, []);
 
   // ?raw=1 mode for puppeteer: skip preview chrome and render the canvas at
   // native 1290×2796 from origin so page.screenshot can clip cleanly.
