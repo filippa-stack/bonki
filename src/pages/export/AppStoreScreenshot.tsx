@@ -140,16 +140,22 @@ export default function AppStoreScreenshot() {
   const [busy, setBusy] = useState(false);
   const [scale, setScale] = useState(0.3);
 
+  // ?raw=1 mode for puppeteer: skip preview chrome and render the canvas at
+  // native 1290×2796 from origin so page.screenshot can clip cleanly.
+  const isRaw =
+    typeof window !== 'undefined' &&
+    new URLSearchParams(window.location.search).get('raw') === '1';
+
   useEffect(() => {
+    if (isRaw) return;
     const compute = () => {
       const w = window.innerWidth;
-      // Fit canvas width within 80% of viewport.
       setScale(Math.min(0.4, (w * 0.8) / CANVAS_W));
     };
     compute();
     window.addEventListener('resize', compute);
     return () => window.removeEventListener('resize', compute);
-  }, []);
+  }, [isRaw]);
 
   const Screen = spec.Screen;
 
@@ -162,6 +168,29 @@ export default function AppStoreScreenshot() {
       setBusy(false);
     }
   };
+
+  // Render the bare canvas at 1:1 with no surrounding chrome — for puppeteer.
+  if (isRaw) {
+    return (
+      <div style={{ margin: 0, padding: 0, background: '#000', width: CANVAS_W, height: CANVAS_H }}>
+        <AppStoreCanvas innerRef={(el) => (captureRef.current = el)} background={spec.canvasBg}>
+          {spec.bare ? (
+            <div style={{ position: 'absolute', inset: 0 }}>
+              <Screen />
+            </div>
+          ) : (
+            <>
+              <CaptionZone size={spec.captionSize}>{spec.caption}</CaptionZone>
+              <HairlineDivider />
+              <DeviceFrame background={spec.screenBg} showChrome={spec.showChrome ?? true}>
+                <Screen />
+              </DeviceFrame>
+            </>
+          )}
+        </AppStoreCanvas>
+      </div>
+    );
+  }
 
   return (
     <div
