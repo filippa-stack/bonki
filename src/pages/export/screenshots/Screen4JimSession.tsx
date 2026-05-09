@@ -12,7 +12,7 @@ interface Props {
 export default function Screen4JimSession({ scrollY = 0 }: Props) {
   return (
     <RealAppFrame
-      src="/card/jim-glad?demo=1&devState=browse&step=1"
+      src="/card/jim-glad?demo=1&devState=browse&step=1&exportFonts=1"
       scrollY={scrollY}
       translateY={-50}
     />

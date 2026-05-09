@@ -6,5 +6,5 @@
 import RealAppFrame from './RealAppFrame';
 
 export default function Screen3JimHome() {
-  return <RealAppFrame src="/product/jag-i-mig?demo=1&devState=browse" />;
+  return <RealAppFrame src="/product/jag-i-mig?demo=1&devState=browse&exportFonts=1" />;
 }

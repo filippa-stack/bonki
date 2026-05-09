@@ -21,5 +21,5 @@ export default function Screen6JimCompletion() {
     localStorage.setItem(DEMO_TAKEAWAY_KEY(CARD_ID), DEMO_TAKEAWAY_TEXT);
   }, []);
 
-  return <RealAppFrame src={`/card/${CARD_ID}?demo=1&devState=completed&view=completed`} />;
+  return <RealAppFrame src={`/card/${CARD_ID}?demo=1&devState=completed&view=completed&exportFonts=1`} />;
 }

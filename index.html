@@ -42,6 +42,27 @@
         });
       }
     </script>
+    <script>
+      // Export-only font override: when ?exportFonts=1 is in the URL, force
+      // Fraunces to load with display:block and override --font-display so
+      // app-store screenshot captures get the canonical display serif instead
+      // of the Cormorant/Georgia fallback. Production users never hit this.
+      (function () {
+        try {
+          if (new URLSearchParams(location.search).get('exportFonts') === '1') {
+            var l = document.createElement('link');
+            l.rel = 'stylesheet';
+            l.href = 'https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&display=block';
+            l.setAttribute('data-export-fraunces', '1');
+            document.head.appendChild(l);
+            var s = document.createElement('style');
+            s.setAttribute('data-export-fonts', '1');
+            s.textContent = ":root{--font-display:'Fraunces',Georgia,serif !important;}";
+            document.head.appendChild(s);
+          }
+        } catch (e) {}
+      })();
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
