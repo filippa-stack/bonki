@@ -1,31 +1,60 @@
 /**
- * Marketing 06 — Era samtal cropped to single reflection.
+ * Marketing 06 — Era samtal cropped to a single reflection.
+ * Mounts the production SessionGroupCard with marketing-controlled props.
+ * Page chrome (h1 + subtitle + month header) is inlined here because it's
+ * not reused elsewhere; the actual reflection card is the production one.
  */
+import { useNavigate } from 'react-router-dom';
 import { ScaledScreen, FONT_DISPLAY, FONT_SERIF, FONT_LABEL, FONT_SANS, LOGICAL_H } from './MarketingShared';
-import { MIDNIGHT_INK, LANTERN_GLOW, WARM_GOLD, CORNFLOWER } from '@/lib/palette';
+import { MIDNIGHT_INK, LANTERN_GLOW } from '@/lib/palette';
+import { SessionGroupCard, type SessionGroup } from '@/pages/Journal';
 
-const PRODUCT_LABEL = 'Vårt Vi';
-const CARD_SUBTITLE = "Ert minsta 'vi'";
-const DATE = '10 april';
 const QUESTION =
-  '\u2014 Vad är det som gör att ni känner er som ett par \u2014 bortom det praktiska ni delar?';
+  'Vem av oss bär det osynliga ansvaret för vårt liv \u2014 och hur märker den andra av det?';
 const REFLECTION =
-  'Att vi skrattar åt samma saker. Att jag kan komma hem och säga något helt obegripligt och han förstår direkt vad jag menar.';
+  'Det är jag som planerar. Det har jag alltid vetat. Men jag visste inte att det syntes på honom också \u2014 att han kände det utan att vi pratat om det.';
+
+const GROUP: SessionGroup = {
+  type: 'group',
+  sessionId: 'marketing-session-smallest-we',
+  productId: 'still_us',
+  cardId: 'smallest-we',
+  cardName: 'Det osynliga ansvaret',
+  categoryName: '',
+  date: '2026-04-10T12:00:00.000Z',
+  notes: [
+    {
+      type: 'note',
+      id: 'marketing-note-1',
+      text: REFLECTION,
+      questionText: QUESTION,
+      cardId: 'smallest-we',
+      cardName: 'Det osynliga ansvaret',
+      categoryName: '',
+      productId: 'still_us',
+      date: '2026-04-10T12:00:00.000Z',
+      sessionId: 'marketing-session-smallest-we',
+    },
+  ],
+  takeaway: null,
+};
 
 export default function MarketingJournalSingle() {
+  const navigate = useNavigate();
+
   return (
     <ScaledScreen background={MIDNIGHT_INK}>
       <div
         style={{
           position: 'absolute',
           inset: 0,
-          padding: '52px 24px 28px',
+          padding: '52px 0 28px',
           display: 'flex',
           flexDirection: 'column',
           height: LOGICAL_H,
         }}
       >
-        {/* Page title cluster */}
+        {/* Page title */}
         <h1
           style={{
             fontFamily: FONT_DISPLAY,
@@ -33,6 +62,7 @@ export default function MarketingJournalSingle() {
             fontSize: 30,
             color: LANTERN_GLOW,
             margin: 0,
+            padding: '0 24px',
             letterSpacing: '-0.005em',
           }}
         >
@@ -45,125 +75,75 @@ export default function MarketingJournalSingle() {
             fontSize: 16,
             color: 'rgba(253,246,227,0.65)',
             margin: '6px 0 0',
+            padding: '0 24px',
           }}
         >
           Vad ni burit med er
         </p>
 
-        {/* Timeline header */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 40 }}>
-          <span
+        {/* Month header — same shape as Journal's month band */}
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 10,
+            marginLeft: '1.75rem',
+            paddingLeft: '16px',
+            marginTop: 32,
+            marginBottom: 12,
+            position: 'relative',
+          }}
+        >
+          <div
             style={{
-              width: 8,
-              height: 8,
+              position: 'absolute',
+              left: 'calc(-1.75rem + 2.05rem - 4px)',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              width: 7,
+              height: 7,
               borderRadius: '50%',
-              background: CORNFLOWER,
-              boxShadow: '0 0 0 4px rgba(100,149,237,0.18)',
+              backgroundColor: '#E9C890',
             }}
           />
           <span
             style={{
-              fontFamily: FONT_LABEL,
-              fontSize: 12,
-              letterSpacing: '0.22em',
-              color: 'rgba(253,246,227,0.7)',
+              fontSize: 14,
+              letterSpacing: '0.02em',
+              color: '#E9C890',
+              fontFamily: FONT_DISPLAY,
+              fontWeight: 500,
+              lineHeight: 1,
             }}
           >
-            APRIL 2026
+            April 2026
           </span>
-          <span style={{ flex: 1, height: 1, background: 'rgba(253,246,227,0.10)' }} />
           <span
             style={{
+              marginLeft: 'auto',
+              fontSize: 11,
+              fontStyle: 'italic',
+              color: 'rgba(245, 240, 232, 0.35)',
               fontFamily: FONT_SANS,
-              fontSize: 12,
-              color: 'rgba(253,246,227,0.55)',
-              letterSpacing: '0.04em',
+              paddingRight: 16,
             }}
           >
             1 samtal
           </span>
         </div>
 
-        {/* Single reflection card */}
-        <div style={{ marginTop: 18, flex: 1, display: 'flex', alignItems: 'center' }}>
-          <div
-            style={{
-              width: '100%',
-              borderRadius: 22,
-              background: 'rgba(253,246,227,0.04)',
-              border: '1px solid rgba(253,246,227,0.08)',
-              padding: '24px 22px 26px',
-              boxShadow: '0 18px 40px rgba(0,0,0,0.35)',
-            }}
-          >
-            {/* Top row: label + date */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-              <span
-                style={{
-                  fontFamily: FONT_LABEL,
-                  fontSize: 11,
-                  letterSpacing: '0.22em',
-                  color: CORNFLOWER,
-                }}
-              >
-                {PRODUCT_LABEL.toUpperCase()}
-              </span>
-              <span
-                style={{
-                  fontFamily: FONT_SANS,
-                  fontSize: 12,
-                  color: 'rgba(253,246,227,0.5)',
-                }}
-              >
-                {DATE}
-              </span>
-            </div>
-
-            {/* Card subtitle */}
-            <p
-              style={{
-                fontFamily: FONT_SERIF,
-                fontStyle: 'italic',
-                fontSize: 22,
-                color: LANTERN_GLOW,
-                margin: '10px 0 18px',
-                lineHeight: 1.25,
-              }}
-            >
-              {CARD_SUBTITLE}
-            </p>
-
-            {/* Question */}
-            <p
-              style={{
-                fontFamily: FONT_SERIF,
-                fontStyle: 'italic',
-                fontSize: 15,
-                lineHeight: 1.5,
-                color: 'rgba(253,246,227,0.85)',
-                margin: 0,
-              }}
-            >
-              {QUESTION}
-            </p>
-
-            {/* Hairline */}
-            <div style={{ height: 1, background: 'rgba(253,246,227,0.10)', margin: '20px 0' }} />
-
-            {/* Reflection */}
-            <p
-              style={{
-                fontFamily: FONT_SERIF,
-                fontSize: 16,
-                fontStyle: 'italic',
-                lineHeight: 1.55,
-                color: WARM_GOLD,
-                margin: 0,
-              }}
-            >
-              {REFLECTION}
-            </p>
-          </div>
+        {/* Real production SessionGroupCard */}
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 16,
+            marginLeft: '1.75rem',
+            paddingLeft: 16,
+            paddingRight: 16,
+          }}
+        >
+          <SessionGroupCard group={GROUP} navigate={navigate} />
         </div>
       </div>
     </ScaledScreen>

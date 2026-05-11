@@ -442,7 +442,7 @@ function CompletedMarkerRow({ marker, index }: { marker: CompletedMarker; index:
 }
 
 // ─── Session Group types ───
-interface SessionGroup {
+export interface SessionGroup {
   type: 'group';
   sessionId: string;
   notes: NoteEntry[];
@@ -457,7 +457,7 @@ interface SessionGroup {
 type RenderItem = NoteEntry | CompletedMarker | SessionGroup;
 
 // ─── Session Group Card (premium envelope) ───
-function SessionGroupCard({ group, navigate }: { group: SessionGroup; navigate: (p: string) => void }) {
+export function SessionGroupCard({ group, navigate }: { group: SessionGroup; navigate: (p: string) => void }) {
   const [expanded, setExpanded] = useState(false);
   const accent = getProductAccent(group.productId, group.cardId);
   const productName = getProductName(group.productId, group.cardId);

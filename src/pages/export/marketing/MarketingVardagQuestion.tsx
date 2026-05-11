@@ -1,58 +1,118 @@
 /**
- * Marketing 02 — Vardag (kids) mid-session question card.
- * Cream card with warm glow on Vardag #48A873 background. Glassy mid-green CTA.
+ * Marketing 02 — Vardag mid-session question card.
+ * Renders the real card 'vk-hur-var-din-dag' prompt[6] inside a
+ * production-faithful cream card on Vardag atmospheric green.
+ * Visual styling mirrors the live kids session in CardView.
  */
-import { ScaledScreen, FONT_SERIF, FONT_LABEL, FONT_SANS, LOGICAL_H } from './MarketingShared';
-import { LANTERN_GLOW, productTileColors, productAccentColor } from '@/lib/palette';
+import { ScaledScreen, FONT_SERIF, FONT_SANS, LOGICAL_H } from './MarketingShared';
+import { LANTERN_GLOW, productAccentColor, productTileColors } from '@/lib/palette';
+import { vardagskortProduct } from '@/data/products/vardagskort';
 
-const VARDAG_BG = productTileColors.vardagskort.tileDeep; // #48A873
-const PILL_BG = productAccentColor.vardagskort; // #A8E5C0
+const CARD = vardagskortProduct.cards.find((c) => c.id === 'vk-hur-var-din-dag')!;
+const PROMPTS = (CARD.sections[0] as any).prompts as string[];
+const QUESTION = PROMPTS[6];
+const TOTAL = PROMPTS.length; // 7
+const CURRENT = 7;
 
-const QUESTION = 'Vad var det bästa som hände idag?';
+const VARDAG_BG = vardagskortProduct.backgroundColor || productTileColors.vardagskort.tileDeep;
+const VARDAG_ACCENT = productAccentColor['vardagskort'];
 
 export default function MarketingVardagQuestion() {
   return (
     <ScaledScreen background={VARDAG_BG}>
-      {/* Soft atmospheric vignette */}
       <div
         style={{
           position: 'absolute',
           inset: 0,
-          background:
-            'radial-gradient(110% 80% at 50% 30%, rgba(255,253,248,0.18) 0%, rgba(72,168,115,0) 60%)',
-          pointerEvents: 'none',
-        }}
-      />
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          padding: '64px 24px 28px',
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'center',
           height: LOGICAL_H,
         }}
       >
+        {/* ── Top bar — card title left, close button right (matches live kids chrome) ── */}
         <div
           style={{
-            fontFamily: FONT_LABEL,
-            fontSize: 12,
-            letterSpacing: '0.22em',
-            color: 'rgba(255,253,248,0.78)',
-            marginBottom: 28,
+            height: 56,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            paddingLeft: 16,
+            paddingRight: 16,
           }}
         >
-          FRÅGA 1 AV 5
+          <span
+            style={{
+              fontFamily: FONT_SANS,
+              fontSize: 15,
+              fontWeight: 400,
+              color: LANTERN_GLOW,
+            }}
+          >
+            {CARD.title}
+          </span>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={LANTERN_GLOW} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.65 }}>
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
         </div>
 
-        <div style={{ position: 'relative', width: '100%', flex: 1, display: 'flex', alignItems: 'center' }}>
+        {/* Progress bar */}
+        <div style={{ width: '100%', height: 4, backgroundColor: 'rgba(255,255,255,0.10)' }}>
+          <div
+            style={{
+              height: '100%',
+              width: `${(CURRENT / TOTAL) * 100}%`,
+              background: `linear-gradient(90deg, ${VARDAG_ACCENT}, color-mix(in srgb, ${VARDAG_ACCENT} 70%, white))`,
+            }}
+          />
+        </div>
+
+        {/* Kids counter pill — production format ("7 av 7" with leading dot) */}
+        <div style={{ display: 'flex', justifyContent: 'center', marginTop: 36 }}>
+          <span
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 6,
+              fontFamily: FONT_SANS,
+              fontSize: 11,
+              fontWeight: 600,
+              letterSpacing: '0.04em',
+              color: 'rgba(253,246,227,0.75)',
+              borderRadius: 20,
+              padding: '5px 14px 5px 10px',
+              border: '1px solid rgba(253,246,227,0.18)',
+            }}
+          >
+            <span
+              style={{
+                width: 6,
+                height: 6,
+                borderRadius: '50%',
+                backgroundColor: 'rgba(253,246,227,0.75)',
+              }}
+            />
+            {CURRENT} av {TOTAL}
+          </span>
+        </div>
+
+        {/* Cream question card */}
+        <div
+          style={{
+            position: 'relative',
+            margin: '20px 16px 0',
+            flex: 1,
+            display: 'flex',
+            alignItems: 'center',
+          }}
+        >
           <div
             style={{
               position: 'absolute',
-              inset: '-40px -20px',
+              inset: '-24px -12px',
               background:
-                'radial-gradient(60% 50% at 50% 50%, rgba(253,246,227,0.40) 0%, rgba(253,246,227,0.10) 55%, rgba(253,246,227,0) 75%)',
+                'radial-gradient(60% 50% at 50% 50%, rgba(233,200,144,0.18) 0%, rgba(233,200,144,0.04) 55%, transparent 75%)',
+              filter: 'blur(2px)',
               pointerEvents: 'none',
             }}
           />
@@ -61,13 +121,12 @@ export default function MarketingVardagQuestion() {
               position: 'relative',
               width: '100%',
               borderRadius: 28,
-              background: LANTERN_GLOW,
-              padding: '64px 30px 68px',
-              boxShadow:
-                '0 30px 80px rgba(0,0,0,0.30), 0 8px 24px rgba(0,0,0,0.18), 0 0 0 1px rgba(253,246,227,0.05)',
-              minHeight: 300,
+              background: '#FAF7F2',
+              padding: '32px 24px 36px',
+              boxShadow: '0 8px 32px rgba(0,0,0,0.20)',
+              minHeight: 240,
               display: 'flex',
-              alignItems: 'center',
+              flexDirection: 'column',
               justifyContent: 'center',
             }}
           >
@@ -75,9 +134,9 @@ export default function MarketingVardagQuestion() {
               style={{
                 fontFamily: FONT_SERIF,
                 fontStyle: 'italic',
-                fontSize: 30,
-                lineHeight: 1.3,
-                color: '#0E2E22',
+                fontSize: 21,
+                lineHeight: 1.4,
+                color: '#1A1A2E',
                 margin: 0,
                 textAlign: 'center',
               }}
@@ -87,27 +146,55 @@ export default function MarketingVardagQuestion() {
           </div>
         </div>
 
-        {/* Glassy mid-green pill CTA */}
+        {/* Reflection trigger */}
         <button
           style={{
-            marginTop: 28,
-            height: 48,
-            minWidth: 200,
-            paddingInline: 36,
-            borderRadius: 24,
-            border: '1px solid rgba(255,253,248,0.35)',
-            background: `${PILL_BG}cc`,
-            color: '#0E2E22',
-            fontFamily: FONT_SANS,
-            fontWeight: 600,
-            fontSize: 15,
-            letterSpacing: '0.02em',
-            backdropFilter: 'blur(8px)',
-            boxShadow: '0 12px 28px rgba(0,0,0,0.18)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 8,
+            marginTop: 16,
+            background: 'none',
+            border: 'none',
+            padding: '12px 20px',
           }}
         >
-          Nästa
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={LANTERN_GLOW} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.7 }}>
+            <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
+          </svg>
+          <span
+            style={{
+              fontFamily: FONT_SERIF,
+              fontStyle: 'italic',
+              fontSize: 14,
+              color: LANTERN_GLOW,
+              opacity: 0.7,
+            }}
+          >
+            Skriv vad ni vill minnas
+          </span>
         </button>
+
+        {/* Kids accent pill — matches live CardView kids CTA exactly */}
+        <div style={{ padding: '8px 24px 20px', display: 'flex', justifyContent: 'center' }}>
+          <button
+            style={{
+              width: '100%',
+              maxWidth: 340,
+              height: 56,
+              borderRadius: 28,
+              background: `color-mix(in srgb, ${VARDAG_ACCENT} 40%, rgba(255,255,255,0.06))`,
+              border: `1px solid color-mix(in srgb, ${VARDAG_ACCENT} 60%, transparent)`,
+              color: LANTERN_GLOW,
+              fontFamily: FONT_SANS,
+              fontWeight: 600,
+              fontSize: 16,
+              letterSpacing: 0,
+            }}
+          >
+            Nästa
+          </button>
+        </div>
       </div>
     </ScaledScreen>
   );
