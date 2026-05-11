@@ -223,8 +223,23 @@ export default function AppStoreScreenshot() {
       );
     }
     if (spec.bareFrame) {
+      const BARE_SCALE = (CANVAS_W * 0.98) / FRAME_WIDTH_PX;
+      const scaledW = FRAME_WIDTH_PX * BARE_SCALE;
+      const scaledH = FRAME_HEIGHT_PX * BARE_SCALE;
+      const left = (CANVAS_W - scaledW) / 2;
+      const top = (CANVAS_H - scaledH) / 2;
       return (
-        <div style={{ position: 'absolute', inset: 0, transform: `translateY(${centerOffset}px)` }}>
+        <div
+          style={{
+            position: 'absolute',
+            left: `${left - FRAME_TOP_PX * 0 + 0}px`,
+            top: `${top - FRAME_TOP_PX}px`,
+            transform: `translate(${0}px, ${0}px) scale(${BARE_SCALE})`,
+            transformOrigin: 'top left',
+            width: FRAME_WIDTH_PX,
+            height: FRAME_HEIGHT_PX,
+          }}
+        >
           <DeviceFrame background={spec.screenBg} showChrome={spec.showChrome ?? true}>
             <Screen {...screenProps} />
           </DeviceFrame>
