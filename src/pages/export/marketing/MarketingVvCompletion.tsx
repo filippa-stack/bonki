@@ -17,8 +17,28 @@ const REFLECTION =
   'Vi pratade om vem som b\u00e4r vad \u2014 och hur det m\u00e4rks \u00e4ven n\u00e4r vi inte s\u00e4ger det. Jag visste inte att Johan faktiskt s\u00e5g det. Att han f\u00f6rst\u00e5tt hur tungt det \u00e4r att alltid vara den som planerar.';
 
 export default function MarketingVvCompletion() {
+  const cardImageUrl = useCardImage('smallest-we');
   return (
     <ScaledScreen background={MIDNIGHT_INK}>
+      {cardImageUrl && (
+        <img
+          src={cardImageUrl}
+          alt=""
+          draggable={false}
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '50%',
+            objectFit: 'contain',
+            objectPosition: '50% 30%',
+            opacity: 0.3,
+            pointerEvents: 'none',
+            zIndex: 0,
+          }}
+        />
+      )}
       <div
         style={{
           position: 'absolute',
@@ -28,6 +48,7 @@ export default function MarketingVvCompletion() {
           flexDirection: 'column',
           alignItems: 'center',
           height: LOGICAL_H,
+          zIndex: 1,
         }}
       >
         {/* Saffron hairline — production non-child branch */}
