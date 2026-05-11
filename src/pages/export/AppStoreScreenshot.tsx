@@ -268,7 +268,7 @@ export default function AppStoreScreenshot() {
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 24, flexWrap: 'wrap' }}>
         <h1 style={{ fontSize: 18, fontWeight: 600, margin: 0 }}>
-          App Store screenshot {spec.n}/7 — {spec.name}
+          App Store screenshot {spec.n}/{GRAPHICS.length} — {spec.name}
         </h1>
         <button
           onClick={handleDownload}
