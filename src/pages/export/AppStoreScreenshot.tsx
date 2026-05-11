@@ -15,6 +15,7 @@ import {
   CANVAS_H,
   MIDNIGHT_INK,
   JIM_DEEP,
+  FRAME_WIDTH_PX,
   FRAME_HEIGHT_PX,
   FRAME_TOP_PX,
 } from '@/lib/exportScreenshot/composition';
@@ -223,8 +224,23 @@ export default function AppStoreScreenshot() {
       );
     }
     if (spec.bareFrame) {
+      const BARE_SCALE = (CANVAS_W * 0.98) / FRAME_WIDTH_PX;
+      const scaledH = FRAME_HEIGHT_PX * BARE_SCALE;
+      const targetTop = (CANVAS_H - scaledH) / 2;
+      // Scale around frame top-center, then translate vertically so the
+      // scaled frame is centered on the canvas. DeviceFrame internally
+      // anchors at top:FRAME_TOP_PX, left:50% — wrapper transform scales
+      // and shifts the whole device as one unit.
+      const translateY = targetTop - FRAME_TOP_PX;
       return (
-        <div style={{ position: 'absolute', inset: 0, transform: `translateY(${centerOffset}px)` }}>
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            transform: `translateY(${translateY}px) scale(${BARE_SCALE})`,
+            transformOrigin: `50% ${FRAME_TOP_PX}px`,
+          }}
+        >
           <DeviceFrame background={spec.screenBg} showChrome={spec.showChrome ?? true}>
             <Screen {...screenProps} />
           </DeviceFrame>
