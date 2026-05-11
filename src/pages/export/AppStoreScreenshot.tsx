@@ -24,6 +24,20 @@ import Screen4JimSession from './screenshots/Screen4JimSession';
 import Screen5VvSession from './screenshots/Screen5VvSession';
 import Screen6JimCompletion from './screenshots/Screen6JimCompletion';
 import Screen7Authority from './screenshots/Screen7Authority';
+import {
+  ScreenLibrary,
+  ScreenJmaHome,
+  ScreenJivHome,
+  ScreenVardagsHome,
+  ScreenSyskonHome,
+  ScreenSexHome,
+  ScreenVvHome,
+} from './screenshots/BareProductScreens';
+import {
+  CANVAS_H as _CH,
+  FRAME_HEIGHT_PX,
+  FRAME_TOP_PX,
+} from '@/lib/exportScreenshot/composition';
 
 interface GraphicSpec {
   n: number;
