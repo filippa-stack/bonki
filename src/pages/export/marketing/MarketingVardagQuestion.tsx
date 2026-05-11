@@ -7,6 +7,7 @@
 import { ScaledScreen, FONT_SERIF, FONT_SANS, LOGICAL_H } from './MarketingShared';
 import { LANTERN_GLOW, productAccentColor, productTileColors } from '@/lib/palette';
 import { vardagskortProduct } from '@/data/products/vardagskort';
+import { useCardImage } from '@/hooks/useCardImage';
 
 const CARD = vardagskortProduct.cards.find((c) => c.id === 'vk-hur-var-din-dag')!;
 const PROMPTS = (CARD.sections[0] as any).prompts as string[];
@@ -18,6 +19,7 @@ const VARDAG_BG = vardagskortProduct.backgroundColor || productTileColors.vardag
 const VARDAG_ACCENT = productAccentColor['vardagskort'];
 
 export default function MarketingVardagQuestion() {
+  const cardImageUrl = useCardImage('vk-hur-var-din-dag');
   return (
     <ScaledScreen background={VARDAG_BG}>
       <div
@@ -106,9 +108,28 @@ export default function MarketingVardagQuestion() {
             alignItems: 'center',
           }}
         >
+          {cardImageUrl && (
+            <img
+              src={cardImageUrl}
+              alt=""
+              draggable={false}
+              style={{
+                position: 'absolute',
+                inset: '-32%',
+                width: '164%',
+                height: '164%',
+                objectFit: 'contain',
+                objectPosition: '50% 45%',
+                opacity: 0.7,
+                pointerEvents: 'none',
+                zIndex: 0,
+              }}
+            />
+          )}
           <div
             style={{
               position: 'absolute',
+              zIndex: 1,
               inset: '-24px -12px',
               background:
                 'radial-gradient(60% 50% at 50% 50%, rgba(233,200,144,0.18) 0%, rgba(233,200,144,0.04) 55%, transparent 75%)',
@@ -119,6 +140,7 @@ export default function MarketingVardagQuestion() {
           <div
             style={{
               position: 'relative',
+              zIndex: 1,
               width: '100%',
               borderRadius: 28,
               background: '#FAF7F2',

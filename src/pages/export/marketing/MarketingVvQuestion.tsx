@@ -7,6 +7,7 @@
 import { ScaledScreen, FONT_SERIF, FONT_SANS, LOGICAL_H } from './MarketingShared';
 import { MIDNIGHT_INK, LANTERN_GLOW, WARM_GOLD, BARK } from '@/lib/palette';
 import { cards as stillUsCards } from '@/data/content';
+import { useCardImage } from '@/hooks/useCardImage';
 
 const CARD = stillUsCards.find((c) => c.id === 'smallest-we')!;
 const QUESTION = (CARD.sections[0].prompts as string[])[0];
@@ -14,6 +15,7 @@ const TOTAL_PROMPTS = (CARD.sections[0].prompts as string[]).length; // 4
 const CURRENT_PROMPT = 2;
 
 export default function MarketingVvQuestion() {
+  const cardImageUrl = useCardImage('smallest-we');
   return (
     <ScaledScreen background={MIDNIGHT_INK}>
       <div
@@ -80,9 +82,28 @@ export default function MarketingVvQuestion() {
             alignItems: 'center',
           }}
         >
+          {cardImageUrl && (
+            <img
+              src={cardImageUrl}
+              alt=""
+              draggable={false}
+              style={{
+                position: 'absolute',
+                inset: '-32%',
+                width: '164%',
+                height: '164%',
+                objectFit: 'contain',
+                objectPosition: '50% 45%',
+                opacity: 0.7,
+                pointerEvents: 'none',
+                zIndex: 0,
+              }}
+            />
+          )}
           <div
             style={{
               position: 'absolute',
+              zIndex: 1,
               inset: '-32px -16px',
               background:
                 'radial-gradient(60% 50% at 50% 50%, rgba(233,200,144,0.28) 0%, rgba(233,200,144,0.08) 55%, rgba(233,200,144,0) 75%)',
@@ -93,6 +114,7 @@ export default function MarketingVvQuestion() {
           <div
             style={{
               position: 'relative',
+              zIndex: 1,
               width: '100%',
               borderRadius: 28,
               background: '#FAF7F2',
