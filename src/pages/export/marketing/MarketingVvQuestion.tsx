@@ -15,6 +15,7 @@ const TOTAL_PROMPTS = (CARD.sections[0].prompts as string[]).length; // 4
 const CURRENT_PROMPT = 2;
 
 export default function MarketingVvQuestion() {
+  const cardImageUrl = useCardImage('smallest-we');
   return (
     <ScaledScreen background={MIDNIGHT_INK}>
       <div
