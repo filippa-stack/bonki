@@ -1,55 +1,49 @@
-## Fix: bare iPhone graphics (8–16) render at full canvas size
+## Problem
 
-### Problem
+Scaling the wrapper `div` with CSS `transform: scale()` blows up the entire device — frame, bezel, and iframe contents — proportionally. The iframe still renders at the same logical viewport (`390 × ~616` CSS pixels), so the user sees the *same* slice of the app, just bigger. No additional app content becomes visible.
 
-Graphics 8–16 reuse the same `DeviceFrame` dimensions (1079 × 1689 px) that graphics 1–7 use, where the frame intentionally only fills the bottom ~60% of the 1284 × 2778 canvas — the top ~35% is reserved for the caption zone. Since the bare graphics have no caption, the frame is just floating small in the middle of the canvas with huge empty bands above and below.
+## Root cause
 
-### Fix
+`DeviceFrame` has hardcoded dimensions (`FRAME_WIDTH_PX = 1079`, `FRAME_HEIGHT_PX = 1689`). `RealAppFrame` imports those same constants to compute its iframe's logical height (`logicalH = innerH / scale ≈ 616`). Wrapping in `transform: scale(1.166)` doesn't change either — it just rescales the rendered pixels.
 
-When `bareFrame: true`, render the device frame at an enlarged size so it visually fills the canvas (small uniform margin), keeping the same aspect ratio so the iPhone silhouette stays correct.
+To show **more** app content, the iframe itself must be rendered at a **larger physical size** (taller inner screen → taller logicalH → more vertical content fits before the iframe is clipped).
 
-**Sizing math** (in `AppStoreScreenshot.tsx`, only for the `bareFrame` branch):
+## Fix
 
-- Canvas: `1284 × 2778`
-- Original frame: `1079 × 1689` (aspect `0.639`)
-- Target: scale frame uniformly to `~98%` of canvas width → `width ≈ 1258`, `height ≈ 1970`. Vertically centered → top ≈ `404`.
-- Scale factor: `1258 / 1079 ≈ 1.166`.
+Render a dedicated larger device for bare graphics instead of scaling. Make `DeviceFrame` + `RealAppFrame` accept width/height props.
 
-Implementation approach: wrap `<DeviceFrame>` in a positioned div that applies a CSS `transform: scale(1.166)` with `transformOrigin: 'top left'`, then translate it to center on canvas. This keeps `DeviceFrame` itself unchanged (so the bezel/corner-radius/screen content all scale together as one unit, including the iframe) and is isolated to the bare-frame branch — graphics 1–7 are untouched.
+### Changes
+
+**1. `src/lib/exportScreenshot/composition.tsx`**
+- Add optional `width` / `height` / `top` props to `DeviceFrame` (defaults stay `FRAME_WIDTH_PX` / `FRAME_HEIGHT_PX` / `FRAME_TOP_PX` so graphics 1–7 are unchanged).
+- Export new constants for bare-frame size, e.g.:
+  - `BARE_FRAME_WIDTH_PX = 1258` (≈ 98% of 1284)
+  - `BARE_FRAME_HEIGHT_PX = 2580` (fills canvas vertically with ~99 px breathing room top & bottom; preserves iPhone-ish aspect closely enough — the bezel curve still reads as iPhone)
+  - `BARE_FRAME_TOP_PX = (2778 - 2580) / 2 = 99`
+
+**2. `src/pages/export/screenshots/RealAppFrame.tsx`**
+- Accept optional `frameWidth` / `frameHeight` props. Compute `innerW`/`innerH` from these instead of the global constants.
+- Result: iframe `logicalH = innerH / scale` grows from ~616 → ~795 CSS px, so ~30 % more app content fits vertically.
+
+**3. `src/pages/export/screenshots/BareProductScreens.tsx`**
+- Pass the bare frame dimensions through to `RealAppFrame` so its iframe sizes match.
+
+**4. `src/pages/export/AppStoreScreenshot.tsx`**
+- Remove the wrapper-level `transform: scale()` for the `bareFrame` branch.
+- Render `<DeviceFrame width={BARE_FRAME_WIDTH_PX} height={BARE_FRAME_HEIGHT_PX} top={BARE_FRAME_TOP_PX}>` with `<Screen frameWidth=... frameHeight=...>` inside.
+
+### Untouched
+
+- Graphics 1–7 (default `DeviceFrame` args identical to today's behaviour).
+- `compositionAndroid.tsx`, `GooglePlayScreenshot.tsx`.
+- Capture pipeline (still 1284×2778).
+- Screen content components — they render whatever route they target; the iframe just exposes more of it.
+
+### Numbers
 
 ```text
-Before                          After
-┌──────────────────┐            ┌──────────────────┐
-│                  │            │  ┌────────────┐  │
-│   (empty band)   │            │  │            │  │
-│                  │            │  │            │  │
-│   ┌──────────┐   │            │  │   iPhone   │  │
-│   │  iPhone  │   │            │  │            │  │
-│   │          │   │            │  │            │  │
-│   └──────────┘   │            │  │            │  │
-│                  │            │  └────────────┘  │
-│   (empty band)   │            │                  │
-└──────────────────┘            └──────────────────┘
+Canvas:           1284 × 2778
+Old bare frame:   1079 × 1689   (scaled 1.166× = 1258 × 1970 pixels, but iframe content unchanged)
+New bare frame:   1258 × 2580   (real larger device, iframe gets ~795 CSS px tall → +30% content)
+Top margin:       99 px         (centers vertically)
 ```
-
-### Files touched
-
-- **`src/pages/export/AppStoreScreenshot.tsx`** — replace the current `bareFrame` render branch:
-  - Compute `BARE_SCALE = (CANVAS_W * 0.98) / FRAME_WIDTH_PX`.
-  - Compute scaled frame width/height; center on canvas.
-  - Wrap `<DeviceFrame>` in a div with `position: absolute`, `left/top` for centering, and `transform: scale(BARE_SCALE)` with `transformOrigin: 'top left'`.
-
-### Not changed
-
-- `composition.tsx` constants (`FRAME_TOP_PX`, `FRAME_WIDTH_PX`, etc.) — unchanged so graphics 1–7 remain pixel-identical.
-- `DeviceFrame` internal markup — unchanged.
-- iframe / `RealAppFrame` — unchanged (it sizes relative to `FRAME_WIDTH_PX`, and the CSS scale wraps everything as a single unit).
-- Caption/hairline branches — unchanged.
-
-### Verification
-
-- `/export/app-store/8` through `/16`: iPhone frame visually fills the canvas with ~1.3% margin per side, no large empty bands.
-- iPhone silhouette aspect ratio preserved (no stretching).
-- Status bar, screen content, and home indicator all scale together cleanly.
-- Graphics 1–7 unchanged in preview and PNG export.
-- PNG export still produces 1284 × 2778.

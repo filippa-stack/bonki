@@ -14,15 +14,24 @@ interface Props {
    *  space. Negative values shift content up (reveals top of page above the
    *  status-bar zone painted by DeviceFrame). */
   translateY?: number;
+  /** Override frame width/height (defaults to FRAME_WIDTH_PX / FRAME_HEIGHT_PX). */
+  frameWidth?: number;
+  frameHeight?: number;
 }
 
-export default function RealAppFrame({ src, scrollY = 0, translateY = 0 }: Props) {
+export default function RealAppFrame({
+  src,
+  scrollY = 0,
+  translateY = 0,
+  frameWidth = FRAME_WIDTH_PX,
+  frameHeight = FRAME_HEIGHT_PX,
+}: Props) {
   const ref = useRef<HTMLIFrameElement | null>(null);
 
   // Inner screen dimensions (frame minus bezel) — must match DeviceFrame's bezel.
   const bezel = 12;
-  const innerW = FRAME_WIDTH_PX - bezel * 2;
-  const innerH = FRAME_HEIGHT_PX - bezel * 2;
+  const innerW = frameWidth - bezel * 2;
+  const innerH = frameHeight - bezel * 2;
   const scale = innerW / INNER_LOGICAL_W;
   const logicalH = innerH / scale;
 
