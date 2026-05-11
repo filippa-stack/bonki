@@ -7,6 +7,7 @@
 import { ScaledScreen, FONT_SERIF, FONT_SANS, LOGICAL_H } from './MarketingShared';
 import { LANTERN_GLOW, productAccentColor, productTileColors } from '@/lib/palette';
 import { vardagskortProduct } from '@/data/products/vardagskort';
+import { useCardImage } from '@/hooks/useCardImage';
 
 const CARD = vardagskortProduct.cards.find((c) => c.id === 'vk-hur-var-din-dag')!;
 const PROMPTS = (CARD.sections[0] as any).prompts as string[];
