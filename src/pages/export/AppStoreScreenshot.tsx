@@ -250,19 +250,7 @@ export default function AppStoreScreenshot() {
     return (
       <div style={{ margin: 0, padding: 0, background: '#000', width: CANVAS_W, height: CANVAS_H }}>
         <AppStoreCanvas innerRef={(el) => (captureRef.current = el)} background={spec.canvasBg}>
-          {spec.bare ? (
-            <div style={{ position: 'absolute', inset: 0 }}>
-              <Screen {...screenProps} />
-            </div>
-          ) : (
-            <>
-              <CaptionZone size={spec.captionSize}>{spec.caption}</CaptionZone>
-              <HairlineDivider />
-              <DeviceFrame background={spec.screenBg} showChrome={spec.showChrome ?? true}>
-                <Screen {...screenProps} />
-              </DeviceFrame>
-            </>
-          )}
+          {renderCanvasChildren()}
         </AppStoreCanvas>
       </div>
     );
