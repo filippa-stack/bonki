@@ -204,7 +204,11 @@ export default function AppStoreScreenshot() {
     return () => window.removeEventListener('resize', compute);
   }, [isRaw]);
 
-  const Screen = spec.Screen as React.ComponentType<{ scrollY?: number }>;
+  const Screen = spec.Screen as React.ComponentType<{
+    scrollY?: number;
+    frameWidth?: number;
+    frameHeight?: number;
+  }>;
   const screenProps = spec.iframeScrollY != null ? { scrollY: spec.iframeScrollY } : {};
 
   const handleDownload = async () => {
@@ -217,7 +221,6 @@ export default function AppStoreScreenshot() {
     }
   };
 
-  const centerOffset = (CANVAS_H - FRAME_HEIGHT_PX) / 2 - FRAME_TOP_PX;
   const renderCanvasChildren = () => {
     if (spec.bare) {
       return (
@@ -227,27 +230,23 @@ export default function AppStoreScreenshot() {
       );
     }
     if (spec.bareFrame) {
-      const BARE_SCALE = (CANVAS_W * 0.98) / FRAME_WIDTH_PX;
-      const scaledH = FRAME_HEIGHT_PX * BARE_SCALE;
-      const targetTop = (CANVAS_H - scaledH) / 2;
-      // Scale around frame top-center, then translate vertically so the
-      // scaled frame is centered on the canvas. DeviceFrame internally
-      // anchors at top:FRAME_TOP_PX, left:50% — wrapper transform scales
-      // and shifts the whole device as one unit.
-      const translateY = targetTop - FRAME_TOP_PX;
+      // Render a larger DeviceFrame directly (no CSS scaling) so the
+      // embedded iframe gets a taller logical viewport and reveals more
+      // app content vertically.
       return (
-        <div
-          style={{
-            position: 'absolute',
-            inset: 0,
-            transform: `translateY(${translateY}px) scale(${BARE_SCALE})`,
-            transformOrigin: `50% ${FRAME_TOP_PX}px`,
-          }}
+        <DeviceFrame
+          background={spec.screenBg}
+          showChrome={spec.showChrome ?? true}
+          width={BARE_FRAME_WIDTH_PX}
+          height={BARE_FRAME_HEIGHT_PX}
+          top={BARE_FRAME_TOP_PX}
         >
-          <DeviceFrame background={spec.screenBg} showChrome={spec.showChrome ?? true}>
-            <Screen {...screenProps} />
-          </DeviceFrame>
-        </div>
+          <Screen
+            {...screenProps}
+            frameWidth={BARE_FRAME_WIDTH_PX}
+            frameHeight={BARE_FRAME_HEIGHT_PX}
+          />
+        </DeviceFrame>
       );
     }
     return (
