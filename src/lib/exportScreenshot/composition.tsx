@@ -16,6 +16,12 @@ export const HAIRLINE_TOP_PX = 904;
 export const FRAME_TOP_PX = 964;
 export const FRAME_WIDTH_PX = 1079;
 export const FRAME_HEIGHT_PX = 1689;
+// Bare-frame dimensions (graphics 8–16): larger device that fills the canvas
+// so the embedded iframe renders at a taller logical viewport and shows more
+// app content. Centered vertically on the 1284×2778 canvas.
+export const BARE_FRAME_WIDTH_PX = 1258;
+export const BARE_FRAME_HEIGHT_PX = 2580;
+export const BARE_FRAME_TOP_PX = Math.round((CANVAS_H - BARE_FRAME_HEIGHT_PX) / 2);
 // Logical iPhone CSS viewport used inside the device frame (mobile breakpoints)
 export const INNER_LOGICAL_W = 390;
 
