@@ -1,12 +1,19 @@
 /**
- * Marketing 03 — Vårt Vi completion screen with reflection takeaway.
+ * Marketing 03 — Vårt Vi completion screen.
+ * Renders the production VV (non-child) branch styling exactly:
+ *  - Saffron hairline (not a saffron checkmark badge — that's the kids branch)
+ *  - Headline at clamp(26px, 7vw, 34px) weight 500 in hsl(41 78% 38%)
+ *  - Translucent dark takeaway block with italic serif text
+ *  - "Fortsätt utforska" CTA
+ * Mirrors CompletedSessionView lines ~248–520 non-child branch.
  */
 import { ScaledScreen, FONT_DISPLAY, FONT_SERIF, FONT_SANS, LOGICAL_H } from './MarketingShared';
-import { MIDNIGHT_INK, LANTERN_GLOW, WARM_GOLD, SAFFRON_FLAME } from '@/lib/palette';
+import { MIDNIGHT_INK } from '@/lib/palette';
 
-const HEADLINE = "Ni pratade om Ert minsta 'vi'.";
+const HEADLINE = 'Ni pratade om Det osynliga ansvaret.';
+const DATE = 'April 2026';
 const REFLECTION =
-  'Att vi skrattar åt samma saker. Att jag kan komma hem och säga något helt obegripligt och han förstår direkt vad jag menar.';
+  'Det är jag som planerar. Det har jag alltid vetat. Men jag visste inte att det syntes på honom också \u2014 att han kände det utan att vi pratat om det.';
 
 export default function MarketingVvCompletion() {
   return (
@@ -15,41 +22,33 @@ export default function MarketingVvCompletion() {
         style={{
           position: 'absolute',
           inset: 0,
-          padding: '56px 24px 28px',
+          padding: '64px 24px 32px',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
           height: LOGICAL_H,
         }}
       >
-        {/* Saffron checkmark badge */}
+        {/* Saffron hairline — production non-child branch */}
         <div
           style={{
-            width: 56,
-            height: 56,
-            borderRadius: '50%',
-            background: SAFFRON_FLAME,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            boxShadow: '0 0 0 6px rgba(233,180,76,0.18), 0 12px 24px rgba(0,0,0,0.35)',
-            marginBottom: 22,
+            width: 32,
+            height: 2,
+            borderRadius: 1,
+            background: 'hsl(41, 78%, 48%)',
+            opacity: 0.5,
+            marginBottom: 8,
           }}
-        >
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#1A1A2E" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-            <polyline points="20 6 9 17 4 12" />
-          </svg>
-        </div>
+        />
 
-        {/* Headline */}
+        {/* Headline — exact production values */}
         <h1
           style={{
             fontFamily: FONT_DISPLAY,
             fontWeight: 500,
-            fontStyle: 'normal',
             fontSize: 30,
             lineHeight: 1.2,
-            color: LANTERN_GLOW,
+            color: 'hsl(41, 78%, 38%)',
             textAlign: 'center',
             margin: 0,
             maxWidth: 320,
@@ -59,44 +58,65 @@ export default function MarketingVvCompletion() {
           {HEADLINE}
         </h1>
 
-        {/* Cream takeaway field with warm glow */}
-        <div style={{ position: 'relative', width: '100%', marginTop: 36, flex: 1, display: 'flex', alignItems: 'center' }}>
-          <div
+        {/* Date */}
+        <p
+          style={{
+            fontFamily: FONT_SERIF,
+            fontStyle: 'italic',
+            fontSize: 15,
+            color: '#FDF6E3',
+            opacity: 0.55,
+            margin: '8px 0 0',
+          }}
+        >
+          {DATE}
+        </p>
+
+        {/* Takeaway eyebrow */}
+        <p
+          style={{
+            fontFamily: FONT_SANS,
+            fontSize: 11,
+            letterSpacing: '0.06em',
+            textTransform: 'uppercase',
+            color: '#FDF6E3',
+            opacity: 0.45,
+            margin: '40px 0 8px',
+            alignSelf: 'flex-start',
+          }}
+        >
+          Det ni tog med er
+        </p>
+
+        {/* Translucent dark takeaway block */}
+        <div
+          style={{
+            width: '100%',
+            background: 'rgba(255, 255, 255, 0.06)',
+            borderRadius: 12,
+            border: '1px solid rgba(255, 255, 255, 0.08)',
+            flex: 1,
+            display: 'flex',
+            alignItems: 'flex-start',
+          }}
+        >
+          <p
             style={{
-              position: 'absolute',
-              inset: '-40px -20px',
-              background:
-                'radial-gradient(60% 55% at 50% 50%, rgba(233,200,144,0.32) 0%, rgba(233,200,144,0.08) 55%, rgba(233,200,144,0) 75%)',
-              pointerEvents: 'none',
-            }}
-          />
-          <div
-            style={{
-              position: 'relative',
-              width: '100%',
-              borderRadius: 24,
-              background: LANTERN_GLOW,
-              padding: '36px 28px',
-              boxShadow:
-                '0 30px 80px rgba(0,0,0,0.45), 0 8px 24px rgba(0,0,0,0.25)',
+              padding: '20px 24px',
+              fontFamily: FONT_SERIF,
+              fontStyle: 'italic',
+              fontSize: 17,
+              lineHeight: 1.7,
+              color: '#FDF6E3',
+              opacity: 0.8,
+              margin: 0,
             }}
           >
-            <p
-              style={{
-                fontFamily: FONT_SERIF,
-                fontStyle: 'italic',
-                fontSize: 19,
-                lineHeight: 1.55,
-                color: '#1A1A2E',
-                margin: 0,
-                textAlign: 'left',
-              }}
-            >
-              {REFLECTION}
-            </p>
-          </div>
+            {REFLECTION}
+          </p>
         </div>
 
+        {/* "Fortsätt utforska" — production cta-primary */}
         <button
           style={{
             marginTop: 28,
@@ -105,16 +125,15 @@ export default function MarketingVvCompletion() {
             paddingInline: 36,
             borderRadius: 24,
             border: 'none',
-            background: WARM_GOLD,
+            background: 'hsl(41, 78%, 48%)',
             color: '#1A1A2E',
             fontFamily: FONT_SANS,
             fontWeight: 600,
             fontSize: 15,
             letterSpacing: '0.02em',
-            boxShadow: '0 12px 28px rgba(233,200,144,0.28)',
           }}
         >
-          Nästa samtal
+          Fortsätt utforska
         </button>
       </div>
     </ScaledScreen>
