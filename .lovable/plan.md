@@ -1,102 +1,58 @@
-## Mål
+# Extend App Store export set with 9 bare iPhone graphics
 
-Sju Google Play-skärmdumpar på `1080×1920 px` med samma komposition (caption-zon, hårlinje, app-skärm-zon), samma captions och samma `Screen*`-komponenter som App Store-versionen — men med Android-chrome (Pixel 8-stil).
+Add graphics 8–16 to the existing `/export/app-store/{n}` route. These are **bare device frames** — iPhone frame + screen content on the canvas, no caption zone, no hairline divider, no headline copy.
 
-## Justeringar (från godkännande)
+## What gets added
 
-1. **Caption-skala −15%** appliceras direkt i `GRAPHICS`-arrayen för Google Play-routen: `140 → 120`, `130 → 112`, `120 → 104`.
-2. **Frame aspect 1:1.34** är medvetet val för att bevara `INNER_LOGICAL_W = 390 px` viewport som `Screen*`-komponenterna är designade för. Skickar som planerat.
-3. **Status bar timestamp** = `12:00` (Android-konvention), inte `9:41`.
-4. **Punch-hole** = pure black fyllning + 1 px hairline-ring i `LANTERN_GLOW` @ 30% opacity för synlighet mot djupa bakgrunder (t.ex. `JIM_DEEP` terracotta).
+| # | Name | Source route | Canvas/screen bg |
+|---|---|---|---|
+| 8 | library | `/?demo=1&devState=browse&exportFonts=1` | Midnight Ink |
+| 9 | journal | (reuses pre-cropped `journal-clean.png`) | Midnight Ink |
+| 10 | jag-i-mig | `/product/jag-i-mig?demo=1&devState=browse&exportFonts=1` | JIM_DEEP |
+| 11 | jag-med-andra | `/product/jag-med-andra?...` | JMA palette deep |
+| 12 | jag-i-varlden | `/product/jag-i-varlden?...` | JIV palette deep |
+| 13 | vardagskort | `/product/vardagskort?...` | Vardags palette deep |
+| 14 | syskonkort | `/product/syskonkort?...` | Syskon palette deep |
+| 15 | sexualitetskort | `/product/sexualitetskort?...` | Sexualitet palette deep |
+| 16 | vart-vi | `/product/still-us?...` | Deep Dusk |
 
-## Arkitektur
+Filenames on download: `app-store-{n}-{name}.png`. Same 1290×2778 canvas as graphics 1–7.
 
-Ingen ändring i befintliga `src/pages/export/screenshots/Screen{1-7}*.tsx`, `composition.tsx`, eller App Store-flödet. Allt nytt läggs sida vid sida.
+## Composition
 
-### 1. Ny composition-modul
+A new render branch in `AppStoreScreenshot.tsx` keyed off a `bareFrame: true` flag on the spec:
 
-**Fil:** `src/lib/exportScreenshot/compositionAndroid.tsx`
+- `AppStoreCanvas` background = `canvasBg` (matches device screen bg so the frame floats seamlessly).
+- Single `DeviceFrame` centered vertically on canvas with full iOS chrome (`showChrome: true`).
+- No `CaptionZone`, no `HairlineDivider`.
+- Frame uses the existing `DeviceFrame` constants from `composition.tsx` — same dimensions as graphics 1–7 to keep the iPhone silhouette identical across the set.
+- Vertical centering: compute `top = (CANVAS_H - FRAME_HEIGHT_PX) / 2` and override the frame position via a wrapper.
 
-Speglar `composition.tsx` med Android-anpassade konstanter och primitiver:
+## Files touched
 
-```text
-CANVAS_W = 1080
-CANVAS_H = 1920
+- **`src/pages/export/AppStoreScreenshot.tsx`** — extend `GRAPHICS` array from 7 to 16 entries; add `bareFrame?: boolean` to `GraphicSpec`; add render branch for bare-frame mode (centers the existing `DeviceFrame` on canvas, no caption/hairline). Update nav-tabs grid to wrap (16 buttons).
+- **`src/pages/export/screenshots/Screen8Library.tsx`** — `RealAppFrame` pointing to `/?demo=1&devState=browse&exportFonts=1` (identical to Screen1 but kept separate for clarity).
+- **`src/pages/export/screenshots/Screen9Journal.tsx`** — re-export of existing `Screen2Journal` (or use it directly in spec — no new file needed).
+- **`src/pages/export/screenshots/Screen10JmaHome.tsx` … `Screen15SexHome.tsx`, `Screen16VvHome.tsx`** — one `RealAppFrame` per product slug. Six new files (jag-med-andra, jag-i-varlden, vardagskort, syskonkort, sexualitetskort, still-us). Reuse existing `Screen3JimHome.tsx` for jag-i-mig (graphic 10) — or add `Screen10JimHome.tsx` for naming consistency; pick one (recommend reusing `Screen3JimHome`).
 
-// Skalat proportionellt mot App Store-versionen
-TOP_BREATH_PX        = 117   (var 169 → ×0.691)
-CAPTION_ZONE_TOP_PX  = 117
-CAPTION_ZONE_HEIGHT  = 494   (var 715)
-HAIRLINE_TOP_PX      = 625   (var 904)
-FRAME_TOP_PX         = 666   (var 964)
-FRAME_WIDTH_PX       = 907   (var 1079, 84% av canvas-bredden)
-FRAME_HEIGHT_PX      = 1218  (var 1689; aspect ≈ 1:1.34 — medvetet val)
-INNER_LOGICAL_W      = 390   (oförändrat — Screen*-komponenter förblir samma)
-```
+Total new files: 7 (one library + six product homes; journal and jag-i-mig reuse existing screen components).
 
-Exporter: `GooglePlayCanvas`, `CaptionZone`, `HairlineDivider`, `AndroidDeviceFrame`.
+## Canvas backgrounds per product
 
-### 2. Android-device-frame
+Pulled from `productTileColors` deep variants (mem://design/product-color-palette-mapping). Falls back to MIDNIGHT_INK if a palette is unclear — verified against `src/lib/palette.ts` during implementation.
 
-- **Punch-hole** (top-center): cirkel `Ø 28 px` absolut-positionerad `top: 18 px, left: 50%`, `background: #000`, `border: 1px solid rgba(245, 232, 204, 0.30)` (LANTERN_GLOW @ 30%), `z-index: 11`. Garanterar synlighet mot både `MIDNIGHT_INK` och `JIM_DEEP`.
-- **Hörnradie:** `innerRadius = 60` (Pixel 8-stil, skarpare än iPhone), `bezel = 10`.
-- **AndroidStatusBar:**
-  - Höjd `48 px`, padding `0 48px`, fontfamilj `"Roboto", "Inter", -apple-system, sans-serif`, fontsize `30 px`, fontweight `500`.
-  - Vänster: **`12:00`** (Android-konvention).
-  - Höger: signal-staplar (Material-stil, 4 staplar), Wi-Fi (Material-triangel), batteri-rektangel utan tip, ikoner ~`26 px`.
-- **AndroidNavBar** (ersätter HomeIndicator): gestur-pill `width: 320 px, height: 6 px, borderRadius: 3 px, bg: rgba(255,255,255,0.85)`, `bottom: 14 px`, centrerad.
-- `showChrome={false}` döljer status bar + nav bar (men behåller punch-hole — den är fysisk hårdvara, inte UI-chrome).
+## What's intentionally NOT changed
 
-### 3. Ny export-route-komponent
+- `composition.tsx` — untouched; reuses existing `DeviceFrame`, `AppStoreCanvas`, constants.
+- `compositionAndroid.tsx` — untouched.
+- `GooglePlayScreenshot.tsx` — untouched (no Google Play counterparts requested).
+- Graphics 1–7 — pixel-identical, no regression.
+- Export pipeline (`exportPng.ts`, raw mode for puppeteer) — works as-is for new graphics.
 
-**Fil:** `src/pages/export/GooglePlayScreenshot.tsx`
+## Verification
 
-Klon av `AppStoreScreenshot.tsx` med:
-- Imports från `compositionAndroid`.
-- `GooglePlayCanvas` + `AndroidDeviceFrame`.
-- Filnamn: `google-play-${n}-${name}.png`.
-- Nav-länkar: `/export/google-play/${n}`.
-- Rubrik: `Google Play screenshot N/7`.
-- `GRAPHICS`-arrayen: identiska captions, `canvasBg`/`screenBg`, `Screen`-komponenter, `bare`/`showChrome`/`iframeScrollY` — **men `captionSize` skalad −15%**:
-
-```text
-Screen 1: 140 → 120
-Screen 2: 130 → 112
-Screen 3: 130 → 112
-Screen 4: 130 → 112
-Screen 5: 130 → 112
-Screen 6: 120 → 104
-Screen 7: 120 → 104
-```
-
-### 4. Routes
-
-**Fil:** `src/App.tsx` — lägg till bredvid app-store-routerna:
-
-```tsx
-<Route path="/export/google-play" element={<Navigate to="/export/google-play/1" replace />} />
-<Route path="/export/google-play/:n" element={<GooglePlayScreenshot />} />
-```
-
-### 5. Export-pipeline
-
-`exportNodeToPng(node, filename, 1080, 1920)`. `?raw=1`-läget fungerar identiskt.
-
-## Filer som skapas/ändras
-
-```text
-NEW  src/lib/exportScreenshot/compositionAndroid.tsx
-NEW  src/pages/export/GooglePlayScreenshot.tsx
-EDIT src/App.tsx                          (+2 rader routes, +1 import)
-```
-
-## Inget som ändras
-
-`composition.tsx`, `AppStoreScreenshot.tsx`, alla `Screen{1-7}*.tsx`, demo-data, captions, copy.
-
-## Verifikation efter implementation
-
-1. Navigera till `/export/google-play/1` … `/7`, kontrollera att alla 7 renderar utan layoutfel.
-2. Visuell QA: punch-hole syns top-center med hairline-ring mot både mörkblå och terracotta bakgrund; status bar visar `12:00`; nav-pill längst ner.
-3. Ladda ner en PNG, verifiera exakt `1080×1920 px`.
-4. Bekräfta att `Screen5VvSession` (`showChrome: false`) inte renderar dubbel status bar men behåller punch-hole.
+- All 16 routes render (`/export/app-store/1` … `/export/app-store/16`).
+- Bare graphics (8–16) show only iPhone frame + screen, no caption text, no hairline.
+- Each product home shows production content with all categories/cards unlocked (browse mode).
+- PNG download produces 1290×2778 file with correct filename.
+- Nav tabs at top of preview wrap cleanly with 16 buttons.

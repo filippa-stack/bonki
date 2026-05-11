@@ -15,6 +15,8 @@ import {
   CANVAS_H,
   MIDNIGHT_INK,
   JIM_DEEP,
+  FRAME_HEIGHT_PX,
+  FRAME_TOP_PX,
 } from '@/lib/exportScreenshot/composition';
 import { exportNodeToPng } from '@/lib/exportScreenshot/exportPng';
 import Screen1Marquee from './screenshots/Screen1Marquee';
@@ -24,17 +26,28 @@ import Screen4JimSession from './screenshots/Screen4JimSession';
 import Screen5VvSession from './screenshots/Screen5VvSession';
 import Screen6JimCompletion from './screenshots/Screen6JimCompletion';
 import Screen7Authority from './screenshots/Screen7Authority';
+import {
+  ScreenLibrary,
+  ScreenJmaHome,
+  ScreenJivHome,
+  ScreenVardagsHome,
+  ScreenSyskonHome,
+  ScreenSexHome,
+  ScreenVvHome,
+} from './screenshots/BareProductScreens';
 
 interface GraphicSpec {
   n: number;
   name: string;
-  caption: React.ReactNode;
-  captionSize: number;
+  caption?: React.ReactNode;
+  captionSize?: number;
   canvasBg: string;
   screenBg: string;
   Screen: React.ComponentType;
   /** When true, renders the screen full-canvas without a device frame (Screen 7). */
   bare?: boolean;
+  /** When true, renders only the iPhone frame centered (no caption/hairline). */
+  bareFrame?: boolean;
   /** When false, hides DeviceFrame's status bar + home indicator (e.g. Graphic 2 image already includes them). */
   showChrome?: boolean;
   /** Optional iframe content scroll-Y in CSS pixels (used to bring clipped content into view). */
@@ -133,11 +146,21 @@ const GRAPHICS: GraphicSpec[] = [
     Screen: Screen7Authority,
     bare: true,
   },
+  // ── Bare iPhone graphics (8–16): no caption, no hairline, frame centered ──
+  { n: 8, name: 'library', canvasBg: MIDNIGHT_INK, screenBg: MIDNIGHT_INK, Screen: ScreenLibrary, bareFrame: true },
+  { n: 9, name: 'journal', canvasBg: MIDNIGHT_INK, screenBg: MIDNIGHT_INK, Screen: Screen2Journal, bareFrame: true },
+  { n: 10, name: 'jag-i-mig', canvasBg: '#8C4A2D', screenBg: '#8C4A2D', Screen: Screen3JimHome, bareFrame: true },
+  { n: 11, name: 'jag-med-andra', canvasBg: '#721B3A', screenBg: '#721B3A', Screen: ScreenJmaHome, bareFrame: true },
+  { n: 12, name: 'jag-i-varlden', canvasBg: '#606613', screenBg: '#606613', Screen: ScreenJivHome, bareFrame: true },
+  { n: 13, name: 'vardagskort', canvasBg: '#48A873', screenBg: '#48A873', Screen: ScreenVardagsHome, bareFrame: true },
+  { n: 14, name: 'syskonkort', canvasBg: '#8E459D', screenBg: '#8E459D', Screen: ScreenSyskonHome, bareFrame: true },
+  { n: 15, name: 'sexualitetskort', canvasBg: '#7E4838', screenBg: '#7E4838', Screen: ScreenSexHome, bareFrame: true },
+  { n: 16, name: 'vart-vi', canvasBg: '#0B1026', screenBg: '#0B1026', Screen: ScreenVvHome, bareFrame: true },
 ];
 
 export default function AppStoreScreenshot() {
   const { n } = useParams<{ n: string }>();
-  const idx = Math.max(1, Math.min(7, parseInt(n ?? '1', 10))) - 1;
+  const idx = Math.max(1, Math.min(GRAPHICS.length, parseInt(n ?? '1', 10))) - 1;
   const spec = GRAPHICS[idx];
   const captureRef = useRef<HTMLDivElement | null>(null);
   const [busy, setBusy] = useState(false);
@@ -190,24 +213,41 @@ export default function AppStoreScreenshot() {
     }
   };
 
+  const centerOffset = (CANVAS_H - FRAME_HEIGHT_PX) / 2 - FRAME_TOP_PX;
+  const renderCanvasChildren = () => {
+    if (spec.bare) {
+      return (
+        <div style={{ position: 'absolute', inset: 0 }}>
+          <Screen {...screenProps} />
+        </div>
+      );
+    }
+    if (spec.bareFrame) {
+      return (
+        <div style={{ position: 'absolute', inset: 0, transform: `translateY(${centerOffset}px)` }}>
+          <DeviceFrame background={spec.screenBg} showChrome={spec.showChrome ?? true}>
+            <Screen {...screenProps} />
+          </DeviceFrame>
+        </div>
+      );
+    }
+    return (
+      <>
+        <CaptionZone size={spec.captionSize ?? 130}>{spec.caption}</CaptionZone>
+        <HairlineDivider />
+        <DeviceFrame background={spec.screenBg} showChrome={spec.showChrome ?? true}>
+          <Screen {...screenProps} />
+        </DeviceFrame>
+      </>
+    );
+  };
+
   // Render the bare canvas at 1:1 with no surrounding chrome — for puppeteer.
   if (isRaw) {
     return (
       <div style={{ margin: 0, padding: 0, background: '#000', width: CANVAS_W, height: CANVAS_H }}>
         <AppStoreCanvas innerRef={(el) => (captureRef.current = el)} background={spec.canvasBg}>
-          {spec.bare ? (
-            <div style={{ position: 'absolute', inset: 0 }}>
-              <Screen {...screenProps} />
-            </div>
-          ) : (
-            <>
-              <CaptionZone size={spec.captionSize}>{spec.caption}</CaptionZone>
-              <HairlineDivider />
-              <DeviceFrame background={spec.screenBg} showChrome={spec.showChrome ?? true}>
-                <Screen {...screenProps} />
-              </DeviceFrame>
-            </>
-          )}
+          {renderCanvasChildren()}
         </AppStoreCanvas>
       </div>
     );
@@ -225,7 +265,7 @@ export default function AppStoreScreenshot() {
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 24, flexWrap: 'wrap' }}>
         <h1 style={{ fontSize: 18, fontWeight: 600, margin: 0 }}>
-          App Store screenshot {spec.n}/7 — {spec.name}
+          App Store screenshot {spec.n}/{GRAPHICS.length} — {spec.name}
         </h1>
         <button
           onClick={handleDownload}
@@ -281,19 +321,7 @@ export default function AppStoreScreenshot() {
           }}
         >
           <AppStoreCanvas innerRef={(el) => (captureRef.current = el)} background={spec.canvasBg}>
-            {spec.bare ? (
-              <div style={{ position: 'absolute', inset: 0 }}>
-                <Screen {...screenProps} />
-              </div>
-            ) : (
-              <>
-                <CaptionZone size={spec.captionSize}>{spec.caption}</CaptionZone>
-                <HairlineDivider />
-                <DeviceFrame background={spec.screenBg} showChrome={spec.showChrome ?? true}>
-                  <Screen {...screenProps} />
-                </DeviceFrame>
-              </>
-            )}
+            {renderCanvasChildren()}
           </AppStoreCanvas>
         </div>
       </div>
