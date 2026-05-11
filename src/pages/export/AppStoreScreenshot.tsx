@@ -149,11 +149,21 @@ const GRAPHICS: GraphicSpec[] = [
     Screen: Screen7Authority,
     bare: true,
   },
+  // ── Bare iPhone graphics (8–16): no caption, no hairline, frame centered ──
+  { n: 8, name: 'library', canvasBg: MIDNIGHT_INK, screenBg: MIDNIGHT_INK, Screen: ScreenLibrary, bareFrame: true },
+  { n: 9, name: 'journal', canvasBg: MIDNIGHT_INK, screenBg: MIDNIGHT_INK, Screen: Screen2Journal, bareFrame: true },
+  { n: 10, name: 'jag-i-mig', canvasBg: '#8C4A2D', screenBg: '#8C4A2D', Screen: Screen3JimHome, bareFrame: true },
+  { n: 11, name: 'jag-med-andra', canvasBg: '#721B3A', screenBg: '#721B3A', Screen: ScreenJmaHome, bareFrame: true },
+  { n: 12, name: 'jag-i-varlden', canvasBg: '#606613', screenBg: '#606613', Screen: ScreenJivHome, bareFrame: true },
+  { n: 13, name: 'vardagskort', canvasBg: '#48A873', screenBg: '#48A873', Screen: ScreenVardagsHome, bareFrame: true },
+  { n: 14, name: 'syskonkort', canvasBg: '#8E459D', screenBg: '#8E459D', Screen: ScreenSyskonHome, bareFrame: true },
+  { n: 15, name: 'sexualitetskort', canvasBg: '#7E4838', screenBg: '#7E4838', Screen: ScreenSexHome, bareFrame: true },
+  { n: 16, name: 'vart-vi', canvasBg: '#0B1026', screenBg: '#0B1026', Screen: ScreenVvHome, bareFrame: true },
 ];
 
 export default function AppStoreScreenshot() {
   const { n } = useParams<{ n: string }>();
-  const idx = Math.max(1, Math.min(7, parseInt(n ?? '1', 10))) - 1;
+  const idx = Math.max(1, Math.min(GRAPHICS.length, parseInt(n ?? '1', 10))) - 1;
   const spec = GRAPHICS[idx];
   const captureRef = useRef<HTMLDivElement | null>(null);
   const [busy, setBusy] = useState(false);
