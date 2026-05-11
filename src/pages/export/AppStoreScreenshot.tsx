@@ -15,6 +15,8 @@ import {
   CANVAS_H,
   MIDNIGHT_INK,
   JIM_DEEP,
+  FRAME_HEIGHT_PX,
+  FRAME_TOP_PX,
 } from '@/lib/exportScreenshot/composition';
 import { exportNodeToPng } from '@/lib/exportScreenshot/exportPng';
 import Screen1Marquee from './screenshots/Screen1Marquee';
@@ -33,11 +35,6 @@ import {
   ScreenSexHome,
   ScreenVvHome,
 } from './screenshots/BareProductScreens';
-import {
-  CANVAS_H as _CH,
-  FRAME_HEIGHT_PX,
-  FRAME_TOP_PX,
-} from '@/lib/exportScreenshot/composition';
 
 interface GraphicSpec {
   n: number;
