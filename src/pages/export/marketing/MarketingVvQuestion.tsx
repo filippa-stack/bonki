@@ -7,6 +7,7 @@
 import { ScaledScreen, FONT_SERIF, FONT_SANS, LOGICAL_H } from './MarketingShared';
 import { MIDNIGHT_INK, LANTERN_GLOW, WARM_GOLD, BARK } from '@/lib/palette';
 import { cards as stillUsCards } from '@/data/content';
+import { useCardImage } from '@/hooks/useCardImage';
 
 const CARD = stillUsCards.find((c) => c.id === 'smallest-we')!;
 const QUESTION = (CARD.sections[0].prompts as string[])[0];
