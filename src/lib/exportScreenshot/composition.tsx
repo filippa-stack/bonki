@@ -114,11 +114,11 @@ export function DeviceFrame({
     <div
       style={{
         position: 'absolute',
-        top: `${FRAME_TOP_PX}px`,
+        top: `${top}px`,
         left: '50%',
         transform: 'translateX(-50%)',
-        width: `${FRAME_WIDTH_PX}px`,
-        height: `${FRAME_HEIGHT_PX}px`,
+        width: `${width}px`,
+        height: `${height}px`,
         borderRadius: `${innerRadius + bezel}px`,
         background: '#000',
         boxShadow: '0 24px 80px rgba(0,0,0,0.55), 0 6px 18px rgba(0,0,0,0.35)',
