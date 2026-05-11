@@ -42,13 +42,15 @@ import {
 interface GraphicSpec {
   n: number;
   name: string;
-  caption: React.ReactNode;
-  captionSize: number;
+  caption?: React.ReactNode;
+  captionSize?: number;
   canvasBg: string;
   screenBg: string;
   Screen: React.ComponentType;
   /** When true, renders the screen full-canvas without a device frame (Screen 7). */
   bare?: boolean;
+  /** When true, renders only the iPhone frame centered (no caption/hairline). */
+  bareFrame?: boolean;
   /** When false, hides DeviceFrame's status bar + home indicator (e.g. Graphic 2 image already includes them). */
   showChrome?: boolean;
   /** Optional iframe content scroll-Y in CSS pixels (used to bring clipped content into view). */
