@@ -48,6 +48,7 @@ import NotFound from "./pages/NotFound";
 import ScreenshotExport from "./pages/ScreenshotExport";
 import AppStoreScreenshot from "./pages/export/AppStoreScreenshot";
 import GooglePlayScreenshot from "./pages/export/GooglePlayScreenshot";
+import MarketingScreenshot from "./pages/export/MarketingScreenshot";
 import AnalyticsDashboard from "./pages/AnalyticsDashboard";
 import { useCaptureController } from "@/hooks/useCaptureController";
 
@@ -194,6 +195,8 @@ function AppRoutes() {
       <Route path="/export/app-store/:n" element={<AppStoreScreenshot />} />
       <Route path="/export/google-play" element={<Navigate to="/export/google-play/1" replace />} />
       <Route path="/export/google-play/:n" element={<GooglePlayScreenshot />} />
+      <Route path="/export/marketing" element={<Navigate to="/export/marketing/1" replace />} />
+      <Route path="/export/marketing/:n" element={<MarketingScreenshot />} />
       <Route path="/analytics" element={<AnalyticsDashboard />} />
       <Route path="/privacy" element={<PrivacyPolicy />} />
       <Route path="/delete-account" element={<DeleteAccount />} />
