@@ -19,6 +19,7 @@ const VARDAG_BG = vardagskortProduct.backgroundColor || productTileColors.vardag
 const VARDAG_ACCENT = productAccentColor['vardagskort'];
 
 export default function MarketingVardagQuestion() {
+  const cardImageUrl = useCardImage('vk-hur-var-din-dag');
   return (
     <ScaledScreen background={VARDAG_BG}>
       <div
