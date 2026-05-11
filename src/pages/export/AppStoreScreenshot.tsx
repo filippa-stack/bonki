@@ -18,6 +18,9 @@ import {
   FRAME_WIDTH_PX,
   FRAME_HEIGHT_PX,
   FRAME_TOP_PX,
+  BARE_FRAME_WIDTH_PX,
+  BARE_FRAME_HEIGHT_PX,
+  BARE_FRAME_TOP_PX,
 } from '@/lib/exportScreenshot/composition';
 import { exportNodeToPng } from '@/lib/exportScreenshot/exportPng';
 import Screen1Marquee from './screenshots/Screen1Marquee';
