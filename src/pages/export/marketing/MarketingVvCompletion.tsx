@@ -9,11 +9,12 @@
  */
 import { ScaledScreen, FONT_DISPLAY, FONT_SERIF, FONT_SANS, LOGICAL_H } from './MarketingShared';
 import { MIDNIGHT_INK } from '@/lib/palette';
+import { useCardImage } from '@/hooks/useCardImage';
 
 const HEADLINE = 'Ni pratade om Det osynliga ansvaret.';
 const DATE = 'April 2026';
 const REFLECTION =
-  'Det är jag som planerar. Det har jag alltid vetat. Men jag visste inte att det syntes på honom också \u2014 att han kände det utan att vi pratat om det.';
+  'Vi pratade om vem som b\u00e4r vad \u2014 och hur det m\u00e4rks \u00e4ven n\u00e4r vi inte s\u00e4ger det. Jag visste inte att Johan faktiskt s\u00e5g det. Att han f\u00f6rst\u00e5tt hur tungt det \u00e4r att alltid vara den som planerar.';
 
 export default function MarketingVvCompletion() {
   return (
