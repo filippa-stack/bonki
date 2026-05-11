@@ -82,19 +82,40 @@ export default function MarketingVvQuestion() {
             alignItems: 'center',
           }}
         >
+          {cardImageUrl && (
+            <img
+              src={cardImageUrl}
+              alt=""
+              draggable={false}
+              style={{
+                position: 'absolute',
+                inset: '-32%',
+                width: '164%',
+                height: '164%',
+                objectFit: 'contain',
+                objectPosition: '50% 45%',
+                opacity: 0.7,
+                pointerEvents: 'none',
+                zIndex: 0,
+              }}
+            />
+          )}
           <div
             style={{
-              position: 'absolute',
+              position: 'relative',
+              zIndex: 1,
               inset: '-32px -16px',
               background:
                 'radial-gradient(60% 50% at 50% 50%, rgba(233,200,144,0.28) 0%, rgba(233,200,144,0.08) 55%, rgba(233,200,144,0) 75%)',
               filter: 'blur(2px)',
               pointerEvents: 'none',
+              position: 'absolute',
             }}
           />
           <div
             style={{
               position: 'relative',
+              zIndex: 1,
               width: '100%',
               borderRadius: 28,
               background: '#FAF7F2',
