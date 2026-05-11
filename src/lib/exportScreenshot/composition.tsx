@@ -94,14 +94,20 @@ export function DeviceFrame({
   background,
   children,
   showChrome = true,
+  width = FRAME_WIDTH_PX,
+  height = FRAME_HEIGHT_PX,
+  top = FRAME_TOP_PX,
 }: {
   background: string;
   children: ReactNode;
   showChrome?: boolean;
+  width?: number;
+  height?: number;
+  top?: number;
 }) {
   const bezel = 12;
-  const innerW = FRAME_WIDTH_PX - bezel * 2;
-  const innerH = FRAME_HEIGHT_PX - bezel * 2;
+  const innerW = width - bezel * 2;
+  const innerH = height - bezel * 2;
   const innerRadius = 90;
 
   return (
