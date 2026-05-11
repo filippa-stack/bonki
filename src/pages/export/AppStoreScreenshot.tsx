@@ -15,6 +15,7 @@ import {
   CANVAS_H,
   MIDNIGHT_INK,
   JIM_DEEP,
+  FRAME_WIDTH_PX,
   FRAME_HEIGHT_PX,
   FRAME_TOP_PX,
 } from '@/lib/exportScreenshot/composition';
