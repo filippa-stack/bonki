@@ -216,6 +216,35 @@ export default function AppStoreScreenshot() {
     }
   };
 
+  const centerOffset = (CANVAS_H - FRAME_HEIGHT_PX) / 2 - FRAME_TOP_PX;
+  const renderCanvasChildren = () => {
+    if (spec.bare) {
+      return (
+        <div style={{ position: 'absolute', inset: 0 }}>
+          <Screen {...screenProps} />
+        </div>
+      );
+    }
+    if (spec.bareFrame) {
+      return (
+        <div style={{ position: 'absolute', inset: 0, transform: `translateY(${centerOffset}px)` }}>
+          <DeviceFrame background={spec.screenBg} showChrome={spec.showChrome ?? true}>
+            <Screen {...screenProps} />
+          </DeviceFrame>
+        </div>
+      );
+    }
+    return (
+      <>
+        <CaptionZone size={spec.captionSize ?? 130}>{spec.caption}</CaptionZone>
+        <HairlineDivider />
+        <DeviceFrame background={spec.screenBg} showChrome={spec.showChrome ?? true}>
+          <Screen {...screenProps} />
+        </DeviceFrame>
+      </>
+    );
+  };
+
   // Render the bare canvas at 1:1 with no surrounding chrome — for puppeteer.
   if (isRaw) {
     return (
