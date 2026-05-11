@@ -102,14 +102,13 @@ export default function MarketingVvQuestion() {
           )}
           <div
             style={{
-              position: 'relative',
+              position: 'absolute',
               zIndex: 1,
               inset: '-32px -16px',
               background:
                 'radial-gradient(60% 50% at 50% 50%, rgba(233,200,144,0.28) 0%, rgba(233,200,144,0.08) 55%, rgba(233,200,144,0) 75%)',
               filter: 'blur(2px)',
               pointerEvents: 'none',
-              position: 'absolute',
             }}
           />
           <div
