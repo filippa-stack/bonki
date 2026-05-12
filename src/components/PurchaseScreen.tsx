@@ -312,7 +312,6 @@ export default function PurchaseScreen({ onPurchaseComplete }: PurchaseScreenPro
                 `Lås upp för ${displayPrice} kr`
               )}
             </button>
-          )}
 
           {error && (
             <p
