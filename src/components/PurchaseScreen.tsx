@@ -9,7 +9,7 @@ import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { purchaseProduct } from '@/lib/revenueCat';
-import { isAndroidNative } from '@/lib/platform';
+
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
@@ -291,35 +291,16 @@ export default function PurchaseScreen({ onPurchaseComplete }: PurchaseScreenPro
           transition={{ delay: 0.6, duration: 0.6, ease: EASE }}
           style={{ marginTop: '36px' }}
         >
-          {isAndroidNative() ? (
-            <div
-              style={{
-                width: '100%',
-                maxWidth: '320px',
-                margin: '0 auto',
-                padding: '16px 20px',
-                borderRadius: '12px',
-                background: 'rgba(255,255,255,0.06)',
-                color: 'rgba(253, 246, 227, 0.75)',
-                fontFamily: 'var(--font-sans)',
-                fontSize: 14,
-                lineHeight: 1.5,
-                textAlign: 'center',
-              }}
-            >
-              Köp är inte tillgängliga i Android-versionen just nu. Vi arbetar på det. Logga in med samma konto för att låsa upp produkter du redan äger.
-            </div>
-          ) : (
-            <button
-              onClick={handlePurchase}
-              disabled={processing || completed}
-              className="cta-primary"
-              style={{
-                width: '100%',
-                maxWidth: '280px',
-                boxShadow: '0 2px 12px -2px hsla(158, 30%, 15%, 0.18), 0 1px 3px hsla(158, 25%, 12%, 0.08)',
-              }}
-            >
+          <button
+            onClick={handlePurchase}
+            disabled={processing || completed}
+            className="cta-primary"
+            style={{
+              width: '100%',
+              maxWidth: '280px',
+              boxShadow: '0 2px 12px -2px hsla(158, 30%, 15%, 0.18), 0 1px 3px hsla(158, 25%, 12%, 0.08)',
+            }}
+          >
               {completed ? (
                 <span style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
                   <Check className="w-4 h-4" />
