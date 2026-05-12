@@ -1,35 +1,43 @@
-## Single-file change: `src/lib/platform.ts`
+# Fix Google Sign-In on Android
 
-### Findings from exploration
+Two minimal edits, no other files touched.
 
-- `isProductHiddenOnPlatform` already hides `sexualitetskort` on **any** native platform via `Capacitor.isNativePlatform()` (covers both iOS and Android). No logic change needed for Change 1 — Android is already covered.
-- `isAndroidNative` is no longer referenced anywhere outside its own definition (`rg "isAndroidNative"` returns only line 10 of `platform.ts`). Safe to delete.
+## Change 1 — `capacitor.config.ts`
 
-### Edits
+Add a `plugins.SocialLogin.google` block so the native Android layer reads `webClientId` at startup (not only via the runtime JS `initialize()` call).
 
-Remove lines 6–12 (the JSDoc block and the `isAndroidNative` export). Keep `isIOSNative`, `HIDDEN_PRODUCT_IDS_NATIVE`, and `isProductHiddenOnPlatform` exactly as they are.
-
-Resulting file:
-
+Before:
 ```ts
-import { Capacitor } from '@capacitor/core';
-
-export const isIOSNative = (): boolean =>
-  Capacitor.isNativePlatform() && Capacitor.getPlatform() === 'ios';
-
-export const HIDDEN_PRODUCT_IDS_NATIVE = ['sexualitetskort'] as const;
-
-export const isProductHiddenOnPlatform = (productId: string): boolean =>
-  Capacitor.isNativePlatform() &&
-  (HIDDEN_PRODUCT_IDS_NATIVE as readonly string[]).includes(productId);
+const config: CapacitorConfig = {
+  appId: 'com.bonkistudio.bonkiapp',
+  appName: 'BONKI',
+  webDir: 'dist',
+  server: {},
+};
 ```
 
-### Verification
+After:
+```ts
+const config: CapacitorConfig = {
+  appId: 'com.bonkistudio.bonkiapp',
+  appName: 'BONKI',
+  webDir: 'dist',
+  server: {},
+  plugins: {
+    SocialLogin: {
+      google: {
+        webClientId: '629196806647-m2r1g9m73n79bbbdvm7524fc5t48frmk.apps.googleusercontent.com',
+        mode: 'online'
+      }
+    }
+  }
+};
+```
 
-- `rg "isAndroidNative"` → zero matches.
-- `rg "isProductHiddenOnPlatform"` → unchanged matches (export in `platform.ts` + usage in `CardView.tsx`).
-- Android native hides `sexualitetskort` (same path as iOS); web unaffected.
+## Change 2 — `src/lib/googleSignIn.ts`
 
-### Note on Change 1
+In `ensureGoogleInitialized()`, change `mode: 'offline'` → `mode: 'online'`. Keep `GOOGLE_WEB_CLIENT_ID` and everything else identical.
 
-The user's prompt says to "extend" the function to also return true on Android, but the current implementation already does this through `isNativePlatform()`. No behavior change is required to satisfy the spec — only the dead-code removal of `isAndroidNative`. Flagging this so the user knows nothing is being missed.
+## Out of scope
+
+No changes to auth flows, Apple sign-in, the client ID value, or any other file.
