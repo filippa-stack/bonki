@@ -3,6 +3,7 @@ import type { CustomerInfo } from '@revenuecat/purchases-capacitor';
 import { Purchases, LOG_LEVEL } from '@revenuecat/purchases-capacitor';
 
 const APPLE_API_KEY = 'appl_nPPbYisknZGlswxGmwZZzMUjgWl';
+const GOOGLE_API_KEY = 'goog_QZpYqnRJZyrEpVRbrfRtxGhNWqW';
 
 let initialized = false;
 
@@ -28,8 +29,10 @@ export async function initRevenueCat(userId: string): Promise<void> {
     if (Capacitor.getPlatform() === 'ios') {
       await Purchases.configure({ apiKey: APPLE_API_KEY, appUserID: userId });
       initialized = true;
+    } else if (Capacitor.getPlatform() === 'android') {
+      await Purchases.configure({ apiKey: GOOGLE_API_KEY, appUserID: userId });
+      initialized = true;
     }
-    // Android support added in a later prompt
   } catch (error) {
     console.error('RevenueCat initialization failed:', error);
   }
