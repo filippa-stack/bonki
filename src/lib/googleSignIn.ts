@@ -28,7 +28,7 @@ async function ensureGoogleInitialized() {
   await SocialLogin.initialize({
     google: {
       webClientId: GOOGLE_WEB_CLIENT_ID,
-      mode: 'offline',
+      mode: 'online',
     },
   });
   googleInitialized = true;
