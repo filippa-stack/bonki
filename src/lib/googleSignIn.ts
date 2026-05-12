@@ -76,7 +76,6 @@ export async function signInWithGoogle(): Promise<GoogleSignInResult> {
     const loginResult = await SocialLogin.login({
       provider: 'google',
       options: {
-        scopes: ['email', 'profile'],
         nonce: hashedNonce,
       },
     });

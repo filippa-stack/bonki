@@ -1,43 +1,37 @@
-# Fix Google Sign-In on Android
+## Change
 
-Two minimal edits, no other files touched.
+In `src/lib/googleSignIn.ts`, remove the `scopes: ['email', 'profile']` line from the options object passed to `SocialLogin.login()`. Keep `nonce`.
 
-## Change 1 — `capacitor.config.ts`
-
-Add a `plugins.SocialLogin.google` block so the native Android layer reads `webClientId` at startup (not only via the runtime JS `initialize()` call).
-
-Before:
+### Before
 ```ts
-const config: CapacitorConfig = {
-  appId: 'com.bonkistudio.bonkiapp',
-  appName: 'BONKI',
-  webDir: 'dist',
-  server: {},
-};
+const loginResult = await SocialLogin.login({
+  provider: 'google',
+  options: {
+    scopes: ['email', 'profile'],
+    nonce: hashedNonce,
+  },
+});
 ```
 
-After:
+### After
 ```ts
-const config: CapacitorConfig = {
-  appId: 'com.bonkistudio.bonkiapp',
-  appName: 'BONKI',
-  webDir: 'dist',
-  server: {},
-  plugins: {
-    SocialLogin: {
-      google: {
-        webClientId: '629196806647-m2r1g9m73n79bbbdvm7524fc5t48frmk.apps.googleusercontent.com',
-        mode: 'online'
-      }
-    }
-  }
-};
+const loginResult = await SocialLogin.login({
+  provider: 'google',
+  options: {
+    nonce: hashedNonce,
+  },
+});
 ```
 
-## Change 2 — `src/lib/googleSignIn.ts`
+## Why
 
-In `ensureGoogleInitialized()`, change `mode: 'offline'` → `mode: 'online'`. Keep `GOOGLE_WEB_CLIENT_ID` and everything else identical.
+The Capgo Android plugin throws "You CANNOT use scopes without modifying the main activity" whenever a `scopes` array is passed and `MainActivity` does not implement `ModifiedMainActivityForSocialLoginPlugin`. The plugin already adds `email`, `profile`, and `openid` by default, so removing the explicit array preserves the same scope set without triggering the error.
 
-## Out of scope
+## Untouched
 
-No changes to auth flows, Apple sign-in, the client ID value, or any other file.
+- `ensureGoogleInitialized()` and all init code
+- Nonce generation and `sha256Hex`
+- `supabase.auth.signInWithIdToken` call
+- Error handling
+- `capacitor.config.ts`
+- All other files
