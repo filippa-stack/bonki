@@ -1,21 +1,23 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
 import { Capacitor } from '@capacitor/core';
+import { App } from '@capacitor/app';
 import { toast } from 'sonner';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { isDemoMode, isDemoParam } from '@/lib/demoMode';
 import { purchaseProduct, presentCodeRedemptionSheet, restorePurchases } from '@/lib/revenueCat';
-
+import { usePageBackground } from '@/hooks/usePageBackground';
 import { productIntros } from '@/data/productIntros';
-import { PREVIEW_QUESTION } from '@/lib/productPreviewQuestions';
+import { PREVIEW_QUESTIONS } from '@/lib/productPreviewQuestions';
 import type { ProductManifest } from '@/types/product';
 import {
   MIDNIGHT_INK,
   LANTERN_GLOW,
   BONKI_ORANGE,
+  WARM_GOLD,
+  DEEP_DUSK_BG,
   productTileColors,
 } from '@/lib/palette';
 
@@ -58,16 +60,35 @@ interface ProductPaywallProps {
 }
 
 /**
- * ProductPaywall — unified fullscreen paywall.
- * Visually mirrors ProductIntro: atmospheric creature backdrop, framed
- * preview-question card, two-line meta, accent CTA, escape link.
+ * ProductPaywall — visually mirrors ProductIntro.tsx so users cannot tell the
+ * surfaces apart. CTA continues to call handlePurchase (RevenueCat on native,
+ * Stripe on web) instead of navigating to /buy.
  */
 export default function ProductPaywall({ product, onAccessGranted }: ProductPaywallProps) {
   const navigate = useNavigate();
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const [priceSek, setPriceSek] = useState<number | null>(null);
+
+  const tileColors = productTileColors[product.id];
+  const productAccent = tileColors?.tileLight ?? BONKI_ORANGE;
+  const bgColor = product.backgroundColor ?? MIDNIGHT_INK;
+  usePageBackground(bgColor);
+
+  const creatureImage = PRODUCT_ILLUSTRATION[product.id];
+  const introData = productIntros[product.id];
+  const fullBodyText = introData?.slides.map((s) => s.body).join('\n\n') ?? '';
+  const paragraphs = fullBodyText.split('\n\n').map((p) => p.trim()).filter(Boolean);
+  const opening = paragraphs[0];
+  const restParagraphs = paragraphs.slice(1);
+
+  const isAdult = product.id === 'still_us';
+  const isSexualitet = product.id === 'sexualitetskort';
+  const sexSafetyLine = isSexualitet ? introData?.slides[0]?.signoff : null;
+  const accentTint = isAdult ? WARM_GOLD : (productTileColors[product.id]?.tileLight ?? WARM_GOLD);
+  const stickyBg = isAdult ? DEEP_DUSK_BG : bgColor;
+  const previewQuestions = PREVIEW_QUESTIONS[product.id] ?? [];
+  const previewLabel = `En fråga ur ${product.name}`;
 
   // Demo mode: auto-bypass paywall
   useEffect(() => {
@@ -76,17 +97,6 @@ export default function ProductPaywall({ product, onAccessGranted }: ProductPayw
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const tileColors = productTileColors[product.id];
-  const productAccent = tileColors?.tileLight ?? BONKI_ORANGE;
-  const bgColor = product.backgroundColor ?? MIDNIGHT_INK;
-  const creatureImage = PRODUCT_ILLUSTRATION[product.id];
-  const introData = productIntros[product.id];
-  const fullBodyText = introData?.slides.map((s) => s.body).join('\n\n') ?? '';
-  const previewLabel = `En fråga ur ${product.name}`;
-
-  // Hidden long-press dev bypass
-  const longPressTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Fetch dynamic price
   useEffect(() => {
@@ -100,16 +110,25 @@ export default function ProductPaywall({ product, onAccessGranted }: ProductPayw
       });
   }, [product.id]);
 
+  // Hardware back button (Android native)
+  useEffect(() => {
+    if (!Capacitor.isNativePlatform()) return;
+    let handle: { remove: () => void } | undefined;
+    App.addListener('backButton', () => {
+      localStorage.removeItem('bonki-last-active-product');
+      navigate('/', { replace: true });
+    }).then((h) => { handle = h; });
+    return () => { handle?.remove(); };
+  }, [navigate]);
+
   const handlePurchase = async () => {
     if (!user) {
-      setError('Du behöver vara inloggad. Försök ladda om sidan.');
+      console.error('[ProductPaywall] purchase attempt without user');
+      toast.error('Du behöver vara inloggad. Försök ladda om sidan.');
       return;
     }
     setLoading(true);
-    setError(null);
 
-    // Native iOS: route through Apple StoreKit via RevenueCat. Apple Guideline 3.1.1
-    // prohibits steering iOS users to external (Stripe) payment for digital content.
     if (Capacitor.isNativePlatform()) {
       try {
         const result = await purchaseProduct(product.id);
@@ -118,16 +137,16 @@ export default function ProductPaywall({ product, onAccessGranted }: ProductPayw
           return;
         }
         if (!result.success) {
-          setError('Köpet kunde inte genomföras. Försök igen.');
+          console.error('[ProductPaywall] purchase failed:', result.error);
+          toast.error('Köpet kunde inte genomföras. Försök igen.');
           setLoading(false);
           return;
         }
         toast.success('Tack för ditt köp!');
-        // RevenueCat webhook syncs user_product_access server-side.
         onAccessGranted?.();
       } catch (err) {
-        console.error('RevenueCat purchase error:', err);
-        setError('Kunde inte starta betalningen');
+        console.error('[ProductPaywall] RevenueCat purchase error:', err);
+        toast.error('Kunde inte starta betalningen');
       } finally {
         setLoading(false);
       }
@@ -162,11 +181,10 @@ export default function ProductPaywall({ product, onAccessGranted }: ProductPayw
       }
 
       if (!res.ok) {
-        if (res.status === 503) {
-          setError('Betalning är inte konfigurerad ännu. Kontakta oss!');
-        } else {
-          setError(json.error || 'Något gick fel');
-        }
+        console.error('[ProductPaywall] checkout error:', json.error);
+        toast.error(res.status === 503
+          ? 'Betalning är inte konfigurerad ännu. Kontakta oss!'
+          : (json.error || 'Något gick fel'));
         return;
       }
 
@@ -174,55 +192,35 @@ export default function ProductPaywall({ product, onAccessGranted }: ProductPayw
         window.location.href = json.url;
       }
     } catch (err) {
-      console.error('Purchase error:', err);
-      setError('Kunde inte starta betalningen');
+      console.error('[ProductPaywall] purchase error:', err);
+      toast.error('Kunde inte starta betalningen');
     } finally {
       setLoading(false);
     }
   };
 
-  // Hidden 3s long-press bypass (demo only)
-  const handlePricePressStart = () => {
-    if (isDemoMode() || isDemoParam()) {
-      longPressTimer.current = setTimeout(() => {
-        onAccessGranted?.();
-      }, 3000);
-    }
-  };
-  const handlePricePressEnd = () => {
-    if (longPressTimer.current) {
-      clearTimeout(longPressTimer.current);
-      longPressTimer.current = null;
-    }
-  };
-
-  const ctaLabel = priceSek !== null ? `Köp · ${priceSek} kr` : 'Köp';
-
   return (
     <div
       style={{
         backgroundColor: bgColor,
-        height: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
-        overflow: 'auto',
         position: 'fixed',
         inset: 0,
         zIndex: 50,
+        overflow: 'hidden',
+        display: 'flex',
+        flexDirection: 'column',
       }}
     >
-      {/* 1. Atmospheric creature backdrop */}
+      {/* ── Atmospheric creature backdrop ── */}
       {creatureImage && (
         <div
+          aria-hidden
           style={{
             position: 'absolute',
             top: 0,
             left: '-10%',
             right: '-10%',
-            height: '42%',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'flex-start',
+            height: '38%',
             overflow: 'hidden',
             pointerEvents: 'none',
             zIndex: 0,
@@ -231,7 +229,6 @@ export default function ProductPaywall({ product, onAccessGranted }: ProductPayw
           <img
             src={creatureImage}
             alt=""
-            aria-hidden
             style={{
               width: '100%',
               height: '100%',
@@ -244,10 +241,20 @@ export default function ProductPaywall({ product, onAccessGranted }: ProductPayw
           <div
             style={{
               position: 'absolute',
+              inset: 0,
+              background: isAdult
+                ? 'radial-gradient(ellipse at 50% 30%, rgba(100,149,237,0.18) 0%, transparent 70%)'
+                : `radial-gradient(ellipse at 50% 30%, ${accentTint}22 0%, transparent 70%)`,
+              pointerEvents: 'none',
+            }}
+          />
+          <div
+            style={{
+              position: 'absolute',
               bottom: 0,
               left: 0,
               right: 0,
-              height: '50%',
+              height: '60%',
               background: `linear-gradient(to top, ${bgColor} 0%, transparent 100%)`,
               pointerEvents: 'none',
             }}
@@ -255,9 +262,12 @@ export default function ProductPaywall({ product, onAccessGranted }: ProductPayw
         </div>
       )}
 
-      {/* 2. Back arrow */}
+      {/* ── Back arrow ── */}
       <button
-        onClick={() => navigate(-1)}
+        onClick={() => {
+          localStorage.removeItem('bonki-last-active-product');
+          navigate('/', { replace: true });
+        }}
         style={{
           position: 'absolute',
           top: 'max(12px, env(safe-area-inset-top, 12px))',
@@ -275,228 +285,263 @@ export default function ProductPaywall({ product, onAccessGranted }: ProductPayw
         <ArrowLeft size={24} />
       </button>
 
-      {/* Content area */}
+      {/* ── Scrollable content ── */}
       <div
         style={{
+          flex: 1,
+          overflowY: 'auto',
+          WebkitOverflowScrolling: 'touch',
           position: 'relative',
           zIndex: 1,
-          flex: 1,
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'flex-end',
-          padding: '0 28px',
-          paddingTop: 'max(44px, env(safe-area-inset-top, 44px))',
         }}
       >
-        <div style={{ flex: '1 1 auto', minHeight: '15%' }} />
-
-        {/* 3. Heading */}
-        <motion.h1
-          initial={false}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0 }}
+        <div
           style={{
-            fontFamily: 'var(--font-serif)',
-            fontSize: '28px',
-            fontWeight: 600,
-            color: LANTERN_GLOW,
-            textAlign: 'center',
-            lineHeight: 1.2,
-            letterSpacing: '-0.02em',
-            margin: 0,
+            padding: '0 24px',
+            paddingTop: 'max(80px, calc(env(safe-area-inset-top, 0px) + 80px))',
+            display: 'flex',
+            flexDirection: 'column',
           }}
         >
-          Välkommen till{'\n'}
-          {product.name}
-        </motion.h1>
+          {/* Hero spacer */}
+          <div style={{ height: 'calc(28vh - 80px)', minHeight: 60 }} />
 
-        {/* 4. Tagline */}
-        {product.tagline && (
-          <p
+          {/* Title */}
+          <h1
             style={{
-              fontFamily: 'var(--font-sans)',
-              fontSize: '15px',
+              fontFamily: 'var(--font-serif)',
+              fontSize: '40px',
+              fontWeight: 500,
               color: LANTERN_GLOW,
-              opacity: 0.6,
               textAlign: 'center',
-              margin: '8px 0 0',
+              lineHeight: 1.15,
+              letterSpacing: '-0.01em',
+              margin: 0,
+              textShadow: '0 2px 12px rgba(0,0,0,0.35)',
             }}
           >
-            {product.tagline}
-          </p>
-        )}
+            {product.name}
+          </h1>
 
-        {/* 5. Body paragraphs */}
-        {fullBodyText && (
-          <div style={{ textAlign: 'center', marginTop: '20px' }}>
-            {fullBodyText.split('\n\n').map((para, i) => (
-              <p
-                key={i}
-                style={{
-                  fontFamily: 'var(--font-sans)',
-                  fontSize: '16px',
-                  color: LANTERN_GLOW,
-                  textAlign: 'center',
-                  lineHeight: 1.6,
-                  opacity: 0.88,
-                  margin: i === 0 ? '0' : '14px 0 0',
-                }}
-              >
-                {para}
-              </p>
-            ))}
-          </div>
-        )}
+          {/* Tagline */}
+          {product.tagline && (
+            <p
+              style={{
+                fontFamily: 'var(--font-serif)',
+                fontStyle: 'italic',
+                fontSize: '18px',
+                color: LANTERN_GLOW,
+                opacity: 0.85,
+                textAlign: 'center',
+                lineHeight: 1.4,
+                margin: '10px 0 0',
+              }}
+            >
+              {product.tagline}
+            </p>
+          )}
 
-        {/* 6. Framed preview question */}
-        {PREVIEW_QUESTION[product.id] && (
+          {/* Trust signal — psychologist credentials */}
           <div
             style={{
-              marginTop: '32px',
-              padding: '24px 24px',
-              borderRadius: '14px',
-              backgroundColor: 'rgba(11, 16, 38, 0.35)',
-              border: '1px solid rgba(253, 246, 227, 0.20)',
+              marginTop: 32,
+              padding: '14px 0',
+              borderTop: `1px solid color-mix(in srgb, ${WARM_GOLD} 35%, transparent)`,
+              borderBottom: `1px solid color-mix(in srgb, ${WARM_GOLD} 35%, transparent)`,
               textAlign: 'center',
             }}
           >
             <div
               style={{
-                fontFamily: 'var(--font-sans)',
-                fontSize: '11px',
+                fontFamily: 'var(--font-display)',
+                fontSize: 11,
                 fontWeight: 600,
                 letterSpacing: '0.12em',
                 textTransform: 'uppercase',
-                color: LANTERN_GLOW,
-                opacity: 0.5,
-                marginBottom: '10px',
+                color: WARM_GOLD,
+                opacity: 0.8,
               }}
             >
-              {previewLabel}
+              Utvecklat av psykolog
             </div>
+            <div
+              style={{
+                fontFamily: 'var(--font-serif)',
+                fontStyle: 'italic',
+                fontSize: 15,
+                color: LANTERN_GLOW,
+                opacity: 0.95,
+                marginTop: 6,
+              }}
+            >
+              Ida W. · 29 års klinisk erfarenhet
+            </div>
+          </div>
+
+          {/* Opening statement */}
+          {opening && (
             <p
               style={{
                 fontFamily: 'var(--font-serif)',
-                fontSize: '17px',
-                fontWeight: 400,
-                lineHeight: 1.45,
+                fontSize: 18,
                 color: LANTERN_GLOW,
-                opacity: 0.92,
-                margin: 0,
+                lineHeight: 1.4,
+                textAlign: 'center',
+                margin: '24px 0',
               }}
             >
-              &ldquo;{PREVIEW_QUESTION[product.id]}&rdquo;
+              {opening}
             </p>
-          </div>
-        )}
+          )}
 
-        {/* 7. Two-line meta — long-press for dev bypass */}
-        <div
-          style={{ marginTop: '24px', textAlign: 'center', userSelect: 'none' }}
-          onPointerDown={handlePricePressStart}
-          onPointerUp={handlePricePressEnd}
-          onPointerLeave={handlePricePressEnd}
-        >
-          <p
-            style={{
-              fontFamily: 'var(--font-sans)',
-              fontSize: '14px',
-              fontWeight: 500,
-              color: LANTERN_GLOW,
-              opacity: 0.85,
-              margin: 0,
-              lineHeight: 1.5,
-            }}
-          >
-            {priceSek !== null ? `${priceSek} kr` : '…'} · Engångsköp · Tillgång för alltid
-          </p>
-          <p
-            style={{
-              fontFamily: 'var(--font-sans)',
-              fontSize: '13px',
-              color: LANTERN_GLOW,
-              opacity: 0.55,
-              margin: '6px 0 0',
-              lineHeight: 1.5,
-            }}
-          >
-            Utvecklat tillsammans med legitimerade psykologer · 29 års klinisk erfarenhet
-          </p>
-          <p
-            style={{
-              fontFamily: 'var(--font-sans)',
-              fontSize: '12px',
-              color: LANTERN_GLOW,
-              opacity: 0.6,
-              margin: '4px 0 0',
-              lineHeight: 1.5,
-            }}
-          >
-            Bonki är ett samtalsverktyg, inte terapi eller medicinsk rådgivning
-          </p>
+          {/* Body paragraphs */}
+          {restParagraphs.length > 0 && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+              {restParagraphs.map((para, i) => (
+                <p
+                  key={i}
+                  style={{
+                    fontFamily: 'var(--font-display)',
+                    fontSize: 15,
+                    color: LANTERN_GLOW,
+                    opacity: 0.85,
+                    lineHeight: 1.55,
+                    textAlign: 'center',
+                    margin: 0,
+                  }}
+                >
+                  {para}
+                </p>
+              ))}
+            </div>
+          )}
+
+          {/* Example questions stack */}
+          {previewQuestions.length > 0 && (
+            <div style={{ marginTop: 32, display: 'flex', flexDirection: 'column', gap: 16 }}>
+              {previewQuestions.map((q, i) => (
+                <div
+                  key={i}
+                  style={{
+                    padding: '24px 20px',
+                    borderRadius: 14,
+                    background: 'rgba(255,255,255,0.02)',
+                    border: '1px solid rgba(255,255,255,0.10)',
+                    textAlign: 'center',
+                  }}
+                >
+                  <div
+                    style={{
+                      fontFamily: 'var(--font-display)',
+                      fontSize: 11,
+                      fontWeight: 600,
+                      letterSpacing: '0.10em',
+                      textTransform: 'uppercase',
+                      color: LANTERN_GLOW,
+                      opacity: 0.55,
+                      marginBottom: 12,
+                    }}
+                  >
+                    {previewLabel}
+                  </div>
+                  <p
+                    style={{
+                      fontFamily: 'var(--font-serif)',
+                      fontStyle: 'italic',
+                      fontSize: 17,
+                      color: LANTERN_GLOW,
+                      lineHeight: 1.45,
+                      margin: 0,
+                    }}
+                  >
+                    &ldquo;{q}&rdquo;
+                  </p>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Sexualitet safety line */}
+          {sexSafetyLine && (
+            <p
+              style={{
+                fontFamily: 'var(--font-serif)',
+                fontStyle: 'italic',
+                fontSize: 13,
+                color: LANTERN_GLOW,
+                opacity: 0.6,
+                textAlign: 'center',
+                marginTop: 20,
+                lineHeight: 1.5,
+              }}
+            >
+              {sexSafetyLine}
+            </p>
+          )}
+
+          {/* Bottom spacer so sticky CTA doesn't cover content */}
+          <div style={{ height: 'calc(140px + env(safe-area-inset-bottom, 0px))' }} />
         </div>
+      </div>
 
-        {/* 8. CTA + 9. trust + 10. escape */}
-        <div
-          style={{
-            marginTop: '24px',
-            paddingBottom: 'calc(24px + env(safe-area-inset-bottom, 0px))',
-          }}
-        >
+      {/* ── Sticky bottom: meta + CTA ── */}
+      <div
+        style={{
+          position: 'absolute',
+          left: 0,
+          right: 0,
+          bottom: 0,
+          zIndex: 5,
+          paddingBottom: 'calc(20px + env(safe-area-inset-bottom, 0px))',
+          paddingTop: 16,
+          background: `linear-gradient(to top, ${stickyBg} 0%, ${stickyBg} 70%, transparent 100%)`,
+          pointerEvents: 'none',
+        }}
+      >
+        <div style={{ pointerEvents: 'auto', padding: '0 24px' }}>
+          <p
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: 13,
+              color: LANTERN_GLOW,
+              opacity: 0.7,
+              letterSpacing: '0.04em',
+              textAlign: 'center',
+              margin: '0 0 10px',
+            }}
+          >
+            {product.cards.length} samtal · {priceSek ?? '…'} kr · engångsköp
+          </p>
           <button
             onClick={handlePurchase}
             disabled={loading}
             style={{
               width: '100%',
-              height: '56px',
-              backgroundColor: productAccent,
-              border: 'none',
-              borderRadius: '14px',
-              cursor: loading ? 'wait' : 'pointer',
+              height: 56,
+              borderRadius: 28,
+              background: `color-mix(in srgb, ${accentTint} 28%, rgba(255,255,255,0.06))`,
+              border: `1px solid color-mix(in srgb, ${accentTint} 50%, transparent)`,
+              color: LANTERN_GLOW,
               fontFamily: 'var(--font-display)',
-              fontVariationSettings: "'opsz' 17",
-              fontSize: '17px',
+              fontSize: 16,
               fontWeight: 600,
-              color: MIDNIGHT_INK,
+              cursor: loading ? 'wait' : 'pointer',
               opacity: loading ? 0.7 : 1,
               transition: 'opacity 150ms ease, transform 140ms cubic-bezier(0.4, 0, 0.2, 1)',
             }}
-            onPointerDown={(e) => { if (!loading) e.currentTarget.style.transform = 'scale(0.97)'; }}
-            onPointerUp={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
-            onPointerLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
+            onMouseDown={(e) => { if (!loading) e.currentTarget.style.transform = 'scale(0.98)'; }}
+            onMouseUp={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
           >
-            {loading ? 'Förbereder…' : ctaLabel}
+            {loading ? 'Förbereder…' : (
+              <>
+                Köp {product.name}
+                {priceSek !== null && (
+                  <span style={{ opacity: 0.85, marginLeft: 6 }}>· {priceSek} kr</span>
+                )}
+              </>
+            )}
           </button>
-
-          {error && (
-            <p
-              style={{
-                fontFamily: 'var(--font-sans)',
-                fontSize: '13px',
-                color: 'hsl(0, 60%, 70%)',
-                textAlign: 'center',
-                margin: '12px 0 0',
-              }}
-            >
-              {error}
-            </p>
-          )}
-
-          {/* Trust line */}
-          <p
-            style={{
-              fontFamily: 'var(--font-sans)',
-              fontSize: '12px',
-              color: LANTERN_GLOW,
-              opacity: 0.5,
-              textAlign: 'center',
-              margin: '12px 0 0',
-            }}
-          >
-            Säker betalning · Ingen prenumeration
-          </p>
-
-          {/* Redeem code (iOS only) */}
           {Capacitor.getPlatform() === 'ios' && (
             <button
               onClick={async () => {
@@ -526,28 +571,6 @@ export default function ProductPaywall({ product, onAccessGranted }: ProductPayw
               Lös in kod
             </button>
           )}
-
-          {/* Escape link */}
-          <button
-            onClick={() => navigate('/', { replace: true })}
-            style={{
-              display: 'block',
-              margin: '16px auto 0',
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              fontFamily: 'var(--font-sans)',
-              fontSize: '14px',
-              fontWeight: 500,
-              color: LANTERN_GLOW,
-              opacity: 0.75,
-              textDecoration: 'underline',
-              textUnderlineOffset: '3px',
-              padding: '8px 16px',
-            }}
-          >
-            Utforska andra produkter
-          </button>
         </div>
       </div>
     </div>
