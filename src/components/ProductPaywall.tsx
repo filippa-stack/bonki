@@ -70,8 +70,6 @@ export default function ProductPaywall({ product, onAccessGranted }: ProductPayw
   const [loading, setLoading] = useState(false);
   const [priceSek, setPriceSek] = useState<number | null>(null);
 
-  const tileColors = productTileColors[product.id];
-  const productAccent = tileColors?.tileLight ?? BONKI_ORANGE;
   const bgColor = product.backgroundColor ?? MIDNIGHT_INK;
   usePageBackground(bgColor);
 
