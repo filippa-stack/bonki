@@ -58,6 +58,15 @@ export default function BuyPage() {
   // Detect return from Stripe cancel — prevents auto-retrigger loop
   const isCancelReturn = searchParams.get('cancelled') === '1';
 
+  // Native: never show /buy. Redirect immediately to product page (or library).
+  useEffect(() => {
+    if (Capacitor.isNativePlatform()) {
+      const pid = searchParams.get('product');
+      navigate(pid ? `/product/${pid}` : '/library', { replace: true });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   useEffect(() => {
     return () => { if (cooldownRef.current) clearInterval(cooldownRef.current); };
   }, []);
