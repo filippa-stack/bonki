@@ -115,6 +115,10 @@ export default function AdultProductCardTile({
               src={tileImage}
               alt=""
               aria-hidden="true"
+              loading="lazy"
+              decoding="async"
+              width={300}
+              height={400}
               style={{
                 width: '85%',
                 height: '85%',
