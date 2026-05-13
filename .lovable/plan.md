@@ -1,14 +1,28 @@
-## Plan: Replace 18 Vårt Vi WebP illustrations
+## Vårt Vi content update — CONTENT_VERSION 14 → 15
 
-All 18 attached files verified — filenames match the existing files in `public/card-images/` exactly.
+Two files edited. Mechanical search-replace, no logic changes.
 
-### Steps
-1. Overwrite each of the 18 files in `public/card-images/` with the attached version of the same name (binary-identical copy, no rename).
-2. List the new file sizes for all 18 to confirm replacement and report the per-file kB.
-3. Stop. No code changes, no build, no Live publish.
+### 1. `src/data/content.ts`
 
-### Files replaced (18)
-adrift, behind-the-scenes, conflict-repair, different-parenting-styles, expressing-needs, facing-adversity, family-ab, identity-shift, listening-presence, love-languages, our-traditions, parenting-boundaries, parenting-exhaustion, self-esteem-wavering, smallest-we, thoughtful-space, when-life-tilts, worth-spending-on — all `.webp` in `public/card-images/`.
+Bump version:
+- Line 4: `CONTENT_VERSION = 14` → `15`
 
-### Untouched
-`useCardImage.ts`, `CARD_IDS_WITH_IMAGES`, all kids illustrations (`jim-*`, `jma-*`, `jiv-*`, `vk-*`, `sex-*`, `sk-*`), `src/assets/illustration-*.png`, all components, `vite.config.ts`.
+Replace `sections[0].prompts` for these 7 cards (full 4-prompt array, in order, as specified in the message):
+- `thoughtful-space` (lines 165–170) — prompt 4 shortened (drop trailing "Och vad skulle det kosta..." clause)
+- `self-esteem-wavering` (lines 180–186) — prompt 1: "rum" → "sammanhang"
+- `smallest-we` (lines 196–202) — prompt 1: "vårt liv" → "vår relation"
+- `facing-adversity` (lines 228–234) — prompt 4 expanded with "exempelvis…" clause
+- `adrift` (lines 260–266) — "begär" → "begär/lust"; "ditt begär" → "din lust"; "närat" → "närt"
+- `parenting-boundaries` (lines 325–329) — prompt 3 rephrased
+- `different-parenting-styles` (lines 341–345) — prompt 4 simplified
+
+### 2. `src/data/gorExercises.ts`
+
+Replace `instructionText` only on 4 entries (titles + cardId untouched):
+- `smallest-we` (line 51) — trailing sentence rephrased to "Bestäm en tidpunkt att stämma av om två veckor."
+- `when-life-tilts` (line 81) — same content, now formatted with `\n1. … \n2. … \n3. …` numbered list
+- `parenting-boundaries` (line 91) — "sessionen" → "samtalet"
+- `parenting-exhaustion` (line 101) — adds comma after "om"
+
+### Out of scope
+No title/subtitle changes. No category re-bucketing. No reordering. No other cards touched. No component or styling changes.
