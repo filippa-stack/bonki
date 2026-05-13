@@ -213,6 +213,8 @@ export default function Login() {
         startCooldown();
       }
     } catch (err) {
+      const e = err as { name?: string; message?: string; cause?: unknown; stack?: string };
+      console.error('[OTP] signInWithOtp failed', { name: e?.name, message: e?.message, cause: e?.cause, stack: e?.stack });
       setError(t('login.error_start'));
       localStorage.removeItem('pending-legal-consent');
     } finally {
