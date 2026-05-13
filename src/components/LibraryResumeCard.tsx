@@ -326,19 +326,18 @@ export default function LibraryResumeCard({ activeTab, global, forceMock }: Libr
                 overflow: 'hidden',
               }}
             >
-              {illustration && (
-                <img
-                  src={illustration}
-                  alt=""
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'contain',
-                    objectPosition: 'center',
-                    pointerEvents: 'none',
-                  }}
-                />
-              )}
+              {/* Use product hero illustration to match the Vårt Vi marquee framing exactly */}
+              <img
+                src={ILLUSTRATIONS.still_us}
+                alt=""
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'contain',
+                  objectPosition: 'center',
+                  pointerEvents: 'none',
+                }}
+              />
             </div>
           ) : (
             <div
