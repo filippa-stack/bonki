@@ -474,8 +474,7 @@ export default function ProductIntro({
                       fontWeight: 600,
                       letterSpacing: '0.10em',
                       textTransform: 'uppercase',
-                      color: LANTERN_GLOW,
-                      opacity: 0.55,
+                      color: TEXT_EYEBROW,
                       marginBottom: 12,
                     }}
                   >
