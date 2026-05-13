@@ -1,7 +1,7 @@
 import { Category, Card } from '@/types';
 
 /** Bump this whenever categories or cards change in this file */
-export const CONTENT_VERSION = 14;
+export const CONTENT_VERSION = 15;
 
 export const categories: Category[] = [
   {
@@ -166,7 +166,7 @@ export const cards: Card[] = [
         'Vems syn på vårt förhållande betyder mest för dig?',
         'Finns det någon i din närhet vars åsikt om oss du fortfarande bär med dig — på gott eller ont?',
         'Hur hanterar du det när någon ifrågasätter eller bekräftar oss — tar du till dig det eller stänger du ute det?',
-        'Föreställ er: Om människor ni litar på började tvivla på er som par — skulle ni lyssna eller göra motstånd? Och vad skulle det kosta att välja det andra alternativet?',
+        'Föreställ er: Om människor ni litar på började tvivla på er som par — skulle ni lyssna eller göra motstånd?',
       ],
     }],
   },
@@ -179,7 +179,7 @@ export const cards: Card[] = [
     sections: [{
       id: 'opening-self-esteem-wavering', type: 'opening', title: 'Frågor', content: '',
       prompts: [
-        'Vilket rum utanför "oss" känns mest betydelsefullt för dig just nu?',
+        'Vilket sammanhang utanför "oss" känns mest betydelsefullt för dig just nu?',
         'På vilket sätt berikar ditt eget utrymme vår relation — och när får det dig snarare att distansera dig?',
         'Vad har du gjort för att värna om ditt eget utrymme — och vad har du valt att avstå från för vår skull?',
         'Föreställ er: Om en av er helt förlorade sitt eget utrymme — vad skulle hända med "oss"?',
@@ -195,7 +195,7 @@ export const cards: Card[] = [
     sections: [{
       id: 'opening-smallest-we', type: 'opening', title: 'Frågor', content: '',
       prompts: [
-        'Vem av oss bär det osynliga ansvaret för vårt liv — och hur märker den andra av det?',
+        'Vem av oss bär det osynliga ansvaret för vår relation — och hur märker den andra av det?',
         'När du tar ansvar för oss, hur känns det i kroppen — som omtanke eller som en tyngd?',
         'Vad har du gjort med rollen du har hamnat i — har du accepterat den, kämpat emot den eller försökt prata om den?',
         'Föreställ er: Om den som planerar slutade planera under en månad — vad skulle hända med er då?',
@@ -230,7 +230,7 @@ export const cards: Card[] = [
         'När känner du dig genuint omhändertagen av mig?',
         'Finns det stunder då du upplever att du bär mig — eller att jag bär dig — på ett sätt som känns för tungt?',
         'När du själv har behövt mest stöd, hur har du hanterat det — har du vänt dig till mig, dragit dig undan eller hittat något annat sätt?',
-        'Föreställ er: Om en av er drabbades av långvarig sjukdom eller psykisk ohälsa — hur skulle ni hantera det utan att den ena försvinner i omsorgstagandet och den andra bryts ner?',
+        'Föreställ er: Om en av er drabbades av långvarig sjukdom eller psykisk ohälsa — hur skulle ni hantera det utan att förlora balansen, exempelvis att den ena försvinner i omsorgstagandet och den andra bryts ner?',
       ],
     }],
   },
@@ -260,8 +260,8 @@ export const cards: Card[] = [
       id: 'opening-adrift', type: 'opening', title: 'Frågor', content: '',
       prompts: [
         'När känner du dig genuint nära mig — utöver sex?',
-        'Hur visar du begär — och hur skulle du vilja att jag besvarade det?',
-        'Hur har du förhållit dig till ditt begär i vår relation — har du närat det, lagt det åt sidan eller väntat på att det ska uppstå av sig själv?',
+        'Hur visar du begär/lust — och hur skulle du vilja att jag besvarade det?',
+        'Hur har du förhållit dig till din lust i vår relation — har du närt det, lagt det åt sidan eller väntat på att det ska uppstå av sig själv?',
         'Föreställ er: Om en av er hade betydligt mindre sexlust än den andra — hur skulle ni kunna vårda närheten utan att skapa press eller skuldkänslor?',
       ],
     }],
@@ -325,7 +325,7 @@ export const cards: Card[] = [
       prompts: [
         'Vilka beteenden är absolut oacceptabla för dig i en relation?',
         'Vilka av mina gränser anser du dig ha lärt dig tolka, trots att jag aldrig uttryckt dem explicit?',
-        'Vad har du förlåtit tidigare som du trodde var omöjligt — och finns det något du idag vet med säkerhet att du aldrig skulle kunna förlåta?',
+        'Vad har du förlåtit som du tidigare trodde var omöjligt — och finns det något du idag vet med säkerhet att du aldrig skulle kunna förlåta?',
         'Föreställ er: Om en av er överskred en absolut gräns hos den andre — finns det en väg tillbaka, och vad skulle krävas för att den vägen skulle vara möjlig?',
       ],
     }],
@@ -342,7 +342,7 @@ export const cards: Card[] = [
         'Hur har din barndom påverkat din bild av att vara förälder — eller att välja att inte vara det?',
         'Vilken roll spelar barn i din vision av vår framtid, och hur har den bilden förändrats sedan vi träffades?',
         'Finns det något gällande frågan om barn som du har burit på, men inte vågat säga rakt ut till mig?',
-        'Föreställ er: Om en av er ville ha barn (eller fler barn) och den andre inte ville — hur skulle ni navigera mellan ett ja och ett nej i en och samma kärlek?',
+        'Föreställ er: Om en av er ville ha barn och den andre inte ville — hur skulle ni navigera mellan ett ja och ett nej när ni vill välja varandra?',
       ],
     }],
   },

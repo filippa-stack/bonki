@@ -48,7 +48,7 @@ const gorExercises: Record<string, GorExercise> = {
   'smallest-we': {
     cardId: 'smallest-we',
     title: 'Det osynliga ansvaret',
-    instructionText: 'Välj en konkret sak som ni förändrar eller delar på ett nytt sätt från och med imorgon. Bara en sak. Skriv ner den. Bestäm när ni ska stämma av om två veckor.',
+    instructionText: 'Välj en konkret sak som ni förändrar eller delar på ett nytt sätt från och med imorgon. Bara en sak. Skriv ner den. Bestäm en tidpunkt att stämma av om två veckor.',
   },
   'worth-spending-on': {
     cardId: 'worth-spending-on',
@@ -78,7 +78,7 @@ const gorExercises: Record<string, GorExercise> = {
   'when-life-tilts': {
     cardId: 'when-life-tilts',
     title: 'Vägen tillbaka',
-    instructionText: 'Skapa ert reparationsprotokoll. Bestäm tre saker: en mening den som sårat kan säga för att inleda en försoning, en tidsram för när ni senast måste prata om det, samt en specifik plats där ni gör det. Skriv ner alla tre och spara dem.',
+    instructionText: 'Skapa ert reparationsprotokoll. Bestäm tre saker:\n1. en mening den som sårat kan säga för att inleda en försoning\n2. en tidsram för när ni senast måste prata om det\n3. en specifik plats där ni gör det\nSkriv ner alla tre och spara dem.',
   },
   'family-ab': {
     cardId: 'family-ab',
@@ -88,7 +88,7 @@ const gorExercises: Record<string, GorExercise> = {
   'parenting-boundaries': {
     cardId: 'parenting-boundaries',
     title: 'De röda linjerna',
-    instructionText: 'Den här sessionen var den tyngsta hittills. Säg till varandra: "Det här är vad jag har delat ikväll. Du har hört det. Jag litar på dig med det." Den andre svarar: "Jag tar emot det. Jag bär det varsamt."',
+    instructionText: 'Det här samtalet var den tyngsta hittills. Säg till varandra: "Det här är vad jag har delat ikväll. Du har hört det. Jag litar på dig med det." Den andre svarar: "Jag tar emot det. Jag bär det varsamt."',
   },
   'different-parenting-styles': {
     cardId: 'different-parenting-styles',
@@ -98,7 +98,7 @@ const gorExercises: Record<string, GorExercise> = {
   'parenting-exhaustion': {
     cardId: 'parenting-exhaustion',
     title: 'Drömmens pris',
-    instructionText: 'Skriv ner en dröm du har, som du vill att den andra personen ska känna till och fråga dig om en gång om året. Byt papper med varandra. Bestäm ett datum om exakt ett år. Lägg in det i kalendern redan nu — det är drömmens årsdag.',
+    instructionText: 'Skriv ner en dröm du har, som du vill att den andra personen ska känna till och fråga dig om, en gång om året. Byt papper med varandra. Bestäm ett datum om exakt ett år. Lägg in det i kalendern redan nu — det är drömmens årsdag.',
   },
 };
 
