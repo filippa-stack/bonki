@@ -241,7 +241,7 @@ export default function KidsTileFrame({
                 letterSpacing: '0.08em',
                 textTransform: 'uppercase',
                 color: darkText,
-                opacity: 0.7,
+                opacity: 0.65,
                 lineHeight: 1.2,
               }}
             >
