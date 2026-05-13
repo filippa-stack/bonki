@@ -1,37 +1,14 @@
-## Change
+## Plan: Replace 18 Vårt Vi WebP illustrations
 
-In `src/lib/googleSignIn.ts`, remove the `scopes: ['email', 'profile']` line from the options object passed to `SocialLogin.login()`. Keep `nonce`.
+All 18 attached files verified — filenames match the existing files in `public/card-images/` exactly.
 
-### Before
-```ts
-const loginResult = await SocialLogin.login({
-  provider: 'google',
-  options: {
-    scopes: ['email', 'profile'],
-    nonce: hashedNonce,
-  },
-});
-```
+### Steps
+1. Overwrite each of the 18 files in `public/card-images/` with the attached version of the same name (binary-identical copy, no rename).
+2. List the new file sizes for all 18 to confirm replacement and report the per-file kB.
+3. Stop. No code changes, no build, no Live publish.
 
-### After
-```ts
-const loginResult = await SocialLogin.login({
-  provider: 'google',
-  options: {
-    nonce: hashedNonce,
-  },
-});
-```
+### Files replaced (18)
+adrift, behind-the-scenes, conflict-repair, different-parenting-styles, expressing-needs, facing-adversity, family-ab, identity-shift, listening-presence, love-languages, our-traditions, parenting-boundaries, parenting-exhaustion, self-esteem-wavering, smallest-we, thoughtful-space, when-life-tilts, worth-spending-on — all `.webp` in `public/card-images/`.
 
-## Why
-
-The Capgo Android plugin throws "You CANNOT use scopes without modifying the main activity" whenever a `scopes` array is passed and `MainActivity` does not implement `ModifiedMainActivityForSocialLoginPlugin`. The plugin already adds `email`, `profile`, and `openid` by default, so removing the explicit array preserves the same scope set without triggering the error.
-
-## Untouched
-
-- `ensureGoogleInitialized()` and all init code
-- Nonce generation and `sha256Hex`
-- `supabase.auth.signInWithIdToken` call
-- Error handling
-- `capacitor.config.ts`
-- All other files
+### Untouched
+`useCardImage.ts`, `CARD_IDS_WITH_IMAGES`, all kids illustrations (`jim-*`, `jma-*`, `jiv-*`, `vk-*`, `sex-*`, `sk-*`), `src/assets/illustration-*.png`, all components, `vite.config.ts`.
