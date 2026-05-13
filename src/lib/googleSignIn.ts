@@ -104,6 +104,10 @@ export async function signInWithGoogle(): Promise<GoogleSignInResult> {
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : String(err);
     const code = (err as { code?: string | number })?.code;
+    const name = (err as { name?: string })?.name;
+    const cause = (err as { cause?: unknown })?.cause;
+    const stack = (err as { stack?: string })?.stack;
+    console.error('[GoogleSignIn] caught', { name, code, message, cause, stack });
     const haystack = `${code ?? ''} ${message}`.toLowerCase();
 
     // Google Android cancellation: status code 12501, or "canceled"/"cancelled" strings
