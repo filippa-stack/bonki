@@ -15,6 +15,7 @@ import type { ProductManifest } from '@/types/product';
 import {
   MIDNIGHT_INK,
   LANTERN_GLOW,
+  TEXT_EYEBROW,
   WARM_GOLD,
   DEEP_DUSK_BG,
   productTileColors,
@@ -431,8 +432,7 @@ export default function ProductPaywall({ product, onAccessGranted }: ProductPayw
                       fontWeight: 600,
                       letterSpacing: '0.10em',
                       textTransform: 'uppercase',
-                      color: LANTERN_GLOW,
-                      opacity: 0.55,
+                      color: TEXT_EYEBROW,
                       marginBottom: 12,
                     }}
                   >

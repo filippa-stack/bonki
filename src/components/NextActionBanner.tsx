@@ -16,6 +16,7 @@ import { getNextProductRecommendation } from '@/lib/productRecommendations';
 import {
   SAFFRON_FLAME,
   LANTERN_GLOW,
+  TEXT_EYEBROW,
 } from '@/lib/palette';
 
 interface NextActionBannerProps {
@@ -53,7 +54,7 @@ export default function NextActionBanner({
     label = 'Fortsätt ert samtal';
     subtitle = card.title;
     ctaText = 'Öppna';
-    labelColor = LANTERN_GLOW;
+    labelColor = TEXT_EYEBROW;
     onClick = () => navigate(`/card/${card.id}`, { state: { resumed: true } });
 
   // STATE 2: All cards done — cross-product recommendation
@@ -64,7 +65,7 @@ export default function NextActionBanner({
     label = 'Ert nästa steg';
     subtitle = recommendation.displayName;
     ctaText = 'Utforska';
-    labelColor = 'rgba(253, 246, 227, 0.65)';
+    labelColor = TEXT_EYEBROW;
     onClick = () => navigate(`/product/${recommendation.slug}`);
 
   // STATE 3: Has next suggested card within this product
@@ -75,7 +76,7 @@ export default function NextActionBanner({
     label = hasCompletions ? 'Nästa samtal' : 'Börja här';
     subtitle = card.title;
     ctaText = 'Öppna';
-    labelColor = LANTERN_GLOW;
+    labelColor = TEXT_EYEBROW;
     onClick = () => navigate(`/product/${product.slug}/portal/${nextSuggestedCategoryId}?card=${nextSuggestedCardId}`);
 
   // STATE 4: Fallback — no banner

@@ -12,7 +12,7 @@ import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { supabase } from '@/integrations/supabase/client';
 import { isDemoMode } from '@/lib/demoMode';
 import { isProductHiddenOnPlatform } from '@/lib/platform';
-import { MIDNIGHT_INK, productDarkText } from '@/lib/palette';
+import { MIDNIGHT_INK, productDarkText, TEXT_EYEBROW } from '@/lib/palette';
 import { getCalmInterior } from '@/lib/productTileVariants';
 import KidsTileFrame from '@/components/KidsTileFrame';
 
@@ -94,7 +94,7 @@ function LibraryHeader() {
         fontWeight: 600,
         letterSpacing: '0.10em',
         textTransform: 'uppercase',
-        color: 'rgba(253, 246, 227, 0.55)',
+        color: TEXT_EYEBROW,
         margin: 0,
       }}>
         Samtal för hela familjen
@@ -112,7 +112,7 @@ function SectionEyebrow({ label }: { label: string }) {
       fontWeight: 600,
       letterSpacing: '0.12em',
       textTransform: 'uppercase',
-      color: 'rgba(253, 246, 227, 0.45)',
+      color: TEXT_EYEBROW,
       margin: '24px 0 10px',
       padding: '0 4px',
     }}>

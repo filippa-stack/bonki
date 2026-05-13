@@ -15,6 +15,8 @@ export const LANTERN_GLOW = '#FDF6E3';
 export const TEXT_ON_DARK = 'rgba(255, 255, 255, 0.85)';
 /** Meta/small-caps text on dark backgrounds — respects 70% opacity floor. */
 export const TEXT_ON_DARK_META = 'rgba(255, 255, 255, 0.70)';
+/** Warm off-white for small-caps section eyebrow labels on navy/dark backgrounds. */
+export const TEXT_EYEBROW = 'hsl(35, 45%, 90%)';
 export const PARCHMENT = '#F5EDD2';
 export const WARM_WHITE = '#FFFDF8';
 export const BONKI_ORANGE = '#E85D2C';
@@ -94,11 +96,11 @@ export const productAccentColor: Record<string, string> = {
 
 /** Per-product dark text color for titles on tiles (in product hue family). */
 export const productDarkText: Record<string, string> = {
-  jag_i_mig: '#5A3A1F',       // deep coral-brown
-  jag_med_andra: '#4A1428',   // deep wine
-  jag_i_varlden: '#2E2D08',   // deep olive-brown
-  vardagskort: '#0E2E22',     // deep forest
-  syskonkort: '#2A1F40',      // deep mauve-violet
-  sexualitetskort: '#3D1F15', // deep terracotta
-  still_us: '#0A1628',        // ember night
+  jag_i_mig: '#5B2814',       // hsl(15, 63%, 22%)  deep burnt sienna
+  jag_med_andra: '#511F39',   // hsl(330, 45%, 22%) deep plum
+  jag_i_varlden: '#363D14',   // hsl(75, 50%, 16%)  deep olive
+  vardagskort: '#175C3D',     // hsl(150, 55%, 20%) deep forest (hue-cohesion tuned)
+  syskonkort: '#3D2451',      // hsl(280, 40%, 22%) deep violet
+  sexualitetskort: '#5A2515', // hsl(10, 60%, 22%)  deep rust
+  still_us: '#0A1628',        // ember night (dark-bg tile, unchanged)
 };
