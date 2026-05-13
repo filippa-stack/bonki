@@ -58,6 +58,10 @@ export default function ProductCardTile({
           src={tileImage}
           alt=""
           aria-hidden="true"
+          loading="lazy"
+          decoding="async"
+          width={400}
+          height={400}
           style={{
             position: 'absolute',
             inset: 12,
