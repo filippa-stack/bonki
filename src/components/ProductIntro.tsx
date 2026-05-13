@@ -177,8 +177,41 @@ export default function ProductIntro({
       // Non-blocking — don't let telemetry failures stop checkout
     }
 
+    if (Capacitor.isNativePlatform()) {
+      setInitiating(true);
+      try {
+        const result = await purchaseProduct(productId);
+        if (result.cancelled) return;
+        if (!result.success) {
+          console.error('[ProductIntro] purchase failed:', result.error);
+          toast.error('Köpet kunde inte slutföras. Försök igen.');
+          return;
+        }
+        toast.success('Tack för ditt köp!');
+        onComplete();
+      } catch (err) {
+        console.error('[ProductIntro] purchase error:', err);
+        toast.error('Köpet kunde inte slutföras. Försök igen.');
+      } finally {
+        setInitiating(false);
+      }
+      return;
+    }
+
     navigate(`/buy?product=${productId}`);
   };
+
+  // Hardware back button (Android native)
+  useEffect(() => {
+    if (!Capacitor.isNativePlatform()) return;
+    let handle: { remove: () => void } | undefined;
+    App.addListener('backButton', () => {
+      localStorage.removeItem('bonki-last-active-product');
+      navigate('/', { replace: true });
+    }).then((h) => { handle = h; });
+    return () => { handle?.remove(); };
+  }, [navigate]);
+
 
   // Sexualitet safety signoff
   const sexSafetyLine = isSexualitet
