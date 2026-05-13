@@ -41,7 +41,7 @@ const ILLUSTRATIONS: Record<string, string> = {
 const TAGLINES: Record<string, string> = {
   still_us: 'Samtalen som dagen inte gav plats för',
   jag_i_mig: 'När känslor får ord',
-  jag_med_andra: 'Att höra till & vara sig själv',
+  jag_med_andra: 'Att höra till',
   jag_i_varlden: 'Att hitta sin plats',
   vardagskort: 'Det vanliga, på djupet',
   syskonkort: 'När vi delar allt & inget',
