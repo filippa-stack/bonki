@@ -15,6 +15,7 @@ import type { ProductManifest } from '@/types/product';
 import {
   MIDNIGHT_INK,
   LANTERN_GLOW,
+  TEXT_EYEBROW,
   WARM_GOLD,
   DEEP_DUSK_BG,
   productTileColors,
