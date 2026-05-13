@@ -122,7 +122,7 @@ export default function NextConversationCard({ product, progress }: NextConversa
         fontFamily: 'var(--font-sans)',
         fontSize: '11px',
         fontWeight: 600,
-        color: product.darkTextOnTile ? 'rgba(90,58,31,0.75)' : `${LANTERN_GLOW}B3`,
+        color: product.darkTextOnTile ? 'rgba(90,58,31,0.75)' : 'rgba(255, 255, 255, 0.85)',
         textTransform: 'uppercase',
         letterSpacing: '1.5px',
         position: 'relative',

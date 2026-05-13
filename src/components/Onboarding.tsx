@@ -295,7 +295,7 @@ export default function Onboarding() {
             <motion.p {...fadeUp(0.35)} style={{
               fontFamily: 'var(--font-sans)', fontSize: '15px', fontWeight: 500,
               letterSpacing: '0.16em', textTransform: 'uppercase',
-              color: LANTERN_GLOW, opacity: 0.5, marginBottom: '14px',
+              color: 'rgba(255, 255, 255, 0.7)', marginBottom: '14px',
             }}>
               Utvecklat av psykolog
             </motion.p>

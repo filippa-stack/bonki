@@ -126,9 +126,9 @@ export default function NextActionBanner({
         </p>
         <p style={{
           fontFamily: 'var(--font-display)',
-          fontSize: '15px',
+          fontSize: '17px',
           fontWeight: 600,
-          color: LANTERN_GLOW,
+          color: 'rgba(255, 255, 255, 0.85)',
           lineHeight: 1.3,
           overflow: 'hidden',
           textOverflow: 'ellipsis',

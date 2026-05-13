@@ -10,6 +10,11 @@ export const FOREST_TEAL = '#33656D';
 export const SAFFRON_FLAME = '#E9B44C';
 export const DEEP_SAFFRON = '#D4A03A';
 export const LANTERN_GLOW = '#FDF6E3';
+
+/** Body/subtitle text on dark backgrounds — use instead of LANTERN_GLOW for readability. */
+export const TEXT_ON_DARK = 'rgba(255, 255, 255, 0.85)';
+/** Meta/small-caps text on dark backgrounds — respects 70% opacity floor. */
+export const TEXT_ON_DARK_META = 'rgba(255, 255, 255, 0.70)';
 export const PARCHMENT = '#F5EDD2';
 export const WARM_WHITE = '#FFFDF8';
 export const BONKI_ORANGE = '#E85D2C';
