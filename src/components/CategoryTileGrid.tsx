@@ -183,6 +183,10 @@ function CategoryTile({
           right: 0,
           padding: '14px',
           zIndex: 3,
+          textAlign: 'center',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
         }}
       >
         <span
@@ -195,6 +199,7 @@ function CategoryTile({
             opacity: nameOpacity,
             lineHeight: 1.2,
             display: 'block',
+            textAlign: 'center',
             textShadow: '0 1px 4px rgba(0,0,0,0.5), 0 2px 8px rgba(0,0,0,0.3)',
           }}
         >
@@ -209,6 +214,7 @@ function CategoryTile({
             lineHeight: 1.3,
             marginTop: '3px',
             display: 'block',
+            textAlign: 'center',
             textShadow: '0 1px 4px rgba(0,0,0,0.5), 0 2px 8px rgba(0,0,0,0.3)',
           }}
         >
