@@ -208,6 +208,7 @@ function StillUsMarquee({
           fontSize: 13,
           margin: 0,
           fontFamily: 'var(--font-display)',
+          fontStyle: 'normal',
           lineHeight: 1.3,
         }}>
           {TAGLINES.still_us}
