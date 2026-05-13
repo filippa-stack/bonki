@@ -339,12 +339,19 @@ function StickyFilterHeader({
               visible={visible}
               enterDelay={visible ? Math.min(index, 12) * 0.03 : 0}
             >
-              <AdultProductCardTile
-                card={card}
-                cardColor={cardColors[index]}
-                isCompleted={completedSet.has(card.id)}
-                productSlug={product.slug}
-              />
+              {visible ? (
+                <AdultProductCardTile
+                  card={card}
+                  cardColor={cardColors[index]}
+                  isCompleted={completedSet.has(card.id)}
+                  productSlug={product.slug}
+                />
+              ) : (
+                <div
+                  aria-hidden="true"
+                  style={{ width: '100%', aspectRatio: '3 / 4', visibility: 'hidden' }}
+                />
+              )}
             </FilterableCardCell>
           );
         })}
