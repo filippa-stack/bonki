@@ -273,7 +273,7 @@ export default function LibraryResumeCard({ activeTab, global, forceMock }: Libr
           fontWeight: 600,
           letterSpacing: '0.14em',
           textTransform: 'uppercase',
-          color: 'rgba(253, 246, 227, 0.45)',
+          color: 'rgba(255, 255, 255, 0.70)',
           margin: '0 0 8px',
           padding: '0 4px',
         }}
