@@ -14,11 +14,11 @@ export default {
     },
     extend: {
       fontFamily: {
-        display: ['Cormorant', 'Georgia', 'serif'],
-        'display-brand': ['Bebas Neue', 'sans-serif'],
-        serif: ['Cormorant', 'Georgia', 'serif'],
-        sans: ['DM Sans', 'Segoe UI', 'sans-serif'],
-        body: ['DM Sans', 'Segoe UI', 'sans-serif'],
+        display: ['"Bricolage Grotesque"', 'system-ui', 'sans-serif'],
+        'display-brand': ['"Bricolage Grotesque"', 'system-ui', 'sans-serif'],
+        serif: ['"Bricolage Grotesque"', 'system-ui', 'sans-serif'],
+        sans: ['"Bricolage Grotesque"', 'system-ui', 'sans-serif'],
+        body: ['"Bricolage Grotesque"', 'system-ui', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",

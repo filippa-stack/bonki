@@ -140,8 +140,8 @@ h1, h2, h3,
     --state-inactive: 29 10% 55%;           /* Driftwood-light */
 
     /* Typography */
-    --font-display: 'Cormorant', Georgia, serif;
-    --font-body: 'DM Sans', 'Segoe UI', sans-serif;
+    --font-display: 'Bricolage Grotesque', system-ui, sans-serif;
+    --font-body: 'Bricolage Grotesque', system-ui, sans-serif;
     --font-serif: var(--font-display);
     --font-sans: var(--font-body);
 
