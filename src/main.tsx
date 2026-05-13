@@ -14,6 +14,25 @@ if (Capacitor.isNativePlatform()) {
   StatusBar.setOverlaysWebView({ overlay: true }).catch(() => {});
 }
 
+// Service worker handling:
+// - Web: register normally (PWA install / offline support).
+// - Native (Capacitor): never register, and proactively unregister any stale
+//   SW that a previous build installed inside the WebView. A SW under
+//   `https://localhost` intercepts cross-origin fetches in unpredictable ways
+//   and was the cause of "Failed to fetch" on every Supabase call from native.
+if ("serviceWorker" in navigator) {
+  if (Capacitor.isNativePlatform()) {
+    navigator.serviceWorker
+      .getRegistrations()
+      .then((rs) => rs.forEach((r) => r.unregister()))
+      .catch(() => {});
+  } else {
+    import("virtual:pwa-register")
+      .then(({ registerSW }) => registerSW({ immediate: true }))
+      .catch(() => {});
+  }
+}
+
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <App />
