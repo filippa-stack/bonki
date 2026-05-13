@@ -175,6 +175,8 @@ export default function KidsTileFrame({
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
+          alignItems: 'center',
+          textAlign: 'center',
         }}
       >
         {/* Hairline separator at top of strip */}
@@ -199,6 +201,7 @@ export default function KidsTileFrame({
             color: darkText,
             lineHeight: 1.05,
             display: 'block',
+            textAlign: 'center',
           }}
         >
           {title}
@@ -215,6 +218,7 @@ export default function KidsTileFrame({
               lineHeight: 1.2,
               marginTop: 3,
               display: 'block',
+              textAlign: 'center',
             }}
           >
             {subtitle}

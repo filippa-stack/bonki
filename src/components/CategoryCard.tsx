@@ -58,22 +58,24 @@ export default function CategoryCard({
         />
       )}
 
-      <div className="flex flex-col gap-2 relative z-[1]">
-        <div className="flex items-center justify-between">
-          <h3
-            className="text-heading"
-            style={{ color: isCompleted ? 'var(--color-text-secondary)' : 'var(--color-text-primary)' }}
-          >
-            {category.title}
-          </h3>
-          {isCompleted && (
-            <CheckCircle2 className="w-4 h-4 flex-shrink-0" style={{ color: 'var(--color-text-secondary)', opacity: 0.4 }} />
-          )}
-        </div>
+      {isCompleted && (
+        <CheckCircle2
+          className="w-4 h-4 absolute top-3 right-3 z-[2]"
+          style={{ color: 'var(--color-text-secondary)', opacity: 0.4 }}
+        />
+      )}
+
+      <div className="flex flex-col items-center gap-2 relative z-[1] text-center">
+        <h3
+          className="text-heading"
+          style={{ color: isCompleted ? 'var(--color-text-secondary)' : 'var(--color-text-primary)', textAlign: 'center' }}
+        >
+          {category.title}
+        </h3>
         {category.entryLine && (
           <p
             className="type-body leading-relaxed"
-            style={{ color: 'var(--color-text-secondary)', opacity: 0.8 }}
+            style={{ color: 'var(--color-text-secondary)', opacity: 0.8, textAlign: 'center' }}
           >
             {category.entryLine}
           </p>

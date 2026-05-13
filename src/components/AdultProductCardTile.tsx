@@ -202,6 +202,7 @@ export default function AdultProductCardTile({
           flex: '1 1 auto',
           display: 'flex',
           alignItems: 'center',
+          justifyContent: 'center',
           padding: '14px 16px',
           backgroundColor: titleZoneBg,
         }}
@@ -218,6 +219,7 @@ export default function AdultProductCardTile({
             WebkitLineClamp: 2,
             WebkitBoxOrient: 'vertical',
             overflow: 'hidden',
+            textAlign: 'center',
           }}
         >
           {card.title}

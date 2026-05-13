@@ -348,6 +348,8 @@ function LibraryKidsTile({
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
+          alignItems: 'center',
+          textAlign: 'center',
           gap: 2,
         }}
       >
@@ -360,6 +362,7 @@ function LibraryKidsTile({
             color: darkText,
             lineHeight: 1.05,
             display: 'block',
+            textAlign: 'center',
           }}
         >
           {product.name}
@@ -375,6 +378,7 @@ function LibraryKidsTile({
               opacity: 0.7,
               lineHeight: 1.2,
               display: 'block',
+              textAlign: 'center',
             }}
           >
             {TAGLINES[product.id]}
