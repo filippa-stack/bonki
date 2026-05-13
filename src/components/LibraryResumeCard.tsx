@@ -387,9 +387,9 @@ export default function LibraryResumeCard({ activeTab, global, forceMock }: Libr
           <p
             style={{
               fontFamily: 'var(--font-display)',
-              fontSize: 16,
+              fontSize: 18,
               fontWeight: 500,
-              color: LANTERN_GLOW,
+              color: 'rgba(255, 255, 255, 0.85)',
               lineHeight: 1.1,
               margin: 0,
               overflow: 'hidden',
@@ -402,11 +402,9 @@ export default function LibraryResumeCard({ activeTab, global, forceMock }: Libr
           <p
             style={{
               fontFamily: 'var(--font-display)',
-              fontStyle: 'italic',
-              fontSize: 11,
+              fontSize: 13,
               fontWeight: 400,
-              color: LANTERN_GLOW,
-              opacity: 0.65,
+              color: 'rgba(255, 255, 255, 0.85)',
               lineHeight: 1.3,
               margin: 0,
               overflow: 'hidden',

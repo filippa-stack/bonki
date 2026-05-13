@@ -60,9 +60,9 @@ export default function ResumeBanner({ cardId, accentColor }: ResumeBannerProps)
             <p
               className="flex items-center gap-2"
               style={{
-                fontSize: '14px',
+                fontSize: '16px',
                 fontWeight: 500,
-                color: LANTERN_GLOW,
+                color: 'rgba(255, 255, 255, 0.85)',
                 lineHeight: 1.3,
                 margin: 0,
               }}

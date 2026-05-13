@@ -210,11 +210,10 @@ export default function KidsTileFrame({
           <span
             style={{
               fontFamily: 'var(--font-display)',
-              fontStyle: 'italic',
               fontSize: 11,
               fontWeight: 400,
               color: darkText,
-              opacity: 0.7,
+              opacity: 0.75,
               lineHeight: 1.2,
               marginTop: 3,
               display: 'block',
@@ -237,12 +236,12 @@ export default function KidsTileFrame({
             <span
               style={{
                 fontFamily: 'var(--font-body)',
-                fontSize: 9,
+                fontSize: 10,
                 fontWeight: 600,
                 letterSpacing: '0.08em',
                 textTransform: 'uppercase',
                 color: darkText,
-                opacity: 0.55,
+                opacity: 0.7,
                 lineHeight: 1.2,
               }}
             >

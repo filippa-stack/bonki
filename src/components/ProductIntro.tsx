@@ -368,10 +368,8 @@ export default function ProductIntro({
             <p
               style={{
                 fontFamily: 'var(--font-serif)',
-                fontStyle: 'italic',
-                fontSize: '18px',
-                color: LANTERN_GLOW,
-                opacity: 0.85,
+                fontSize: '20px',
+                color: 'rgba(255, 255, 255, 0.85)',
                 textAlign: 'center',
                 lineHeight: 1.4,
                 margin: '10px 0 0',
@@ -443,8 +441,7 @@ export default function ProductIntro({
                   style={{
                     fontFamily: 'var(--font-display)',
                     fontSize: 15,
-                    color: LANTERN_GLOW,
-                    opacity: 0.85,
+                    color: 'rgba(255, 255, 255, 0.85)',
                     lineHeight: 1.55,
                     textAlign: 'center',
                     margin: 0,

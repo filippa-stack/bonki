@@ -267,7 +267,7 @@ export default function PaywallBottomSheet({
                     fontFamily: 'var(--font-sans)',
                     fontSize: '16px',
                     fontWeight: 400,
-                    color: LANTERN_GLOW,
+                    color: 'rgba(255, 255, 255, 0.85)',
                     margin: 0,
                     marginTop: '12px',
                     lineHeight: 1.5,
@@ -286,7 +286,6 @@ export default function PaywallBottomSheet({
                 style={{
                   fontFamily: 'var(--font-sans)',
                   fontSize: '13px',
-                  fontStyle: 'italic',
                   color: DRIFTWOOD,
                   margin: 0,
                   marginTop: '10px',
@@ -298,7 +297,6 @@ export default function PaywallBottomSheet({
                 style={{
                   fontFamily: 'var(--font-sans)',
                   fontSize: '12px',
-                  fontStyle: 'italic',
                   color: DRIFTWOOD,
                   opacity: 0.6,
                   margin: 0,
@@ -314,7 +312,6 @@ export default function PaywallBottomSheet({
                   style={{
                     fontFamily: 'var(--font-sans)',
                     fontSize: '13px',
-                    fontStyle: 'italic',
                     color: DRIFTWOOD,
                     margin: 0,
                     marginTop: '8px',
@@ -330,8 +327,7 @@ export default function PaywallBottomSheet({
                   fontFamily: 'var(--font-sans)',
                   fontSize: '15px',
                   fontWeight: 500,
-                  color: LANTERN_GLOW,
-                  opacity: 0.75,
+                  color: 'rgba(255, 255, 255, 0.85)',
                   margin: 0,
                   marginTop: '16px',
                 }}

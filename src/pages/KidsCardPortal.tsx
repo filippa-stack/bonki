@@ -472,17 +472,15 @@ export default function KidsCardPortal() {
                 {card.title}
               </h1>
 
-              {/* Italic serif subtitle */}
+              {/* Subtitle */}
               {card.subtitle && (
                 <p
                   style={{
                     fontFamily: 'var(--font-serif, var(--font-display))',
-                    fontStyle: 'italic',
-                    fontSize: 14,
+                    fontSize: 16,
                     fontWeight: 400,
                     lineHeight: 1.4,
-                    color: LANTERN_GLOW,
-                    opacity: 0.85,
+                    color: 'rgba(255, 255, 255, 0.85)',
                     margin: 0,
                     textAlign: 'center',
                     padding: '0 24px 18px',
@@ -605,7 +603,6 @@ export default function KidsCardPortal() {
                 <div
                   style={{
                     fontFamily: 'var(--font-serif, var(--font-display))',
-                    fontStyle: 'italic',
                     fontSize: 13,
                     fontWeight: 400,
                     color: SAFFRON_FLAME,

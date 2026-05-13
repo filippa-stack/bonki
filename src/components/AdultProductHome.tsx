@@ -217,10 +217,9 @@ export default function AdultProductHome({ product }: { product: ProductManifest
           <p
             style={{
               fontFamily: 'var(--font-display)',
-              fontSize: 'clamp(15px, 4.2vw, 19px)',
+              fontSize: 'clamp(17px, 4.6vw, 21px)',
               fontWeight: 600,
-              fontStyle: 'italic',
-              color: LANTERN_GLOW,
+              color: 'rgba(255, 255, 255, 0.85)',
               marginTop: '8px',
               letterSpacing: '0.03em',
               textShadow: [
@@ -314,9 +313,7 @@ function StickyFilterHeader({
             textAlign: 'center',
             fontFamily: 'var(--font-display)',
             fontSize: '14px',
-            fontStyle: 'italic',
-            color: LANTERN_GLOW,
-            opacity: 0.7,
+            color: 'rgba(255, 255, 255, 0.85)',
           }}
         >
           Inga samtal i den här kategorin än.
