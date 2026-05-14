@@ -9,7 +9,7 @@ import { AppProvider, useApp } from "@/contexts/AppContext";
 import { DevStateProvider } from "@/contexts/DevStateContext";
 
 import ActiveSessionGuard from "@/components/ActiveSessionGuard";
-import InstallGuideBanner from "@/components/InstallGuideBanner";
+import AppInstallBanner from "@/components/AppInstallBanner";
 import BonkiLoadingScreen from "@/components/BonkiLoadingScreen";
 import { useRouteTheme } from "@/hooks/useRouteTheme";
 import BottomNav from "@/components/BottomNav";
@@ -91,7 +91,7 @@ function ProtectedContent() {
 
   return (
     <>
-      <InstallGuideBanner />
+      <AppInstallBanner />
       <ActiveSessionGuard>
         <div style={{ minHeight: '100vh', background: 'var(--page-bg, #0B1026)' }}>
           <Routes>
