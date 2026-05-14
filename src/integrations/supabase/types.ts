@@ -1038,6 +1038,42 @@ export type Database = {
           },
         ]
       }
+      purchase_link_audit: {
+        Row: {
+          created_at: string
+          error_message: string | null
+          id: string
+          products_already_owned: number
+          products_linked: number
+          requester_user_id: string
+          source_email: string
+          source_user_id: string | null
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          products_already_owned?: number
+          products_linked?: number
+          requester_user_id: string
+          source_email: string
+          source_user_id?: string | null
+          status: string
+        }
+        Update: {
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          products_already_owned?: number
+          products_linked?: number
+          requester_user_id?: string
+          source_email?: string
+          source_user_id?: string | null
+          status?: string
+        }
+        Relationships: []
+      }
       question_bookmarks: {
         Row: {
           bookmarked_at: string
