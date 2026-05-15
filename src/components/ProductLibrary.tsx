@@ -600,16 +600,16 @@ export default function ProductLibrary() {
 
         {/* ── FÖR BARN · FÖR FAMILJEN ── */}
         <div className="px-5">
-          <SectionEyebrow label="För barn · För familjen" />
+          <SectionEyebrow label="För barn · För familjen" extraTopMargin={12} />
           <p style={{
-            fontFamily: 'var(--font-display)',
-            fontSize: 14,
+            fontFamily: 'var(--font-body)',
+            fontSize: 11,
             fontWeight: 400,
-            color: 'rgba(255, 255, 255, 0.85)',
+            color: 'rgba(255, 255, 255, 0.55)',
             lineHeight: 1.5,
             textAlign: 'left',
             padding: '0 4px',
-            margin: '8px 0 16px',
+            margin: '4px 0 14px',
           }}>
             Åldrarna är en vägledning. Ni känner ert barn bäst.
           </p>
