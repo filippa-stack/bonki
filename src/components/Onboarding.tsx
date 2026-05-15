@@ -373,7 +373,7 @@ export default function Onboarding() {
             {/* Three-dot pagination — third dot active (continues sequence from Slide 1 / Slide 2) */}
             <div
               aria-hidden="true"
-              style={{ display: 'flex', gap: 6, alignItems: 'center', marginBottom: 4 }}
+              style={{ display: 'flex', gap: 6, alignItems: 'center', justifyContent: 'center', marginBottom: 4, alignSelf: 'center' }}
             >
               {[0, 1, 2].map((i) => (
                 <span
