@@ -8,9 +8,13 @@
  *   BONKI wordmark (top) → recognition sentence (vertically centered)
  *   → bar indicator → Fortsätt CTA (bottom cluster)
  *
+ * Swipe-left advances (mirrors Fortsätt). Swipe-right is a no-op.
+ *
  * Background: var(--surface-base) (#0B1026). iOS PWA safe-area aware,
  * uses 100vh with calc() (never 100dvh) per project iOS stability rules.
  */
+
+import { motion } from 'framer-motion';
 
 const ORANGE = '#E85D2C';
 const ORANGE_PRESSED = '#D8531E';
@@ -23,7 +27,13 @@ interface PreAuthIntroSlide1Props {
 
 export default function PreAuthIntroSlide1({ onContinue }: PreAuthIntroSlide1Props) {
   return (
-    <div
+    <motion.div
+      drag="x"
+      dragConstraints={{ left: 0, right: 0 }}
+      dragElastic={0.2}
+      onDragEnd={(_, info) => {
+        if (info.offset.x < -60) onContinue();
+      }}
       style={{
         minHeight: 'calc(100vh)',
         background: 'var(--surface-base, #0B1026)',
@@ -35,6 +45,7 @@ export default function PreAuthIntroSlide1({ onContinue }: PreAuthIntroSlide1Pro
         paddingLeft: 24,
         paddingRight: 24,
         transform: 'translateZ(0)',
+        touchAction: 'pan-y',
       }}
     >
       {/* BONKI wordmark — top, Bebas Neue text */}
@@ -146,6 +157,6 @@ export default function PreAuthIntroSlide1({ onContinue }: PreAuthIntroSlide1Pro
           Fortsätt
         </button>
       </div>
-    </div>
+    </motion.div>
   );
 }

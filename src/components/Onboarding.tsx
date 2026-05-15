@@ -370,6 +370,24 @@ export default function Onboarding() {
             paddingBottom: 'calc(32px + env(safe-area-inset-bottom, 16px))',
             display: 'flex', flexDirection: 'column', gap: '12px',
           }}>
+            {/* Three-dot pagination — third dot active (continues sequence from Slide 1 / Slide 2) */}
+            <div
+              aria-hidden="true"
+              style={{ display: 'flex', gap: 6, alignItems: 'center', justifyContent: 'center', marginBottom: 4, alignSelf: 'center' }}
+            >
+              {[0, 1, 2].map((i) => (
+                <span
+                  key={i}
+                  style={{
+                    width: 6,
+                    height: 6,
+                    borderRadius: '50%',
+                    background: i === 2 ? '#E85D2C' : 'rgba(253,246,227,0.20)',
+                    display: 'block',
+                  }}
+                />
+              ))}
+            </div>
             <BonkiButton
               style={{
                 background: 'linear-gradient(180deg, #E85D2C 0%, #C44D22 100%)',
