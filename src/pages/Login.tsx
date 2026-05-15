@@ -286,14 +286,26 @@ export default function Login() {
   }
 
   if (!skipRedesign) {
+    const allowSwipeBack = !showEmailForm && !otpSent;
     return (
-      <div
+      <motion.div
+        drag={allowSwipeBack ? 'x' : false}
+        dragConstraints={{ left: 0, right: 0 }}
+        dragElastic={0.2}
+        onDragEnd={(_, info) => {
+          // Swipe-right → return to Slide 1 within this session only.
+          // Do NOT clear PREAUTH_SEEN_KEY — it gates "show intro on next app launch"
+          // for all users on this device, and clearing it would re-trigger the intro
+          // unrelatedly. Re-showing Slide 1 here is purely React state.
+          if (allowSwipeBack && info.offset.x > 60) setShowSlide1(true);
+        }}
         className="min-h-screen flex flex-col items-center px-6"
         style={{
           background: 'var(--surface-base, #0B1026)',
           paddingTop: 'max(env(safe-area-inset-top), 32px)',
           paddingBottom: 'max(env(safe-area-inset-bottom), 24px)',
           transform: 'translateZ(0)',
+          touchAction: 'pan-y',
         }}
       >
         <div className="w-full max-w-[340px] flex flex-col items-center text-center" style={{ flex: 1, justifyContent: 'center' }}>
