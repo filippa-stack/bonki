@@ -452,7 +452,7 @@ function LibraryKidsTile({
           <span
             style={{
               fontFamily: 'var(--font-display)',
-              fontStyle: 'italic',
+              fontStyle: 'normal',
               fontSize: 12,
               fontWeight: 400,
               color: darkText,
@@ -616,11 +616,11 @@ export default function ProductLibrary() {
           background: 'linear-gradient(180deg, transparent 0%, rgba(28, 43, 26, 0.10) 25%, rgba(45, 69, 40, 0.08) 60%, rgba(28, 43, 26, 0.12) 100%)',
         }} />
         <div style={{
-          position: 'absolute', top: 0, left: 0, right: 0, height: '360px',
+          position: 'absolute', top: 0, left: 0, right: 0, height: '280px',
           background: `linear-gradient(180deg,
             hsla(230, 25%, 10%, 0.0) 0%,
-            hsla(230, 25%, 10%, 0.35) 30%,
-            hsla(230, 25%, 10%, 0.75) 55%,
+            hsla(230, 25%, 10%, 0.15) 30%,
+            hsla(230, 25%, 10%, 0.35) 55%,
             ${libraryBg} 100%)`,
           zIndex: 1,
         }} />
