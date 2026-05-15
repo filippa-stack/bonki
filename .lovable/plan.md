@@ -1,61 +1,57 @@
-## Goal
+## Hotfix: Allow textarea to clear on prompt advance (with diagnostic log + comment retained)
 
-Deliver 7 downloadable PNGs — one per library tile, exactly as they appear in the app today, with transparent background outside the tile's rounded shape.
+### File
+`src/pages/CardView.tsx` only.
 
-## Tiles to capture
+### Change
+1. Delete L805:
+   ```ts
+   if (!kidsNoteSession.myReflection && kidsNoteSession.sessionId) return;
+   ```
+2. Replace the existing one-line comment above the sync effect (currently L800: `// Sync saved note text from DB — only on initial load for each prompt`) with the rationale block below.
+3. **Keep** the `[kids-note-sync]` `console.log` exactly as-is — it is the remote diagnostic for this code path.
+4. **Keep** the loading guard (L802), synced-ref guard (L803), and stale-prompt guard (L804) untouched.
 
-1. **Vårt Vi** (Still Us) — horizontal marquee, cobalt blue, 14 px radius
-2. **Jag i mig** — grid tile (orange)
-3. **Jag med andra** — grid tile (pink)
-4. **Vardag** — grid tile (mint)
-5. **Syskon** — grid tile (lilac)
-6. **Jag i världen** — grid tile (lime)
-7. **Sexualitet** — grid tile (terracotta)
-
-All grid tiles use `borderRadius: 14`, the marquee uses `borderRadius: 14`. Each `<button>` already has a unique `aria-label` (product name) plus `Vårt Vi` for the marquee — easy to target.
-
-## Approach
-
-```text
-1. Navigate browser to "/" at 390 × 844 (the user's mobile viewport).
-2. Use browser--act to scroll the library so all tiles are in view,
-   then read each target button's getBoundingClientRect via observe/eval.
-3. Take a full-page screenshot at devicePixelRatio = 2 (so output is ~1560 px wide).
-4. In a Python script (PIL):
-     - For each tile: crop the rectangle (scaled by DPR).
-     - Build a rounded-rectangle alpha mask (radius 14 × DPR = 28 px).
-     - Apply mask → corners become transparent, tile interior preserved.
-     - Save to /mnt/documents/library-tile-{slug}.png
-5. Emit one <presentation-artifact> tag per PNG.
+### Resulting region (current L800–820)
+```ts
+// Sync saved note text from DB on prompt change.
+// The loading guard below is sufficient — useSessionReflections sets loading=true
+// synchronously when (sessionId, stepIndex) change, batched with setMyReflection(null),
+// so there is no observable render where loading=false && myReflection=null && sessionId=valid
+// during a fetch. The only time that triple-state occurs is AFTER the fetch resolves with
+// no row, which is exactly when we want to clear local text. Do NOT re-add a
+// `!myReflection && sessionId` early-return here — it reintroduces the Q2→Q3 carry-over bug.
+useEffect(() => {
+  if (kidsNoteSession.loading) return;
+  if (kidsNoteSyncedRef.current) return;
+  if (kidsNoteSession.myReflection && kidsNoteSession.myReflection.stepIndex !== kidsNoteStepIndex) return;
+  kidsNoteSyncedRef.current = true;
+  console.log('[kids-note-sync]', {
+    hasText: !!kidsNoteSession.myReflection?.text,
+    text: kidsNoteSession.myReflection?.text?.slice(0, 20),
+    stepIndex: kidsNoteSession.myReflection?.stepIndex,
+    expectedStep: kidsNoteStepIndex,
+    sessionId: kidsNoteSession.sessionId,
+  });
+  if (kidsNoteSession.myReflection?.text) {
+    setKidsNoteLocalText(kidsNoteSession.myReflection.text);
+    setKidsNoteExpanded(true);
+  } else {
+    setKidsNoteLocalText('');
+  }
+}, [kidsNoteSession.loading, kidsNoteSession.myReflection, kidsNoteStepIndex]);
 ```
 
-## Auth / data caveat
+### Untouched
+- Reset effect (793–798)
+- All write paths, recovery effects, session id derivation, autosave, markReady
+- `useSessionReflections.ts` (no edits)
+- No other files touched
 
-The library route requires a signed-in user. If the live preview session is not authenticated, the page redirects to login and tiles won't render. Fallback plan:
-
-- First try navigating to `/` directly. If the library renders, proceed.
-- If it redirects to login, navigate to `/?devState=browse` (your project-knowledge dev state that unlocks all content for review). If that still gates, fall back to `/library-mock` which renders the same tile components without auth.
-
-I'll confirm which one actually shows the tiles before cropping.
-
-## Output
-
-Seven files in `/mnt/documents/`:
-
-```text
-library-tile-vart-vi.png       (wide, ~1560×~600 px)
-library-tile-jag-i-mig.png     (~750×~1000 px)
-library-tile-jag-med-andra.png
-library-tile-vardag.png
-library-tile-syskon.png
-library-tile-jag-i-varlden.png
-library-tile-sexualitet.png
-```
-
-Each PNG: tile artwork exactly as rendered (illustration + title strip + meta row), rounded corners alpha-masked to transparent. No surrounding Midnight Ink background.
-
-## Not in scope
-
-- No code changes to the library.
-- No re-rendering tiles at a different size (you chose "cropped from live library screenshot").
-- No alteration of badges, completion counts, or metadata — they appear as they currently show for the live session (likely "X SAMTAL · ÅLDER" for unpurchased state).
+### Verification (iOS preview)
+1. Q2: type "Jwhavs" → tap Fortsätt
+2. Q3 textarea is empty (collapsed with pencil nudge)
+3. Type something on Q3 → Fortsätt → Q4 also empty
+4. Back to Q2 → "Jwhavs" reappears
+5. Confirm `[kids-note-sync]` console log fires on every prompt transition with `hasText`: false on Q3/Q4 first visit, true on Q2 return.
+6. Paste the updated L800–820 region in the closing message for audit before Live publish.

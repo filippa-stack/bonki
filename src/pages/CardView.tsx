@@ -797,12 +797,17 @@ export default function CardView() {
     kidsNoteSyncedRef.current = false;
   }, [kidsNoteStepIndex]);
 
-  // Sync saved note text from DB — only on initial load for each prompt
+  // Sync saved note text from DB on prompt change.
+  // The loading guard below is sufficient — useSessionReflections sets loading=true
+  // synchronously when (sessionId, stepIndex) change, batched with setMyReflection(null),
+  // so there is no observable render where loading=false && myReflection=null && sessionId=valid
+  // during a fetch. The only time that triple-state occurs is AFTER the fetch resolves with
+  // no row, which is exactly when we want to clear local text. Do NOT re-add a
+  // `!myReflection && sessionId` early-return here — it reintroduces the Q2→Q3 carry-over bug.
   useEffect(() => {
     if (kidsNoteSession.loading) return;
     if (kidsNoteSyncedRef.current) return;
     if (kidsNoteSession.myReflection && kidsNoteSession.myReflection.stepIndex !== kidsNoteStepIndex) return;
-    if (!kidsNoteSession.myReflection && kidsNoteSession.sessionId) return;
     kidsNoteSyncedRef.current = true;
     console.log('[kids-note-sync]', {
       hasText: !!kidsNoteSession.myReflection?.text,
