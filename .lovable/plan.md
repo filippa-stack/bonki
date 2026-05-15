@@ -1,41 +1,37 @@
-# Remove the remaining scrim over library section eyebrows
+# Final scrim pass — neutralize the top-corner vignette
 
-Last pass softened the top fade (280px) but the perceived dark band over "FÖR BARN · FÖR FAMILJEN" is coming from a different layer further down the page. That eyebrow sits around y≈540–600px on a 390×844 viewport — well below the 280px top fade, so softening it didn't help.
-
-## Diagnosis
-
-In `ProductLibrary.tsx`, the atmospheric stack has a **mid-page blue/violet wash**:
+The cropped top-half of your screenshot shows a darker patch behind the "FORTSÄTT" eyebrow, strongest toward the right edge, fading toward the page center. The previous edits removed the mid-page wash and softened the top fade, but two atmospheric layers are still creating that corner darkening:
 
 ```text
-position: absolute; top: 350px; height: 600px;
-linear-gradient(180deg,
-  transparent 0%,
-  rgba(26, 39, 68, 0.08)  30%,   // ≈ y=530, right under the marquee
-  rgba(74, 58, 107, 0.05) 60%,
-  transparent 100%)
+// top-left
+position: absolute; top: 0; left: 0; width: 50%; height: 400px;
+radial-gradient(ellipse 80% 70% at 0% 0%, rgba(74, 58, 107, 0.06) 0%, transparent 70%)
+
+// top-right
+position: absolute; top: 0; right: 0; width: 50%; height: 400px;
+radial-gradient(ellipse 80% 70% at 100% 0%, rgba(74, 58, 107, 0.06) 0%, transparent 70%)
 ```
 
-That layer covers y≈350–950px — exactly the region containing the "För barn · För familjen" eyebrow and the disclaimer. It reads as a dark wash sitting on the eyebrow.
-
-There is also still the top fade (now 280px, 0.15→0.35 mid-stops) and a bottom green wash from y=900 down — those are not in the eyebrow band but contribute to overall murkiness.
+Even at 6% opacity, violet (74,58,107) over the navy `#1A1A2E` background reads as a slight darkening rather than a glow because the violet sits at similar luminance to the base. The eye reads it as a corner scrim.
 
 ## Fix
 
-Two targeted edits in `src/components/ProductLibrary.tsx`, both inside the atmospheric layers block:
+In `src/components/ProductLibrary.tsx`, atmospheric layers block:
 
-1. **Remove the mid-page blue/violet wash entirely** (the `top: 350px, height: 600px` div). Nothing about the brand identity depends on it; it just dims the eyebrow band.
-2. **Further soften the top fade** so the page header area is calm but not heavy:
-   - height `280px → 220px`
-   - mid-stops `0.15 → 0.08` (30%) and `0.35 → 0.18` (55%)
+1. **Remove both top-corner violet radial glows** entirely.
+2. Keep:
+   - the green ambient highlight at the very top (`hsla(100, 60%, 80%, 0.10)`) — adds a hint of warmth without darkening
+   - the bottom green wash (off-axis from any eyebrow)
+   - the soft top fade (now 220px, 0.08→0.18)
 
-Keep the corner radial glows (top-left / top-right violet) and the green ambient wash at the bottom — those are off-axis from the eyebrow and add atmosphere without darkening the section title band.
+Net effect: the top region becomes evenly dark with only the central green halo, no corner vignette behind FORTSÄTT or FÖR ER SOM PAR.
 
 ## Verification
 
-- 390×844 preview: scroll the library top-to-bottom and confirm no horizontal darker stripe sits over either eyebrow ("För er som par", "För barn · För familjen").
-- Marquee tile and kids tiles still read against background with no halo.
-- Header "Biblioteket" still feels grounded (top fade, just lighter).
+- 390×844 preview, top of library: confirm no darker corners behind the FORTSÄTT eyebrow band
+- Scroll: confirm no banding anywhere
+- Header "Biblioteket" still feels intentional, not flat
 
 ## Out of scope
 
-No changes to typography, copy, palette tokens, tile structure, or any other surface.
+No typography, copy, palette, tile, or routing changes.
