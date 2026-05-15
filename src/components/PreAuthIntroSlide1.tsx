@@ -157,6 +157,6 @@ export default function PreAuthIntroSlide1({ onContinue }: PreAuthIntroSlide1Pro
           Fortsätt
         </button>
       </div>
-    </div>
+    </motion.div>
   );
 }
