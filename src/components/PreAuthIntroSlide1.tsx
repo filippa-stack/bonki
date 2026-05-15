@@ -27,7 +27,13 @@ interface PreAuthIntroSlide1Props {
 
 export default function PreAuthIntroSlide1({ onContinue }: PreAuthIntroSlide1Props) {
   return (
-    <div
+    <motion.div
+      drag="x"
+      dragConstraints={{ left: 0, right: 0 }}
+      dragElastic={0.2}
+      onDragEnd={(_, info) => {
+        if (info.offset.x < -60) onContinue();
+      }}
       style={{
         minHeight: 'calc(100vh)',
         background: 'var(--surface-base, #0B1026)',
@@ -39,6 +45,7 @@ export default function PreAuthIntroSlide1({ onContinue }: PreAuthIntroSlide1Pro
         paddingLeft: 24,
         paddingRight: 24,
         transform: 'translateZ(0)',
+        touchAction: 'pan-y',
       }}
     >
       {/* BONKI wordmark — top, Bebas Neue text */}
