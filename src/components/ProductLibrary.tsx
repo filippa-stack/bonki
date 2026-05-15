@@ -260,12 +260,23 @@ function LibraryKidsTile({
   const { frame, interior, text: darkText } = TILE_COLORS[product.id]
     ?? { frame: '#2A2D3A', interior: '#3A3D4A', text: '#5A3A1F' };
   const tasted = !isPurchased && completedCount > 0;
-  const progress = isPurchased
-    ? `${completedCount} AV ${totalCards}`
-    : `${totalCards} SAMTAL`;
-  const meta = product.ageLabel
-    ? `${progress} · ${product.ageLabel.toUpperCase()}`
-    : progress;
+
+  // Defensive age parse — first integer from ageLabel, never "undefined+".
+  const ageMatch = product.ageLabel?.match(/\d+/);
+  const ageBadge = ageMatch ? `${ageMatch[0]}+` : null;
+
+  // Progress fill — animated from 0 to target on mount.
+  const progressPct = totalCards > 0 ? Math.min(100, (completedCount / totalCards) * 100) : 0;
+  const progressFillRef = useRef<HTMLDivElement>(null);
+  useLayoutEffect(() => {
+    if (!progressFillRef.current) return;
+    const el = progressFillRef.current;
+    el.style.width = '0%';
+    const id = requestAnimationFrame(() => {
+      el.style.width = `${progressPct}%`;
+    });
+    return () => cancelAnimationFrame(id);
+  }, [progressPct]);
 
   return (
     <button
@@ -320,6 +331,62 @@ function LibraryKidsTile({
             }}
           />
         )}
+
+        {/* Age badge — top-left of inner zone (only if ageLabel parses) */}
+        {ageBadge && (
+          <div
+            aria-hidden="true"
+            style={{
+              position: 'absolute',
+              top: 8,
+              left: 8,
+              minWidth: 28,
+              height: 22,
+              padding: '0 6px',
+              borderRadius: 6,
+              background: 'rgba(255,255,255,0.15)',
+              border: '1px solid rgba(255,255,255,0.30)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontFamily: 'var(--font-body)',
+              fontSize: 11,
+              fontWeight: 600,
+              color: 'rgba(255,255,255,0.85)',
+              lineHeight: 1,
+              pointerEvents: 'none',
+            }}
+          >
+            {ageBadge}
+          </div>
+        )}
+
+        {/* Progress bar — bottom of inner zone, animated fill */}
+        <div
+          aria-hidden="true"
+          style={{
+            position: 'absolute',
+            left: 12,
+            right: 12,
+            bottom: 8,
+            height: 2,
+            borderRadius: 1,
+            background: 'rgba(212,154,63,0.20)',
+            overflow: 'hidden',
+            pointerEvents: 'none',
+          }}
+        >
+          <div
+            ref={progressFillRef}
+            style={{
+              width: '0%',
+              height: '100%',
+              background: '#D49A3F',
+              borderRadius: 1,
+              transition: 'width 400ms ease-out',
+            }}
+          />
+        </div>
       </div>
 
       {/* Hairline at inner-zone / title-strip seam */}
@@ -336,7 +403,7 @@ function LibraryKidsTile({
         }}
       />
 
-      {/* Title strip — bottom 30%, sits on frame color */}
+      {/* Title strip — bottom 24%, sits on frame color */}
       <div
         style={{
           position: 'absolute',
@@ -344,37 +411,52 @@ function LibraryKidsTile({
           right: 0,
           bottom: 0,
           height: '24%',
-          padding: '8px 9px',
+          padding: '6px 9px 8px',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center',
           textAlign: 'center',
-          gap: 2,
+          gap: 4,
         }}
       >
-        <span
+        <div
           style={{
-            fontFamily: 'var(--font-display)',
-            fontVariationSettings: "'opsz' 24",
-            fontSize: 14,
-            fontWeight: 600,
-            color: darkText,
-            lineHeight: 1.05,
-            display: 'block',
-            textAlign: 'center',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 6,
+            width: '100%',
           }}
         >
-          {product.name}
-        </span>
+          <span
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontVariationSettings: "'opsz' 24",
+              fontSize: 16,
+              fontWeight: 600,
+              color: darkText,
+              lineHeight: 1.1,
+              textAlign: 'center',
+            }}
+          >
+            {product.name}
+          </span>
+          {tasted && (
+            <span style={{ display: 'inline-flex', color: darkText, opacity: 0.55, flexShrink: 0 }}>
+              <BonkiLogoMark size={10} />
+            </span>
+          )}
+        </div>
         {TAGLINES[product.id] && (
           <span
             style={{
               fontFamily: 'var(--font-display)',
+              fontStyle: 'italic',
               fontSize: 12,
               fontWeight: 400,
               color: darkText,
-              opacity: 0.75,
+              opacity: 0.85,
               lineHeight: 1.2,
               display: 'block',
               textAlign: 'center',
@@ -383,34 +465,6 @@ function LibraryKidsTile({
             {TAGLINES[product.id]}
           </span>
         )}
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: 6,
-          }}
-        >
-          <span
-            style={{
-              fontFamily: 'var(--font-body)',
-              fontSize: 8,
-              fontWeight: 600,
-              letterSpacing: '0.08em',
-              textTransform: 'uppercase',
-              color: darkText,
-              opacity: 0.55,
-              lineHeight: 1.2,
-            }}
-          >
-            {meta}
-          </span>
-          {tasted && (
-            <span style={{ display: 'inline-flex', color: darkText, opacity: 0.55, flexShrink: 0 }}>
-              <BonkiLogoMark size={9} />
-            </span>
-          )}
-        </div>
       </div>
     </button>
   );
