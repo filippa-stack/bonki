@@ -608,19 +608,15 @@ export default function ProductLibrary() {
           background: 'radial-gradient(ellipse 80% 70% at 100% 0%, rgba(74, 58, 107, 0.06) 0%, transparent 70%)',
         }} />
         <div style={{
-          position: 'absolute', top: '350px', left: 0, right: 0, height: '600px',
-          background: 'linear-gradient(180deg, transparent 0%, rgba(26, 39, 68, 0.08) 30%, rgba(74, 58, 107, 0.05) 60%, transparent 100%)',
-        }} />
-        <div style={{
           position: 'absolute', top: '900px', left: 0, right: 0, bottom: 0,
           background: 'linear-gradient(180deg, transparent 0%, rgba(28, 43, 26, 0.10) 25%, rgba(45, 69, 40, 0.08) 60%, rgba(28, 43, 26, 0.12) 100%)',
         }} />
         <div style={{
-          position: 'absolute', top: 0, left: 0, right: 0, height: '280px',
+          position: 'absolute', top: 0, left: 0, right: 0, height: '220px',
           background: `linear-gradient(180deg,
             hsla(230, 25%, 10%, 0.0) 0%,
-            hsla(230, 25%, 10%, 0.15) 30%,
-            hsla(230, 25%, 10%, 0.35) 55%,
+            hsla(230, 25%, 10%, 0.08) 30%,
+            hsla(230, 25%, 10%, 0.18) 55%,
             ${libraryBg} 100%)`,
           zIndex: 1,
         }} />
