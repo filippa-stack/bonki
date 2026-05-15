@@ -8,9 +8,13 @@
  *   BONKI wordmark (top) → recognition sentence (vertically centered)
  *   → bar indicator → Fortsätt CTA (bottom cluster)
  *
+ * Swipe-left advances (mirrors Fortsätt). Swipe-right is a no-op.
+ *
  * Background: var(--surface-base) (#0B1026). iOS PWA safe-area aware,
  * uses 100vh with calc() (never 100dvh) per project iOS stability rules.
  */
+
+import { motion } from 'framer-motion';
 
 const ORANGE = '#E85D2C';
 const ORANGE_PRESSED = '#D8531E';
