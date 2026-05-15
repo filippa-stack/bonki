@@ -104,7 +104,7 @@ function LibraryHeader() {
 }
 
 /* ── Section eyebrow with mushroom-tinted divider ─────────────────────── */
-function SectionEyebrow({ label }: { label: string }) {
+function SectionEyebrow({ label, extraTopMargin = 0 }: { label: string; extraTopMargin?: number }) {
   return (
     <p style={{
       fontFamily: 'var(--font-body)',
@@ -113,7 +113,7 @@ function SectionEyebrow({ label }: { label: string }) {
       letterSpacing: '0.12em',
       textTransform: 'uppercase',
       color: TEXT_EYEBROW,
-      margin: '24px 0 10px',
+      margin: `${24 + extraTopMargin}px 0 14px`,
       padding: '0 4px',
     }}>
       {label}
