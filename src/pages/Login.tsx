@@ -595,7 +595,7 @@ export default function Login() {
           .text-xs.leading-relaxed { color: rgba(253, 246, 227, 0.50); font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 400; }
           .text-xs.leading-relaxed button { color: rgba(253, 246, 227, 0.50); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; }
         `}</style>
-      </div>
+      </motion.div>
     );
   }
 
