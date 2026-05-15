@@ -368,7 +368,7 @@ export default function Onboarding() {
             position: 'relative', zIndex: 1, flex: '0 0 auto',
             padding: '16px 24px 0',
             paddingBottom: 'calc(32px + env(safe-area-inset-bottom, 16px))',
-            display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px',
+            display: 'flex', flexDirection: 'column', gap: '12px',
           }}>
             {/* Three-dot pagination — third dot active (continues sequence from Slide 1 / Slide 2) */}
             <div
