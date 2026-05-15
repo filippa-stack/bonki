@@ -53,7 +53,6 @@ export default function BottomNav() {
   const params = new URLSearchParams(search);
   const isOnboarding = params.get('devState') === 'onboarding';
   if (isOnboarding) return null;
-  if (params.get('hideNav') === '1') return null;
   if (pathname === '/onboarding-mock') return null;
   const isCardArchiveOrComplete = params.get('from') === 'archive' || params.get('view') === 'completed';
   if (pathname.startsWith('/card/') && !isCardArchiveOrComplete) return null;
