@@ -1,31 +1,39 @@
-## Goal
+## Problem
 
-Soften the native Google Sign-In button on the Login page to Google's official neutral styling (white background, dark text, colored "G"), so Apple's solid-black button visually dominates on iOS and satisfies App Store Guideline 4.8.
+Google's branding verifier fetches `https://bonkiapp.com/` and expects to see a link to the privacy policy. Today, unauthenticated visitors are redirected by React Router to `/login`, and the verifier (which may not execute JS, or which only inspects the root URL response) never sees a privacy link on `/`. The existing crawlable privacy link lives only inside `src/pages/Login.tsx`.
 
-## Change (one block, one file)
+## Fix (one file)
 
-**File:** `src/pages/Login.tsx`, lines **805–832** — the `{isNative && (...)}` Google button block.
+**File:** `index.html` — add a static, crawlable privacy link directly in the HTML so it is present in the initial response for `https://bonkiapp.com/`, independent of React, routing, or auth state.
 
-- `className`: remove `border-0 text-white`; keep `w-full h-14 text-base font-semibold rounded-xl flex items-center justify-center gap-2 disabled:opacity-50`.
-- `style`: replace `background: ORANGE_GRADIENT` + `boxShadow: ORANGE_SHADOW` with:
-  - `background: '#FFFFFF'`
-  - `color: '#1F1F1F'`
-  - `border: '1px solid #DADCE0'`
-  - (no `boxShadow`)
-- SVG: change the four `<path fill="#fff" .../>` to the official Google brand colors — `#4285F4`, `#34A853`, `#FBBC04`, `#EA4335` (in the existing path order). Add `aria-hidden="true"` on the `<svg>`.
-- Keep label `Fortsätt med Google`, loading state, handler `handleNativeGoogleSignIn`, and the `{isNative && (...)}` gate exactly as today.
+Insert immediately after `<div id="root"></div>` (line 38), before the existing `<script>` blocks:
+
+```html
+<noscript>
+  <a href="/privacy">Integritetspolicy</a>
+</noscript>
+<a
+  href="/privacy"
+  aria-label="Integritetspolicy"
+  style="position:absolute;left:1rem;bottom:1rem;color:#94a3b8;font-size:12px;text-decoration:underline;z-index:1;"
+>Integritetspolicy</a>
+```
+
+Why this works:
+- The `<a>` is in the static HTML body, so it is in the initial document response for every route — including `/` — regardless of JS execution or auth redirects.
+- It points to `/privacy`, which is an already-public route in `App.tsx` (line 201) rendering `PrivacyPolicy`.
+- Styling is minimal/unobtrusive (small muted link in bottom-left, low z-index) so it does not visually intrude on the app UI. The React app paints on top inside `#root`.
+- The `<noscript>` fallback covers crawlers with JS disabled.
 
 ## Out of scope
 
-- Apple button block (stays canonical black + white text + white logo).
-- Web `!isNative` Google button (lines 835+).
-- Email/OTP block, googleSignIn.ts, capacitor.config.ts, AuthContext.tsx, RevenueCat.
-- Source order — Google still renders below Apple.
+- No changes to `App.tsx`, `Login.tsx`, routing, auth, or any component.
+- No new components, no SEO library, no meta-tag changes.
+- `/privacy` route already exists — not touched.
 
 ## Verification
 
-1. TypeScript build clean.
-2. iOS Login top-to-bottom: Apple (solid black) → Google (white with thin gray border, colored G) → email/OTP. Apple is clearly the heavier button.
-3. Google button keeps `w-full h-14` (equal dimensions to Apple).
-4. The G renders in Google's four brand colors, not white-on-white.
-5. Android Login uses the same neutral white Google button (expected — gate is `isNative`).
+1. `curl -s https://bonkiapp.com/ | grep -i privacy` returns the `<a href="/privacy">` line.
+2. Visiting `/` in browser shows the app unchanged; a small "Integritetspolicy" link appears in the bottom-left corner.
+3. Clicking it navigates to the existing privacy policy page.
+4. Re-run Google's branding verification — privacy link requirement satisfied.
