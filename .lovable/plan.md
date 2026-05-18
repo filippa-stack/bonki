@@ -1,28 +1,12 @@
-## Problem
-The absolute-positioned "Integritetspolicy" link in `index.html` overlaps the library tiles (visible in the screenshot, bottom-left over the "Vardag" card).
+## Change
+Edit `src/lib/googleSignIn.ts` lines 13–35:
 
-## Fix
-In `index.html`, replace the visible absolute-positioned `<a>` with a visually-hidden but DOM-present anchor (clip-path technique). Crawlers still see it in the static HTML response; users never see it overlapping UI.
+1. Update JSDoc on `GOOGLE_WEB_CLIENT_ID` ("Web Client IDs are not secret" → "Client IDs are not secret").
+2. Add new constant `GOOGLE_IOS_CLIENT_ID = '629196806647-960ga3kinh5v280ft77rpn04artkeqnc.apps.googleusercontent.com'` with full JSDoc explaining iOS-specific plugin requirement.
+3. In `ensureGoogleInitialized`, pass `iOSClientId: GOOGLE_IOS_CLIENT_ID` and `iOSServerClientId: GOOGLE_WEB_CLIENT_ID` to the `google` block of `SocialLogin.initialize`.
 
-Replace lines 39–46 (the `<noscript>` + visible `<a>`) with:
-
-```html
-<a
-  href="/privacy"
-  style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;"
->Integritetspolicy</a>
-```
-
-## Why this works
-- Anchor is in the initial HTML response on every route → Google's branding verifier sees it via `curl` / static fetch.
-- `clip:rect(0,0,0,0)` + 1×1px is the standard `sr-only` pattern: present in DOM, accessible to screen readers and crawlers, invisible to sighted users.
-- No `<noscript>` wrapper needed — the `<a>` is already in the static document, so it's available whether JS runs or not.
-- No z-index conflict, no overlap with app UI.
-
-## Out of scope
-No changes to `App.tsx`, routing, `/privacy` page, or any React component.
+No other files touched. Android behavior unchanged (extra fields ignored natively). No JS platform branching.
 
 ## Verification
-- `curl -s https://bonkiapp.com/ | grep -i 'href="/privacy"'` returns the anchor.
-- Visiting `/` shows the app with no visible bottom-left link overlapping tiles.
-- Re-run Google's branding verification.
+- Build clean.
+- `initialize` call contains exactly `webClientId`, `iOSClientId`, `iOSServerClientId`, `mode`.
