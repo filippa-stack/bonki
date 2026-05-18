@@ -99,6 +99,9 @@ async function attemptGoogleSignIn(): Promise<{
     },
   });
 
+  console.log('[GoogleSignIn DEBUG] idToken:', (loginResult as any)?.result?.idToken?.substring(0, 100));
+  console.log('[GoogleSignIn DEBUG] result keys:', Object.keys((loginResult as any)?.result || {}));
+
   const result = (loginResult as unknown as { result?: { idToken?: string } })?.result;
   const idToken = result?.idToken;
 
