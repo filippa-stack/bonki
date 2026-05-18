@@ -1,102 +1,33 @@
-# Enable Google Sign-In on iOS (native)
+## Goal
 
-Scope is intentionally narrow: two files, no new logic, no auth/cloud changes. The Capgo SocialLogin plugin is given the iOS credentials it needs to initialize, and the Android-only gate on the Google button in `Login.tsx` is broadened to all native platforms.
+Google's branding verification fails because crawling `https://bonkiapp.com` finds no link to the privacy policy. The route `/privacy` exists (rendered by `PrivacyPolicy.tsx` and registered in `App.tsx`), but no visible `<a href="/privacy">` anchor is reachable from the public landing.
 
-## Defensive precheck (do this before any edits)
+For anonymous visitors, the app redirects to **Login** (`src/pages/Login.tsx`). The existing privacy text there lives inside `TermsConsent` as a dialog trigger — not a navigable link, so Google's crawler sees nothing.
 
-1. Confirm `capacitor.config.ts` already contains a `plugins.SocialLogin.google` block with `webClientId` set to `629196806647-m2r1g9m73n79bbbdvm7524fc5t48frmk.apps.googleusercontent.com` (added in Handover 29 / Lovable Prompt 4). If this block is missing, stop and report — this prompt is shaped around extending it, not creating it.
+## Change
 
-2. Read `src/lib/googleSignIn.ts` end-to-end. The platform gate at line 66 is `if (!Capacitor.isNativePlatform())`, which already accepts both iOS and Android. If you find **any** other iOS-blocking check anywhere in this file (e.g. `Capacitor.getPlatform() !== 'android'`, `isAndroid` flags, conditional imports, `ensureGoogleInitialized` internals), stop and report. Do not silently "fix" or remove them — flag them so we can decide together. The audit says they don't exist, but the audit may have missed something.
+Add a small, visible footer link to `/privacy` on the public Login page. Swedish copy, low-key styling, real `<Link to="/privacy">` so it is in the rendered DOM and crawlable.
 
-## Changes
+**File:** `src/pages/Login.tsx`
 
-### 1. `capacitor.config.ts`
+- Import `Link` from `react-router-dom` (if not already imported).
+- Add a footer block at the bottom of the Login page JSX (just before the closing wrapper), containing a single anchor:
+  - Label: `Integritetspolicy`
+  - `to="/privacy"`
+  - Styled muted/small, centered, with a bit of bottom padding so it sits above the safe area.
 
-Extend the existing `SocialLogin.google` block. Android keys stay unchanged.
+No other files change. No logic, auth, RevenueCat, capacitor, or routing changes. The `/privacy` route already exists and renders `PrivacyPolicy.tsx`.
 
-**FROM:**
-```ts
-SocialLogin: {
-  google: {
-    webClientId: '629196806647-m2r1g9m73n79bbbdvm7524fc5t48frmk.apps.googleusercontent.com',
-    mode: 'online',
-  },
-},
-```
+## Out of scope
 
-**TO:**
-```ts
-SocialLogin: {
-  google: {
-    webClientId: '629196806647-m2r1g9m73n79bbbdvm7524fc5t48frmk.apps.googleusercontent.com',
-    iOSClientId: '629196806647-960ga3kinh5v280ft77rpn04artkeqnc.apps.googleusercontent.com',
-    // iOSServerClientId MUST equal webClientId — this is the audience Supabase
-    // verifies against when signInWithIdToken is called on iOS. Without it,
-    // sign-ins succeed at Google but fail at Supabase verify (aud mismatch).
-    // Do not "simplify" away.
-    iOSServerClientId: '629196806647-m2r1g9m73n79bbbdvm7524fc5t48frmk.apps.googleusercontent.com',
-    mode: 'online',
-  },
-},
-```
+- Footer.tsx (used inside authenticated pages only; not reached anonymously).
+- index.html static fallback (the SPA renders Login fast enough; Googlebot executes JS for verification).
+- Terms link, cookie banner, or any redesign of the Login layout.
+- Native-only screens (the verification target is the web origin `bonkiapp.com`).
 
-Note: The new iOS Client ID is `629196806647-960ga3kinh5v280ft77rpn04artkeqnc...` — same Google Cloud project as the Web Client (same `629196806647` prefix).
+## Verification
 
-### 2. `src/lib/googleSignIn.ts`
-
-**No change.** Audit confirms the platform gate at line 66 already accepts both iOS and Android, and the init/login/`signInWithIdToken` sequence is platform-agnostic. Return shape unchanged.
-
-(The Handover-26 Android gating lives in `Login.tsx`, not here.)
-
-If the precheck above turns up any iOS-blocking checks anywhere in this file, stop and report instead of editing.
-
-### 3. `src/pages/Login.tsx`
-
-Today (per Handover 26 §5.2): Apple button is gated to iOS, Google button is gated to Android via `Capacitor.getPlatform() === 'android'`. Change: broaden the Google button's gate to `isNative` so it renders on both iOS and Android.
-
-**FROM (the Google native button block, near line 805):**
-```tsx
-{isNative && Capacitor.getPlatform() === 'android' && (
-  <button onClick={handleNativeGoogleSignIn} ...>
-    ...Fortsätt med Google
-  </button>
-)}
-```
-
-**TO:**
-```tsx
-{isNative && (
-  <button onClick={handleNativeGoogleSignIn} ...>
-    ...Fortsätt med Google
-  </button>
-)}
-```
-
-`handleNativeGoogleSignIn` (lines 171–194) and all its state are reused verbatim. No new state, no new handler, no new imports.
-
-### Apple-first button order on iOS (load-bearing)
-
-On iOS, the Apple button MUST render visually above the Google button. Apple Sign-In is the platform-expected primary option on iOS (Apple App Store Guideline 4.8 expects Apple Sign-In to be at least as prominent as other social logins).
-
-The Apple block (gated to iOS, near line 779) already comes before the Google block in source order — keep it that way. Do not reorder. After applying, describe the final iOS button order in your response so I can verify before publishing.
-
-## Explicitly out of scope (untouched)
-
-- `AuthContext.tsx`, RevenueCat init, `initRevenueCat` coupling
-- Apple Sign-In path (`handleNativeAppleSignIn`, `appleSignIn.ts`)
-- Lovable Cloud / Supabase Google provider settings
-- Web reviewer block (`?review=1`)
-- `link-purchases` / Hämta webbköp flow
-- Protected patterns from project memory: `suppressUntilRef`, `prevServerStepRef`, `clearTimeout(pendingSave.current)`, `hasSyncedRef`, resume logic, `AnimatePresence mode="sync"`, no `key={location.pathname}` on Routes, no `100dvh`
-
-## Verification after applying
-
-In the implementation response, confirm:
-
-1. TypeScript build is clean (no new errors).
-2. Apple button renders **above** Google button on iOS Login screen. Describe the final iOS Login screen vertical order of buttons.
-3. Android Login screen is unchanged (Google button still appears, no Apple).
-4. `googleSignIn.ts` was not modified (or, if it had to be modified, explain why).
-5. `capacitor.config.ts` shows the new `iOSClientId` and `iOSServerClientId` under `plugins.SocialLogin.google`.
-
-After verification, the user will Publish to Live and pull on Göran's Mac for the native iOS build (Info.plist URL scheme registration with the reversed Client ID happens on the native side, not here).
+1. `npm run build` clean.
+2. Visit `https://bonkiapp.com` in an incognito window → Login renders → "Integritetspolicy" link visible at the bottom → click navigates to `/privacy` and renders the policy page.
+3. View page source after JS hydration: an `<a href="/privacy">Integritetspolicy</a>` is present in the DOM.
+4. Resubmit Google branding verification.
