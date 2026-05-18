@@ -1,12 +1,24 @@
-## Change
-Edit `src/lib/googleSignIn.ts` lines 13–35:
+## Fix iOS Google Sign-In nonce mismatch (cached-token retry)
 
-1. Update JSDoc on `GOOGLE_WEB_CLIENT_ID` ("Web Client IDs are not secret" → "Client IDs are not secret").
-2. Add new constant `GOOGLE_IOS_CLIENT_ID = '629196806647-960ga3kinh5v280ft77rpn04artkeqnc.apps.googleusercontent.com'` with full JSDoc explaining iOS-specific plugin requirement.
-3. In `ensureGoogleInitialized`, pass `iOSClientId: GOOGLE_IOS_CLIENT_ID` and `iOSServerClientId: GOOGLE_WEB_CLIENT_ID` to the `google` block of `SocialLogin.initialize`.
+Refactor `src/lib/googleSignIn.ts` to retry once after clearing Google's iOS SDK cache when Supabase rejects an id_token with a nonce mismatch.
 
-No other files touched. Android behavior unchanged (extra fields ignored natively). No JS platform branching.
+### Edit: `src/lib/googleSignIn.ts`
 
-## Verification
-- Build clean.
-- `initialize` call contains exactly `webClientId`, `iOSClientId`, `iOSServerClientId`, `mode`.
+1. **Add helper `attemptGoogleSignIn()`** — one pass: fresh nonce → `SocialLogin.login({ provider: 'google', options: { nonce: hashedNonce } })` → `supabase.auth.signInWithIdToken(...)`. Returns `{ success, error?, nonceError? }`. Detects nonce mismatch by lowercasing `error.message` and checking for substring `"nonce"` plus one of `"id_token"`/`"id token"`/`"mismatch"`.
+
+2. **Rewrite `signInWithGoogle()`** body (keeping the `!Capacitor.isNativePlatform()` guard and the outer `catch` block unchanged):
+   - `await ensureGoogleInitialized()`
+   - Call `attemptGoogleSignIn()`; return success if successful.
+   - If failure and not a nonce error → return the error.
+   - If nonce error → `await SocialLogin.logout({ provider: 'google' })` (wrapped in try/catch logging only), then call `attemptGoogleSignIn()` once more and return its result.
+
+3. **Preserved unchanged**: `ensureGoogleInitialized` (incl. all three iOS fields), `randomString`, `sha256Hex`, `GoogleSignInResult`, web guard, and the outer catch (12501 / canceled / cancelled detection).
+
+### Out of scope
+`capacitor.config.ts`, `Login.tsx`, `appleSignIn.ts`, `AuthContext.tsx`, RevenueCat — untouched.
+
+### Verification
+- TS build clean.
+- `signInWithGoogle` calls `SocialLogin.logout({ provider: 'google' })` on detected nonce mismatch and retries once.
+- Outer catch cancellation detection unchanged.
+- Only `src/lib/googleSignIn.ts` modified.

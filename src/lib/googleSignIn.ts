@@ -79,45 +79,88 @@ async function sha256Hex(input: string): Promise<string> {
  * On web, returns a no-op — callers should fall back to the existing Lovable
  * OAuth web flow.
  */
+/**
+ * One pass of: generate fresh nonce → Google login → Supabase exchange.
+ * Returns the Supabase result so the caller can decide whether to retry.
+ */
+async function attemptGoogleSignIn(): Promise<{
+  success: boolean;
+  cancelled?: boolean;
+  error?: string;
+  nonceError?: boolean;
+}> {
+  const rawNonce = randomString();
+  const hashedNonce = await sha256Hex(rawNonce);
+
+  const loginResult = await SocialLogin.login({
+    provider: 'google',
+    options: {
+      nonce: hashedNonce,
+    },
+  });
+
+  const result = (loginResult as unknown as { result?: { idToken?: string } })?.result;
+  const idToken = result?.idToken;
+
+  if (!idToken) {
+    console.error('[GoogleSignIn] No id_token returned from plugin', loginResult);
+    return { success: false, error: 'Ingen identitetstoken mottagen från Google.' };
+  }
+
+  const { error } = await supabase.auth.signInWithIdToken({
+    provider: 'google',
+    token: idToken,
+    nonce: rawNonce,
+  });
+
+  if (error) {
+    // Detect the known iOS cached-token nonce mismatch error so the caller
+    // can clear Google's SDK cache and retry. Match on substring because
+    // Supabase's exact error text may evolve.
+    const msg = (error.message || '').toLowerCase();
+    const isNonceError =
+      msg.includes('nonce') &&
+      (msg.includes('id_token') || msg.includes('id token') || msg.includes('mismatch'));
+    console.error('[GoogleSignIn] Supabase signInWithIdToken failed', error);
+    return {
+      success: false,
+      error: `Supabase: ${error.message}`,
+      nonceError: isNonceError,
+    };
+  }
+
+  return { success: true };
+}
+
 export async function signInWithGoogle(): Promise<GoogleSignInResult> {
   if (!Capacitor.isNativePlatform()) {
     return { success: false, notNative: true };
   }
 
-  const rawNonce = randomString();
-
   try {
     await ensureGoogleInitialized();
-    const hashedNonce = await sha256Hex(rawNonce);
 
-    const loginResult = await SocialLogin.login({
-      provider: 'google',
-      options: {
-        nonce: hashedNonce,
-      },
-    });
+    // First attempt
+    const first = await attemptGoogleSignIn();
+    if (first.success) return { success: true };
 
-    // Capgo response shape: { provider: 'google', result: { idToken, ... } }
-    const result = (loginResult as unknown as { result?: { idToken?: string } })?.result;
-    const idToken = result?.idToken;
-
-    if (!idToken) {
-      console.error('[GoogleSignIn] No id_token returned from plugin', loginResult);
-      return { success: false, error: 'Ingen identitetstoken mottagen från Google.' };
+    if (!first.nonceError) {
+      return { success: false, error: first.error };
     }
 
-    const { error } = await supabase.auth.signInWithIdToken({
-      provider: 'google',
-      token: idToken,
-      nonce: rawNonce,
-    });
-
-    if (error) {
-      console.error('[GoogleSignIn] Supabase signInWithIdToken failed', error);
-      return { success: false, error: `Supabase: ${error.message}` };
+    // Nonce mismatch — iOS Google SDK returned a cached token with stale or
+    // missing nonce. Clear the cache by logging out from Google, then retry
+    // once. Per Capgo's documented Supabase iOS Google integration pattern.
+    console.warn('[GoogleSignIn] Nonce mismatch — clearing Google cache and retrying');
+    try {
+      await SocialLogin.logout({ provider: 'google' });
+    } catch (logoutErr) {
+      console.warn('[GoogleSignIn] Google logout before retry failed (continuing)', logoutErr);
     }
 
-    return { success: true };
+    const second = await attemptGoogleSignIn();
+    if (second.success) return { success: true };
+    return { success: false, error: second.error };
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : String(err);
     const code = (err as { code?: string | number })?.code;
