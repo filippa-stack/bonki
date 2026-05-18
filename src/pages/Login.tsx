@@ -802,7 +802,7 @@ export default function Login() {
                   </button>
                 )}
 
-                {isNative && Capacitor.getPlatform() === 'android' && (
+                {isNative && (
                   <button
                     onClick={handleNativeGoogleSignIn}
                     disabled={googleLoading || loading}

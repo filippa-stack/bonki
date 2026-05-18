@@ -1,37 +1,102 @@
-# Final scrim pass — neutralize the top-corner vignette
+# Enable Google Sign-In on iOS (native)
 
-The cropped top-half of your screenshot shows a darker patch behind the "FORTSÄTT" eyebrow, strongest toward the right edge, fading toward the page center. The previous edits removed the mid-page wash and softened the top fade, but two atmospheric layers are still creating that corner darkening:
+Scope is intentionally narrow: two files, no new logic, no auth/cloud changes. The Capgo SocialLogin plugin is given the iOS credentials it needs to initialize, and the Android-only gate on the Google button in `Login.tsx` is broadened to all native platforms.
 
-```text
-// top-left
-position: absolute; top: 0; left: 0; width: 50%; height: 400px;
-radial-gradient(ellipse 80% 70% at 0% 0%, rgba(74, 58, 107, 0.06) 0%, transparent 70%)
+## Defensive precheck (do this before any edits)
 
-// top-right
-position: absolute; top: 0; right: 0; width: 50%; height: 400px;
-radial-gradient(ellipse 80% 70% at 100% 0%, rgba(74, 58, 107, 0.06) 0%, transparent 70%)
+1. Confirm `capacitor.config.ts` already contains a `plugins.SocialLogin.google` block with `webClientId` set to `629196806647-m2r1g9m73n79bbbdvm7524fc5t48frmk.apps.googleusercontent.com` (added in Handover 29 / Lovable Prompt 4). If this block is missing, stop and report — this prompt is shaped around extending it, not creating it.
+
+2. Read `src/lib/googleSignIn.ts` end-to-end. The platform gate at line 66 is `if (!Capacitor.isNativePlatform())`, which already accepts both iOS and Android. If you find **any** other iOS-blocking check anywhere in this file (e.g. `Capacitor.getPlatform() !== 'android'`, `isAndroid` flags, conditional imports, `ensureGoogleInitialized` internals), stop and report. Do not silently "fix" or remove them — flag them so we can decide together. The audit says they don't exist, but the audit may have missed something.
+
+## Changes
+
+### 1. `capacitor.config.ts`
+
+Extend the existing `SocialLogin.google` block. Android keys stay unchanged.
+
+**FROM:**
+```ts
+SocialLogin: {
+  google: {
+    webClientId: '629196806647-m2r1g9m73n79bbbdvm7524fc5t48frmk.apps.googleusercontent.com',
+    mode: 'online',
+  },
+},
 ```
 
-Even at 6% opacity, violet (74,58,107) over the navy `#1A1A2E` background reads as a slight darkening rather than a glow because the violet sits at similar luminance to the base. The eye reads it as a corner scrim.
+**TO:**
+```ts
+SocialLogin: {
+  google: {
+    webClientId: '629196806647-m2r1g9m73n79bbbdvm7524fc5t48frmk.apps.googleusercontent.com',
+    iOSClientId: '629196806647-960ga3kinh5v280ft77rpn04artkeqnc.apps.googleusercontent.com',
+    // iOSServerClientId MUST equal webClientId — this is the audience Supabase
+    // verifies against when signInWithIdToken is called on iOS. Without it,
+    // sign-ins succeed at Google but fail at Supabase verify (aud mismatch).
+    // Do not "simplify" away.
+    iOSServerClientId: '629196806647-m2r1g9m73n79bbbdvm7524fc5t48frmk.apps.googleusercontent.com',
+    mode: 'online',
+  },
+},
+```
 
-## Fix
+Note: The new iOS Client ID is `629196806647-960ga3kinh5v280ft77rpn04artkeqnc...` — same Google Cloud project as the Web Client (same `629196806647` prefix).
 
-In `src/components/ProductLibrary.tsx`, atmospheric layers block:
+### 2. `src/lib/googleSignIn.ts`
 
-1. **Remove both top-corner violet radial glows** entirely.
-2. Keep:
-   - the green ambient highlight at the very top (`hsla(100, 60%, 80%, 0.10)`) — adds a hint of warmth without darkening
-   - the bottom green wash (off-axis from any eyebrow)
-   - the soft top fade (now 220px, 0.08→0.18)
+**No change.** Audit confirms the platform gate at line 66 already accepts both iOS and Android, and the init/login/`signInWithIdToken` sequence is platform-agnostic. Return shape unchanged.
 
-Net effect: the top region becomes evenly dark with only the central green halo, no corner vignette behind FORTSÄTT or FÖR ER SOM PAR.
+(The Handover-26 Android gating lives in `Login.tsx`, not here.)
 
-## Verification
+If the precheck above turns up any iOS-blocking checks anywhere in this file, stop and report instead of editing.
 
-- 390×844 preview, top of library: confirm no darker corners behind the FORTSÄTT eyebrow band
-- Scroll: confirm no banding anywhere
-- Header "Biblioteket" still feels intentional, not flat
+### 3. `src/pages/Login.tsx`
 
-## Out of scope
+Today (per Handover 26 §5.2): Apple button is gated to iOS, Google button is gated to Android via `Capacitor.getPlatform() === 'android'`. Change: broaden the Google button's gate to `isNative` so it renders on both iOS and Android.
 
-No typography, copy, palette, tile, or routing changes.
+**FROM (the Google native button block, near line 805):**
+```tsx
+{isNative && Capacitor.getPlatform() === 'android' && (
+  <button onClick={handleNativeGoogleSignIn} ...>
+    ...Fortsätt med Google
+  </button>
+)}
+```
+
+**TO:**
+```tsx
+{isNative && (
+  <button onClick={handleNativeGoogleSignIn} ...>
+    ...Fortsätt med Google
+  </button>
+)}
+```
+
+`handleNativeGoogleSignIn` (lines 171–194) and all its state are reused verbatim. No new state, no new handler, no new imports.
+
+### Apple-first button order on iOS (load-bearing)
+
+On iOS, the Apple button MUST render visually above the Google button. Apple Sign-In is the platform-expected primary option on iOS (Apple App Store Guideline 4.8 expects Apple Sign-In to be at least as prominent as other social logins).
+
+The Apple block (gated to iOS, near line 779) already comes before the Google block in source order — keep it that way. Do not reorder. After applying, describe the final iOS button order in your response so I can verify before publishing.
+
+## Explicitly out of scope (untouched)
+
+- `AuthContext.tsx`, RevenueCat init, `initRevenueCat` coupling
+- Apple Sign-In path (`handleNativeAppleSignIn`, `appleSignIn.ts`)
+- Lovable Cloud / Supabase Google provider settings
+- Web reviewer block (`?review=1`)
+- `link-purchases` / Hämta webbköp flow
+- Protected patterns from project memory: `suppressUntilRef`, `prevServerStepRef`, `clearTimeout(pendingSave.current)`, `hasSyncedRef`, resume logic, `AnimatePresence mode="sync"`, no `key={location.pathname}` on Routes, no `100dvh`
+
+## Verification after applying
+
+In the implementation response, confirm:
+
+1. TypeScript build is clean (no new errors).
+2. Apple button renders **above** Google button on iOS Login screen. Describe the final iOS Login screen vertical order of buttons.
+3. Android Login screen is unchanged (Google button still appears, no Apple).
+4. `googleSignIn.ts` was not modified (or, if it had to be modified, explain why).
+5. `capacitor.config.ts` shows the new `iOSClientId` and `iOSServerClientId` under `plugins.SocialLogin.google`.
+
+After verification, the user will Publish to Live and pull on Göran's Mac for the native iOS build (Info.plist URL scheme registration with the reversed Client ID happens on the native side, not here).
