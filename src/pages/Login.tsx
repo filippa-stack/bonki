@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { lovable } from '@/integrations/lovable/index';
@@ -921,6 +921,27 @@ export default function Login() {
             <p className="text-sm mt-4" style={{ color: '#E85D2C' }}>{error}</p>
           )}
         </div>
+      </div>
+
+      {/* Crawlable privacy link for Google branding verification */}
+      <div
+        style={{
+          textAlign: 'center',
+          paddingTop: 16,
+          paddingBottom: 'max(env(safe-area-inset-bottom), 16px)',
+        }}
+      >
+        <Link
+          to="/privacy"
+          style={{
+            fontSize: 12,
+            color: 'rgba(253, 246, 227, 0.55)',
+            textDecoration: 'underline',
+            textUnderlineOffset: 2,
+          }}
+        >
+          Integritetspolicy
+        </Link>
       </div>
 
       <style>{`
