@@ -923,6 +923,27 @@ export default function Login() {
         </div>
       </div>
 
+      {/* Crawlable privacy link for Google branding verification */}
+      <div
+        style={{
+          textAlign: 'center',
+          paddingTop: 16,
+          paddingBottom: 'max(env(safe-area-inset-bottom), 16px)',
+        }}
+      >
+        <Link
+          to="/privacy"
+          style={{
+            fontSize: 12,
+            color: 'rgba(253, 246, 227, 0.55)',
+            textDecoration: 'underline',
+            textUnderlineOffset: 2,
+          }}
+        >
+          Integritetspolicy
+        </Link>
+      </div>
+
       <style>{`
         .text-xs.leading-relaxed { color: rgba(253, 246, 227, 0.45); }
         .text-xs.leading-relaxed button { color: rgba(212, 245, 192, 0.75); }
