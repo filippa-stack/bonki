@@ -1,33 +1,31 @@
 ## Goal
 
-Google's branding verification fails because crawling `https://bonkiapp.com` finds no link to the privacy policy. The route `/privacy` exists (rendered by `PrivacyPolicy.tsx` and registered in `App.tsx`), but no visible `<a href="/privacy">` anchor is reachable from the public landing.
+Soften the native Google Sign-In button on the Login page to Google's official neutral styling (white background, dark text, colored "G"), so Apple's solid-black button visually dominates on iOS and satisfies App Store Guideline 4.8.
 
-For anonymous visitors, the app redirects to **Login** (`src/pages/Login.tsx`). The existing privacy text there lives inside `TermsConsent` as a dialog trigger — not a navigable link, so Google's crawler sees nothing.
+## Change (one block, one file)
 
-## Change
+**File:** `src/pages/Login.tsx`, lines **805–832** — the `{isNative && (...)}` Google button block.
 
-Add a small, visible footer link to `/privacy` on the public Login page. Swedish copy, low-key styling, real `<Link to="/privacy">` so it is in the rendered DOM and crawlable.
-
-**File:** `src/pages/Login.tsx`
-
-- Import `Link` from `react-router-dom` (if not already imported).
-- Add a footer block at the bottom of the Login page JSX (just before the closing wrapper), containing a single anchor:
-  - Label: `Integritetspolicy`
-  - `to="/privacy"`
-  - Styled muted/small, centered, with a bit of bottom padding so it sits above the safe area.
-
-No other files change. No logic, auth, RevenueCat, capacitor, or routing changes. The `/privacy` route already exists and renders `PrivacyPolicy.tsx`.
+- `className`: remove `border-0 text-white`; keep `w-full h-14 text-base font-semibold rounded-xl flex items-center justify-center gap-2 disabled:opacity-50`.
+- `style`: replace `background: ORANGE_GRADIENT` + `boxShadow: ORANGE_SHADOW` with:
+  - `background: '#FFFFFF'`
+  - `color: '#1F1F1F'`
+  - `border: '1px solid #DADCE0'`
+  - (no `boxShadow`)
+- SVG: change the four `<path fill="#fff" .../>` to the official Google brand colors — `#4285F4`, `#34A853`, `#FBBC04`, `#EA4335` (in the existing path order). Add `aria-hidden="true"` on the `<svg>`.
+- Keep label `Fortsätt med Google`, loading state, handler `handleNativeGoogleSignIn`, and the `{isNative && (...)}` gate exactly as today.
 
 ## Out of scope
 
-- Footer.tsx (used inside authenticated pages only; not reached anonymously).
-- index.html static fallback (the SPA renders Login fast enough; Googlebot executes JS for verification).
-- Terms link, cookie banner, or any redesign of the Login layout.
-- Native-only screens (the verification target is the web origin `bonkiapp.com`).
+- Apple button block (stays canonical black + white text + white logo).
+- Web `!isNative` Google button (lines 835+).
+- Email/OTP block, googleSignIn.ts, capacitor.config.ts, AuthContext.tsx, RevenueCat.
+- Source order — Google still renders below Apple.
 
 ## Verification
 
-1. `npm run build` clean.
-2. Visit `https://bonkiapp.com` in an incognito window → Login renders → "Integritetspolicy" link visible at the bottom → click navigates to `/privacy` and renders the policy page.
-3. View page source after JS hydration: an `<a href="/privacy">Integritetspolicy</a>` is present in the DOM.
-4. Resubmit Google branding verification.
+1. TypeScript build clean.
+2. iOS Login top-to-bottom: Apple (solid black) → Google (white with thin gray border, colored G) → email/OTP. Apple is clearly the heavier button.
+3. Google button keeps `w-full h-14` (equal dimensions to Apple).
+4. The G renders in Google's four brand colors, not white-on-white.
+5. Android Login uses the same neutral white Google button (expected — gate is `isNative`).
