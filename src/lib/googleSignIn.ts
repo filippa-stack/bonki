@@ -15,11 +15,26 @@ export interface GoogleSignInResult {
  * Used as `webClientId` for the Capgo plugin so the id_token's `aud` claim
  * matches what Supabase verifies. The Android client (same project, package
  * com.bonkistudio.bonkiapp) is matched implicitly via package name + SHA-1
- * and never appears in code. Web Client IDs are not secret (visible in every
+ * and never appears in code. Client IDs are not secret (visible in every
  * issued id_token's `aud` claim) — safe to commit.
  */
 const GOOGLE_WEB_CLIENT_ID =
   '629196806647-m2r1g9m73n79bbbdvm7524fc5t48frmk.apps.googleusercontent.com';
+
+/**
+ * iOS Client ID from the same Google Cloud project ("BONKI iOS").
+ * Required at the JS init layer because the Capgo plugin has no implicit
+ * package-match mechanism on iOS — unlike Android, where the Android client
+ * is matched via package name + SHA-1 without JS configuration. Without
+ * this, SocialLogin.initialize silently skips initializing the Google
+ * provider on iOS, causing "No provider was initialized" at login time.
+ *
+ * iOSServerClientId equals webClientId: it tells the plugin which audience
+ * Supabase will verify against (Supabase expects the Web Client ID in the
+ * aud claim, not the iOS Client ID).
+ */
+const GOOGLE_IOS_CLIENT_ID =
+  '629196806647-960ga3kinh5v280ft77rpn04artkeqnc.apps.googleusercontent.com';
 
 let googleInitialized = false;
 
@@ -28,6 +43,8 @@ async function ensureGoogleInitialized() {
   await SocialLogin.initialize({
     google: {
       webClientId: GOOGLE_WEB_CLIENT_ID,
+      iOSClientId: GOOGLE_IOS_CLIENT_ID,
+      iOSServerClientId: GOOGLE_WEB_CLIENT_ID,
       mode: 'online',
     },
   });
