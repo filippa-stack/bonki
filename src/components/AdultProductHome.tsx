@@ -217,7 +217,7 @@ export default function AdultProductHome({ product }: { product: ProductManifest
           <p
             style={{
               fontFamily: 'var(--font-serif)',
-              fontStyle: 'italic',
+              fontStyle: 'normal',
               fontSize: '14px',
               fontWeight: 400,
               lineHeight: 1.45,
