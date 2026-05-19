@@ -38,7 +38,7 @@ import {
 } from '@/lib/palette';
 import { getPortalCopy } from '@/data/stillUsPortalCopy';
 import { CARD_SEQUENCE, bareIdFromSlug } from '@/data/stillUsSequence';
-import { getCircleColor } from '@/components/AdultProductCardTile';
+
 
 /** Map a manifest card id (e.g. 'su-mock-3') to the bare id used by
  *  stillUsPortalCopy (e.g. 'expressing-needs'). */
