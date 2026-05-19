@@ -39,9 +39,10 @@ export const PREVIEW_QUESTIONS: Record<string, string[]> = {
     'Vad betyder det att respektera någon annans gränser?',
   ],
   still_us: [
-    'Om något litet mellan er tyst försvann, vad tror du att du skulle märka först?',
-    'När kände ni er senast riktigt sedda av varandra?',
-    'Vad skulle ni våga säga om ni visste att det skulle tas emot väl?',
+    'Finns det något litet din partner gör — som alltid får dig att må lite bättre?',
+    'Vad är det din partner förstår om dig — som du aldrig behövt förklara?',
+    'Finns det något mellan er som fungerar så bra att ni aldrig pratar om det?',
+    'Vad skulle din partner bli överraskad av att höra — om du berättade vad du just tänkte?',
   ],
 };
 
