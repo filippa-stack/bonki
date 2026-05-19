@@ -508,23 +508,6 @@ function LibraryKidsTile({
             </span>
           )}
         </div>
-        {TAGLINES[product.id] && (
-          <span
-            style={{
-              fontFamily: 'var(--font-display)',
-              fontStyle: 'normal',
-              fontSize: 12,
-              fontWeight: 400,
-              color: darkText,
-              opacity: 0.85,
-              lineHeight: 1.2,
-              display: 'block',
-              textAlign: 'center',
-            }}
-          >
-            {TAGLINES[product.id]}
-          </span>
-        )}
       </div>
     </button>
   );
