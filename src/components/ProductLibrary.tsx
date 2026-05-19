@@ -68,6 +68,8 @@ const PRODUCT_ACCENT: Record<string, string> = {
   sexualitetskort: '#B87560',
 };
 
+const VI_TAB_HERO_COLOR = STORM_GREY;
+
 const tileVariants = {
   hidden: { opacity: 1, y: 0, scale: 1 },
   visible: { opacity: 1, y: 0, scale: 1 },
