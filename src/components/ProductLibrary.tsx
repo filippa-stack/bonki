@@ -814,6 +814,14 @@ export default function ProductLibrary() {
   const vardag = allProducts.find(p => p.id === 'vardagskort')!;
   const syskon = allProducts.find(p => p.id === 'syskonkort')!;
 
+  // Resolves the categoryId for a Vårt Vi card id (su-mock-N)
+  // by looking up the card in the still_us product manifest.
+  const resolveStillUsCategoryId = (cardId: string): string | null => {
+    const stillUs = allProducts.find(p => p.id === 'still_us');
+    const card = stillUs?.cards.find(c => c.id === cardId);
+    return card?.categoryId ?? null;
+  };
+
   // COUNT-BASED APPROXIMATION — intentional. Do not replace with a Supabase
   // query. The proper fix is a dedicated hook returning per-card completion
   // IDs, which is a separate ticket. This approximation is correct for the
@@ -898,7 +906,14 @@ export default function ProductLibrary() {
                 isPurchased={purchased.has('still_us')}
                 completedCardIds={stillUsCompletedIds}
                 onUnpurchasedTileTap={(index) => setExpandedTileIndex(index)}
-                onPurchasedTileTap={(cardId) => navigate(`/card/${cardId}`)}
+                onPurchasedTileTap={(cardId) => {
+                  const categoryId = resolveStillUsCategoryId(cardId);
+                  if (categoryId) {
+                    navigate(`/product/still-us/portal/${categoryId}?card=${cardId}`);
+                  } else {
+                    navigate(`/card/${cardId}`);
+                  }
+                }}
               />
             </div>
           </div>
