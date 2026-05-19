@@ -646,7 +646,7 @@ export default function ProductLibrary() {
         </div>
 
         {/* Resume card */}
-        <div className="px-5" style={{ marginBottom: 8 }}>
+        <div className="px-5" style={{ marginBottom: 24 }}>
           <LibraryResumeCard global />
         </div>
 
