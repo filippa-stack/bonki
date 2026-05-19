@@ -161,26 +161,21 @@ function StillUsMarquee({
         alignItems: 'center',
         justifyContent: 'center',
       }}>
-        <div style={{
-          width: '100%',
-          aspectRatio: '1 / 1',
-          maxWidth: 130,
-          maxHeight: 130,
-          borderRadius: '50%',
-          background: '#5A85D5',
-          border: '1px solid rgba(245, 232, 204, 0.30)',
-          overflow: 'hidden',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}>
-          <img
-            src={illustrationStillUs}
-            alt=""
-            draggable={false}
-            style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'center', pointerEvents: 'none' }}
-          />
-        </div>
+        <img
+          src={illustrationStillUs}
+          alt=""
+          draggable={false}
+          style={{
+            width: '100%',
+            aspectRatio: '1 / 1',
+            maxWidth: 130,
+            maxHeight: 130,
+            objectFit: 'contain',
+            objectPosition: 'center',
+            pointerEvents: 'none',
+            filter: 'drop-shadow(0 8px 10px rgba(0,0,0,0.35))',
+          }}
+        />
       </div>
       <div style={{
         flex: 1,

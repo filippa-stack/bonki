@@ -15,25 +15,7 @@ import {
   SAFFRON_FLAME,
   WARM_GOLD,
   LANTERN_GLOW,
-  CORNFLOWER,
-  MIDNIGHT_INK,
-  DUSTY_ROSE,
-  STORM_GREY,
-  SAGE,
 } from '@/lib/palette';
-
-/** Hardcoded contrasting medallion fill per anchor color (Emma's mockups). */
-export function getCircleColor(cardColor: string): string {
-  switch (cardColor) {
-    case CORNFLOWER:   return '#5A85D5'; // darker (only light anchor)
-    case MIDNIGHT_INK: return '#2A2D45';
-    case DUSTY_ROSE:   return '#C99A9D';
-    case WARM_GOLD:    return '#E8D4A8';
-    case STORM_GREY:   return '#5A6573';
-    case SAGE:         return '#A8B5A8';
-    default:           return cardColor;
-  }
-}
 
 interface AdultProductCardTileProps {
   card: Card;
@@ -96,39 +78,25 @@ export default function AdultProductCardTile({
           justifyContent: 'center',
         }}
       >
-        {/* Medallion */}
-        <div
-          style={{
-            width: '78%',
-            aspectRatio: '1 / 1',
-            borderRadius: '50%',
-            backgroundColor: getCircleColor(cardColor),
-            border: '1px solid rgba(245, 232, 204, 0.30)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            overflow: 'hidden',
-          }}
-        >
-          {tileImage && (
-            <img
-              src={tileImage}
-              alt=""
-              aria-hidden="true"
-              loading="lazy"
-              decoding="async"
-              width={300}
-              height={400}
-              style={{
-                width: '85%',
-                height: '85%',
-                objectFit: 'contain',
-                objectPosition: 'center',
-                display: 'block',
-              }}
-            />
-          )}
-        </div>
+        {tileImage && (
+          <img
+            src={tileImage}
+            alt=""
+            aria-hidden="true"
+            loading="lazy"
+            decoding="async"
+            width={300}
+            height={400}
+            style={{
+              width: '66%',
+              height: 'auto',
+              objectFit: 'contain',
+              objectPosition: 'center',
+              display: 'block',
+              filter: 'drop-shadow(0 8px 10px rgba(0,0,0,0.35))',
+            }}
+          />
+        )}
 
         {/* Inner shadow at bottom edge of zone A */}
         <div
