@@ -1,34 +1,34 @@
-## Replace locked Vårt Vi preview tiles with a medallion row
+## Refine locked Vårt Vi medallion row
 
-Scope: visual swap of the `!isPurchased` branch in `VartViPreviewStrip` (`src/components/ProductLibrary.tsx`, lines 296–342). Everything else — purchased branch, expansion overlay, state wiring, data, routing — stays untouched.
+Three scoped visual changes inside `VartViPreviewStrip`'s `!isPurchased` branch in `src/components/ProductLibrary.tsx` (lines ~326–408). No other surfaces, state, or logic touched.
 
-### Change
+### 1. Bigger, bolder quote glyph
+The `motion.span` rendering `&ldquo;` (line 376–388) currently uses `fontSize: 36` with no opacity/transform overrides. Update its style to:
+- `fontSize: 52`
+- `opacity: 1`
+- `transform: 'translateY(6px)'`
 
-Replace the 2×2 italic-serif tile grid with:
+### 2. Remove "En fråga" captions
+Delete the entire `<span>` caption block (lines 392–405) below each medallion. Then on the outer `motion.button` style (lines 338–349), remove the `gap: 10` property. Keep `flexDirection: 'column'` and the rest.
 
-1. Small-caps eyebrow `"Börja med en fråga"` above the row (white, low opacity, centered, letter-spaced).
-2. A horizontal `flex` row of 4 circular medallions filling the strip width, sourced from `PREVIEW_QUESTIONS.still_us` (up to 4 entries) and `PREVIEW_TILE_COLORS` (cornflower / dusty rose / warm gold / storm grey).
-3. Each medallion = outer circle in the tile color + inner darker circle (via `color-mix(in srgb, <bg> 78%, #000)`) + a large italic-serif quote glyph (`"`) centered inside.
-4. Foreground rule: white glyph on cornflower / dusty rose / storm grey; `#5F4114` on warm gold for contrast.
-5. Small-caps caption `"En fråga"` below each medallion (white, low opacity).
-6. Outer button stays `motion.button` with `layoutId={`preview-tile-${i}`}` so the existing shared-layout expansion overlay still morphs correctly. The inner glyph keeps `layoutId={`preview-text-${i}`}`. `onClick={() => onUnpurchasedTileTap(i)}`.
+### 3. Inverse inner-circle contrast for Storm Grey only
+Replace the single `innerBg` line (330) with:
+```ts
+const isStormGrey = bgColor === STORM_GREY;
+const innerBg = isStormGrey
+  ? `color-mix(in srgb, ${bgColor} 75%, #FFFFFF 25%)`
+  : `color-mix(in srgb, ${bgColor} 78%, #000000)`;
+```
+(Using the safe ≤100% variant since color-mix percentages >100% aren't widely supported.)
+
+`STORM_GREY` is already imported at line 18.
 
 ### Untouched
-
-- Purchased branch (lines 344+): `Nästa` / `Era samtal` eyebrow and `PreviewCardPurchased` 2×2 grid.
-- Expansion overlay (around line 959) — already reads `PREVIEW_QUESTIONS.still_us` by `expandedTileIndex`.
-- `setExpandedTileIndex`, `onUnpurchasedTileTap`, `PREVIEW_QUESTIONS`, `PREVIEW_TILE_COLORS`, `CARD_SEQUENCE`.
-- All other components, hooks, routing, data fetching.
-
-### Notes
-
-- `WARM_GOLD`, `CORNFLOWER`, `DUSTY_ROSE`, `STORM_GREY` are already imported at line 18 — no new imports needed.
-- `PREVIEW_QUESTIONS` already imported at line 7.
-- Pure presentation diff, ~60 lines replacing ~46 lines in one file.
+Purchased branch, expansion overlay, `layoutId` values, `PREVIEW_QUESTIONS`, `PREVIEW_TILE_COLORS`, `onUnpurchasedTileTap`, eyebrow label above the row.
 
 ### Verification
-
-- TypeScript build clean.
-- Vi tab unpurchased: eyebrow visible, 4 medallions horizontal, correct fg/bg per color, captions below.
-- Tap a medallion → shared-layout expansion overlay opens with full question text + close button (unchanged behavior).
-- Vi tab purchased state: unchanged.
+- TS build clean.
+- Glyph noticeably larger and fully opaque.
+- No per-medallion captions; eyebrow remains.
+- Storm Grey medallion's inner circle is lighter than its outer ring; other three keep darker-inner pattern.
+- Tap → expansion overlay unchanged.
