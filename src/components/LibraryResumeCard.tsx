@@ -329,20 +329,37 @@ export default function LibraryResumeCard({ activeTab, global, forceMock }: Libr
           }}
         >
           {isStillUs ? (
-            <img
-              src={ILLUSTRATIONS.still_us}
-              alt=""
-              style={{
-                maxWidth: '88%',
-                maxHeight: '88%',
-                width: 'auto',
-                height: 'auto',
-                objectFit: 'contain',
-                objectPosition: 'center',
-                pointerEvents: 'none',
-                filter: 'drop-shadow(0 2px 3px rgba(0,0,0,0.25))',
-              }}
-            />
+            illustration ? (
+              <img
+                src={illustration}
+                alt=""
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'contain',
+                  objectPosition: 'center',
+                  padding: 4,
+                  boxSizing: 'border-box',
+                  pointerEvents: 'none',
+                  filter: 'drop-shadow(0 2px 3px rgba(0,0,0,0.25))',
+                }}
+              />
+            ) : (
+              <img
+                src={ILLUSTRATIONS.still_us}
+                alt=""
+                style={{
+                  maxWidth: '88%',
+                  maxHeight: '88%',
+                  width: 'auto',
+                  height: 'auto',
+                  objectFit: 'contain',
+                  objectPosition: 'center',
+                  pointerEvents: 'none',
+                  filter: 'drop-shadow(0 2px 3px rgba(0,0,0,0.25))',
+                }}
+              />
+            )
           ) : (
             <div
               style={{
