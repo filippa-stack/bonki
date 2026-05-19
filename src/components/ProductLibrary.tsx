@@ -296,47 +296,117 @@ function VartViPreviewStrip({
   if (!isPurchased) {
     const questions = (PREVIEW_QUESTIONS.still_us ?? []).slice(0, 4);
     return (
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
-          gap: 10,
-        }}
-      >
-        {questions.map((q, i) => (
-          <motion.button
-            key={i}
-            type="button"
-            layoutId={`preview-tile-${i}`}
-            onClick={() => onUnpurchasedTileTap(i)}
-            style={{
-              background: PREVIEW_TILE_COLORS[i % PREVIEW_TILE_COLORS.length],
-              borderRadius: 12,
-              border: 'none',
-              padding: '14px 12px',
-              minHeight: 130,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              cursor: 'pointer',
-              WebkitTapHighlightColor: 'transparent',
-              boxShadow: '0 0 0 1px rgba(255,255,255,0.06)',
-            }}
-          >
-            <span
-              style={{
-                fontFamily: 'var(--font-display)',
-                fontStyle: 'italic',
-                fontSize: 14,
-                lineHeight: 1.3,
-                color: LANTERN_GLOW,
-                textAlign: 'center',
-              }}
-            >
-              {q}
-            </span>
-          </motion.button>
-        ))}
+      <div>
+        {/* Eyebrow */}
+        <p
+          style={{
+            fontFamily: 'var(--font-body)',
+            fontSize: 11,
+            fontWeight: 500,
+            letterSpacing: '0.16em',
+            textTransform: 'uppercase',
+            color: '#FFFFFF',
+            opacity: 0.55,
+            textAlign: 'center',
+            margin: '0 0 14px',
+          }}
+        >
+          Börja med en fråga
+        </p>
+
+        {/* Medallion row */}
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            gap: 10,
+            width: '100%',
+          }}
+        >
+          {questions.map((q, i) => {
+            const bgColor = PREVIEW_TILE_COLORS[i % PREVIEW_TILE_COLORS.length];
+            const isWarmGold = bgColor === WARM_GOLD;
+            const fgColor = isWarmGold ? '#5F4114' : '#FFFFFF';
+            const innerBg = `color-mix(in srgb, ${bgColor} 78%, #000000)`;
+
+            return (
+              <motion.button
+                key={i}
+                type="button"
+                layoutId={`preview-tile-${i}`}
+                onClick={() => onUnpurchasedTileTap(i)}
+                style={{
+                  flex: 1,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  gap: 10,
+                  background: 'none',
+                  border: 'none',
+                  padding: 0,
+                  cursor: 'pointer',
+                  WebkitTapHighlightColor: 'transparent',
+                }}
+              >
+                {/* Outer circle */}
+                <div
+                  style={{
+                    width: '100%',
+                    aspectRatio: '1 / 1',
+                    borderRadius: '50%',
+                    background: bgColor,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    boxShadow: '0 0 0 1px rgba(255,255,255,0.06)',
+                  }}
+                >
+                  {/* Inner circle */}
+                  <div
+                    style={{
+                      width: '70%',
+                      height: '70%',
+                      borderRadius: '50%',
+                      background: innerBg,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <motion.span
+                      layoutId={`preview-text-${i}`}
+                      style={{
+                        fontFamily: 'var(--font-display)',
+                        fontStyle: 'italic',
+                        fontSize: 36,
+                        lineHeight: 1,
+                        color: fgColor,
+                        textAlign: 'center',
+                      }}
+                    >
+                      &ldquo;
+                    </motion.span>
+                  </div>
+                </div>
+
+                {/* Caption */}
+                <span
+                  style={{
+                    fontFamily: 'var(--font-body)',
+                    fontSize: 10,
+                    fontWeight: 500,
+                    letterSpacing: '0.16em',
+                    textTransform: 'uppercase',
+                    color: '#FFFFFF',
+                    opacity: 0.55,
+                  }}
+                >
+                  En fråga
+                </span>
+              </motion.button>
+            );
+          })}
+        </div>
       </div>
     );
   }
