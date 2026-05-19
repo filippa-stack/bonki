@@ -335,7 +335,9 @@ export default function AdultCardPortal() {
               <PortalCardImage cardId={card.id}>
                 {(src) => src ? (
                   <img src={src} alt="" aria-hidden="true" style={{
-                    width: '66%',
+                    maxWidth: '80%',
+                    maxHeight: '88%',
+                    width: 'auto',
                     height: 'auto',
                     objectFit: 'contain',
                     objectPosition: 'center',
