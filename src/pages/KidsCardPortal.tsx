@@ -225,7 +225,7 @@ export default function KidsCardPortal() {
         setTimeout(() => {
           // Phase 3 (900–1200ms): light fades, navigate
           setPortalPhase('phase3');
-          setTimeout(() => navigate(`/card/${card.id}`), 350);
+          setTimeout(() => navigate(`/card/${card.id}`, { state: { fromPortal: true } }), 350);
         }, 500);
       }, 400);
     } else {
@@ -238,7 +238,7 @@ export default function KidsCardPortal() {
         setTimeout(() => {
           // Phase 3 (650–900ms): white-out then navigate
           setPortalPhase('phase3');
-          setTimeout(() => navigate(`/card/${card.id}`), 250);
+          setTimeout(() => navigate(`/card/${card.id}`, { state: { fromPortal: true } }), 250);
         }, 500);
       }, 150);
     }

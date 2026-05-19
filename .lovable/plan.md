@@ -1,51 +1,76 @@
-# Ticket 3 Follow-ups
+# Restore CardView showStartScreen gate
 
-Two surgical UI fixes per spec. No data, hooks, or routing changes.
+Default the in-CardView "Starta samtal" gate back to **true** for live card entries, except when arriving from a portal Starta CTA, the resume banner, archive, dev, or demo. ~6 lines across 4 files. Render JSX, dismissal handlers, and all session/reflection logic untouched.
 
-## File 1 — `src/components/LibraryResumeCard.tsx`
+## File 1 — `src/pages/CardView.tsx`
 
-In the medallion's `isStillUs` branch, replace the single `<img src={ILLUSTRATIONS.still_us}>` with a conditional:
+Replace lines 708–713 (preserve a comment block above the const):
 
-- If `illustration` (already resolved via `useCardImage` higher in the component) is available → render it as a full-bleed card image (width/height 100%, `objectFit: contain`, `padding: 4`, drop-shadow).
-- Fallback → existing product-level `ILLUSTRATIONS.still_us` rendering, untouched.
+```tsx
+// ─── Session start screen — ritual gate before first question ───
+// Suppress the in-CardView gate when arriving from:
+//   - the category portal's Starta button (portal already gated us)
+//   - the library resume banner (we want to land in-session)
+//   - archive, dev, demo modes
+const arrivedFromPortal =
+  (location.state as { fromPortal?: boolean } | null)?.fromPortal === true;
+const [showStartScreen, setShowStartScreen] = useState(
+  () => !isFromArchive && !isResumed && !arrivedFromPortal && !devState && !isDemoMode()
+);
+```
 
-Kids branch unchanged. No new imports.
+`isFromArchive`, `isResumed`, `devState`, `location`, `isDemoMode` are all already in scope (verified: `isDemoMode` imported line 34).
 
-## File 2 — `src/components/ProductLibrary.tsx`
+## File 2 — `src/components/LibraryResumeCard.tsx`
 
-### VartViPreviewStrip purchased branch
+Line 268:
 
-Replace the `nextFour` slice with the always-4 padding logic:
+```tsx
+onClick={() => navigate(`/card/${display.cardId}`, { state: { resumed: true } })}
+```
 
-1. `uncompleted` = CARD_SEQUENCE not in `completedCardIds` (`su-mock-${i}` keys).
-2. `completed` = CARD_SEQUENCE in `completedCardIds`, reversed (most-recent first).
-3. Build `previewCards: { seq, isCompleted }[]` by pushing uncompleted first, then completed, capping at 4.
-4. Early-return `null` only if `previewCards.length === 0`.
+CardView already reads `location.state.resumed` at line 137 and clears it via `history.replaceState`.
 
-### Eyebrow
+## File 3 — `src/pages/AdultCardPortal.tsx`
 
-`eyebrowLabel = uncompleted.length > 0 ? 'Nästa' : 'Era samtal'`.
+Line 177 (inside `startSession` callback):
 
-### Map
+```tsx
+navigate(`/card/${card.id}`, { state: { fromPortal: true } });
+```
 
-Pass `isCompleted` into each `<PreviewCardPurchased>`.
+Leave line 528 (freeCardId entry) untouched — free card first-touch should see the gate.
 
-### PreviewCardPurchased component
+## File 4 — `src/pages/KidsCardPortal.tsx`
 
-Update signature to add `isCompleted: boolean`. Render changes:
+Lines 228 and 241 (both inside the portal-animation `setTimeout` chains):
 
-- Wrap with `position: relative`, `opacity: isCompleted ? 0.78 : 1`.
-- When `isCompleted`, add absolutely-positioned saffron (#E9B44C) SVG check in top-right (16×16).
-- Image and title layout unchanged otherwise.
+```tsx
+setTimeout(() => navigate(`/card/${card.id}`, { state: { fromPortal: true } }), 350);
+// and
+setTimeout(() => navigate(`/card/${card.id}`, { state: { fromPortal: true } }), 250);
+```
 
-## Out of scope
+Leave line 753 (freeCardId entry) untouched.
 
-Duplicate-with-resume-banner issue, typography, kids tiles, TabBar, VartViHero, expansion overlay, routing, all data/hooks/state.
+## Not changed
+
+- `src/components/ProductLibrary.tsx` line 901 — preview tile keeps bare `navigate('/card/:id')`; the gate **should** appear.
+- CardView lines 2270–2746 — render JSX and `setShowStartScreen(false)` dismissal handlers untouched.
+- Lines 137, 140–145 — existing `isResumed` read and `history.replaceState` clear reused as-is.
+- All session/reflection/navigation logic.
 
 ## Verification
 
-- Build clean.
-- Paused Vårt Vi resume banner medallion shows the per-card illustration.
-- Vi tab (purchased) always renders 4 tiles; completed fillers show saffron check + ~78% opacity.
-- Eyebrow flips to "Era samtal" when all 18 cards completed.
-- ProductIntro / BuyPage unaffected.
+1. Vårt Vi preview tile (never-started) → threshold appears
+2. Vårt Vi preview tile (revisit completed) → threshold appears
+3. Resume banner → no threshold, mounts at paused step
+4. Category portal Starta → no threshold (already gated), goes to Q1
+5. Kids card via category portal Starta → no threshold on second tap
+6. Kids resume banner (if any) → no threshold
+7. Free card deep entry → threshold appears
+8. Archive view → unchanged (bypassed via existing `isLive` guard)
+
+## Out of scope
+
+Within-step prompt-index resume (server stores step only), start-screen UI redesign, preview-tile redesign, freeCardId entry paths, anything else.

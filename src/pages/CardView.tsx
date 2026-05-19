@@ -706,11 +706,15 @@ export default function CardView() {
   }, [serverStepIndex, normalizedSession.sessionId]);
 
   // ─── Session start screen — ritual gate before first question ───
-  // showStartScreen is a pure UX gate, decoupled from session state.
-  // Set true on mount for live mode; only cleared by explicit user tap.
-  // Start screen removed — the portal page already serves as the intro gate.
-  // All products now go directly to the first question.
-  const [showStartScreen, setShowStartScreen] = useState(false);
+  // Suppress the in-CardView gate when arriving from:
+  //   - the category portal's Starta button (portal already gated us)
+  //   - the library resume banner (we want to land in-session)
+  //   - archive, dev, demo modes
+  const arrivedFromPortal =
+    (location.state as { fromPortal?: boolean } | null)?.fromPortal === true;
+  const [showStartScreen, setShowStartScreen] = useState(
+    () => !isFromArchive && !isResumed && !arrivedFromPortal && !devState && !isDemoMode()
+  );
 
   const hasStarted = !showStartScreen;
 

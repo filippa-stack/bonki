@@ -174,7 +174,7 @@ export default function AdultCardPortal() {
       setPaywallOpen(true);
       return;
     }
-    navigate(`/card/${card.id}`);
+    navigate(`/card/${card.id}`, { state: { fromPortal: true } });
   }, [card, navigate, product, productIsPurchased, bypassPaywall]);
 
   const ctaLabel = useMemo(() => {
