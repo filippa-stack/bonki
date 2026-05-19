@@ -166,8 +166,8 @@ function StillUsMarquee({
           alt=""
           draggable={false}
           style={{
-            width: '100%',
-            aspectRatio: '1 / 1',
+            width: 'auto',
+            height: 'auto',
             maxWidth: 130,
             maxHeight: 130,
             objectFit: 'contain',

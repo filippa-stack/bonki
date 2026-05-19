@@ -318,8 +318,10 @@ export default function LibraryResumeCard({ activeTab, global, forceMock }: Libr
               src={ILLUSTRATIONS.still_us}
               alt=""
               style={{
-                width: '100%',
-                height: '100%',
+                maxWidth: '88%',
+                maxHeight: '88%',
+                width: 'auto',
+                height: 'auto',
                 objectFit: 'contain',
                 objectPosition: 'center',
                 pointerEvents: 'none',
