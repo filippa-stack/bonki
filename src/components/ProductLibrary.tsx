@@ -906,7 +906,14 @@ export default function ProductLibrary() {
                 isPurchased={purchased.has('still_us')}
                 completedCardIds={stillUsCompletedIds}
                 onUnpurchasedTileTap={(index) => setExpandedTileIndex(index)}
-                onPurchasedTileTap={(cardId) => navigate(`/card/${cardId}`)}
+                onPurchasedTileTap={(cardId) => {
+                  const categoryId = resolveStillUsCategoryId(cardId);
+                  if (categoryId) {
+                    navigate(`/product/still-us/portal/${categoryId}?card=${cardId}`);
+                  } else {
+                    navigate(`/card/${cardId}`);
+                  }
+                }}
               />
             </div>
           </div>
