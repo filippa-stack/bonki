@@ -332,24 +332,18 @@ export default function AdultCardPortal() {
               alignItems: 'center',
               justifyContent: 'center',
             }}>
-              <div style={{
-                width: '60%',
-                aspectRatio: '1 / 1',
-                borderRadius: '50%',
-                backgroundColor: getCircleColor(cardColor),
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                overflow: 'hidden',
-              }}>
-                <PortalCardImage cardId={card.id}>
-                  {(src) => src ? (
-                    <img src={src} alt="" aria-hidden="true" style={{
-                      width: '80%', height: '80%', objectFit: 'contain', display: 'block',
-                    }} />
-                  ) : null}
-                </PortalCardImage>
-              </div>
+              <PortalCardImage cardId={card.id}>
+                {(src) => src ? (
+                  <img src={src} alt="" aria-hidden="true" style={{
+                    width: '66%',
+                    height: 'auto',
+                    objectFit: 'contain',
+                    objectPosition: 'center',
+                    display: 'block',
+                    filter: 'drop-shadow(0 8px 10px rgba(0,0,0,0.35))',
+                  }} />
+                ) : null}
+              </PortalCardImage>
 
               {isCompleted && (
                 <div style={{
