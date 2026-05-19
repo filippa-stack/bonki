@@ -88,7 +88,9 @@ export default function AdultProductCardTile({
             width={300}
             height={400}
             style={{
-              width: '66%',
+              maxWidth: '80%',
+              maxHeight: '88%',
+              width: 'auto',
               height: 'auto',
               objectFit: 'contain',
               objectPosition: 'center',
