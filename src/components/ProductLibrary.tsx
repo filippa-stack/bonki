@@ -847,7 +847,14 @@ export default function ProductLibrary() {
               isPurchased={purchased.has('still_us')}
               onClick={() => navigate('/product/still-us')}
             />
-            {/* Preview strip placeholder — ticket 3 will add this */}
+            <div style={{ marginTop: 20 }}>
+              <VartViPreviewStrip
+                isPurchased={purchased.has('still_us')}
+                completedCardIds={stillUsCompletedIds}
+                onUnpurchasedTileTap={(index) => setExpandedTileIndex(index)}
+                onPurchasedTileTap={(cardId) => navigate(`/card/${cardId}`)}
+              />
+            </div>
           </div>
         )}
 
@@ -886,6 +893,93 @@ export default function ProductLibrary() {
           </div>
         )}
 
+
+        {/* Bottom safe-area spacing */}
+        <AnimatePresence>
+          {expandedTileIndex !== null && (() => {
+            const questions = (PREVIEW_QUESTIONS.still_us ?? []).slice(0, 4);
+            const q = questions[expandedTileIndex];
+            const bgColor = PREVIEW_TILE_COLORS[expandedTileIndex % PREVIEW_TILE_COLORS.length];
+            return (
+              <motion.div
+                key="preview-overlay"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                onClick={() => setExpandedTileIndex(null)}
+                style={{
+                  position: 'fixed',
+                  inset: 0,
+                  background: 'rgba(26, 26, 46, 0.85)',
+                  zIndex: 100,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  padding: 24,
+                  backdropFilter: 'blur(8px)',
+                  WebkitBackdropFilter: 'blur(8px)',
+                }}
+              >
+                <motion.div
+                  layoutId={`preview-tile-${expandedTileIndex}`}
+                  onClick={(e) => e.stopPropagation()}
+                  style={{
+                    background: bgColor,
+                    borderRadius: 20,
+                    padding: '48px 28px',
+                    width: '100%',
+                    maxWidth: 360,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    minHeight: 320,
+                    position: 'relative',
+                    boxShadow: '0 12px 40px rgba(0,0,0,0.40)',
+                  }}
+                >
+                  <button
+                    type="button"
+                    onClick={() => setExpandedTileIndex(null)}
+                    aria-label="Stäng"
+                    style={{
+                      position: 'absolute',
+                      top: 14,
+                      right: 14,
+                      width: 32,
+                      height: 32,
+                      borderRadius: 16,
+                      background: 'rgba(255,255,255,0.15)',
+                      border: 'none',
+                      color: LANTERN_GLOW,
+                      fontSize: 18,
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      WebkitTapHighlightColor: 'transparent',
+                    }}
+                  >
+                    ×
+                  </button>
+                  <p
+                    style={{
+                      fontFamily: 'var(--font-display)',
+                      fontStyle: 'italic',
+                      fontSize: 22,
+                      lineHeight: 1.35,
+                      color: LANTERN_GLOW,
+                      textAlign: 'center',
+                      margin: 0,
+                    }}
+                  >
+                    {q}
+                  </p>
+                </motion.div>
+              </motion.div>
+            );
+          })()}
+        </AnimatePresence>
 
         {/* Bottom safe-area spacing */}
         <div style={{ paddingBottom: 'calc(72px + env(safe-area-inset-bottom, 0px))' }} />
