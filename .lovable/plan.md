@@ -1,10 +1,30 @@
-# Fix Vårt Vi illustration clipping — max-box sizing across 4 surfaces
+# Compact LibraryResumeCard visual refresh
 
-Replace fixed-width sizing with constrained max-box. Surface 4 uses 88% pre-emptively.
+Replace only the JSX return block in `src/components/LibraryResumeCard.tsx`. All data fetching, realtime, demo sync, refs, state, and imports stay untouched.
 
-- **Surface 1** `AdultProductCardTile.tsx` Zone A img → `maxWidth: '80%'`, `maxHeight: '88%'`, `width/height: auto`, contain/center, existing drop-shadow.
-- **Surface 2** `ProductLibrary.tsx` StillUsMarquee img → drop `aspectRatio`, set `width/height: auto`, `maxWidth/maxHeight: 130`, contain/center, existing drop-shadow.
-- **Surface 3** `AdultCardPortal.tsx` PortalCardImage img → same as Surface 1.
-- **Surface 4** `LibraryResumeCard.tsx` isStillUs img → `maxWidth/maxHeight: '88%'`, `width/height: auto`, contain/center, existing 3px/4px drop-shadow.
+## Scope
 
-Mat colors, shadows, title strips, kids surfaces unchanged.
+**File:** `src/components/LibraryResumeCard.tsx`
+**Modify:** only the final `return ( ... )` block (currently the `<div>` wrapper containing the "Fortsätt" eyebrow + button).
+**Leave intact:** imports, props interface, `fetchFromDb`, all `useEffect`s, `devMock`/`showMock`, `fetchRef`, `setResume`, `stepLabel` calculation, `useCardImage`, channel cleanup, `if (!display) return null` guard, and all derived constants (`accent`, `isStillUs`, `innerColor`, `darkText`, `illustration`).
+
+## New visual
+
+- Single `<button>` (the whole banner is the action) — no outer `<div>`, no eyebrow label.
+- Layout: `[ring + medallion]  [card title]  [chevron]`, gap 12px, padding 11/13, radius 14, subtle accent-tinted bg + border.
+- Ring: 46×46 SVG, saffron `#E9B44C` stroke, rotated -90°. Progress parsed visually from `display.stepLabel` via `/(\d+)\s*av\s*(\d+)/` — purely cosmetic, does not alter the data-layer format.
+- Medallion: circular for Vårt Vi (uses `ILLUSTRATIONS.still_us` with drop shadow); rounded-square inner panel for kids (uses `innerColor` + `illustration`).
+- Title: `display.cardTitle` only, single line, ellipsis. No product name, no "Pausad vid Fråga X av Y".
+- Chevron: lucide `ChevronRight`, size 20, colored with `accent`.
+
+## Verification
+
+- TypeScript build clean.
+- Tap still navigates to `/card/{display.cardId}`.
+- Realtime pause/resume from another device still updates the banner (fetch logic untouched).
+- Both Vårt Vi (circle) and kids (rounded square) medallion variants render.
+- No "FORTSÄTT" eyebrow, no step label text, no product name in the rendered output.
+
+## Out of scope
+
+All other files; `fetchFromDb`; realtime subscription; the underlying `stepLabel` string format (only parsed for the ring).

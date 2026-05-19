@@ -264,53 +264,68 @@ export default function LibraryResumeCard({ activeTab, global, forceMock }: Libr
   const illustration = cardIllustration ?? ILLUSTRATIONS[display.productId];
 
   return (
-    <div>
-      {/* Eyebrow */}
-      <p
+    <button
+      onClick={() => navigate(`/card/${display.cardId}`)}
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '12px',
+        width: '100%',
+        padding: '11px 13px',
+        borderRadius: '14px',
+        background: `color-mix(in srgb, ${accent} 10%, transparent)`,
+        border: `1px solid color-mix(in srgb, ${accent} 22%, transparent)`,
+        cursor: 'pointer',
+        textAlign: 'left',
+        WebkitTapHighlightColor: 'transparent',
+      }}
+    >
+      {/* Ring + medallion */}
+      <div
+        aria-hidden="true"
         style={{
-          fontFamily: 'var(--font-body)',
-          fontSize: 9,
-          fontWeight: 600,
-          letterSpacing: '0.14em',
-          textTransform: 'uppercase',
-          color: 'rgba(255, 255, 255, 0.70)',
-          margin: '0 0 8px',
-          padding: '0 4px',
+          position: 'relative',
+          width: 46,
+          height: 46,
+          flexShrink: 0,
         }}
       >
-        Fortsätt
-      </p>
+        {(() => {
+          const match = display.stepLabel.match(/(\d+)\s*av\s*(\d+)/);
+          const current = match ? parseInt(match[1], 10) : 0;
+          const total = match ? parseInt(match[2], 10) : 0;
+          const pct = total > 0 ? (current - 1) / total : 0;
+          const r = 21;
+          const c = 2 * Math.PI * r;
+          const offset = c * (1 - pct);
+          return (
+            <svg
+              width="46"
+              height="46"
+              viewBox="0 0 46 46"
+              style={{ position: 'absolute', inset: 0, transform: 'rotate(-90deg)' }}
+            >
+              <circle cx="23" cy="23" r={r} fill="none"
+                stroke="rgba(245,232,204,0.15)" strokeWidth="2" />
+              <circle cx="23" cy="23" r={r} fill="none"
+                stroke="#E9B44C" strokeWidth="2"
+                strokeDasharray={c}
+                strokeDashoffset={offset}
+                strokeLinecap="round" />
+            </svg>
+          );
+        })()}
 
-      <button
-        onClick={() => navigate(`/card/${display.cardId}`)}
-        style={{
-          display: 'flex',
-          alignItems: 'stretch',
-          gap: '14px',
-          width: '100%',
-          padding: '14px 16px',
-          borderRadius: '14px',
-          background: `color-mix(in srgb, ${accent} 12%, transparent)`,
-          border: `1px solid color-mix(in srgb, ${accent} 20%, transparent)`,
-          cursor: 'pointer',
-          textAlign: 'left',
-          WebkitTapHighlightColor: 'transparent',
-        }}
-      >
-        {/* Left: medallion — circle for Vårt Vi, rounded rect for kids */}
         <div
-          aria-hidden="true"
           style={{
-            flex: '0 0 56px',
-            width: 56,
-            height: 56,
-            borderRadius: isStillUs ? '50%' : 10,
+            position: 'absolute',
+            inset: 4,
+            borderRadius: isStillUs ? '50%' : 8,
             background: accent,
-            position: 'relative',
+            overflow: 'hidden',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            overflow: 'hidden',
           }}
         >
           {isStillUs ? (
@@ -325,15 +340,15 @@ export default function LibraryResumeCard({ activeTab, global, forceMock }: Libr
                 objectFit: 'contain',
                 objectPosition: 'center',
                 pointerEvents: 'none',
-                filter: 'drop-shadow(0 3px 4px rgba(0,0,0,0.35))',
+                filter: 'drop-shadow(0 2px 3px rgba(0,0,0,0.25))',
               }}
             />
           ) : (
             <div
               style={{
                 position: 'absolute',
-                inset: 6,
-                borderRadius: 6,
+                inset: 3,
+                borderRadius: 5,
                 background: innerColor,
                 border: `1px solid ${darkText}30`,
                 display: 'flex',
@@ -351,7 +366,7 @@ export default function LibraryResumeCard({ activeTab, global, forceMock }: Libr
                     height: '100%',
                     objectFit: 'contain',
                     objectPosition: 'center',
-                    padding: 4,
+                    padding: 3,
                     boxSizing: 'border-box',
                     pointerEvents: 'none',
                   }}
@@ -360,69 +375,34 @@ export default function LibraryResumeCard({ activeTab, global, forceMock }: Libr
             </div>
           )}
         </div>
+      </div>
 
-        {/* Middle: text */}
-        <div
-          style={{
-            flex: 1,
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            gap: 3,
-            minWidth: 0,
-          }}
-        >
-          <p
-            style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: 18,
-              fontWeight: 500,
-              color: 'rgba(255, 255, 255, 0.85)',
-              lineHeight: 1.1,
-              margin: 0,
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              whiteSpace: 'nowrap',
-            }}
-          >
-            {display.cardTitle}
-          </p>
-          <p
-            style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: 13,
-              fontWeight: 400,
-              color: 'rgba(255, 255, 255, 0.85)',
-              lineHeight: 1.3,
-              margin: 0,
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              whiteSpace: 'nowrap',
-            }}
-          >
-            {display.productName} · {display.stepLabel}
-          </p>
-        </div>
+      <p
+        style={{
+          flex: 1,
+          fontFamily: 'var(--font-display)',
+          fontSize: 14,
+          fontWeight: 500,
+          color: 'rgba(255, 255, 255, 0.92)',
+          lineHeight: 1.2,
+          margin: 0,
+          minWidth: 0,
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap',
+        }}
+      >
+        {display.cardTitle}
+      </p>
 
-        {/* Right: chevron */}
-        <div
-          style={{
-            flexShrink: 0,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: '0 4px',
-          }}
-        >
-          <ChevronRight
-            size={18}
-            strokeWidth={1.5}
-            color={accent}
-            aria-hidden="true"
-          />
-        </div>
-      </button>
-    </div>
+      <ChevronRight
+        size={20}
+        strokeWidth={1.5}
+        color={accent}
+        aria-hidden="true"
+        style={{ flexShrink: 0 }}
+      />
+    </button>
   );
 }
 
