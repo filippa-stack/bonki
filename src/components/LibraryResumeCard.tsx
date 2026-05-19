@@ -314,31 +314,18 @@ export default function LibraryResumeCard({ activeTab, global, forceMock }: Libr
           }}
         >
           {isStillUs ? (
-            <div
+            <img
+              src={ILLUSTRATIONS.still_us}
+              alt=""
               style={{
-                width: '70%',
-                height: '70%',
-                borderRadius: '50%',
-                background: innerColor,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                overflow: 'hidden',
+                width: '100%',
+                height: '100%',
+                objectFit: 'contain',
+                objectPosition: 'center',
+                pointerEvents: 'none',
+                filter: 'drop-shadow(0 3px 4px rgba(0,0,0,0.35))',
               }}
-            >
-              {/* Use product hero illustration to match the Vårt Vi marquee framing exactly */}
-              <img
-                src={ILLUSTRATIONS.still_us}
-                alt=""
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'contain',
-                  objectPosition: 'center',
-                  pointerEvents: 'none',
-                }}
-              />
-            </div>
+            />
           ) : (
             <div
               style={{
