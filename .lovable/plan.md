@@ -1,33 +1,40 @@
-# ProductLibrary two-tab restructure
+## Ticket 2 Follow-up: Fix VartViHero composition and resume banner spacing
 
-Restructure `src/components/ProductLibrary.tsx` to a "Vi" / "Barnen" tab system. All data fetching, hooks, routing, demo logic, and atmospheric layers remain untouched.
+**File:** `src/components/ProductLibrary.tsx` (only)
 
-## Scope
+### Fix 1 — VartViHero vertical poster
 
-**File:** `src/components/ProductLibrary.tsx`
-**Untouched:** `useAllProductAccess`, `useCoupleSpaceContext`, `useAuth`, `useDevState`, demo session listeners, `completedCountMap` / `activeProductIds` queries, `sortedKidsProducts` memo, `isProductHiddenOnPlatform` filter, `LibraryResumeCard`, `usePageBackground` + background layers, `KontoIcon`/`KontoSheet`, all `useNavigate` targets, `trackOnboarding`.
+Replace the entire `return ( ... )` block inside the `VartViHero` function (currently a horizontal flex with split image/text zones) with a vertical column layout:
 
-## Changes
+- `<button>` with `flexDirection: 'column'`, `alignItems: 'center'`, `justifyContent: 'center'`, padding `24px 18px 22px`, radius 16, `VI_TAB_HERO_COLOR` background, hairline box-shadow border, centered text.
+- Children stacked top-to-bottom:
+  1. Eyebrow `"För er som par"` — body font, 11px, uppercase, 0.16em tracking, `LANTERN_GLOW` @ 0.55, marginBottom 18.
+  2. `illustrationStillUs` — max 150×150, contain, drop-shadow, marginBottom 16.
+  3. `<h3>Vårt Vi</h3>` — display font 30px, weight 500, `LANTERN_GLOW`, line-height 1, marginBottom 16, `opsz` 30.
+  4. Conditional footer:
+     - If `isPurchased && completedCount > 0`: 60% width (max 180) container with 2px gold progress track + uppercase `"{completed} av {total}"` count below.
+     - Else: uppercase `"{totalCards} samtal"`.
 
-1. **Imports** — add `CORNFLOWER, DUSTY_ROSE, STORM_GREY, WARM_GOLD` from `@/lib/palette`.
-2. **Constant** — add `VI_TAB_HERO_COLOR = STORM_GREY` after existing `TILE_COLORS`.
-3. **Replace `LibraryHeader`** with a new `TabBar({ active, onChange })` rendering two display-font buttons (`Vi`, `Barnen`); active tab gets full opacity + a 2px warm-gold underline pill; inactive 0.42 opacity.
-4. **Delete `SectionEyebrow`** function entirely.
-5. **Replace `StillUsMarquee`** with a new `VartViHero({ totalCards, completedCount, isPurchased, onClick })`. Storm Grey surface, "För er som par" eyebrow, "Vårt Vi" serif title, illustration, and either a progress bar + "X av Y" or "{totalCards} samtal" fallback when not purchased.
-6. **`LibraryKidsTile`** — remove the `TAGLINES[product.id] && (...)` subtitle block. Keep title, tasted glyph, and progress bar.
-7. **`ProductLibrary` default export:**
-   - Add `const [activeTab, setActiveTab] = useState<'vi' | 'barnen'>('vi');` right after `stillUsProduct` lookup.
-   - Replace the `{/* Content */}` JSX with: `KontoIcon` + `KontoSheet`, `TabBar`, `LibraryResumeCard` (kept as-is), then conditional render — `activeTab === 'vi'` → `VartViHero` wired to `/product/still-us` (with `totalCards`/`completedCount`/`isPurchased` derived from existing data); `activeTab === 'barnen'` → the existing age-guidance microcopy + kids grid mapping `sortedKidsProducts` to `LibraryKidsTile` (navigation targets unchanged).
+No changes to props, no changes outside the return.
 
-## Verification
+### Fix 2 — Resume banner spacing
 
-- TypeScript build clean.
-- Header "Biblioteket" and the "Samtal för hela familjen" eyebrow are gone; tab bar visible with gold underline under the active tab.
-- Vi tab: Storm Grey hero with "För er som par", Vårt Vi serif title, illustration, progress bar + "X av 18" when purchased / "18 samtal" otherwise. Tap → `/product/still-us`.
-- Barnen tab: existing 6-tile kids grid renders; tile subtitles (TAGLINES) are gone; navigation unchanged.
-- `LibraryResumeCard` still renders between TabBar and content when an active session exists.
-- Section labels "FÖR ER SOM PAR" / "FÖR BARN · FÖR FAMILJEN" are gone.
+In the `ProductLibrary` default export JSX, change the wrapper around `<LibraryResumeCard global />`:
 
-## Out of scope
+```
+<div className="px-5" style={{ marginBottom: 24 }}>
+  <LibraryResumeCard global />
+</div>
+```
 
-Ticket 3 preview strip; all other files; data fetching; kids tile internal progress bar.
+(`marginBottom: 8` → `marginBottom: 24`.)
+
+### Out of scope / untouched
+
+TabBar, LibraryResumeCard internals, LibraryKidsTile, all hooks/data/state, barnen tab content, routing, typography migration.
+
+### Verification
+
+- TS build clean.
+- Vi tab: vertical poster — eyebrow / illustration (~150px) / "Vårt Vi" 30px serif / progress or count, all centered, noticeably taller than before.
+- 24px gap between resume banner and Vårt Vi hero (Vi tab) / disclaimer (Barnen tab).

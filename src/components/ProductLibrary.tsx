@@ -155,10 +155,6 @@ function VartViHero({
   isPurchased: boolean;
   onClick: () => void;
 }) {
-  const showProgress = isPurchased && completedCount > 0;
-  const onColorText = '#F5E8CC';
-  const pct = totalCards > 0 ? Math.min(100, (completedCount / totalCards) * 100) : 0;
-
   return (
     <button
       type="button"
@@ -166,136 +162,117 @@ function VartViHero({
       style={{
         width: '100%',
         display: 'flex',
+        flexDirection: 'column',
         alignItems: 'center',
-        gap: 16,
-        padding: 18,
+        justifyContent: 'center',
+        padding: '24px 18px 22px',
         borderRadius: 16,
         background: VI_TAB_HERO_COLOR,
-        border: '1px solid rgba(255,255,255,0.08)',
-        boxShadow: '0 8px 24px rgba(0,0,0,0.18)',
+        border: 'none',
+        boxShadow: '0 0 0 1px rgba(255,255,255,0.06)',
         cursor: 'pointer',
-        textAlign: 'left',
         WebkitTapHighlightColor: 'transparent',
-        minHeight: 156,
+        textAlign: 'center',
       }}
     >
-      <div
+      <span
         style={{
-          flex: '0 0 38%',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
+          fontFamily: 'var(--font-body)',
+          fontSize: 11,
+          fontWeight: 500,
+          color: LANTERN_GLOW,
+          opacity: 0.55,
+          letterSpacing: '0.16em',
+          textTransform: 'uppercase',
+          marginBottom: 18,
+          display: 'block',
         }}
       >
-        <img
-          src={illustrationStillUs}
-          alt=""
-          draggable={false}
-          style={{
-            width: 'auto',
-            height: 'auto',
-            maxWidth: 130,
-            maxHeight: 130,
-            objectFit: 'contain',
-            objectPosition: 'center',
-            pointerEvents: 'none',
-            filter: 'drop-shadow(0 8px 10px rgba(0,0,0,0.35))',
-          }}
-        />
-      </div>
-
-      <div
+        För er som par
+      </span>
+      <img
+        src={illustrationStillUs}
+        alt=""
+        draggable={false}
         style={{
-          flex: 1,
-          minWidth: 0,
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          paddingLeft: 16,
-          borderLeft: '1px solid rgba(245, 232, 204, 0.22)',
+          width: 'auto',
+          height: 'auto',
+          maxWidth: 150,
+          maxHeight: 150,
+          objectFit: 'contain',
+          objectPosition: 'center',
+          pointerEvents: 'none',
+          filter: 'drop-shadow(0 6px 8px rgba(0,0,0,0.30))',
+          marginBottom: 16,
+          display: 'block',
+        }}
+      />
+      <h3
+        style={{
+          fontFamily: 'var(--font-display)',
+          fontSize: 30,
+          fontWeight: 500,
+          color: LANTERN_GLOW,
+          lineHeight: 1,
+          letterSpacing: '-0.01em',
+          margin: '0 0 16px',
+          fontVariationSettings: "'opsz' 30",
         }}
       >
+        Vårt Vi
+      </h3>
+      {isPurchased && completedCount > 0 ? (
+        <div style={{ width: '60%', maxWidth: 180 }}>
+          <div
+            style={{
+              height: 2,
+              background: 'rgba(245,232,204,0.22)',
+              borderRadius: 1,
+              overflow: 'hidden',
+              marginBottom: 7,
+            }}
+          >
+            <div
+              style={{
+                width: `${Math.min(100, (completedCount / totalCards) * 100)}%`,
+                height: '100%',
+                background: WARM_GOLD,
+                borderRadius: 1,
+              }}
+            />
+          </div>
+          <p
+            style={{
+              fontFamily: 'var(--font-body)',
+              fontSize: 10,
+              fontWeight: 500,
+              color: LANTERN_GLOW,
+              opacity: 0.65,
+              letterSpacing: '0.16em',
+              textTransform: 'uppercase',
+              textAlign: 'center',
+              margin: 0,
+            }}
+          >
+            {completedCount} av {totalCards}
+          </p>
+        </div>
+      ) : (
         <p
           style={{
             fontFamily: 'var(--font-body)',
             fontSize: 10,
-            fontWeight: 600,
-            letterSpacing: '0.12em',
-            textTransform: 'uppercase',
-            color: onColorText,
-            opacity: 0.7,
-            margin: '0 0 6px',
-          }}
-        >
-          För er som par
-        </p>
-        <h3
-          style={{
-            fontFamily: 'var(--font-display)',
-            color: onColorText,
-            fontSize: 24,
             fontWeight: 500,
-            lineHeight: 1.05,
-            letterSpacing: '-0.005em',
+            color: LANTERN_GLOW,
+            opacity: 0.65,
+            letterSpacing: '0.16em',
+            textTransform: 'uppercase',
             margin: 0,
           }}
         >
-          Vårt Vi
-        </h3>
-
-        {showProgress ? (
-          <div style={{ marginTop: 12 }}>
-            <div
-              aria-hidden="true"
-              style={{
-                width: '100%',
-                height: 3,
-                borderRadius: 2,
-                background: 'rgba(245,232,204,0.18)',
-                overflow: 'hidden',
-              }}
-            >
-              <div
-                style={{
-                  width: `${pct}%`,
-                  height: '100%',
-                  background: WARM_GOLD,
-                  borderRadius: 2,
-                  transition: 'width 400ms ease-out',
-                }}
-              />
-            </div>
-            <p
-              style={{
-                fontFamily: 'var(--font-body)',
-                fontSize: 11,
-                fontWeight: 600,
-                letterSpacing: '0.06em',
-                color: onColorText,
-                opacity: 0.75,
-                margin: '6px 0 0',
-              }}
-            >
-              {completedCount} av {totalCards}
-            </p>
-          </div>
-        ) : (
-          <p
-            style={{
-              fontFamily: 'var(--font-body)',
-              fontSize: 11,
-              fontWeight: 600,
-              letterSpacing: '0.08em',
-              textTransform: 'uppercase',
-              color: onColorText,
-              opacity: 0.65,
-              margin: '10px 0 0',
-            }}
-          >
-            {totalCards} samtal
-          </p>
-        )}
-      </div>
+          {totalCards} samtal
+        </p>
+      )}
     </button>
   );
 }
