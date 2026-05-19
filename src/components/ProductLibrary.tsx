@@ -281,6 +281,179 @@ function VartViHero({
   );
 }
 
+/* ── Vi tab preview strip — 4 expandable tiles ────────────────────────── */
+function VartViPreviewStrip({
+  isPurchased,
+  completedCardIds,
+  onUnpurchasedTileTap,
+  onPurchasedTileTap,
+}: {
+  isPurchased: boolean;
+  completedCardIds: Set<string>;
+  onUnpurchasedTileTap: (index: number) => void;
+  onPurchasedTileTap: (cardId: string) => void;
+}) {
+  if (!isPurchased) {
+    const questions = (PREVIEW_QUESTIONS.still_us ?? []).slice(0, 4);
+    return (
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr',
+          gap: 10,
+        }}
+      >
+        {questions.map((q, i) => (
+          <motion.button
+            key={i}
+            type="button"
+            layoutId={`preview-tile-${i}`}
+            onClick={() => onUnpurchasedTileTap(i)}
+            style={{
+              background: PREVIEW_TILE_COLORS[i % PREVIEW_TILE_COLORS.length],
+              borderRadius: 12,
+              border: 'none',
+              padding: '14px 12px',
+              minHeight: 130,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer',
+              WebkitTapHighlightColor: 'transparent',
+              boxShadow: '0 0 0 1px rgba(255,255,255,0.06)',
+            }}
+          >
+            <span
+              style={{
+                fontFamily: 'var(--font-display)',
+                fontStyle: 'italic',
+                fontSize: 14,
+                lineHeight: 1.3,
+                color: LANTERN_GLOW,
+                textAlign: 'center',
+              }}
+            >
+              {q}
+            </span>
+          </motion.button>
+        ))}
+      </div>
+    );
+  }
+
+  // Purchased state: next 4 non-completed cards from CARD_SEQUENCE
+  const nextFour = CARD_SEQUENCE
+    .filter((seq) => !completedCardIds.has(`su-mock-${seq.index}`))
+    .slice(0, 4);
+
+  if (nextFour.length === 0) return null;
+
+  return (
+    <div>
+      <p
+        style={{
+          fontFamily: 'var(--font-body)',
+          fontSize: 11,
+          fontWeight: 500,
+          letterSpacing: '0.16em',
+          textTransform: 'uppercase',
+          color: LANTERN_GLOW,
+          opacity: 0.55,
+          margin: '0 0 12px',
+        }}
+      >
+        Nästa
+      </p>
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr',
+          gap: 10,
+        }}
+      >
+        {nextFour.map((seq, i) => (
+          <PreviewCardPurchased
+            key={seq.index}
+            seqIndex={seq.index}
+            title={seq.title}
+            bgColor={PREVIEW_TILE_COLORS[i % PREVIEW_TILE_COLORS.length]}
+            onClick={() => onPurchasedTileTap(`su-mock-${seq.index}`)}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function PreviewCardPurchased({
+  seqIndex,
+  title,
+  bgColor,
+  onClick,
+}: {
+  seqIndex: number;
+  title: string;
+  bgColor: string;
+  onClick: () => void;
+}) {
+  const muxId = `su-mock-${seqIndex}`;
+  const image = useCardImage(muxId);
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      style={{
+        background: bgColor,
+        borderRadius: 12,
+        border: 'none',
+        padding: 10,
+        minHeight: 130,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 6,
+        cursor: 'pointer',
+        WebkitTapHighlightColor: 'transparent',
+        boxShadow: '0 0 0 1px rgba(255,255,255,0.06)',
+      }}
+    >
+      {image ? (
+        <img
+          src={image}
+          alt=""
+          draggable={false}
+          style={{
+            maxWidth: 70,
+            maxHeight: 70,
+            objectFit: 'contain',
+            filter: 'drop-shadow(0 4px 6px rgba(0,0,0,0.25))',
+            pointerEvents: 'none',
+          }}
+        />
+      ) : (
+        <div style={{ height: 70 }} />
+      )}
+      <span
+        style={{
+          fontFamily: 'var(--font-display)',
+          fontSize: 13,
+          fontWeight: 600,
+          color: LANTERN_GLOW,
+          textAlign: 'center',
+          lineHeight: 1.2,
+          display: '-webkit-box',
+          WebkitLineClamp: 2,
+          WebkitBoxOrient: 'vertical',
+          overflow: 'hidden',
+        }}
+      >
+        {title}
+      </span>
+    </button>
+  );
+}
+
 /* ── Kids tile — title strip footer carries always-visible meta row ──── */
 /* ── Library kids tile — delegates to KidsTileFrame primitive ─────────── */
 function LibraryKidsTile({
