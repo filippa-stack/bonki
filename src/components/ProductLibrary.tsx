@@ -12,7 +12,7 @@ import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { supabase } from '@/integrations/supabase/client';
 import { isDemoMode } from '@/lib/demoMode';
 import { isProductHiddenOnPlatform } from '@/lib/platform';
-import { MIDNIGHT_INK, productDarkText, TEXT_EYEBROW } from '@/lib/palette';
+import { MIDNIGHT_INK, productDarkText, TEXT_EYEBROW, CORNFLOWER, DUSTY_ROSE, STORM_GREY, WARM_GOLD } from '@/lib/palette';
 import { getCalmInterior } from '@/lib/productTileVariants';
 import KidsTileFrame from '@/components/KidsTileFrame';
 
