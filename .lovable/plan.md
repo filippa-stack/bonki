@@ -1,30 +1,33 @@
-# Compact LibraryResumeCard visual refresh
+# ProductLibrary two-tab restructure
 
-Replace only the JSX return block in `src/components/LibraryResumeCard.tsx`. All data fetching, realtime, demo sync, refs, state, and imports stay untouched.
+Restructure `src/components/ProductLibrary.tsx` to a "Vi" / "Barnen" tab system. All data fetching, hooks, routing, demo logic, and atmospheric layers remain untouched.
 
 ## Scope
 
-**File:** `src/components/LibraryResumeCard.tsx`
-**Modify:** only the final `return ( ... )` block (currently the `<div>` wrapper containing the "Fortsätt" eyebrow + button).
-**Leave intact:** imports, props interface, `fetchFromDb`, all `useEffect`s, `devMock`/`showMock`, `fetchRef`, `setResume`, `stepLabel` calculation, `useCardImage`, channel cleanup, `if (!display) return null` guard, and all derived constants (`accent`, `isStillUs`, `innerColor`, `darkText`, `illustration`).
+**File:** `src/components/ProductLibrary.tsx`
+**Untouched:** `useAllProductAccess`, `useCoupleSpaceContext`, `useAuth`, `useDevState`, demo session listeners, `completedCountMap` / `activeProductIds` queries, `sortedKidsProducts` memo, `isProductHiddenOnPlatform` filter, `LibraryResumeCard`, `usePageBackground` + background layers, `KontoIcon`/`KontoSheet`, all `useNavigate` targets, `trackOnboarding`.
 
-## New visual
+## Changes
 
-- Single `<button>` (the whole banner is the action) — no outer `<div>`, no eyebrow label.
-- Layout: `[ring + medallion]  [card title]  [chevron]`, gap 12px, padding 11/13, radius 14, subtle accent-tinted bg + border.
-- Ring: 46×46 SVG, saffron `#E9B44C` stroke, rotated -90°. Progress parsed visually from `display.stepLabel` via `/(\d+)\s*av\s*(\d+)/` — purely cosmetic, does not alter the data-layer format.
-- Medallion: circular for Vårt Vi (uses `ILLUSTRATIONS.still_us` with drop shadow); rounded-square inner panel for kids (uses `innerColor` + `illustration`).
-- Title: `display.cardTitle` only, single line, ellipsis. No product name, no "Pausad vid Fråga X av Y".
-- Chevron: lucide `ChevronRight`, size 20, colored with `accent`.
+1. **Imports** — add `CORNFLOWER, DUSTY_ROSE, STORM_GREY, WARM_GOLD` from `@/lib/palette`.
+2. **Constant** — add `VI_TAB_HERO_COLOR = STORM_GREY` after existing `TILE_COLORS`.
+3. **Replace `LibraryHeader`** with a new `TabBar({ active, onChange })` rendering two display-font buttons (`Vi`, `Barnen`); active tab gets full opacity + a 2px warm-gold underline pill; inactive 0.42 opacity.
+4. **Delete `SectionEyebrow`** function entirely.
+5. **Replace `StillUsMarquee`** with a new `VartViHero({ totalCards, completedCount, isPurchased, onClick })`. Storm Grey surface, "För er som par" eyebrow, "Vårt Vi" serif title, illustration, and either a progress bar + "X av Y" or "{totalCards} samtal" fallback when not purchased.
+6. **`LibraryKidsTile`** — remove the `TAGLINES[product.id] && (...)` subtitle block. Keep title, tasted glyph, and progress bar.
+7. **`ProductLibrary` default export:**
+   - Add `const [activeTab, setActiveTab] = useState<'vi' | 'barnen'>('vi');` right after `stillUsProduct` lookup.
+   - Replace the `{/* Content */}` JSX with: `KontoIcon` + `KontoSheet`, `TabBar`, `LibraryResumeCard` (kept as-is), then conditional render — `activeTab === 'vi'` → `VartViHero` wired to `/product/still-us` (with `totalCards`/`completedCount`/`isPurchased` derived from existing data); `activeTab === 'barnen'` → the existing age-guidance microcopy + kids grid mapping `sortedKidsProducts` to `LibraryKidsTile` (navigation targets unchanged).
 
 ## Verification
 
 - TypeScript build clean.
-- Tap still navigates to `/card/{display.cardId}`.
-- Realtime pause/resume from another device still updates the banner (fetch logic untouched).
-- Both Vårt Vi (circle) and kids (rounded square) medallion variants render.
-- No "FORTSÄTT" eyebrow, no step label text, no product name in the rendered output.
+- Header "Biblioteket" and the "Samtal för hela familjen" eyebrow are gone; tab bar visible with gold underline under the active tab.
+- Vi tab: Storm Grey hero with "För er som par", Vårt Vi serif title, illustration, progress bar + "X av 18" when purchased / "18 samtal" otherwise. Tap → `/product/still-us`.
+- Barnen tab: existing 6-tile kids grid renders; tile subtitles (TAGLINES) are gone; navigation unchanged.
+- `LibraryResumeCard` still renders between TabBar and content when an active session exists.
+- Section labels "FÖR ER SOM PAR" / "FÖR BARN · FÖR FAMILJEN" are gone.
 
 ## Out of scope
 
-All other files; `fetchFromDb`; realtime subscription; the underlying `stepLabel` string format (only parsed for the ring).
+Ticket 3 preview strip; all other files; data fetching; kids tile internal progress bar.

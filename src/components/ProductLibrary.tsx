@@ -12,7 +12,7 @@ import { useCoupleSpaceContext } from '@/contexts/CoupleSpaceContext';
 import { supabase } from '@/integrations/supabase/client';
 import { isDemoMode } from '@/lib/demoMode';
 import { isProductHiddenOnPlatform } from '@/lib/platform';
-import { MIDNIGHT_INK, productDarkText, TEXT_EYEBROW } from '@/lib/palette';
+import { MIDNIGHT_INK, productDarkText, TEXT_EYEBROW, CORNFLOWER, DUSTY_ROSE, STORM_GREY, WARM_GOLD } from '@/lib/palette';
 import { getCalmInterior } from '@/lib/productTileVariants';
 import KidsTileFrame from '@/components/KidsTileFrame';
 
@@ -68,61 +68,83 @@ const PRODUCT_ACCENT: Record<string, string> = {
   sexualitetskort: '#B87560',
 };
 
+const VI_TAB_HERO_COLOR = STORM_GREY;
+
 const tileVariants = {
   hidden: { opacity: 1, y: 0, scale: 1 },
   visible: { opacity: 1, y: 0, scale: 1 },
 };
 
 /* ── Editorial library header ─────────────────────────────────────────── */
-function LibraryHeader() {
+/* ── Tab bar ───────────────────────────────────────────────────────────── */
+function TabBar({
+  active,
+  onChange,
+}: {
+  active: 'vi' | 'barnen';
+  onChange: (t: 'vi' | 'barnen') => void;
+}) {
   return (
-    <div style={{ textAlign: 'center', marginBottom: 32 }}>
-      <h1 style={{
-        fontFamily: 'var(--font-display)',
-        fontSize: 28,
-        fontWeight: 500,
-        letterSpacing: '0',
-        color: LANTERN_GLOW,
-        margin: '0 0 6px',
-        fontVariationSettings: "'opsz' 28",
-      }}>
-        Biblioteket
-      </h1>
-      <p style={{
-        fontFamily: 'var(--font-body)',
-        fontSize: 11,
-        fontWeight: 600,
-        letterSpacing: '0.10em',
-        textTransform: 'uppercase',
-        color: TEXT_EYEBROW,
-        margin: 0,
-      }}>
-        Samtal för hela familjen
-      </p>
+    <div
+      role="tablist"
+      aria-label="Bibliotek"
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        gap: 32,
+        marginBottom: 20,
+      }}
+    >
+      {(['vi', 'barnen'] as const).map((tab) => {
+        const isActive = active === tab;
+        const label = tab === 'vi' ? 'Vi' : 'Barnen';
+        return (
+          <button
+            key={tab}
+            type="button"
+            role="tab"
+            aria-selected={isActive}
+            onClick={() => onChange(tab)}
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: 22,
+              fontWeight: 500,
+              color: LANTERN_GLOW,
+              opacity: isActive ? 1 : 0.42,
+              letterSpacing: '-0.005em',
+              background: 'none',
+              border: 'none',
+              padding: '0 0 8px',
+              cursor: 'pointer',
+              position: 'relative',
+              transition: 'opacity 200ms ease',
+              WebkitTapHighlightColor: 'transparent',
+            }}
+          >
+            {label}
+            {isActive && (
+              <span
+                aria-hidden="true"
+                style={{
+                  position: 'absolute',
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  height: 2,
+                  borderRadius: 1,
+                  background: WARM_GOLD,
+                }}
+              />
+            )}
+          </button>
+        );
+      })}
     </div>
   );
 }
 
-/* ── Section eyebrow with mushroom-tinted divider ─────────────────────── */
-function SectionEyebrow({ label, extraTopMargin = 0 }: { label: string; extraTopMargin?: number }) {
-  return (
-    <p style={{
-      fontFamily: 'var(--font-body)',
-      fontSize: 10,
-      fontWeight: 600,
-      letterSpacing: '0.12em',
-      textTransform: 'uppercase',
-      color: TEXT_EYEBROW,
-      margin: `${24 + extraTopMargin}px 0 14px`,
-      padding: '0 4px',
-    }}>
-      {label}
-    </p>
-  );
-}
-
-/* ── Vårt Vi marquee — horizontal medallion composition ───────────────── */
-function StillUsMarquee({
+/* ── Vårt Vi hero — Storm Grey surface for the Vi tab ─────────────────── */
+function VartViHero({
   totalCards,
   completedCount,
   isPurchased,
@@ -133,8 +155,10 @@ function StillUsMarquee({
   isPurchased: boolean;
   onClick: () => void;
 }) {
-  const accent = PRODUCT_ACCENT.still_us;
+  const showProgress = isPurchased && completedCount > 0;
   const onColorText = '#F5E8CC';
+  const pct = totalCards > 0 ? Math.min(100, (completedCount / totalCards) * 100) : 0;
+
   return (
     <button
       type="button"
@@ -144,23 +168,25 @@ function StillUsMarquee({
         display: 'flex',
         alignItems: 'center',
         gap: 16,
-        padding: 16,
-        borderRadius: 14,
-        background: accent,
-        border: 'none',
-        boxShadow: '0 0 0 1px rgba(255,255,255,0.06)',
+        padding: 18,
+        borderRadius: 16,
+        background: VI_TAB_HERO_COLOR,
+        border: '1px solid rgba(255,255,255,0.08)',
+        boxShadow: '0 8px 24px rgba(0,0,0,0.18)',
         cursor: 'pointer',
         textAlign: 'left',
         WebkitTapHighlightColor: 'transparent',
-        minHeight: 150,
+        minHeight: 156,
       }}
     >
-      <div style={{
-        flex: '0 0 40%',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}>
+      <div
+        style={{
+          flex: '0 0 38%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
         <img
           src={illustrationStillUs}
           alt=""
@@ -177,59 +203,98 @@ function StillUsMarquee({
           }}
         />
       </div>
-      <div style={{
-        flex: 1,
-        minWidth: 0,
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        paddingLeft: 16,
-        borderLeft: '1px solid rgba(245, 232, 204, 0.30)',
-      }}>
-        <h3 style={{
-          fontFamily: 'var(--font-display)',
-          color: onColorText,
-          fontSize: 22,
-          fontWeight: 500,
-          lineHeight: 1.05,
-          letterSpacing: '-0.005em',
-          margin: 0,
-        }}>
+
+      <div
+        style={{
+          flex: 1,
+          minWidth: 0,
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          paddingLeft: 16,
+          borderLeft: '1px solid rgba(245, 232, 204, 0.22)',
+        }}
+      >
+        <p
+          style={{
+            fontFamily: 'var(--font-body)',
+            fontSize: 10,
+            fontWeight: 600,
+            letterSpacing: '0.12em',
+            textTransform: 'uppercase',
+            color: onColorText,
+            opacity: 0.7,
+            margin: '0 0 6px',
+          }}
+        >
+          För er som par
+        </p>
+        <h3
+          style={{
+            fontFamily: 'var(--font-display)',
+            color: onColorText,
+            fontSize: 24,
+            fontWeight: 500,
+            lineHeight: 1.05,
+            letterSpacing: '-0.005em',
+            margin: 0,
+          }}
+        >
           Vårt Vi
         </h3>
-        <p style={{
-          color: onColorText,
-          opacity: 0.85,
-          fontSize: 13,
-          margin: 0,
-          fontFamily: 'var(--font-display)',
-          fontStyle: 'normal',
-          lineHeight: 1.3,
-        }}>
-          {TAGLINES.still_us}
-        </p>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginTop: 8 }}>
-          <span style={{
-            background: 'rgba(255,255,255,0.18)',
-            borderRadius: 999,
-            padding: '4px 12px',
-            fontSize: 11,
-            color: onColorText,
-            fontWeight: 600,
-          }}>
-            {completedCount} av {totalCards}
-          </span>
-          <span style={{
-            color: onColorText,
-            opacity: 0.55,
-            fontSize: 10,
-            letterSpacing: '0.08em',
-            textTransform: 'uppercase',
-            fontWeight: 600,
-          }}>
+
+        {showProgress ? (
+          <div style={{ marginTop: 12 }}>
+            <div
+              aria-hidden="true"
+              style={{
+                width: '100%',
+                height: 3,
+                borderRadius: 2,
+                background: 'rgba(245,232,204,0.18)',
+                overflow: 'hidden',
+              }}
+            >
+              <div
+                style={{
+                  width: `${pct}%`,
+                  height: '100%',
+                  background: WARM_GOLD,
+                  borderRadius: 2,
+                  transition: 'width 400ms ease-out',
+                }}
+              />
+            </div>
+            <p
+              style={{
+                fontFamily: 'var(--font-body)',
+                fontSize: 11,
+                fontWeight: 600,
+                letterSpacing: '0.06em',
+                color: onColorText,
+                opacity: 0.75,
+                margin: '6px 0 0',
+              }}
+            >
+              {completedCount} av {totalCards}
+            </p>
+          </div>
+        ) : (
+          <p
+            style={{
+              fontFamily: 'var(--font-body)',
+              fontSize: 11,
+              fontWeight: 600,
+              letterSpacing: '0.08em',
+              textTransform: 'uppercase',
+              color: onColorText,
+              opacity: 0.65,
+              margin: '10px 0 0',
+            }}
+          >
             {totalCards} samtal
-          </span>
-        </div>
+          </p>
+        )}
       </div>
     </button>
   );
@@ -443,23 +508,6 @@ function LibraryKidsTile({
             </span>
           )}
         </div>
-        {TAGLINES[product.id] && (
-          <span
-            style={{
-              fontFamily: 'var(--font-display)',
-              fontStyle: 'normal',
-              fontSize: 12,
-              fontWeight: 400,
-              color: darkText,
-              opacity: 0.85,
-              lineHeight: 1.2,
-              display: 'block',
-              textAlign: 'center',
-            }}
-          >
-            {TAGLINES[product.id]}
-          </span>
-        )}
       </div>
     </button>
   );
@@ -478,6 +526,7 @@ export default function ProductLibrary() {
   useAuth();
   const [kontoOpen, setKontoOpen] = useState(false);
   const stillUsProduct = allProducts.find(p => p.id === 'still_us');
+  const [activeTab, setActiveTab] = useState<'vi' | 'barnen'>('vi');
 
   useEffect(() => {
     if (!tracked.current) {
@@ -614,9 +663,9 @@ export default function ProductLibrary() {
         <KontoIcon onClick={() => setKontoOpen(true)} />
         <KontoSheet open={kontoOpen} onClose={() => setKontoOpen(false)} />
 
-        {/* Editorial header */}
+        {/* Tab bar */}
         <div className="px-5" style={{ paddingTop: 'calc(env(safe-area-inset-top, 0px) + 56px)' }}>
-          <LibraryHeader />
+          <TabBar active={activeTab} onChange={setActiveTab} />
         </div>
 
         {/* Resume card */}
@@ -624,51 +673,53 @@ export default function ProductLibrary() {
           <LibraryResumeCard global />
         </div>
 
-        {/* ── FÖR PAR — Vårt Vi marquee ── */}
-        <div className="px-5">
-          <SectionEyebrow label="För er som par" />
-          <StillUsMarquee
-            totalCards={stillUsProduct?.cards.length ?? 22}
-            completedCount={completedCountMap['still_us'] || 0}
-            isPurchased={purchased.has('still_us')}
-            onClick={() => navigate('/product/still-us')}
-          />
-        </div>
-
-        {/* ── FÖR BARN · FÖR FAMILJEN ── */}
-        <div className="px-5">
-          <SectionEyebrow label="För barn · För familjen" extraTopMargin={12} />
-          <p style={{
-            fontFamily: 'var(--font-body)',
-            fontSize: 11,
-            fontWeight: 400,
-            color: 'rgba(255, 255, 255, 0.55)',
-            lineHeight: 1.5,
-            textAlign: 'left',
-            padding: '0 4px',
-            margin: '4px 0 14px',
-          }}>
-            Åldrarna är en vägledning. Ni känner ert barn bäst.
-          </p>
-
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
-            gap: 12,
-          }}>
-            {sortedKidsProducts.map((product) => (
-              <LibraryKidsTile
-                key={product.id}
-                product={product}
-                illustration={ILLUSTRATIONS[product.id]}
-                totalCards={product.cards.length}
-                completedCount={completedCountMap[product.id] || 0}
-                isPurchased={purchased.has(product.id)}
-                onClick={() => navigate(`/product/${product.slug}`)}
-              />
-            ))}
+        {activeTab === 'vi' && (
+          <div className="px-5">
+            <VartViHero
+              totalCards={stillUsProduct?.cards.length ?? 22}
+              completedCount={completedCountMap['still_us'] || 0}
+              isPurchased={purchased.has('still_us')}
+              onClick={() => navigate('/product/still-us')}
+            />
+            {/* Preview strip placeholder — ticket 3 will add this */}
           </div>
-        </div>
+        )}
+
+        {activeTab === 'barnen' && (
+          <div className="px-5">
+            <p style={{
+              fontFamily: 'var(--font-body)',
+              fontSize: 11,
+              fontWeight: 400,
+              color: 'rgba(255, 255, 255, 0.55)',
+              lineHeight: 1.5,
+              textAlign: 'left',
+              padding: '0 4px',
+              margin: '4px 0 14px',
+            }}>
+              Åldrarna är en vägledning. Ni känner ert barn bäst.
+            </p>
+
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: '1fr 1fr',
+              gap: 12,
+            }}>
+              {sortedKidsProducts.map((product) => (
+                <LibraryKidsTile
+                  key={product.id}
+                  product={product}
+                  illustration={ILLUSTRATIONS[product.id]}
+                  totalCards={product.cards.length}
+                  completedCount={completedCountMap[product.id] || 0}
+                  isPurchased={purchased.has(product.id)}
+                  onClick={() => navigate(`/product/${product.slug}`)}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+
 
         {/* Bottom safe-area spacing */}
         <div style={{ paddingBottom: 'calc(72px + env(safe-area-inset-bottom, 0px))' }} />
