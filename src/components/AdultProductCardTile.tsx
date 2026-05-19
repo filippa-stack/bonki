@@ -96,39 +96,25 @@ export default function AdultProductCardTile({
           justifyContent: 'center',
         }}
       >
-        {/* Medallion */}
-        <div
-          style={{
-            width: '78%',
-            aspectRatio: '1 / 1',
-            borderRadius: '50%',
-            backgroundColor: getCircleColor(cardColor),
-            border: '1px solid rgba(245, 232, 204, 0.30)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            overflow: 'hidden',
-          }}
-        >
-          {tileImage && (
-            <img
-              src={tileImage}
-              alt=""
-              aria-hidden="true"
-              loading="lazy"
-              decoding="async"
-              width={300}
-              height={400}
-              style={{
-                width: '85%',
-                height: '85%',
-                objectFit: 'contain',
-                objectPosition: 'center',
-                display: 'block',
-              }}
-            />
-          )}
-        </div>
+        {tileImage && (
+          <img
+            src={tileImage}
+            alt=""
+            aria-hidden="true"
+            loading="lazy"
+            decoding="async"
+            width={300}
+            height={400}
+            style={{
+              width: '66%',
+              height: 'auto',
+              objectFit: 'contain',
+              objectPosition: 'center',
+              display: 'block',
+              filter: 'drop-shadow(0 8px 10px rgba(0,0,0,0.35))',
+            }}
+          />
+        )}
 
         {/* Inner shadow at bottom edge of zone A */}
         <div
