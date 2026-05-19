@@ -216,22 +216,36 @@ export default function AdultProductHome({ product }: { product: ProductManifest
           </h1>
           <p
             style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: 'clamp(17px, 4.6vw, 21px)',
-              fontWeight: 600,
-              color: 'rgba(255, 255, 255, 0.85)',
-              marginTop: '8px',
-              letterSpacing: '0.03em',
-              textShadow: [
-                '0 1px 3px rgba(0,0,0,0.9)',
-                '0 2px 8px rgba(0,0,0,0.7)',
-                `0 0 24px ${CORNFLOWER}`,
-                `0 0 48px ${CORNFLOWER}`,
-                `0 0 72px ${CORNFLOWER}`,
-              ].join(', '),
+              fontFamily: 'var(--font-serif)',
+              fontStyle: 'italic',
+              fontSize: '14px',
+              fontWeight: 400,
+              lineHeight: 1.45,
+              color: LANTERN_GLOW,
+              opacity: 0.85,
+              textAlign: 'center',
+              maxWidth: '320px',
+              margin: '8px auto 0',
             }}
           >
-            {product.cards.length} samtal om {product.tagline.toLowerCase().replace(/\.$/, '')}.
+            De viktigaste samtalen får sällan plats.
+            <br />
+            Här får de det.
+          </p>
+          <p
+            style={{
+              fontFamily: 'var(--font-body)',
+              fontSize: '11px',
+              fontWeight: 600,
+              letterSpacing: '0.12em',
+              textTransform: 'uppercase',
+              color: LANTERN_GLOW,
+              opacity: 0.55,
+              textAlign: 'center',
+              margin: '10px 0 0',
+            }}
+          >
+            18 SAMTAL · 4 KATEGORIER
           </p>
         </div>
 
