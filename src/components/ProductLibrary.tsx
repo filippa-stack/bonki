@@ -3,7 +3,10 @@ import BonkiLoadingScreen from '@/components/BonkiLoadingScreen';
 import KontoIcon from '@/components/KontoIcon';
 import KontoSheet from '@/components/KontoSheet';
 import { usePageBackground } from '@/hooks/usePageBackground';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { PREVIEW_QUESTIONS } from '@/lib/productPreviewQuestions';
+import { CARD_SEQUENCE } from '@/data/stillUsSequence';
+import { useCardImage } from '@/hooks/useCardImage';
 import { useNavigate } from 'react-router-dom';
 import { allProducts } from '@/data/products';
 import { useAllProductAccess } from '@/hooks/useAllProductAccess';
@@ -69,6 +72,7 @@ const PRODUCT_ACCENT: Record<string, string> = {
 };
 
 const VI_TAB_HERO_COLOR = STORM_GREY;
+const PREVIEW_TILE_COLORS = [CORNFLOWER, DUSTY_ROSE, WARM_GOLD, STORM_GREY];
 
 const tileVariants = {
   hidden: { opacity: 1, y: 0, scale: 1 },
@@ -273,6 +277,179 @@ function VartViHero({
           {totalCards} samtal
         </p>
       )}
+    </button>
+  );
+}
+
+/* ── Vi tab preview strip — 4 expandable tiles ────────────────────────── */
+function VartViPreviewStrip({
+  isPurchased,
+  completedCardIds,
+  onUnpurchasedTileTap,
+  onPurchasedTileTap,
+}: {
+  isPurchased: boolean;
+  completedCardIds: Set<string>;
+  onUnpurchasedTileTap: (index: number) => void;
+  onPurchasedTileTap: (cardId: string) => void;
+}) {
+  if (!isPurchased) {
+    const questions = (PREVIEW_QUESTIONS.still_us ?? []).slice(0, 4);
+    return (
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr',
+          gap: 10,
+        }}
+      >
+        {questions.map((q, i) => (
+          <motion.button
+            key={i}
+            type="button"
+            layoutId={`preview-tile-${i}`}
+            onClick={() => onUnpurchasedTileTap(i)}
+            style={{
+              background: PREVIEW_TILE_COLORS[i % PREVIEW_TILE_COLORS.length],
+              borderRadius: 12,
+              border: 'none',
+              padding: '14px 12px',
+              minHeight: 130,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer',
+              WebkitTapHighlightColor: 'transparent',
+              boxShadow: '0 0 0 1px rgba(255,255,255,0.06)',
+            }}
+          >
+            <span
+              style={{
+                fontFamily: 'var(--font-display)',
+                fontStyle: 'italic',
+                fontSize: 14,
+                lineHeight: 1.3,
+                color: LANTERN_GLOW,
+                textAlign: 'center',
+              }}
+            >
+              {q}
+            </span>
+          </motion.button>
+        ))}
+      </div>
+    );
+  }
+
+  // Purchased state: next 4 non-completed cards from CARD_SEQUENCE
+  const nextFour = CARD_SEQUENCE
+    .filter((seq) => !completedCardIds.has(`su-mock-${seq.index}`))
+    .slice(0, 4);
+
+  if (nextFour.length === 0) return null;
+
+  return (
+    <div>
+      <p
+        style={{
+          fontFamily: 'var(--font-body)',
+          fontSize: 11,
+          fontWeight: 500,
+          letterSpacing: '0.16em',
+          textTransform: 'uppercase',
+          color: LANTERN_GLOW,
+          opacity: 0.55,
+          margin: '0 0 12px',
+        }}
+      >
+        Nästa
+      </p>
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr',
+          gap: 10,
+        }}
+      >
+        {nextFour.map((seq, i) => (
+          <PreviewCardPurchased
+            key={seq.index}
+            seqIndex={seq.index}
+            title={seq.title}
+            bgColor={PREVIEW_TILE_COLORS[i % PREVIEW_TILE_COLORS.length]}
+            onClick={() => onPurchasedTileTap(`su-mock-${seq.index}`)}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function PreviewCardPurchased({
+  seqIndex,
+  title,
+  bgColor,
+  onClick,
+}: {
+  seqIndex: number;
+  title: string;
+  bgColor: string;
+  onClick: () => void;
+}) {
+  const muxId = `su-mock-${seqIndex}`;
+  const image = useCardImage(muxId);
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      style={{
+        background: bgColor,
+        borderRadius: 12,
+        border: 'none',
+        padding: 10,
+        minHeight: 130,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 6,
+        cursor: 'pointer',
+        WebkitTapHighlightColor: 'transparent',
+        boxShadow: '0 0 0 1px rgba(255,255,255,0.06)',
+      }}
+    >
+      {image ? (
+        <img
+          src={image}
+          alt=""
+          draggable={false}
+          style={{
+            maxWidth: 70,
+            maxHeight: 70,
+            objectFit: 'contain',
+            filter: 'drop-shadow(0 4px 6px rgba(0,0,0,0.25))',
+            pointerEvents: 'none',
+          }}
+        />
+      ) : (
+        <div style={{ height: 70 }} />
+      )}
+      <span
+        style={{
+          fontFamily: 'var(--font-display)',
+          fontSize: 13,
+          fontWeight: 600,
+          color: LANTERN_GLOW,
+          textAlign: 'center',
+          lineHeight: 1.2,
+          display: '-webkit-box',
+          WebkitLineClamp: 2,
+          WebkitBoxOrient: 'vertical',
+          overflow: 'hidden',
+        }}
+      >
+        {title}
+      </span>
     </button>
   );
 }
@@ -504,6 +681,7 @@ export default function ProductLibrary() {
   const [kontoOpen, setKontoOpen] = useState(false);
   const stillUsProduct = allProducts.find(p => p.id === 'still_us');
   const [activeTab, setActiveTab] = useState<'vi' | 'barnen'>('vi');
+  const [expandedTileIndex, setExpandedTileIndex] = useState<number | null>(null);
 
   useEffect(() => {
     if (!tracked.current) {
@@ -590,6 +768,17 @@ export default function ProductLibrary() {
   const vardag = allProducts.find(p => p.id === 'vardagskort')!;
   const syskon = allProducts.find(p => p.id === 'syskonkort')!;
 
+  // COUNT-BASED APPROXIMATION — intentional. Do not replace with a Supabase
+  // query. The proper fix is a dedicated hook returning per-card completion
+  // IDs, which is a separate ticket. This approximation is correct for the
+  // majority of users who progress sequentially.
+  const stillUsCompletedIds = useMemo(() => {
+    const count = completedCountMap['still_us'] || 0;
+    return new Set(
+      CARD_SEQUENCE.slice(0, count).map((s) => `su-mock-${s.index}`),
+    );
+  }, [completedCountMap]);
+
   const sortedKidsProducts = useMemo(
     () => [jagIMig, jagMedAndra, vardag, syskon, jagIVarlden, sexualitet]
       .filter(p => !isProductHiddenOnPlatform(p.id)),
@@ -658,7 +847,14 @@ export default function ProductLibrary() {
               isPurchased={purchased.has('still_us')}
               onClick={() => navigate('/product/still-us')}
             />
-            {/* Preview strip placeholder — ticket 3 will add this */}
+            <div style={{ marginTop: 20 }}>
+              <VartViPreviewStrip
+                isPurchased={purchased.has('still_us')}
+                completedCardIds={stillUsCompletedIds}
+                onUnpurchasedTileTap={(index) => setExpandedTileIndex(index)}
+                onPurchasedTileTap={(cardId) => navigate(`/card/${cardId}`)}
+              />
+            </div>
           </div>
         )}
 
@@ -697,6 +893,92 @@ export default function ProductLibrary() {
           </div>
         )}
 
+
+        <AnimatePresence>
+          {expandedTileIndex !== null && (() => {
+            const questions = (PREVIEW_QUESTIONS.still_us ?? []).slice(0, 4);
+            const q = questions[expandedTileIndex];
+            const bgColor = PREVIEW_TILE_COLORS[expandedTileIndex % PREVIEW_TILE_COLORS.length];
+            return (
+              <motion.div
+                key="preview-overlay"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                onClick={() => setExpandedTileIndex(null)}
+                style={{
+                  position: 'fixed',
+                  inset: 0,
+                  background: 'rgba(26, 26, 46, 0.85)',
+                  zIndex: 100,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  padding: 24,
+                  backdropFilter: 'blur(8px)',
+                  WebkitBackdropFilter: 'blur(8px)',
+                }}
+              >
+                <motion.div
+                  layoutId={`preview-tile-${expandedTileIndex}`}
+                  onClick={(e) => e.stopPropagation()}
+                  style={{
+                    background: bgColor,
+                    borderRadius: 20,
+                    padding: '48px 28px',
+                    width: '100%',
+                    maxWidth: 360,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    minHeight: 320,
+                    position: 'relative',
+                    boxShadow: '0 12px 40px rgba(0,0,0,0.40)',
+                  }}
+                >
+                  <button
+                    type="button"
+                    onClick={() => setExpandedTileIndex(null)}
+                    aria-label="Stäng"
+                    style={{
+                      position: 'absolute',
+                      top: 14,
+                      right: 14,
+                      width: 32,
+                      height: 32,
+                      borderRadius: 16,
+                      background: 'rgba(255,255,255,0.15)',
+                      border: 'none',
+                      color: LANTERN_GLOW,
+                      fontSize: 18,
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      WebkitTapHighlightColor: 'transparent',
+                    }}
+                  >
+                    ×
+                  </button>
+                  <p
+                    style={{
+                      fontFamily: 'var(--font-display)',
+                      fontStyle: 'italic',
+                      fontSize: 22,
+                      lineHeight: 1.35,
+                      color: LANTERN_GLOW,
+                      textAlign: 'center',
+                      margin: 0,
+                    }}
+                  >
+                    {q}
+                  </p>
+                </motion.div>
+              </motion.div>
+            );
+          })()}
+        </AnimatePresence>
 
         {/* Bottom safe-area spacing */}
         <div style={{ paddingBottom: 'calc(72px + env(safe-area-inset-bottom, 0px))' }} />
