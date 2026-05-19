@@ -341,12 +341,27 @@ function VartViPreviewStrip({
     );
   }
 
-  // Purchased state: next 4 non-completed cards from CARD_SEQUENCE
-  const nextFour = CARD_SEQUENCE
-    .filter((seq) => !completedCardIds.has(`su-mock-${seq.index}`))
-    .slice(0, 4);
+  // Always render 4 tiles: uncompleted first, then completed-as-revisit
+  const uncompleted = CARD_SEQUENCE.filter(
+    (seq) => !completedCardIds.has(`su-mock-${seq.index}`)
+  );
+  const completed = CARD_SEQUENCE.filter(
+    (seq) => completedCardIds.has(`su-mock-${seq.index}`)
+  ).reverse();
 
-  if (nextFour.length === 0) return null;
+  const previewCards: Array<{ seq: typeof CARD_SEQUENCE[number]; isCompleted: boolean }> = [];
+  for (const seq of uncompleted) {
+    if (previewCards.length >= 4) break;
+    previewCards.push({ seq, isCompleted: false });
+  }
+  for (const seq of completed) {
+    if (previewCards.length >= 4) break;
+    previewCards.push({ seq, isCompleted: true });
+  }
+
+  if (previewCards.length === 0) return null;
+
+  const eyebrowLabel = uncompleted.length > 0 ? 'Nästa' : 'Era samtal';
 
   return (
     <div>
@@ -362,7 +377,7 @@ function VartViPreviewStrip({
           margin: '0 0 12px',
         }}
       >
-        Nästa
+        {eyebrowLabel}
       </p>
       <div
         style={{
@@ -371,12 +386,13 @@ function VartViPreviewStrip({
           gap: 10,
         }}
       >
-        {nextFour.map((seq, i) => (
+        {previewCards.map(({ seq, isCompleted }, i) => (
           <PreviewCardPurchased
-            key={seq.index}
+            key={seq.cardId}
             seqIndex={seq.index}
             title={seq.title}
             bgColor={PREVIEW_TILE_COLORS[i % PREVIEW_TILE_COLORS.length]}
+            isCompleted={isCompleted}
             onClick={() => onPurchasedTileTap(`su-mock-${seq.index}`)}
           />
         ))}
@@ -389,11 +405,13 @@ function PreviewCardPurchased({
   seqIndex,
   title,
   bgColor,
+  isCompleted,
   onClick,
 }: {
   seqIndex: number;
   title: string;
   bgColor: string;
+  isCompleted: boolean;
   onClick: () => void;
 }) {
   const muxId = `su-mock-${seqIndex}`;
@@ -403,6 +421,7 @@ function PreviewCardPurchased({
       type="button"
       onClick={onClick}
       style={{
+        position: 'relative',
         background: bgColor,
         borderRadius: 12,
         border: 'none',
@@ -416,8 +435,35 @@ function PreviewCardPurchased({
         cursor: 'pointer',
         WebkitTapHighlightColor: 'transparent',
         boxShadow: '0 0 0 1px rgba(255,255,255,0.06)',
+        opacity: isCompleted ? 0.78 : 1,
       }}
     >
+      {isCompleted && (
+        <div
+          aria-hidden="true"
+          style={{
+            position: 'absolute',
+            top: 8,
+            right: 8,
+            width: 16,
+            height: 16,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <svg width="16" height="16" viewBox="0 0 18 18" fill="none">
+            <path
+              d="M3.5 9.5 L7.5 13.5 L14.5 5.5"
+              stroke="#E9B44C"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </div>
+      )}
+
       {image ? (
         <img
           src={image}
