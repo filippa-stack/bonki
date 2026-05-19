@@ -526,6 +526,7 @@ export default function ProductLibrary() {
   useAuth();
   const [kontoOpen, setKontoOpen] = useState(false);
   const stillUsProduct = allProducts.find(p => p.id === 'still_us');
+  const [activeTab, setActiveTab] = useState<'vi' | 'barnen'>('vi');
 
   useEffect(() => {
     if (!tracked.current) {
