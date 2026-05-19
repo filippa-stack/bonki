@@ -327,7 +327,10 @@ function VartViPreviewStrip({
             const bgColor = PREVIEW_TILE_COLORS[i % PREVIEW_TILE_COLORS.length];
             const isWarmGold = bgColor === WARM_GOLD;
             const fgColor = isWarmGold ? '#5F4114' : '#FFFFFF';
-            const innerBg = `color-mix(in srgb, ${bgColor} 78%, #000000)`;
+            const isStormGrey = bgColor === STORM_GREY;
+            const innerBg = isStormGrey
+              ? `color-mix(in srgb, ${bgColor} 75%, #FFFFFF 25%)`
+              : `color-mix(in srgb, ${bgColor} 78%, #000000)`;
 
             return (
               <motion.button
@@ -340,7 +343,6 @@ function VartViPreviewStrip({
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
-                  gap: 10,
                   background: 'none',
                   border: 'none',
                   padding: 0,
@@ -378,31 +380,18 @@ function VartViPreviewStrip({
                       style={{
                         fontFamily: 'var(--font-display)',
                         fontStyle: 'italic',
-                        fontSize: 36,
+                        fontSize: 52,
                         lineHeight: 1,
                         color: fgColor,
                         textAlign: 'center',
+                        opacity: 1,
+                        transform: 'translateY(6px)',
                       }}
                     >
                       &ldquo;
                     </motion.span>
                   </div>
                 </div>
-
-                {/* Caption */}
-                <span
-                  style={{
-                    fontFamily: 'var(--font-body)',
-                    fontSize: 10,
-                    fontWeight: 500,
-                    letterSpacing: '0.16em',
-                    textTransform: 'uppercase',
-                    color: '#FFFFFF',
-                    opacity: 0.55,
-                  }}
-                >
-                  En fråga
-                </span>
               </motion.button>
             );
           })}
