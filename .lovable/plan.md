@@ -1,50 +1,34 @@
-## Goal
+## Replace locked Vårt Vi preview tiles with a medallion row
 
-Route purchased-state Vårt Vi preview tile taps to the rich `AdultCardPortal` page instead of jumping straight to `CardView`. Resume banner, locked tiles, and in-product flow stay untouched.
+Scope: visual swap of the `!isPurchased` branch in `VartViPreviewStrip` (`src/components/ProductLibrary.tsx`, lines 296–342). Everything else — purchased branch, expansion overlay, state wiring, data, routing — stays untouched.
 
-## Change (single file)
+### Change
 
-**`src/components/ProductLibrary.tsx`**
+Replace the 2×2 italic-serif tile grid with:
 
-`allProducts` is already imported (line 11), so no new import is needed.
+1. Small-caps eyebrow `"Börja med en fråga"` above the row (white, low opacity, centered, letter-spaced).
+2. A horizontal `flex` row of 4 circular medallions filling the strip width, sourced from `PREVIEW_QUESTIONS.still_us` (up to 4 entries) and `PREVIEW_TILE_COLORS` (cornflower / dusty rose / warm gold / storm grey).
+3. Each medallion = outer circle in the tile color + inner darker circle (via `color-mix(in srgb, <bg> 78%, #000)`) + a large italic-serif quote glyph (`"`) centered inside.
+4. Foreground rule: white glyph on cornflower / dusty rose / storm grey; `#5F4114` on warm gold for contrast.
+5. Small-caps caption `"En fråga"` below each medallion (white, low opacity).
+6. Outer button stays `motion.button` with `layoutId={`preview-tile-${i}`}` so the existing shared-layout expansion overlay still morphs correctly. The inner glyph keeps `layoutId={`preview-text-${i}`}`. `onClick={() => onUnpurchasedTileTap(i)}`.
 
-1. Add a small helper inside the default-exported component (near the existing product lookups around lines 810–815) that maps a `su-mock-N` card id to its `categoryId` via the `still_us` manifest:
+### Untouched
 
-   ```ts
-   const resolveStillUsCategoryId = (cardId: string): string | null => {
-     const stillUs = allProducts.find(p => p.id === 'still_us');
-     const card = stillUs?.cards.find(c => c.id === cardId);
-     return card?.categoryId ?? null;
-   };
-   ```
+- Purchased branch (lines 344+): `Nästa` / `Era samtal` eyebrow and `PreviewCardPurchased` 2×2 grid.
+- Expansion overlay (around line 959) — already reads `PREVIEW_QUESTIONS.still_us` by `expandedTileIndex`.
+- `setExpandedTileIndex`, `onUnpurchasedTileTap`, `PREVIEW_QUESTIONS`, `PREVIEW_TILE_COLORS`, `CARD_SEQUENCE`.
+- All other components, hooks, routing, data fetching.
 
-2. Replace the `onPurchasedTileTap` prop at line 901:
+### Notes
 
-   ```tsx
-   onPurchasedTileTap={(cardId) => {
-     const categoryId = resolveStillUsCategoryId(cardId);
-     if (categoryId) {
-       navigate(`/product/still-us/portal/${categoryId}?card=${cardId}`);
-     } else {
-       navigate(`/card/${cardId}`);
-     }
-   }}
-   ```
+- `WARM_GOLD`, `CORNFLOWER`, `DUSTY_ROSE`, `STORM_GREY` are already imported at line 18 — no new imports needed.
+- `PREVIEW_QUESTIONS` already imported at line 7.
+- Pure presentation diff, ~60 lines replacing ~46 lines in one file.
 
-No other lines change.
+### Verification
 
-## Explicitly not touched
-
-- `AdultCardPortal.tsx`, `CardView.tsx`, `LibraryResumeCard.tsx`
-- `VartViPreviewStrip` internals (still receives the same prop signature)
-- Locked-state preview tiles, `CARD_SEQUENCE`, all hooks, data fetching, routing config
-- Back-arrow behavior in `AdultCardPortal` (parked)
-
-## Verification
-
-1. Vi tab → tap never-started preview tile → lands on `AdultCardPortal` (eyebrow, title, illustration, "Starta samtal").
-2. Portal → "Starta samtal" → Q1, no threshold (existing `fromPortal: true` at AdultCardPortal:177).
-3. Portal → back arrow → `/product/still-us` (current portal behavior; parked).
-4. Tap completed/revisit tile (saffron check) → portal renders with "Gör om samtalet".
-5. Resume banner for paused card → unchanged: `/card/:id` with `resumed: true`, mounts at paused step.
-6. In-product flow (product home → card → portal → start) → unchanged.
+- TypeScript build clean.
+- Vi tab unpurchased: eyebrow visible, 4 medallions horizontal, correct fg/bg per color, captions below.
+- Tap a medallion → shared-layout expansion overlay opens with full question text + close button (unchanged behavior).
+- Vi tab purchased state: unchanged.
