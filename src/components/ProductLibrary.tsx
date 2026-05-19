@@ -894,7 +894,6 @@ export default function ProductLibrary() {
         )}
 
 
-        {/* Bottom safe-area spacing */}
         <AnimatePresence>
           {expandedTileIndex !== null && (() => {
             const questions = (PREVIEW_QUESTIONS.still_us ?? []).slice(0, 4);
