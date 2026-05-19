@@ -663,9 +663,9 @@ export default function ProductLibrary() {
         <KontoIcon onClick={() => setKontoOpen(true)} />
         <KontoSheet open={kontoOpen} onClose={() => setKontoOpen(false)} />
 
-        {/* Editorial header */}
+        {/* Tab bar */}
         <div className="px-5" style={{ paddingTop: 'calc(env(safe-area-inset-top, 0px) + 56px)' }}>
-          <LibraryHeader />
+          <TabBar active={activeTab} onChange={setActiveTab} />
         </div>
 
         {/* Resume card */}
@@ -673,51 +673,53 @@ export default function ProductLibrary() {
           <LibraryResumeCard global />
         </div>
 
-        {/* ── FÖR PAR — Vårt Vi marquee ── */}
-        <div className="px-5">
-          <SectionEyebrow label="För er som par" />
-          <StillUsMarquee
-            totalCards={stillUsProduct?.cards.length ?? 22}
-            completedCount={completedCountMap['still_us'] || 0}
-            isPurchased={purchased.has('still_us')}
-            onClick={() => navigate('/product/still-us')}
-          />
-        </div>
-
-        {/* ── FÖR BARN · FÖR FAMILJEN ── */}
-        <div className="px-5">
-          <SectionEyebrow label="För barn · För familjen" extraTopMargin={12} />
-          <p style={{
-            fontFamily: 'var(--font-body)',
-            fontSize: 11,
-            fontWeight: 400,
-            color: 'rgba(255, 255, 255, 0.55)',
-            lineHeight: 1.5,
-            textAlign: 'left',
-            padding: '0 4px',
-            margin: '4px 0 14px',
-          }}>
-            Åldrarna är en vägledning. Ni känner ert barn bäst.
-          </p>
-
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
-            gap: 12,
-          }}>
-            {sortedKidsProducts.map((product) => (
-              <LibraryKidsTile
-                key={product.id}
-                product={product}
-                illustration={ILLUSTRATIONS[product.id]}
-                totalCards={product.cards.length}
-                completedCount={completedCountMap[product.id] || 0}
-                isPurchased={purchased.has(product.id)}
-                onClick={() => navigate(`/product/${product.slug}`)}
-              />
-            ))}
+        {activeTab === 'vi' && (
+          <div className="px-5">
+            <VartViHero
+              totalCards={stillUsProduct?.cards.length ?? 22}
+              completedCount={completedCountMap['still_us'] || 0}
+              isPurchased={purchased.has('still_us')}
+              onClick={() => navigate('/product/still-us')}
+            />
+            {/* Preview strip placeholder — ticket 3 will add this */}
           </div>
-        </div>
+        )}
+
+        {activeTab === 'barnen' && (
+          <div className="px-5">
+            <p style={{
+              fontFamily: 'var(--font-body)',
+              fontSize: 11,
+              fontWeight: 400,
+              color: 'rgba(255, 255, 255, 0.55)',
+              lineHeight: 1.5,
+              textAlign: 'left',
+              padding: '0 4px',
+              margin: '4px 0 14px',
+            }}>
+              Åldrarna är en vägledning. Ni känner ert barn bäst.
+            </p>
+
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: '1fr 1fr',
+              gap: 12,
+            }}>
+              {sortedKidsProducts.map((product) => (
+                <LibraryKidsTile
+                  key={product.id}
+                  product={product}
+                  illustration={ILLUSTRATIONS[product.id]}
+                  totalCards={product.cards.length}
+                  completedCount={completedCountMap[product.id] || 0}
+                  isPurchased={purchased.has(product.id)}
+                  onClick={() => navigate(`/product/${product.slug}`)}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+
 
         {/* Bottom safe-area spacing */}
         <div style={{ paddingBottom: 'calc(72px + env(safe-area-inset-bottom, 0px))' }} />
