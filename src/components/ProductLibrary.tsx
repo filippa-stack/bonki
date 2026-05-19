@@ -681,6 +681,7 @@ export default function ProductLibrary() {
   const [kontoOpen, setKontoOpen] = useState(false);
   const stillUsProduct = allProducts.find(p => p.id === 'still_us');
   const [activeTab, setActiveTab] = useState<'vi' | 'barnen'>('vi');
+  const [expandedTileIndex, setExpandedTileIndex] = useState<number | null>(null);
 
   useEffect(() => {
     if (!tracked.current) {
@@ -766,6 +767,17 @@ export default function ProductLibrary() {
   const sexualitet = allProducts.find(p => p.id === 'sexualitetskort')!;
   const vardag = allProducts.find(p => p.id === 'vardagskort')!;
   const syskon = allProducts.find(p => p.id === 'syskonkort')!;
+
+  // COUNT-BASED APPROXIMATION — intentional. Do not replace with a Supabase
+  // query. The proper fix is a dedicated hook returning per-card completion
+  // IDs, which is a separate ticket. This approximation is correct for the
+  // majority of users who progress sequentially.
+  const stillUsCompletedIds = useMemo(() => {
+    const count = completedCountMap['still_us'] || 0;
+    return new Set(
+      CARD_SEQUENCE.slice(0, count).map((s) => `su-mock-${s.index}`),
+    );
+  }, [completedCountMap]);
 
   const sortedKidsProducts = useMemo(
     () => [jagIMig, jagMedAndra, vardag, syskon, jagIVarlden, sexualitet]
