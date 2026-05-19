@@ -3,7 +3,10 @@ import BonkiLoadingScreen from '@/components/BonkiLoadingScreen';
 import KontoIcon from '@/components/KontoIcon';
 import KontoSheet from '@/components/KontoSheet';
 import { usePageBackground } from '@/hooks/usePageBackground';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { PREVIEW_QUESTIONS } from '@/lib/productPreviewQuestions';
+import { CARD_SEQUENCE } from '@/data/stillUsSequence';
+import { useCardImage } from '@/hooks/useCardImage';
 import { useNavigate } from 'react-router-dom';
 import { allProducts } from '@/data/products';
 import { useAllProductAccess } from '@/hooks/useAllProductAccess';
@@ -69,6 +72,7 @@ const PRODUCT_ACCENT: Record<string, string> = {
 };
 
 const VI_TAB_HERO_COLOR = STORM_GREY;
+const PREVIEW_TILE_COLORS = [CORNFLOWER, DUSTY_ROSE, WARM_GOLD, STORM_GREY];
 
 const tileVariants = {
   hidden: { opacity: 1, y: 0, scale: 1 },
