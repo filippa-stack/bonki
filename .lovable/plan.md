@@ -1,76 +1,50 @@
-# Restore CardView showStartScreen gate
+## Goal
 
-Default the in-CardView "Starta samtal" gate back to **true** for live card entries, except when arriving from a portal Starta CTA, the resume banner, archive, dev, or demo. ~6 lines across 4 files. Render JSX, dismissal handlers, and all session/reflection logic untouched.
+Route purchased-state Vårt Vi preview tile taps to the rich `AdultCardPortal` page instead of jumping straight to `CardView`. Resume banner, locked tiles, and in-product flow stay untouched.
 
-## File 1 — `src/pages/CardView.tsx`
+## Change (single file)
 
-Replace lines 708–713 (preserve a comment block above the const):
+**`src/components/ProductLibrary.tsx`**
 
-```tsx
-// ─── Session start screen — ritual gate before first question ───
-// Suppress the in-CardView gate when arriving from:
-//   - the category portal's Starta button (portal already gated us)
-//   - the library resume banner (we want to land in-session)
-//   - archive, dev, demo modes
-const arrivedFromPortal =
-  (location.state as { fromPortal?: boolean } | null)?.fromPortal === true;
-const [showStartScreen, setShowStartScreen] = useState(
-  () => !isFromArchive && !isResumed && !arrivedFromPortal && !devState && !isDemoMode()
-);
-```
+`allProducts` is already imported (line 11), so no new import is needed.
 
-`isFromArchive`, `isResumed`, `devState`, `location`, `isDemoMode` are all already in scope (verified: `isDemoMode` imported line 34).
+1. Add a small helper inside the default-exported component (near the existing product lookups around lines 810–815) that maps a `su-mock-N` card id to its `categoryId` via the `still_us` manifest:
 
-## File 2 — `src/components/LibraryResumeCard.tsx`
+   ```ts
+   const resolveStillUsCategoryId = (cardId: string): string | null => {
+     const stillUs = allProducts.find(p => p.id === 'still_us');
+     const card = stillUs?.cards.find(c => c.id === cardId);
+     return card?.categoryId ?? null;
+   };
+   ```
 
-Line 268:
+2. Replace the `onPurchasedTileTap` prop at line 901:
 
-```tsx
-onClick={() => navigate(`/card/${display.cardId}`, { state: { resumed: true } })}
-```
+   ```tsx
+   onPurchasedTileTap={(cardId) => {
+     const categoryId = resolveStillUsCategoryId(cardId);
+     if (categoryId) {
+       navigate(`/product/still-us/portal/${categoryId}?card=${cardId}`);
+     } else {
+       navigate(`/card/${cardId}`);
+     }
+   }}
+   ```
 
-CardView already reads `location.state.resumed` at line 137 and clears it via `history.replaceState`.
+No other lines change.
 
-## File 3 — `src/pages/AdultCardPortal.tsx`
+## Explicitly not touched
 
-Line 177 (inside `startSession` callback):
-
-```tsx
-navigate(`/card/${card.id}`, { state: { fromPortal: true } });
-```
-
-Leave line 528 (freeCardId entry) untouched — free card first-touch should see the gate.
-
-## File 4 — `src/pages/KidsCardPortal.tsx`
-
-Lines 228 and 241 (both inside the portal-animation `setTimeout` chains):
-
-```tsx
-setTimeout(() => navigate(`/card/${card.id}`, { state: { fromPortal: true } }), 350);
-// and
-setTimeout(() => navigate(`/card/${card.id}`, { state: { fromPortal: true } }), 250);
-```
-
-Leave line 753 (freeCardId entry) untouched.
-
-## Not changed
-
-- `src/components/ProductLibrary.tsx` line 901 — preview tile keeps bare `navigate('/card/:id')`; the gate **should** appear.
-- CardView lines 2270–2746 — render JSX and `setShowStartScreen(false)` dismissal handlers untouched.
-- Lines 137, 140–145 — existing `isResumed` read and `history.replaceState` clear reused as-is.
-- All session/reflection/navigation logic.
+- `AdultCardPortal.tsx`, `CardView.tsx`, `LibraryResumeCard.tsx`
+- `VartViPreviewStrip` internals (still receives the same prop signature)
+- Locked-state preview tiles, `CARD_SEQUENCE`, all hooks, data fetching, routing config
+- Back-arrow behavior in `AdultCardPortal` (parked)
 
 ## Verification
 
-1. Vårt Vi preview tile (never-started) → threshold appears
-2. Vårt Vi preview tile (revisit completed) → threshold appears
-3. Resume banner → no threshold, mounts at paused step
-4. Category portal Starta → no threshold (already gated), goes to Q1
-5. Kids card via category portal Starta → no threshold on second tap
-6. Kids resume banner (if any) → no threshold
-7. Free card deep entry → threshold appears
-8. Archive view → unchanged (bypassed via existing `isLive` guard)
-
-## Out of scope
-
-Within-step prompt-index resume (server stores step only), start-screen UI redesign, preview-tile redesign, freeCardId entry paths, anything else.
+1. Vi tab → tap never-started preview tile → lands on `AdultCardPortal` (eyebrow, title, illustration, "Starta samtal").
+2. Portal → "Starta samtal" → Q1, no threshold (existing `fromPortal: true` at AdultCardPortal:177).
+3. Portal → back arrow → `/product/still-us` (current portal behavior; parked).
+4. Tap completed/revisit tile (saffron check) → portal renders with "Gör om samtalet".
+5. Resume banner for paused card → unchanged: `/card/:id` with `resumed: true`, mounts at paused step.
+6. In-product flow (product home → card → portal → start) → unchanged.
