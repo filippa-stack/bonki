@@ -1,34 +1,42 @@
-## Refine locked Vårt Vi medallion row
+I'm in plan mode so I can't write the artifact yet — approve this plan and I'll produce the downloadable file plus the colors reference. Both deliverables are read-only artifacts under `/mnt/documents/` (no app code changes).
 
-Three scoped visual changes inside `VartViPreviewStrip`'s `!isPurchased` branch in `src/components/ProductLibrary.tsx` (lines ~326–408). No other surfaces, state, or logic touched.
+## Deliverables
 
-### 1. Bigger, bolder quote glyph
-The `motion.span` rendering `&ldquo;` (line 376–388) currently uses `fontSize: 36` with no opacity/transform overrides. Update its style to:
-- `fontSize: 52`
-- `opacity: 1`
-- `transform: 'translateY(6px)'`
+1. **`/mnt/documents/bonki-ux-flowchart.mmd`** — Mermaid flowchart of the full app UX (downloadable / previewable in chat).
+2. **`/mnt/documents/bonki-product-colors.md`** — Reference of every product's color tokens, pulled from `src/lib/palette.ts` + each product manifest.
 
-### 2. Remove "En fråga" captions
-Delete the entire `<span>` caption block (lines 392–405) below each medallion. Then on the outer `motion.button` style (lines 338–349), remove the `gap: 10` property. Keep `flexDirection: 'column'` and the rest.
+## UX flowchart scope
 
-### 3. Inverse inner-circle contrast for Storm Grey only
-Replace the single `innerBg` line (330) with:
-```ts
-const isStormGrey = bgColor === STORM_GREY;
-const innerBg = isStormGrey
-  ? `color-mix(in srgb, ${bgColor} 75%, #FFFFFF 25%)`
-  : `color-mix(in srgb, ${bgColor} 78%, #000000)`;
-```
-(Using the safe ≤100% variant since color-mix percentages >100% aren't widely supported.)
+Based on `src/App.tsx` routes + product navigation patterns, the chart will cover:
 
-`STORM_GREY` is already imported at line 18.
+- Auth gate (`/login` → Google / Magic Link) → onboarding gate
+- Home / Library (`/`) → Konto sheet, Journal (`/journal`)
+- Product entry: `/product/:slug` → ProductIntro (first visit) → ProductPaywall (if no access, Stripe) → ProductHome (Kids variant vs Adult variant for Vårt Vi)
+- Category portal: `/product/:slug/portal/:categoryId` (KidsCardPortal vs AdultCardPortal)
+- Session: `/card/:cardId` (CardView, steps 1..N, completion w/ takeaway, "Nästa samtal" / exit)
+- Per-product Diary (`/diary/:productId`)
+- Resume-banner + pause/exit edges back to ProductHome
 
-### Untouched
-Purchased branch, expansion overlay, `layoutId` values, `PREVIEW_QUESTIONS`, `PREVIEW_TILE_COLORS`, `onUnpurchasedTileTap`, eyebrow label above the row.
+## Product colors (preview — exact values that will go in the .md)
 
-### Verification
-- TS build clean.
-- Glyph noticeably larger and fully opaque.
-- No per-medallion captions; eyebrow remains.
-- Storm Grey medallion's inner circle is lighter than its outer ring; other three keep darker-inner pattern.
-- Tap → expansion overlay unchanged.
+Source: `src/lib/palette.ts` (`productTileColors`, `productAccentColor`, `productDarkText`) + each `ProductManifest`.
+
+| Product | tileLight | tileMid | tileDeep | Accent pill | Dark text on tile |
+|---|---|---|---|---|---|
+| Jag i mig | `#E89B6B` | `#D08560` | `#8C4A2D` | `#F2BC97` | `#5B2814` |
+| Jag med andra | `#CB7AB2` | `#A85E94` | `#721B3A` | `#E59FCF` | `#511F39` |
+| Jag i världen | `#C6D423` | `#A3AF1C` | `#606613` | `#D8E145` | `#363D14` |
+| Vardagskort | `#8BDDB0` | `#68C494` | `#48A873` | `#A8E5C0` | `#175C3D` |
+| Syskonkort | `#CF8BDD` | `#B56CC4` | `#8E459D` | `#E0BFEA` | `#3D2451` |
+| Sexualitetskort | `#B87560` | `#A26350` | `#7E4838` | `#CFA08D` | `#5A2515` |
+| Vårt Vi (still_us) | `#94BCE1` | `#6F9CC5` | `#4B759B` | `#E9C890` | `#0A1628` (Ember Night) |
+
+Plus **Still Us layer colors** (Vårt Vi category tiles): Vardagen `#3A6E9B` · Tillsammans `#1E5A8A` · Grunden `#0D2E6B` · Riktningen `#0A1628`.
+
+Plus **global shell tokens** (`MIDNIGHT_INK #1A1A2E`, `DEEP_DUSK_BG #0B1026`, `SAFFRON_FLAME #E9B44C`, `BONKI_ORANGE #E85D2C`) and adult palette extras (`CORNFLOWER`, `DUSTY_ROSE`, `STORM_GREY`, `SAGE`, `WARM_GOLD`).
+
+The .md will also list each product's `accentColor`, `secondaryAccent`, `backgroundColor`, and `ctaButtonColor` straight from each manifest file so you have one place that shows every hex/HSL in use.
+
+## After approval
+
+I'll run two `code--exec` writes (flowchart + colors doc) and post them as `<presentation-artifact>` tags so you can download / preview both.
