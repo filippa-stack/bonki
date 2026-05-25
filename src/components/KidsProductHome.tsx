@@ -379,15 +379,12 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
 
   const bg = product.backgroundColor;
   const tileLight = product.tileLight ?? bg;
+  const pageBg = PAGE_BG[product.id] ?? bg;
   const useSquareGrid = true;
-
-
-
-
 
   // Loading gate — prevent flash while progress resolves
   if (progress.loading && !hasRenderedContent.current) {
-    return <div style={{ minHeight: '100vh', backgroundColor: MIDNIGHT_INK }} />;
+    return <div style={{ minHeight: '100vh', backgroundColor: pageBg }} />;
   }
 
   hasRenderedContent.current = true;
@@ -395,196 +392,12 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
   return (
     <div
       className="min-h-screen relative overflow-x-hidden"
-      style={{ backgroundColor: MIDNIGHT_INK }}
+      style={{ backgroundColor: pageBg }}
     >
-      <ProductHomeBackButton color={LANTERN_GLOW} />
+      <ProductHomeBackButton color={INK} />
       <KontoIcon onClick={() => setKontoOpen(true)} />
       <KontoSheet open={kontoOpen} onClose={() => setKontoOpen(false)} />
 
-      {/* ── Atmospheric radial glow behind hero ── */}
-      <div
-        style={{
-          position: 'absolute',
-          top: '-8vh',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          width: '160vw',
-          height: '60vh',
-          background: `radial-gradient(ellipse 65% 55% at 50% 40%, ${tileLight}35 0%, ${tileLight}15 45%, transparent 100%)`,
-          pointerEvents: 'none',
-          zIndex: 0,
-        }}
-      />
-
-
-      {/* ── Hero illustration — large, atmospheric, bleeds off top ── */}
-      {product.heroImage && (
-        <motion.div
-          initial={{ opacity: 1 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6 }}
-          style={{
-            position: 'absolute',
-            top: HERO_TOP_OFFSET[product.id] ?? '-10vh',
-            left: '-5vw',
-            right: '-5vw',
-            height: '100vh',
-            zIndex: 0,
-            pointerEvents: 'none',
-          }}
-        >
-          {product.id === 'vardagskort' ? (
-            <img
-              src={product.heroImage}
-              alt=""
-              aria-hidden="true"
-              style={{
-                position: 'absolute',
-                top: '12%',
-                left: '-35%',
-                width: '120%',
-                height: 'auto',
-                opacity: 0.38,
-                pointerEvents: 'none',
-              }}
-            />
-          ) : product.id === 'jag_i_mig' ? (
-            <img
-              src={product.heroImage}
-              alt=""
-              aria-hidden="true"
-              style={{
-                position: 'absolute',
-                top: '12%',
-                left: '-35%',
-                width: '120%',
-                height: 'auto',
-                opacity: 0.38,
-                pointerEvents: 'none',
-              }}
-            />
-          ) : product.id === 'jag_med_andra' ? (
-            <img
-              src={product.heroImage}
-              alt=""
-              aria-hidden="true"
-              style={{
-                position: 'absolute',
-                top: '-5%',
-                right: '-30%',
-                width: '110%',
-                height: 'auto',
-                opacity: 0.38,
-                pointerEvents: 'none',
-              }}
-            />
-          ) : product.id === 'jag_i_varlden' ? (
-            <img
-              src={product.heroImage}
-              alt=""
-              aria-hidden="true"
-              style={{
-                position: 'absolute',
-                top: '15%',
-                right: '-30%',
-                width: '110%',
-                height: 'auto',
-                opacity: 0.38,
-                pointerEvents: 'none',
-              }}
-            />
-          ) : product.id === 'syskonkort' ? (
-            <img
-              src={product.heroImage}
-              alt=""
-              aria-hidden="true"
-              style={{
-                position: 'absolute',
-                top: '-5%',
-                left: '-25%',
-                width: '110%',
-                height: 'auto',
-                opacity: 0.38,
-                pointerEvents: 'none',
-              }}
-            />
-          ) : product.id === 'sexualitetskort' ? (
-            <img
-              src={product.heroImage}
-              alt=""
-              aria-hidden="true"
-              style={{
-                position: 'absolute',
-                top: '-5%',
-                left: '-20%',
-                width: '110%',
-                height: 'auto',
-                opacity: 0.38,
-                pointerEvents: 'none',
-              }}
-            />
-          ) : product.id === 'still_us' ? (
-            <img
-              src={product.heroImage}
-              alt=""
-              aria-hidden="true"
-              style={{
-                position: 'absolute',
-                top: '5%',
-                left: '-15%',
-                width: '110%',
-                height: 'auto',
-                opacity: 0.38,
-                pointerEvents: 'none',
-              }}
-            />
-          ) : (
-            <img
-              src={product.heroImage}
-              alt=""
-              aria-hidden="true"
-              style={{
-                width: '1080px',
-                height: '1350px',
-                objectFit: 'cover',
-                objectPosition: HERO_OBJECT_POSITION[product.id] ?? '50% 55%',
-                opacity: 0.38,
-                position: 'absolute',
-                left: '50%',
-                transform: 'translateX(-50%)',
-              }}
-            />
-          )}
-          {/* Multi-stop scrim: product color blend — skip for Vardag */}
-          {product.id !== 'vardagskort' && product.id !== 'jag_i_mig' && product.id !== 'jag_med_andra' && product.id !== 'jag_i_varlden' && product.id !== 'syskonkort' && product.id !== 'sexualitetskort' && product.id !== 'still_us' && (
-            <div
-              style={{
-                position: 'absolute',
-                bottom: 0,
-                left: 0,
-                right: 0,
-                height: '90%',
-                background: `linear-gradient(to top, ${bg}F0 0%, ${bg}E0 15%, ${bg}C0 35%, ${bg}80 55%, ${bg}40 70%, transparent 100%)`,
-                pointerEvents: 'none',
-              }}
-            />
-          )}
-        </motion.div>
-      )}
-
-      {/* ── Top scrim for header text readability ── */}
-      <div
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          height: '28vh',
-          background: `linear-gradient(to bottom, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.15) 50%, transparent 100%)`,
-          zIndex: 1,
-          pointerEvents: 'none',
-        }}
-      />
 
       {/* ── Content ── */}
       <div
