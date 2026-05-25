@@ -1,6 +1,5 @@
 import { motion } from 'framer-motion';
 import type { ProductManifest } from '@/types/product';
-import heroImage from '@/assets/illustration-syskon.png';
 import UnifiedResumeBanner from '@/components/UnifiedResumeBanner';
 import NextConversationCard from '@/components/NextConversationCard';
 import ProductHomeBackButton from '@/components/ProductHomeBackButton';
@@ -10,9 +9,9 @@ import type { CreatureTileStyle } from '@/components/CategoryTileGrid';
 import { useNextCardImages } from '@/hooks/useNextCardImages';
 
 const EASE = [0.4, 0.0, 0.2, 1] as const;
-const BG = '#2A1018';
+const BG = '#E0BFEA';
+const INK = '#2A1F1A';
 const ACCENT_COLOR = '#D4A878';
-const TILE_LIGHT = '#4A2028';
 
 const ORDERED_TILES = [
   { id: 'sk-vi-blev-syskon', bg: '#4A2028', sub: 'När familjen växer' },
@@ -21,7 +20,6 @@ const ORDERED_TILES = [
   { id: 'sk-er-relation', bg: '#2A1018', sub: 'Nära, svårt och allt däremellan' },
 ];
 
-// Optically calibrated per-tile
 const CREATURE_TILE_STYLES: CreatureTileStyle[] = [
   { scale: 1.1, objectPosition: '50% 20%', opacity: 1 },
   { scale: 1.1, objectPosition: '50% 20%', opacity: 1 },
@@ -37,40 +35,8 @@ export default function SyskonProductHome({ product }: { product: ProductManifes
   const tileImages = useNextCardImages(product, progress);
   return (
     <div className="min-h-screen relative overflow-hidden" style={{ backgroundColor: BG }}>
-      <ProductHomeBackButton color="#FDF6E3" />
+      <ProductHomeBackButton color={INK} />
 
-      {/* ── Atmospheric radial glow behind hero ── */}
-      <div
-        style={{
-          position: 'absolute',
-          top: '-10vh',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          width: '120vw',
-          height: '60vh',
-          background: `radial-gradient(ellipse 70% 55% at 50% 40%, ${TILE_LIGHT}26 0%, transparent 100%)`,
-          pointerEvents: 'none',
-          zIndex: 0,
-        }}
-      />
-
-      {/* ── Hero illustration ── */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.6 }}
-        style={{ position: 'absolute', top: '-14vh', left: '-5vw', right: '-5vw', height: '100vh', zIndex: 0, pointerEvents: 'none' }}
-      >
-        <img src={heroImage} alt="" style={{ width: '1080px', height: '1350px', objectFit: 'cover', objectPosition: '50% 8%', opacity: 0.38, position: 'absolute', left: '50%', transform: 'translateX(-50%)' }} />
-        {/* Extended scrim with smooth blend */}
-        <div style={{
-          position: 'absolute', bottom: 0, left: 0, right: 0, height: '85%',
-          background: `linear-gradient(to top, ${BG}F0 0%, ${BG}E0 15%, ${BG}C0 35%, ${BG}80 55%, ${BG}40 70%, transparent 100%)`,
-          pointerEvents: 'none',
-        }} />
-      </motion.div>
-
-      {/* ── Content ── */}
       <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', paddingTop: 'clamp(32px, 10vh, 90px)', paddingRight: '5vw', paddingBottom: '80px', paddingLeft: '5vw' }}>
         <motion.div variants={containerVariants} initial="hidden" animate="visible" style={{ textAlign: 'center', width: '100%' }}>
           <motion.div variants={titleVariants}>
@@ -78,10 +44,9 @@ export default function SyskonProductHome({ product }: { product: ProductManifes
               fontFamily: "var(--font-display)",
               fontSize: 'clamp(36px, 10vw, 50px)',
               fontWeight: 700,
-              color: '#FDF6E3',
+              color: INK,
               letterSpacing: '-0.01em',
               whiteSpace: 'nowrap',
-              textShadow: `0 2px 16px rgba(0,0,0,0.6), 0 0 60px ${BG}, 0 0 120px ${BG}`,
               fontVariationSettings: "'opsz' 36",
             }}>
               Syskon
@@ -89,10 +54,9 @@ export default function SyskonProductHome({ product }: { product: ProductManifes
             <p className="font-serif" style={{
               fontSize: 'clamp(16px, 4.5vw, 20px)',
               fontWeight: 400,
-              color: ACCENT_COLOR,
-              opacity: 0.9,
+              color: INK,
+              opacity: 0.7,
               marginTop: '6px',
-              textShadow: `0 1px 12px rgba(0,0,0,0.7), 0 0 30px ${BG}, 0 0 60px ${BG}, 0 4px 24px ${BG}`,
             }}>
               Band för livet
             </p>
@@ -101,7 +65,6 @@ export default function SyskonProductHome({ product }: { product: ProductManifes
           </motion.div>
         </motion.div>
 
-        {/* Generous breathing room */}
         <div style={{ flex: 1, minHeight: '32px', maxHeight: 'clamp(48px, 14vh, 130px)' }} />
 
         <CategoryTileGrid

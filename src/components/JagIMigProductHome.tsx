@@ -1,6 +1,5 @@
 import { motion } from 'framer-motion';
 import type { ProductManifest } from '@/types/product';
-import heroImage from '@/assets/illustration-jag-i-mig.png';
 import UnifiedResumeBanner from '@/components/UnifiedResumeBanner';
 import NextConversationCard from '@/components/NextConversationCard';
 import ProductHomeBackButton from '@/components/ProductHomeBackButton';
@@ -10,9 +9,9 @@ import type { CreatureTileStyle } from '@/components/CategoryTileGrid';
 import { useNextCardImages } from '@/hooks/useNextCardImages';
 
 const EASE = [0.4, 0.0, 0.2, 1] as const;
-const BG = '#8C4A2D';
+const BG = '#F2BC97';
+const INK = '#2A1F1A';
 const ACCENT_COLOR = '#E89B6B';
-const TILE_LIGHT = '#E89B6B';
 
 const ORDERED_TILES = [
   { id: 'jim-mina-kanslor', bg: '#E89B6B', sub: 'Att känna igen dem' },
@@ -21,7 +20,6 @@ const ORDERED_TILES = [
   { id: 'jim-att-vara-jag', bg: '#E0926A', sub: 'Vem du är' },
 ];
 
-// Card images are vivid illustrations — higher opacity than creature textures
 const CREATURE_TILE_STYLES: CreatureTileStyle[] = [
   { scale: 1.1, objectPosition: '50% 20%', opacity: 1 },
   { scale: 1.1, objectPosition: '50% 20%', opacity: 1 },
@@ -38,42 +36,8 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
 
   return (
     <div className="min-h-screen relative overflow-hidden" style={{ backgroundColor: BG }}>
-      <ProductHomeBackButton color="#FDF6E3" />
+      <ProductHomeBackButton color={INK} />
 
-      {/* ── Atmospheric radial glow behind hero ── */}
-      <div
-        style={{
-          position: 'absolute',
-          top: '-5vh',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          width: '140vw',
-          height: '55vh',
-          background: `radial-gradient(ellipse 60% 50% at 50% 45%, ${TILE_LIGHT}30 0%, ${TILE_LIGHT}10 50%, transparent 100%)`,
-          pointerEvents: 'none',
-          zIndex: 0,
-        }}
-      />
-
-      {/* ── Hero illustration — matching Vardag sizing ── */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.6 }}
-        style={{
-          position: 'absolute',
-          inset: 0,
-          zIndex: 0,
-          pointerEvents: 'none',
-          backgroundImage: `url(${heroImage})`,
-          backgroundRepeat: 'no-repeat',
-          backgroundSize: '30vw auto',
-          backgroundPosition: 'center 45%',
-          opacity: 0.38,
-        }}
-      />
-
-      {/* ── Content ── */}
       <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', paddingTop: 'clamp(28px, 8vh, 80px)', paddingRight: '5vw', paddingBottom: '80px', paddingLeft: '5vw' }}>
         <motion.div variants={containerVariants} initial="hidden" animate="visible" style={{ textAlign: 'center', width: '100%' }}>
           <motion.div variants={titleVariants}>
@@ -81,10 +45,9 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
               fontFamily: "var(--font-display)",
               fontSize: 'clamp(38px, 11vw, 54px)',
               fontWeight: 700,
-              color: '#FDF6E3',
+              color: INK,
               letterSpacing: '-0.02em',
               whiteSpace: 'nowrap',
-              textShadow: `0 2px 20px rgba(0,0,0,0.7), 0 0 60px ${BG}, 0 0 120px ${BG}`,
               fontVariationSettings: "'opsz' 36",
             }}>
               Jag i mig
@@ -92,10 +55,9 @@ export default function JagIMigProductHome({ product }: { product: ProductManife
             <p className="font-serif" style={{
               fontSize: 'clamp(16px, 4.5vw, 20px)',
               fontWeight: 400,
-              color: ACCENT_COLOR,
-              opacity: 0.9,
+              color: INK,
+              opacity: 0.7,
               marginTop: '6px',
-              textShadow: `0 1px 16px rgba(0,0,0,0.8), 0 0 40px ${BG}, 0 0 80px ${BG}`,
             }}>
               När känslor får ord
             </p>
