@@ -97,6 +97,7 @@ export default function KidsTileFrame({
   titleSize = 18,
   radius = 22,
   stripFraction = 0.24,
+  pageBg,
 }: KidsTileFrameProps) {
   // Skip checkmark fade on initial mount when card is already completed
   const isFirstRenderRef = useRef(true);
@@ -105,6 +106,11 @@ export default function KidsTileFrame({
 
   const Wrapper = onClick ? 'button' : 'div';
 
+  const neu = Boolean(pageBg);
+  const surface = neu ? (pageBg as string) : frame;
+  const innerSurface = neu ? (pageBg as string) : interior;
+  const stripSurface = neu ? (pageBg as string) : frame;
+
   return (
     <Wrapper
       type={onClick ? 'button' : undefined}
@@ -112,14 +118,16 @@ export default function KidsTileFrame({
       aria-label={ariaLabel ?? title}
       style={{
         position: 'relative',
-        overflow: 'hidden',
+        overflow: 'visible',
         width: '100%',
         aspectRatio: '3 / 4',
         borderRadius: radius,
         textAlign: 'left',
-        backgroundColor: frame,
-        border: '1px solid rgba(255, 255, 255, 0.10)',
-        boxShadow: '0 8px 24px rgba(0,0,0,0.12), 0 2px 6px rgba(0,0,0,0.06)',
+        backgroundColor: surface,
+        border: neu ? 'none' : '1px solid rgba(255, 255, 255, 0.10)',
+        boxShadow: neu
+          ? `8px 8px 18px ${shade(pageBg as string, -0.14)}, -8px -8px 18px ${shade(pageBg as string, 0.10)}`
+          : '0 8px 24px rgba(0,0,0,0.12), 0 2px 6px rgba(0,0,0,0.06)',
         padding: 0,
         cursor: onClick ? 'pointer' : 'default',
         display: 'block',
@@ -135,11 +143,12 @@ export default function KidsTileFrame({
           right: 16,
           bottom: `calc(${stripFraction * 100}% + 8px)`,
           borderRadius: Math.max(8, radius - 8),
-          backgroundColor: interior,
-          border: `1px solid ${darkText}30`,
+          backgroundColor: innerSurface,
+          border: neu ? 'none' : `1px solid ${darkText}30`,
           overflow: 'hidden',
         }}
       >
+
         {children && (
           <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
             {children}
