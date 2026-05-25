@@ -36,7 +36,7 @@ const LANTERN_GLOW = '#FDF6E3';
 const NEU_BG = '#e9f6f4';
 const NEU_SHADOW_OUT = '8px 8px 20px rgba(166,195,192,0.55), -8px -8px 20px rgba(255,255,255,0.9)';
 const NEU_SHADOW_OUT_SM = '5px 5px 14px rgba(166,195,192,0.5), -5px -5px 14px rgba(255,255,255,0.9)';
-const NEU_SHADOW_IN = 'inset 3px 3px 6px rgba(0,0,0,0.14), inset -3px -3px 6px rgba(255,255,255,0.20)';
+
 
 const ILLUSTRATIONS: Record<string, string> = {
   jag_i_mig: illustrationJagIMig,
@@ -379,7 +379,6 @@ function VartViPreviewStrip({
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      boxShadow: NEU_SHADOW_IN,
                     }}
                   >
                     <motion.span
@@ -636,7 +635,7 @@ function LibraryKidsTile({
           backgroundColor: interior,
           borderRadius: 14,
           border: 'none',
-          boxShadow: NEU_SHADOW_IN,
+          
           overflow: 'hidden',
           display: 'flex',
           alignItems: 'center',
