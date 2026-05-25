@@ -1,50 +1,58 @@
-## Goal
+## Why nothing changed
 
-Each product home page gets its product-specific solid color as the page background, hero illustrations and atmospheric glows are removed, and title/subtitle/back-button text switches to dark ink so it reads on the lighter backgrounds.
+`/product/jag-i-mig` (and the other kids products) are not rendered by `JagIMigProductHome.tsx` etc. — those files are dead code. `src/pages/ProductHome.tsx` routes all six kids products through the shared `KidsProductHome.tsx`. The only file I edited last turn that was actually live was `AdultProductHome.tsx` (Vårt Vi). That's why your screen didn't change.
 
-## Color → product mapping
+## Fix
 
-Derived from the user's 7 colors, mapped by hue to match each product's existing library-tile inner-plate identity:
+Apply the same treatment to `src/components/KidsProductHome.tsx`, keyed by `product.id`. Leave `product.backgroundColor` in the manifests alone (it's referenced from other surfaces — paywall, library, themes — and re-coloring those is out of scope).
 
-| Product | New BG |
-|---|---|
-| Jag i mig | `#F2BC97` |
-| Jag med andra | `#E59FCF` |
-| Jag i världen | `#D8E145` |
-| Vardag | `#A8E5C0` |
-| Syskon | `#E0BFEA` |
-| Sexualitet | `#CFA08D` |
-| Vårt Vi (Still Us) | `#E9C890` |
+### Color map (hardcoded in `KidsProductHome.tsx`)
 
-## Shared changes (all 7 home components)
+```ts
+const PAGE_BG: Record<string, string> = {
+  jag_i_mig:       '#F2BC97',
+  jag_med_andra:   '#E59FCF',
+  jag_i_varlden:   '#D8E145',
+  vardagskort:     '#A8E5C0',
+  syskonkort:      '#E0BFEA',
+  sexualitetskort: '#CFA08D',
+  still_us:        '#E9C890', // unused here (routes to AdultProductHome) — kept for safety
+};
+const INK = '#2A1F1A';
+```
 
-1. Replace `BG` (or `DEEP_DUSK_BG` in `AdultProductHome.tsx`) with the new hex above.
-2. Delete the hero illustration block (`<motion.div>` wrapping `heroImage` / `product.heroImage`, the `img`, and its scrim/backlight divs). Remove the now-unused `heroImage` import.
-3. Delete the atmospheric radial-glow background `<div>` (the one using `TILE_LIGHT` / `CORNFLOWER` `radial-gradient`).
-4. Delete the top scrim div (`AdultProductHome` only) — no longer needed without hero.
-5. Text color swap to dark ink `#2A1F1A`:
-   - `<ProductHomeBackButton color="#FDF6E3" />` → `color="#2A1F1A"`
-   - `<h1>` `color: '#FDF6E3'` → `color: '#2A1F1A'`
-   - Remove the heavy `textShadow` halos on `<h1>` and the subtitle `<p>` (they bake the old dark BG color and would look like dark blobs on a light background).
-   - Subtitle `<p>` `color: ACCENT_COLOR` → `color: '#2A1F1A'` with `opacity: 0.7` so it still reads as secondary.
-6. Leave untouched: `CategoryTileGrid` (tiles keep their own bg colors), `UnifiedResumeBanner`, `NextConversationCard`, `accentColor` prop passed to those (kept as is — affects child component theming, not page chrome), tile order, illustration assets used inside tiles, layout/spacing.
+### Edits to `src/components/KidsProductHome.tsx`
 
-## Files to edit
+1. Add `PAGE_BG` + `INK` constants near the existing palette imports.
+2. Compute `const pageBg = PAGE_BG[product.id] ?? product.backgroundColor;` near `const bg = product.backgroundColor;` (line 368).
+3. Line 378 loading skeleton: `backgroundColor: MIDNIGHT_INK` → `backgroundColor: pageBg`.
+4. Line 386 root `<div>`: `backgroundColor: MIDNIGHT_INK` → `backgroundColor: pageBg`.
+5. Line 388: `<ProductHomeBackButton color={LANTERN_GLOW} />` → `color={INK}`.
+6. **Delete** the atmospheric radial glow `<div>` (lines 392–405).
+7. **Delete** the entire hero illustration block — the `{product.heroImage && (<motion.div …>…</motion.div>)}` from line 408 through its closing `)}` on line 561, including all per-product `<img>` branches and the scrim.
+8. **Delete** the top scrim `<div>` (lines 563–575).
+9. Title `<h1>` (lines 598–612):
+   - `color: LANTERN_GLOW` → `color: INK`
+   - remove the `textShadow` line entirely.
+10. Subtitle `<p>` (lines 613–631):
+    - `color: 'rgba(255, 255, 255, 0.85)'` → `color: INK` with `opacity: 0.7`
+    - remove the `textShadow` array entirely.
+11. Leave untouched: tiles, `tileLight`, sticky filter header, `NextActionBanner`, `CategoryFilterChips`, card grid, `ProductCardTile`, animations, layout/spacing, `KontoIcon`, prefetch effect for `product.heroImage` (harmless — just network prefetch; removing the `<img>` is enough to satisfy the request).
 
-- `src/components/JagIMigProductHome.tsx` — `BG` → `#F2BC97`
-- `src/components/JagMedAndraProductHome.tsx` — `BG` → `#E59FCF`
-- `src/components/JagIVarldenProductHome.tsx` — `BG` → `#D8E145`
-- `src/components/VardagProductHome.tsx` — `BG` → `#A8E5C0`
-- `src/components/SyskonProductHome.tsx` — `BG` → `#E0BFEA`
-- `src/components/SexualitetProductHome.tsx` — `BG` → `#CFA08D`
-- `src/components/AdultProductHome.tsx` (Vårt Vi) — `DEEP_DUSK_BG` → `#E9C890`
+### Cleanup
+
+Delete the now-confirmed-dead per-product home files so future edits don't waste turns:
+- `src/components/JagIMigProductHome.tsx`
+- `src/components/JagMedAndraProductHome.tsx`
+- `src/components/JagIVarldenProductHome.tsx`
+- `src/components/VardagProductHome.tsx`
+- `src/components/SyskonProductHome.tsx`
+- `src/components/SexualitetProductHome.tsx`
+
+(Verified via `rg`: none of these are imported anywhere except their own file.)
 
 ## Out of scope
 
-- Library tile interior colors (`ProductLibrary.tsx` `TILE_COLORS`) — not touched, even though some user-supplied hexes differ slightly from current tile interiors. Tell me if you want those synced too.
-- Tile illustrations, CategoryTileGrid styling, banners, paywall, child components.
-- Session screens, portals, completion ceremonies.
-
-## Risk note
-
-Some title/subtitle elements rely on the dark BG + glow halo for legibility. With heavy `textShadow` removed and dark ink on lighter pastels, contrast should be fine on all 7 colors (all are light enough that `#2A1F1A` clears WCAG AA for large text). No new contrast helpers added — flag if any specific page needs a tweak after build.
+- Product manifest `backgroundColor` / `tileLight` (untouched; would ripple to paywall, library, themes).
+- Tile contents, illustrations, banners, card grid.
+- `AdultProductHome.tsx` — already correctly updated in the previous turn.
