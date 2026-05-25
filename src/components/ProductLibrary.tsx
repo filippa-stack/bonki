@@ -176,10 +176,10 @@ function VartViHero({
         alignItems: 'center',
         justifyContent: 'center',
         padding: '24px 18px 22px',
-        borderRadius: 16,
+        borderRadius: 24,
         background: VI_TAB_HERO_COLOR,
         border: 'none',
-        boxShadow: '0 0 0 1px rgba(255,255,255,0.06)',
+        boxShadow: NEU_SHADOW_OUT,
         cursor: 'pointer',
         WebkitTapHighlightColor: 'transparent',
         textAlign: 'center',
@@ -356,7 +356,7 @@ function VartViPreviewStrip({
                   WebkitTapHighlightColor: 'transparent',
                 }}
               >
-                {/* Outer circle */}
+                {/* Outer circle — neumorphic extrusion */}
                 <div
                   style={{
                     width: '100%',
@@ -366,10 +366,10 @@ function VartViPreviewStrip({
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    boxShadow: '0 0 0 1px rgba(255,255,255,0.06)',
+                    boxShadow: NEU_SHADOW_OUT_SM,
                   }}
                 >
-                  {/* Inner circle */}
+                  {/* Inner circle — inset well */}
                   <div
                     style={{
                       width: '70%',
@@ -379,6 +379,7 @@ function VartViPreviewStrip({
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
+                      boxShadow: NEU_SHADOW_IN,
                     }}
                   >
                     <motion.span
