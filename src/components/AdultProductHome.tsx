@@ -18,9 +18,7 @@ import KontoIcon from '@/components/KontoIcon';
 import KontoSheet from '@/components/KontoSheet';
 import NextActionBanner from '@/components/NextActionBanner';
 import {
-  LANTERN_GLOW,
   CORNFLOWER,
-  DEEP_DUSK_BG,
   MIDNIGHT_INK,
   DUSTY_ROSE,
   STORM_GREY,
