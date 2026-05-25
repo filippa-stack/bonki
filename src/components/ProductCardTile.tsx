@@ -27,6 +27,8 @@ interface ProductCardTileProps {
   positionIndex: number;
   /** Legacy prop kept for compatibility — dark text now resolved per-product. */
   darkText?: boolean;
+  /** When provided, tile renders in neumorphic mode against this page bg. */
+  pageBg?: string;
 }
 
 export default function ProductCardTile({
@@ -36,6 +38,7 @@ export default function ProductCardTile({
   productSlug,
   productId,
   positionIndex,
+  pageBg,
 }: ProductCardTileProps) {
   const navigate = useNavigate();
   const tileImage = useCardImage(card.id);
@@ -51,6 +54,7 @@ export default function ProductCardTile({
       darkText={titleColor}
       completed={isCompleted}
       ariaLabel={card.title}
+      pageBg={pageBg}
       onClick={() => navigate(`/product/${productSlug}/portal/${card.categoryId}?card=${card.id}`)}
     >
       {tileImage && (
