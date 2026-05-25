@@ -616,7 +616,7 @@ function LibraryKidsTile({
         aspectRatio: '3 / 4',
         borderRadius: 22,
         overflow: 'visible',
-        backgroundColor: frame,
+        backgroundColor: NEU_BG,
         border: 'none',
         boxShadow: NEU_SHADOW_OUT,
         padding: 0,
@@ -626,7 +626,7 @@ function LibraryKidsTile({
         WebkitTapHighlightColor: 'transparent',
       }}
     >
-      {/* Inner zone — distinct rounded plate */}
+      {/* Inner zone — recessed brand-colored plate */}
       <div
         style={{
           position: 'absolute',
@@ -635,9 +635,9 @@ function LibraryKidsTile({
           right: 9,
           bottom: '26%',
           backgroundColor: interior,
-          borderRadius: 14,
+          borderRadius: 12,
           border: 'none',
-          
+          boxShadow: NEU_SHADOW_INSET,
           overflow: 'hidden',
           display: 'flex',
           alignItems: 'center',
