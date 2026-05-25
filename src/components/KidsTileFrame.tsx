@@ -203,7 +203,7 @@ export default function KidsTileFrame({
           right: 0,
           bottom: 0,
           height: `${stripFraction * 100}%`,
-          backgroundColor: frame,
+          backgroundColor: stripSurface,
           padding: '0 16px',
           display: 'flex',
           flexDirection: 'column',
