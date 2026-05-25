@@ -113,7 +113,7 @@ function TabBar({
               fontFamily: 'var(--font-display)',
               fontSize: 22,
               fontWeight: 500,
-              color: LANTERN_GLOW,
+              color: '#0B1026',
               opacity: isActive ? 1 : 0.42,
               letterSpacing: '-0.005em',
               background: 'none',
@@ -431,7 +431,7 @@ function VartViPreviewStrip({
           fontWeight: 500,
           letterSpacing: '0.16em',
           textTransform: 'uppercase',
-          color: LANTERN_GLOW,
+          color: '#0B1026',
           opacity: 0.55,
           margin: '0 0 12px',
         }}
@@ -777,7 +777,7 @@ export default function ProductLibrary() {
     document.documentElement.classList.remove('theme-verdigris');
     document.body.classList.remove('verdigris-grain', 'verdigris-lightleak');
   }, []);
-  usePageBackground(MIDNIGHT_INK);
+  usePageBackground('#e9f6f4');
   const navigate = useNavigate();
   const tracked = useRef(false);
 
@@ -899,7 +899,8 @@ export default function ProductLibrary() {
   );
   const defaultKidsOrder = sortedKidsProducts;
 
-  const libraryBg = MIDNIGHT_INK;
+  const libraryBg = '#e9f6f4';
+  const shellInk = '#0B1026';
 
   if (accessLoading) {
     return <BonkiLoadingScreen />;
@@ -915,27 +916,7 @@ export default function ProductLibrary() {
         transition: 'background 600ms ease',
       }}
     >
-      {/* ── Atmospheric background layers ── */}
-      <div aria-hidden="true" style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none', zIndex: 0 }}>
-        <div style={{
-          position: 'absolute', top: '-20px', left: '50%', transform: 'translateX(-50%)',
-          width: '120vw', height: '340px',
-          background: 'radial-gradient(ellipse 55% 60% at 50% 35%, hsla(100, 60%, 80%, 0.10) 0%, hsla(100, 60%, 80%, 0.04) 45%, transparent 100%)',
-        }} />
-        <div style={{
-          position: 'absolute', top: '900px', left: 0, right: 0, bottom: 0,
-          background: 'linear-gradient(180deg, transparent 0%, rgba(28, 43, 26, 0.10) 25%, rgba(45, 69, 40, 0.08) 60%, rgba(28, 43, 26, 0.12) 100%)',
-        }} />
-        <div style={{
-          position: 'absolute', top: 0, left: 0, right: 0, height: '220px',
-          background: `linear-gradient(180deg,
-            hsla(230, 25%, 10%, 0.0) 0%,
-            hsla(230, 25%, 10%, 0.08) 30%,
-            hsla(230, 25%, 10%, 0.18) 55%,
-            ${libraryBg} 100%)`,
-          zIndex: 1,
-        }} />
-      </div>
+      {/* Atmospheric layers removed for light shell */}
 
       {/* Content */}
       <div style={{ position: 'relative', zIndex: 1 }}>
@@ -984,7 +965,7 @@ export default function ProductLibrary() {
               fontFamily: 'var(--font-body)',
               fontSize: 11,
               fontWeight: 400,
-              color: 'rgba(255, 255, 255, 0.55)',
+              color: 'rgba(11, 16, 38, 0.6)',
               lineHeight: 1.5,
               textAlign: 'left',
               padding: '0 4px',
