@@ -568,6 +568,7 @@ function StickyFilterHeader({
                 productSlug={product.slug}
                 productId={product.id}
                 positionIndex={index}
+                pageBg={pageBg}
               />
             </FilterableCardCell>
           );
