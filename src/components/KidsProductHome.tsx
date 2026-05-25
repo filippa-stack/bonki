@@ -459,6 +459,7 @@ export default function KidsProductHome({ product }: { product: ProductManifest 
           product={product}
           progress={progress}
           tileLight={tileLight}
+          pageBg={pageBg}
         />
       </div>
     </div>
@@ -470,10 +471,12 @@ function StickyFilterHeader({
   product,
   progress,
   tileLight,
+  pageBg,
 }: {
   product: ProductManifest;
   progress: KidsProductProgress;
   tileLight: string;
+  pageBg: string;
 }) {
   const [selected, setSelected] = useState<Set<string>>(() => new Set([ALL_FILTER_KEY]));
 
