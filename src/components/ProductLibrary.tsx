@@ -177,9 +177,9 @@ function VartViHero({
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: '24px 18px 22px',
+        padding: '20px 18px 22px',
         borderRadius: 24,
-        background: VI_TAB_HERO_COLOR,
+        background: NEU_BG,
         border: 'none',
         boxShadow: NEU_SHADOW_OUT,
         cursor: 'pointer',
@@ -192,42 +192,56 @@ function VartViHero({
           fontFamily: 'var(--font-body)',
           fontSize: 11,
           fontWeight: 500,
-          color: LANTERN_GLOW,
-          opacity: 0.55,
+          color: LABEL_INK,
+          opacity: 0.65,
           letterSpacing: '0.16em',
           textTransform: 'uppercase',
-          marginBottom: 18,
+          marginBottom: 14,
           display: 'block',
         }}
       >
         För er som par
       </span>
-      <img
-        src={illustrationStillUs}
-        alt=""
-        draggable={false}
+      {/* Recessed plate holding the illustration */}
+      <div
         style={{
-          width: 'auto',
-          height: 'auto',
-          maxWidth: 150,
-          maxHeight: 150,
-          objectFit: 'contain',
-          objectPosition: 'center',
-          pointerEvents: 'none',
-          filter: 'drop-shadow(0 6px 8px rgba(0,0,0,0.30))',
+          width: '100%',
+          borderRadius: 20,
+          background: VI_TAB_HERO_COLOR,
+          boxShadow: NEU_SHADOW_INSET,
+          padding: '22px 18px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
           marginBottom: 16,
-          display: 'block',
         }}
-      />
+      >
+        <img
+          src={illustrationStillUs}
+          alt=""
+          draggable={false}
+          style={{
+            width: 'auto',
+            height: 'auto',
+            maxWidth: 150,
+            maxHeight: 150,
+            objectFit: 'contain',
+            objectPosition: 'center',
+            pointerEvents: 'none',
+            filter: 'drop-shadow(0 6px 8px rgba(0,0,0,0.30))',
+            display: 'block',
+          }}
+        />
+      </div>
       <h3
         style={{
           fontFamily: 'var(--font-display)',
           fontSize: 30,
           fontWeight: 500,
-          color: LANTERN_GLOW,
+          color: LABEL_INK,
           lineHeight: 1,
           letterSpacing: '-0.01em',
-          margin: '0 0 16px',
+          margin: '0 0 12px',
           fontVariationSettings: "'opsz' 30",
         }}
       >
@@ -238,7 +252,7 @@ function VartViHero({
           <div
             style={{
               height: 2,
-              background: 'rgba(245,232,204,0.22)',
+              background: 'rgba(51,64,61,0.18)',
               borderRadius: 1,
               overflow: 'hidden',
               marginBottom: 7,
@@ -258,7 +272,7 @@ function VartViHero({
               fontFamily: 'var(--font-body)',
               fontSize: 10,
               fontWeight: 500,
-              color: LANTERN_GLOW,
+              color: LABEL_INK,
               opacity: 0.65,
               letterSpacing: '0.16em',
               textTransform: 'uppercase',
@@ -275,7 +289,7 @@ function VartViHero({
             fontFamily: 'var(--font-body)',
             fontSize: 10,
             fontWeight: 500,
-            color: LANTERN_GLOW,
+            color: LABEL_INK,
             opacity: 0.65,
             letterSpacing: '0.16em',
             textTransform: 'uppercase',
