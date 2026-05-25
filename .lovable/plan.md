@@ -1,58 +1,47 @@
-## Why nothing changed
+## Goal
 
-`/product/jag-i-mig` (and the other kids products) are not rendered by `JagIMigProductHome.tsx` etc. — those files are dead code. `src/pages/ProductHome.tsx` routes all six kids products through the shared `KidsProductHome.tsx`. The only file I edited last turn that was actually live was `AdultProductHome.tsx` (Vårt Vi). That's why your screen didn't change.
+Kids product home tiles read as a single solid plate the same color as the page background, lifted off the page by a true neumorphic dual-shadow. No inner-plate color, no border, no drop shadow.
 
-## Fix
+## Scope
 
-Apply the same treatment to `src/components/KidsProductHome.tsx`, keyed by `product.id`. Leave `product.backgroundColor` in the manifests alone (it's referenced from other surfaces — paywall, library, themes — and re-coloring those is out of scope).
+`KidsProductHome` grid tiles only (the `ProductCardTile` cells). `KidsTileFrame` is shared with the library and the card portal — I'll add an opt-in `neumorphic` mode keyed off a new `pageBg` prop, so existing callers (library, portal) stay pixel-identical.
 
-### Color map (hardcoded in `KidsProductHome.tsx`)
+## Edits
 
-```ts
-const PAGE_BG: Record<string, string> = {
-  jag_i_mig:       '#F2BC97',
-  jag_med_andra:   '#E59FCF',
-  jag_i_varlden:   '#D8E145',
-  vardagskort:     '#A8E5C0',
-  syskonkort:      '#E0BFEA',
-  sexualitetskort: '#CFA08D',
-  still_us:        '#E9C890', // unused here (routes to AdultProductHome) — kept for safety
-};
-const INK = '#2A1F1A';
-```
+### 1. `src/components/KidsTileFrame.tsx`
 
-### Edits to `src/components/KidsProductHome.tsx`
+Add optional prop `pageBg?: string`. When provided, render in neumorphic mode:
 
-1. Add `PAGE_BG` + `INK` constants near the existing palette imports.
-2. Compute `const pageBg = PAGE_BG[product.id] ?? product.backgroundColor;` near `const bg = product.backgroundColor;` (line 368).
-3. Line 378 loading skeleton: `backgroundColor: MIDNIGHT_INK` → `backgroundColor: pageBg`.
-4. Line 386 root `<div>`: `backgroundColor: MIDNIGHT_INK` → `backgroundColor: pageBg`.
-5. Line 388: `<ProductHomeBackButton color={LANTERN_GLOW} />` → `color={INK}`.
-6. **Delete** the atmospheric radial glow `<div>` (lines 392–405).
-7. **Delete** the entire hero illustration block — the `{product.heroImage && (<motion.div …>…</motion.div>)}` from line 408 through its closing `)}` on line 561, including all per-product `<img>` branches and the scrim.
-8. **Delete** the top scrim `<div>` (lines 563–575).
-9. Title `<h1>` (lines 598–612):
-   - `color: LANTERN_GLOW` → `color: INK`
-   - remove the `textShadow` line entirely.
-10. Subtitle `<p>` (lines 613–631):
-    - `color: 'rgba(255, 255, 255, 0.85)'` → `color: INK` with `opacity: 0.7`
-    - remove the `textShadow` array entirely.
-11. Leave untouched: tiles, `tileLight`, sticky filter header, `NextActionBanner`, `CategoryFilterChips`, card grid, `ProductCardTile`, animations, layout/spacing, `KontoIcon`, prefetch effect for `product.heroImage` (harmless — just network prefetch; removing the `<img>` is enough to satisfy the request).
+- **Outer wrapper**: `backgroundColor = pageBg`, remove the `1px rgba(255,255,255,0.10)` border, replace `boxShadow` with a raised dual-shadow derived from `pageBg`:
+  ```
+  boxShadow: `8px 8px 18px ${darken(pageBg, 0.12)}, -8px -8px 18px ${lighten(pageBg, 0.10)}`
+  ```
+  (light source top-left). Add small darken/lighten helpers inside the file.
+- **Inner zone**: also `backgroundColor = pageBg`, remove its `border: 1px ${darkText}30`. Keep position/inset/radius unchanged so the illustration crop is identical.
+- **Title strip**: `backgroundColor = pageBg` (already keyed off `frame`, which we'll keep passing — but in neumorphic mode just override to pageBg too). Hairline separator at top: keep it (uses `darkText` @ 18%) so the title still has a visual anchor against the illustration.
+- **Title color**: keep `darkText` (`productDarkText[productId]`) — already INK-family per product, reads cleanly on the pastel pageBg.
+- **Checkmark**: unchanged.
+- Tap feedback: add subtle `:active` inset shadow swap via inline style only if trivial; otherwise leave (out of scope to add motion).
 
-### Cleanup
+When `pageBg` is **not** provided, behavior is byte-identical to today (default branch wraps current style object).
 
-Delete the now-confirmed-dead per-product home files so future edits don't waste turns:
-- `src/components/JagIMigProductHome.tsx`
-- `src/components/JagMedAndraProductHome.tsx`
-- `src/components/JagIVarldenProductHome.tsx`
-- `src/components/VardagProductHome.tsx`
-- `src/components/SyskonProductHome.tsx`
-- `src/components/SexualitetProductHome.tsx`
+### 2. `src/components/ProductCardTile.tsx`
 
-(Verified via `rg`: none of these are imported anywhere except their own file.)
+Accept a new optional prop `pageBg?: string` and forward it to `KidsTileFrame`. `interior` and `frame` props become inert in neumorphic mode but stay passed (harmless; future-proof).
+
+### 3. `src/components/KidsProductHome.tsx`
+
+In the grid `map` (around line 540s in current file), pass `pageBg={pageBg}` to `ProductCardTile`. `pageBg` is already computed at the top of the component.
 
 ## Out of scope
 
-- Product manifest `backgroundColor` / `tileLight` (untouched; would ripple to paywall, library, themes).
-- Tile contents, illustrations, banners, card grid.
-- `AdultProductHome.tsx` — already correctly updated in the previous turn.
+- `ProductLibrary` tiles (already neumorphic from earlier turn).
+- `KidsCardPortal` big card preview (different surface, different bg).
+- `productTileVariants.ts` — left as-is; unused in neumorphic mode but kept for the other consumers.
+- `AdultProductHome` / Still Us — uses its own composition, not `KidsTileFrame`.
+- Manifest colors, illustrations, completed-check icon, layout, spacing, animations, title typography.
+
+## Risk / verification
+
+- The pastel page bg darken/lighten amounts (12% / 10%) are conservative — confirmed visually after.
+- After the edit I'll reload `/product/jag-i-mig` and screenshot to confirm: tile = peach, raised lift visible, no flat-card look. If any product's bg is so close to white that the light shadow disappears, I'll bump the darken amount for that one — but unlikely with the 7 chosen colors.

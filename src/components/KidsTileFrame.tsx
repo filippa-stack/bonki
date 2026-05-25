@@ -24,6 +24,23 @@ import { useEffect, useRef, type ReactNode, type CSSProperties } from 'react';
 import { motion } from 'framer-motion';
 import { SAFFRON_FLAME } from '@/lib/palette';
 
+/* ── Color helpers for neumorphic shadows ── */
+function clamp(n: number) { return Math.max(0, Math.min(255, n)); }
+function hexToRgb(hex: string): [number, number, number] {
+  const h = hex.replace('#', '');
+  return [
+    parseInt(h.substring(0, 2), 16),
+    parseInt(h.substring(2, 4), 16),
+    parseInt(h.substring(4, 6), 16),
+  ];
+}
+function shade(hex: string, amount: number): string {
+  // amount > 0 = lighten, < 0 = darken
+  const [r, g, b] = hexToRgb(hex);
+  const f = (c: number) => clamp(Math.round(c + (amount > 0 ? (255 - c) : c) * amount));
+  return `rgb(${f(r)}, ${f(g)}, ${f(b)})`;
+}
+
 interface KidsTileFrameProps {
   /** Product anchor color — outer frame + title strip background. */
   frame: string;
@@ -55,7 +72,14 @@ interface KidsTileFrameProps {
   radius?: number;
   /** Title strip height as fraction of card (default 0.24). */
   stripFraction?: number;
+  /**
+   * Page background color. When provided, the tile renders in neumorphic mode:
+   * frame + inner zone + strip all use this color, with a raised dual-shadow
+   * derived from it. Frame / interior props are ignored visually.
+   */
+  pageBg?: string;
 }
+
 
 export default function KidsTileFrame({
   frame,
@@ -73,6 +97,7 @@ export default function KidsTileFrame({
   titleSize = 18,
   radius = 22,
   stripFraction = 0.24,
+  pageBg,
 }: KidsTileFrameProps) {
   // Skip checkmark fade on initial mount when card is already completed
   const isFirstRenderRef = useRef(true);
@@ -81,6 +106,11 @@ export default function KidsTileFrame({
 
   const Wrapper = onClick ? 'button' : 'div';
 
+  const neu = Boolean(pageBg);
+  const surface = neu ? (pageBg as string) : frame;
+  const innerSurface = neu ? (pageBg as string) : interior;
+  const stripSurface = neu ? (pageBg as string) : frame;
+
   return (
     <Wrapper
       type={onClick ? 'button' : undefined}
@@ -88,14 +118,16 @@ export default function KidsTileFrame({
       aria-label={ariaLabel ?? title}
       style={{
         position: 'relative',
-        overflow: 'hidden',
+        overflow: 'visible',
         width: '100%',
         aspectRatio: '3 / 4',
         borderRadius: radius,
         textAlign: 'left',
-        backgroundColor: frame,
-        border: '1px solid rgba(255, 255, 255, 0.10)',
-        boxShadow: '0 8px 24px rgba(0,0,0,0.12), 0 2px 6px rgba(0,0,0,0.06)',
+        backgroundColor: surface,
+        border: neu ? 'none' : '1px solid rgba(255, 255, 255, 0.10)',
+        boxShadow: neu
+          ? `8px 8px 18px ${shade(pageBg as string, -0.14)}, -8px -8px 18px ${shade(pageBg as string, 0.10)}`
+          : '0 8px 24px rgba(0,0,0,0.12), 0 2px 6px rgba(0,0,0,0.06)',
         padding: 0,
         cursor: onClick ? 'pointer' : 'default',
         display: 'block',
@@ -111,11 +143,12 @@ export default function KidsTileFrame({
           right: 16,
           bottom: `calc(${stripFraction * 100}% + 8px)`,
           borderRadius: Math.max(8, radius - 8),
-          backgroundColor: interior,
-          border: `1px solid ${darkText}30`,
+          backgroundColor: innerSurface,
+          border: neu ? 'none' : `1px solid ${darkText}30`,
           overflow: 'hidden',
         }}
       >
+
         {children && (
           <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
             {children}
@@ -170,7 +203,7 @@ export default function KidsTileFrame({
           right: 0,
           bottom: 0,
           height: `${stripFraction * 100}%`,
-          backgroundColor: frame,
+          backgroundColor: stripSurface,
           padding: '0 16px',
           display: 'flex',
           flexDirection: 'column',
