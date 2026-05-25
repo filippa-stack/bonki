@@ -1,42 +1,28 @@
-I'm in plan mode so I can't write the artifact yet — approve this plan and I'll produce the downloadable file plus the colors reference. Both deliverables are read-only artifacts under `/mnt/documents/` (no app code changes).
+## Goal
+Change the main library page (`/`) background from the dark Midnight shell (`#0B1026`) to mint-cream `#e9f6f4`.
 
-## Deliverables
+## Scope
+Only `src/components/ProductLibrary.tsx` (the live lobby). The sandbox `ProductLibraryMock.tsx`, kids/adult product homes, and session screens are not touched.
 
-1. **`/mnt/documents/bonki-ux-flowchart.mmd`** — Mermaid flowchart of the full app UX (downloadable / previewable in chat).
-2. **`/mnt/documents/bonki-product-colors.md`** — Reference of every product's color tokens, pulled from `src/lib/palette.ts` + each product manifest.
+## Changes
 
-## UX flowchart scope
+1. **`src/components/ProductLibrary.tsx`**
+   - Replace the `LIBRARY_BG` constant (currently `#0B1026`) with `#e9f6f4`.
+   - That constant feeds `usePageBackground(LIBRARY_BG)` and the root `<div>`'s inline `background` + `--surface-base`, so a single edit repaints the whole shell.
 
-Based on `src/App.tsx` routes + product navigation patterns, the chart will cover:
+2. **Foreground contrast review (same file only)**
+   The lobby currently assumes a dark shell. On a light mint shell several elements would become invisible or low-contrast. I will adjust just enough to remain legible without redesigning:
+   - Tab labels ("Vi" / "Barnen"): switch from `LANTERN_GLOW` cream → a dark ink (`#0B1026`) with the same active/inactive opacity ramp.
+   - "Åldrarna är en vägledning…" helper line and any other cream/white body copy on the shell → dark ink at reduced opacity.
+   - Resume banner / section eyebrows that sit directly on the shell → dark ink.
+   - Tiles themselves keep their existing per-product gradients and white-on-color text (they're self-contained colored cards, so they still read fine on a light shell).
 
-- Auth gate (`/login` → Google / Magic Link) → onboarding gate
-- Home / Library (`/`) → Konto sheet, Journal (`/journal`)
-- Product entry: `/product/:slug` → ProductIntro (first visit) → ProductPaywall (if no access, Stripe) → ProductHome (Kids variant vs Adult variant for Vårt Vi)
-- Category portal: `/product/:slug/portal/:categoryId` (KidsCardPortal vs AdultCardPortal)
-- Session: `/card/:cardId` (CardView, steps 1..N, completion w/ takeaway, "Nästa samtal" / exit)
-- Per-product Diary (`/diary/:productId`)
-- Resume-banner + pause/exit edges back to ProductHome
+3. **Bottom nav / Konto icon**
+   If the bottom nav or `KontoIcon` inherits cream-on-dark styling that becomes unreadable on mint, I'll darken those icon/text colors locally in the lobby render path only. No changes to the nav component itself.
 
-## Product colors (preview — exact values that will go in the .md)
+## Out of scope
+- Product home pages, Diary, session views, paywall, onboarding — all keep their current backgrounds.
+- No new design tokens, no theme system changes, no memory updates (this is a one-off visual override, not a brand shift).
 
-Source: `src/lib/palette.ts` (`productTileColors`, `productAccentColor`, `productDarkText`) + each `ProductManifest`.
-
-| Product | tileLight | tileMid | tileDeep | Accent pill | Dark text on tile |
-|---|---|---|---|---|---|
-| Jag i mig | `#E89B6B` | `#D08560` | `#8C4A2D` | `#F2BC97` | `#5B2814` |
-| Jag med andra | `#CB7AB2` | `#A85E94` | `#721B3A` | `#E59FCF` | `#511F39` |
-| Jag i världen | `#C6D423` | `#A3AF1C` | `#606613` | `#D8E145` | `#363D14` |
-| Vardagskort | `#8BDDB0` | `#68C494` | `#48A873` | `#A8E5C0` | `#175C3D` |
-| Syskonkort | `#CF8BDD` | `#B56CC4` | `#8E459D` | `#E0BFEA` | `#3D2451` |
-| Sexualitetskort | `#B87560` | `#A26350` | `#7E4838` | `#CFA08D` | `#5A2515` |
-| Vårt Vi (still_us) | `#94BCE1` | `#6F9CC5` | `#4B759B` | `#E9C890` | `#0A1628` (Ember Night) |
-
-Plus **Still Us layer colors** (Vårt Vi category tiles): Vardagen `#3A6E9B` · Tillsammans `#1E5A8A` · Grunden `#0D2E6B` · Riktningen `#0A1628`.
-
-Plus **global shell tokens** (`MIDNIGHT_INK #1A1A2E`, `DEEP_DUSK_BG #0B1026`, `SAFFRON_FLAME #E9B44C`, `BONKI_ORANGE #E85D2C`) and adult palette extras (`CORNFLOWER`, `DUSTY_ROSE`, `STORM_GREY`, `SAGE`, `WARM_GOLD`).
-
-The .md will also list each product's `accentColor`, `secondaryAccent`, `backgroundColor`, and `ctaButtonColor` straight from each manifest file so you have one place that shows every hex/HSL in use.
-
-## After approval
-
-I'll run two `code--exec` writes (flowchart + colors doc) and post them as `<presentation-artifact>` tags so you can download / preview both.
+## Risks
+- Memory rule "Default dark theme (#0B1026/Midnight Ink)" still applies elsewhere; this edit is a deliberate local exception for the lobby only. Confirm you want the lobby to diverge from the dark-shell standard before I implement.
