@@ -717,21 +717,7 @@ function LibraryKidsTile({
         </div>
       </div>
 
-      {/* Hairline at inner-zone / title-strip seam */}
-      <div
-        aria-hidden="true"
-        style={{
-          position: 'absolute',
-          left: 9,
-          right: 9,
-          bottom: '24%',
-          height: 1,
-          backgroundColor: darkText,
-          opacity: 0.25,
-        }}
-      />
-
-      {/* Title strip — bottom 24%, sits on frame color */}
+      {/* Title strip — bottom 24%, sits on raised frame */}
       <div
         style={{
           position: 'absolute',
@@ -763,7 +749,7 @@ function LibraryKidsTile({
               fontVariationSettings: "'opsz' 24",
               fontSize: 16,
               fontWeight: 600,
-              color: darkText,
+              color: LABEL_INK,
               lineHeight: 1.1,
               textAlign: 'center',
             }}
@@ -771,7 +757,7 @@ function LibraryKidsTile({
             {product.name}
           </span>
           {tasted && (
-            <span style={{ display: 'inline-flex', color: darkText, opacity: 0.55, flexShrink: 0 }}>
+            <span style={{ display: 'inline-flex', color: LABEL_INK, opacity: 0.55, flexShrink: 0 }}>
               <BonkiLogoMark size={10} />
             </span>
           )}
