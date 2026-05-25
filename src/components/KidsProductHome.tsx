@@ -35,6 +35,18 @@ import {
   BONKI_ORANGE,
 } from '@/lib/palette';
 
+/* ── Per-product page background (light, vibrant) ── */
+const PAGE_BG: Record<string, string> = {
+  jag_i_mig:       '#F2BC97',
+  jag_med_andra:   '#E59FCF',
+  jag_i_varlden:   '#D8E145',
+  vardagskort:     '#A8E5C0',
+  syskonkort:      '#E0BFEA',
+  sexualitetskort: '#CFA08D',
+  still_us:        '#E9C890',
+};
+const INK = '#2A1F1A';
+
 /* ── Animation tokens ── */
 const EASE = [0.4, 0.0, 0.2, 1] as const;
 const containerVariants = {
