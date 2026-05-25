@@ -1,43 +1,50 @@
-## Why nothing visibly changed
+## Goal
 
-The prior turn only deleted the `inset` shadow from the inner plate. Tile frames still use the brand color, so they read as flat colored cards on the mint page — not as raised neumorphic elements lifting off the surface.
+Each product home page gets its product-specific solid color as the page background, hero illustrations and atmospheric glows are removed, and title/subtitle/back-button text switches to dark ink so it reads on the lighter backgrounds.
 
-For true neumorphism the frame must be the **same color as the page background** (`#e9f6f4`, confirmed at `src/components/ProductLibrary.tsx:787`). The brand color moves into a recessed inner plate.
+## Color → product mapping
 
-## Edits — `src/components/ProductLibrary.tsx`
+Derived from the user's 7 colors, mapped by hue to match each product's existing library-tile inner-plate identity:
 
-### 1. Shared constants (near line 37)
+| Product | New BG |
+|---|---|
+| Jag i mig | `#F2BC97` |
+| Jag med andra | `#E59FCF` |
+| Jag i världen | `#D8E145` |
+| Vardag | `#A8E5C0` |
+| Syskon | `#E0BFEA` |
+| Sexualitet | `#CFA08D` |
+| Vårt Vi (Still Us) | `#E9C890` |
 
-```ts
-const PAGE_BG = '#e9f6f4';
-const LABEL_INK = '#33403d';
-const NEU_SHADOW_OUT    = '8px 8px 20px rgba(166,195,192,0.65), -8px -8px 20px rgba(255,255,255,0.95)';
-const NEU_SHADOW_OUT_SM = '5px 5px 14px rgba(166,195,192,0.55), -5px -5px 14px rgba(255,255,255,0.95)';
-const NEU_SHADOW_INSET  = 'inset 5px 5px 11px rgba(0,0,0,0.28), inset -4px -4px 9px rgba(255,255,255,0.22)';
-```
+## Shared changes (all 7 home components)
 
-### 2. `LibraryKidsTile` (lines 606–end of component)
+1. Replace `BG` (or `DEEP_DUSK_BG` in `AdultProductHome.tsx`) with the new hex above.
+2. Delete the hero illustration block (`<motion.div>` wrapping `heroImage` / `product.heroImage`, the `img`, and its scrim/backlight divs). Remove the now-unused `heroImage` import.
+3. Delete the atmospheric radial-glow background `<div>` (the one using `TILE_LIGHT` / `CORNFLOWER` `radial-gradient`).
+4. Delete the top scrim div (`AdultProductHome` only) — no longer needed without hero.
+5. Text color swap to dark ink `#2A1F1A`:
+   - `<ProductHomeBackButton color="#FDF6E3" />` → `color="#2A1F1A"`
+   - `<h1>` `color: '#FDF6E3'` → `color: '#2A1F1A'`
+   - Remove the heavy `textShadow` halos on `<h1>` and the subtitle `<p>` (they bake the old dark BG color and would look like dark blobs on a light background).
+   - Subtitle `<p>` `color: ACCENT_COLOR` → `color: '#2A1F1A'` with `opacity: 0.7` so it still reads as secondary.
+6. Leave untouched: `CategoryTileGrid` (tiles keep their own bg colors), `UnifiedResumeBanner`, `NextConversationCard`, `accentColor` prop passed to those (kept as is — affects child component theming, not page chrome), tile order, illustration assets used inside tiles, layout/spacing.
 
-- Outer `<button>` (line 617): `backgroundColor: PAGE_BG` (was `frame`). Keep `borderRadius: 22`, keep `NEU_SHADOW_OUT`.
-- Inner plate (line 628): keep `backgroundColor: interior`, add `boxShadow: NEU_SHADOW_INSET`, drop `borderRadius` from 14 → 12 so the mint frame reads as a continuous raised lip.
-- Remove the hairline seam at line 719 (no longer needed — the recessed plate creates the separation).
-- Title strip background → `PAGE_BG`; title text `color: LABEL_INK` (instead of `darkText`). Product label now sits on the frame, not on the colored plate.
+## Files to edit
 
-### 3. Vårt Vi hero tile (around line 182)
+- `src/components/JagIMigProductHome.tsx` — `BG` → `#F2BC97`
+- `src/components/JagMedAndraProductHome.tsx` — `BG` → `#E59FCF`
+- `src/components/JagIVarldenProductHome.tsx` — `BG` → `#D8E145`
+- `src/components/VardagProductHome.tsx` — `BG` → `#A8E5C0`
+- `src/components/SyskonProductHome.tsx` — `BG` → `#E0BFEA`
+- `src/components/SexualitetProductHome.tsx` — `BG` → `#CFA08D`
+- `src/components/AdultProductHome.tsx` (Vårt Vi) — `DEEP_DUSK_BG` → `#E9C890`
 
-- Outer `<button>`: `backgroundColor: PAGE_BG`, `borderRadius: 24`, `NEU_SHADOW_OUT`.
-- Wrap the illustration in a recessed inner plate: `backgroundColor: VI_TAB_HERO_COLOR` (whatever it is currently using), `borderRadius: 20`, `boxShadow: NEU_SHADOW_INSET`.
-- Move the eyebrow, title, and progress line out of the colored plate and onto the frame area below it. Text color → `LABEL_INK`.
+## Out of scope
 
-### 4. Out of scope (untouched)
+- Library tile interior colors (`ProductLibrary.tsx` `TILE_COLORS`) — not touched, even though some user-supplied hexes differ slightly from current tile interiors. Tell me if you want those synced too.
+- Tile illustrations, CategoryTileGrid styling, banners, paywall, child components.
+- Session screens, portals, completion ceremonies.
 
-`PreviewCardPurchased` medallions, illustration assets, age pill states, tile order, modal shadow at line 1046.
+## Risk note
 
-## Critical constraint
-
-Frame color must be **exactly** `#e9f6f4`. Any drift breaks the neumorphic illusion and the tiles read as flat cards again. Light source is top-left on every shadow declaration.
-
-## Verification
-
-- `rg "backgroundColor: frame" src/components/ProductLibrary.tsx` returns nothing.
-- Visual: each tile reads as a mint pillow pushing up out of the page, with a sunken brand-colored window holding the illustration.
+Some title/subtitle elements rely on the dark BG + glow halo for legibility. With heavy `textShadow` removed and dark ink on lighter pastels, contrast should be fine on all 7 colors (all are light enough that `#2A1F1A` clears WCAG AA for large text). No new contrast helpers added — flag if any specific page needs a tweak after build.

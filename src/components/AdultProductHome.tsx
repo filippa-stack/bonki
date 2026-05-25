@@ -18,9 +18,7 @@ import KontoIcon from '@/components/KontoIcon';
 import KontoSheet from '@/components/KontoSheet';
 import NextActionBanner from '@/components/NextActionBanner';
 import {
-  LANTERN_GLOW,
   CORNFLOWER,
-  DEEP_DUSK_BG,
   MIDNIGHT_INK,
   DUSTY_ROSE,
   STORM_GREY,
@@ -78,7 +76,8 @@ export default function AdultProductHome({ product }: { product: ProductManifest
     }
   }, [product.heroImage]);
 
-  const bg = DEEP_DUSK_BG;
+  const bg = '#E9C890';
+  const ink = '#2A1F1A';
   const accent = CORNFLOWER;
 
   // Override product.tileLight to cornflower for chips + banner
@@ -94,96 +93,10 @@ export default function AdultProductHome({ product }: { product: ProductManifest
 
   return (
     <div className="min-h-screen relative overflow-x-hidden" style={{ backgroundColor: bg }}>
-      <ProductHomeBackButton color={LANTERN_GLOW} />
+      <ProductHomeBackButton color={ink} />
       <KontoIcon onClick={() => setKontoOpen(true)} />
       <KontoSheet open={kontoOpen} onClose={() => setKontoOpen(false)} />
 
-      {/* Atmospheric cool glow — evening sky */}
-      <div
-        style={{
-          position: 'absolute',
-          top: '-8vh',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          width: '160vw',
-          height: '60vh',
-          background: `radial-gradient(ellipse 65% 55% at 50% 40%, ${CORNFLOWER}30 0%, #1B2A6B22 45%, transparent 100%)`,
-          pointerEvents: 'none',
-          zIndex: 0,
-        }}
-      />
-
-      {/* Hero illustration */}
-      {product.heroImage && (
-        <motion.div
-          initial={{ opacity: 1 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6 }}
-          style={{
-            position: 'absolute',
-            top: '-8vh',
-            left: '-5vw',
-            right: '-5vw',
-            height: '100vh',
-            zIndex: 0,
-            pointerEvents: 'none',
-          }}
-        >
-          {/* Subtle backlight behind figures */}
-          <div
-            style={{
-              position: 'absolute',
-              top: '5%',
-              left: '-5%',
-              width: '70%',
-              height: '60%',
-              background:
-                'radial-gradient(ellipse at 30% 35%, rgba(100,149,237,0.30), transparent 60%)',
-              pointerEvents: 'none',
-            }}
-          />
-          <img
-            src={product.heroImage}
-            alt=""
-            aria-hidden="true"
-            style={{
-              position: 'absolute',
-              top: '5%',
-              left: '-15%',
-              width: '110%',
-              height: 'auto',
-              opacity: 0.42,
-              pointerEvents: 'none',
-            }}
-          />
-          {/* Bottom scrim — fades hero into Deep Dusk workspace */}
-          <div
-            style={{
-              position: 'absolute',
-              bottom: 0,
-              left: 0,
-              right: 0,
-              height: '70%',
-              background: `linear-gradient(to top, ${DEEP_DUSK_BG} 0%, ${DEEP_DUSK_BG}F0 18%, ${DEEP_DUSK_BG}D0 35%, ${DEEP_DUSK_BG}90 55%, ${DEEP_DUSK_BG}40 75%, transparent 100%)`,
-              pointerEvents: 'none',
-            }}
-          />
-        </motion.div>
-      )}
-
-      {/* Top scrim */}
-      <div
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          height: '28vh',
-          background: 'linear-gradient(to bottom, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.15) 50%, transparent 100%)',
-          zIndex: 1,
-          pointerEvents: 'none',
-        }}
-      />
 
       <div
         style={{
@@ -204,10 +117,9 @@ export default function AdultProductHome({ product }: { product: ProductManifest
               fontFamily: 'var(--font-display)',
               fontSize: 'clamp(34px, 9.5vw, 50px)',
               fontWeight: 700,
-              color: LANTERN_GLOW,
+              color: ink,
               letterSpacing: '-0.02em',
               whiteSpace: 'nowrap',
-              textShadow: `0 2px 20px rgba(0,0,0,0.7), 0 0 60px ${CORNFLOWER}66, 0 0 120px ${CORNFLOWER}44`,
               fontVariationSettings: "'opsz' 36",
               margin: 0,
             }}
@@ -221,8 +133,8 @@ export default function AdultProductHome({ product }: { product: ProductManifest
               fontSize: '14px',
               fontWeight: 400,
               lineHeight: 1.45,
-              color: LANTERN_GLOW,
-              opacity: 0.85,
+              color: ink,
+              opacity: 0.75,
               textAlign: 'center',
               maxWidth: '320px',
               margin: '8px auto 0',
@@ -239,7 +151,7 @@ export default function AdultProductHome({ product }: { product: ProductManifest
               fontWeight: 600,
               letterSpacing: '0.12em',
               textTransform: 'uppercase',
-              color: LANTERN_GLOW,
+              color: ink,
               opacity: 0.55,
               textAlign: 'center',
               margin: '10px 0 0',
