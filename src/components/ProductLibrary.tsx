@@ -34,8 +34,10 @@ const LANTERN_GLOW = '#FDF6E3';
 
 /* ── Neumorphic shadow language (lobby tiles on mint #e9f6f4 shell) ── */
 const NEU_BG = '#e9f6f4';
-const NEU_SHADOW_OUT = '8px 8px 20px rgba(166,195,192,0.55), -8px -8px 20px rgba(255,255,255,0.9)';
-const NEU_SHADOW_OUT_SM = '5px 5px 14px rgba(166,195,192,0.5), -5px -5px 14px rgba(255,255,255,0.9)';
+const LABEL_INK = '#33403d';
+const NEU_SHADOW_OUT = '8px 8px 20px rgba(166,195,192,0.65), -8px -8px 20px rgba(255,255,255,0.95)';
+const NEU_SHADOW_OUT_SM = '5px 5px 14px rgba(166,195,192,0.55), -5px -5px 14px rgba(255,255,255,0.95)';
+const NEU_SHADOW_INSET = 'inset 5px 5px 11px rgba(0,0,0,0.28), inset -4px -4px 9px rgba(255,255,255,0.22)';
 
 
 const ILLUSTRATIONS: Record<string, string> = {
