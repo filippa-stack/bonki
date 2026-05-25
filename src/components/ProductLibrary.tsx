@@ -489,7 +489,7 @@ function PreviewCardPurchased({
       style={{
         position: 'relative',
         background: bgColor,
-        borderRadius: 12,
+        borderRadius: 18,
         border: 'none',
         padding: 10,
         minHeight: 130,
@@ -500,7 +500,7 @@ function PreviewCardPurchased({
         gap: 6,
         cursor: 'pointer',
         WebkitTapHighlightColor: 'transparent',
-        boxShadow: '0 0 0 1px rgba(255,255,255,0.06)',
+        boxShadow: NEU_SHADOW_OUT_SM,
         opacity: isCompleted ? 0.78 : 1,
       }}
     >
