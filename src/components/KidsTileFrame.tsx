@@ -24,6 +24,23 @@ import { useEffect, useRef, type ReactNode, type CSSProperties } from 'react';
 import { motion } from 'framer-motion';
 import { SAFFRON_FLAME } from '@/lib/palette';
 
+/* ── Color helpers for neumorphic shadows ── */
+function clamp(n: number) { return Math.max(0, Math.min(255, n)); }
+function hexToRgb(hex: string): [number, number, number] {
+  const h = hex.replace('#', '');
+  return [
+    parseInt(h.substring(0, 2), 16),
+    parseInt(h.substring(2, 4), 16),
+    parseInt(h.substring(4, 6), 16),
+  ];
+}
+function shade(hex: string, amount: number): string {
+  // amount > 0 = lighten, < 0 = darken
+  const [r, g, b] = hexToRgb(hex);
+  const f = (c: number) => clamp(Math.round(c + (amount > 0 ? (255 - c) : c) * amount));
+  return `rgb(${f(r)}, ${f(g)}, ${f(b)})`;
+}
+
 interface KidsTileFrameProps {
   /** Product anchor color — outer frame + title strip background. */
   frame: string;
@@ -55,7 +72,14 @@ interface KidsTileFrameProps {
   radius?: number;
   /** Title strip height as fraction of card (default 0.24). */
   stripFraction?: number;
+  /**
+   * Page background color. When provided, the tile renders in neumorphic mode:
+   * frame + inner zone + strip all use this color, with a raised dual-shadow
+   * derived from it. Frame / interior props are ignored visually.
+   */
+  pageBg?: string;
 }
+
 
 export default function KidsTileFrame({
   frame,
