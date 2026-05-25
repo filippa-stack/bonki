@@ -32,6 +32,12 @@ import illustrationVardag from '@/assets/illustration-vardag.png';
 
 const LANTERN_GLOW = '#FDF6E3';
 
+/* ── Neumorphic shadow language (lobby tiles on mint #e9f6f4 shell) ── */
+const NEU_BG = '#e9f6f4';
+const NEU_SHADOW_OUT = '8px 8px 20px rgba(166,195,192,0.55), -8px -8px 20px rgba(255,255,255,0.9)';
+const NEU_SHADOW_OUT_SM = '5px 5px 14px rgba(166,195,192,0.5), -5px -5px 14px rgba(255,255,255,0.9)';
+const NEU_SHADOW_IN = 'inset 3px 3px 6px rgba(0,0,0,0.14), inset -3px -3px 6px rgba(255,255,255,0.20)';
+
 const ILLUSTRATIONS: Record<string, string> = {
   jag_i_mig: illustrationJagIMig,
   jag_med_andra: illustrationJagMedAndra,
@@ -170,10 +176,10 @@ function VartViHero({
         alignItems: 'center',
         justifyContent: 'center',
         padding: '24px 18px 22px',
-        borderRadius: 16,
+        borderRadius: 24,
         background: VI_TAB_HERO_COLOR,
         border: 'none',
-        boxShadow: '0 0 0 1px rgba(255,255,255,0.06)',
+        boxShadow: NEU_SHADOW_OUT,
         cursor: 'pointer',
         WebkitTapHighlightColor: 'transparent',
         textAlign: 'center',
@@ -350,7 +356,7 @@ function VartViPreviewStrip({
                   WebkitTapHighlightColor: 'transparent',
                 }}
               >
-                {/* Outer circle */}
+                {/* Outer circle — neumorphic extrusion */}
                 <div
                   style={{
                     width: '100%',
@@ -360,10 +366,10 @@ function VartViPreviewStrip({
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    boxShadow: '0 0 0 1px rgba(255,255,255,0.06)',
+                    boxShadow: NEU_SHADOW_OUT_SM,
                   }}
                 >
-                  {/* Inner circle */}
+                  {/* Inner circle — inset well */}
                   <div
                     style={{
                       width: '70%',
@@ -373,6 +379,7 @@ function VartViPreviewStrip({
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
+                      boxShadow: NEU_SHADOW_IN,
                     }}
                   >
                     <motion.span
@@ -482,7 +489,7 @@ function PreviewCardPurchased({
       style={{
         position: 'relative',
         background: bgColor,
-        borderRadius: 12,
+        borderRadius: 18,
         border: 'none',
         padding: 10,
         minHeight: 130,
@@ -493,7 +500,7 @@ function PreviewCardPurchased({
         gap: 6,
         cursor: 'pointer',
         WebkitTapHighlightColor: 'transparent',
-        boxShadow: '0 0 0 1px rgba(255,255,255,0.06)',
+        boxShadow: NEU_SHADOW_OUT_SM,
         opacity: isCompleted ? 0.78 : 1,
       }}
     >
@@ -606,11 +613,11 @@ function LibraryKidsTile({
         position: 'relative',
         width: '100%',
         aspectRatio: '3 / 4',
-        borderRadius: 14,
-        overflow: 'hidden',
+        borderRadius: 22,
+        overflow: 'visible',
         backgroundColor: frame,
-        border: '1px solid rgba(255, 255, 255, 0.10)',
-        boxShadow: '0 8px 24px rgba(0,0,0,0.12), 0 2px 6px rgba(0,0,0,0.06)',
+        border: 'none',
+        boxShadow: NEU_SHADOW_OUT,
         padding: 0,
         cursor: 'pointer',
         display: 'block',
@@ -627,8 +634,9 @@ function LibraryKidsTile({
           right: 9,
           bottom: '26%',
           backgroundColor: interior,
-          borderRadius: 12,
-          border: `1px solid ${darkText}30`,
+          borderRadius: 14,
+          border: 'none',
+          boxShadow: NEU_SHADOW_IN,
           overflow: 'hidden',
           display: 'flex',
           alignItems: 'center',
