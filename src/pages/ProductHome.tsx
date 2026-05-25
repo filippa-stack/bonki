@@ -171,7 +171,7 @@ onClick={() => navigate('/')}
         initial={{ opacity: 1 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
-        className="px-5 pt-14 pb-4"
+        className="px-5 pt-14 pb-4 bg-[#e9f6f4]"
       >
         <button
 onClick={() => navigate('/')}
@@ -207,7 +207,7 @@ onClick={() => navigate('/')}
 
       {/* Categories */}
       <motion.div
-        className="px-5 pb-8"
+        className="px-5 pb-8 bg-[#e9f6f4]"
         initial="hidden"
         animate="visible"
         variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.06, delayChildren: 0.2 } } }}
